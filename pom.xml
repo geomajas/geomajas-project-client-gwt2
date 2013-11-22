@@ -10,106 +10,206 @@
   -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<parent>
-		<groupId>org.sonatype.oss</groupId>
-		<artifactId>oss-parent</artifactId>
-		<version>7</version>
-	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.geomajas</groupId>
-	<artifactId>geomajas-all</artifactId>
-	<version>dummy-SNAPSHOT</version>
-	<packaging>pom</packaging>
-	<url>http://www.geomajas.org/</url>
-	<name>Grouping of all Geomajas modules</name>
-	<description>Grouping of all Geomajas modules</description>
 
+	<parent>
+		<groupId>org.geomajas</groupId>
+		<artifactId>geomajas-parent</artifactId>
+		<version>1.0.9</version>
+	</parent>
+
+	<groupId>org.geomajas</groupId>
+	<artifactId>geomajas-client-gwt2-all</artifactId>
+	<version>1.9.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>Geomajas GWT2 client: Parent POM</name>
+	<description>Geomajas GWT2 client: Parent POM</description>
+
+	<scm>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/client/geomajas-client-gwt2</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/client/geomajas-client-gwt2</developerConnection>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/client/geomajas-client-gwt2</url>
+	</scm>
+
+	<developers>
+		<developer>
+			<id>pieterdg</id>
+			<name>Pieter De Graef</name>
+			<email>pieter.degraef@geosparc.com</email>
+			<roles>
+				<role>Module maintainer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>jandm</id>
+			<name>Jan De Moerloose</name>
+			<email>jan.demoerloose@geosparc.com</email>
+		</developer>
+	</developers>
+	
 	<modules>
-		<module>project</module>
-		<module>backend</module>
-		<module>face</module>
-		<module>client</module>
-		<module>plugin</module>
-		<module>application</module>
-		<module>test</module>
+		<module>gwt2-api</module>
+		<module>gwt2-impl</module>
+ 		<module>documentation</module>
+		<module>example-base</module>
+		<module>example-jar</module>
+		<module>example</module>
 	</modules>
+
+	<properties>
+		<gwt-client-backend-version>1.13.1</gwt-client-backend-version>
+		<gwt-client-rasterizing-version>1.2.0</gwt-client-rasterizing-version>
+		<gwt-client-common-gwt-version>1.4.0</gwt-client-common-gwt-version>
+		<gwt-client-gwt-version>2.5.0</gwt-client-gwt-version>
+		<gwt-client-gwt-graphics-version>1.0.0.TX11</gwt-client-gwt-graphics-version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-backend</artifactId>
+				<version>${gwt-client-backend-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-face-common-gwt-all</artifactId>
+				<version>${gwt-client-common-gwt-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-client-gwt2-api</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-client-gwt2-api</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-client-gwt2-impl</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-client-gwt2-impl</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-client-gwt2-impl</artifactId>
+				<version>${project.version}</version>
+				<classifier>tests</classifier>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-client-gwt2-example-base</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-client-gwt2-example-base</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-client-gwt2-example-jar</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-client-gwt2-example-jar</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
+			</dependency>
+
+			<dependency>
+				<groupId>xerces</groupId>
+				<artifactId>xercesImpl</artifactId>
+				<version>2.9.1</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.vaadin.addons</groupId>
+				<artifactId>gwt-graphics</artifactId>
+				<version>${gwt-client-gwt-graphics-version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.google.gwt.inject</groupId>
+				<artifactId>gin</artifactId>
+				<version>1.5.0</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.google.gwt</groupId>
+				<artifactId>gwt-user</artifactId>
+				<version>${gwt-client-gwt-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.gwt</groupId>
+				<artifactId>gwt-servlet</artifactId>
+				<version>${gwt-client-gwt-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.gwt</groupId>
+				<artifactId>gwt-dev</artifactId>
+				<version>${gwt-client-gwt-version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-rasterizing-all</artifactId>
+				<version>${gwt-client-rasterizing-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
 
 	<profiles>
 		<profile>
-			<id>full-build</id>
+			<id>default</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<modules>
-				<module>build-tools</module>
 				<module>documentation</module>
 			</modules>
 		</profile>
 		<profile>
-			<id>hudson</id>
+			<id>skipDocs</id>
 			<activation>
 				<property>
-					<name>hudson</name>
+					<name>skipDocs</name>
+				</property>
+			</activation>
+		</profile>
+		<profile>
+			<id>m2e</id>
+			<activation>
+				<property>
+					<name>m2e.version</name>
 				</property>
 			</activation>
 		</profile>
 	</profiles>
-
-	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/trunk</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk</developerConnection>
-		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk</url>
-	</scm>
-
-	<organization>
-		<name>Geosparc</name>
-		<url>http://www.geosparc.com</url>
-	</organization>
-	<mailingLists>
-		<mailingList>
-			<name>DEV</name>
-			<post>mailto:majas-dev@geomajas.org</post>
-			<subscribe>http://lists.geomajas.org/mailman/listinfo/majas-dev</subscribe>
-			<unsubscribe>http://lists.geomajas.org/mailman/listinfo/majas-dev</unsubscribe>
-			<archive>http://lists.geomajas.org/pipermail/majas-dev/</archive>
-		</mailingList>
-	</mailingLists>
-	<licenses>
-		<license>
-			<name>GNU Affero General Public License, Version 3</name>
-			<url>http://www.gnu.org/licenses/agpl-3.0.html</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-	<issueManagement>
-		<system>JIRA</system>
-		<url>http://jira.geomajas.org</url>
-	</issueManagement>
-	<ciManagement>
-		<system>Jenkins</system>
-		<url>http://ci.geomajas.org/jenkins/</url>
-		<notifiers>
-			<notifier>
-				<type>mail</type>
-				<sendOnError>true</sendOnError>
-				<sendOnFailure>true</sendOnFailure>
-				<sendOnSuccess>false</sendOnSuccess>
-				<sendOnWarning>true</sendOnWarning>
-				<configuration>
-					<address>geomajas-commit@lists.sourceforge.net</address>
-				</configuration>
-			</notifier>
-		</notifiers>
-	</ciManagement>
-
-	<developers>
-		<developer>
-			<id>dirkf</id>
-			<name>Dirk Frigne</name>
-			<email>dirk.frigne@geosparc.com</email>
-			<roles>
-				<role>product owner</role>
-			</roles>
-		</developer>
-	</developers>
 </project>
