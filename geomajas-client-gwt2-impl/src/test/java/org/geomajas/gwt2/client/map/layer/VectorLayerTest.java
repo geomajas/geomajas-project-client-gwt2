@@ -15,12 +15,12 @@ import junit.framework.Assert;
 
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
-import org.geomajas.gwt2.client.GeomajasTestModule;
+import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.map.MapConfigurationImpl;
 import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.MapEventBusImpl;
 import org.geomajas.gwt2.client.map.ViewPort;
-import org.geomajas.gwt2.client.map.layer.VectorServerLayerImpl;
-import org.geomajas.gwt2.client.service.EndPointService;
+import org.geomajas.gwt2.client.map.ViewPortImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,10 +28,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.web.bindery.event.shared.EventBus;
 
 /**
  * Test-cases for the {@link VectorServerLayerImpl} class.
@@ -42,8 +38,6 @@ import com.google.web.bindery.event.shared.EventBus;
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml", "layerBeans1.xml", "mapBeans.xml" })
 public class VectorLayerTest {
 
-	private static final Injector INJECTOR = Guice.createInjector(new GeomajasTestModule());
-
 	@Autowired
 	@Qualifier(value = "mapBeans")
 	private ClientMapInfo mapInfo;
@@ -53,40 +47,37 @@ public class VectorLayerTest {
 	private MapEventBus eventBus;
 
 	private ViewPort viewPort;
-	
-	private EndPointService endPointService;
 
 	@Before
 	public void checkLayerOrder() {
-		eventBus = new MapEventBusImpl(this, INJECTOR.getInstance(EventBus.class));
-		viewPort = INJECTOR.getInstance(ViewPort.class);
-		viewPort.initialize(mapInfo, eventBus);
+		eventBus = new MapEventBusImpl(this, GeomajasImpl.getInstance().getEventBus());
+		viewPort = new ViewPortImpl(eventBus, new MapConfigurationImpl());
+		viewPort.initialize(mapInfo);
 		viewPort.setMapSize(1000, 1000);
-		endPointService  = INJECTOR.getInstance(EndPointService.class);
 		layerInfo = (ClientVectorLayerInfo) mapInfo.getLayers().get(0);
 	}
 
 	@Test
 	public void testServerLayerId() {
-		VectorServerLayerImpl layer = new VectorServerLayerImpl(layerInfo, viewPort, eventBus, endPointService);
+		VectorServerLayerImpl layer = new VectorServerLayerImpl(layerInfo, viewPort, eventBus);
 		Assert.assertEquals(layerInfo.getServerLayerId(), layer.getServerLayerId());
 	}
 
 	@Test
 	public void testTitle() {
-		VectorServerLayerImpl layer = new VectorServerLayerImpl(layerInfo, viewPort, eventBus, endPointService);
+		VectorServerLayerImpl layer = new VectorServerLayerImpl(layerInfo, viewPort, eventBus);
 		Assert.assertEquals(layerInfo.getLabel(), layer.getTitle());
 	}
 
 	@Test
 	public void testLayerInfo() {
-		VectorServerLayerImpl layer = new VectorServerLayerImpl(layerInfo, viewPort, eventBus, endPointService);
+		VectorServerLayerImpl layer = new VectorServerLayerImpl(layerInfo, viewPort, eventBus);
 		Assert.assertEquals(layerInfo, layer.getLayerInfo());
 	}
 
 	@Test
 	public void testSelection() {
-		VectorServerLayerImpl layer = new VectorServerLayerImpl(layerInfo, viewPort, eventBus, endPointService);
+		VectorServerLayerImpl layer = new VectorServerLayerImpl(layerInfo, viewPort, eventBus);
 		Assert.assertFalse(layer.isSelected());
 		layer.setSelected(true);
 		Assert.assertTrue(layer.isSelected());
@@ -96,7 +87,7 @@ public class VectorLayerTest {
 
 	@Test
 	public void testMarkedAsVisible() {
-		VectorServerLayerImpl layer = new VectorServerLayerImpl(layerInfo, viewPort, eventBus, endPointService);
+		VectorServerLayerImpl layer = new VectorServerLayerImpl(layerInfo, viewPort, eventBus);
 		Assert.assertTrue(layer.isMarkedAsVisible());
 		layer.setMarkedAsVisible(false);
 		Assert.assertFalse(layer.isMarkedAsVisible());
@@ -106,42 +97,33 @@ public class VectorLayerTest {
 
 	@Test
 	public void testShowing() {
-		VectorServerLayerImpl layer = new VectorServerLayerImpl(layerInfo, viewPort, eventBus, endPointService);
+		VectorServerLayerImpl layer = new VectorServerLayerImpl(layerInfo, viewPort, eventBus);
 
 		// Scale between 6 and 20 is OK:
-		viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(0)); // 32 -> NOK
+		viewPort.applyScale(viewPort.getFixedScale(5)); // 32 -> NOK
 		Assert.assertFalse(layer.isShowing());
 
-		viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(1)); // 16 -> OK
+		viewPort.applyScale(viewPort.getFixedScale(4)); // 16 -> OK
 		Assert.assertTrue(layer.isShowing());
 
-		viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(2)); // 8 -> OK
+		viewPort.applyScale(viewPort.getFixedScale(3)); // 8 -> OK
 		Assert.assertTrue(layer.isShowing());
 
-		viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(3)); // 4 -> NOK
+		viewPort.applyScale(viewPort.getFixedScale(2)); // 4 -> NOK
 		Assert.assertFalse(layer.isShowing());
 
-		viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(4)); // 2 -> NOK
+		viewPort.applyScale(viewPort.getFixedScale(1)); // 2 -> NOK
 		Assert.assertFalse(layer.isShowing());
 
-		viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(5)); // 1 -> NOK
+		viewPort.applyScale(viewPort.getFixedScale(0)); // 1 -> NOK
 		Assert.assertFalse(layer.isShowing());
 
 		// Mark as invisible:
 		layer.setMarkedAsVisible(false);
-		viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(0)); // 32 -> NOK
+		viewPort.applyScale(viewPort.getFixedScale(5)); // 32 -> NOK
 		Assert.assertFalse(layer.isShowing());
 
-		viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(1)); // 16 -> NOK
+		viewPort.applyScale(viewPort.getFixedScale(4)); // 16 -> NOK
 		Assert.assertFalse(layer.isShowing());
-	}
-
-	@Test
-	public void testFilter() {
-		VectorServerLayerImpl layer = new VectorServerLayerImpl(layerInfo, viewPort, eventBus, endPointService);
-		Assert.assertNull(layer.getFilter());
-		String filter = "Look at me, mom!";
-		layer.setFilter(filter);
-		Assert.assertEquals(filter, layer.getFilter());
 	}
 }

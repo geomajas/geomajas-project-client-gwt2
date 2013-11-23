@@ -11,13 +11,14 @@
 
 package org.geomajas.gwt2.example.client.sample.general;
 
+import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.event.MapInitializationEvent;
 import org.geomajas.gwt2.client.event.MapInitializationHandler;
 import org.geomajas.gwt2.client.map.MapConfiguration;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.layer.Layer;
+import org.geomajas.gwt2.example.base.client.ExampleBase;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
-import org.geomajas.gwt2.example.client.ExampleJar;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -54,15 +55,20 @@ public class NavigationOptionPanel implements SamplePanel {
 
 	private static final MyUiBinder UI_BINDER = GWT.create(MyUiBinder.class);
 
-	private final long defaultMillis = 400;
+	private final int defaultMillis = 400;
+
+	private final int defaultFadeInMillis = 250;
 
 	private MapPresenter mapPresenter;
 
 	@UiField
-	protected CheckBox enableAnimation;
+	protected TextBox millisBox;
 
 	@UiField
-	protected TextBox millisBox;
+	protected TextBox fadeInBox;
+
+	@UiField
+	protected CheckBox cancelAnimationSupport;
 
 	@UiField
 	protected VerticalPanel layerPanel;
@@ -73,16 +79,8 @@ public class NavigationOptionPanel implements SamplePanel {
 	public Widget asWidget() {
 		Widget layout = UI_BINDER.createAndBindUi(this);
 
-		// Add a change handler to the animation toggle checkbox:
-		enableAnimation.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
-
-			public void onValueChange(ValueChangeEvent<Boolean> event) {
-				mapPresenter.getConfiguration().setMapHintValue(MapConfiguration.ANIMATION_ENABLED, event.getValue());
-			}
-		});
-
 		// Initialize the map, and return the layout:
-		mapPresenter = ExampleJar.getInjector().getMapPresenter();
+		mapPresenter = GeomajasImpl.getInstance().getMapPresenter();
 		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 		mapPresenter.initialize("gwt-app", "mapCountries");
@@ -99,6 +97,21 @@ public class NavigationOptionPanel implements SamplePanel {
 				}
 			}
 		});
+		fadeInBox.addKeyUpHandler(new KeyUpHandler() {
+
+			public void onKeyUp(KeyUpEvent event) {
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+					changeFadeInMillis();
+				}
+			}
+		});
+		cancelAnimationSupport.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+
+			public void onValueChange(ValueChangeEvent<Boolean> event) {
+				mapPresenter.getConfiguration().setMapHintValue(MapConfiguration.ANIMATION_CANCEL_SUPPORT,
+						cancelAnimationSupport.getValue());
+			}
+		});
 
 		return layout;
 	}
@@ -108,9 +121,14 @@ public class NavigationOptionPanel implements SamplePanel {
 		changeAnimationMillis();
 	}
 
+	@UiHandler("fadeInBtn")
+	protected void onFadeInButtonClicked(ClickEvent event) {
+		changeFadeInMillis();
+	}
+
 	private void changeAnimationMillis() {
 		String txt = millisBox.getValue();
-		long time = defaultMillis;
+		int time = defaultMillis;
 		try {
 			time = Integer.parseInt(txt);
 		} catch (Exception e) { // NOSONAR
@@ -121,8 +139,22 @@ public class NavigationOptionPanel implements SamplePanel {
 		mapPresenter.getConfiguration().setMapHintValue(MapConfiguration.ANIMATION_TIME, time);
 	}
 
+	private void changeFadeInMillis() {
+		String txt = fadeInBox.getValue();
+		int time = defaultFadeInMillis;
+		try {
+			time = Integer.parseInt(txt);
+		} catch (Exception e) { // NOSONAR
+			Window.alert("Could not parse milliseconds... Default value of " + defaultFadeInMillis + " is used");
+			mapPresenter.getConfiguration().setMapHintValue(MapConfiguration.FADE_IN_TIME, defaultMillis);
+			fadeInBox.setValue(defaultFadeInMillis + "");
+		}
+		mapPresenter.getConfiguration().setMapHintValue(MapConfiguration.FADE_IN_TIME, time);
+	}
+
 	/**
-	 * Map initialization handler that zooms in.
+	 * Map initialization handler that adds checkboxes for every layer to enable/disable animated rendering for those
+	 * layers.
 	 * 
 	 * @author Pieter De Graef
 	 */
@@ -133,19 +165,18 @@ public class NavigationOptionPanel implements SamplePanel {
 			for (int i = 0; i < mapPresenter.getLayersModel().getLayerCount(); i++) {
 				final Layer layer = mapPresenter.getLayersModel().getLayer(i);
 				CheckBox cb = new CheckBox("Animate: " + layer.getTitle());
-				cb.setValue(true);
-				layerPanel.add(cb);
+				cb.setValue(mapPresenter.getConfiguration().isAnimated(layer));
 				cb.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
 
 					public void onValueChange(ValueChangeEvent<Boolean> event) {
 						mapPresenter.getConfiguration().setAnimated(layer, event.getValue());
 					}
 				});
+				layerPanel.add(cb);
 			}
 
 			// Zoom in (scale times 4), to get a better view:
-			double scale = mapPresenter.getViewPort().getScale() * 4;
-			mapPresenter.getViewPort().applyScale(scale);
+			mapPresenter.getViewPort().applyBounds(ExampleBase.BBOX_AFRICA);
 		}
 	}
 }

@@ -18,11 +18,13 @@ import javax.annotation.PostConstruct;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.map.MapConfigurationImpl;
 import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.MapEventBusImpl;
 import org.geomajas.gwt2.client.map.ViewPort;
+import org.geomajas.gwt2.client.map.ViewPortImpl;
 import org.geomajas.layer.tile.TileCode;
-import org.geomajas.plugin.wmsclient.client.WmsClientTestGinModule;
 import org.geomajas.plugin.wmsclient.client.layer.config.WmsTileConfiguration;
 import org.junit.Assert;
 import org.junit.Test;
@@ -32,10 +34,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.web.bindery.event.shared.EventBus;
 
 /**
  * Testcases for the {@link WmsTileService} interface.
@@ -47,8 +45,6 @@ import com.google.web.bindery.event.shared.EventBus;
 		"mapViewPortBeans.xml", "layerViewPortBeans.xml" })
 @DirtiesContext
 public class LayerTileServiceTest {
-
-	private static final Injector INJECTOR = Guice.createInjector(new WmsClientTestGinModule());
 
 	private static final double DELTA = 1e-10;
 
@@ -66,11 +62,11 @@ public class LayerTileServiceTest {
 
 	@PostConstruct
 	public void initialize() {
-		eventBus = new MapEventBusImpl(this, INJECTOR.getInstance(EventBus.class));
-		viewPort = INJECTOR.getInstance(ViewPort.class);
-		viewPort.initialize(mapInfo, eventBus);
+		eventBus = new MapEventBusImpl(this, GeomajasImpl.getInstance().getEventBus());
+		viewPort = new ViewPortImpl(eventBus, new MapConfigurationImpl());
+		viewPort.initialize(mapInfo);
 		viewPort.setMapSize(1000, 1000);
-		tileService = INJECTOR.getInstance(WmsTileService.class);
+		tileService = new WmsTileServiceImpl();
 
 		Bbox max = viewPort.getMaximumBounds();
 		tileConfig = new WmsTileConfiguration(200, 200, new Coordinate(max.getX(), max.getY()));

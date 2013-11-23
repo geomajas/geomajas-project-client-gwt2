@@ -11,13 +11,11 @@
 
 package org.geomajas.gwt2.example.client.sample.general;
 
+import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
-import org.geomajas.gwt2.client.event.ViewPortScaledEvent;
-import org.geomajas.gwt2.client.event.ViewPortTranslatedEvent;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
-import org.geomajas.gwt2.example.client.ExampleJar;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -61,7 +59,7 @@ public class ViewPortEventPanel implements SamplePanel {
 		Widget layout = UI_BINDER.createAndBindUi(this);
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = ExampleJar.getInjector().getMapPresenter();
+		mapPresenter = GeomajasImpl.getInstance().getMapPresenter();
 		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addViewPortChangedHandler(new MyViewPortChangedHandler());
 
@@ -112,16 +110,6 @@ public class ViewPortEventPanel implements SamplePanel {
 		@Override
 		public void onViewPortChanged(ViewPortChangedEvent event) {
 			eventLayout.add(new Label("ViewPortChangedEvent"));
-		}
-
-		@Override
-		public void onViewPortScaled(ViewPortScaledEvent event) {
-			eventLayout.add(new Label("ViewPortScaledEvent"));
-		}
-
-		@Override
-		public void onViewPortTranslated(ViewPortTranslatedEvent event) {
-			eventLayout.add(new Label("ViewPortTranslatedEvent"));
 		}
 	}
 }

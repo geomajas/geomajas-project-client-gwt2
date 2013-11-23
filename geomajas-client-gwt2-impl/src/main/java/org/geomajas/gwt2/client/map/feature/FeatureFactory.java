@@ -17,7 +17,9 @@ import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
  * GIN factory for {@link Feature} objects.
  * 
  * @author Jan De Moerloose
+ * @deprecated Dependency on the backend.
  */
+@Deprecated
 public interface FeatureFactory {
 
 	/**

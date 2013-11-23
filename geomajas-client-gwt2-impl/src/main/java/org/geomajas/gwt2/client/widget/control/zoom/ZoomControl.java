@@ -12,11 +12,14 @@
 package org.geomajas.gwt2.client.widget.control.zoom;
 
 import org.geomajas.gwt.client.util.Browser;
+import org.geomajas.gwt2.client.animation.NavigationAnimationFactory;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.widget.AbstractMapWidget;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
@@ -94,6 +97,9 @@ public class ZoomControl extends AbstractMapWidget {
 		initWidget(UI_BINDER.createAndBindUi(this));
 		zoomInElement.getElement().setInnerText("+");
 		zoomOutElement.getElement().setInnerText("-");
+		getElement().getStyle().setPosition(Position.ABSOLUTE);
+		getElement().getStyle().setTop(5, Unit.PX);
+		getElement().getStyle().setLeft(5, Unit.PX);
 
 		if (Browser.isMobile()) {
 			initializeForMobile();
@@ -116,10 +122,9 @@ public class ZoomControl extends AbstractMapWidget {
 		zoomInElement.addDomHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				int index = viewPort.getZoomStrategy().getZoomStepIndex(viewPort.getScale());
-				try {
-					viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index - 1));
-				} catch (IllegalArgumentException e) {
+				int index = viewPort.getFixedScaleIndex(viewPort.getScale());
+				if (index < viewPort.getFixedScaleCount() - 1) {
+					viewPort.registerAnimation(NavigationAnimationFactory.createZoomIn(mapPresenter));
 				}
 				event.stopPropagation();
 			}
@@ -129,10 +134,9 @@ public class ZoomControl extends AbstractMapWidget {
 		zoomOutElement.addDomHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				int index = viewPort.getZoomStrategy().getZoomStepIndex(viewPort.getScale());
-				try {
-					viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index + 1));
-				} catch (IllegalArgumentException e) {
+				int index = viewPort.getFixedScaleIndex(viewPort.getScale());
+				if (index > 0) {
+					viewPort.registerAnimation(NavigationAnimationFactory.createZoomOut(mapPresenter));
 				}
 				event.stopPropagation();
 			}
@@ -148,10 +152,9 @@ public class ZoomControl extends AbstractMapWidget {
 			public void onTouchStart(TouchStartEvent event) {
 				zoomInElement.addStyleName(resource.css().zoomControlZoomInTouch());
 				ViewPort viewPort = mapPresenter.getViewPort();
-				int index = viewPort.getZoomStrategy().getZoomStepIndex(viewPort.getScale());
-				try {
-					viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index - 1));
-				} catch (IllegalArgumentException e) {
+				int index = viewPort.getFixedScaleIndex(viewPort.getScale());
+				if (index < viewPort.getFixedScaleCount() - 1) {
+					viewPort.applyScale(viewPort.getFixedScale(index - 1));
 				}
 				event.stopPropagation();
 			}
@@ -171,10 +174,9 @@ public class ZoomControl extends AbstractMapWidget {
 			public void onTouchStart(TouchStartEvent event) {
 				zoomOutElement.addStyleName(resource.css().zoomControlZoomOutTouch());
 				ViewPort viewPort = mapPresenter.getViewPort();
-				int index = viewPort.getZoomStrategy().getZoomStepIndex(viewPort.getScale());
-				try {
-					viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index + 1));
-				} catch (IllegalArgumentException e) {
+				int index = viewPort.getFixedScaleIndex(viewPort.getScale());
+				if (index < viewPort.getFixedScaleCount() - 1) {
+					viewPort.applyScale(viewPort.getFixedScale(index + 1));
 				}
 				event.stopPropagation();
 			}

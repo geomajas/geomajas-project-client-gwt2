@@ -27,13 +27,22 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * @author Emiel Ackermann
  * @author Jan Venstermans
  */
-public class CommandServiceImpl implements CommandService {
-	
+public final class CommandServiceImpl implements CommandService {
+
+	private static CommandService instance;
+
 	/** No-arguments constructor. */
-	public CommandServiceImpl() {
+	private CommandServiceImpl() {
 		ExceptionCallbackImpl callback = new ExceptionCallbackImpl();
 		GwtCommandDispatcher.getInstance().setCommandExceptionCallback(callback);
 		GwtCommandDispatcher.getInstance().setCommunicationExceptionCallback(callback);
+	}
+
+	public static CommandService getInstance() {
+		if (instance == null) {
+			instance = new CommandServiceImpl();
+		}
+		return instance;
 	}
 
 	@Override
@@ -63,6 +72,6 @@ public class CommandServiceImpl implements CommandService {
 
 	@Override
 	public void setTokenRequestHandler(TokenRequestHandler tokenRequestHandler) {
-		GwtCommandDispatcher.getInstance().setTokenRequestHandler(tokenRequestHandler);		
+		GwtCommandDispatcher.getInstance().setTokenRequestHandler(tokenRequestHandler);
 	}
 }

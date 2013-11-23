@@ -15,8 +15,6 @@ import org.geomajas.annotation.Api;
 import org.geomajas.configuration.client.UnitType;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
-import org.geomajas.gwt2.client.event.ViewPortScaledEvent;
-import org.geomajas.gwt2.client.event.ViewPortTranslatedEvent;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.widget.AbstractMapWidget;
 
@@ -107,13 +105,6 @@ public class Scalebar extends AbstractMapWidget {
 		this.unitLength = mapPresenter.getConfiguration().getServerConfiguration().getUnitLength();
 
 		mapPresenter.getEventBus().addViewPortChangedHandler(new ViewPortChangedHandler() {
-
-			public void onViewPortTranslated(ViewPortTranslatedEvent event) {
-			}
-
-			public void onViewPortScaled(ViewPortScaledEvent event) {
-				redrawScale();
-			}
 
 			public void onViewPortChanged(ViewPortChangedEvent event) {
 				redrawScale();

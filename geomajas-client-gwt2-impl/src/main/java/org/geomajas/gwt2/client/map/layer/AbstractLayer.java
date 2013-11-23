@@ -19,8 +19,6 @@ import org.geomajas.gwt2.client.event.LayerShowEvent;
 import org.geomajas.gwt2.client.event.LayerVisibilityMarkedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
-import org.geomajas.gwt2.client.event.ViewPortScaledEvent;
-import org.geomajas.gwt2.client.event.ViewPortTranslatedEvent;
 import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.ViewPort;
 
@@ -149,10 +147,6 @@ public abstract class AbstractLayer implements Layer {
 	protected class LayerScaleVisibilityHandler implements ViewPortChangedHandler {
 
 		public void onViewPortChanged(ViewPortChangedEvent event) {
-			onViewPortScaled(null);
-		}
-
-		public void onViewPortScaled(ViewPortScaledEvent event) {
 			if (!visibleAtPreviousScale && isShowing()) {
 				visibleAtPreviousScale = true;
 				eventBus.fireEvent(new LayerShowEvent(AbstractLayer.this));
@@ -160,9 +154,6 @@ public abstract class AbstractLayer implements Layer {
 				visibleAtPreviousScale = false;
 				eventBus.fireEvent(new LayerHideEvent(AbstractLayer.this));
 			}
-		}
-
-		public void onViewPortTranslated(ViewPortTranslatedEvent event) {
 		}
 	}
 }

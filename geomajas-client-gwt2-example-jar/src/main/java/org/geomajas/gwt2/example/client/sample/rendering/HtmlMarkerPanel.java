@@ -11,6 +11,7 @@
 
 package org.geomajas.gwt2.example.client.sample.rendering;
 
+import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.event.MapInitializationEvent;
 import org.geomajas.gwt2.client.event.MapInitializationHandler;
 import org.geomajas.gwt2.client.gfx.AbstractTransformableWidget;
@@ -18,7 +19,6 @@ import org.geomajas.gwt2.client.gfx.TransformableWidget;
 import org.geomajas.gwt2.client.gfx.TransformableWidgetContainer;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
-import org.geomajas.gwt2.example.client.ExampleJar;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Position;
@@ -64,7 +64,7 @@ public class HtmlMarkerPanel implements SamplePanel {
 		Widget layout = UI_BINDER.createAndBindUi(this);
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = ExampleJar.getInjector().getMapPresenter();
+		mapPresenter = GeomajasImpl.getInstance().getMapPresenter();
 		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 

@@ -45,12 +45,6 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- Other GWT projects -->
-		<dependency>
-			<groupId>com.google.gwt.inject</groupId>
-			<artifactId>gin</artifactId>
-		</dependency>
-
 		<!-- Test dependencies -->
 		<dependency>
 			<groupId>org.geomajas</groupId>

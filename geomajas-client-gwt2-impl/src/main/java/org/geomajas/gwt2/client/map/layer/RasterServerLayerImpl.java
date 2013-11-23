@@ -8,18 +8,19 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.gwt2.client.map.layer;
 
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.gwt.client.util.UrlBuilder;
+import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.event.LayerStyleChangedEvent;
 import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.ViewPort;
-import org.geomajas.gwt2.client.service.EndPointService;
+import org.geomajas.gwt2.client.map.render.LayerRenderer;
+import org.geomajas.gwt2.client.map.render.dom.FixedScaleLayerRenderer;
 
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 
 /**
  * The client side representation of a raster layer defined on the backend.
@@ -28,19 +29,26 @@ import com.google.inject.assistedinject.Assisted;
  */
 public class RasterServerLayerImpl extends AbstractServerLayer<ClientRasterLayerInfo> implements RasterServerLayer {
 
-	private EndPointService endPointService;
+	private final FixedScaleLayerRenderer renderer;
 
 	/** The only constructor. */
-	@Inject
-	public RasterServerLayerImpl(@Assisted ClientRasterLayerInfo layerInfo, @Assisted final ViewPort viewPort,
-			@Assisted final MapEventBus eventBus, final EndPointService endPointService) {
+	public RasterServerLayerImpl(ClientRasterLayerInfo layerInfo, ViewPort viewPort, MapEventBus eventBus) {
 		super(layerInfo, viewPort, eventBus);
-		this.endPointService = endPointService;
+		renderer = new FixedScaleLayerRenderer(viewPort, this, eventBus);
+	}
+
+	// ------------------------------------------------------------------------
+	// Layer implementation:
+	// ------------------------------------------------------------------------
+
+	@Override
+	public LayerRenderer getRenderer() {
+		return renderer;
 	}
 
 	@Override
 	public IsWidget buildLegendWidget() {
-		UrlBuilder url = new UrlBuilder(endPointService.getLegendServiceUrl());
+		UrlBuilder url = new UrlBuilder(GeomajasImpl.getInstance().getEndPointService().getLegendServiceUrl());
 		url.addPath(getServerLayerId() + LEGEND_ICON_EXTENSION);
 		return new ServerLayerStyleWidget(url.toString(), getTitle(), null);
 	}

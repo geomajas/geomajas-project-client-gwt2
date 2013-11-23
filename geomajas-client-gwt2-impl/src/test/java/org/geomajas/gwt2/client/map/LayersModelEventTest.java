@@ -16,7 +16,7 @@ import java.util.List;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
-import org.geomajas.gwt2.client.GeomajasTestModule;
+import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.event.LayerAddedEvent;
 import org.geomajas.gwt2.client.event.LayerDeselectedEvent;
 import org.geomajas.gwt2.client.event.LayerOrderChangedEvent;
@@ -25,12 +25,12 @@ import org.geomajas.gwt2.client.event.LayerRemovedEvent;
 import org.geomajas.gwt2.client.event.LayerSelectedEvent;
 import org.geomajas.gwt2.client.event.LayerSelectionHandler;
 import org.geomajas.gwt2.client.event.MapCompositionHandler;
-import org.geomajas.gwt2.client.map.MapEventBusImpl;
 import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.client.map.layer.LayersModel;
+import org.geomajas.gwt2.client.map.layer.LayersModelImpl;
 import org.geomajas.testdata.ReloadContext;
-import org.geomajas.testdata.ReloadContextTestExecutionListener;
 import org.geomajas.testdata.ReloadContext.ClassMode;
+import org.geomajas.testdata.ReloadContextTestExecutionListener;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,9 +42,6 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
 /**
@@ -57,10 +54,8 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
 		"layerBeans1.xml", "layerBeans2.xml", "layerBeans3.xml" })
 @TestExecutionListeners(listeners = { ReloadContextTestExecutionListener.class,
 		DependencyInjectionTestExecutionListener.class })
-@ReloadContext(classMode=ClassMode.BEFORE_EACH_TEST_METHOD)
+@ReloadContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 public class LayersModelEventTest {
-
-	private static final Injector INJECTOR = Guice.createInjector(new GeomajasTestModule());
 
 	private static final String LAYER1 = "beans1Layer";
 
@@ -88,8 +83,8 @@ public class LayersModelEventTest {
 
 	@Before
 	public void checkLayerOrder() {
-		eventBus = new MapEventBusImpl(this, INJECTOR.getInstance(EventBus.class));
-		viewPort = INJECTOR.getInstance(ViewPort.class);
+		eventBus = new MapEventBusImpl(this, GeomajasImpl.getInstance().getEventBus());
+		viewPort = new ViewPortImpl(eventBus, new MapConfigurationImpl());
 
 		List<ClientLayerInfo> layers = new ArrayList<ClientLayerInfo>();
 		for (int i = 1; i < 4; i++) {
@@ -104,7 +99,7 @@ public class LayersModelEventTest {
 
 	@Test
 	public void testInitialize() {
-		LayersModel layersModel = INJECTOR.getInstance(LayersModel.class);
+		LayersModel layersModel = new LayersModelImpl(viewPort, eventBus, new MapConfigurationImpl());
 		final MapCompositionHandler layerCounter = new MapCompositionHandler() {
 
 			public void onLayerAdded(LayerAddedEvent event) {
@@ -116,15 +111,15 @@ public class LayersModelEventTest {
 			}
 		};
 		eventBus.addMapCompositionHandler(layerCounter);
-		layersModel.initialize(mapInfo, viewPort, eventBus);
+		layersModel.initialize(mapInfo);
 		Assert.assertEquals(3, layerCount);
 		Assert.assertEquals(3, layersModel.getLayerCount());
 	}
 
 	@Test
 	public void testLayerSelection() {
-		LayersModel layersModel = INJECTOR.getInstance(LayersModel.class);
-		layersModel.initialize(mapInfo, viewPort, eventBus);
+		LayersModel layersModel = new LayersModelImpl(viewPort, eventBus, new MapConfigurationImpl());
+		layersModel.initialize(mapInfo);
 		Layer layer1 = layersModel.getLayer(LAYER1);
 		Layer layer2 = layersModel.getLayer(LAYER2);
 
@@ -159,8 +154,8 @@ public class LayersModelEventTest {
 
 	@Test
 	public void testMoveLayerDown() {
-		LayersModel layersModel = INJECTOR.getInstance(LayersModel.class);
-		layersModel.initialize(mapInfo, viewPort, eventBus);
+		LayersModel layersModel = new LayersModelImpl(viewPort, eventBus, new MapConfigurationImpl());
+		layersModel.initialize(mapInfo);
 		Layer layer1 = layersModel.getLayer(LAYER1);
 		Layer layer3 = layersModel.getLayer(LAYER3);
 
@@ -188,8 +183,8 @@ public class LayersModelEventTest {
 
 	@Test
 	public void testMoveLayerUp() {
-		LayersModel layersModel = INJECTOR.getInstance(LayersModel.class);
-		layersModel.initialize(mapInfo, viewPort, eventBus);
+		LayersModel layersModel = new LayersModelImpl(viewPort, eventBus, new MapConfigurationImpl());
+		layersModel.initialize(mapInfo);
 		Layer layer1 = layersModel.getLayer(LAYER1);
 		Layer layer3 = layersModel.getLayer(LAYER3);
 
@@ -217,8 +212,8 @@ public class LayersModelEventTest {
 
 	@Test
 	public void testMoveLayer() {
-		LayersModel layersModel = INJECTOR.getInstance(LayersModel.class);
-		layersModel.initialize(mapInfo, viewPort, eventBus);
+		LayersModel layersModel = new LayersModelImpl(viewPort, eventBus, new MapConfigurationImpl());
+		layersModel.initialize(mapInfo);
 
 		Layer layer1 = layersModel.getLayer(LAYER1);
 		Layer layer2 = layersModel.getLayer(LAYER2);
@@ -268,8 +263,8 @@ public class LayersModelEventTest {
 
 	@Test
 	public void testLayerRemoval() {
-		LayersModel layersModel = INJECTOR.getInstance(LayersModel.class);
-		layersModel.initialize(mapInfo, viewPort, eventBus);
+		LayersModel layersModel = new LayersModelImpl(viewPort, eventBus, new MapConfigurationImpl());
+		layersModel.initialize(mapInfo);
 
 		layerCount = layersModel.getLayerCount();
 		Assert.assertEquals(3, layerCount);

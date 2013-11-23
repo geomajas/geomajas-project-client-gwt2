@@ -18,19 +18,30 @@ import com.google.gwt.core.client.GWT;
  * Default implementation of {@link EndPointService}.
  * 
  * @author Jan De Moerloose
- * 
  */
-public class EndPointServiceImpl implements EndPointService {
+public final class EndPointServiceImpl implements EndPointService {
 
 	private static final String GEOMAJAS_SERVICE_PATH = "geomajasService";
 
 	private static final String LEGEND_SERVICE_PATH = "legendgraphic/";
+
+	private static EndPointService instance;
 
 	private String commandServiceUrl;
 
 	private String legendServiceUrl;
 
 	private String dispatcherUrl;
+
+	private EndPointServiceImpl() {
+	}
+
+	public static EndPointService getInstance() {
+		if (instance == null) {
+			instance = new EndPointServiceImpl();
+		}
+		return instance;
+	}
 
 	public String getCommandServiceUrl() {
 		if (commandServiceUrl != null) {

@@ -21,8 +21,10 @@ import org.geomajas.gwt2.client.event.LayerVisibilityHandler;
 import org.geomajas.gwt2.client.event.MapCompositionHandler;
 import org.geomajas.gwt2.client.event.MapInitializationHandler;
 import org.geomajas.gwt2.client.event.MapResizedHandler;
+import org.geomajas.gwt2.client.event.NavigationStartHandler;
+import org.geomajas.gwt2.client.event.NavigationStopHandler;
+import org.geomajas.gwt2.client.event.NavigationUpdateHandler;
 import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
-import org.geomajas.gwt2.client.event.ViewPortChangingHandler;
 import org.geomajas.gwt2.client.map.layer.Layer;
 
 import com.google.web.bindery.event.shared.Event;
@@ -181,13 +183,29 @@ public interface MapEventBus {
 	HandlerRegistration addViewPortChangedHandler(ViewPortChangedHandler handler);
 	
 	/**
-	 * Add a viewport handler.
+	 * Add a handler that listens to navigation start events.
 	 * 
-	 * @param handler the handler
-	 * @return the handler registration
+	 * @param handler The handler.
+	 * @return The handler registration.
 	 */
-	HandlerRegistration addViewPortChangingHandler(ViewPortChangingHandler handler);
-	
+	HandlerRegistration addNavigationStartHandler(NavigationStartHandler handler);
+
+	/**
+	 * Add a handler that listens to navigation start events.
+	 * 
+	 * @param handler The handler.
+	 * @return The handler registration.
+	 */
+	HandlerRegistration addNavigationUpdateHandler(NavigationUpdateHandler handler);
+
+	/**
+	 * Add a handler that listens to navigation start events.
+	 * 
+	 * @param handler The handler.
+	 * @return The handler registration.
+	 */
+	HandlerRegistration addNavigationStopHandler(NavigationStopHandler handler);
+
 	/**
 	 * Add a handler of this type to the map.
 	 *
@@ -203,5 +221,4 @@ public interface MapEventBus {
 	 * @param event the event
 	 */
 	<H> void fireEvent(Event<H> event);
-	
 }

@@ -11,9 +11,10 @@
 
 package org.geomajas.plugin.wmsclient.client.layer;
 
-import com.google.gwt.core.client.Callback;
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.event.FeatureDeselectedEvent;
 import org.geomajas.gwt2.client.event.FeatureSelectedEvent;
@@ -23,9 +24,7 @@ import org.geomajas.plugin.wmsclient.client.layer.config.WmsTileConfiguration;
 import org.geomajas.plugin.wmsclient.client.layer.feature.FeatureCollection;
 import org.geomajas.plugin.wmsclient.client.service.WmsService.GetFeatureInfoFormat;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import com.google.gwt.core.client.Callback;
 
 /**
  * Default implementation of the {@link FeaturesSupportedWmsLayer}.
@@ -39,10 +38,9 @@ public class FeaturesSupportedWmsLayerImpl extends WmsLayerImpl implements Featu
 
 	private String filter;
 
-	@Inject
-	public FeaturesSupportedWmsLayerImpl(@Assisted String title, @Assisted WmsLayerConfiguration wmsConfig,
-			@Assisted WmsTileConfiguration tileConfig) {
-		super(title, wmsConfig, tileConfig);
+	public FeaturesSupportedWmsLayerImpl(String title, WmsLayerConfiguration wmsLayerConfig,
+			WmsTileConfiguration wmsTileConfig) {
+		super(title, wmsLayerConfig, wmsTileConfig);
 	}
 
 	// ------------------------------------------------------------------------

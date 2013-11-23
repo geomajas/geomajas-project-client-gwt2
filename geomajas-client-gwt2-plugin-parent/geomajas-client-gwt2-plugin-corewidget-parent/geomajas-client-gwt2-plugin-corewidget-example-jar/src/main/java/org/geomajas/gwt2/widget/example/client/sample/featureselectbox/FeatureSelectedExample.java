@@ -10,7 +10,7 @@
  */
 package org.geomajas.gwt2.widget.example.client.sample.featureselectbox;
 
-import org.geomajas.gwt2.client.GeomajasGinjector;
+import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.client.widget.MapLayoutPanel;
@@ -38,8 +38,6 @@ public class FeatureSelectedExample implements SamplePanel {
 	protected DockLayoutPanel rootElement;
 
 	private MapPresenter mapPresenter;
-
-	private static final GeomajasGinjector GEOMAJASINJECTOR = GWT.create(GeomajasGinjector.class);
 
 	@UiField
 	protected ResizeLayoutPanel mapPanel;
@@ -69,7 +67,7 @@ public class FeatureSelectedExample implements SamplePanel {
 		rootElement = UIBINDER.createAndBindUi(this);
 
 		// Create the MapPresenter
-		mapPresenter = GEOMAJASINJECTOR.getMapPresenter();
+		mapPresenter = GeomajasImpl.getInstance().getMapPresenter();
 
 		// add FeatureClickedHandler where we handle FeatureClickedEvent
 		mapPresenter.getEventBus().addHandler(FeatureClickedHandler.TYPE, new MyFeatureClickedHandler());

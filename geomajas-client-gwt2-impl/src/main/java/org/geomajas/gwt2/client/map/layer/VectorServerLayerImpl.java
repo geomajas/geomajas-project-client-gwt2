@@ -25,6 +25,7 @@ import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.util.UrlBuilder;
+import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.event.FeatureDeselectedEvent;
 import org.geomajas.gwt2.client.event.FeatureSelectedEvent;
 import org.geomajas.gwt2.client.event.LayerLabelHideEvent;
@@ -33,20 +34,17 @@ import org.geomajas.gwt2.client.event.LayerStyleChangedEvent;
 import org.geomajas.gwt2.client.event.LayerStyleChangedHandler;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
-import org.geomajas.gwt2.client.event.ViewPortScaledEvent;
-import org.geomajas.gwt2.client.event.ViewPortTranslatedEvent;
 import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.feature.Feature;
-import org.geomajas.gwt2.client.service.EndPointService;
+import org.geomajas.gwt2.client.map.render.LayerRenderer;
+import org.geomajas.gwt2.client.map.render.dom.FixedScaleLayerRenderer;
 import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.RuleInfo;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 
 /**
  * Vector layer representation.
@@ -55,24 +53,31 @@ import com.google.inject.assistedinject.Assisted;
  */
 public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayerInfo> implements VectorServerLayer {
 
-	private Map<String, Feature> selection;
+	private final LayerRenderer renderer;
+
+	private final Map<String, Feature> selection;
 
 	private String filter;
 
 	private boolean labeled;
 
-	private EndPointService endPointService;
-
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	@Inject
-	public VectorServerLayerImpl(@Assisted ClientVectorLayerInfo layerInfo, @Assisted final ViewPort viewPort,
-			@Assisted final MapEventBus eventBus, final EndPointService endPointService) {
+	public VectorServerLayerImpl(ClientVectorLayerInfo layerInfo, ViewPort viewPort, MapEventBus eventBus) {
 		super(layerInfo, viewPort, eventBus);
-		this.endPointService = endPointService;
-		selection = new HashMap<String, Feature>();
+		this.selection = new HashMap<String, Feature>();
+		this.renderer = new FixedScaleLayerRenderer(viewPort, this, eventBus);
+	}
+
+	// ------------------------------------------------------------------------
+	// Layer implementation:
+	// ------------------------------------------------------------------------
+
+	@Override
+	public LayerRenderer getRenderer() {
+		return renderer;
 	}
 
 	// ------------------------------------------------------------------------
@@ -184,7 +189,7 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 
 	@Override
 	public IsWidget buildLegendWidget() {
-		return new VectorServerLayerLegendWidget(this, endPointService, eventBus, viewPort);
+		return new VectorServerLayerLegendWidget(this, eventBus, viewPort);
 	}
 
 	// ------------------------------------------------------------------------
@@ -202,18 +207,10 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 
 		private VerticalPanel layout;
 
-		protected VectorServerLayerLegendWidget(VectorServerLayer layer, EndPointService endPointService,
-				MapEventBus eventBus, ViewPort viewPort) {
+		protected VectorServerLayerLegendWidget(VectorServerLayer layer, MapEventBus eventBus, ViewPort viewPort) {
 
 			// Zooming in or out may cause some styles to become visible/invisible:
 			eventBus.addViewPortChangedHandler(new ViewPortChangedHandler() {
-
-				public void onViewPortTranslated(ViewPortTranslatedEvent event) {
-				}
-
-				public void onViewPortScaled(ViewPortScaledEvent event) {
-					updateVisibility();
-				}
 
 				public void onViewPortChanged(ViewPortChangedEvent event) {
 					updateVisibility();
@@ -245,7 +242,8 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 			int i = 0;
 			for (FeatureTypeStyleInfo sfi : styleInfo.getUserStyle().getFeatureTypeStyleList()) {
 				for (RuleInfo rInfo : sfi.getRuleList()) {
-					UrlBuilder url = new UrlBuilder(endPointService.getLegendServiceUrl());
+					UrlBuilder url = new UrlBuilder(GeomajasImpl.getInstance().getEndPointService()
+							.getLegendServiceUrl());
 					url.addPath(getServerLayerId());
 					url.addPath(styleInfo.getName());
 					url.addPath(i + ".png");

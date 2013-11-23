@@ -42,5 +42,4 @@ public interface ExceptionDialogResource extends ClientBundle {
 	@Source("image/close_hover.png")
 	@ImageOptions(repeatStyle = RepeatStyle.None)
 	ImageResource exceptionDialogCloseIconHover();
-
 }

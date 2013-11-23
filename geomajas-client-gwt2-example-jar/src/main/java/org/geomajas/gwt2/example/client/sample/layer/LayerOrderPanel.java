@@ -11,12 +11,14 @@
 
 package org.geomajas.gwt2.example.client.sample.layer;
 
+import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.event.MapInitializationEvent;
 import org.geomajas.gwt2.client.event.MapInitializationHandler;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.layer.Layer;
+import org.geomajas.gwt2.example.base.client.ExampleBase;
+import org.geomajas.gwt2.example.base.client.resource.ShowcaseResource;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
-import org.geomajas.gwt2.example.client.ExampleJar;
 
 import com.allen_sauer.gwt.dnd.client.DragEndEvent;
 import com.allen_sauer.gwt.dnd.client.DragHandler;
@@ -51,6 +53,8 @@ public class LayerOrderPanel implements SamplePanel {
 
 	private static final MyUiBinder UI_BINDER = GWT.create(MyUiBinder.class);
 
+	private static final ShowcaseResource RESOURCE = GWT.create(ShowcaseResource.class);
+
 	private MapPresenter mapPresenter;
 
 	private PickupDragController layerDragController;
@@ -65,6 +69,8 @@ public class LayerOrderPanel implements SamplePanel {
 	protected AbsolutePanel dndBoundary;
 
 	public Widget asWidget() {
+		RESOURCE.css().ensureInjected();
+
 		// Define the left layout:
 		Widget layout = UI_BINDER.createAndBindUi(this);
 
@@ -74,7 +80,7 @@ public class LayerOrderPanel implements SamplePanel {
 		layerDragController.addDragHandler(new LayerDragHandler());
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = ExampleJar.getInjector().getMapPresenter();
+		mapPresenter = GeomajasImpl.getInstance().getMapPresenter();
 		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 
@@ -102,8 +108,10 @@ public class LayerOrderPanel implements SamplePanel {
 		private Layer dragLayer;
 
 		public void onDragEnd(DragEndEvent event) {
-			int dropIndex = layerPanel.getWidgetIndex(event.getContext().selectedWidgets.get(0)) - 1;
-			mapPresenter.getLayersModel().moveLayer(dragLayer, dropIndex);
+			// The order has been reversed to better display the situation on the map....
+			int dropIndex = layerPanel.getWidgetIndex(event.getContext().selectedWidgets.get(0));
+			mapPresenter.getLayersModel().moveLayer(dragLayer,
+					mapPresenter.getLayersModel().getLayerCount() - dropIndex);
 		}
 
 		public void onDragStart(DragStartEvent event) {
@@ -125,7 +133,10 @@ public class LayerOrderPanel implements SamplePanel {
 	private class MyMapInitializationHandler implements MapInitializationHandler {
 
 		public void onMapInitialized(MapInitializationEvent event) {
-			for (int i = 0; i < mapPresenter.getLayersModel().getLayerCount(); i++) {
+			mapPresenter.getViewPort().applyBounds(ExampleBase.BBOX_LATLON_USA);
+
+			// Go over the layer top-down (i.e. reverse order):
+			for (int i = mapPresenter.getLayersModel().getLayerCount() - 1; i >= 0; i--) {
 				LayerWidget widget = new LayerWidget(mapPresenter.getLayersModel().getLayer(i));
 				layerDragController.makeDraggable(widget);
 				layerPanel.add(widget);
@@ -146,6 +157,7 @@ public class LayerOrderPanel implements SamplePanel {
 			super(layer.getTitle());
 			setWidth("100%");
 			this.layer = layer;
+			addStyleName(RESOURCE.css().sampleHasBorder());
 		}
 
 		public Layer getLayer() {

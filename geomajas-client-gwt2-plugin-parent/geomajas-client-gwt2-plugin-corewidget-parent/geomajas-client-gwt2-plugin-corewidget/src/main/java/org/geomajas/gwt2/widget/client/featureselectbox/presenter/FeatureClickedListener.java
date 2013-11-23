@@ -64,8 +64,9 @@ public class FeatureClickedListener extends AbstractController implements MapCon
 	}
 
 	/**
-	 *
-	 * @param pixelBuffer minimum distance between features to show context menu with features labels.
+	 * 
+	 * @param pixelBuffer
+	 *            minimum distance between features to show context menu with features labels.
 	 */
 	public FeatureClickedListener(int pixelBuffer) {
 		super(false);
@@ -175,10 +176,10 @@ public class FeatureClickedListener extends AbstractController implements MapCon
 	}
 
 	private double calculateBufferFromPixelTolerance() {
-		Coordinate c1 = mapPresenter.getViewPort().transform(new Coordinate(0, 0), RenderSpace.SCREEN,
-				RenderSpace.WORLD);
-		Coordinate c2 = mapPresenter.getViewPort().transform(new Coordinate(pixelBuffer, 0), RenderSpace.SCREEN,
-				RenderSpace.WORLD);
+		Coordinate c1 = mapPresenter.getViewPort().getTransformationService()
+				.transform(new Coordinate(0, 0), RenderSpace.SCREEN, RenderSpace.WORLD);
+		Coordinate c2 = mapPresenter.getViewPort().getTransformationService()
+				.transform(new Coordinate(pixelBuffer, 0), RenderSpace.SCREEN, RenderSpace.WORLD);
 		return c1.distance(c2);
 	}
 

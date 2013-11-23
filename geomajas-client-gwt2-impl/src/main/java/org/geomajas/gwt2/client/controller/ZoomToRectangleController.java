@@ -12,6 +12,9 @@
 package org.geomajas.gwt2.client.controller;
 
 import org.geomajas.geometry.Bbox;
+import org.geomajas.gwt2.client.animation.NavigationAnimationFactory;
+import org.geomajas.gwt2.client.map.View;
+import org.geomajas.gwt2.client.map.ZoomOption;
 
 /**
  * Map controller that lets the user drag a rectangle on the map, after which it zooms to that rectangle.
@@ -27,6 +30,7 @@ public class ZoomToRectangleController extends AbstractRectangleController {
 	 *            The result of the user's dragging on the map, expressed in world space.
 	 */
 	public void execute(Bbox worldBounds) {
-		mapPresenter.getViewPort().applyBounds(worldBounds);
+		View endView = mapPresenter.getViewPort().asView(worldBounds, ZoomOption.LEVEL_CLOSEST);
+		mapPresenter.getViewPort().registerAnimation(NavigationAnimationFactory.createZoomIn(mapPresenter, endView));
 	}
 }

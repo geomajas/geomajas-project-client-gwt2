@@ -16,11 +16,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.geomajas.geometry.Geometry;
-import org.geomajas.layer.feature.Attribute;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
-
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
+import org.geomajas.layer.feature.Attribute;
 
 /**
  * Default implementation of the Feature interface. Represents the individual objects of vector layers.
@@ -48,8 +45,7 @@ public class FeatureImpl implements Feature {
 	// ------------------------------------------------------------------------
 
 	@SuppressWarnings("rawtypes")
-	@Inject
-	FeatureImpl(@Assisted org.geomajas.layer.feature.Feature feature, @Assisted FeaturesSupported layer) {
+	FeatureImpl(org.geomajas.layer.feature.Feature feature, FeaturesSupported layer) {
 		this.layer = layer;
 		id = feature.getId();
 		attributes = new HashMap<String, Attribute<?>>();

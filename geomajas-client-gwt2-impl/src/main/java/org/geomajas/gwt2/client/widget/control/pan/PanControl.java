@@ -20,6 +20,8 @@ import org.geomajas.gwt2.client.widget.AbstractMapWidget;
 
 import com.google.gwt.animation.client.Animation;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
@@ -96,6 +98,10 @@ public class PanControl extends AbstractMapWidget {
 
 	private void buildGui() {
 		initWidget(UI_BINDER.createAndBindUi(this));
+		getElement().getStyle().setPosition(Position.ABSOLUTE);
+		getElement().getStyle().setTop(5, Unit.PX);
+		getElement().getStyle().setLeft(5, Unit.PX);
+
 		StopPropagationHandler preventWeirdBehaviourHandler = new StopPropagationHandler();
 		addDomHandler(preventWeirdBehaviourHandler, MouseDownEvent.getType());
 		addDomHandler(preventWeirdBehaviourHandler, MouseUpEvent.getType());

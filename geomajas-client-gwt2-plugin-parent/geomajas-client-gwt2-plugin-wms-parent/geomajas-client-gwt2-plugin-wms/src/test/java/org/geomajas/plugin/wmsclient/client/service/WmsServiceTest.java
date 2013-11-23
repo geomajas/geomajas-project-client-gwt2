@@ -12,13 +12,11 @@
 package org.geomajas.plugin.wmsclient.client.service;
 
 import org.geomajas.geometry.Bbox;
-import org.geomajas.plugin.wmsclient.client.WmsClientGinjector;
 import org.geomajas.plugin.wmsclient.client.layer.config.WmsLayerConfiguration;
 import org.geomajas.plugin.wmsclient.client.service.WmsService.WmsRequest;
 import org.geomajas.plugin.wmsclient.client.service.WmsService.WmsUrlTransformer;
 import org.junit.Test;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.junit.client.GWTTestCase;
 
@@ -28,8 +26,6 @@ import com.google.gwt.junit.client.GWTTestCase;
  * @author Pieter De Graef
  */
 public class WmsServiceTest extends GWTTestCase {
-
-	private WmsClientGinjector injector;
 
 	private static final String VALUE_URL = "http://www.geomajas.org/";
 
@@ -159,8 +155,7 @@ public class WmsServiceTest extends GWTTestCase {
 	// ------------------------------------------------------------------------
 
 	private void initialize() {
-		injector = GWT.create(WmsClientGinjector.class);
-		wmsService = injector.getWmsService();
+		wmsService = new WmsServiceImpl();
 		wmsConfig = new WmsLayerConfiguration();
 		wmsConfig.setBaseUrl(VALUE_URL);
 		wmsConfig.setLayers(VALUE_LAYER);

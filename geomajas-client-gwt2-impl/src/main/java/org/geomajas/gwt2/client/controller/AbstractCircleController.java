@@ -117,7 +117,7 @@ public abstract class AbstractCircleController extends AbstractMapController {
 			geometry.setCoordinates(coordinates);
 
 			ViewPort viewPort = mapPresenter.getViewPort();
-			execute(viewPort.transform(geometry, RenderSpace.SCREEN, RenderSpace.WORLD), 
+			execute(viewPort.getTransformationService().transform(geometry, RenderSpace.SCREEN, RenderSpace.WORLD), 
 					circle.getRadius() / viewPort.getScale());
 
 			stopDragging();

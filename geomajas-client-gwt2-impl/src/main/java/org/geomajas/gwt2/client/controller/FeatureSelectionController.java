@@ -266,10 +266,10 @@ public class FeatureSelectionController extends NavigationController {
 	 * @return The distance the given number of pixels entails.
 	 */
 	private double pixelsToUnits(int pixels) {
-		Coordinate c1 = mapPresenter.getViewPort().transform(new Coordinate(0, 0), RenderSpace.SCREEN,
-				RenderSpace.WORLD);
-		Coordinate c2 = mapPresenter.getViewPort().transform(new Coordinate(pixels, 0), RenderSpace.SCREEN,
-				RenderSpace.WORLD);
+		Coordinate c1 = mapPresenter.getViewPort().getTransformationService()
+				.transform(new Coordinate(0, 0), RenderSpace.SCREEN, RenderSpace.WORLD);
+		Coordinate c2 = mapPresenter.getViewPort().getTransformationService()
+				.transform(new Coordinate(pixels, 0), RenderSpace.SCREEN, RenderSpace.WORLD);
 		return MathService.distance(c1, c2);
 	}
 

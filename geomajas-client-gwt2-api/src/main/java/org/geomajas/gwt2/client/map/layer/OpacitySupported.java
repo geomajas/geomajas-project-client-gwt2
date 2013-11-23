@@ -14,6 +14,8 @@ package org.geomajas.gwt2.client.map.layer;
 import org.geomajas.annotation.Api;
 
 /**
+ * TODO integrate this into the basic layer definition.
+ * 
  * Extension for the layer interface which signifies that this particular layer can change in opacity.
  * 
  * @author Pieter De Graef

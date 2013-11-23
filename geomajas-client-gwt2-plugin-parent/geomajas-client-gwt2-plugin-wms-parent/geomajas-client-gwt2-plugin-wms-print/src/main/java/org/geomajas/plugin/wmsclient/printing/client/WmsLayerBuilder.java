@@ -13,7 +13,6 @@ package org.geomajas.plugin.wmsclient.printing.client;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.client.map.MapPresenter;
-import org.geomajas.gwt2.client.map.ZoomStrategy.ZoomOption;
 import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.client.map.layer.OpacitySupported;
 import org.geomajas.plugin.printing.client.template.PrintableLayerBuilder;
@@ -32,13 +31,11 @@ public class WmsLayerBuilder implements PrintableLayerBuilder {
 	public ClientLayerInfo build(MapPresenter mapPresenter, Layer layer, Bbox worldBounds, double scale) {
 		WmsLayer wmsLayer = (WmsLayer) layer;
 
-		// fromDto()
 		WmsClientLayerInfo info = new WmsClientLayerInfo();
 		info.setTiles(wmsLayer.getTiles(scale, worldBounds));
 		info.setTileHeight(wmsLayer.getTileConfig().getTileHeight());
 		info.setTileWidth(wmsLayer.getTileConfig().getTileWidth());
-		// the actual scale may be different !
-		info.setScale(mapPresenter.getViewPort().getZoomStrategy().checkScale(scale, ZoomOption.LEVEL_CLOSEST));
+		info.setScale(scale);
 
 		info.setId(wmsLayer.getId());
 		RasterLayerRasterizingInfo rasterInfo = new RasterLayerRasterizingInfo();

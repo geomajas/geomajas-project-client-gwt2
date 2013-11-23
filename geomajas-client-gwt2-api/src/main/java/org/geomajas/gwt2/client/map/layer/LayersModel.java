@@ -13,9 +13,6 @@ package org.geomajas.gwt2.client.map.layer;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.configuration.client.ClientMapInfo;
-import org.geomajas.gwt2.client.map.MapEventBus;
-import org.geomajas.gwt2.client.map.ViewPort;
-
 
 /**
  * <p>
@@ -36,18 +33,17 @@ public interface LayersModel {
 	 * 
 	 * @param mapInfo
 	 *            The configuration object from which this model should build itself.
-	 * @param viewPort
-	 *            The view port that is associated with the same map this layer model belongs to.
-	 * @param eventBus
-	 *            Event bus that governs all event related to this layers model.
+	 * @deprecated Needs to be removed.
 	 */
-	void initialize(ClientMapInfo mapInfo, ViewPort viewPort, MapEventBus eventBus);
+	@Deprecated
+	void initialize(ClientMapInfo mapInfo);
 
 	/**
 	 * Add a new layer to the layers model. The new layer will be added at the back of the list (where the back of the
 	 * list is rendered on top).
 	 * 
-	 * @param layer The layer to be added to the model.
+	 * @param layer
+	 *            The layer to be added to the model.
 	 * @return True or false, indicating success or not.
 	 */
 	boolean addLayer(Layer layer);
