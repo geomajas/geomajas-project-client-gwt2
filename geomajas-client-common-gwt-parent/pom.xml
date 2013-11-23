@@ -24,8 +24,9 @@
 	<description>Geomajas GWT2 client: Parent for common client-side code</description>
 
 	<modules>
-		<module>common-gwt</module>
-		<module>documentation</module>
+		<module>geomajas-client-common-gwt</module>
+		<module>geomajas-client-common-gwt-command</module>
+		<module>geomajas-client-common-gwt-documentation</module>
 	</modules>
 
 </project>

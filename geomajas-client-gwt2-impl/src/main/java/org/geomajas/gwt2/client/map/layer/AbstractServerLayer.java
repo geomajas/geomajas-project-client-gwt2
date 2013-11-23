@@ -79,4 +79,15 @@ public abstract class AbstractServerLayer<T extends ClientLayerInfo> extends Abs
 		}
 		return false;
 	}
+
+	protected String addPath(String baseUrl, String path) {
+		if (path.startsWith("/") && baseUrl.endsWith("/")) {
+			baseUrl = baseUrl + path.substring(1);
+		} else if (baseUrl.endsWith("/")) {
+			baseUrl = baseUrl + path;
+		} else {
+			baseUrl = baseUrl + "/" + path;
+		}
+		return baseUrl;
+	}
 }

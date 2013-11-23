@@ -10,12 +10,9 @@
   -->
 
 <module>
-	<inherits name="com.google.gwt.user.User"/>
-	<inherits name="com.google.gwt.i18n.I18N"/>
+	<inherits name="org.geomajas.GeomajasDto"/>
 
-	<inherits name="org.geomajas.gwt.GeomajasCommonGwt"/>
-	<inherits name="org.geomajas.gwt.GeomajasCommonGwtCommand"/>
-	<inherits name='org.vaadin.gwtgraphics.GWTGraphics'/>
+	<!-- make sure the default is there -->
+	<source path="client"/>
 
-	<source path="gwt2"/>
 </module>

@@ -466,7 +466,8 @@ public class WmsServiceImpl implements WmsService {
 	}
 
 	private boolean useInvertedAxis(WmsVersion version, String crs) {
-		if (WmsVersion.V1_3_0.equals(version) && ("EPSG:4326".equalsIgnoreCase(crs) || "WGS:84".equalsIgnoreCase(crs))) {
+		if (WmsVersion.V1_3_0.equals(version) && ("EPSG:4326".equalsIgnoreCase(crs) || 
+				"WGS:84".equalsIgnoreCase(crs))) {
 			return true;
 		}
 		return false;

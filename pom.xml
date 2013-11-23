@@ -50,11 +50,16 @@
 
 	<dependencyManagement>
 		<dependencies>
-		
+
 			<!-- Artifacts within this project -->
 			<dependency>
 				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-face-common-gwt</artifactId>
+				<artifactId>geomajas-client-common-gwt</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-client-common-gwt-command</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 

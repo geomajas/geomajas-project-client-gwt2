@@ -24,7 +24,6 @@ import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
-import org.geomajas.gwt.client.util.UrlBuilder;
 import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.event.FeatureDeselectedEvent;
 import org.geomajas.gwt2.client.event.FeatureSelectedEvent;
@@ -42,6 +41,7 @@ import org.geomajas.gwt2.client.map.render.dom.FixedScaleLayerRenderer;
 import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.RuleInfo;
 
+import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -242,12 +242,11 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 			int i = 0;
 			for (FeatureTypeStyleInfo sfi : styleInfo.getUserStyle().getFeatureTypeStyleList()) {
 				for (RuleInfo rInfo : sfi.getRuleList()) {
-					UrlBuilder url = new UrlBuilder(GeomajasImpl.getInstance().getEndPointService()
-							.getLegendServiceUrl());
-					url.addPath(getServerLayerId());
-					url.addPath(styleInfo.getName());
-					url.addPath(i + ".png");
-					ServerLayerStyleWidget widget = new ServerLayerStyleWidget(url.toString(), rInfo.getName(), rInfo);
+					String url = GeomajasImpl.getInstance().getEndPointService().getLegendServiceUrl();
+					addPath(url, getServerLayerId());
+					addPath(url, styleInfo.getName());
+					addPath(url, i + ".png");
+					ServerLayerStyleWidget widget = new ServerLayerStyleWidget(URL.encode(url), rInfo.getName(), rInfo);
 					ruleWidgets.add(widget);
 					layout.add(widget);
 					i++;

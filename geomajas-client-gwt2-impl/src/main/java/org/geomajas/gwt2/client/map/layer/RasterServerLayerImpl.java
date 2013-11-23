@@ -12,7 +12,6 @@
 package org.geomajas.gwt2.client.map.layer;
 
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
-import org.geomajas.gwt.client.util.UrlBuilder;
 import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.event.LayerStyleChangedEvent;
 import org.geomajas.gwt2.client.map.MapEventBus;
@@ -20,6 +19,7 @@ import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.render.LayerRenderer;
 import org.geomajas.gwt2.client.map.render.dom.FixedScaleLayerRenderer;
 
+import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.IsWidget;
 
 /**
@@ -48,9 +48,9 @@ public class RasterServerLayerImpl extends AbstractServerLayer<ClientRasterLayer
 
 	@Override
 	public IsWidget buildLegendWidget() {
-		UrlBuilder url = new UrlBuilder(GeomajasImpl.getInstance().getEndPointService().getLegendServiceUrl());
-		url.addPath(getServerLayerId() + LEGEND_ICON_EXTENSION);
-		return new ServerLayerStyleWidget(url.toString(), getTitle(), null);
+		String url = GeomajasImpl.getInstance().getEndPointService().getLegendServiceUrl();
+		addPath(url, getServerLayerId() + LEGEND_ICON_EXTENSION);
+		return new ServerLayerStyleWidget(URL.encode(url), getTitle(), null);
 	}
 
 	/**

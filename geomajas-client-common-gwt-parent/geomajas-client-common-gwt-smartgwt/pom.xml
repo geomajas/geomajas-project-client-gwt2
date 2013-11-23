@@ -15,71 +15,27 @@
 	<packaging>jar</packaging>
 
 	<parent>
-		<groupId>org.geomajas.plugin</groupId>
-		<artifactId>geomajas-client-gwt2-plugin-editing-parent</artifactId>
+		<groupId>org.geomajas</groupId>
+		<artifactId>geomajas-face-common-gwt-parent</artifactId>
 		<version>2.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>geomajas-client-gwt2-plugin-editing-common</artifactId>
-	<name>Geomajas GWT2 client: Plugin Editing - Commons</name>
-	<description>Geomajas GWT2 client: Editing Plugin - Commons</description>
+	<artifactId>geomajas-client-common-gwt-smartgwt</artifactId>
+	<name>Geomajas GWT2 client: Commons - Library</name>
+	<description>Geomajas GWT2 client: Commons - Library</description>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-client-common-gwt-command</artifactId>
+		</dependency>
+
 		<!-- GWT dependencies -->
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		
-		<!-- Geomajas dependencies -->
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-client-common-gwt</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-client-common-gwt-command</artifactId>
-		</dependency>
-
-		<!-- Logging dependencies -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</dependency>
-
-		<!-- Test dependencies -->
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-testdata</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jcl-over-slf4j</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>log4j-over-slf4j</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-
 	</dependencies>
 
 	<build>
@@ -93,6 +49,7 @@
 			</resource>
 			<resource>
 				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
 				<excludes>
 					<exclude>META-INF/geomajasContext.xml</exclude>
 				</excludes>
@@ -103,7 +60,7 @@
 	<profiles>
 		<!--  include sources in build -->
 		<profile>
-			<id>default</id>			
+			<id>default</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
@@ -129,6 +86,7 @@
 					<name>m2e.version</name>
 				</property>
 			</activation>
-		</profile>	
+		</profile>
 	</profiles>
+
 </project>

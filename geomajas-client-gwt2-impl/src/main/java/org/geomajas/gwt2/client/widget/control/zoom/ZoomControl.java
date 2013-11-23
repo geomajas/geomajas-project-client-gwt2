@@ -11,7 +11,7 @@
 
 package org.geomajas.gwt2.client.widget.control.zoom;
 
-import org.geomajas.gwt.client.util.Browser;
+import org.geomajas.gwt.client.util.Dom;
 import org.geomajas.gwt2.client.animation.NavigationAnimationFactory;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.ViewPort;
@@ -101,7 +101,7 @@ public class ZoomControl extends AbstractMapWidget {
 		getElement().getStyle().setTop(5, Unit.PX);
 		getElement().getStyle().setLeft(5, Unit.PX);
 
-		if (Browser.isMobile()) {
+		if (Dom.isMobile()) {
 			initializeForMobile();
 		} else {
 			initializeForDesktop();

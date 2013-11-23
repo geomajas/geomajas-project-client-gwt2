@@ -27,7 +27,7 @@ import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt.client.map.RenderSpace;
-import org.geomajas.gwt.client.util.Browser;
+import org.geomajas.gwt.client.util.Dom;
 import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.controller.MapController;
 import org.geomajas.gwt2.client.controller.MapEventParserImpl;
@@ -266,7 +266,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		this.featureService = new FeatureServiceImpl(this);
 		this.mapEventParser = new MapEventParserImpl(this);
 		this.renderer = new LayersModelRendererImpl(layersModel, viewPort, this.eventBus, this.configuration);
-		this.isMobileBrowser = Browser.isMobile();
+		this.isMobileBrowser = Dom.isMobile();
 
 		this.eventBus.addViewPortChangedHandler(new ViewPortChangedHandler() {
 
