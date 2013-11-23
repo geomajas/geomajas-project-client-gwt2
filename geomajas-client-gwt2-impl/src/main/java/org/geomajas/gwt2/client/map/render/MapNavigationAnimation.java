@@ -59,21 +59,15 @@ public class MapNavigationAnimation extends Animation {
 	 * Start the animation right now, using the given parameters. Only the botton X layers will be animated, where X
 	 * equals the value set through <code>setNrAnimatedLayers</code>.
 	 * 
-	 * @param layerPresenters
-	 *            A collection of {@link MapScalesRenderer}s that should be animated. This class will call the
-	 *            navigation methods onto these presenters directly.
-	 * @param sourceScale
-	 *            The source zooming factor. This is a delta value. Value=1 will keep the layer presenters at their
-	 *            current scale level.
-	 * @param targetScale
-	 *            The target zooming factor. This is a delta value. Value=1 will keep the layer presenters at their
-	 *            current scale level.
-	 * @param sourcePosition
-	 *            The source translation factor.
-	 * @param targetPosition
-	 *            The target translation factor.
-	 * @param millis
-	 *            The time in milliseconds this animation should run.
+	 * @param layerPresenters A collection of {@link MapScalesRenderer}s that should be animated. This class will call
+	 *        the navigation methods onto these presenters directly.
+	 * @param sourceScale The source zooming factor. This is a delta value. Value=1 will keep the layer presenters at
+	 *        their current scale level.
+	 * @param targetScale The target zooming factor. This is a delta value. Value=1 will keep the layer presenters at
+	 *        their current scale level.
+	 * @param sourcePosition The source translation factor.
+	 * @param targetPosition The target translation factor.
+	 * @param millis The time in milliseconds this animation should run.
 	 */
 	public void start(List<LayerRenderer> layerPresenters, double sourceScale, double targetScale,
 			Coordinate sourcePosition, Coordinate targetPosition, int millis) {
@@ -89,12 +83,9 @@ public class MapNavigationAnimation extends Animation {
 	/**
 	 * Extend the animation to a new location and scale. This is executed only if the animation is actually running.
 	 * 
-	 * @param targetScale
-	 *            The new target scale.
-	 * @param targetPosition
-	 *            The new target location.
-	 * @param millis
-	 *            The time in milliseconds starting from now (time is not added).
+	 * @param targetScale The new target scale.
+	 * @param targetPosition The new target location.
+	 * @param millis The time in milliseconds starting from now (time is not added).
 	 */
 	public void extend(double targetScale, Coordinate targetPosition, int millis) {
 		if (running) {
@@ -124,8 +115,7 @@ public class MapNavigationAnimation extends Animation {
 	/**
 	 * Set the navigation function be be used.
 	 * 
-	 * @param function
-	 *            Apply a new navigation function.
+	 * @param function Apply a new navigation function.
 	 */
 	public void setFunction(AbstractNavigationFunction function) {
 		this.function = function;
@@ -148,9 +138,8 @@ public class MapNavigationAnimation extends Animation {
 	 * Method that keeps tabs on the animation progress, and automatically transforms all {@link MapScalesRenderer}s
 	 * accordingly.
 	 * 
-	 * @param progress
-	 *            The progress within the animation. Is a value between 0 and 1, where 1 means that the animation come
-	 *            to it's end.
+	 * @param progress The progress within the animation. Is a value between 0 and 1, where 1 means that the animation
+	 *        come to it's end.
 	 */
 	protected void onUpdate(double progress) {
 		running = true;
@@ -167,6 +156,13 @@ public class MapNavigationAnimation extends Animation {
 			LayerScaleRenderer scalePresenter = presenter.getVisibleScale();
 			if (scalePresenter != null) {
 				if (configuration.isAnimated(presenter.getLayer()) && Dom.isTransformationSupported()) {
+					double[] startLocation = function.getLocation(0);
+					// we have to compensate for the already applied scale
+					double startX = startLocation[0];
+					double startY = startLocation[1];
+					double endScale = function.getLocation(1)[2];
+					currentX = startX + (currentX - startX) * currentScale / endScale;
+					currentY = startY + (currentY - startY) * currentScale / endScale;
 					scalePresenter.getHtmlContainer().applyScale(currentScale, 0, 0);
 					scalePresenter.getHtmlContainer().setLeft((int) Math.round(currentX));
 					scalePresenter.getHtmlContainer().setTop((int) Math.round(currentY));
