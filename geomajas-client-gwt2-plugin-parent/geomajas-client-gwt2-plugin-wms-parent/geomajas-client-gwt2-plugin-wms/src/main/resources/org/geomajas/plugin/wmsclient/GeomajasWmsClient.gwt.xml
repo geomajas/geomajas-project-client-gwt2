@@ -12,7 +12,6 @@
 	<inherits name="com.google.gwt.http.HTTP" />
 	<inherits name="com.google.gwt.xml.XML" />
     <inherits name="org.geomajas.gwt2.GeomajasClientImpl"/>
-    <inherits name="com.google.gwt.inject.Inject"/>
     
     <!-- Source for this plug-in -->
     <source path="client" />

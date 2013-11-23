@@ -14,13 +14,14 @@ package org.geomajas.gwt2.client.widget.control.zoomtorect;
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt.client.map.RenderSpace;
+import org.geomajas.gwt2.client.animation.NavigationAnimationFactory;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
-import org.geomajas.gwt2.client.event.ViewPortScaledEvent;
-import org.geomajas.gwt2.client.event.ViewPortTranslatedEvent;
 import org.geomajas.gwt2.client.gfx.VectorContainer;
 import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.ViewPort;
+import org.geomajas.gwt2.client.map.ZoomOption;
 import org.geomajas.gwt2.client.widget.AbstractMapWidget;
 import org.vaadin.gwtgraphics.client.Group;
 import org.vaadin.gwtgraphics.client.shape.Path;
@@ -31,6 +32,8 @@ import org.vaadin.gwtgraphics.client.shape.path.MoveTo;
 
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
@@ -96,14 +99,6 @@ public class ZoomToRectangleControl extends AbstractMapWidget {
 		buildGui();
 		mapPresenter.getEventBus().addViewPortChangedHandler(new ViewPortChangedHandler() {
 
-			public void onViewPortTranslated(ViewPortTranslatedEvent event) {
-				cleanup();
-			}
-
-			public void onViewPortScaled(ViewPortScaledEvent event) {
-				cleanup();
-			}
-
 			public void onViewPortChanged(ViewPortChangedEvent event) {
 				cleanup();
 			}
@@ -128,6 +123,9 @@ public class ZoomToRectangleControl extends AbstractMapWidget {
 
 	private void buildGui() {
 		initWidget(new SimplePanel());
+		getElement().getStyle().setPosition(Position.ABSOLUTE);
+		getElement().getStyle().setTop(5, Unit.PX);
+		getElement().getStyle().setLeft(60, Unit.PX);
 		setStyleName(resource.css().zoomToRectangle());
 		StopPropagationHandler preventWeirdBehaviourHandler = new StopPropagationHandler();
 		addDomHandler(preventWeirdBehaviourHandler, MouseDownEvent.getType());
@@ -227,8 +225,10 @@ public class ZoomToRectangleControl extends AbstractMapWidget {
 					if (event.getNativeButton() != NativeEvent.BUTTON_RIGHT && dragging) {
 						dragging = false;
 						if (screenBounds != null) {
-							Bbox worldBounds = viewPort.transform(screenBounds, RenderSpace.SCREEN, RenderSpace.WORLD);
-							viewPort.applyBounds(worldBounds);
+							Bbox worldBounds = viewPort.getTransformationService().transform(screenBounds,
+									RenderSpace.SCREEN, RenderSpace.WORLD);
+							View endView = viewPort.asView(worldBounds, ZoomOption.LEVEL_CLOSEST);
+							viewPort.registerAnimation(NavigationAnimationFactory.createZoomIn(mapPresenter, endView));
 						}
 					}
 					event.stopPropagation();

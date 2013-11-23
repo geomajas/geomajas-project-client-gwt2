@@ -19,20 +19,13 @@ import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.geometry.Matrix;
+import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt2.client.controller.MapController;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
-import org.geomajas.gwt2.client.event.ViewPortChangingEvent;
-import org.geomajas.gwt2.client.event.ViewPortChangingHandler;
-import org.geomajas.gwt2.client.event.ViewPortScaledEvent;
-import org.geomajas.gwt2.client.event.ViewPortScalingEvent;
-import org.geomajas.gwt2.client.event.ViewPortTranslatedEvent;
-import org.geomajas.gwt2.client.event.ViewPortTranslatingEvent;
 import org.geomajas.gwt2.client.gfx.GfxUtil;
 import org.geomajas.gwt2.client.gfx.VectorContainer;
 import org.geomajas.gwt2.client.map.MapPresenter;
-import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditMoveEvent;
@@ -83,12 +76,12 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 		GeometryEditShapeChangedHandler, GeometryEditChangeStateHandler, GeometryIndexSelectedHandler,
 		GeometryIndexDeselectedHandler, GeometryIndexDisabledHandler, GeometryIndexEnabledHandler,
 		GeometryIndexMarkForDeletionBeginHandler, GeometryIndexMarkForDeletionEndHandler,
-		GeometryEditTentativeMoveHandler, ViewPortChangedHandler, ViewPortChangingHandler {
+		GeometryEditTentativeMoveHandler, ViewPortChangedHandler {
 
 	private final MapPresenter mapPresenter;
 
 	private final GeometryEditService editService;
-	
+
 	private GfxUtil gfxUtil;
 
 	private final StyleProvider styleProvider;
@@ -106,11 +99,10 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 	private Path tentativeMoveLine;
 
 	private VectorObject nullShape;
-	
-	private double previousDx;
-	
-	private double previousDy;
-	
+//
+//	private double previousDx;
+//
+//	private double previousDy;
 
 	// ------------------------------------------------------------------------
 	// Constructor:
@@ -138,7 +130,6 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 
 		// Add ViewPortChangedHandler:
 		mapPresenter.getEventBus().addHandler(ViewPortChangedHandler.TYPE, this);
-		mapPresenter.getEventBus().addHandler(ViewPortChangingHandler.TYPE, this);
 
 		// Add edit base handlers:
 		editService.addGeometryEditChangeStateHandler(this);
@@ -165,8 +156,10 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 
 	/** Clear everything and completely redraw the edited geometry. */
 	public void redraw() {
-		previousDx = mapPresenter.getViewPort().getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN).getDx();
-		previousDy = mapPresenter.getViewPort().getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN).getDy();
+//		previousDx = mapPresenter.getViewPort().getTransformationService()
+//				.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN).getDx();
+//		previousDy = mapPresenter.getViewPort().getTransformationService()
+//				.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN).getDy();
 		shapes.clear();
 		if (container != null) {
 			container.setTranslation(0, 0);
@@ -174,7 +167,7 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 			try {
 				tentativeMoveLine = new Path(-5, -5);
 				tentativeMoveLine.lineTo(-5, -5);
-				FeatureStyleInfo style =  styleProvider.getEdgeTentativeMoveStyle();
+				FeatureStyleInfo style = styleProvider.getEdgeTentativeMoveStyle();
 				gfxUtil.applyStroke(tentativeMoveLine, style.getStrokeColor(), style.getStrokeOpacity(),
 						style.getStrokeWidth(), style.getDashArray());
 				container.add(tentativeMoveLine);
@@ -195,36 +188,14 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 		redraw();
 	}
 
-	/** Redraw the geometry on the map. */
-	public void onViewPortScaled(ViewPortScaledEvent event) {
-		redraw();
-	}
-
-	/** Redraw the geometry on the map. */
-	public void onViewPortTranslated(ViewPortTranslatedEvent event) {
-		redraw();
-	}
-
-	@Override
-	public void onViewPortChanging(ViewPortChangingEvent event) {
-		// intermediate changes by translating/scaling screen container	
-		
-	}
-
-	@Override
-	public void onViewPortScaling(ViewPortScalingEvent event) {
-		// intermediate changes by translating/scaling screen container			
-	}
-
-	@Override
-	public void onViewPortTranslating(ViewPortTranslatingEvent event) {
-		// reflect intermediate changes by translating screen container			
-		if (container != null) {
-			Matrix translation = event.getViewPort().getTranslationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
-			container.setTranslation(translation.getDx() - previousDx, translation.getDy() - previousDy);
-		}
-	}
-	
+	// @Override
+	// public void onViewPortTranslating(ViewPortTranslatingEvent event) {
+	// // reflect intermediate changes by translating screen container
+	// if (container != null) {
+	// Matrix translation = event.getViewPort().getTranslationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
+	// container.setTranslation(translation.getDx() - previousDx, translation.getDy() - previousDy);
+	// }
+	// }
 
 	// ------------------------------------------------------------------------
 	// Start & stop handler implementations:
@@ -424,8 +395,10 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 					&& (Geometry.LINE_STRING.equals(geometryType) || Geometry.LINEAR_RING.equals(geometryType))) {
 				Coordinate temp1 = event.getOrigin();
 				Coordinate temp2 = event.getCurrentPosition();
-				Coordinate c1 = mapPresenter.getViewPort().transform(temp1, RenderSpace.WORLD, RenderSpace.SCREEN);
-				Coordinate c2 = mapPresenter.getViewPort().transform(temp2, RenderSpace.WORLD, RenderSpace.SCREEN);
+				Coordinate c1 = mapPresenter.getViewPort().getTransformationService()
+						.transform(temp1, RenderSpace.WORLD, RenderSpace.SCREEN);
+				Coordinate c2 = mapPresenter.getViewPort().getTransformationService()
+						.transform(temp2, RenderSpace.WORLD, RenderSpace.SCREEN);
 
 				tentativeMoveLine.setStep(0, new MoveTo(false, c1.getX(), c1.getY()));
 				tentativeMoveLine.setStep(1, new LineTo(false, c2.getX(), c2.getY()));
@@ -448,7 +421,7 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 	public StyleProvider getStyleProvider() {
 		return styleProvider;
 	}
-	
+
 	public void setVisible(boolean visible) {
 		if (container != null) {
 			container.setVisible(visible);
@@ -623,7 +596,7 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 			shapes.put(index, shape);
 		}
 	}
-	
+
 	boolean contains(Bbox box, Coordinate c) {
 		if (c.getX() < box.getX()) {
 			return false;

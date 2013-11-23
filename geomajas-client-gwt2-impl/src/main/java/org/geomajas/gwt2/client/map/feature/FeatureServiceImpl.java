@@ -24,15 +24,12 @@ import org.geomajas.command.dto.SearchFeatureResponse;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
-import org.geomajas.layer.feature.SearchCriterion;
+import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
 import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.client.map.layer.ServerLayer;
-import org.geomajas.gwt2.client.service.CommandService;
-
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
+import org.geomajas.layer.feature.SearchCriterion;
 
 /**
  * <p>
@@ -48,19 +45,23 @@ public class FeatureServiceImpl implements FeatureService {
 
 	private final FeatureFactory featureFactory;
 
-	@Inject
-	private CommandService commandService;
-
 	/**
 	 * Initialize this feature service for the given map.
 	 * 
 	 * @param mapPresenter
 	 *            The map presenter.
+	 * @param commandService
+	 *            Command service used to request features on the backend.
 	 */
-	@Inject
-	public FeatureServiceImpl(@Assisted MapPresenter mapPresenter, FeatureFactory featureFactory) {
+	public FeatureServiceImpl(MapPresenter mapPresenter) {
 		this.mapPresenter = mapPresenter;
-		this.featureFactory = featureFactory;
+		this.featureFactory = new FeatureFactory() {
+
+			@Override
+			public Feature create(org.geomajas.layer.feature.Feature feature, FeaturesSupported layer) {
+				return new FeatureImpl(feature, layer);
+			}
+		};
 	}
 
 	// ------------------------------------------------------------------------
@@ -84,18 +85,19 @@ public class FeatureServiceImpl implements FeatureService {
 
 		GwtCommand command = new GwtCommand(SearchFeatureRequest.COMMAND);
 		command.setCommandRequest(request);
-		commandService.execute(command, new AbstractCommandCallback<SearchFeatureResponse>() {
+		GeomajasImpl.getInstance().getCommandService()
+				.execute(command, new AbstractCommandCallback<SearchFeatureResponse>() {
 
-			public void execute(SearchFeatureResponse response) {
-				List<Feature> features = new ArrayList<Feature>();
-				for (org.geomajas.layer.feature.Feature feature : response.getFeatures()) {
-					features.add(featureFactory.create(feature, layer));
-				}
-				Map<FeaturesSupported, List<Feature>> mapping = new HashMap<FeaturesSupported, List<Feature>>();
-				mapping.put(layer, features);
-				callback.execute(mapping);
-			}
-		});
+					public void execute(SearchFeatureResponse response) {
+						List<Feature> features = new ArrayList<Feature>();
+						for (org.geomajas.layer.feature.Feature feature : response.getFeatures()) {
+							features.add(featureFactory.create(feature, layer));
+						}
+						Map<FeaturesSupported, List<Feature>> mapping = new HashMap<FeaturesSupported, List<Feature>>();
+						mapping.put(layer, features);
+						callback.execute(mapping);
+					}
+				});
 	}
 
 	// ------------------------------------------------------------------------
@@ -119,20 +121,21 @@ public class FeatureServiceImpl implements FeatureService {
 
 		GwtCommand command = new GwtCommand(SearchByLocationRequest.COMMAND);
 		command.setCommandRequest(request);
-		commandService.execute(command, new AbstractCommandCallback<SearchByLocationResponse>() {
+		GeomajasImpl.getInstance().getCommandService()
+				.execute(command, new AbstractCommandCallback<SearchByLocationResponse>() {
 
-			public void execute(SearchByLocationResponse response) {
-				for (List<org.geomajas.layer.feature.Feature> dtos : response.getFeatureMap().values()) {
-					List<Feature> features = new ArrayList<Feature>(dtos.size());
-					for (org.geomajas.layer.feature.Feature feature : dtos) {
-						features.add(featureFactory.create(feature, layer));
+					public void execute(SearchByLocationResponse response) {
+						for (List<org.geomajas.layer.feature.Feature> dtos : response.getFeatureMap().values()) {
+							List<Feature> features = new ArrayList<Feature>(dtos.size());
+							for (org.geomajas.layer.feature.Feature feature : dtos) {
+								features.add(featureFactory.create(feature, layer));
+							}
+							Map<FeaturesSupported, List<Feature>> map = new HashMap<FeaturesSupported, List<Feature>>();
+							map.put(layer, features);
+							callback.execute(map);
+						}
 					}
-					Map<FeaturesSupported, List<Feature>> map = new HashMap<FeaturesSupported, List<Feature>>();
-					map.put(layer, features);
-					callback.execute(map);
-				}
-			}
-		});
+				});
 	}
 
 	@Override
@@ -174,22 +177,23 @@ public class FeatureServiceImpl implements FeatureService {
 
 		GwtCommand command = new GwtCommand(SearchByLocationRequest.COMMAND);
 		command.setCommandRequest(request);
-		commandService.execute(command, new AbstractCommandCallback<SearchByLocationResponse>() {
+		GeomajasImpl.getInstance().getCommandService()
+				.execute(command, new AbstractCommandCallback<SearchByLocationResponse>() {
 
-			public void execute(SearchByLocationResponse response) {
-				Map<FeaturesSupported, List<Feature>> mapping = new HashMap<FeaturesSupported, List<Feature>>();
-				for (Entry<String, List<org.geomajas.layer.feature.Feature>> entry : response.getFeatureMap()
-						.entrySet()) {
-					FeaturesSupported layer = searchLayer(entry.getKey());
-					List<Feature> features = new ArrayList<Feature>(entry.getValue().size());
-					for (org.geomajas.layer.feature.Feature feature : entry.getValue()) {
-						features.add(featureFactory.create(feature, layer));
+					public void execute(SearchByLocationResponse response) {
+						Map<FeaturesSupported, List<Feature>> mapping = new HashMap<FeaturesSupported, List<Feature>>();
+						for (Entry<String, List<org.geomajas.layer.feature.Feature>> entry : response.getFeatureMap()
+								.entrySet()) {
+							FeaturesSupported layer = searchLayer(entry.getKey());
+							List<Feature> features = new ArrayList<Feature>(entry.getValue().size());
+							for (org.geomajas.layer.feature.Feature feature : entry.getValue()) {
+								features.add(featureFactory.create(feature, layer));
+							}
+							mapping.put(layer, features);
+						}
+						callback.execute(mapping);
 					}
-					mapping.put(layer, features);
-				}
-				callback.execute(mapping);
-			}
-		});
+				});
 	}
 
 	// ------------------------------------------------------------------------

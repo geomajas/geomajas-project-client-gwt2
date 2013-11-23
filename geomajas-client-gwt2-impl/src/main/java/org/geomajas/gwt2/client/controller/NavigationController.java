@@ -12,9 +12,9 @@
 package org.geomajas.gwt2.client.controller;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.map.RenderSpace;
+import org.geomajas.gwt2.client.animation.NavigationAnimationFactory;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.ViewPort;
 
@@ -76,9 +76,7 @@ public class NavigationController extends AbstractMapController {
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	/**
-	 * Create a controller.
-	 */
+	/** Create a NavigationController instance. */
 	public NavigationController() {
 		super(false);
 		zoomToRectangleController = new ZoomToRectangleController();
@@ -130,7 +128,6 @@ public class NavigationController extends AbstractMapController {
 		if (zooming) {
 			zoomToRectangleController.onMouseMove(event);
 		} else if (dragging) {
-			// updateView(event);
 			super.onMouseMove(event);
 		}
 	}
@@ -151,12 +148,8 @@ public class NavigationController extends AbstractMapController {
 
 	@Override
 	public void onDoubleClick(DoubleClickEvent event) {
-		// Zoom in on the event location:
-		Bbox bounds = mapPresenter.getViewPort().getBounds();
-		double x = lastClickPosition.getX() - (bounds.getWidth() / 4);
-		double y = lastClickPosition.getY() - (bounds.getHeight() / 4);
-		Bbox newBounds = new Bbox(x, y, bounds.getWidth() / 2, bounds.getHeight() / 2);
-		mapPresenter.getViewPort().applyBounds(newBounds);
+		mapPresenter.getViewPort().registerAnimation(
+				NavigationAnimationFactory.createZoomIn(mapPresenter, calculatePosition(true, lastClickPosition)));
 	}
 
 	@Override
@@ -169,32 +162,6 @@ public class NavigationController extends AbstractMapController {
 		}
 		Coordinate location = getLocation(event, RenderSpace.WORLD);
 		scrollZoomTo(isNorth, location);
-	}
-
-	protected native int getWheelDelta(NativeEvent evt) /*-{
-		return Math.round(-evt.wheelDelta) || 0;
-	}-*/;
-
-	protected void scrollZoomTo(boolean isNorth, Coordinate location) {
-		ViewPort viewPort = mapPresenter.getViewPort();
-		int index = viewPort.getZoomStrategy().getZoomStepIndex(viewPort.getScale());
-		if (isNorth) {
-			if (index > 0) {
-				if (scrollZoomType == ScrollZoomType.ZOOM_POSITION) {
-					viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index - 1), location);
-				} else {
-					viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index - 1));
-				}
-			}
-		} else {
-			if (index < viewPort.getZoomStrategy().getZoomStepCount() - 1) {
-				if (scrollZoomType == ScrollZoomType.ZOOM_POSITION) {
-					viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index + 1), location);
-				} else {
-					viewPort.applyScale(viewPort.getZoomStrategy().getZoomStepScale(index + 1));
-				}
-			}
-		}
 	}
 
 	// ------------------------------------------------------------------------
@@ -213,7 +180,8 @@ public class NavigationController extends AbstractMapController {
 	/**
 	 * Set the scroll zoom type of this controller.
 	 * 
-	 * @param scrollZoomType the scroll zoom type.
+	 * @param scrollZoomType
+	 *            the scroll zoom type.
 	 */
 	public void setScrollZoomType(ScrollZoomType scrollZoomType) {
 		this.scrollZoomType = scrollZoomType;
@@ -233,16 +201,65 @@ public class NavigationController extends AbstractMapController {
 
 	protected void updateView(HumanInputEvent<?> event) {
 		Coordinate end = getLocation(event, RenderSpace.SCREEN);
-		Coordinate beginWorld = mapPresenter.getViewPort().transform(dragOrigin, RenderSpace.SCREEN, RenderSpace.WORLD);
-		Coordinate endWorld = mapPresenter.getViewPort().transform(end, RenderSpace.SCREEN, RenderSpace.WORLD);
+		Coordinate beginWorld = mapPresenter.getViewPort().getTransformationService()
+				.transform(dragOrigin, RenderSpace.SCREEN, RenderSpace.WORLD);
+		Coordinate endWorld = mapPresenter.getViewPort().getTransformationService()
+				.transform(end, RenderSpace.SCREEN, RenderSpace.WORLD);
 
 		double x = mapPresenter.getViewPort().getPosition().getX() + beginWorld.getX() - endWorld.getX();
 		double y = mapPresenter.getViewPort().getPosition().getY() + beginWorld.getY() - endWorld.getY();
-		if (dragging) {
-			mapPresenter.getViewPort().dragToPosition(new Coordinate(x, y));
-		} else {
-			mapPresenter.getViewPort().applyPosition(new Coordinate(x, y));
-		}
+		mapPresenter.getViewPort().applyPosition(new Coordinate(x, y));
 		dragOrigin = end;
+	}
+
+	protected native int getWheelDelta(NativeEvent evt)
+	/*-{
+		return Math.round(-evt.wheelDelta) || 0;
+	}-*/;
+
+	protected void scrollZoomTo(boolean isNorth, Coordinate location) {
+		ViewPort viewPort = mapPresenter.getViewPort();
+		int index = viewPort.getFixedScaleIndex(viewPort.getScale());
+		if (isNorth) {
+			if (index < viewPort.getFixedScaleCount() - 1) {
+				if (scrollZoomType == ScrollZoomType.ZOOM_POSITION) {
+					Coordinate position = calculatePosition(true, location);
+					viewPort.registerAnimation(NavigationAnimationFactory.createZoomIn(mapPresenter, position));
+				} else {
+					viewPort.registerAnimation(NavigationAnimationFactory.createZoomIn(mapPresenter));
+				}
+			}
+		} else {
+			if (index > 0) {
+				if (scrollZoomType == ScrollZoomType.ZOOM_POSITION) {
+					Coordinate position = calculatePosition(false, location);
+					viewPort.registerAnimation(NavigationAnimationFactory.createZoomOut(mapPresenter, position));
+				} else {
+					viewPort.registerAnimation(NavigationAnimationFactory.createZoomOut(mapPresenter));
+				}
+			}
+		}
+	}
+
+	/**
+	 * Calculate the target position should there be a rescale point. The idea is that after zooming in or out, the
+	 * mouse cursor would still lie at the same position in world space.
+	 */
+	protected Coordinate calculatePosition(boolean zoomIn, Coordinate rescalePoint) {
+		ViewPort viewPort = mapPresenter.getViewPort();
+		Coordinate position = viewPort.getPosition();
+		int index = viewPort.getFixedScaleIndex(viewPort.getScale());
+		double scale = viewPort.getScale();
+		if (zoomIn && index < viewPort.getFixedScaleCount() - 1) {
+			scale = viewPort.getFixedScale(index + 1);
+
+		} else if (!zoomIn && index > 0) {
+			scale = viewPort.getFixedScale(index - 1);
+		}
+		double factor = scale / viewPort.getScale();
+		double dX = (rescalePoint.getX() - position.getX()) * (1 - 1 / factor);
+		double dY = (rescalePoint.getY() - position.getY()) * (1 - 1 / factor);
+
+		return new Coordinate(position.getX() + dX, position.getY() + dY);
 	}
 }

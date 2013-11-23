@@ -11,6 +11,8 @@
 
 package org.geomajas.plugin.wmsclient.client.layer;
 
+import java.util.List;
+
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.client.map.ViewPort;
@@ -18,12 +20,9 @@ import org.geomajas.gwt2.client.map.layer.HasLegendWidget;
 import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.client.map.layer.LegendUrlSupported;
 import org.geomajas.gwt2.client.map.layer.OpacitySupported;
-import org.geomajas.gwt2.client.map.render.HasLayerRenderer;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.plugin.wmsclient.client.layer.config.WmsLayerConfiguration;
 import org.geomajas.plugin.wmsclient.client.layer.config.WmsTileConfiguration;
-
-import java.util.List;
 
 /**
  * <p>
@@ -36,7 +35,7 @@ import java.util.List;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public interface WmsLayer extends Layer, OpacitySupported, HasLayerRenderer, LegendUrlSupported, HasLegendWidget {
+public interface WmsLayer extends Layer, OpacitySupported, LegendUrlSupported, HasLegendWidget {
 
 	/**
 	 * Get the main WMS options. These options are translated into HTTP GET parameters for the WMS calls.
@@ -46,6 +45,7 @@ public interface WmsLayer extends Layer, OpacitySupported, HasLayerRenderer, Leg
 	WmsLayerConfiguration getConfig();
 
 	/**
+	 * Get this layers tile configuration object.
 	 * 
 	 * @return
 	 */

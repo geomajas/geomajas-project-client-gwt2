@@ -17,7 +17,8 @@ import org.geomajas.annotation.Api;
  * 
  * @author Jan De Moerloose
  * 
- * @param <T> the hint type class
+ * @param <T>
+ *            The hint type class
  * @since 1.0.0
  */
 @Api(allMethods = true)
@@ -29,6 +30,7 @@ public class MapHint<T> {
 	 * Construct a map hint with the following name.
 	 * 
 	 * @param name
+	 *            The name of the hint.
 	 */
 	public MapHint(String name) {
 		this.name = name;
@@ -37,7 +39,7 @@ public class MapHint<T> {
 	/**
 	 * Get the name of this map hint. Uniqueness is not necessary as this is guaranteed by the class.
 	 * 
-	 * @return name
+	 * @return name Get the name of this hint.
 	 */
 	public String getName() {
 		return name;
@@ -47,5 +49,4 @@ public class MapHint<T> {
 	public String toString() {
 		return name;
 	}
-
 }

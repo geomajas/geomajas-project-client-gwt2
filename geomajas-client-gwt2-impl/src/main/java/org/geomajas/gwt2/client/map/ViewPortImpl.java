@@ -11,24 +11,24 @@
 
 package org.geomajas.gwt2.client.map;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.geometry.Geometry;
-import org.geomajas.geometry.Matrix;
 import org.geomajas.geometry.service.BboxService;
-import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.gwt.client.map.RenderSpace;
+import org.geomajas.gwt.client.util.Dom;
+import org.geomajas.gwt2.client.animation.NavigationAnimation;
+import org.geomajas.gwt2.client.event.NavigationStopEvent;
+import org.geomajas.gwt2.client.event.NavigationStopHandler;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
-import org.geomajas.gwt2.client.event.ViewPortChangingEvent;
-import org.geomajas.gwt2.client.event.ViewPortScaledEvent;
-import org.geomajas.gwt2.client.event.ViewPortScalingEvent;
-import org.geomajas.gwt2.client.event.ViewPortTranslatedEvent;
-import org.geomajas.gwt2.client.event.ViewPortTranslatingEvent;
-import org.geomajas.gwt2.client.map.ZoomStrategy.ZoomOption;
 
-import com.google.inject.Inject;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 
 /**
  * Implementation of the ViewPort interface.
@@ -36,7 +36,13 @@ import com.google.inject.Inject;
  * @author Pieter De Graef
  */
 public final class ViewPortImpl implements ViewPort {
-	
+
+	private final MapEventBus eventBus;
+
+	private final MapConfiguration configuration;
+
+	private final ViewPortTransformationService transformationService;
+
 	private ClientMapInfo mapInfo;
 
 	/** The map's width in pixels. */
@@ -48,11 +54,9 @@ public final class ViewPortImpl implements ViewPort {
 	/** The maximum bounding box available to this MapView. Never go outside it! */
 	private Bbox maxBounds;
 
-	private MapEventBus eventBus;
+	private final List<Double> fixedScales = new ArrayList<Double>();
 
 	private String crs;
-
-	private ZoomStrategy zoomStrategy;
 
 	// Current viewing parameters:
 
@@ -62,13 +66,25 @@ public final class ViewPortImpl implements ViewPort {
 
 	private boolean initialized;
 
+	private NavigationAnimation currentAnimation;
+
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
 
-	@Inject
-	private ViewPortImpl() {
-		position = new Coordinate();
+	public ViewPortImpl(MapEventBus eventBus, MapConfiguration configuration) {
+		this.eventBus = eventBus;
+		this.configuration = configuration;
+		this.transformationService = new ViewPortTransformationServiceImpl(this);
+		this.position = new Coordinate();
+
+		eventBus.addNavigationStopHandler(new NavigationStopHandler() {
+
+			@Override
+			public void onNavigationStopped(NavigationStopEvent event) {
+				currentAnimation = null;
+			}
+		});
 	}
 
 	// -------------------------------------------------------------------------
@@ -76,9 +92,8 @@ public final class ViewPortImpl implements ViewPort {
 	// -------------------------------------------------------------------------
 
 	@Override
-	public void initialize(ClientMapInfo mapInfo, MapEventBus eventBus) {
+	public void initialize(ClientMapInfo mapInfo) {
 		this.mapInfo = mapInfo;
-		this.eventBus = eventBus;
 		crs = mapInfo.getCrs();
 
 		// Calculate maximum bounds:
@@ -98,14 +113,23 @@ public final class ViewPortImpl implements ViewPort {
 			}
 		}
 
-		// Set the best zoom strategy given the map info:
-		if (mapInfo.getScaleConfiguration().getZoomLevels() != null
-				&& mapInfo.getScaleConfiguration().getZoomLevels().size() > 0) {
-			zoomStrategy = new FixedStepZoomStrategy(mapInfo, maxBounds);
+		if (mapInfo.getScaleConfiguration().getZoomLevels().size() > 0) {
+			for (ScaleInfo scale : mapInfo.getScaleConfiguration().getZoomLevels()) {
+				fixedScales.add(scale.getPixelPerUnit());
+			}
+		} else if (mapInfo.getScaleConfiguration().getMaximumScale() != null) {
+			// If there are no fixed scale levels, we'll calculate them:
+			double tempScale = getMaxBoundsScale();
+			fixedScales.add(tempScale);
+			while (tempScale < mapInfo.getScaleConfiguration().getMaximumScale().getPixelPerUnit()) {
+				tempScale *= 2;
+				fixedScales.add(tempScale);
+			}
 		} else {
-			zoomStrategy = new FreeForAllZoomStrategy(mapInfo, maxBounds);
+			throw new IllegalStateException(
+					"The map configuration must either contain fixed resolutions or a maximum scale");
 		}
-		zoomStrategy.setMapSize(mapWidth, mapHeight);
+
 		initialized = true;
 	}
 
@@ -115,16 +139,66 @@ public final class ViewPortImpl implements ViewPort {
 	}
 
 	@Override
+	public double getMinimumScale() {
+		return fixedScales.get(0);
+	}
+
+	@Override
+	public double getMaximumScale() {
+		return fixedScales.get(fixedScales.size() - 1);
+	}
+
+	@Override
+	public int getFixedScaleCount() {
+		return fixedScales.size();
+	}
+
+	@Override
+	public double getFixedScale(int index) {
+		if (index < 0) {
+			throw new IllegalArgumentException("Scale index cannot be found.");
+		}
+		if (index >= fixedScales.size()) {
+			throw new IllegalArgumentException("Scale index cannot be found.");
+		}
+		return fixedScales.get(index);
+	}
+
+	@Override
+	public int getFixedScaleIndex(double scale) {
+		double minimumScale = getMinimumScale();
+		if (scale <= minimumScale) {
+			return 0;
+		}
+		double maximumScale = getMaximumScale();
+		if (scale >= maximumScale) {
+			return fixedScales.size() - 1;
+		}
+
+		for (int i = 0; i < fixedScales.size(); i++) {
+			double lower = fixedScales.get(i);
+			double upper = fixedScales.get(i + 1);
+			if (scale <= upper && scale > lower) {
+				if (Math.abs(upper - scale) >= Math.abs(lower - scale)) {
+					return i;
+				} else {
+					return i + 1;
+				}
+			}
+		}
+		return 0;
+	}
+
+	@Override
 	public void setMapSize(int width, int height) {
 		if (this.mapWidth != width || this.mapHeight != height) {
-			position = transform(new Coordinate(width / 2, height / 2), RenderSpace.SCREEN, RenderSpace.WORLD);
+			View oldView = getView();
+			Coordinate screen = new Coordinate((double) width / 2.0, (double) height / 2.0);
+			position = getTransformationService().transform(screen, RenderSpace.SCREEN, RenderSpace.WORLD);
 			this.mapWidth = width;
 			this.mapHeight = height;
-			if (zoomStrategy != null) {
-				zoomStrategy.setMapSize(width, height);
-			}
 			if (eventBus != null) {
-				eventBus.fireEvent(new ViewPortChangedEvent(this));
+				eventBus.fireEvent(new ViewPortChangedEvent(oldView, getView(), currentAnimation));
 			}
 		}
 	}
@@ -158,6 +232,11 @@ public final class ViewPortImpl implements ViewPort {
 		return scale;
 	}
 
+	@Override
+	public View getView() {
+		return new View(new Coordinate(position), scale);
+	}
+
 	/**
 	 * Given the information in this ViewPort object, what is the currently visible area? This value is expressed in
 	 * world coordinates.
@@ -177,53 +256,115 @@ public final class ViewPortImpl implements ViewPort {
 	// -------------------------------------------------------------------------
 
 	@Override
-	public ZoomStrategy getZoomStrategy() {
-		return zoomStrategy;
-	}
-
-	@Override
-	public void setZoomStrategy(ZoomStrategy zoomStrategy) {
-		this.zoomStrategy = zoomStrategy;
-	}
-
-	@Override
-	public void dragToPosition(Coordinate coordinate) {
-		position = checkPosition(coordinate, scale);
-		if (eventBus != null) {
-			eventBus.fireEvent(new ViewPortTranslatingEvent(this));
+	public void registerAnimation(NavigationAnimation animation) {
+		boolean cancelSupport = configuration.getMapHintValue(MapConfiguration.ANIMATION_CANCEL_SUPPORT);
+		if (!cancelSupport && currentAnimation != null) {
+			return;
 		}
+
+		if (currentAnimation != null) {
+			currentAnimation.cancel();
+		}
+		this.currentAnimation = animation;
+
+		// Schedule the animation from the moment the browser event loop returns:
+		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+
+			@Override
+			public void execute() {
+				if (currentAnimation != null) {
+					if (Dom.isTransformationSupported()) {
+						currentAnimation.run();
+					} else {
+						applyView(currentAnimation.getEndView());
+						currentAnimation = null;
+					}
+				}
+			}
+		});
 	}
 
 	@Override
 	public void applyPosition(Coordinate coordinate) {
-		position = checkPosition(coordinate, scale);
-		if (eventBus != null) {
-			eventBus.fireEvent(new ViewPortTranslatedEvent(this));
+		Coordinate tempPosition = checkPosition(coordinate, scale);
+		if (tempPosition != position) {
+			View oldView = getView();
+			position = tempPosition;
+			eventBus.fireEvent(new ViewPortChangedEvent(oldView, getView(), currentAnimation));
 		}
 	}
 
 	@Override
-	public void dragToScale(double scale) {
-		applyScale(scale, position, true);
-	}
-
-	@Override
 	public void applyScale(double scale) {
-		applyScale(scale, position, false);
+		applyScale(scale, position, ZoomOption.FREE);
 	}
 
 	@Override
-	public void dragToScale(double newScale, Coordinate rescalePoint) {
-		applyScale(newScale, rescalePoint, true);
+	public void applyScale(double scale, ZoomOption zoomOption) {
+		applyScale(scale, position, zoomOption);
 	}
 
 	@Override
-	public void applyScale(double newScale, Coordinate rescalePoint) {
-		applyScale(newScale, rescalePoint, false);
+	public void applyView(View view) {
+		applyView(view, ZoomOption.FREE);
 	}
 
-	private void applyScale(double newScale, Coordinate rescalePoint, boolean dragging) {
-		double limitedScale = zoomStrategy.checkScale(newScale, ZoomOption.LEVEL_CLOSEST);
+	@Override
+	public void applyView(View view, ZoomOption zoomOption) {
+		double tempScale = checkScale(view.getScale(), ZoomOption.FREE);
+		Coordinate tempPosition = checkPosition(view.getPosition(), scale);
+		applyViewNoChecks(tempPosition, tempScale);
+	}
+
+	@Override
+	public void applyBounds(Bbox bounds) {
+		applyBounds(bounds, ZoomOption.FREE);
+	}
+
+	@Override
+	public void applyBounds(Bbox bounds, ZoomOption zoomOption) {
+		double tempScale = getScaleForBounds(bounds, zoomOption);
+		Coordinate tempPosition = checkPosition(BboxService.getCenterPoint(bounds), tempScale);
+		applyViewNoChecks(tempPosition, tempScale);
+	}
+
+	@Override
+	public boolean isInitialized() {
+		return initialized;
+	}
+
+	@Override
+	public double toScale(double scaleDenominator) {
+		return mapInfo.getUnitLength() / (mapInfo.getPixelLength() * scaleDenominator);
+	}
+
+	@Override
+	public Bbox asBounds(View view) {
+		double w = mapWidth / view.getScale();
+		double h = mapHeight / view.getScale();
+		double x = view.getPosition().getX() - w / 2;
+		double y = view.getPosition().getY() - h / 2;
+		return new Bbox(x, y, w, h);
+	}
+
+	@Override
+	public View asView(Bbox bounds, ZoomOption zoomOption) {
+		double tempScale = getScaleForBounds(bounds, zoomOption);
+		Coordinate tempPosition = checkPosition(BboxService.getCenterPoint(bounds), tempScale);
+		return new View(tempPosition, tempScale);
+	}
+
+	@Override
+	public ViewPortTransformationService getTransformationService() {
+		return transformationService;
+	}
+
+	// -------------------------------------------------------------------------
+	// Private functions:
+	// -------------------------------------------------------------------------
+
+	private void applyScale(double newScale, Coordinate rescalePoint, ZoomOption zoomOption) {
+		double limitedScale = checkScale(newScale, zoomOption);
 		if (limitedScale != scale) {
 			// Calculate theoretical new bounds. First create a BBOX of correct size:
 			Bbox newBbox = new Bbox(0, 0, getMapWidth() / limitedScale, getMapHeight() / limitedScale);
@@ -238,195 +379,53 @@ public final class ViewPortImpl implements ViewPort {
 			newBbox = BboxService.translate(newBbox, dX, dY);
 
 			// Now apply on this view port:
-			scale = limitedScale;
-			position = checkPosition(BboxService.getCenterPoint(newBbox), scale);
-			if (eventBus != null) {
-				if (dX == 0 && dY == 0) {
-					eventBus.fireEvent(dragging ? new ViewPortScalingEvent(this) : new ViewPortScaledEvent(this));
-				} else {
-					eventBus.fireEvent(dragging ? new ViewPortChangingEvent(this) : new ViewPortChangedEvent(this));
-				}
-			}
+			Coordinate tempPosition = checkPosition(BboxService.getCenterPoint(newBbox), limitedScale);
+			applyViewNoChecks(tempPosition, limitedScale);
 		}
 	}
-
-	@Override
-	public void applyBounds(Bbox bounds) {
-		applyBounds(bounds, ZoomOption.LEVEL_FIT);
-	}
-
-	@Override
-	public void applyBounds(Bbox bounds, ZoomOption zoomOption) {
-		double newScale = getScaleForBounds(bounds, zoomOption);
-		Coordinate tempPosition = checkPosition(BboxService.getCenterPoint(bounds), newScale);
-		if (newScale == scale) {
-			if (!position.equals(tempPosition)) {
-				position = tempPosition;
-				if (eventBus != null) {
-					eventBus.fireEvent(new ViewPortTranslatedEvent(this));
-				}
-			}
-		} else {
-			position = tempPosition;
-			scale = newScale;
-			if (eventBus != null) {
-				eventBus.fireEvent(new ViewPortChangedEvent(this));
-			}
-		}
-	}
-
-	// ------------------------------------------------------------------------
-	// ViewPort transformation methods:
-	// ------------------------------------------------------------------------
-
-	@Override
-	public Coordinate transform(Coordinate coordinate, RenderSpace from, RenderSpace to) {
-		switch (from) {
-			case SCREEN:
-				switch (to) {
-					case SCREEN:
-						return new Coordinate(coordinate);
-					case WORLD:
-						return screenToWorld(coordinate);
-				}
-			case WORLD:
-				switch (to) {
-					case SCREEN:
-						return worldToScreen(coordinate);
-					case WORLD:
-						return new Coordinate(coordinate);
-				}
-		}
-		return coordinate;
-	}
-
-	@Override
-	public Geometry transform(Geometry geometry, RenderSpace from, RenderSpace to) {
-		switch (from) {
-			case SCREEN:
-				switch (to) {
-					case SCREEN:
-						return GeometryService.clone(geometry);
-					case WORLD:
-						return screenToWorld(geometry);
-				}
-			case WORLD:
-				switch (to) {
-					case SCREEN:
-						return worldToScreen(geometry);
-					case WORLD:
-						return GeometryService.clone(geometry);
-				}
-		}
-		return geometry;
-	}
-
-	@Override
-	public Bbox transform(Bbox bbox, RenderSpace from, RenderSpace to) {
-		switch (from) {
-			case SCREEN:
-				switch (to) {
-					case SCREEN:
-						return new Bbox(bbox.getX(), bbox.getY(), bbox.getWidth(), bbox.getHeight());
-					case WORLD:
-						return screenToWorld(bbox);
-				}
-			case WORLD:
-				switch (to) {
-					case SCREEN:
-						return worldToScreen(bbox);
-					case WORLD:
-						return new Bbox(bbox.getX(), bbox.getY(), bbox.getWidth(), bbox.getHeight());
-				}
-		}
-		return bbox;
-	}
-
-	@Override
-	public Matrix getTransformationMatrix(RenderSpace from, RenderSpace to) {
-		switch (from) {
-			case SCREEN:
-				switch (to) {
-					case SCREEN:
-						return Matrix.IDENTITY;
-					case WORLD:
-						throw new RuntimeException("Not implemented.");
-				}
-			case WORLD:
-				switch (to) {
-					case SCREEN:
-						if (scale > 0) {
-							double dX = -(position.getX() * scale) + mapWidth / 2;
-							double dY = position.getY() * scale + mapHeight / 2;
-							return new Matrix(scale, 0, 0, -scale, dX, dY);
-						}
-						return new Matrix(1, 0, 0, 1, 0, 0);
-					case WORLD:
-						return Matrix.IDENTITY;
-				}
-		}
-		return null;
-	}
-
-	@Override
-	public Matrix getTranslationMatrix(RenderSpace from, RenderSpace to) {
-		switch (from) {
-			case SCREEN:
-				switch (to) {
-					case SCREEN:
-						return Matrix.IDENTITY;
-					case WORLD:
-						throw new RuntimeException("Not implemented.");
-				}
-			case WORLD:
-				switch (to) {
-					case SCREEN:
-						if (scale > 0) {
-							double dX = -(position.getX() * scale) + mapWidth / 2;
-							double dY = position.getY() * scale + mapHeight / 2;
-							return new Matrix(1, 0, 0, 1, dX, dY);
-						}
-						return new Matrix(1, 0, 0, 1, 0, 0);
-					case WORLD:
-						return Matrix.IDENTITY;
-				}
-		}
-		return null;
-	}
-
-	@Override
-	public boolean isInitialized() {
-		return initialized;
-	}
-
-	@Override
-	public double toScale(double scaleDenominator) {
-		return mapInfo.getUnitLength() / (mapInfo.getPixelLength() * scaleDenominator);
-	}
-
-	// -------------------------------------------------------------------------
-	// Private functions:
-	// -------------------------------------------------------------------------
 
 	private double getScaleForBounds(Bbox bounds, ZoomOption zoomOption) {
 		double wRatio;
 		double boundsWidth = bounds.getWidth();
 		if (boundsWidth <= 0) {
-			wRatio = zoomStrategy.getMinimumScale();
+			wRatio = getMinimumScale();
 		} else {
 			wRatio = mapWidth / boundsWidth;
 		}
 		double hRatio;
 		double boundsHeight = bounds.getHeight();
 		if (boundsHeight <= 0) {
-			hRatio = zoomStrategy.getMinimumScale();
+			hRatio = getMinimumScale();
 		} else {
 			hRatio = mapHeight / boundsHeight;
 		}
 		// Return the checked scale for the minimum to fit inside:
-		return zoomStrategy.checkScale(wRatio < hRatio ? wRatio : hRatio, zoomOption);
+		return checkScale(wRatio < hRatio ? wRatio : hRatio, zoomOption);
 	}
 
+	private double getMaxBoundsScale() {
+		if (maxBounds == null) {
+			return 0;
+		}
+		double wRatio;
+		double boundsWidth = maxBounds.getWidth();
+		if (boundsWidth <= 0) {
+			wRatio = getMinimumScale();
+		} else {
+			wRatio = mapWidth / boundsWidth;
+		}
+		double hRatio;
+		double boundsHeight = maxBounds.getHeight();
+		if (boundsHeight <= 0) {
+			hRatio = getMinimumScale();
+		} else {
+			hRatio = mapHeight / boundsHeight;
+		}
+		// Return the checked scale for the minimum to fit inside:
+		return wRatio < hRatio ? wRatio : hRatio;
+	}
+
+	// Returns a position that's within the maximum bounds:
 	private Coordinate checkPosition(final Coordinate newPosition, final double newScale) {
 		double xCenter = newPosition.getX();
 		double yCenter = newPosition.getY();
@@ -460,104 +459,53 @@ public final class ViewPortImpl implements ViewPort {
 		return new Coordinate(xCenter, yCenter);
 	}
 
-	// -------------------------------------------------------------------------
-	// Private Transformation methods:
-	// -------------------------------------------------------------------------
-
-	private Coordinate worldToScreen(Coordinate coordinate) {
-		if (coordinate != null) {
-			double x = coordinate.getX() * scale;
-			double y = -coordinate.getY() * scale;
-			double translateX = -(position.getX() * scale) + (mapWidth / 2);
-			double translateY = (position.getY() * scale) + (mapHeight / 2);
-			x += translateX;
-			y += translateY;
-			return new Coordinate(x, y);
+	// Returns a scale as requested by the zoom option:
+	private double checkScale(double scale, ZoomOption zoomOption) {
+		double allowedScale = scale;
+		double minimumScale = getMinimumScale();
+		if (allowedScale < minimumScale) {
+			allowedScale = minimumScale;
+		} else if (allowedScale > getMaximumScale()) {
+			allowedScale = getMaximumScale();
 		}
-		return null;
-	}
 
-	private Geometry worldToScreen(Geometry geometry) {
-		if (geometry != null) {
-			Geometry result = new Geometry(geometry.getGeometryType(), geometry.getSrid(), geometry.getPrecision());
-			if (geometry.getGeometries() != null) {
-				Geometry[] transformed = new Geometry[geometry.getGeometries().length];
-				for (int i = 0; i < geometry.getGeometries().length; i++) {
-					transformed[i] = worldToScreen(geometry.getGeometries()[i]);
+		if (zoomOption == ZoomOption.FREE) {
+			return allowedScale;
+		}
+
+		for (int i = 0; i < fixedScales.size() - 1; i++) {
+			double lower = fixedScales.get(i);
+			double upper = fixedScales.get(i + 1);
+
+			if (allowedScale == upper) {
+				return upper;
+			} else if (allowedScale == lower) {
+				return lower;
+			} else if (allowedScale < upper && allowedScale > lower) {
+				switch (zoomOption) {
+					case LEVEL_FIT:
+						return lower;
+					case LEVEL_CLOSEST:
+						if (Math.abs(upper - allowedScale) < Math.abs(allowedScale - lower)) {
+							return upper;
+						} else {
+							return lower;
+						}
+					default:
+						return allowedScale;
 				}
-				result.setGeometries(transformed);
 			}
-			if (geometry.getCoordinates() != null) {
-				Coordinate[] transformed = new Coordinate[geometry.getCoordinates().length];
-				for (int i = 0; i < geometry.getCoordinates().length; i++) {
-					transformed[i] = worldToScreen(geometry.getCoordinates()[i]);
-				}
-				result.setCoordinates(transformed);
-			}
-			return result;
 		}
-		throw new IllegalArgumentException("Cannot transform null geometry.");
+
+		return allowedScale;
 	}
 
-	private Bbox worldToScreen(Bbox bbox) {
-		if (bbox != null) {
-			Coordinate c1 = worldToScreen(BboxService.getOrigin(bbox));
-			Coordinate c2 = worldToScreen(BboxService.getEndPoint(bbox));
-			double x = (c1.getX() < c2.getX()) ? c1.getX() : c2.getX();
-			double y = (c1.getY() < c2.getY()) ? c1.getY() : c2.getY();
-			return new Bbox(x, y, Math.abs(c1.getX() - c2.getX()), Math.abs(c1.getY() - c2.getY()));
+	private void applyViewNoChecks(Coordinate tempPosition, double tempScale) {
+		if (tempScale != scale || !position.equals(tempPosition)) {
+			View oldView = getView();
+			scale = tempScale;
+			position = tempPosition;
+			eventBus.fireEvent(new ViewPortChangedEvent(oldView, getView(), currentAnimation));
 		}
-		return null;
-	}
-
-	private Coordinate screenToWorld(Coordinate coordinate) {
-		if (coordinate != null) {
-			double inverseScale = 1 / scale;
-			double x = coordinate.getX() * inverseScale;
-			double y = -coordinate.getY() * inverseScale;
-
-			double w = mapWidth / scale;
-			double h = mapHeight / scale;
-			// -cam: center X axis around cam. +bbox.w/2: to place the origin in the center of the screen
-			double translateX = -position.getX() + (w / 2);
-			double translateY = -position.getY() - (h / 2); // Inverted Y-axis here...
-			x -= translateX;
-			y -= translateY;
-			return new Coordinate(x, y);
-		}
-		return null;
-	}
-
-	private Geometry screenToWorld(Geometry geometry) {
-		if (geometry != null) {
-			Geometry result = new Geometry(geometry.getGeometryType(), geometry.getSrid(), geometry.getPrecision());
-			if (geometry.getGeometries() != null) {
-				Geometry[] transformed = new Geometry[geometry.getGeometries().length];
-				for (int i = 0; i < geometry.getGeometries().length; i++) {
-					transformed[i] = screenToWorld(geometry.getGeometries()[i]);
-				}
-				result.setGeometries(transformed);
-			}
-			if (geometry.getCoordinates() != null) {
-				Coordinate[] transformed = new Coordinate[geometry.getCoordinates().length];
-				for (int i = 0; i < geometry.getCoordinates().length; i++) {
-					transformed[i] = screenToWorld(geometry.getCoordinates()[i]);
-				}
-				result.setCoordinates(transformed);
-			}
-			return result;
-		}
-		throw new IllegalArgumentException("Cannot transform null geometry.");
-	}
-
-	private Bbox screenToWorld(Bbox bbox) {
-		if (bbox != null) {
-			Coordinate c1 = screenToWorld(BboxService.getOrigin(bbox));
-			Coordinate c2 = screenToWorld(BboxService.getEndPoint(bbox));
-			double x = (c1.getX() < c2.getX()) ? c1.getX() : c2.getX();
-			double y = (c1.getY() < c2.getY()) ? c1.getY() : c2.getY();
-			return new Bbox(x, y, Math.abs(c1.getX() - c2.getX()), Math.abs(c1.getY() - c2.getY()));
-		}
-		return null;
 	}
 }

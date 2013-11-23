@@ -12,8 +12,11 @@
 package org.geomajas.gwt2.client.map.layer;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.gwt2.client.map.render.LayerRenderer;
 
 /**
+ * TODO add minimum and maximum scale...
+ * 
  * The basic definition of a layer within the GWT client.
  * 
  * @author Pieter De Graef
@@ -82,4 +85,11 @@ public interface Layer {
 
 	/** Refresh this layer on the map. This method will completely erase the current contents and redraw. */
 	void refresh();
+
+	/**
+	 * Return the specific renderer for the layer.
+	 * 
+	 * @return The layer specific renderer.
+	 */
+	LayerRenderer getRenderer();
 }

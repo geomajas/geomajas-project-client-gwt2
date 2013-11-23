@@ -10,7 +10,7 @@
  */
 package org.geomajas.gwt2.widget.example.client.sample.mouseover;
 
-import org.geomajas.gwt2.client.GeomajasGinjector;
+import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.widget.MapLayoutPanel;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
@@ -25,7 +25,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Class description.
- *
+ * 
  * @author Dosi Bingov
  */
 public class FeatureMouseOverExample implements SamplePanel {
@@ -33,8 +33,6 @@ public class FeatureMouseOverExample implements SamplePanel {
 	protected DockLayoutPanel rootElement;
 
 	private MapPresenter mapPresenter;
-
-	private static final GeomajasGinjector GEOMAJASINJECTOR = GWT.create(GeomajasGinjector.class);
 
 	@UiField
 	protected ResizeLayoutPanel mapPanel;
@@ -47,12 +45,10 @@ public class FeatureMouseOverExample implements SamplePanel {
 
 	/**
 	 * UI binder interface.
-	 *
+	 * 
 	 * @author Dosi Bingov
 	 */
-	interface FeatureSelectedExampleUiBinder extends
-			UiBinder<DockLayoutPanel, FeatureMouseOverExample> {
-
+	interface FeatureSelectedExampleUiBinder extends UiBinder<DockLayoutPanel, FeatureMouseOverExample> {
 	}
 
 	private static final FeatureSelectedExampleUiBinder UIBINDER = GWT.create(FeatureSelectedExampleUiBinder.class);
@@ -61,7 +57,7 @@ public class FeatureMouseOverExample implements SamplePanel {
 		rootElement = UIBINDER.createAndBindUi(this);
 
 		// Create the MapPresenter
-		mapPresenter = GEOMAJASINJECTOR.getMapPresenter();
+		mapPresenter = GeomajasImpl.getInstance().getMapPresenter();
 
 		// Define the layout:
 		ResizeLayoutPanel resizeLayoutPanel = new ResizeLayoutPanel();

@@ -11,6 +11,9 @@
 
 package org.geomajas.gwt2.example.client.sample.general;
 
+import java.util.Iterator;
+
+import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.event.MapInitializationEvent;
 import org.geomajas.gwt2.client.event.MapInitializationHandler;
 import org.geomajas.gwt2.client.map.MapPresenter;
@@ -19,7 +22,6 @@ import org.geomajas.gwt2.client.widget.control.pan.PanControl;
 import org.geomajas.gwt2.client.widget.control.zoom.ZoomControl;
 import org.geomajas.gwt2.client.widget.control.zoom.ZoomStepControl;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
-import org.geomajas.gwt2.example.client.ExampleJar;
 
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -41,7 +43,7 @@ public class AlternativeControlsPanel implements SamplePanel {
 		resizeLayoutPanel.setSize("100%", "100%");
 
 		// Create the MapPresenter and add to the layout:
-		mapPresenter = ExampleJar.getInjector().getMapPresenter();
+		mapPresenter = GeomajasImpl.getInstance().getMapPresenter();
 		layout.setPresenter(mapPresenter);
 
 		// Initialize the map, and return the layout:
@@ -63,16 +65,17 @@ public class AlternativeControlsPanel implements SamplePanel {
 		@Override
 		public void onMapInitialized(MapInitializationEvent event) {
 			// Search for the ZoomControl widget and remove it:
-			for (int i = 0; i < mapPresenter.getWidgetPane().getWidgetCount(); i++) {
-				Widget widget = mapPresenter.getWidgetPane().getWidget(i);
+			Iterator<Widget> iterator = mapPresenter.getWidgetPane().iterator(); 
+			while (iterator.hasNext()) {
+				Widget widget = iterator.next();
 				if (widget instanceof ZoomControl) {
-					mapPresenter.getWidgetPane().remove(i);
+					mapPresenter.getWidgetPane().remove(widget);
 				}
 			}
 
 			// Now add the alternative controls:
-			mapPresenter.getWidgetPane().add(new PanControl(mapPresenter), 5, 5);
-			mapPresenter.getWidgetPane().add(new ZoomStepControl(mapPresenter), 17, 60);
+			mapPresenter.getWidgetPane().add(new PanControl(mapPresenter));
+			mapPresenter.getWidgetPane().add(new ZoomStepControl(mapPresenter));
 		}
 	}
 }

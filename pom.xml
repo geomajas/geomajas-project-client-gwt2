@@ -37,7 +37,7 @@
 		<module>geomajas-client-gwt2-example-base</module>
 		<module>geomajas-client-gwt2-example-jar</module>
  		<module>geomajas-client-gwt2-documentation</module>
-  		<module>geomajas-client-gwt2-plugin-parent</module>
+  		<!-- <module>geomajas-client-gwt2-plugin-parent</module> -->
 		<module>geomajas-client-gwt2-example</module>
 	</modules>
 
@@ -283,12 +283,6 @@
 				<groupId>org.vaadin.addons</groupId>
 				<artifactId>gwt-graphics</artifactId>
 				<version>${version-vaadin-graphics}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.google.gwt.inject</groupId>
-				<artifactId>gin</artifactId>
-				<version>1.5.0</version>
 			</dependency>
 
 			<!-- External GWT libraries -->

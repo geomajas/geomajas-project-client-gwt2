@@ -11,12 +11,11 @@
 
 package org.geomajas.plugin.wmsclient.client.layer;
 
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.geometry.Bbox;
-import org.geomajas.gwt2.client.gfx.HtmlContainer;
+import org.geomajas.gwt2.client.event.LayerStyleChangedEvent;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.AbstractLayer;
 import org.geomajas.gwt2.client.map.layer.LegendConfig;
@@ -26,12 +25,11 @@ import org.geomajas.layer.tile.TileCode;
 import org.geomajas.plugin.wmsclient.client.layer.config.WmsLayerConfiguration;
 import org.geomajas.plugin.wmsclient.client.layer.config.WmsTileConfiguration;
 import org.geomajas.plugin.wmsclient.client.render.WmsLayerRenderer;
-import org.geomajas.plugin.wmsclient.client.render.WmsLayerRendererFactory;
 import org.geomajas.plugin.wmsclient.client.service.WmsService;
 import org.geomajas.plugin.wmsclient.client.service.WmsTileService;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.IsWidget;
 
 /**
  * Default implementation of a {@link WmsLayer}.
@@ -49,22 +47,15 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 
 	protected final WmsTileConfiguration tileConfig;
 
-	@Inject
 	protected WmsService wmsService;
 
-	@Inject
 	protected WmsTileService tileService;
-
-	@Inject
-	private WmsLayerRendererFactory rendererFactory;
 
 	protected WmsLayerRenderer renderer;
 
 	private double opacity = 1.0;
 
-	@Inject
-	protected WmsLayerImpl(@Assisted String title, @Assisted WmsLayerConfiguration wmsConfig,
-			@Assisted WmsTileConfiguration tileConfig) {
+	protected WmsLayerImpl(String title, WmsLayerConfiguration wmsConfig, WmsTileConfiguration tileConfig) {
 		super(wmsConfig.getLayers());
 
 		this.wmsConfig = wmsConfig;
@@ -106,24 +97,21 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 
 	@Override
 	public void setOpacity(double opacity) {
-		this.opacity  = opacity;
-		if (null != renderer) {
-			renderer.getHtmlContainer().setOpacity(opacity);
-		} 
+		this.opacity = opacity;
+		// if (null != renderer) {
+		// renderer.getHtmlContainer().setOpacity(opacity);
+		eventBus.fireEvent(new LayerStyleChangedEvent(this));
+		// }
 	}
 
 	@Override
 	public double getOpacity() {
-		if (null != renderer) {
-			return renderer.getHtmlContainer().getOpacity();
-		}
-		return this.opacity;
+		return opacity;
 	}
 
 	// ------------------------------------------------------------------------
 	// Layer implementation:
 	// ------------------------------------------------------------------------
-
 
 	@Override
 	public boolean isShowing() {
@@ -135,29 +123,22 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 		}
 		return false;
 	}
-	
+
+	@Override
+	public LayerRenderer getRenderer() {
+		return null;
+	}
+
 	// ------------------------------------------------------------------------
 	// HasMapScalesRenderer implementation:
 	// ------------------------------------------------------------------------
-
-	/**
-	 * Get the specific renderer for this type of layer. This will return a scale-based renderer that used a
-	 * {@link org.geomajas.plugin.wmsclient.client.render.WmsTiledScaleRendererImpl} for each resolution.
-	 */
-	public LayerRenderer getRenderer(HtmlContainer container) {
-		if (renderer == null) {
-			renderer = rendererFactory.create(this, container);
-			renderer.getHtmlContainer().setOpacity(opacity);
-		}
-		return renderer;
-	}
 
 	@Override
 	public List<RasterTile> getTiles(double scale, Bbox worldBounds) {
 		List<TileCode> codes = tileService.getTileCodesForBounds(getViewPort(), tileConfig, worldBounds, scale);
 		List<RasterTile> tiles = new ArrayList<RasterTile>();
 		if (!codes.isEmpty()) {
-			double actualScale = viewPort.getZoomStrategy().getZoomStepScale(codes.get(0).getTileLevel());
+			double actualScale = viewPort.getFixedScale(codes.get(0).getTileLevel());
 			for (TileCode code : codes) {
 				Bbox bounds = tileService.getWorldBoundsForTile(getViewPort(), tileConfig, code);
 				RasterTile tile = new RasterTile(getScreenBounds(actualScale, bounds), code.toString());

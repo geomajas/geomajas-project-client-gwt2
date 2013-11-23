@@ -18,13 +18,9 @@ import junit.framework.Assert;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt2.client.GeomajasTestModule;
+import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
-import org.geomajas.gwt2.client.event.ViewPortScaledEvent;
-import org.geomajas.gwt2.client.event.ViewPortTranslatedEvent;
-import org.geomajas.gwt2.client.map.MapEventBusImpl;
-import org.geomajas.gwt2.client.map.ZoomStrategy.ZoomOption;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,10 +30,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 import com.google.web.bindery.event.shared.Event;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
 /**
@@ -51,8 +44,6 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
 @DirtiesContext
 public class ViewPortEventTest {
 
-	private static final Injector INJECTOR = Guice.createInjector(new GeomajasTestModule());
-
 	@Autowired
 	@Qualifier(value = "mapViewPortBeans")
 	private ClientMapInfo mapInfo;
@@ -65,9 +56,9 @@ public class ViewPortEventTest {
 
 	@PostConstruct
 	public void initialize() {
-		eventBus = new MapEventBusImpl(this, INJECTOR.getInstance(EventBus.class));
-		viewPort = INJECTOR.getInstance(ViewPort.class);
-		viewPort.initialize(mapInfo, eventBus);
+		eventBus = new MapEventBusImpl(this, GeomajasImpl.getInstance().getEventBus());
+		viewPort = new ViewPortImpl(eventBus, new MapConfigurationImpl());
+		viewPort.initialize(mapInfo);
 		viewPort.setMapSize(1000, 1000);
 	}
 
@@ -85,12 +76,12 @@ public class ViewPortEventTest {
 		Assert.assertEquals(4.0, viewPort.getScale());
 		Assert.assertNull(event);
 
-		HandlerRegistration reg = eventBus.addViewPortChangedHandler(new AllowTranslationHandler());
+		HandlerRegistration reg = eventBus.addViewPortChangedHandler(new AllowChangedHandler());
 
 		viewPort.applyPosition(new Coordinate(342, 342));
 		Assert.assertEquals(4.0, viewPort.getScale());
 		Assert.assertNotNull(event);
-		Assert.assertTrue(event instanceof ViewPortTranslatedEvent);
+//		Assert.assertTrue(event instanceof ViewPortTranslatedEvent);
 
 		reg.removeHandler();
 	}
@@ -100,12 +91,12 @@ public class ViewPortEventTest {
 		Assert.assertEquals(4.0, viewPort.getScale());
 		Assert.assertNull(event);
 
-		HandlerRegistration reg = eventBus.addViewPortChangedHandler(new AllowScalingHandler());
+		HandlerRegistration reg = eventBus.addViewPortChangedHandler(new AllowChangedHandler());
 
 		viewPort.applyScale(2.0);
 		Assert.assertEquals(2.0, viewPort.getScale());
 		Assert.assertNotNull(event);
-		Assert.assertTrue(event instanceof ViewPortScaledEvent);
+//		Assert.assertTrue(event instanceof ViewPortScaledEvent);
 
 		reg.removeHandler();
 	}
@@ -124,13 +115,13 @@ public class ViewPortEventTest {
 		Assert.assertTrue(event instanceof ViewPortChangedEvent);
 
 		reg.removeHandler();
-		reg = eventBus.addViewPortChangedHandler(new AllowTranslationHandler());
+		reg = eventBus.addViewPortChangedHandler(new AllowChangedHandler());
 
 		// Expect to end up at the same scale, so no changed event, but translation only:
 		viewPort.applyBounds(new Bbox(-50, -50, 100, 100));
 		Assert.assertEquals(8.0, viewPort.getScale());
 		Assert.assertNotNull(event);
-		Assert.assertTrue(event instanceof ViewPortTranslatedEvent);
+//		Assert.assertTrue(event instanceof ViewPortTranslatedEvent);
 
 		reg.removeHandler();
 	}
@@ -155,7 +146,7 @@ public class ViewPortEventTest {
 
 		HandlerRegistration reg = eventBus.addViewPortChangedHandler(new AllowChangedHandler());
 		viewPort.setMapSize(500, 500);
-		
+
 		Assert.assertEquals(4.0, viewPort.getScale());
 		Assert.assertTrue(viewPort.getPosition().equalsDelta(new Coordinate(-62.5, 62.5), 0.00001));
 		Assert.assertNotNull(event);
@@ -171,54 +162,15 @@ public class ViewPortEventTest {
 
 		HandlerRegistration reg = eventBus.addViewPortChangedHandler(new AllowNoEventsHandler());
 		viewPort.setMapSize(viewPort.getMapWidth(), viewPort.getMapHeight());
-		
+
 		Assert.assertNull(event);
 
 		reg.removeHandler();
 	}
-// ------------------------------------------------------------------------
+
+	// ------------------------------------------------------------------------
 	// Private classes that allows only one type of event to be fired.
 	// ------------------------------------------------------------------------
-
-	/**
-	 * ViewPortHandler that allows only ViewPortTranslatedEvents.
-	 * 
-	 * @author Pieter De Graef
-	 */
-	private class AllowTranslationHandler implements ViewPortChangedHandler {
-
-		public void onViewPortChanged(ViewPortChangedEvent event) {
-			Assert.fail("No ViewPortChangedEvent should have been fired.");
-		}
-
-		public void onViewPortScaled(ViewPortScaledEvent event) {
-			Assert.fail("No ViewPortScaledEvent should have been fired.");
-		}
-
-		public void onViewPortTranslated(ViewPortTranslatedEvent event) {
-			ViewPortEventTest.this.event = event;
-		}
-	}
-
-	/**
-	 * ViewPortHandler that allows only ViewPortScaledEvents.
-	 * 
-	 * @author Pieter De Graef
-	 */
-	private class AllowScalingHandler implements ViewPortChangedHandler {
-
-		public void onViewPortChanged(ViewPortChangedEvent event) {
-			Assert.fail("No ViewPortChangedEvent should have been fired.");
-		}
-
-		public void onViewPortScaled(ViewPortScaledEvent event) {
-			ViewPortEventTest.this.event = event;
-		}
-
-		public void onViewPortTranslated(ViewPortTranslatedEvent event) {
-			Assert.fail("No ViewPortTranslatedEvent should have been fired.");
-		}
-	}
 
 	/**
 	 * ViewPortHandler that allows only ViewPortChangedEvents.
@@ -229,14 +181,6 @@ public class ViewPortEventTest {
 
 		public void onViewPortChanged(ViewPortChangedEvent event) {
 			ViewPortEventTest.this.event = event;
-		}
-
-		public void onViewPortScaled(ViewPortScaledEvent event) {
-			Assert.fail("No ViewPortScaledEvent should have been fired.");
-		}
-
-		public void onViewPortTranslated(ViewPortTranslatedEvent event) {
-			Assert.fail("No ViewPortTranslatedEvent should have been fired.");
 		}
 	}
 
@@ -249,14 +193,6 @@ public class ViewPortEventTest {
 
 		public void onViewPortChanged(ViewPortChangedEvent event) {
 			Assert.fail("No ViewPortChangedEvent should have been fired.");
-		}
-
-		public void onViewPortScaled(ViewPortScaledEvent event) {
-			Assert.fail("No ViewPortScaledEvent should have been fired.");
-		}
-
-		public void onViewPortTranslated(ViewPortTranslatedEvent event) {
-			Assert.fail("No ViewPortTranslatedEvent should have been fired.");
 		}
 	}
 }

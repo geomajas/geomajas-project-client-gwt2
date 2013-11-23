@@ -19,5 +19,4 @@ import org.vaadin.gwtgraphics.client.Group;
  * @author Pieter De Graef
  */
 public class VectorGroup extends Group implements VectorContainer {
-
 }

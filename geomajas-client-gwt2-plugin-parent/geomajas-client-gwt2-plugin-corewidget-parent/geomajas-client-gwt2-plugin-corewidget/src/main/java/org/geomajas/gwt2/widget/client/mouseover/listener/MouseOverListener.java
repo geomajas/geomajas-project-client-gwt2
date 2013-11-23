@@ -90,8 +90,9 @@ public class MouseOverListener extends AbstractController implements MapControll
 	}
 
 	/**
-	 *
-	 * @param pixelBuffer minimum distance between features to be included in the call out box.
+	 * 
+	 * @param pixelBuffer
+	 *            minimum distance between features to be included in the call out box.
 	 */
 	public MouseOverListener(int pixelBuffer) {
 		super(false);
@@ -282,10 +283,10 @@ public class MouseOverListener extends AbstractController implements MapControll
 	}
 
 	private double calculateBufferFromPixelTolerance() {
-		Coordinate c1 = mapPresenter.getViewPort().transform(new Coordinate(0, 0), RenderSpace.SCREEN,
-				RenderSpace.WORLD);
-		Coordinate c2 = mapPresenter.getViewPort().transform(new Coordinate(pixelBuffer, 0), RenderSpace.SCREEN,
-				RenderSpace.WORLD);
+		Coordinate c1 = mapPresenter.getViewPort().getTransformationService()
+				.transform(new Coordinate(0, 0), RenderSpace.SCREEN, RenderSpace.WORLD);
+		Coordinate c2 = mapPresenter.getViewPort().getTransformationService()
+				.transform(new Coordinate(pixelBuffer, 0), RenderSpace.SCREEN, RenderSpace.WORLD);
 		return MathService.distance(c1, c2);
 	}
 }

@@ -48,13 +48,12 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
-import com.google.inject.Inject;
 
 /**
  * Default implementation of the {@link WmsService}.
  * 
  * @author Pieter De Graef
- * @author An Buyle (support for static and dynamic legend when printing)
+ * @author An Buyle
  */
 public class WmsServiceImpl implements WmsService {
 
@@ -69,10 +68,8 @@ public class WmsServiceImpl implements WmsService {
 
 	private static final int LEGEND_DPI = 91;
 
-	@Inject
 	private WmsTileService tileService;
 
-	@Inject
 	private FeatureFactory featureFactory;
 
 	private WmsUrlTransformer urlTransformer;
@@ -142,7 +139,8 @@ public class WmsServiceImpl implements WmsService {
 
 		GwtCommand command = new GwtCommand(GetFeatureInfoRequest.COMMAND_NAME);
 		command.setCommandRequest(new GetFeatureInfoRequest(url));
-		GwtCommandDispatcher.getInstance().execute(command, new  AbstractCommandCallback<GetFeatureInfoResponse>() {
+		GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback<GetFeatureInfoResponse>() {
+
 			@Override
 			public void execute(GetFeatureInfoResponse response) {
 				List<Feature> features = new ArrayList<Feature>();
@@ -152,16 +150,16 @@ public class WmsServiceImpl implements WmsService {
 
 				callback.onSuccess(new FeatureCollection(features, response.getAttributeDescriptors()));
 			}
-			
+
 			@Override
 			public void onCommunicationException(Throwable error) {
 				callback.onFailure(error.toString());
 				super.onCommunicationException(error);
 			}
-			
+
 			@Override
 			public void onCommandException(CommandResponse response) {
-				
+
 				String msg = "";
 				for (ExceptionDto error : response.getExceptions()) {
 					msg = error.getClassName() + ": " + error.getMessage();
@@ -169,10 +167,10 @@ public class WmsServiceImpl implements WmsService {
 				}
 				callback.onFailure(msg);
 				super.onCommandException(response);
-			} 
-			
+			}
+
 		});
-						
+
 	}
 
 	@Override
@@ -263,12 +261,12 @@ public class WmsServiceImpl implements WmsService {
 				url.append(legendConfig.getFontStyle().getSize());
 				url.append(";");
 			}
-			
-//	TODO:	
-//			int dpi = legendConfig.getDpi();
-//			if (dpi <= 0) {
-//				dpi = LEGEND_DPI;
-//			}
+
+			// TODO:
+			// int dpi = legendConfig.getDpi();
+			// if (dpi <= 0) {
+			// dpi = LEGEND_DPI;
+			// }
 			int dpi = LEGEND_DPI;
 			url.append("bgColor:0xFFFFFF;dpi:" + dpi);
 		}
@@ -316,8 +314,10 @@ public class WmsServiceImpl implements WmsService {
 				layer.getViewPort().getScale());
 		Bbox worldBounds = tileService.getWorldBoundsForTile(layer.getViewPort(), layer.getTileConfig(), tileCode);
 
-		Bbox screenBounds = layer.getViewPort().transform(worldBounds, RenderSpace.WORLD, RenderSpace.SCREEN);
-		Coordinate screenLocation = layer.getViewPort().transform(location, RenderSpace.WORLD, RenderSpace.SCREEN);
+		Bbox screenBounds = layer.getViewPort().getTransformationService()
+				.transform(worldBounds, RenderSpace.WORLD, RenderSpace.SCREEN);
+		Coordinate screenLocation = layer.getViewPort().getTransformationService()
+				.transform(location, RenderSpace.WORLD, RenderSpace.SCREEN);
 
 		// Add the base parameters needed for getMap:
 		addBaseParameters(url, layer.getConfig(), layer.getCrs(), worldBounds, layer.getTileConfig().getTileWidth()
@@ -466,8 +466,7 @@ public class WmsServiceImpl implements WmsService {
 	}
 
 	private boolean useInvertedAxis(WmsVersion version, String crs) {
-		if (WmsVersion.V1_3_0.equals(version) && ("EPSG:4326".equalsIgnoreCase(crs) || 
-				"WGS:84".equalsIgnoreCase(crs))) {
+		if (WmsVersion.V1_3_0.equals(version) && ("EPSG:4326".equalsIgnoreCase(crs) || "WGS:84".equalsIgnoreCase(crs))) {
 			return true;
 		}
 		return false;

@@ -12,7 +12,7 @@
 package org.geomajas.gwt2.widget.example.client.sample.map;
 
 
-import org.geomajas.gwt2.client.GeomajasGinjector;
+import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.event.MapInitializationEvent;
 import org.geomajas.gwt2.client.event.MapInitializationHandler;
 import org.geomajas.gwt2.client.map.MapPresenter;
@@ -51,8 +51,6 @@ public class LegendOrderSample implements SamplePanel {
 	interface MyUiBinder extends UiBinder<Widget, LegendOrderSample> {
 	}
 
-	private static final GeomajasGinjector GEOMAJASINJECTOR = GWT.create(GeomajasGinjector.class);
-
 	private static final MyUiBinder UI_BINDER = GWT.create(MyUiBinder.class);
 
 	private MapPresenter mapPresenter;
@@ -81,7 +79,7 @@ public class LegendOrderSample implements SamplePanel {
 		layerDragController.addDragHandler(new LayerDragHandler());
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = GEOMAJASINJECTOR.getMapPresenter();
+		mapPresenter = GeomajasImpl.getInstance().getMapPresenter();
 		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 

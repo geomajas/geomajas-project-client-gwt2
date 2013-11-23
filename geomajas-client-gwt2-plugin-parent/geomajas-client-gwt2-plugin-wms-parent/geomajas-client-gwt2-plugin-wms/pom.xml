@@ -114,10 +114,6 @@
 			<artifactId>gwt-servlet</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<dependency>
-			<groupId>com.google.gwt.inject</groupId>
-			<artifactId>gin</artifactId>
-		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>

@@ -17,8 +17,7 @@ import junit.framework.Assert;
 
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt2.client.GeomajasTestModule;
-import org.geomajas.gwt2.client.map.MapEventBusImpl;
+import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.testdata.ReloadContext;
 import org.geomajas.testdata.ReloadContextTestExecutionListener;
 import org.junit.Before;
@@ -30,10 +29,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.web.bindery.event.shared.EventBus;
 
 /**
  * Unit test that checks if the ViewPortImpl positions correctly.
@@ -48,8 +43,6 @@ import com.google.web.bindery.event.shared.EventBus;
 @ReloadContext
 public class ViewPortPositionTest {
 
-	private static final Injector INJECTOR = Guice.createInjector(new GeomajasTestModule());
-
 	@Autowired
 	@Qualifier(value = "mapViewPortBeans")
 	private ClientMapInfo mapInfo;
@@ -60,9 +53,9 @@ public class ViewPortPositionTest {
 
 	@PostConstruct
 	public void initialize() {
-		eventBus = new MapEventBusImpl(this, INJECTOR.getInstance(EventBus.class));
-		viewPort = INJECTOR.getInstance(ViewPort.class);
-		viewPort.initialize(mapInfo, eventBus);
+		eventBus = new MapEventBusImpl(this, GeomajasImpl.getInstance().getEventBus());
+		viewPort = new ViewPortImpl(eventBus, new MapConfigurationImpl());
+		viewPort.initialize(mapInfo);
 		viewPort.setMapSize(200, 200);
 	}
 

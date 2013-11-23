@@ -41,9 +41,6 @@ public class LegendConfig {
 	/** Default icon size used the legend icons. */
 	public static final String DEFAULT_IMAGE_FORMAT = "PNG";
 
-	/** Default DPI used for legend images. */
-	public static final int DEFAULT_DPI = 72;
-
 	private int iconWidth = DEFAULT_ICON_SIZE;
 
 	private int iconHeight = DEFAULT_ICON_SIZE;
@@ -55,10 +52,6 @@ public class LegendConfig {
 	private String exceptions = DEFAULT_IMAGE_FORMAT;
 
 	private Bbox bounds;
-
-	private int styleIndex;
-
-	private int dpi = DEFAULT_DPI;
 
 	/** Default constructor. Makes sure everything has a default value, to minimize the chance of a NPE. */
 	public LegendConfig() {
@@ -169,24 +162,6 @@ public class LegendConfig {
 		this.bounds = bounds;
 	}
 
-	/** Get the DPI used for legend images.
-	 *
-	 * @return The DPI used for legend images.
-	 */
-	public int getDpi() {
-		return dpi;
-	}
-
-	/** Set the DPI used for legend images.
-	 *
-	 * @param dpi
-	 * 			The DPI used for legend images.
-	 */
-
-	public void setDpi(int dpi) {
-		this.dpi = dpi;
-	}
-
 	/**
 	 * Get the mimetype to be used in case of an exception.
 	 * 
@@ -194,20 +169,6 @@ public class LegendConfig {
 	 */
 	public String getExceptions() {
 		return exceptions;
-	}
-
-	/**
-	 * @return  The index of the desired active style
-	 */
-	public int getStyleIndex() {
-		return styleIndex;
-	}
-
-	/**
-	 * @param styleIndex The index of the desired active style
-	 */
-	public void setStyleIndex(int styleIndex) {
-		this.styleIndex = styleIndex;
 	}
 
 	/**

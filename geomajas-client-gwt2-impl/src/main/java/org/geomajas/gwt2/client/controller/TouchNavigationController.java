@@ -68,7 +68,8 @@ public class TouchNavigationController extends AbstractMapController {
 	@Override
 	public void onTouchMove(TouchMoveEvent event) {
 		event.preventDefault();
-		midPoint = mapPresenter.getViewPort().transform(getMidPoint(event), RenderSpace.SCREEN, RenderSpace.WORLD);
+		midPoint = mapPresenter.getViewPort().getTransformationService()
+				.transform(getMidPoint(event), RenderSpace.SCREEN, RenderSpace.WORLD);
 		updateView(event, true); // TODO second argument should be false but onTouchEnd is not fired
 	}
 
@@ -99,22 +100,6 @@ public class TouchNavigationController extends AbstractMapController {
 		zoomTo(event.getScale(), false);
 	}
 
-	private void zoomTo(double scale, boolean isGestureEnded) {
-		if (midPoint != null) {
-			if (isGestureEnded) {
-				mapPresenter.getViewPort().applyScale(scale * lastScale, midPoint);
-			} else {
-				mapPresenter.getViewPort().dragToScale(scale * lastScale, midPoint);
-			}
-		} else {
-			if (isGestureEnded) {
-				mapPresenter.getViewPort().applyScale(scale * lastScale);
-			} else {
-				mapPresenter.getViewPort().dragToScale(scale * lastScale);
-			}
-		}
-	}
-
 	// ------------------------------------------------------------------------
 	// Methods:
 	// ------------------------------------------------------------------------
@@ -129,13 +114,22 @@ public class TouchNavigationController extends AbstractMapController {
 	public void onDeactivate(MapPresenter mapPresenter) {
 	}
 
+	protected void zoomTo(double scale, boolean isGestureEnded) {
+//		if (midPoint != null) {
+//			mapPresenter.getViewPort().applyScale(scale * lastScale, midPoint);
+//		} else {
+			mapPresenter.getViewPort().applyScale(scale * lastScale);
+//		}
+	}
+
 	/**
 	 * Method used to calculate exact middle point between multiple touches of a touch events.
 	 * 
-	 * @param event a touch event
+	 * @param event
+	 *            a touch event
 	 * @return middle point
 	 */
-	private Coordinate getMidPoint(TouchEvent<?> event) {
+	protected Coordinate getMidPoint(TouchEvent<?> event) {
 		Coordinate[] coords = new Coordinate[event.getTouches().length()];
 		for (int i = 0; i < event.getTargetTouches().length(); i++) {
 			coords[i] = new Coordinate(event.getTouches().get(i).getClientX(), event.getTouches().get(i).getClientY());
@@ -156,7 +150,6 @@ public class TouchNavigationController extends AbstractMapController {
 	}
 
 	/**
-	 * 
 	 * Update the view of the map when touching and dragging.
 	 * 
 	 * @param event
@@ -164,19 +157,14 @@ public class TouchNavigationController extends AbstractMapController {
 	protected void updateView(TouchEvent<?> event, boolean isTouchEnded) {
 		Coordinate end = getMidPoint(event);
 
-		Coordinate beginWorld = mapPresenter.getViewPort().transform(touchedOrigin, RenderSpace.SCREEN,
-				RenderSpace.WORLD);
-		Coordinate endWorld = mapPresenter.getViewPort().transform(end, RenderSpace.SCREEN, RenderSpace.WORLD);
+		Coordinate beginWorld = mapPresenter.getViewPort().getTransformationService()
+				.transform(touchedOrigin, RenderSpace.SCREEN, RenderSpace.WORLD);
+		Coordinate endWorld = mapPresenter.getViewPort().getTransformationService()
+				.transform(end, RenderSpace.SCREEN, RenderSpace.WORLD);
 		double x = mapPresenter.getViewPort().getPosition().getX() + beginWorld.getX() - endWorld.getX();
 		double y = mapPresenter.getViewPort().getPosition().getY() + beginWorld.getY() - endWorld.getY();
 
-		if (isTouchEnded) {
-			mapPresenter.getViewPort().applyPosition(new Coordinate(x, y));
-		} else {
-			mapPresenter.getViewPort().dragToPosition(new Coordinate(x, y));
-		}
-
+		mapPresenter.getViewPort().applyPosition(new Coordinate(x, y));
 		touchedOrigin = end;
 	}
-
 }

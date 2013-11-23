@@ -11,7 +11,7 @@
 
 package org.geomajas.gwt2.widget.example.client.sample.map;
 
-import org.geomajas.gwt2.client.GeomajasGinjector;
+import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.gwt2.widget.client.map.MapLegendDropDown;
@@ -40,8 +40,6 @@ public class MapLegendDropDownSample implements SamplePanel {
 	interface MyUiBinder extends UiBinder<Widget, MapLegendDropDownSample> {
 	}
 
-	private static final GeomajasGinjector GEOMAJASINJECTOR = GWT.create(GeomajasGinjector.class);
-
 	private static final MyUiBinder UI_BINDER = GWT.create(MyUiBinder.class);
 
 	private MapPresenter mapPresenter;
@@ -57,7 +55,7 @@ public class MapLegendDropDownSample implements SamplePanel {
 		Widget layout = UI_BINDER.createAndBindUi(this);
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = GEOMAJASINJECTOR.getMapPresenter();
+		mapPresenter = GeomajasImpl.getInstance().getMapPresenter();
 		mapPresenter.setSize(480, 480);
 
 		// Add a MapLegendDropDown to the panel on the left:
@@ -65,10 +63,10 @@ public class MapLegendDropDownSample implements SamplePanel {
 
 		// Add a MapLegendDropDown to the MapPresenter:
 		MapLegendDropDown mapDropDown = new MapLegendDropDown(mapPresenter);
-		mapPresenter.getWidgetPane().add(mapDropDown, 0, 5);
+		mapPresenter.getWidgetPane().add(mapDropDown);
 
 		// Align the MapLegendDropDown on the map to the top-right:
-		mapDropDown.getElement().getStyle().clearLeft();
+		mapDropDown.getElement().getStyle().setTop(5, Unit.PX);
 		mapDropDown.getElement().getStyle().setRight(5, Unit.PX);
 
 		DecoratorPanel mapDecorator = new DecoratorPanel();

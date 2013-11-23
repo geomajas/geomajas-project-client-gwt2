@@ -10,7 +10,7 @@
  */
 package org.geomajas.plugin.geocoder.puregwt.example.client.sample;
 
-import org.geomajas.gwt2.client.GeomajasGinjector;
+import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.event.MapInitializationEvent;
 import org.geomajas.gwt2.client.event.MapInitializationHandler;
 import org.geomajas.gwt2.client.map.MapPresenter;
@@ -28,7 +28,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Class description.
- *
+ * 
  * @author Dosi Bingov
  */
 public class GeoCoderExample implements SamplePanel {
@@ -36,8 +36,6 @@ public class GeoCoderExample implements SamplePanel {
 	protected DockLayoutPanel rootElement;
 
 	private MapPresenter mapPresenter;
-
-	private static final GeomajasGinjector GEOMAJASINJECTOR = GWT.create(GeomajasGinjector.class);
 
 	@UiField
 	protected ResizeLayoutPanel mapPanel;
@@ -50,12 +48,10 @@ public class GeoCoderExample implements SamplePanel {
 
 	/**
 	 * UI binder interface.
-	 *
+	 * 
 	 * @author Dosi Bingov
 	 */
-	interface FeatureSelectedExampleUiBinder extends
-			UiBinder<DockLayoutPanel, GeoCoderExample> {
-
+	interface FeatureSelectedExampleUiBinder extends UiBinder<DockLayoutPanel, GeoCoderExample> {
 	}
 
 	private static final FeatureSelectedExampleUiBinder UIBINDER = GWT.create(FeatureSelectedExampleUiBinder.class);
@@ -64,7 +60,7 @@ public class GeoCoderExample implements SamplePanel {
 		rootElement = UIBINDER.createAndBindUi(this);
 
 		// Create the MapPresenter
-		mapPresenter = GEOMAJASINJECTOR.getMapPresenter();
+		mapPresenter = GeomajasImpl.getInstance().getMapPresenter();
 
 		// Initialize the map
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());

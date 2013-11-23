@@ -14,15 +14,13 @@ package org.geomajas.plugin.editing.gwt.client.controller;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.controller.MapEventParser;
+import org.geomajas.gwt.client.handler.MapDownHandler;
+import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
-import org.geomajas.gwt2.client.event.ViewPortScaledEvent;
-import org.geomajas.gwt2.client.event.ViewPortTranslatedEvent;
 import org.geomajas.gwt2.client.gfx.GfxUtil;
 import org.geomajas.gwt2.client.gfx.VectorContainer;
-import org.geomajas.gwt.client.handler.MapDownHandler;
 import org.geomajas.gwt2.client.map.MapPresenter;
-import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.vaadin.gwtgraphics.client.shape.Path;
@@ -76,14 +74,6 @@ public class EdgeMarkerHandler implements MouseOutHandler, MouseOverHandler, Mou
 		style.setStrokeWidth(1);
 
 		mapPresenter.getEventBus().addViewPortChangedHandler(new ViewPortChangedHandler() {
-
-			public void onViewPortTranslated(ViewPortTranslatedEvent event) {
-				cleanup();
-			}
-
-			public void onViewPortScaled(ViewPortScaledEvent event) {
-				cleanup();
-			}
 
 			public void onViewPortChanged(ViewPortChangedEvent event) {
 				cleanup();
