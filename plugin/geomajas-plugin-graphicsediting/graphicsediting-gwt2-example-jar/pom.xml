@@ -12,43 +12,20 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	<packaging>jar</packaging>
 	
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
-		<artifactId>geomajas-plugin-graphicsediting-all</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<artifactId>geomajas-plugin-graphicsediting-parent</artifactId>
+		<version>2.0.0-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>geomajas-plugin-graphicsediting-gwt2-example-jar</artifactId>
-	<packaging>jar</packaging>
-	
-	<name>Geomajas Graphics Editing Showcase Example Library</name>
-	<description>Geomajas Graphics Editing Showcase Example Library</description>
-	<url>http://www.geomajas.org/</url>
+	<artifactId>geomajas-plugin-graphicsediting-gwt2-example-jar</artifactId>	
+	<name>Geomajas GWT2 client: Plugin Graphics -  Samples</name>
+	<description>Geomajas GWT2 client: Plugin Graphics - Samples</description>
 
-	<licenses>
-		<license>
-			<name>GNU Affero General Public License, Version 3</name>
-			<url>http://www.gnu.org/licenses/agpl-3.0.html</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-
-	<!-- @todo you probably want to set the developers, otherwise it inherits from the parent if any
-	<developers>
-		<developer>
-			<id>jd</id>
-			<name>John Doe</name>
-			<email>john.doe@acmee.com</email>
-			<roles>
-				<role>Module maintainer</role>
-			</roles>
-		</developer>
-	</developers>
-	-->
-	
 	<dependencies>
-	
+
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-graphicsediting-gwt2</artifactId>

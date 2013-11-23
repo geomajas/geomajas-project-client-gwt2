@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
   ~
@@ -16,46 +15,45 @@
 
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
-		<artifactId>geomajas-plugin-rasterizing-parent</artifactId>
+		<artifactId>geomajas-plugin-printing-parent</artifactId>
 		<version>2.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>geomajas-plugin-rasterizing-gwt2</artifactId>
-	<name>Geomajas GWT2 client: Plugin Rasterizing - Library</name>
-	<description>Geomajas GWT2 client: Plugin Rasterizing - Library</description>
+	<artifactId>geomajas-plugin-printing</artifactId>
+	<name>Geomajas GWT2 client: Plugin Print - Definition</name>
+	<description>Geomajas GWT2 client: Plugin Print - Definition</description>
 
 	<dependencies>
-        <dependency>
-            <groupId>org.geomajas</groupId>
-            <artifactId>geomajas-client-gwt2-impl</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-common-servlet</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-rasterizing</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-command</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-hibernate</artifactId>
+		</dependency>
 
 		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-user</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-dev</artifactId>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-geotools</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-servlet</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-wms</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -71,6 +69,48 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.thoughtworks.xstream</groupId>
+			<artifactId>xstream</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-oxm</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.lowagie</groupId>
+			<artifactId>itext</artifactId>
+		</dependency>
+		
+		<dependency>
+		    <groupId>jpedal</groupId>
+		    <artifactId>jpedal</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.media</groupId>
+			<artifactId>jai-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.media</groupId>
+			<artifactId>jai_codec</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-httpclient</groupId>
+			<artifactId>commons-httpclient</artifactId>
 		</dependency>
 
 		<dependency>
@@ -93,6 +133,16 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>hsqldb</groupId> 
+			<artifactId>hsqldb</artifactId> 
+			<scope>test</scope>
+		</dependency>
 
 	</dependencies>
 
@@ -107,42 +157,12 @@
 			</resource>
 			<resource>
 				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
 				<excludes>
 					<exclude>META-INF/geomajasContext.xml</exclude>
 				</excludes>
 			</resource>
 		</resources>
 	</build>
-
-	<profiles>
-		<!--  include sources in build -->
-		<profile>
-			<id>default</id>			
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<build>
-				<resources>
-					<resource>
-						<directory>src/main/resources</directory>
-					</resource>
-					<resource>
-						<directory>src/main/java</directory>
-						<includes>
-							<include>**/*.java</include>
-						</includes>
-					</resource>
-				</resources>
-			</build>
-		</profile>
-		<!--  no sources needed in eclipse -->
-		<profile>
-			<id>m2e</id>
-			<activation>
-				<property>
-					<name>m2e.version</name>
-				</property>
-			</activation>
-		</profile>	
-	</profiles>
+	
 </project>

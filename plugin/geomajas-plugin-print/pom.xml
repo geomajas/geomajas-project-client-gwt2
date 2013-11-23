@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
   ~
@@ -15,25 +14,18 @@
 	<packaging>pom</packaging>
 
 	<parent>
-		<groupId>org.geomajas</groupId>
-		<artifactId>geomajas-client-gwt2-parent</artifactId>
+		<groupId>org.geomajas.plugin</groupId>
+		<artifactId>geomajas-client-gwt2-plugin-parent</artifactId>
 		<version>2.0.0-SNAPSHOT</version>
 	</parent>
 
-	<groupId>org.geomajas.plugin</groupId>
-	<artifactId>geomajas-client-gwt2-plugin-parent</artifactId>
-
-	<name>Geomajas GWT2 client: Plugin - Parent</name>
-	<description>Geomajas GWT2 client: Plugin - Parent</description>
+	<artifactId>geomajas-plugin-printing-parent</artifactId>
+	<name>Geomajas GWT2 client: Plugin Print - Parent</name>
+	<description>Geomajas GWT2 client: Plugin Print - Parent</description>
 
 	<modules>
-		<module>geomajas-plugin-corewidget</module>
-		<module>geomajas-plugin-editing</module>
-		<module>geomajas-plugin-geocoder</module>
-<!-- 		<module>geomajas-plugin-graphicsediting</module>-->
-		<module>geomajas-plugin-rasterizing</module>
-		<module>geomajas-plugin-print</module>
-		<module>geomajas-plugin-wmsclient</module>
- 	</modules>
-	
+		<module>print</module>
+		<module>print-gwt2</module>
+	</modules>
+
 </project>

@@ -16,39 +16,29 @@
 
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
-		<artifactId>geomajas-plugin-geocoder-parent</artifactId>
-		<version>1.4.0-SNAPSHOT</version>
+		<artifactId>geomajas-widget-gwt2-core-parent</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>geomajas-plugin-geocoder-gwt2-example</artifactId>
+	<artifactId>geomajas-widget-gwt2-core-example</artifactId>
 	<packaging>war</packaging>
 
-	<name>Geomajas Plugin Geocoder GWT2 Client: Example Application</name>
-	<description>Geomajas Plugin Geocoder GWT2 Client: Example Application</description>
+	<name>Geomajas Plugin GWT2 Core Widget: Example showcase</name>
+	<description>Geomajas Plugin GWT2 Core Widget: Example showcase</description>
 	<url>http://www.geomajas.org/</url>
 
 	<dependencies>
+		
 		<!-- Geomajas dependencies -->
 		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-impl</artifactId>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-widget-gwt2-core-example-jar</artifactId>
 		</dependency>
-		
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-api</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-command</artifactId>
-		</dependency>
-		
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-geocoder-gwt2-example-jar</artifactId>
+			<artifactId>geomajas-widget-gwt2-core-example-jar</artifactId>
+			<classifier>sources</classifier>
 		</dependency>
-		
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-rasterizing</artifactId>
@@ -131,7 +121,7 @@
 					</dependency>
 				</dependencies>
 				<configuration>
-					<module>org.geomajas.plugin.geocoder.puregwt.example.GeocoderExample</module>
+					<module>org.geomajas.gwt2.widget.example.Example</module>
 					<runTarget>index.html</runTarget>
 					<disableCastChecking>true</disableCastChecking>
 					<disableClassMetadata>true</disableClassMetadata>
@@ -152,6 +142,28 @@
 						<phase>clean</phase>
 						<goals>
 							<goal>clean</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<!-- Application specific cleanup (from running in eclipse)-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>remove-build-files</id>
+						<phase>clean</phase>
+						<configuration>
+							<tasks>
+ 								<delete dir="src/main/gwt-unitCache" />
+								<delete dir="src/main/webapp/example" />
+  								<delete dir="src/main/webapp/WEB-INF/deploy" />
+ 							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
 						</goals>
 					</execution>
 				</executions>

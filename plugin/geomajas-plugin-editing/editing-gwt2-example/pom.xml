@@ -15,7 +15,7 @@
 
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
-		<artifactId>geomajas-plugin-editing-all</artifactId>
+		<artifactId>geomajas-plugin-editing-parent</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 

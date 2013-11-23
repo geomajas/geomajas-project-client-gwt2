@@ -11,17 +11,18 @@
   -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<packaging>jar</packaging>
+
 	<parent>
 		<groupId>org.geomajas</groupId>
-		<artifactId>geomajas-face-common-gwt-all</artifactId>
-		<version>1.5.0-SNAPSHOT</version>
+		<artifactId>geomajas-face-common-gwt-parent</artifactId>
+		<version>2.0.0-SNAPSHOT</version>
 	</parent>
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.geomajas</groupId>
+
 	<artifactId>geomajas-face-common-gwt</artifactId>
-	<packaging>jar</packaging>
-	<name>common-gwt</name>
-	<description>common-gwt</description>
+	<name>Geomajas GWT2 client: Commons - Library</name>
+	<description>Geomajas GWT2 client: Commons - Library</description>
 
 	<dependencies>
 		<dependency>
@@ -34,7 +35,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-command</artifactId> <!-- @todo this should be command-api only -->
+			<artifactId>geomajas-command</artifactId>
 		</dependency>
 
 		<!-- GWT dependencies -->
