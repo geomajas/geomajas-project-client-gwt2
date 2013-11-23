@@ -31,14 +31,14 @@
 	</scm>
 	
 	<modules>
-		<module>geomajas-face-common-gwt</module>
-		<module>gwt2-api</module>
-		<module>gwt2-impl</module>
-		<module>example-base</module>
-		<module>example-jar</module>
- 		<module>documentation</module>
-  		<module>plugin</module>
-		<module>example</module>
+		<module>geomajas-client-common-gwt-parent</module>
+		<module>geomajas-client-gwt2-api</module>
+		<module>geomajas-client-gwt2-impl</module>
+		<module>geomajas-client-gwt2-example-base</module>
+		<module>geomajas-client-gwt2-example-jar</module>
+ 		<module>geomajas-client-gwt2-documentation</module>
+  		<module>geomajas-client-gwt2-plugin-parent</module>
+		<module>geomajas-client-gwt2-example</module>
 	</modules>
 
 	<properties>
@@ -92,32 +92,32 @@
 			<!-- Corewidget plugin -->
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-widget-gwt2-core</artifactId>
+				<artifactId>geomajas-client-gwt2-plugin-corewidget</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			
+
 			<!-- Editing plugin -->
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-editing</artifactId>
+				<artifactId>geomajas-client-gwt2-plugin-editing-common</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-editing-gwt2</artifactId>
+				<artifactId>geomajas-client-gwt2-plugin-editing-impl</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			
 			<!-- Geocoder plugin -->
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-geocoder</artifactId>
+				<artifactId>geomajas-client-gwt2-plugin-geocoder</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			<dependency>
+ 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-geocoder-gwt2</artifactId>
-				<version>${project.version}</version>
+				<artifactId>geomajas-plugin-geocoder</artifactId>
+				<version>${version-geomajas-backend}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.codehaus.jackson</groupId>
@@ -151,16 +151,16 @@
 				<artifactId>geomajas-plugin-graphicsediting-gwt2</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			
+
 			<!-- Printing plugin -->
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-printing</artifactId>
+				<artifactId>geomajas-client-gwt2-plugin-print-common</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-printing-gwt2</artifactId>
+				<artifactId>geomajas-client-gwt2-plugin-print-impl</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
@@ -212,19 +212,19 @@
 			<!-- Rasterizing plugin -->
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-rasterizing-gwt2</artifactId>
+				<artifactId>geomajas-client-gwt2-plugin-rasterizing</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			
 			<!-- WMS plugin -->
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-wmsclient</artifactId>
+				<artifactId>geomajas-client-gwt2-plugin-wms</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-wmsclient-printing</artifactId>
+				<artifactId>geomajas-client-gwt2-plugin-wms-print</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
@@ -291,6 +291,13 @@
 				<version>1.5.0</version>
 			</dependency>
 
+			<!-- External GWT libraries -->
+<!-- 			<dependency>
+				<groupId>com.google.code.gwt-dnd</groupId>
+				<artifactId>gwt-dnd</artifactId>
+				<version>3.1.0</version>
+			</dependency>
+ -->
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-user</artifactId>
@@ -317,7 +324,7 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<modules>
-				<module>documentation</module>
+				<module>geomajas-client-gwt2-documentation</module>
 			</modules>
 		</profile>
 		<profile>
