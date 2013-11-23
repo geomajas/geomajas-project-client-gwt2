@@ -269,7 +269,7 @@
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-rasterizing</artifactId>
-				<version>1.2.0</version>
+				<version>${version-geomajas-backend}</version>
 			</dependency>
 
 			<!-- Other artifacts -->

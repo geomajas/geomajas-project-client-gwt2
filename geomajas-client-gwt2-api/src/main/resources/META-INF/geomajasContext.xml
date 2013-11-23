@@ -29,11 +29,11 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="backendVersion" value="${gwt-client-backend-version}"/>
 		<property name="dependencies">
 			<list>
-				<bean class="org.geomajas.global.PluginVersionInfo">
+<!-- 				<bean class="org.geomajas.global.PluginVersionInfo">
 					<property name="name" value="common-gwt" />
 					<property name="version" value="${gwt-client-common-gwt-version}"/>
 				</bean>
-			</list>
+ -->			</list>
 		</property>
 		<property name="copyrightInfo">
 			<list>
