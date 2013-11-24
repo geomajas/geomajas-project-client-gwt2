@@ -14,6 +14,7 @@ package org.geomajas.gwt2.example.client.sample.general;
 import java.util.Iterator;
 
 import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.event.MapInitializationEvent;
 import org.geomajas.gwt2.client.event.MapInitializationHandler;
 import org.geomajas.gwt2.client.map.MapPresenter;
@@ -43,11 +44,11 @@ public class AlternativeControlsPanel implements SamplePanel {
 		resizeLayoutPanel.setSize("100%", "100%");
 
 		// Create the MapPresenter and add to the layout:
-		mapPresenter = GeomajasImpl.getInstance().getMapPresenter();
+		mapPresenter = GeomajasImpl.getInstance().createMapPresenter();
 		layout.setPresenter(mapPresenter);
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("gwt-app", "mapOsm");
+		GeomajasServerExtension.initializeMap(mapPresenter, "gwt-app", "mapOsm");
 
 		// Install alternative controls on the map - when the map has been initialized:
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
@@ -65,7 +66,7 @@ public class AlternativeControlsPanel implements SamplePanel {
 		@Override
 		public void onMapInitialized(MapInitializationEvent event) {
 			// Search for the ZoomControl widget and remove it:
-			Iterator<Widget> iterator = mapPresenter.getWidgetPane().iterator(); 
+			Iterator<Widget> iterator = mapPresenter.getWidgetPane().iterator();
 			while (iterator.hasNext()) {
 				Widget widget = iterator.next();
 				if (widget instanceof ZoomControl) {

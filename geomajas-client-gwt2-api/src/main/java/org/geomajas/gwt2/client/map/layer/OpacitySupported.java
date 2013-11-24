@@ -25,7 +25,8 @@ import org.geomajas.annotation.Api;
 public interface OpacitySupported {
 
 	/**
-	 * Apply a new opacity on the entire layer.
+	 * Apply a new opacity on the entire layer. Changing the opacity on a layer does NOT fire a layer style changed
+	 * event.
 	 * 
 	 * @param opacity
 	 *            The new opacity value. Must be a value between 0 and 1, where 0 means invisible and 1 is totally

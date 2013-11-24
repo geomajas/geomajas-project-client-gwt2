@@ -55,7 +55,7 @@ public class MapLegendDropDownSample implements SamplePanel {
 		Widget layout = UI_BINDER.createAndBindUi(this);
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = GeomajasImpl.getInstance().getMapPresenter();
+		mapPresenter = GeomajasImpl.getInstance().createMapPresenter();
 		mapPresenter.setSize(480, 480);
 
 		// Add a MapLegendDropDown to the panel on the left:

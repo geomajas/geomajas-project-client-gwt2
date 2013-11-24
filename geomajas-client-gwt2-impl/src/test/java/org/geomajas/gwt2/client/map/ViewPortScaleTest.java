@@ -11,18 +11,14 @@
 
 package org.geomajas.gwt2.client.map;
 
-import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
 
 import junit.framework.Assert;
 
-import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.client.GeomajasImpl;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * TODO incorporate in ViewPort tests.
@@ -32,26 +28,17 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * 
  * @author Pieter De Graef
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml", "viewPortContext.xml",
-		"mapViewPortBeans.xml", "mapBeansNoResolutions.xml", "layerViewPortBeans.xml" })
 public class ViewPortScaleTest {
 
 	private static final double[] SCALES = new double[] { 1.0, 2.0, 4.0, 8.0 };
-
-	@Autowired
-	@Qualifier(value = "mapViewPortBeans")
-	private ClientMapInfo mapInfo;
 
 	private ViewPort viewPort;
 
 	private MapEventBus eventBus;
 
-	@PostConstruct
-	public void initialize() {
+	public ViewPortScaleTest() {
 		eventBus = new MapEventBusImpl(this, GeomajasImpl.getInstance().getEventBus());
-		viewPort = new ViewPortImpl(eventBus, new MapConfigurationImpl());
-		viewPort.initialize(mapInfo);
+		viewPort = new ViewPortImpl(eventBus, getMapConfig());
 		viewPort.setMapSize(100, 100);
 	}
 
@@ -147,5 +134,22 @@ public class ViewPortScaleTest {
 		Assert.assertEquals(SCALES[2], viewPort.getScale());
 		viewPort.applyScale(SCALES[3] - 0.001, ZoomOption.LEVEL_CLOSEST);
 		Assert.assertEquals(SCALES[3], viewPort.getScale());
+	}
+
+	private MapConfiguration getMapConfig() {
+		MapOptions options = new MapOptions();
+		options.setCrs("EPSG:4326");
+		options.setInitialBounds(new Bbox(-100, -100, 200, 200));
+		options.setMaxBounds(new Bbox(-100, -100, 200, 200));
+		List<Double> resolutions = new ArrayList<Double>();
+		resolutions.add(1.0);
+		resolutions.add(2.0);
+		resolutions.add(4.0);
+		resolutions.add(8.0);
+		options.setResolutions(resolutions);
+
+		MapConfigurationImpl config = new MapConfigurationImpl();
+		config.setMapOptions(options);
+		return config;
 	}
 }

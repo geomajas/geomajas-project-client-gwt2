@@ -19,7 +19,6 @@ import org.geomajas.gwt2.client.controller.MapController;
 import org.geomajas.gwt2.client.gfx.CanvasContainer;
 import org.geomajas.gwt2.client.gfx.TransformableWidgetContainer;
 import org.geomajas.gwt2.client.gfx.VectorContainer;
-import org.geomajas.gwt2.client.map.feature.FeatureService;
 import org.geomajas.gwt2.client.map.layer.LayersModel;
 import org.geomajas.gwt2.client.map.render.LayersModelRenderer;
 
@@ -36,13 +35,14 @@ import com.google.gwt.user.client.ui.Widget;
  */
 @Api(allMethods = true)
 public interface MapPresenter extends IsWidget {
-
-	/**
-	 * Initialize the map. This method will try to fetch the associated map configuration from the server and apply it
-	 * on return. A special {@link org.geomajas.gwt2.client.event.MapInitializationEvent} will be fired once
-	 * initialization is done.
-	 */
-	void initialize(String applicationId, String id);
+	// TODO remove this...
+//
+//	/**
+//	 * Initialize the map. This method will try to fetch the associated map configuration from the server and apply it
+//	 * on return. A special {@link org.geomajas.gwt2.client.event.MapInitializationEvent} will be fired once
+//	 * initialization is done.
+//	 */
+//	void initialize(String applicationId, String id);
 
 	/**
 	 * Get the event bus for this map. All events regarding this map, it's layers and it's features will originate from
@@ -170,13 +170,6 @@ public interface MapPresenter extends IsWidget {
 	 * @return Returns the view port.
 	 */
 	ViewPort getViewPort();
-
-	/**
-	 * Get a service for feature searching/manipulation, specific for this map.
-	 * 
-	 * @return The feature service.
-	 */
-	FeatureService getFeatureService();
 
 	/**
 	 * Apply a new {@link MapController} on the map. This controller will handle all mouse-events that are global for

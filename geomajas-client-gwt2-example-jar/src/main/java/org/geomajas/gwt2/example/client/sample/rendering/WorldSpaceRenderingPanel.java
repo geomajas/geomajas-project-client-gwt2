@@ -18,6 +18,7 @@ import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.geometry.service.WktException;
 import org.geomajas.geometry.service.WktService;
 import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.event.MapInitializationEvent;
 import org.geomajas.gwt2.client.event.MapInitializationHandler;
 import org.geomajas.gwt2.client.gfx.GfxUtil;
@@ -65,7 +66,7 @@ public class WorldSpaceRenderingPanel implements SamplePanel {
 		Widget layout = UI_BINDER.createAndBindUi(this);
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = GeomajasImpl.getInstance().getMapPresenter();
+		mapPresenter = GeomajasImpl.getInstance().createMapPresenter();
 		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 
@@ -75,7 +76,7 @@ public class WorldSpaceRenderingPanel implements SamplePanel {
 		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("gwt-app", "mapOsm");
+		GeomajasServerExtension.initializeMap(mapPresenter, "gwt-app", "mapOsm");
 		return layout;
 	}
 

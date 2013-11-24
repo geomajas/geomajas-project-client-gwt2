@@ -12,6 +12,7 @@
 package org.geomajas.gwt2.example.client.sample.general;
 
 import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
 import org.geomajas.gwt2.client.map.MapPresenter;
@@ -59,7 +60,7 @@ public class ViewPortEventPanel implements SamplePanel {
 		Widget layout = UI_BINDER.createAndBindUi(this);
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = GeomajasImpl.getInstance().getMapPresenter();
+		mapPresenter = GeomajasImpl.getInstance().createMapPresenter();
 		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addViewPortChangedHandler(new MyViewPortChangedHandler());
 
@@ -69,7 +70,7 @@ public class ViewPortEventPanel implements SamplePanel {
 		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("gwt-app", "mapOsm");
+		GeomajasServerExtension.initializeMap(mapPresenter, "gwt-app", "mapOsm");
 		return layout;
 	}
 

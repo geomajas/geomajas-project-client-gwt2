@@ -17,45 +17,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.geomajas.command.dto.GetMapConfigurationRequest;
-import org.geomajas.command.dto.GetMapConfigurationResponse;
-import org.geomajas.configuration.FeatureStyleInfo;
-import org.geomajas.configuration.client.ClientMapInfo;
-import org.geomajas.geometry.Geometry;
 import org.geomajas.geometry.Matrix;
-import org.geomajas.gwt.client.command.AbstractCommandCallback;
-import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt.client.util.Dom;
-import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.controller.MapController;
 import org.geomajas.gwt2.client.controller.MapEventParserImpl;
 import org.geomajas.gwt2.client.controller.NavigationController;
 import org.geomajas.gwt2.client.controller.TouchNavigationController;
-import org.geomajas.gwt2.client.event.FeatureDeselectedEvent;
-import org.geomajas.gwt2.client.event.FeatureSelectedEvent;
-import org.geomajas.gwt2.client.event.FeatureSelectionHandler;
-import org.geomajas.gwt2.client.event.LayerHideEvent;
-import org.geomajas.gwt2.client.event.LayerShowEvent;
-import org.geomajas.gwt2.client.event.LayerVisibilityHandler;
-import org.geomajas.gwt2.client.event.LayerVisibilityMarkedEvent;
 import org.geomajas.gwt2.client.event.MapInitializationEvent;
 import org.geomajas.gwt2.client.event.MapResizedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
 import org.geomajas.gwt2.client.gfx.CanvasContainer;
-import org.geomajas.gwt2.client.gfx.GfxUtil;
 import org.geomajas.gwt2.client.gfx.TransformableWidgetContainer;
 import org.geomajas.gwt2.client.gfx.VectorContainer;
-import org.geomajas.gwt2.client.map.feature.Feature;
-import org.geomajas.gwt2.client.map.feature.FeatureService;
-import org.geomajas.gwt2.client.map.feature.FeatureServiceImpl;
 import org.geomajas.gwt2.client.map.layer.LayersModel;
 import org.geomajas.gwt2.client.map.layer.LayersModelImpl;
 import org.geomajas.gwt2.client.map.render.LayersModelRenderer;
+import org.geomajas.gwt2.client.map.render.LayersModelRendererImpl;
 import org.geomajas.gwt2.client.map.render.RenderingInfo;
-import org.geomajas.gwt2.client.map.render.dom.LayersModelRendererImpl;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
 import org.geomajas.gwt2.client.widget.MapWidgetImpl;
 import org.geomajas.gwt2.client.widget.control.scalebar.Scalebar;
@@ -63,8 +44,6 @@ import org.geomajas.gwt2.client.widget.control.watermark.Watermark;
 import org.geomajas.gwt2.client.widget.control.zoom.ZoomControl;
 import org.geomajas.gwt2.client.widget.control.zoomtorect.ZoomToRectangleControl;
 import org.vaadin.gwtgraphics.client.Transformable;
-import org.vaadin.gwtgraphics.client.VectorObject;
-import org.vaadin.gwtgraphics.client.shape.Circle;
 
 import com.google.gwt.event.dom.client.HasAllGestureHandlers;
 import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
@@ -212,21 +191,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		 */
 		void setPixelSize(int width, int height);
 
-		/**
-		 * Schedules an animated scaling operation.
-		 * 
-		 * @param xx
-		 *            the new x-axis scale factor
-		 * @param yy
-		 *            the new y-axis scale factor
-		 * @param animationMillis
-		 *            the animation time in millis
-		 */
-		// void scheduleScale(double xx, double yy, int animationMillis);
-
 		CanvasContainer getNewWorldCanvas();
-
-		// void scheduleTransform(double xx, double yy, double dx, double dy, int animationMillis);
 	}
 
 	private final MapEventBus eventBus;
@@ -251,8 +216,6 @@ public final class MapPresenterImpl implements MapPresenter {
 
 	private MapConfiguration configuration;
 
-	private FeatureService featureService;
-
 	private boolean isMobileBrowser;
 
 	public MapPresenterImpl(final EventBus eventBus) {
@@ -263,7 +226,6 @@ public final class MapPresenterImpl implements MapPresenter {
 		this.display = new MapWidgetImpl();
 		this.viewPort = new ViewPortImpl(this.eventBus, this.configuration);
 		this.layersModel = new LayersModelImpl(this.viewPort, this.eventBus, this.configuration);
-		this.featureService = new FeatureServiceImpl(this);
 		this.mapEventParser = new MapEventParserImpl(this);
 		this.renderer = new LayersModelRendererImpl(layersModel, viewPort, this.eventBus, this.configuration);
 		this.isMobileBrowser = Dom.isMobile();
@@ -277,17 +239,11 @@ public final class MapPresenterImpl implements MapPresenter {
 		});
 
 		this.eventBus.addViewPortChangedHandler(new WorldTransformableRenderer());
-	}
 
-	// ------------------------------------------------------------------------
-	// MapPresenter implementation:
-	// ------------------------------------------------------------------------
-
-	@Override
-	public void initialize(String applicationId, String id) {
-		final FeatureSelectionRenderer selectionRenderer = new FeatureSelectionRenderer();
-		eventBus.addLayerVisibilityHandler(selectionRenderer);
-		eventBus.addFeatureSelectionHandler(selectionRenderer);
+		// TODO fix this...
+		// final FeatureSelectionRenderer selectionRenderer = new FeatureSelectionRenderer();
+		// eventBus.addLayerVisibilityHandler(selectionRenderer);
+		// eventBus.addFeatureSelectionHandler(selectionRenderer);
 
 		if (isMobileBrowser) {
 			fallbackController = new TouchNavigationController();
@@ -296,42 +252,38 @@ public final class MapPresenterImpl implements MapPresenter {
 		}
 
 		setMapController(fallbackController);
+	}
 
-		GwtCommand commandRequest = new GwtCommand(GetMapConfigurationRequest.COMMAND);
-		commandRequest.setCommandRequest(new GetMapConfigurationRequest(id, applicationId));
-		GeomajasImpl.getInstance().getCommandService()
-				.execute(commandRequest, new AbstractCommandCallback<GetMapConfigurationResponse>() {
+	// ------------------------------------------------------------------------
+	// MapPresenter implementation:
+	// ------------------------------------------------------------------------
 
-					public void execute(GetMapConfigurationResponse response) {
-						// Initialize the MapModel and ViewPort:
-						ClientMapInfo mapInfo = response.getMapInfo();
-						((MapConfigurationImpl) configuration).setServerConfiguration(mapInfo);
+	public void initialize(MapOptions mapOptions) {
+		// Initialize the LayersModel and ViewPort:
+		if (configuration instanceof MapConfigurationImpl) {
+			((MapConfigurationImpl) configuration).setMapOptions(mapOptions);
+		}
 
-						// Configure the ViewPort. This will immediately zoom to the initial bounds:
-						viewPort.setMapSize(display.getWidth(), display.getHeight());
-						viewPort.initialize(mapInfo);
-						layersModel.initialize(mapInfo);
+		// Configure the ViewPort. This will immediately zoom to the initial bounds:
+		viewPort.setMapSize(display.getWidth(), display.getHeight());
+		((ViewPortImpl) viewPort).initialize(mapOptions);
+		//layersModel.initialize(mapOptions);
 
-						// Immediately zoom to the initial bounds as configured:
-						viewPort.applyBounds(mapInfo.getInitialBounds(), ZoomOption.LEVEL_CLOSEST);
-						renderer.render(new RenderingInfo(display.getMapHtmlContainer(), viewPort.getView(), null));
+		// Immediately zoom to the initial bounds as configured:
+		viewPort.applyBounds(mapOptions.getInitialBounds(), ZoomOption.LEVEL_CLOSEST);
+		renderer.render(new RenderingInfo(display.getMapHtmlContainer(), viewPort.getView(), null));
 
-						// Initialize the FeatureSelectionRenderer:
-						selectionRenderer.initialize(mapInfo);
-
-						// Adding the default map control widgets:
-						if (getWidgetPane() != null) {
-							getWidgetPane().add(new Watermark());
-							getWidgetPane().add(new Scalebar(MapPresenterImpl.this));
-							getWidgetPane().add(new ZoomControl(MapPresenterImpl.this));
-							if (!isMobileBrowser) {
-								getWidgetPane().add(new ZoomToRectangleControl(MapPresenterImpl.this));
-							}
-						}
-						// Fire initialization event
-						eventBus.fireEvent(new MapInitializationEvent());
-					}
-				});
+		// Adding the default map control widgets:
+		if (getWidgetPane() != null) {
+			getWidgetPane().add(new Watermark());
+			getWidgetPane().add(new Scalebar(MapPresenterImpl.this));
+			getWidgetPane().add(new ZoomControl(MapPresenterImpl.this));
+			if (!isMobileBrowser) {
+				getWidgetPane().add(new ZoomToRectangleControl(MapPresenterImpl.this));
+			}
+		}
+		// Fire initialization event
+		eventBus.fireEvent(new MapInitializationEvent());
 	}
 
 	@Override
@@ -422,11 +374,6 @@ public final class MapPresenterImpl implements MapPresenter {
 	@Override
 	public ViewPort getViewPort() {
 		return viewPort;
-	}
-
-	@Override
-	public FeatureService getFeatureService() {
-		return featureService;
 	}
 
 	@Override
@@ -541,91 +488,6 @@ public final class MapPresenterImpl implements MapPresenter {
 	// ------------------------------------------------------------------------
 	// Private classes:
 	// ------------------------------------------------------------------------
-
-	/**
-	 * This feature selection handler will render the selection on the map.
-	 * 
-	 * @author Pieter De Graef
-	 */
-	private class FeatureSelectionRenderer implements FeatureSelectionHandler, LayerVisibilityHandler {
-
-		private final VectorContainer container;
-
-		private final Map<String, VectorObject> shapes;
-
-		private FeatureStyleInfo pointStyle;
-
-		private FeatureStyleInfo lineStyle;
-
-		private FeatureStyleInfo ringStyle;
-
-		public FeatureSelectionRenderer() {
-			container = addWorldContainer();
-			shapes = new HashMap<String, VectorObject>();
-		}
-
-		public void initialize(ClientMapInfo mapInfo) {
-			pointStyle = mapInfo.getPointSelectStyle();
-			lineStyle = mapInfo.getLineSelectStyle();
-			ringStyle = mapInfo.getPolygonSelectStyle();
-		}
-
-		public void onFeatureSelected(FeatureSelectedEvent event) {
-			Feature feature = event.getFeature();
-			if (feature.getLayer().isShowing()) {
-				render(feature);
-			}
-		}
-
-		public void onFeatureDeselected(FeatureDeselectedEvent event) {
-			remove(event.getFeature());
-		}
-
-		public void onShow(LayerShowEvent event) {
-		}
-
-		public void onHide(LayerHideEvent event) {
-		}
-
-		public void onVisibilityMarked(LayerVisibilityMarkedEvent event) {
-		}
-
-		private void render(Feature f) {
-			GfxUtil gfxUtil = GeomajasImpl.getInstance().getGfxUtil();
-			VectorObject shape = gfxUtil.toShape(f.getGeometry());
-			String type = f.getGeometry().getGeometryType();
-			if (Geometry.POINT.equals(type) || Geometry.MULTI_POINT.equals(type)) {
-
-				// if no radius is defined in symbol circle it will be default 5px
-				if (shape instanceof Circle && null != pointStyle.getSymbol()
-						&& null != pointStyle.getSymbol().getCircle()) {
-					((Circle) shape).setUserRadius(pointStyle.getSymbol().getCircle().getR());
-				}
-
-				gfxUtil.applyStroke(shape, pointStyle.getStrokeColor(), pointStyle.getStrokeOpacity(),
-						pointStyle.getStrokeWidth(), pointStyle.getDashArray());
-				gfxUtil.applyFill(shape, pointStyle.getFillColor(), pointStyle.getFillOpacity());
-			} else if (Geometry.LINE_STRING.equals(type) || Geometry.MULTI_LINE_STRING.equals(type)) {
-				gfxUtil.applyStroke(shape, lineStyle.getStrokeColor(), lineStyle.getStrokeOpacity(),
-						lineStyle.getStrokeWidth(), lineStyle.getDashArray());
-				gfxUtil.applyFill(shape, lineStyle.getFillColor(), lineStyle.getFillOpacity());
-			} else {
-				gfxUtil.applyStroke(shape, ringStyle.getStrokeColor(), ringStyle.getStrokeOpacity(),
-						ringStyle.getStrokeWidth(), ringStyle.getDashArray());
-				gfxUtil.applyFill(shape, ringStyle.getFillColor(), ringStyle.getFillOpacity());
-			}
-			container.add(shape);
-			shapes.put(f.getId(), shape);
-		}
-
-		private void remove(Feature feature) {
-			VectorObject shape = shapes.get(feature.getId());
-			if (shape != null) {
-				container.remove(shape);
-				shapes.remove(feature.getId());
-			}
-		}
-	}
 
 	/**
 	 * Handler that redraws all world space objects whenever the view on the map changes.

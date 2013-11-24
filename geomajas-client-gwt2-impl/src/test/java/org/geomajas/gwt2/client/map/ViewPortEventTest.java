@@ -11,11 +11,11 @@
 
 package org.geomajas.gwt2.client.map;
 
-import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
 
 import junit.framework.Assert;
 
-import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.GeomajasImpl;
@@ -23,12 +23,6 @@ import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.google.web.bindery.event.shared.Event;
 import com.google.web.bindery.event.shared.HandlerRegistration;
@@ -38,15 +32,7 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
  * 
  * @author Pieter De Graef
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml", "viewPortContext.xml",
-		"mapViewPortBeans.xml", "mapBeansNoResolutions.xml", "layerViewPortBeans.xml" })
-@DirtiesContext
 public class ViewPortEventTest {
-
-	@Autowired
-	@Qualifier(value = "mapViewPortBeans")
-	private ClientMapInfo mapInfo;
 
 	private MapEventBus eventBus;
 
@@ -54,11 +40,9 @@ public class ViewPortEventTest {
 
 	private Event<ViewPortChangedHandler> event;
 
-	@PostConstruct
-	public void initialize() {
+	public ViewPortEventTest() {
 		eventBus = new MapEventBusImpl(this, GeomajasImpl.getInstance().getEventBus());
-		viewPort = new ViewPortImpl(eventBus, new MapConfigurationImpl());
-		viewPort.initialize(mapInfo);
+		viewPort = new ViewPortImpl(eventBus, getMapConfig());
 		viewPort.setMapSize(1000, 1000);
 	}
 
@@ -81,7 +65,6 @@ public class ViewPortEventTest {
 		viewPort.applyPosition(new Coordinate(342, 342));
 		Assert.assertEquals(4.0, viewPort.getScale());
 		Assert.assertNotNull(event);
-//		Assert.assertTrue(event instanceof ViewPortTranslatedEvent);
 
 		reg.removeHandler();
 	}
@@ -96,7 +79,6 @@ public class ViewPortEventTest {
 		viewPort.applyScale(2.0);
 		Assert.assertEquals(2.0, viewPort.getScale());
 		Assert.assertNotNull(event);
-//		Assert.assertTrue(event instanceof ViewPortScaledEvent);
 
 		reg.removeHandler();
 	}
@@ -121,7 +103,6 @@ public class ViewPortEventTest {
 		viewPort.applyBounds(new Bbox(-50, -50, 100, 100));
 		Assert.assertEquals(8.0, viewPort.getScale());
 		Assert.assertNotNull(event);
-//		Assert.assertTrue(event instanceof ViewPortTranslatedEvent);
 
 		reg.removeHandler();
 	}
@@ -194,5 +175,22 @@ public class ViewPortEventTest {
 		public void onViewPortChanged(ViewPortChangedEvent event) {
 			Assert.fail("No ViewPortChangedEvent should have been fired.");
 		}
+	}
+
+	private MapConfiguration getMapConfig() {
+		MapOptions options = new MapOptions();
+		options.setCrs("EPSG:4326");
+		options.setInitialBounds(new Bbox(-100, -100, 200, 200));
+		options.setMaxBounds(new Bbox(-100, -100, 200, 200));
+		List<Double> resolutions = new ArrayList<Double>();
+		resolutions.add(1.0);
+		resolutions.add(2.0);
+		resolutions.add(4.0);
+		resolutions.add(8.0);
+		options.setResolutions(resolutions);
+
+		MapConfigurationImpl config = new MapConfigurationImpl();
+		config.setMapOptions(options);
+		return config;
 	}
 }

@@ -57,7 +57,7 @@ public class FeatureMouseOverExample implements SamplePanel {
 		rootElement = UIBINDER.createAndBindUi(this);
 
 		// Create the MapPresenter
-		mapPresenter = GeomajasImpl.getInstance().getMapPresenter();
+		mapPresenter = GeomajasImpl.getInstance().createMapPresenter();
 
 		// Define the layout:
 		ResizeLayoutPanel resizeLayoutPanel = new ResizeLayoutPanel();

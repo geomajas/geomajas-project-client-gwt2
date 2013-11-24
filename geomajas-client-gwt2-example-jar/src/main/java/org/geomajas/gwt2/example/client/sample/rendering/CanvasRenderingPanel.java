@@ -18,6 +18,7 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.event.MapInitializationEvent;
 import org.geomajas.gwt2.client.event.MapInitializationHandler;
 import org.geomajas.gwt2.client.gfx.CanvasContainer;
@@ -84,7 +85,7 @@ public class CanvasRenderingPanel implements SamplePanel {
 		Widget layout = UI_BINDER.createAndBindUi(this);
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = GeomajasImpl.getInstance().getMapPresenter();
+		mapPresenter = GeomajasImpl.getInstance().createMapPresenter();
 		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 
@@ -94,7 +95,7 @@ public class CanvasRenderingPanel implements SamplePanel {
 		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("gwt-app", "mapOsm");
+		GeomajasServerExtension.initializeMap(mapPresenter, "gwt-app", "mapOsm");
 		label.setVisible(false);
 		for (int option : options) {
 			countBox.addItem(option + "");

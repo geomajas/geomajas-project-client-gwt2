@@ -14,9 +14,6 @@ package org.geomajas.gwt2.client.map;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.configuration.client.ClientLayerInfo;
-import org.geomajas.configuration.client.ClientMapInfo;
-import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.service.BboxService;
@@ -42,8 +39,6 @@ public final class ViewPortImpl implements ViewPort {
 	private final MapConfiguration configuration;
 
 	private final ViewPortTransformationService transformationService;
-
-	private ClientMapInfo mapInfo;
 
 	/** The map's width in pixels. */
 	private int mapWidth;
@@ -85,43 +80,31 @@ public final class ViewPortImpl implements ViewPort {
 				currentAnimation = null;
 			}
 		});
+		if (configuration.getMapOptions() != null) {
+			initialize(configuration.getMapOptions());
+		}
 	}
 
 	// -------------------------------------------------------------------------
 	// Configuration stuff:
 	// -------------------------------------------------------------------------
 
-	@Override
-	public void initialize(ClientMapInfo mapInfo) {
-		this.mapInfo = mapInfo;
-		crs = mapInfo.getCrs();
+	protected void initialize(MapOptions mapOptions) {
+		crs = mapOptions.getCrs();
 
 		// Calculate maximum bounds:
-		maxBounds = new Bbox(mapInfo.getMaxBounds().getX(), mapInfo.getMaxBounds().getY(), mapInfo.getMaxBounds()
-				.getWidth(), mapInfo.getMaxBounds().getHeight());
+		maxBounds = new Bbox(mapOptions.getMaxBounds().getX(), mapOptions.getMaxBounds().getY(), mapOptions
+				.getMaxBounds().getWidth(), mapOptions.getMaxBounds().getHeight());
 
-		// if the max bounds was not configured, take the union of initial and layer bounds
-		if (BboxService.equals(maxBounds, Bbox.ALL, 1e-10)) {
-			maxBounds = new Bbox(mapInfo.getInitialBounds().getX(), mapInfo.getInitialBounds().getY(), mapInfo
-					.getInitialBounds().getWidth(), mapInfo.getInitialBounds().getHeight());
-			if (mapInfo.getLayers() != null && mapInfo.getLayers().size() > 0) {
-				for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
-					if (layerInfo.getMaxExtent() != null) {
-						maxBounds = BboxService.union(maxBounds, layerInfo.getMaxExtent());
-					}
-				}
+		if (mapOptions.getResolutions() != null && mapOptions.getResolutions().size() > 0) {
+			for (Double resolution : mapOptions.getResolutions()) {
+				fixedScales.add(resolution);
 			}
-		}
-
-		if (mapInfo.getScaleConfiguration().getZoomLevels().size() > 0) {
-			for (ScaleInfo scale : mapInfo.getScaleConfiguration().getZoomLevels()) {
-				fixedScales.add(scale.getPixelPerUnit());
-			}
-		} else if (mapInfo.getScaleConfiguration().getMaximumScale() != null) {
+		} else if (mapOptions.getMaximumScale() != 0) {
 			// If there are no fixed scale levels, we'll calculate them:
 			double tempScale = getMaxBoundsScale();
 			fixedScales.add(tempScale);
-			while (tempScale < mapInfo.getScaleConfiguration().getMaximumScale().getPixelPerUnit()) {
+			while (tempScale < mapOptions.getMaximumScale()) {
 				tempScale *= 2;
 				fixedScales.add(tempScale);
 			}
@@ -140,11 +123,17 @@ public final class ViewPortImpl implements ViewPort {
 
 	@Override
 	public double getMinimumScale() {
+		if (fixedScales.size() == 0) {
+			return 0;
+		}
 		return fixedScales.get(0);
 	}
 
 	@Override
 	public double getMaximumScale() {
+		if (fixedScales.size() == 0) {
+			return Double.MAX_VALUE;
+		}
 		return fixedScales.get(fixedScales.size() - 1);
 	}
 
@@ -335,7 +324,8 @@ public final class ViewPortImpl implements ViewPort {
 
 	@Override
 	public double toScale(double scaleDenominator) {
-		return mapInfo.getUnitLength() / (mapInfo.getPixelLength() * scaleDenominator);
+		//return mapInfo.getUnitLength() / (mapInfo.getPixelLength() * scaleDenominator);
+		return 1 / (configuration.getMapOptions().getPixelsPerUnit() * scaleDenominator);
 	}
 
 	@Override

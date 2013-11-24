@@ -11,10 +11,10 @@
 
 package org.geomajas.gwt2.client;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.client.gfx.GfxUtil;
+import org.geomajas.gwt2.client.map.MapOptions;
 import org.geomajas.gwt2.client.map.MapPresenter;
-import org.geomajas.gwt2.client.service.CommandService;
-import org.geomajas.gwt2.client.service.EndPointService;
 
 import com.google.web.bindery.event.shared.EventBus;
 
@@ -22,16 +22,29 @@ import com.google.web.bindery.event.shared.EventBus;
  * Geomajas starting point. This class allows you to request singleton services or create new instances.
  * 
  * @author Pieter De Graef
+ * @since 2.0.0
  */
+@Api(allMethods = true)
 public interface Geomajas {
 
 	/**
 	 * Create a new empty map. This map still needs to be initialized (it needs to fetch a configuration from the
-	 * server, only then is it initialized, and are any layers available).
+	 * server, only then is it initialized, and are any layers available). Use this method if you want to fetch a
+	 * configuration from the server, using the Geomajas server extensions. Otherwise it's better to use the
+	 * {@link #createMapPresenter(MapOptions)} method.
 	 * 
 	 * @return An empty map.
 	 */
-	MapPresenter getMapPresenter();
+	MapPresenter createMapPresenter();
+
+	/**
+	 * Create a new empty map and immediately provide the necessary initialization configuration.
+	 * 
+	 * @param mapOptions
+	 *            The map configuration.
+	 * @return An initialized map. Time to add some layers!
+	 */
+	MapPresenter createMapPresenter(MapOptions mapOptions);
 
 	/**
 	 * Get the {@link GfxUtil} singleton. Utility service that helps out when rendering custom shapes on the map.
@@ -39,22 +52,6 @@ public interface Geomajas {
 	 * @return The {@link GfxUtil} singleton.
 	 */
 	GfxUtil getGfxUtil();
-
-	/**
-	 * Get the {@link EndPointService} singleton. Has pointers to the Geomajas services on the back-end, and allows
-	 * those end-points to be altered in case your server is somewhere else (for example behind a proxy).
-	 * 
-	 * @return The {@link EndPointService} singleton.
-	 */
-	EndPointService getEndPointService();
-
-	/**
-	 * Get the {@link CommandService} singleton. This service allows for executing commands on the back-end. It is the
-	 * base for all Geomajas client-server communication.
-	 * 
-	 * @return The {@link EndPointService} singleton.
-	 */
-	CommandService getCommandService();
 
 	/**
 	 * Get a general EventBus singleton. This EventBus should should be used outside of the map, to catch application

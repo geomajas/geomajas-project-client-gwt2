@@ -14,7 +14,6 @@ package org.geomajas.gwt2.client.map;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.gwt2.client.map.layer.Layer;
 
 /**
@@ -34,7 +33,7 @@ public class MapConfigurationImpl implements MapConfiguration {
 
 	private Map<MapHint<?>, Object> hintValues;
 
-	private ClientMapInfo mapInfo;
+	private MapOptions mapOptions;
 
 	// ------------------------------------------------------------------------
 	// Constructor:
@@ -73,18 +72,18 @@ public class MapConfigurationImpl implements MapConfiguration {
 	// ------------------------------------------------------------------------
 
 	@Override
-	public ClientMapInfo getServerConfiguration() {
-		return mapInfo;
+	public MapOptions getMapOptions() {
+		return mapOptions;
 	}
 
 	/**
-	 * Protected method used by the MapPresenterImpl to set the server configuration (when it arrives from the server).
+	 * Protected method used by the MapPresenterImpl to set the options object.
 	 * 
-	 * @param mapInfo
-	 *            The server configuration object.
+	 * @param mapOptions
+	 *            The map options configuration object.
 	 */
-	protected void setServerConfiguration(ClientMapInfo mapInfo) {
-		this.mapInfo = mapInfo;
+	protected void setMapOptions(MapOptions mapOptions) {
+		this.mapOptions = mapOptions;
 	}
 
 	@Override

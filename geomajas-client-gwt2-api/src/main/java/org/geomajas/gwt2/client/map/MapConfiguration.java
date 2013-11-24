@@ -12,7 +12,6 @@
 package org.geomajas.gwt2.client.map;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.gwt2.client.map.layer.Layer;
 
 /**
@@ -80,19 +79,26 @@ public interface MapConfiguration {
 	// ------------------------------------------------------------------------
 	// Getters and setters:
 	// ------------------------------------------------------------------------
+	//
+	// /**
+	// * <p>
+	// * Get the server-side configuration object associated with this map. This configuration only becomes available
+	// * after the map has been successfully initialized, as this object first needs to be fetched from the server.
+	// * </p>
+	// * <p>
+	// * Never change the values within this object!
+	// * </p>
+	// *
+	// * @return The server-side configuration object associated with this map.
+	// */
+	// ClientMapInfo getServerConfiguration();
 
 	/**
-	 * <p>
-	 * Get the server-side configuration object associated with this map. This configuration only becomes available
-	 * after the map has been successfully initialized, as this object first needs to be fetched from the server.
-	 * </p>
-	 * <p>
-	 * Never change the values within this object!
-	 * </p>
+	 * Get the general options that where used to configure this map.
 	 * 
-	 * @return The server-side configuration object associated with this map.
+	 * @return The general map options.
 	 */
-	ClientMapInfo getServerConfiguration();
+	MapOptions getMapOptions();
 
 	/**
 	 * Turn animation for a certain layer on or off.

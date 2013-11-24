@@ -8,6 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.gwt2.client.gfx;
 
 import org.vaadin.gwtgraphics.client.Transformable;
@@ -18,8 +19,6 @@ import com.google.gwt.user.client.ui.IsWidget;
  * A widget that supports transformation.
  * 
  * @author Jan De Moerloose
- * 
  */
 public interface TransformableWidget extends IsWidget, Transformable {
-
 }

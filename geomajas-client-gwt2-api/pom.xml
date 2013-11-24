@@ -25,13 +25,13 @@
 
 	<dependencies>
 		<!-- Overwrite the xerces version that comes with JTS to make sure it is compatible with GWT UiBinder. -->
-		<dependency>
+<!-- 		<dependency>
 			<groupId>xerces</groupId>
 			<artifactId>xercesImpl</artifactId>
 		</dependency>
-
+ -->
 		<!-- Geomajas dependencies -->
-		<dependency>
+<!-- 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-api</artifactId>
 		</dependency>
@@ -43,13 +43,9 @@
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-common-servlet</artifactId>
 		</dependency>
-		<dependency>
+ -->		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-client-common-gwt</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-client-common-gwt-command</artifactId>
 		</dependency>
 
 		<!-- GWT dependencies -->

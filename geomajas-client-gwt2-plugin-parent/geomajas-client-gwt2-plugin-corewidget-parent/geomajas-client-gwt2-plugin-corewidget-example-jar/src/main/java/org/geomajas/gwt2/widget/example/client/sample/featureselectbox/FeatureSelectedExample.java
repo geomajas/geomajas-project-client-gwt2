@@ -67,7 +67,7 @@ public class FeatureSelectedExample implements SamplePanel {
 		rootElement = UIBINDER.createAndBindUi(this);
 
 		// Create the MapPresenter
-		mapPresenter = GeomajasImpl.getInstance().getMapPresenter();
+		mapPresenter = GeomajasImpl.getInstance().createMapPresenter();
 
 		// add FeatureClickedHandler where we handle FeatureClickedEvent
 		mapPresenter.getEventBus().addHandler(FeatureClickedHandler.TYPE, new MyFeatureClickedHandler());

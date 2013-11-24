@@ -79,7 +79,7 @@ public class LegendOrderSample implements SamplePanel {
 		layerDragController.addDragHandler(new LayerDragHandler());
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = GeomajasImpl.getInstance().getMapPresenter();
+		mapPresenter = GeomajasImpl.getInstance().createMapPresenter();
 		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 

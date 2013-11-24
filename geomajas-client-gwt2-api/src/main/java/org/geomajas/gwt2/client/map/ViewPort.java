@@ -12,7 +12,6 @@
 package org.geomajas.gwt2.client.map;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.animation.NavigationAnimation;
@@ -36,22 +35,6 @@ import org.geomajas.gwt2.client.animation.NavigationAnimation;
  */
 @Api(allMethods = true)
 public interface ViewPort {
-
-	// -------------------------------------------------------------------------
-	// Configuration stuff:
-	// -------------------------------------------------------------------------
-
-	/**
-	 * Initialization method. Only when this method has been executed can the <code>ViewPort</code> be expected to
-	 * function properly. This initialization should therefore be a part of the whole {@link MapPresenter}
-	 * initialization procedure.
-	 * 
-	 * @param mapInfo
-	 *            The map information meta-data from which to initialize the <code>ViewPort</code>.
-	 * @deprecated Needs to be removed.
-	 */
-	@Deprecated
-	void initialize(ClientMapInfo mapInfo);
 
 	/**
 	 * Get the maximum zooming extent that is allowed on this view port. These bounds are determined by the map

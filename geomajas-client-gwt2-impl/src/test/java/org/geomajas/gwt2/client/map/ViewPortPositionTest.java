@@ -11,51 +11,31 @@
 
 package org.geomajas.gwt2.client.map;
 
-import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
 
 import junit.framework.Assert;
 
-import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.GeomajasImpl;
-import org.geomajas.testdata.ReloadContext;
-import org.geomajas.testdata.ReloadContextTestExecutionListener;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 /**
  * Unit test that checks if the ViewPortImpl positions correctly.
  * 
  * @author Pieter De Graef
  */
-@TestExecutionListeners(listeners = { ReloadContextTestExecutionListener.class,
-		DependencyInjectionTestExecutionListener.class })
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml", "viewPortContext.xml",
-		"mapViewPortBeans.xml", "mapBeansNoResolutions.xml", "layerViewPortBeans.xml" })
-@ReloadContext
 public class ViewPortPositionTest {
-
-	@Autowired
-	@Qualifier(value = "mapViewPortBeans")
-	private ClientMapInfo mapInfo;
 
 	private MapEventBus eventBus;
 
 	private ViewPort viewPort;
 
-	@PostConstruct
-	public void initialize() {
+	public ViewPortPositionTest() {
 		eventBus = new MapEventBusImpl(this, GeomajasImpl.getInstance().getEventBus());
-		viewPort = new ViewPortImpl(eventBus, new MapConfigurationImpl());
-		viewPort.initialize(mapInfo);
+		viewPort = new ViewPortImpl(eventBus, getMapConfig());
 		viewPort.setMapSize(200, 200);
 	}
 
@@ -90,5 +70,22 @@ public class ViewPortPositionTest {
 		viewPort.applyPosition(new Coordinate(1000, 1000));
 		Assert.assertEquals(50.0, viewPort.getPosition().getX());
 		Assert.assertEquals(50.0, viewPort.getPosition().getY());
+	}
+
+	private MapConfiguration getMapConfig() {
+		MapOptions options = new MapOptions();
+		options.setCrs("EPSG:4326");
+		options.setInitialBounds(new Bbox(-100, -100, 200, 200));
+		options.setMaxBounds(new Bbox(-100, -100, 200, 200));
+		List<Double> resolutions = new ArrayList<Double>();
+		resolutions.add(1.0);
+		resolutions.add(2.0);
+		resolutions.add(4.0);
+		resolutions.add(8.0);
+		options.setResolutions(resolutions);
+
+		MapConfigurationImpl config = new MapConfigurationImpl();
+		config.setMapOptions(options);
+		return config;
 	}
 }

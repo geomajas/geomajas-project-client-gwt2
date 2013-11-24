@@ -15,7 +15,7 @@ import org.geomajas.command.CommandResponse;
 import org.geomajas.command.EmptyCommandRequest;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
-import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 
 import com.google.gwt.core.client.GWT;
@@ -60,8 +60,7 @@ public class ServerExceptionPanel implements SamplePanel {
 		GwtCommand command = new GwtCommand();
 		command.setCommandName("command.GetSimpleExceptionCommand");
 		command.setCommandRequest(request);
-		GeomajasImpl.getInstance().getCommandService().execute(command, 
-				new AbstractCommandCallback<CommandResponse>() {
+		GeomajasServerExtension.getCommandService().execute(command, new AbstractCommandCallback<CommandResponse>() {
 
 			@Override
 			public void execute(CommandResponse response) {

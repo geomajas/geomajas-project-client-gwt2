@@ -12,6 +12,7 @@
 package org.geomajas.gwt2.example.client.sample.layer;
 
 import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.event.LayerHideEvent;
 import org.geomajas.gwt2.client.event.LayerShowEvent;
 import org.geomajas.gwt2.client.event.LayerVisibilityHandler;
@@ -67,7 +68,7 @@ public class LayerVisibilityPanel implements SamplePanel {
 		Widget layout = UI_BINDER.createAndBindUi(this);
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = GeomajasImpl.getInstance().getMapPresenter();
+		mapPresenter = GeomajasImpl.getInstance().createMapPresenter();
 		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 		mapPresenter.getEventBus().addLayerVisibilityHandler(new MyLayerVisibilityHandler());
@@ -78,7 +79,7 @@ public class LayerVisibilityPanel implements SamplePanel {
 		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("gwt-app", "mapLayerVisibility");
+		GeomajasServerExtension.initializeMap(mapPresenter, "gwt-app", "mapLayerVisibility");
 		return layout;
 	}
 

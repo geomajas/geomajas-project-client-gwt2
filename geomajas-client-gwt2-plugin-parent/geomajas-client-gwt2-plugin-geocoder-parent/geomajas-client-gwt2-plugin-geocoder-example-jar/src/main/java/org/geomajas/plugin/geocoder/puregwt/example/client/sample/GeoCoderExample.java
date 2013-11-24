@@ -60,7 +60,7 @@ public class GeoCoderExample implements SamplePanel {
 		rootElement = UIBINDER.createAndBindUi(this);
 
 		// Create the MapPresenter
-		mapPresenter = GeomajasImpl.getInstance().getMapPresenter();
+		mapPresenter = GeomajasImpl.getInstance().createMapPresenter();
 
 		// Initialize the map
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());

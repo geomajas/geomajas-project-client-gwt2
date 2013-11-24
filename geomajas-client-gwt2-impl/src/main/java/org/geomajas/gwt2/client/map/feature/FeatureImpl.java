@@ -11,13 +11,10 @@
 
 package org.geomajas.gwt2.client.map.feature;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
-import org.geomajas.layer.feature.Attribute;
 
 /**
  * Default implementation of the Feature interface. Represents the individual objects of vector layers.
@@ -36,26 +33,17 @@ public class FeatureImpl implements Feature {
 
 	private final String label;
 
-	private final boolean updatable;
-
-	private final boolean deletable;
-
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	@SuppressWarnings("rawtypes")
-	FeatureImpl(org.geomajas.layer.feature.Feature feature, FeaturesSupported layer) {
+	FeatureImpl(FeaturesSupported layer, String id, Map<String, Attribute<?>> attributes, Geometry geometry,
+			String label) {
 		this.layer = layer;
-		id = feature.getId();
-		attributes = new HashMap<String, Attribute<?>>();
-		for (Entry<String, Attribute> entry : feature.getAttributes().entrySet()) {
-			attributes.put(entry.getKey(), entry.getValue());
-		}
-		label = feature.getLabel();
-		updatable = feature.isUpdatable();
-		deletable = feature.isDeletable();
-		geometry = feature.getGeometry();
+		this.id = id;
+		this.attributes = attributes;
+		this.geometry = geometry;
+		this.label = label;
 	}
 
 	// ------------------------------------------------------------------------
@@ -99,15 +87,5 @@ public class FeatureImpl implements Feature {
 	@Override
 	public FeaturesSupported getLayer() {
 		return layer;
-	}
-
-	@Override
-	public boolean isUpdatable() {
-		return updatable;
-	}
-
-	@Override
-	public boolean isDeletable() {
-		return deletable;
 	}
 }

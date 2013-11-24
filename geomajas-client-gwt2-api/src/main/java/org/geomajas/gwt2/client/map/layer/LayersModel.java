@@ -12,7 +12,6 @@
 package org.geomajas.gwt2.client.map.layer;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.configuration.client.ClientMapInfo;
 
 /**
  * <p>
@@ -27,16 +26,6 @@ import org.geomajas.configuration.client.ClientMapInfo;
  */
 @Api(allMethods = true)
 public interface LayersModel {
-
-	/**
-	 * Initialization method for the layers model.
-	 * 
-	 * @param mapInfo
-	 *            The configuration object from which this model should build itself.
-	 * @deprecated Needs to be removed.
-	 */
-	@Deprecated
-	void initialize(ClientMapInfo mapInfo);
 
 	/**
 	 * Add a new layer to the layers model. The new layer will be added at the back of the list (where the back of the

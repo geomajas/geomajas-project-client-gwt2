@@ -69,7 +69,7 @@ public class LegendAddRemoveSample implements SamplePanel {
 		Widget layout = UI_BINDER.createAndBindUi(this);
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = GeomajasImpl.getInstance().getMapPresenter();
+		mapPresenter = GeomajasImpl.getInstance().createMapPresenter();
 		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addMapCompositionHandler(new MyMapCompositionHandler());
 		legendPanel.add(new MapLegendPanel(mapPresenter));

@@ -12,11 +12,12 @@
 package org.geomajas.gwt2.example.client.sample.layer;
 
 import org.geomajas.gwt2.client.GeomajasImpl;
-import org.geomajas.gwt2.client.event.MapInitializationEvent;
-import org.geomajas.gwt2.client.event.MapInitializationHandler;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
+import org.geomajas.gwt2.client.event.LayerAddedEvent;
+import org.geomajas.gwt2.client.event.LayerRemovedEvent;
+import org.geomajas.gwt2.client.event.MapCompositionHandler;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.layer.Layer;
-import org.geomajas.gwt2.example.base.client.ExampleBase;
 import org.geomajas.gwt2.example.base.client.resource.ShowcaseResource;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 
@@ -80,9 +81,9 @@ public class LayerOrderPanel implements SamplePanel {
 		layerDragController.addDragHandler(new LayerDragHandler());
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = GeomajasImpl.getInstance().getMapPresenter();
+		mapPresenter = GeomajasImpl.getInstance().createMapPresenter();
 		mapPresenter.setSize(480, 480);
-		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
+		mapPresenter.getEventBus().addMapCompositionHandler(new MyLayerAddHandler());
 
 		// Define the whole layout:
 		DecoratorPanel mapDecorator = new DecoratorPanel();
@@ -90,7 +91,7 @@ public class LayerOrderPanel implements SamplePanel {
 		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("gwt-app", "mapLegend");
+		GeomajasServerExtension.initializeMap(mapPresenter, "gwt-app", "mapLegend");
 		return layout;
 	}
 
@@ -126,21 +127,21 @@ public class LayerOrderPanel implements SamplePanel {
 	}
 
 	/**
-	 * When the map initializes: add draggable layer labels to the layer panel.
+	 * Add a draggable label to the layer panel.
 	 * 
 	 * @author Pieter De Graef
 	 */
-	private class MyMapInitializationHandler implements MapInitializationHandler {
+	private class MyLayerAddHandler implements MapCompositionHandler {
 
-		public void onMapInitialized(MapInitializationEvent event) {
-			mapPresenter.getViewPort().applyBounds(ExampleBase.BBOX_LATLON_USA);
+		@Override
+		public void onLayerAdded(LayerAddedEvent event) {
+			LayerWidget widget = new LayerWidget(event.getLayer());
+			layerDragController.makeDraggable(widget);
+			layerPanel.add(widget);
+		}
 
-			// Go over the layer top-down (i.e. reverse order):
-			for (int i = mapPresenter.getLayersModel().getLayerCount() - 1; i >= 0; i--) {
-				LayerWidget widget = new LayerWidget(mapPresenter.getLayersModel().getLayer(i));
-				layerDragController.makeDraggable(widget);
-				layerPanel.add(widget);
-			}
+		@Override
+		public void onLayerRemoved(LayerRemovedEvent event) {
 		}
 	}
 

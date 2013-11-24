@@ -14,12 +14,9 @@ package org.geomajas.gwt2.client;
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.client.gfx.GfxUtil;
 import org.geomajas.gwt2.client.gfx.GfxUtilImpl;
+import org.geomajas.gwt2.client.map.MapOptions;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.MapPresenterImpl;
-import org.geomajas.gwt2.client.service.CommandService;
-import org.geomajas.gwt2.client.service.CommandServiceImpl;
-import org.geomajas.gwt2.client.service.EndPointService;
-import org.geomajas.gwt2.client.service.EndPointServiceImpl;
 
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
@@ -53,23 +50,20 @@ public final class GeomajasImpl implements Geomajas {
 	}
 
 	@Override
-	public MapPresenter getMapPresenter() {
+	public MapPresenter createMapPresenter() {
 		return new MapPresenterImpl(getEventBus());
+	}
+
+	@Override
+	public MapPresenter createMapPresenter(MapOptions mapOptions) {
+		MapPresenterImpl mapPresenter = new MapPresenterImpl(getEventBus());
+		mapPresenter.initialize(mapOptions);
+		return mapPresenter;
 	}
 
 	@Override
 	public GfxUtil getGfxUtil() {
 		return GfxUtilImpl.getInstance();
-	}
-
-	@Override
-	public EndPointService getEndPointService() {
-		return EndPointServiceImpl.getInstance();
-	}
-
-	@Override
-	public CommandService getCommandService() {
-		return CommandServiceImpl.getInstance();
 	}
 
 	@Override

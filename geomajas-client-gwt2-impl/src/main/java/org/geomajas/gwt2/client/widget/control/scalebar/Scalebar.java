@@ -12,7 +12,6 @@
 package org.geomajas.gwt2.client.widget.control.scalebar;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.configuration.client.UnitType;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
 import org.geomajas.gwt2.client.map.MapPresenter;
@@ -35,6 +34,33 @@ import com.google.gwt.user.client.ui.Widget;
  */
 @Api(allMethods = true)
 public class Scalebar extends AbstractMapWidget {
+
+	/**
+	 * Unit type to use on the scale bar.
+	 * 
+	 * @author Pieter De Graef
+	 */
+	public enum UnitType {
+		/**
+		 * Metric Units. Meters(m) -- Kilometers(km)
+		 */
+		METRIC,
+
+		/**
+		 * English Units. Yards(yd) -- Miles(mi)
+		 */
+		ENGLISH,
+
+		/**
+		 * English Units. Feet(ft) -- Miles(mi)
+		 */
+		ENGLISH_FOOT,
+
+		/**
+		 * Coordinate Reference System Units. Units(u)
+		 */
+		CRS
+	}
 
 	/**
 	 * UI binder definition for the {@link Scalebar} widget.
@@ -60,7 +86,7 @@ public class Scalebar extends AbstractMapWidget {
 	// position in lengths array up to where to test for yards (larger values is for miles)
 	private static final int YARD_STARTING_POINT = 11;
 
-	private UnitType unitType;
+	private UnitType unitType = UnitType.METRIC;
 
 	private double unitLength;
 
@@ -101,8 +127,7 @@ public class Scalebar extends AbstractMapWidget {
 	public Scalebar(MapPresenter mapPresenter, ScalebarResource resource) {
 		super(mapPresenter);
 		resource.css().ensureInjected();
-		this.unitType = mapPresenter.getConfiguration().getServerConfiguration().getDisplayUnitType();
-		this.unitLength = mapPresenter.getConfiguration().getServerConfiguration().getUnitLength();
+		this.unitLength = mapPresenter.getConfiguration().getMapOptions().getUnitLength();
 
 		mapPresenter.getEventBus().addViewPortChangedHandler(new ViewPortChangedHandler() {
 
@@ -113,6 +138,29 @@ public class Scalebar extends AbstractMapWidget {
 
 		initWidget(UI_BINDER.createAndBindUi(this));
 		redrawScale();
+	}
+
+	// ------------------------------------------------------------------------
+	// Public methods:
+	// ------------------------------------------------------------------------
+
+	/**
+	 * Get the unit type used in this widget.
+	 * 
+	 * @return The unit type in which scales are displayed.
+	 */
+	public UnitType getUnitType() {
+		return unitType;
+	}
+
+	/**
+	 * Set the unit type in which scales are displayed.
+	 * 
+	 * @param unitType
+	 *            The new unit type.
+	 */
+	public void setUnitType(UnitType unitType) {
+		this.unitType = unitType;
 	}
 
 	// ------------------------------------------------------------------------

@@ -14,10 +14,6 @@ package org.geomajas.gwt2.client.map.layer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.configuration.client.ClientLayerInfo;
-import org.geomajas.configuration.client.ClientMapInfo;
-import org.geomajas.configuration.client.ClientRasterLayerInfo;
-import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.gwt2.client.event.LayerAddedEvent;
 import org.geomajas.gwt2.client.event.LayerDeselectedEvent;
 import org.geomajas.gwt2.client.event.LayerOrderChangedEvent;
@@ -47,8 +43,6 @@ public class LayersModelImpl implements LayersModel {
 	 */
 	private final List<Layer> layers;
 
-	private ClientMapInfo mapInfo;
-
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
@@ -69,16 +63,6 @@ public class LayersModelImpl implements LayersModel {
 		this.configuration = configuration;
 		this.layers = new ArrayList<Layer>();
 
-	}
-
-	// ------------------------------------------------------------------------
-	// MapModel implementation:
-	// ------------------------------------------------------------------------
-
-	@Override
-	public void initialize(ClientMapInfo mapInfo) {
-		this.mapInfo = mapInfo;
-
 		// Add a layer selection handler that allows only one selected layer at a time:
 		eventBus.addLayerSelectionHandler(new LayerSelectionHandler() {
 
@@ -93,14 +77,11 @@ public class LayersModelImpl implements LayersModel {
 			public void onDeselectLayer(LayerDeselectedEvent event) {
 			}
 		});
-
-		// Create all the layers:
-		layers.clear();
-		for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
-			Layer layer = createLayer(layerInfo);
-			addLayer(layer);
-		}
 	}
+
+	// ------------------------------------------------------------------------
+	// MapModel implementation:
+	// ------------------------------------------------------------------------
 
 	@Override
 	public boolean addLayer(Layer layer) {
@@ -127,10 +108,6 @@ public class LayersModelImpl implements LayersModel {
 		if (layer != null) {
 			int index = getLayerPosition(layer);
 			layers.remove(layer);
-			if (layer instanceof ServerLayer) {
-				ServerLayer<?> serverLayer = (ServerLayer<?>) layer;
-				mapInfo.getLayers().remove(serverLayer.getLayerInfo());
-			}
 			eventBus.fireEvent(new LayerRemovedEvent(layer, index));
 			return true;
 		}
@@ -168,29 +145,6 @@ public class LayersModelImpl implements LayersModel {
 			return false;
 		}
 
-		ClientLayerInfo layerInfo = null;
-		int newIndexMapInfo = -1;
-		// Check if both the layer with whom the specified layer will swap (concerning the ordering) and
-		// the specified layer are server layers. If so their position in the mapInfo.getLayers() must also be swapped
-		if (layer instanceof ServerLayer && layers.get(index) instanceof ServerLayer) {
-			ServerLayer<?> serverLayer = (ServerLayer<?>) layer;
-			layerInfo = serverLayer.getLayerInfo();
-
-			int idx = 0;
-			for (ClientLayerInfo layerInMapInfo : mapInfo.getLayers()) {
-				if (layerInMapInfo.getId().equals(layerInfo.getId())) {
-
-					if (index > currentIndex) {
-						newIndexMapInfo = idx + 1;
-					} else {
-						newIndexMapInfo = idx - 1;
-					}
-					break; // Stop when found
-				}
-				idx++;
-			}
-		}
-
 		// Index might have been altered; check again if it is really a change:
 		if (currentIndex == index) {
 			return false;
@@ -200,11 +154,6 @@ public class LayersModelImpl implements LayersModel {
 		layers.remove(layer);
 		// Change the order:
 		layers.add(index, layer);
-
-		if (layerInfo != null && newIndexMapInfo >= 0) {
-			mapInfo.getLayers().remove(layerInfo); // remove from mapInfo.layers
-			mapInfo.getLayers().add(newIndexMapInfo, layerInfo); // put back (changed order)
-		}
 
 		// Send out the correct event:
 		eventBus.fireEvent(new LayerOrderChangedEvent(currentIndex, index));
@@ -249,25 +198,5 @@ public class LayersModelImpl implements LayersModel {
 			}
 		}
 		return null;
-	}
-
-	// ------------------------------------------------------------------------
-	// Private methods:
-	// ------------------------------------------------------------------------
-
-	private Layer createLayer(ClientLayerInfo layerInfo) {
-		ServerLayer<?> layer = null;
-		switch (layerInfo.getLayerType()) {
-			case RASTER:
-				layer = new RasterServerLayerImpl((ClientRasterLayerInfo) layerInfo, viewPort, eventBus);
-				break;
-			default:
-				layer = new VectorServerLayerImpl((ClientVectorLayerInfo) layerInfo, viewPort, eventBus);
-				break;
-		}
-		if (!mapInfo.getLayers().contains(layer.getLayerInfo())) {
-			mapInfo.getLayers().add(layer.getLayerInfo());
-		}
-		return layer;
 	}
 }

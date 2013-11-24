@@ -12,6 +12,7 @@
 package org.geomajas.gwt2.example.client.sample.general;
 
 import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.event.MapInitializationEvent;
 import org.geomajas.gwt2.client.event.MapInitializationHandler;
 import org.geomajas.gwt2.client.map.MapPresenter;
@@ -53,7 +54,7 @@ public class ResizeMapPanel implements SamplePanel {
 		Widget layout = UI_BINDER.createAndBindUi(this);
 
 		// Create the mapPresenter and add an InitializationHandler:
-		mapPresenter = GeomajasImpl.getInstance().getMapPresenter();
+		mapPresenter = GeomajasImpl.getInstance().createMapPresenter();
 		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 
@@ -63,7 +64,7 @@ public class ResizeMapPanel implements SamplePanel {
 		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("gwt-app", "mapOsm");
+		GeomajasServerExtension.initializeMap(mapPresenter, "gwt-app", "mapOsm");
 		return layout;
 	}
 

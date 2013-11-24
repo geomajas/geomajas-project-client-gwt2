@@ -12,6 +12,7 @@
 package org.geomajas.gwt2.example.client.sample.feature;
 
 import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.controller.FeatureSelectionController;
 import org.geomajas.gwt2.client.controller.FeatureSelectionController.SelectionMethod;
 import org.geomajas.gwt2.client.event.MapInitializationEvent;
@@ -83,7 +84,7 @@ public class FeatureSelectionPanel implements SamplePanel {
 		});
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = GeomajasImpl.getInstance().getMapPresenter();
+		mapPresenter = GeomajasImpl.getInstance().createMapPresenter();
 		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 
@@ -93,7 +94,7 @@ public class FeatureSelectionPanel implements SamplePanel {
 		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("gwt-app", "mapCountries");
+		GeomajasServerExtension.initializeMap(mapPresenter, "gwt-app", "mapCountries");
 		return layout;
 	}
 

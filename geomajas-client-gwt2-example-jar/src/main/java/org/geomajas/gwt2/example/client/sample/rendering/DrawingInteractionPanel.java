@@ -12,6 +12,7 @@
 package org.geomajas.gwt2.example.client.sample.rendering;
 
 import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.event.MapInitializationEvent;
 import org.geomajas.gwt2.client.event.MapInitializationHandler;
 import org.geomajas.gwt2.client.gfx.VectorContainer;
@@ -51,7 +52,7 @@ public class DrawingInteractionPanel implements SamplePanel {
 
 	public Widget asWidget() {
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = GeomajasImpl.getInstance().getMapPresenter();
+		mapPresenter = GeomajasImpl.getInstance().createMapPresenter();
 		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 
@@ -60,7 +61,7 @@ public class DrawingInteractionPanel implements SamplePanel {
 		mapDecorator.add(mapPresenter.asWidget());
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("gwt-app", "mapOsm");
+		GeomajasServerExtension.initializeMap(mapPresenter, "gwt-app", "mapOsm");
 		return mapDecorator;
 	}
 
