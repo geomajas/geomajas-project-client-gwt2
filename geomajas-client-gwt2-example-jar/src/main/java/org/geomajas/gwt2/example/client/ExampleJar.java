@@ -18,6 +18,7 @@ import org.geomajas.gwt2.example.client.i18n.SampleMessages;
 import org.geomajas.gwt2.example.client.sample.feature.FeatureSelectionPanel;
 import org.geomajas.gwt2.example.client.sample.general.AlternativeControlsPanel;
 import org.geomajas.gwt2.example.client.sample.general.MapFillPanel;
+import org.geomajas.gwt2.example.client.sample.general.MapTraceNavigationPanel;
 import org.geomajas.gwt2.example.client.sample.general.NavigationOptionPanel;
 import org.geomajas.gwt2.example.client.sample.general.ResizeMapPanel;
 import org.geomajas.gwt2.example.client.sample.general.ServerExceptionPanel;
@@ -196,6 +197,28 @@ public class ExampleJar implements EntryPoint {
 
 			public String getDescription() {
 				return MESSAGES.generalServerExceptionDescription();
+			}
+
+			public String getCategory() {
+				return CATEGORY_GENERAL;
+			}
+		});
+		SamplePanelRegistry.registerFactory(CATEGORY_GENERAL, new ShowcaseSampleDefinition() {
+
+			public SamplePanel create() {
+				return new MapTraceNavigationPanel();
+			}
+
+			public String getTitle() {
+				return MESSAGES.generalTraceNavigationTitle();
+			}
+
+			public String getShortDescription() {
+				return MESSAGES.generalTraceNavigationShort();
+			}
+
+			public String getDescription() {
+				return MESSAGES.generalTraceNavigationDescription();
 			}
 
 			public String getCategory() {
