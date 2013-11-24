@@ -24,7 +24,7 @@ import org.geomajas.gwt2.client.map.layer.Layer;
  */
 public class MapConfigurationImpl implements MapConfiguration {
 
-	public static final Integer ANIMATION_TIME_DEFAULT = 400;
+	public static final Integer ANIMATION_TIME_DEFAULT = 4000;
 
 	public static final Integer FADE_IN_TIME_DEFAULT = 250;
 
