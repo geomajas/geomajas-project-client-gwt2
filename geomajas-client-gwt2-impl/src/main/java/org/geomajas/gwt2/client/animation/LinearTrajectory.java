@@ -16,15 +16,13 @@ import org.geomajas.gwt2.client.map.View;
 
 /**
  * <p>
- * Trajectory that implements a straight line. Literally. Note that the scale itself is not a linear function (but a
- * squared function), so using this for zooming will not follow the normal zooming course. It will give you a cool
- * gliding effect though.
- * </p>
- * <p>
- * If you want a straight line when navigating, use the {@link StraightLineTrajectory}.
+ * Trajectory that determines its views by using linear interpolation between the initial and final bounds of the
+ * trajectory. Notice that this amounts to linear interpolation of the inverted scale as the width/height of the map
+ * bounds are inversely proportional to the scale (for constant pixel size of the map).
  * </p>
  * 
  * @author Pieter De Graef
+ * @author Jan De Moerloose
  */
 public class LinearTrajectory implements Trajectory {
 
@@ -52,7 +50,9 @@ public class LinearTrajectory implements Trajectory {
 		// Now calculate the NavigationView values to return:
 		double startScale = beginView.getScale();
 		double endScale = endView.getScale();
-		double scale = startScale + progress * (endScale - startScale);
+
+		// width/height vary linearly like x and y, but scale is inversely proportional !!!
+		double scale = 1 / (1 / startScale + progress * (1 / endScale - 1 / startScale));
 
 		return new View(new Coordinate(x, y), scale);
 	}
