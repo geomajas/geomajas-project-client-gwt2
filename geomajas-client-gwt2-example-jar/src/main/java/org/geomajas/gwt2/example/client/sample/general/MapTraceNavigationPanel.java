@@ -13,6 +13,7 @@ package org.geomajas.gwt2.example.client.sample.general;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.animation.NavigationAnimationFactory;
 import org.geomajas.gwt2.client.event.MapInitializationEvent;
 import org.geomajas.gwt2.client.event.MapInitializationHandler;
@@ -46,13 +47,13 @@ public class MapTraceNavigationPanel implements SamplePanel {
 		resizeLayoutPanel.setSize("100%", "100%");
 
 		// Create the MapPresenter and add to the layout:
-		mapPresenter = GeomajasImpl.getInstance().getMapPresenter();
+		mapPresenter = GeomajasImpl.getInstance().createMapPresenter();
 		mapPresenter.getConfiguration().setMapHintValue(MapConfiguration.ANIMATION_TIME, 1000);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 		layout.setPresenter(mapPresenter);
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("gwt-app", "mapOsm");
+		GeomajasServerExtension.initializeMap(mapPresenter, "gwt-app", "mapOsm");
 		return resizeLayoutPanel;
 	}
 
@@ -68,7 +69,7 @@ public class MapTraceNavigationPanel implements SamplePanel {
 			final TracingLayer layer = new TracingLayer(mapPresenter.getViewPort(), container);
 			mapPresenter.getLayersModel().addLayer(layer);
 			mapPresenter.getConfiguration().setAnimated(layer, true);
-			new Timer() {
+			Timer timer = new Timer() {
 
 				private boolean zoomOut;
 
@@ -95,7 +96,8 @@ public class MapTraceNavigationPanel implements SamplePanel {
 					}
 				}
 
-			}.scheduleRepeating(2000);
+			};
+			timer.scheduleRepeating(2000);
 		}
 	}
 }
