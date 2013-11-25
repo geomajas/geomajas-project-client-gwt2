@@ -20,7 +20,6 @@ import org.geomajas.gwt2.client.event.LayerHideEvent;
 import org.geomajas.gwt2.client.event.LayerShowEvent;
 import org.geomajas.gwt2.client.event.LayerVisibilityHandler;
 import org.geomajas.gwt2.client.event.LayerVisibilityMarkedEvent;
-import org.geomajas.gwt2.client.map.MapConfiguration;
 import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.MapEventBusImpl;
 import org.geomajas.gwt2.client.map.TestConfigUtil;
@@ -59,11 +58,9 @@ public class VectorLayerEventTest {
 
 	@Before
 	public void initialize() {
-		MapConfiguration mapConfig = TestConfigUtil.create(mapInfo);
-
 		// Initialize main components:
 		eventBus = new MapEventBusImpl(this, GeomajasImpl.getInstance().getEventBus());
-		viewPort = new ViewPortImpl(eventBus, mapConfig);
+		viewPort = new ViewPortImpl(eventBus, TestConfigUtil.create(mapInfo));
 		viewPort.setMapSize(1000, 1000);
 
 		layerInfo = (ClientVectorLayerInfo) mapInfo.getLayers().get(0);

@@ -11,6 +11,7 @@
 package org.geomajas.plugin.geocoder.puregwt.example.client.sample;
 
 import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.event.MapInitializationEvent;
 import org.geomajas.gwt2.client.event.MapInitializationHandler;
 import org.geomajas.gwt2.client.map.MapPresenter;
@@ -64,7 +65,7 @@ public class GeoCoderExample implements SamplePanel {
 
 		// Initialize the map
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
-		mapPresenter.initialize("geocoder-app", "mapOsm");
+		GeomajasServerExtension.initializeMap(mapPresenter, "geocoder-app", "mapOsm");
 		ResizeLayoutPanel resizeLayoutPanel = new ResizeLayoutPanel();
 		final MapLayoutPanel layout = new MapLayoutPanel();
 		resizeLayoutPanel.setWidget(layout);

@@ -11,6 +11,7 @@
 package org.geomajas.gwt2.widget.example.client.sample.mouseover;
 
 import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.widget.MapLayoutPanel;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
@@ -69,7 +70,7 @@ public class FeatureMouseOverExample implements SamplePanel {
 		mapPanel.add(resizeLayoutPanel);
 
 		// Initialize the map
-		mapPresenter.initialize("gwt2-widget-app", "mapGhent");
+		GeomajasServerExtension.initializeMap(mapPresenter, "gwt2-widget-app", "mapGhent");
 
 		// add feature mouse over listener.
 		MouseOverListener listener = new MouseOverListener(7);

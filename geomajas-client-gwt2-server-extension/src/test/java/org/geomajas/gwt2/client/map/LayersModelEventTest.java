@@ -11,12 +11,8 @@
 
 package org.geomajas.gwt2.client.map;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
-import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.event.LayerAddedEvent;
@@ -87,22 +83,8 @@ public class LayersModelEventTest {
 
 	@Before
 	public void initialize() {
-		MapConfigurationImpl mapConfig = new MapConfigurationImpl();
-		MapOptions mapOptions = new MapOptions();
-		mapOptions.setCrs(mapInfo.getCrs());
-		mapOptions.setInitialBounds(mapInfo.getInitialBounds());
-		mapOptions.setMaxBounds(mapInfo.getMaxBounds());
-		mapOptions.setMaximumScale(mapInfo.getScaleConfiguration().getMaximumScale().getPixelPerUnit());
-		mapOptions.setPixelLength(mapInfo.getPixelLength());
-		mapOptions.setUnitLength(mapInfo.getUnitLength());
-		List<Double> resolutions = new ArrayList<Double>();
-		for (ScaleInfo scale : mapInfo.getScaleConfiguration().getZoomLevels()) {
-			resolutions.add(scale.getPixelPerUnit());
-		}
-		mapOptions.setResolutions(resolutions);
-		mapConfig.setMapOptions(mapOptions);
-
 		// Initialize main components:
+		MapConfiguration mapConfig = TestConfigUtil.create(mapInfo);
 		eventBus = new MapEventBusImpl(this, GeomajasImpl.getInstance().getEventBus());
 		viewPort = new ViewPortImpl(eventBus, mapConfig);
 		layersModel = new LayersModelImpl(viewPort, eventBus, mapConfig);

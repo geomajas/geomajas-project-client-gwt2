@@ -23,8 +23,8 @@ import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.map.RenderSpace;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.feature.Feature;
-import org.geomajas.gwt2.client.map.feature.FeatureFactory;
 import org.geomajas.gwt2.client.map.layer.LegendConfig;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.plugin.wmsclient.client.capabilities.WmsGetCapabilitiesInfo;
@@ -69,8 +69,6 @@ public class WmsServiceImpl implements WmsService {
 	private static final int LEGEND_DPI = 91;
 
 	private WmsTileService tileService;
-
-	private FeatureFactory featureFactory;
 
 	private WmsUrlTransformer urlTransformer;
 
@@ -145,7 +143,7 @@ public class WmsServiceImpl implements WmsService {
 			public void execute(GetFeatureInfoResponse response) {
 				List<Feature> features = new ArrayList<Feature>();
 				for (org.geomajas.layer.feature.Feature feature : response.getFeatures()) {
-					features.add(featureFactory.create(feature, layer));
+					features.add(GeomajasServerExtension.getServerFeatureService().create(feature, layer));
 				}
 
 				callback.onSuccess(new FeatureCollection(features, response.getAttributeDescriptors()));
@@ -168,9 +166,7 @@ public class WmsServiceImpl implements WmsService {
 				callback.onFailure(msg);
 				super.onCommandException(response);
 			}
-
 		});
-
 	}
 
 	@Override
@@ -466,8 +462,7 @@ public class WmsServiceImpl implements WmsService {
 	}
 
 	private boolean useInvertedAxis(WmsVersion version, String crs) {
-		if (WmsVersion.V1_3_0.equals(version) && ("EPSG:4326".equalsIgnoreCase(crs) || 
-				"WGS:84".equalsIgnoreCase(crs))) {
+		if (WmsVersion.V1_3_0.equals(version) && ("EPSG:4326".equalsIgnoreCase(crs) || "WGS:84".equalsIgnoreCase(crs))) {
 			return true;
 		}
 		return false;

@@ -39,31 +39,15 @@ import org.geomajas.layer.feature.SearchCriterion;
  * 
  * @author Pieter De Graef
  */
-public final class FeatureServiceImpl implements FeatureService {
-
-	private static FeatureServiceImpl instance;
-
-	private MapPresenter mapPresenter;
-
-	public static FeatureService getInstance(MapPresenter mapPresenter) {
-		if (instance == null) {
-			instance = new FeatureServiceImpl();
-		}
-		instance.setMapPresenter(mapPresenter);
-		return instance;
-	}
-
-	/** Initialize this feature service for the given map. */
-	private FeatureServiceImpl() {
-	}
+public class ServerFeatureServiceImpl implements ServerFeatureService {
 
 	// ------------------------------------------------------------------------
 	// Searching features by attributes:
 	// ------------------------------------------------------------------------
 
 	@Override
-	public void search(final FeaturesSupported layer, SearchCriterion[] criteria, LogicalOperator operator,
-			int maxResultSize, final FeatureMapFunction callback) {
+	public void search(String crs, final FeaturesSupported layer, SearchCriterion[] criteria, 
+			LogicalOperator operator, int maxResultSize, final FeatureMapFunction callback) {
 		SearchFeatureRequest request = new SearchFeatureRequest();
 		request.setBooleanOperator(operator.getValue());
 		request.setCriteria(criteria);
@@ -72,7 +56,7 @@ public final class FeatureServiceImpl implements FeatureService {
 			ServerLayer<?> serverLayer = (ServerLayer<?>) layer;
 			request.setLayerId(serverLayer.getServerLayerId());
 		}
-		request.setCrs(mapPresenter.getViewPort().getCrs());
+		request.setCrs(crs);
 		request.setFilter(layer.getFilter());
 		request.setFeatureIncludes(11);
 
@@ -94,11 +78,24 @@ public final class FeatureServiceImpl implements FeatureService {
 	}
 
 	// ------------------------------------------------------------------------
+	// Public methods:
+	// ------------------------------------------------------------------------
+
+	@Override
+	public Feature create(org.geomajas.layer.feature.Feature feature, FeaturesSupported layer) {
+		Map<String, Attribute<?>> attributes = new HashMap<String, Attribute<?>>();
+		for (String key : feature.getAttributes().keySet()) {
+			attributes.put(key, new AttributeImpl(feature.getAttributes().get(key)));
+		}
+		return new FeatureImpl(layer, feature.getId(), attributes, feature.getGeometry(), feature.getLabel());
+	}
+
+	// ------------------------------------------------------------------------
 	// Searching features by location:
 	// ------------------------------------------------------------------------
 
 	@Override
-	public void search(final FeaturesSupported layer, Geometry location, double buffer,
+	public void search(String crs, final FeaturesSupported layer, Geometry location, double buffer,
 			final FeatureMapFunction callback) {
 		SearchByLocationRequest request = new SearchByLocationRequest();
 		request.setBuffer(buffer);
@@ -109,7 +106,7 @@ public final class FeatureServiceImpl implements FeatureService {
 		}
 		request.setLocation(location);
 		request.setSearchType(SearchLayerType.SEARCH_ALL_LAYERS.getValue());
-		request.setCrs(mapPresenter.getViewPort().getCrs());
+		request.setCrs(crs);
 		request.setFeatureIncludes(11);
 
 		GwtCommand command = new GwtCommand(SearchByLocationRequest.COMMAND);
@@ -132,8 +129,8 @@ public final class FeatureServiceImpl implements FeatureService {
 	}
 
 	@Override
-	public void search(Geometry location, double buffer, QueryType queryType, SearchLayerType searchType, float ratio,
-			final FeatureMapFunction callback) {
+	public void search(final MapPresenter mapPresenter, Geometry location, double buffer, QueryType queryType,
+			SearchLayerType searchType, float ratio, final FeatureMapFunction callback) {
 		SearchByLocationRequest request = new SearchByLocationRequest();
 
 		// Add all FeaturesSupported layers, together with their filters:
@@ -177,7 +174,7 @@ public final class FeatureServiceImpl implements FeatureService {
 						Map<FeaturesSupported, List<Feature>> mapping = new HashMap<FeaturesSupported, List<Feature>>();
 						for (Entry<String, List<org.geomajas.layer.feature.Feature>> entry : response.getFeatureMap()
 								.entrySet()) {
-							FeaturesSupported layer = searchLayer(entry.getKey());
+							FeaturesSupported layer = searchLayer(mapPresenter, entry.getKey());
 							List<Feature> features = new ArrayList<Feature>(entry.getValue().size());
 							for (org.geomajas.layer.feature.Feature feature : entry.getValue()) {
 								features.add(create(feature, layer));
@@ -193,7 +190,7 @@ public final class FeatureServiceImpl implements FeatureService {
 	// Private methods:
 	// ------------------------------------------------------------------------
 
-	private FeaturesSupported searchLayer(String layerId) {
+	private FeaturesSupported searchLayer(MapPresenter mapPresenter, String layerId) {
 		if (layerId != null) {
 			for (int i = 0; i < mapPresenter.getLayersModel().getLayerCount(); i++) {
 				Layer layer = mapPresenter.getLayersModel().getLayer(i);
@@ -206,18 +203,6 @@ public final class FeatureServiceImpl implements FeatureService {
 			}
 		}
 		return null;
-	}
-
-	private void setMapPresenter(MapPresenter mapPresenter) {
-		this.mapPresenter = mapPresenter;
-	}
-
-	private Feature create(org.geomajas.layer.feature.Feature feature, FeaturesSupported layer) {
-		Map<String, Attribute<?>> attributes = new HashMap<String, Attribute<?>>();
-		for (String key : feature.getAttributes().keySet()) {
-			attributes.put(key, new AttributeImpl(feature.getAttributes().get(key)));
-		}
-		return new FeatureImpl(layer, feature.getId(), attributes, feature.getGeometry(), feature.getLabel());
 	}
 
 	/**

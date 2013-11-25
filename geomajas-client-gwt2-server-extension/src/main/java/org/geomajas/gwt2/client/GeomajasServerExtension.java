@@ -11,9 +11,6 @@
 
 package org.geomajas.gwt2.client;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.geomajas.annotation.Api;
 import org.geomajas.command.dto.GetMapConfigurationRequest;
 import org.geomajas.command.dto.GetMapConfigurationResponse;
@@ -21,15 +18,17 @@ import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
-import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.MapOptions;
+import org.geomajas.gwt2.client.map.MapOptionsExt;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.MapPresenterImpl;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.feature.FeatureSelectionRenderer;
+import org.geomajas.gwt2.client.map.feature.ServerFeatureService;
+import org.geomajas.gwt2.client.map.feature.ServerFeatureServiceImpl;
 import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.client.map.layer.RasterServerLayerImpl;
 import org.geomajas.gwt2.client.map.layer.ServerLayer;
@@ -52,10 +51,13 @@ public final class GeomajasServerExtension {
 
 	private static EndPointService endPointService;
 
+	private static ServerFeatureService featureService;
+
 	/** No-argument constructor. It's private, because this is meant to be a singleton service. */
 	private GeomajasServerExtension() {
 		commandService = new CommandServiceImpl();
 		endPointService = new EndPointServiceImpl();
+		featureService = new ServerFeatureServiceImpl();
 	}
 
 	/**
@@ -76,6 +78,15 @@ public final class GeomajasServerExtension {
 	 */
 	public static EndPointService getEndPointService() {
 		return endPointService;
+	}
+
+	/**
+	 * Get a service for working with or searching for features in server-side layers.
+	 * 
+	 * @return The feature service.
+	 */
+	public static ServerFeatureService getServerFeatureService() {
+		return featureService;
 	}
 
 	/**
@@ -104,18 +115,7 @@ public final class GeomajasServerExtension {
 				}
 
 				// Initialize the map:
-				MapOptions mapOptions = new MapOptions();
-				mapOptions.setCrs(mapInfo.getCrs());
-				mapOptions.setInitialBounds(mapInfo.getInitialBounds());
-				mapOptions.setMaxBounds(mapInfo.getMaxBounds());
-				mapOptions.setMaximumScale(mapInfo.getScaleConfiguration().getMaximumScale().getPixelPerUnit());
-				mapOptions.setPixelLength(mapInfo.getPixelLength());
-				mapOptions.setUnitLength(mapInfo.getUnitLength());
-				List<Double> resolutions = new ArrayList<Double>();
-				for (ScaleInfo scale : mapInfo.getScaleConfiguration().getZoomLevels()) {
-					resolutions.add(scale.getPixelPerUnit());
-				}
-				mapOptions.setResolutions(resolutions);
+				MapOptions mapOptions = new MapOptionsExt(mapInfo);
 				((MapPresenterImpl) mapPresenter).initialize(mapOptions);
 
 				// Also add a renderer for feature selection:

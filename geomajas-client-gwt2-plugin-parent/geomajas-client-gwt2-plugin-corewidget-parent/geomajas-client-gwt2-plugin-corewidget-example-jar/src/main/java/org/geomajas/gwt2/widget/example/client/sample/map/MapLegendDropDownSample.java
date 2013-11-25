@@ -12,6 +12,7 @@
 package org.geomajas.gwt2.widget.example.client.sample.map;
 
 import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.gwt2.widget.client.map.MapLegendDropDown;
@@ -74,7 +75,7 @@ public class MapLegendDropDownSample implements SamplePanel {
 		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("gwt-app", "mapLegend");
+		GeomajasServerExtension.initializeMap(mapPresenter, "gwt-app", "mapLegend");
 		return layout;
 	}
 }

@@ -12,6 +12,7 @@
 package org.geomajas.gwt2.client.map.feature;
 
 import org.geomajas.geometry.Geometry;
+import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
 import org.geomajas.layer.feature.SearchCriterion;
 
@@ -23,7 +24,7 @@ import org.geomajas.layer.feature.SearchCriterion;
  * 
  * @author Pieter De Graef
  */
-public interface FeatureService {
+public interface ServerFeatureService {
 
 	/**
 	 * Logical operator used when searching for features through multiple attribute criteria.
@@ -113,6 +114,17 @@ public interface FeatureService {
 		}
 	}
 
+	/**
+	 * Transform a server-side feature object into a client-side feature object.
+	 * 
+	 * @param feature
+	 *            The server-side feature.
+	 * @param layer
+	 *            The layer it belongs to.
+	 * @return The client-side feature.
+	 */
+	Feature create(org.geomajas.layer.feature.Feature feature, FeaturesSupported layer);
+
 	// ------------------------------------------------------------------------
 	// Searching features by attributes:
 	// ------------------------------------------------------------------------
@@ -120,6 +132,8 @@ public interface FeatureService {
 	/**
 	 * Search for features within a certain layer through a list of attribute criteria.
 	 * 
+	 * @param crs
+	 *            The map coordinate reference system.
 	 * @param layer
 	 *            The layer to search in.
 	 * @param criteria
@@ -131,8 +145,8 @@ public interface FeatureService {
 	 * @param callback
 	 *            Callback function to apply on the result.
 	 */
-	void search(FeaturesSupported layer, SearchCriterion[] criteria, LogicalOperator operator, int maxResultSize,
-			FeatureMapFunction callback);
+	void search(String crs, FeaturesSupported layer, SearchCriterion[] criteria, LogicalOperator operator,
+			int maxResultSize, FeatureMapFunction callback);
 
 	// ------------------------------------------------------------------------
 	// Searching features by location:
@@ -141,6 +155,8 @@ public interface FeatureService {
 	/**
 	 * Search for features within a certain layer by a given location.
 	 * 
+	 * @param crs
+	 *            The map coordinate reference system.
 	 * @param layer
 	 *            The layer to search in.
 	 * @param location
@@ -150,11 +166,13 @@ public interface FeatureService {
 	 * @param callback
 	 *            Callback function to apply on the result.
 	 */
-	void search(FeaturesSupported layer, Geometry location, double buffer, FeatureMapFunction callback);
+	void search(String crs, FeaturesSupported layer, Geometry location, double buffer, FeatureMapFunction callback);
 
 	/**
 	 * Search for features within the {@link org.geomajas.gwt2.client.map.layer.LayersModel} at the given location.
 	 * 
+	 * @param mapPresenter
+	 *            The map to search for.
 	 * @param location
 	 *            The location to search at. Should be expressed in the map CRS.
 	 * @param buffer
@@ -171,6 +189,6 @@ public interface FeatureService {
 	 * @param callback
 	 *            Callback function to apply on the result.
 	 */
-	void search(Geometry location, double buffer, QueryType queryType, SearchLayerType searchType, float ratio,
-			FeatureMapFunction callback);
+	void search(MapPresenter mapPresenter, Geometry location, double buffer, QueryType queryType,
+			SearchLayerType searchType, float ratio, FeatureMapFunction callback);
 }

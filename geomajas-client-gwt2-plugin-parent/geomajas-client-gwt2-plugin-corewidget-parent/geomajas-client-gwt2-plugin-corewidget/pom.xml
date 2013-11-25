@@ -27,7 +27,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-client-gwt2-impl</artifactId>
+			<artifactId>geomajas-client-gwt2-server-extension</artifactId>
 		</dependency>
 
 		<!-- Google dependencies -->

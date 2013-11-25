@@ -11,6 +11,7 @@
 
 package org.geomajas.gwt2.widget.example.client.sample.map;
 import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.event.LayerAddedEvent;
 import org.geomajas.gwt2.client.event.LayerRemovedEvent;
 import org.geomajas.gwt2.client.event.MapCompositionHandler;
@@ -79,7 +80,7 @@ public class LegendAddRemoveSample implements SamplePanel {
 		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("gwt-app", "mapLegend");
+		GeomajasServerExtension.initializeMap(mapPresenter, "gwt-app", "mapLegend");
 		return layout;
 	}
 

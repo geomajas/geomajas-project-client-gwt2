@@ -21,12 +21,12 @@ import org.geomajas.geometry.Geometry;
 import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.geometry.service.MathService;
 import org.geomajas.gwt.client.map.RenderSpace;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.client.map.feature.FeatureMapFunction;
-import org.geomajas.gwt2.client.map.feature.FeatureService.QueryType;
-import org.geomajas.gwt2.client.map.feature.FeatureService.SearchLayerType;
-import org.geomajas.gwt2.client.map.feature.FeatureServiceImpl;
+import org.geomajas.gwt2.client.map.feature.ServerFeatureService.QueryType;
+import org.geomajas.gwt2.client.map.feature.ServerFeatureService.SearchLayerType;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
 
 import com.google.gwt.event.dom.client.HumanInputEvent;
@@ -255,8 +255,8 @@ public class FeatureSelectionController extends NavigationController {
 		Geometry point = new Geometry(Geometry.POINT, 0, -1);
 		point.setCoordinates(new Coordinate[] { location });
 
-		FeatureServiceImpl.getInstance(mapPresenter).search(point, pixelsToUnits(pixelTolerance), QueryType.INTERSECTS,
-				searchLayerType, -1, new SelectionCallback(isShift, false));
+		GeomajasServerExtension.getServerFeatureService().search(mapPresenter, point, pixelsToUnits(pixelTolerance),
+				QueryType.INTERSECTS, searchLayerType, -1, new SelectionCallback(isShift, false));
 	}
 
 	/**
@@ -286,8 +286,9 @@ public class FeatureSelectionController extends NavigationController {
 	private class SelectionRectangleController extends AbstractRectangleController {
 
 		public void execute(Bbox worldBounds) {
-			FeatureServiceImpl.getInstance(mapPresenter).search(GeometryService.toPolygon(worldBounds), 0,
-					QueryType.INTERSECTS, searchLayerType, intersectionRatio, new SelectionCallback(shift, true));
+			GeomajasServerExtension.getServerFeatureService().search(mapPresenter,
+					GeometryService.toPolygon(worldBounds), 0, QueryType.INTERSECTS, searchLayerType,
+					intersectionRatio, new SelectionCallback(shift, true));
 		}
 
 		public void cleanup() {
