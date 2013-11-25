@@ -11,8 +11,8 @@ The build process is as follows:
 - add the repositories in this folder's settings.xml to your own settings.xml or put this file in the default .m2 location
 - run 'mvn install' on the projects you want to build
 
-Explanation of all folder in the root:
-* geomajas-client-common-gwt-parent: Libraries containing code that is used in both Geomajas clients.
+Explanation of all folders in the root:
+* geomajas-client-common-gwt-parent: Libraries containing common code used in both Geomajas clients.
 * geomajas-client-gwt2-api: The client API
 * geomajas-client-gwt2-impl: The implementation of the API.
 * geomajas-client-gwt2-server-extension: Extension of the client to include the Geomajas server.
