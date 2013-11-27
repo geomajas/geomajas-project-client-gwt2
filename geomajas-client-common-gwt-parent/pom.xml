@@ -19,6 +19,7 @@
 		<version>2.0.0-SNAPSHOT</version>
 	</parent>
 
+	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-client-common-gwt-parent</artifactId>
 	<name>Geomajas GWT2 client: Commons - Parent</name>
 	<description>Geomajas GWT2 client: Parent for common client-side code</description>

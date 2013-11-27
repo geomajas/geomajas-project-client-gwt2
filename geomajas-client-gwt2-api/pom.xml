@@ -19,6 +19,7 @@
 		<version>2.0.0-SNAPSHOT</version>
 	</parent>
 
+	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-client-gwt2-api</artifactId>
 	<name>Geomajas GWT2 client: Main - API</name>
 	<description>Geomajas GWT2 client: Main - API</description>

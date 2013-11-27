@@ -18,6 +18,7 @@
 		<version>2.0.0-SNAPSHOT</version>
 	</parent>
 
+	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-client-gwt2-example-jar</artifactId>
 	<name>Geomajas GWT2 client: Main - Showcase samples</name>
 	<description>Geomajas GWT2 client: Main - Showcase samples</description>
