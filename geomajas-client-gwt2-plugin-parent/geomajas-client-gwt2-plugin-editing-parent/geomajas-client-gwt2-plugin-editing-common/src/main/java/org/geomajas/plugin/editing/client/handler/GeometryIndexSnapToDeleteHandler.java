@@ -41,11 +41,24 @@ import com.google.gwt.event.dom.client.MouseOverHandler;
  * <p>
  * At this moment only vertex snapping is supported, but later on, this may be applied to edges as well.
  * </p>
- * 
+ *
  * @author Pieter De Graef
+ * @author Jan Venstermans
  */
 public class GeometryIndexSnapToDeleteHandler extends AbstractGeometryIndexMapHandler implements MouseOverHandler,
 		MouseOutHandler, MapDragHandler, MapUpHandler, MouseMoveHandler {
+
+	private boolean allowMoreThanNeighbours;
+
+	private GeometryIndex indexToDelete;
+
+	public GeometryIndexSnapToDeleteHandler() {
+		this(true);
+	}
+
+	public GeometryIndexSnapToDeleteHandler(boolean allowMoreThanNeighbours) {
+		this.allowMoreThanNeighbours = allowMoreThanNeighbours;
+	}
 
 	public void onMouseOver(MouseOverEvent event) {
 		checkHover(event);
@@ -69,7 +82,8 @@ public class GeometryIndexSnapToDeleteHandler extends AbstractGeometryIndexMapHa
 		if (service.getIndexStateService().isMarkedForDeletion(index)) {
 			// If marked for deletion, remove on mouse up:
 			try {
-				List<GeometryIndex> toDelete = Collections.singletonList(index);
+				service.getIndexStateService().markForDeletionEnd(Collections.singletonList(index));
+				List<GeometryIndex> toDelete = Collections.singletonList(indexToDelete);
 				service.getIndexStateService().markForDeletionEnd(toDelete);
 				service.getIndexStateService().deselectAll();
 				service.remove(toDelete);
@@ -90,10 +104,9 @@ public class GeometryIndexSnapToDeleteHandler extends AbstractGeometryIndexMapHa
 			GeometryIndex selected = service.getIndexStateService().getSelection().get(0);
 
 			// Check: is the selected index of the same type, and is it a neighbor?
-			if (service.getIndexService().getType(index) == service.getIndexService().getType(selected)
-					&& service.getIndexService().isAdjacent(service.getGeometry(), index, selected)) {
+			if (service.getIndexService().getType(index) == service.getIndexService().getType(selected)) {
 
-				// Neighbor detected. Now see if there are enough vertices left to delete one:
+				// see if there are enough vertices left to delete one:
 				int siblingCount = service.getIndexService().getSiblingCount(service.getGeometry(), index);
 				try {
 					String geometryType = service.getIndexService().getGeometryType(service.getGeometry(), index);
@@ -112,12 +125,20 @@ public class GeometryIndexSnapToDeleteHandler extends AbstractGeometryIndexMapHa
 					throw new IllegalStateException(e);
 				}
 
-				// Mark for deletion:
+				if (!allowMoreThanNeighbours &&
+						!(service.getIndexService().isAdjacent(service.getGeometry(), index, selected))) {
+					// only allow neighbours to remove point + hovering over a not-neighbour
+					return;
+				}
+
+				// Mark the selected GeometryIndex for deletion:
+				indexToDelete = selected;
 				if (!service.getIndexStateService().isMarkedForDeletion(index)) {
 					service.getIndexStateService().markForDeletionBegin(Collections.singletonList(index));
 				}
 
 				// Than snap the selected vertex/edge to this one:
+				// if this where omitted, the selected vertex would not overlay index position.
 				if (service.getIndexService().getType(index) == GeometryIndexType.TYPE_VERTEX) {
 					try {
 						Coordinate location = service.getIndexService().getVertex(service.getGeometry(), index);
