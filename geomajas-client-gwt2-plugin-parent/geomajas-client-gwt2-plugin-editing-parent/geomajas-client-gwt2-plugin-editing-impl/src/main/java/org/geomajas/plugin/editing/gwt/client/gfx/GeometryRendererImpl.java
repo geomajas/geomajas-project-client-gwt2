@@ -62,6 +62,7 @@ import org.geomajas.plugin.editing.client.event.state.GeometryIndexMarkForDeleti
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexSelectedEvent;
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexSelectedHandler;
 import org.geomajas.plugin.editing.client.gfx.GeometryRenderer;
+import org.geomajas.plugin.editing.client.handler.AbstractGeometryIndexMapHandler;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
@@ -453,6 +454,16 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 		if (container != null) {
 			container.setVisible(visible);
 		}
+	}
+
+	@Override
+	public void addVertexHandlerFactory(AbstractGeometryIndexMapHandler handler) {
+		((DefaultGeometryIndexControllerFactory) controllerFactory).addVertexHandlerFactory(handler);
+	}
+
+	@Override
+	public void addEdgeHandlerFactory(AbstractGeometryIndexMapHandler handler) {
+		((DefaultGeometryIndexControllerFactory) controllerFactory).addEdgeHandlerFactory(handler);
 	}
 
 	// ------------------------------------------------------------------------

@@ -33,8 +33,10 @@ import org.geomajas.plugin.editing.gwt.client.controller.EdgeMarkerHandler;
 
 /**
  * Default implementation of the {@link GeometryIndexControllerFactory}. Provides the default editing behavior.
+ * It is possible to add custom handlers on top of the default ones.
  * 
  * @author Pieter De Graef
+ * @author Jan Venstermans
  */
 public class DefaultGeometryIndexControllerFactory implements GeometryIndexControllerFactory {
 
@@ -123,6 +125,24 @@ public class DefaultGeometryIndexControllerFactory implements GeometryIndexContr
 
 			public AbstractGeometryIndexMapHandler create() {
 				return new GeometryIndexSnapToDeleteHandler();
+			}
+		});
+	}
+
+	public void addVertexHandlerFactory(final AbstractGeometryIndexMapHandler handler) {
+		vertexFactories.add(new VertexHandlerFactory() {
+
+			public AbstractGeometryIndexMapHandler create() {
+				return handler;
+			}
+		});
+	}
+
+	public void addEdgeHandlerFactory(final AbstractGeometryIndexMapHandler handler) {
+		edgeFactories.add(new EdgeHandlerFactory() {
+
+			public AbstractGeometryIndexMapHandler create() {
+				return handler;
 			}
 		});
 	}

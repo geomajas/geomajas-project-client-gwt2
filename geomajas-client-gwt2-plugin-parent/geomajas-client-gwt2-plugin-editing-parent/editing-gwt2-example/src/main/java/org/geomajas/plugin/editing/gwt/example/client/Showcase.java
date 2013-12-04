@@ -40,6 +40,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import org.geomajas.plugin.editing.gwt.example.client.handler.GeometryIndexDummyHandler;
 
 /**
  * Entry point and main class for GWT2 Client example application.
@@ -103,6 +104,9 @@ public class Showcase implements EntryPoint, MapResizedHandler {
 		RootLayoutPanel.get().add(layout);
 		// Initialize the map:
 		mapPresenter.initialize("showcase", "mapOsm");
+
+		// example of adding a custom Vertex handler
+		editor.addVertexHandlerFactory(new GeometryIndexDummyHandler());
 	}
 
 	private Widget getBtnFreePoint() {
