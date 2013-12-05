@@ -18,12 +18,14 @@ import org.geomajas.gwt2.client.controller.MapController;
 import org.geomajas.gwt2.client.gfx.GfxUtil;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.plugin.editing.client.handler.AbstractGeometryIndexMapHandler;
+import org.geomajas.plugin.editing.client.handler.EdgeMapHandlerFactory;
 import org.geomajas.plugin.editing.client.handler.GeometryIndexDragSelectionHandler;
 import org.geomajas.plugin.editing.client.handler.GeometryIndexHighlightHandler;
 import org.geomajas.plugin.editing.client.handler.GeometryIndexInsertHandler;
 import org.geomajas.plugin.editing.client.handler.GeometryIndexSelectHandler;
 import org.geomajas.plugin.editing.client.handler.GeometryIndexSnapToDeleteHandler;
 import org.geomajas.plugin.editing.client.handler.GeometryIndexStopInsertingHandler;
+import org.geomajas.plugin.editing.client.handler.VertexMapHandlerFactory;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
@@ -40,9 +42,9 @@ import org.geomajas.plugin.editing.gwt.client.controller.EdgeMarkerHandler;
  */
 public class DefaultGeometryIndexControllerFactory implements GeometryIndexControllerFactory {
 
-	private final List<VertexHandlerFactory> vertexFactories = new ArrayList<VertexHandlerFactory>();
+	private final List<VertexMapHandlerFactory> vertexFactories = new ArrayList<VertexMapHandlerFactory>();
 
-	private final List<EdgeHandlerFactory> edgeFactories = new ArrayList<EdgeHandlerFactory>();
+	private final List<EdgeMapHandlerFactory> edgeFactories = new ArrayList<EdgeMapHandlerFactory>();
 
 	private final MapPresenter mapPresenter;
 	
@@ -50,20 +52,20 @@ public class DefaultGeometryIndexControllerFactory implements GeometryIndexContr
 
 	/**
 	 * Private factory definition for create a handler for vertices.
-	 * 
+	 *
 	 * @author Pieter De Graef
 	 */
-	private interface VertexHandlerFactory {
+	private interface VertexHandlerFactory extends VertexMapHandlerFactory {
 
 		AbstractGeometryIndexMapHandler create();
 	}
 
 	/**
 	 * Private factory definition for create a handler for edges.
-	 * 
+	 *
 	 * @author Pieter De Graef
 	 */
-	private interface EdgeHandlerFactory {
+	private interface EdgeHandlerFactory extends EdgeMapHandlerFactory {
 
 		AbstractGeometryIndexMapHandler create();
 	}
@@ -129,22 +131,12 @@ public class DefaultGeometryIndexControllerFactory implements GeometryIndexContr
 		});
 	}
 
-	public void addVertexHandlerFactory(final AbstractGeometryIndexMapHandler handler) {
-		vertexFactories.add(new VertexHandlerFactory() {
-
-			public AbstractGeometryIndexMapHandler create() {
-				return handler;
-			}
-		});
+	public void addVertexHandlerFactory(VertexMapHandlerFactory factory) {
+		vertexFactories.add(factory);
 	}
 
-	public void addEdgeHandlerFactory(final AbstractGeometryIndexMapHandler handler) {
-		edgeFactories.add(new EdgeHandlerFactory() {
-
-			public AbstractGeometryIndexMapHandler create() {
-				return handler;
-			}
-		});
+	public void addEdgeHandlerFactory(EdgeMapHandlerFactory factory) {
+		edgeFactories.add(factory);
 	}
 
 	// ------------------------------------------------------------------------
@@ -174,7 +166,7 @@ public class DefaultGeometryIndexControllerFactory implements GeometryIndexContr
 	private MapController createVertexController(GeometryEditService editService, GeometryIndex index) {
 		CompositeGeometryIndexController controller = new CompositeGeometryIndexController(editService, index,
 				editService.getEditingState() == GeometryEditState.DRAGGING);
-		for (VertexHandlerFactory factory : vertexFactories) {
+		for (VertexMapHandlerFactory factory : vertexFactories) {
 			controller.addMapHandler(factory.create());
 		}
 		return controller;
@@ -183,7 +175,7 @@ public class DefaultGeometryIndexControllerFactory implements GeometryIndexContr
 	private MapController createEdgeController(GeometryEditService editService, GeometryIndex index) {
 		CompositeGeometryIndexController controller = new CompositeGeometryIndexController(editService, index,
 				editService.getEditingState() == GeometryEditState.DRAGGING);
-		for (EdgeHandlerFactory factory : edgeFactories) {
+		for (EdgeMapHandlerFactory factory : edgeFactories) {
 			controller.addMapHandler(factory.create());
 		}
 

@@ -26,6 +26,7 @@
 	<modules>
 		<module>geomajas-client-gwt2-plugin-editing-common</module>
 		<module>geomajas-client-gwt2-plugin-editing-impl</module>
+		<!--<module>editing-gwt2-example</module>-->
 	</modules>
 
 </project>
