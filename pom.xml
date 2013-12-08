@@ -38,7 +38,7 @@
 		<module>geomajas-client-gwt2-example-base</module>
 		<module>geomajas-client-gwt2-example-jar</module>
  		<module>geomajas-client-gwt2-documentation</module>
-  		<!-- <module>geomajas-client-gwt2-plugin-parent</module> -->
+  		<module>geomajas-client-gwt2-plugin-parent</module>
 		<module>geomajas-client-gwt2-example</module>
 	</modules>
 
@@ -235,7 +235,17 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-client-gwt2-plugin-wms-server-extension</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-client-gwt2-plugin-wms-print</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-client-gwt2-plugin-wms-example-jar</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
