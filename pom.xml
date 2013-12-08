@@ -294,11 +294,6 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-layer-geotools</artifactId>
-				<version>${version-geomajas-backend}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-rasterizing</artifactId>
 				<version>${version-geomajas-backend}</version>
 			</dependency>
