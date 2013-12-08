@@ -39,7 +39,11 @@
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-client-gwt2-server-extension</artifactId>
 		</dependency>
-	</dependencies>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+		</dependency>
+   	</dependencies>
 
 	<build>
 		<resources>

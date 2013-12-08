@@ -15,15 +15,15 @@ import java.io.IOException;
 import java.util.List;
 
 import org.geomajas.geometry.Bbox;
-import org.geomajas.plugin.wmsclient.client.capabilities.WmsGetCapabilitiesInfo;
-import org.geomajas.plugin.wmsclient.client.capabilities.WmsLayerInfo;
-import org.geomajas.plugin.wmsclient.client.capabilities.WmsLayerLegendUrlInfo;
-import org.geomajas.plugin.wmsclient.client.capabilities.WmsLayerMetadataUrlInfo;
-import org.geomajas.plugin.wmsclient.client.capabilities.WmsLayerStyleInfo;
-import org.geomajas.plugin.wmsclient.client.capabilities.WmsOnlineResourceInfo;
-import org.geomajas.plugin.wmsclient.client.service.WmsService;
-import org.geomajas.plugin.wmsclient.client.service.WmsService.WmsVersion;
-import org.geomajas.plugin.wmsclient.client.service.WmsServiceImpl;
+import org.geomajas.plugin.wms.client.capabilities.WmsGetCapabilitiesInfo;
+import org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo;
+import org.geomajas.plugin.wms.client.capabilities.WmsLayerLegendUrlInfo;
+import org.geomajas.plugin.wms.client.capabilities.WmsLayerMetadataUrlInfo;
+import org.geomajas.plugin.wms.client.capabilities.WmsLayerStyleInfo;
+import org.geomajas.plugin.wms.client.capabilities.WmsOnlineResourceInfo;
+import org.geomajas.plugin.wms.client.service.WmsService;
+import org.geomajas.plugin.wms.client.service.WmsServiceImpl;
+import org.geomajas.plugin.wms.client.service.WmsService.WmsVersion;
 import org.junit.Test;
 
 import com.google.gwt.core.client.Callback;

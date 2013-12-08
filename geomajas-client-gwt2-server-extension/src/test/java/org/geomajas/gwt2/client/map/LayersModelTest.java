@@ -13,14 +13,15 @@ package org.geomajas.gwt2.client.map;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.gwt2.client.GeomajasImpl;
-import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.event.LayerAddedEvent;
 import org.geomajas.gwt2.client.event.LayerRemovedEvent;
 import org.geomajas.gwt2.client.event.MapCompositionHandler;
 import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.client.map.layer.LayersModel;
 import org.geomajas.gwt2.client.map.layer.LayersModelImpl;
+import org.geomajas.gwt2.client.map.layer.VectorServerLayerImpl;
 import org.geomajas.testdata.ReloadContext;
 import org.geomajas.testdata.ReloadContextTestExecutionListener;
 import org.junit.Assert;
@@ -76,7 +77,7 @@ public class LayersModelTest {
 		for (int i = 1; i < 4; i++) {
 			for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
 				if (("beans" + i + "Layer").equals(layerInfo.getId())) {
-					Layer layer = GeomajasServerExtension.createLayer(layerInfo, viewPort, eventBus);
+					Layer layer = new VectorServerLayerImpl((ClientVectorLayerInfo)layerInfo, viewPort, eventBus);
 					layersModel.addLayer(layer);
 				}
 			}

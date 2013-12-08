@@ -39,6 +39,12 @@
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-testdata</artifactId>
 		</dependency>
+		
+		<!-- Geomajas plugin examples -->
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-client-gwt2-plugin-wms-example-jar</artifactId>
+		</dependency>
 
 		<!-- Google dependencies -->
 		<dependency>

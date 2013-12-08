@@ -47,17 +47,14 @@ import org.geomajas.gwt2.client.service.EndPointServiceImpl;
 @Api(allMethods = true)
 public final class GeomajasServerExtension {
 
-	private static CommandService commandService;
+	private static CommandService commandService = new CommandServiceImpl();
 
-	private static EndPointService endPointService;
+	private static EndPointService endPointService = new EndPointServiceImpl();
 
-	private static ServerFeatureService featureService;
+	private static ServerFeatureService featureService = new ServerFeatureServiceImpl();
 
 	/** No-argument constructor. It's private, because this is meant to be a singleton service. */
 	private GeomajasServerExtension() {
-		commandService = new CommandServiceImpl();
-		endPointService = new EndPointServiceImpl();
-		featureService = new ServerFeatureServiceImpl();
 	}
 
 	/**

@@ -58,7 +58,8 @@ public class ExceptionCallbackImpl implements CommandExceptionCallback, Communic
 	/**
 	 * Build details message for an exception.
 	 * 
-	 * @param error error to build message for
+	 * @param error
+	 *            error to build message for
 	 * @return string with details message
 	 */
 	private String getDetails(ExceptionDto error) {
@@ -80,7 +81,8 @@ public class ExceptionCallbackImpl implements CommandExceptionCallback, Communic
 	/**
 	 * Build details message for an exception.
 	 * 
-	 * @param error error to build message for
+	 * @param error
+	 *            error to build message for
 	 * @return string with details message
 	 */
 	private String getDetails(Throwable error) {
@@ -105,8 +107,10 @@ public class ExceptionCallbackImpl implements CommandExceptionCallback, Communic
 	/**
 	 * Makes a dialog box to show exception message and stack trace.
 	 * 
-	 * @param msg error message
-	 * @param stack stack trace
+	 * @param msg
+	 *            error message
+	 * @param stack
+	 *            stack trace
 	 */
 	private void showDialog(String msg, String stack) {
 		ExceptionDialog warning = new ExceptionDialog(msg, stack);

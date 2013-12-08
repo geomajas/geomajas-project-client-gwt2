@@ -12,6 +12,7 @@
 package org.geomajas.gwt2.client.map;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.geomajas.geometry.Bbox;
@@ -103,6 +104,9 @@ public final class ViewPortImpl implements ViewPort {
 		} else if (mapOptions.getMaximumScale() != 0) {
 			// If there are no fixed scale levels, we'll calculate them:
 			double tempScale = getMaxBoundsScale();
+			if (tempScale == 0.0) {
+				throw new IllegalStateException("Could not initialize the map. Could it be it has no size?");
+			}
 			fixedScales.add(tempScale);
 			while (tempScale < mapOptions.getMaximumScale()) {
 				tempScale *= 2;
@@ -112,6 +116,7 @@ public final class ViewPortImpl implements ViewPort {
 			throw new IllegalStateException(
 					"The map configuration must either contain fixed resolutions or a maximum scale");
 		}
+		Collections.sort(fixedScales);
 
 		initialized = true;
 	}
@@ -324,7 +329,7 @@ public final class ViewPortImpl implements ViewPort {
 
 	@Override
 	public double toScale(double scaleDenominator) {
-		//return mapInfo.getUnitLength() / (mapInfo.getPixelLength() * scaleDenominator);
+		// return mapInfo.getUnitLength() / (mapInfo.getPixelLength() * scaleDenominator);
 		return 1 / (configuration.getMapOptions().getPixelsPerUnit() * scaleDenominator);
 	}
 

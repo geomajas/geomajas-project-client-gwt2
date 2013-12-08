@@ -34,7 +34,7 @@ public class MapOptions {
 
 	private double unitLength = 1.0;
 
-	private double pixelLength;
+	private double pixelLength = 0.0002645833333333333; // default length of a pixel...
 
 	private double maximumScale;
 
@@ -78,6 +78,9 @@ public class MapOptions {
 	 */
 	public void setMaxBounds(Bbox maxBounds) {
 		this.maxBounds = maxBounds;
+		if (initialBounds == null) {
+			initialBounds = new Bbox(maxBounds.getX(), maxBounds.getY(), maxBounds.getWidth(), maxBounds.getHeight());
+		}
 	}
 
 	/**
