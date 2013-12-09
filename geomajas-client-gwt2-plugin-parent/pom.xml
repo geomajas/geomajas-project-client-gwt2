@@ -27,9 +27,9 @@
 	<description>Geomajas GWT2 client: Plugin - Parent</description>
 
 	<modules>
-		<!-- <module>geomajas-client-gwt2-plugin-corewidget-parent</module>
+		<!-- <module>geomajas-client-gwt2-plugin-corewidget-parent</module> -->
 		<module>geomajas-client-gwt2-plugin-editing-parent</module>
-		<module>geomajas-client-gwt2-plugin-geocoder-parent</module>
+		<!-- <module>geomajas-client-gwt2-plugin-geocoder-parent</module>
 		<module>geomajas-client-gwt2-plugin-rasterizing-parent</module>
 		<module>geomajas-client-gwt2-plugin-print-parent</module> -->
 		<module>geomajas-client-gwt2-plugin-wms-parent</module>
