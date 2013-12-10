@@ -5,7 +5,7 @@
   ~
   ~ The program is available in open source according to the GNU Affero
   ~ General Public License. All contributions in this program are covered
-  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ by the Geomagwt-mavenjas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
 
@@ -15,11 +15,11 @@
 
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
-		<artifactId>geomajas-plugin-graphicsediting-parent</artifactId>
+		<artifactId>geomajas-client-gwt2-plugin-graphicsediting-parent</artifactId>
 		<version>2.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>geomajas-plugin-graphicsediting-gwt2</artifactId>
+	<artifactId>geomajas-client-gwt2-plugin-graphicsediting</artifactId>
 	<name>Geomajas GWT2 client: Plugin Graphics - Definition</name>
 	<description>Geomajas GWT2 client: Plugin Graphics -  Definition</description>
 
@@ -27,7 +27,7 @@
 		<!-- Geomajas Project dependencies -->
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-editing-gwt2</artifactId>
+			<artifactId>geomajas-client-gwt2-plugin-editing-impl</artifactId>
 		</dependency>
 		
 		<!-- Geomajas Project dependencies -->

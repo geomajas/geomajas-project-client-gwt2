@@ -19,8 +19,7 @@
 		<version>2.0.0-SNAPSHOT</version>
 	</parent>
 
-	<groupId>org.geomajas.plugin</groupId>
-	<artifactId>geomajas-plugin-graphicsediting-parent</artifactId>
+	<artifactId>geomajas-client-gwt2-plugin-graphicsediting-parent</artifactId>
 
 	<name>Geomajas GWT2 client: Plugin Graphics - Parent</name>
 	<description>
@@ -35,7 +34,8 @@
 
 	<modules>
 		<module>graphicsediting-gwt2</module>
-		<module>graphicsediting-gwt2-example-jar</module>
+		<!--<module>graphicsediting-gwt2-example</module>-->
+		<!--<module>graphicsediting-gwt2-example-jar</module>-->
 	</modules>
 
 </project>
