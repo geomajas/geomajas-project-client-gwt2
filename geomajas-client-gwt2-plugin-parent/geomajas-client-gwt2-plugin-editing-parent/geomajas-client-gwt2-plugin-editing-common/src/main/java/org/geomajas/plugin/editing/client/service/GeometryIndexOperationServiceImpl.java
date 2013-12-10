@@ -245,7 +245,8 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 					if (coordinates == null || coordinates.size() < indices.size()) {
 						throw new GeometryOperationFailedException("No coordinates passed to insert.");
 					}
-					GeometryIndexOperation op2 = new InsertVertexOperation(indexService, coordinates.get(i).get(0));
+					GeometryIndexOperation op2 = new InsertVertexOperation(indexService, coordinates.get(i).get(0),
+							service.isPolygonInsertLinesCanIntersect());
 					op2.execute(geometry, indices.get(i));
 					seq.addOperation(op2);
 			}

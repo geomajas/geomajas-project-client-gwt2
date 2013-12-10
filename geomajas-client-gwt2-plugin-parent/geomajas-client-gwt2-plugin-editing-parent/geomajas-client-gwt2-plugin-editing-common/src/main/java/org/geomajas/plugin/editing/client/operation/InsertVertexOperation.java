@@ -13,6 +13,7 @@ package org.geomajas.plugin.editing.client.operation;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
 import org.geomajas.plugin.editing.client.service.GeometryIndexService;
@@ -40,14 +41,32 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 	private GeometryIndex index;
 
 	/**
+	 * boolean to indicate whether an inserted vertex can create a line that intersects with the current shape of
+	 * the geometry.
+	 */
+	private boolean polygonLinesCanIntersect;
+
+	/**
+	 * Initialize this operation with an indexing service.
+	 *
+	 * @param service
+	 *            geometry index service.
+	 */
+	public InsertVertexOperation(GeometryIndexService service, Coordinate coordinate) {
+		this(service, coordinate, true);
+	}
+
+	/**
 	 * Initialize this operation with an indexing service.
 	 * 
 	 * @param service
 	 *            geometry index service.
 	 */
-	public InsertVertexOperation(GeometryIndexService service, Coordinate coordinate) {
+	public InsertVertexOperation(GeometryIndexService service, Coordinate coordinate,
+								 boolean polygonLinesCanIntersect) {
 		this.service = service;
 		this.coordinate = coordinate;
+		this.polygonLinesCanIntersect = polygonLinesCanIntersect;
 	}
 
 	@Override
@@ -85,7 +104,7 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 	// ------------------------------------------------------------------------
 
 	private void insert(Geometry geom, GeometryIndex index, Coordinate coordinate)
-			throws GeometryIndexNotFoundException {
+			throws GeometryIndexNotFoundException, GeometryOperationFailedException {
 		if (index.hasChild() && geom.getGeometries() != null && geom.getGeometries().length > index.getValue()) {
 			insert(geom.getGeometries()[index.getValue()], index.getChild(), coordinate);
 		} else if (index.getType() == GeometryIndexType.TYPE_EDGE) {
@@ -131,7 +150,7 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 	}
 
 	private void insertAfterVertex(Geometry geom, GeometryIndex index, Coordinate coordinate)
-			throws GeometryIndexNotFoundException {
+			throws GeometryIndexNotFoundException, GeometryOperationFailedException {
 		// First we check the geometry type (allow only Point, LineString and LinearRing):
 		if (Geometry.POINT.equals(geom.getGeometryType())) {
 			if (index.getValue() != 0 || geom.getCoordinates() != null) {
@@ -164,6 +183,9 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 					|| index.getValue() > geom.getCoordinates().length - 1) {
 				throw new GeometryIndexNotFoundException("Vertex index out of bounds.");
 			} else {
+				if (isInsertedVertexIntersectsWithExistingLines(geom.getCoordinates(), coordinate)) {
+					throw new GeometryOperationFailedException("Inserted vertex will result in intersecting edges.");
+				}
 				Coordinate[] result = new Coordinate[geom.getCoordinates().length + 1];
 				int count = 0;
 				for (int i = 0; i < result.length; i++) {
@@ -181,5 +203,33 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 		} else {
 			throw new GeometryIndexNotFoundException("Could not match index with given geometry.");
 		}
+	}
+
+	private boolean isInsertedVertexIntersectsWithExistingLines(Coordinate[] currentGeometryCoordinates,
+																Coordinate newCoordinate) {
+		if (!polygonLinesCanIntersect && currentGeometryCoordinates != null
+				&& currentGeometryCoordinates.length >= 3) {
+			int relevantGeometryCoordinates = currentGeometryCoordinates.length;
+			if (currentGeometryCoordinates[0].equals(
+					currentGeometryCoordinates[currentGeometryCoordinates.length - 1])) {
+				relevantGeometryCoordinates = currentGeometryCoordinates.length - 1;
+			}
+			if (relevantGeometryCoordinates >= 3) {
+				Coordinate[] geometryCoordinates = new Coordinate[relevantGeometryCoordinates - 1];
+				for (int i = 0 ; i < geometryCoordinates.length ; i++) {
+				   geometryCoordinates[i] = currentGeometryCoordinates[i];
+				}
+				Coordinate[] lineCoordinates = {currentGeometryCoordinates[relevantGeometryCoordinates - 1],
+						newCoordinate};
+				Geometry existingGeom = new Geometry();
+				existingGeom.setCoordinates(geometryCoordinates);
+				Geometry lineGeom = new Geometry();
+				lineGeom.setCoordinates(lineCoordinates);
+				if (GeometryService.intersects(existingGeom, lineGeom) ) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }
