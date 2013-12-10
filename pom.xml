@@ -108,11 +108,11 @@
 				<artifactId>geomajas-client-gwt2-plugin-editing-impl</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			<!--<dependency>-->
-				<!--<groupId>org.geomajas.plugin</groupId>-->
-				<!--<artifactId>geomajas-plugin-editing-gwt2-example</artifactId>-->
-				<!--<version>${project.version}</version>-->
-			<!--</dependency>-->
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-editing-gwt2-example</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			
 			<!-- Geocoder plugin -->
 			<dependency>
@@ -154,7 +154,17 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-graphicsediting-gwt2</artifactId>
+				<artifactId>geomajas-client-gwt2-plugin-graphicsediting-parent</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-client-gwt2-plugin-graphicsediting-parent-example</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-client-gwt2-plugin-graphicsediting-parent-example-jar</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 

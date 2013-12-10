@@ -154,6 +154,11 @@ public class GGeometryPath extends ResizableGraphicsObject implements Fillable, 
 		}
 
 		@Override
+		public boolean isAutoHeight() {
+			return false;
+		}
+
+		@Override
 		public void setUserBounds(Bbox bounds) {
 			path.setUserBounds(bounds);
 		}
