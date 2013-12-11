@@ -20,8 +20,8 @@
 	</parent>
 
 	<artifactId>geomajas-client-gwt2-plugin-graphicsediting</artifactId>
-	<name>Geomajas GWT2 client: Plugin Graphics - Definition</name>
-	<description>Geomajas GWT2 client: Plugin Graphics -  Definition</description>
+	<name>Geomajas GWT2 client: Plugin GraphicsEditing - Definition</name>
+	<description>Geomajas GWT2 client: Plugin GraphicsEditing -  Definition</description>
 
 	<dependencies>
 		<!-- Geomajas Project dependencies -->

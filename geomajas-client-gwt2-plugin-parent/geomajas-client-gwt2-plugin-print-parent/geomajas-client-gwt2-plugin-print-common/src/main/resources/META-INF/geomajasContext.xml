@@ -31,7 +31,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			<list>
 				<bean class="org.geomajas.global.PluginVersionInfo">
 					<property name="name" value="rasterizing" />
-					<property name="version" value="${version-geomajas-backend}}" />
+					<property name="version" value="${version-geomajas-backend}" />
 				</bean>
 			</list>
 		</property>
