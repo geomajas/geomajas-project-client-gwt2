@@ -26,12 +26,12 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<property name="version" value="${project.version}" />
 			</bean>
 		</property>
-		<property name="backendVersion" value="${widget-gwt2-core-backend-version}"/>
+		<property name="backendVersion" value="${version-geomajas-backend}"/>
 		<property name="dependencies">
 			<list>
 				<bean class="org.geomajas.global.PluginVersionInfo">
 					<property name="name" value="GWT2 Client impl" />
-					<property name="version" value="${widget-gwt2-core-client-gwt2-version}"/>
+					<property name="version" value="${project.version}"/>
 				</bean>
 			</list>
 		</property>
