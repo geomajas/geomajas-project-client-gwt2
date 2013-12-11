@@ -19,7 +19,7 @@ import org.geomajas.annotation.Api;
  * DTO object for {@link org.geomajas.plugin.printing.component.impl.LegendForLayerComponentImpl}.
  * 
  * @author An Buyle
- * @since 2.4.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class LegendForLayerComponentInfo extends PrintComponentInfo implements Serializable {

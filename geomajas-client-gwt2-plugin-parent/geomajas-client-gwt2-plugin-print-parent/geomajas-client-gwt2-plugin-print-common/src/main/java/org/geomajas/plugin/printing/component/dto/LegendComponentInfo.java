@@ -29,28 +29,28 @@ public class LegendComponentInfo extends PrintComponentInfo {
 	/**
 	 * Default font family for text in the legend component. Can be overridden by specifying the font via setFont()
 	 * 
-	 * @since 2.4.0
+	 * @since 2.0.0
 	 */
 	public static final String DEFAULT_LEGEND_FONT_FAMILY = "Dialog";
 
 	/**
 	 * Default title for the legend component.
 	 * 
-	 * @since 2.4.0
+	 * @since 2.0.0
 	 */
 	public static final String DEFAULT_LEGEND_TITLE = "Legend"; // Default is english
 
 	/**
 	 * Tag used for LegendComponentInfo PrintComponentInfo. See {@link #PrintComponentInfo.setTag(String)} method.
 	 * 
-	 * @since 2.4.0
+	 * @since 2.0.0
 	 */
 	public static final String LEGEND_TAG = "legend";
 
 	/**
 	 * Default font size for text in the legend component. Can be overridden by specifying the font via setFont()
 	 * 
-	 * @since 2.4.0
+	 * @since 2.0.0
 	 */
 	public static final int DEFAULT_LEGEND_FONTSIZE = 10;
 

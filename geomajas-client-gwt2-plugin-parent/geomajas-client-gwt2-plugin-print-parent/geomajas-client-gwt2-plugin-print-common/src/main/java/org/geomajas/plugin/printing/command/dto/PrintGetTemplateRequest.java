@@ -29,7 +29,7 @@ public class PrintGetTemplateRequest implements CommandRequest {
 	/**
 	 * Command name constant for request object.
 	 *
-	 * @since 2.2.0
+	 * @since 2.0.0
 	 */
 	public static final String COMMAND = "command.print.GetTemplate";
 
