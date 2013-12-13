@@ -11,8 +11,6 @@
 
 package org.geomajas.plugin.editing.gwt.client;
 
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 import org.geomajas.gwt2.client.controller.MapController;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedHandler;

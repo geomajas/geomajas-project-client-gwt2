@@ -33,7 +33,7 @@
 		<module>geomajas-client-gwt2-plugin-rasterizing-parent</module>
 		<!--<module>geomajas-client-gwt2-plugin-print-parent</module>-->
 		<module>geomajas-client-gwt2-plugin-wms-parent</module>
-		<module>geomajas-plugin-graphicsediting</module>
+		<!-- <module>geomajas-plugin-graphicsediting</module> -->
  	</modules>
 	
 </project>
