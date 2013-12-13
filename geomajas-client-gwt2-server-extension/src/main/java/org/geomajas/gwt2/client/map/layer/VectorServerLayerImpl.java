@@ -34,10 +34,14 @@ import org.geomajas.gwt2.client.event.LayerStyleChangedHandler;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
 import org.geomajas.gwt2.client.map.MapEventBus;
+import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.feature.Feature;
+import org.geomajas.gwt2.client.map.render.FixedScaleLayerRenderer;
+import org.geomajas.gwt2.client.map.render.FixedScaleRenderer;
 import org.geomajas.gwt2.client.map.render.LayerRenderer;
-import org.geomajas.gwt2.client.map.render.dom.FixedScaleLayerRenderer;
+import org.geomajas.gwt2.client.map.render.dom.VectorServerLayerScaleRenderer;
+import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
 import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.RuleInfo;
 
@@ -65,10 +69,17 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	public VectorServerLayerImpl(ClientVectorLayerInfo layerInfo, ViewPort viewPort, MapEventBus eventBus) {
+	public VectorServerLayerImpl(ClientVectorLayerInfo layerInfo, final ViewPort viewPort, MapEventBus eventBus) {
 		super(layerInfo, viewPort, eventBus);
 		this.selection = new HashMap<String, Feature>();
-		this.renderer = new FixedScaleLayerRenderer(viewPort, this, eventBus);
+		this.renderer = new FixedScaleLayerRenderer(viewPort, this, eventBus) {
+
+			@Override
+			public FixedScaleRenderer createNewScaleRenderer(int tileLevel, View view, HtmlContainer scaleContainer) {
+				return new VectorServerLayerScaleRenderer(VectorServerLayerImpl.this, tileLevel,
+						viewPort.getFixedScale(tileLevel), viewPort, scaleContainer);
+			}
+		};
 	}
 
 	// ------------------------------------------------------------------------

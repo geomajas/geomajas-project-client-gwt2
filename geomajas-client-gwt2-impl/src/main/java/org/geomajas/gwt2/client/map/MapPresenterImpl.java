@@ -240,11 +240,6 @@ public final class MapPresenterImpl implements MapPresenter {
 
 		this.eventBus.addViewPortChangedHandler(new WorldTransformableRenderer());
 
-		// TODO fix this...
-		// final FeatureSelectionRenderer selectionRenderer = new FeatureSelectionRenderer();
-		// eventBus.addLayerVisibilityHandler(selectionRenderer);
-		// eventBus.addFeatureSelectionHandler(selectionRenderer);
-
 		if (isMobileBrowser) {
 			fallbackController = new TouchNavigationController();
 		} else {
@@ -252,6 +247,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		}
 
 		setMapController(fallbackController);
+		setSize(100, 100);
 	}
 
 	// ------------------------------------------------------------------------
@@ -265,9 +261,8 @@ public final class MapPresenterImpl implements MapPresenter {
 		}
 
 		// Configure the ViewPort. This will immediately zoom to the initial bounds:
-		viewPort.setMapSize(display.getWidth(), display.getHeight());
+		//viewPort.setMapSize(display.getWidth(), display.getHeight());
 		((ViewPortImpl) viewPort).initialize(mapOptions);
-		//layersModel.initialize(mapOptions);
 
 		// Immediately zoom to the initial bounds as configured:
 		viewPort.applyBounds(mapOptions.getInitialBounds(), ZoomOption.LEVEL_CLOSEST);

@@ -42,9 +42,13 @@ public interface Geomajas {
 	 * 
 	 * @param mapOptions
 	 *            The map configuration.
+	 * @param mapWidth
+	 *            This initial map width in pixels.
+	 * @param mapHeight
+	 *            This initial map height in pixels.
 	 * @return An initialized map. Time to add some layers!
 	 */
-	MapPresenter createMapPresenter(MapOptions mapOptions);
+	MapPresenter createMapPresenter(MapOptions mapOptions, int mapWidth, int mapHeight);
 
 	/**
 	 * Get the {@link GfxUtil} singleton. Utility service that helps out when rendering custom shapes on the map.

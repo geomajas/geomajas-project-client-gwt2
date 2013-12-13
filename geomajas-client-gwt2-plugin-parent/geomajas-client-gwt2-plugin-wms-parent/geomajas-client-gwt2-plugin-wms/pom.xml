@@ -20,7 +20,7 @@
 
 	<dependencies>
 		<!-- GeoTools dependencies -->
-		<dependency>
+<!-- 		<dependency>
 			<groupId>org.geotools</groupId>
 			<artifactId>gt-xml</artifactId>
 			<exclusions>
@@ -68,6 +68,7 @@
 			<groupId>org.geotools</groupId>
 			<artifactId>gt-render</artifactId>
 		</dependency>
+ -->
 		<dependency>
 			<groupId>org.geomajas.project</groupId>
 			<artifactId>geomajas-project-geometry-jts</artifactId>
@@ -80,7 +81,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-client-gwt2-server-extension</artifactId>
+			<artifactId>geomajas-client-gwt2-impl</artifactId>
 			<exclusions>
 				<exclusion>
 					<groupId>xalan</groupId>
@@ -94,7 +95,7 @@
 		</dependency>
 
 		<!-- HTTP commons -->
-		<dependency>
+<!-- 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 		</dependency>
@@ -102,7 +103,7 @@
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpmime</artifactId>
 		</dependency>
-
+ -->
 		<!-- Google dependencies -->
 		<dependency>
 			<groupId>com.google.gwt</groupId>
@@ -114,7 +115,7 @@
 			<artifactId>gwt-servlet</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-
+<!-- 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
@@ -126,11 +127,6 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-dev</artifactId>
 			<scope>test</scope>
@@ -139,6 +135,12 @@
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-client-gwt2-impl</artifactId>
 			<classifier>tests</classifier>
+			<scope>test</scope>
+		</dependency>
+ -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

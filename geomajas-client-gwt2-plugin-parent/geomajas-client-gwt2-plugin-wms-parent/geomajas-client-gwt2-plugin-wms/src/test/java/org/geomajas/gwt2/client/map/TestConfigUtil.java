@@ -14,8 +14,7 @@ package org.geomajas.gwt2.client.map;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.configuration.client.ClientMapInfo;
-import org.geomajas.configuration.client.ScaleInfo;
+import org.geomajas.geometry.Bbox;
 
 /**
  * Test utility.
@@ -24,21 +23,20 @@ import org.geomajas.configuration.client.ScaleInfo;
  */
 public class TestConfigUtil {
 
-	public static MapConfiguration create(ClientMapInfo mapInfo) {
-		MapConfigurationImpl mapConfig = new MapConfigurationImpl();
-		MapOptions mapOptions = new MapOptions();
-		mapOptions.setCrs(mapInfo.getCrs());
-		mapOptions.setInitialBounds(mapInfo.getInitialBounds());
-		mapOptions.setMaxBounds(mapInfo.getMaxBounds());
-		mapOptions.setMaximumScale(mapInfo.getScaleConfiguration().getMaximumScale().getPixelPerUnit());
-		mapOptions.setPixelLength(mapInfo.getPixelLength());
-		mapOptions.setUnitLength(mapInfo.getUnitLength());
+	public static MapConfiguration getMapConfig() {
+		MapOptions options = new MapOptions();
+		options.setCrs("EPSG:4326");
+		options.setInitialBounds(new Bbox(-100, -100, 200, 200));
+		options.setMaxBounds(new Bbox(-100, -100, 200, 200));
 		List<Double> resolutions = new ArrayList<Double>();
-		for (ScaleInfo scale : mapInfo.getScaleConfiguration().getZoomLevels()) {
-			resolutions.add(scale.getPixelPerUnit());
-		}
-		mapOptions.setResolutions(resolutions);
-		mapConfig.setMapOptions(mapOptions);
-		return mapConfig;
+		resolutions.add(1.0);
+		resolutions.add(2.0);
+		resolutions.add(4.0);
+		resolutions.add(8.0);
+		options.setResolutions(resolutions);
+
+		MapConfigurationImpl config = new MapConfigurationImpl();
+		config.setMapOptions(options);
+		return config;
 	}
 }

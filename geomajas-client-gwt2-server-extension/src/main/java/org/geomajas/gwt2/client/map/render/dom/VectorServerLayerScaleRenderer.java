@@ -23,6 +23,9 @@ import org.geomajas.gwt.client.command.Deferred;
 import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.VectorServerLayer;
+import org.geomajas.gwt2.client.map.render.FixedScaleRenderer;
+import org.geomajas.gwt2.client.map.render.TileLevelRenderedEvent;
+import org.geomajas.gwt2.client.map.render.TileLevelRenderedHandler;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
 import org.geomajas.layer.tile.TileCode;
 

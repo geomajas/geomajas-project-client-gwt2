@@ -27,6 +27,9 @@ import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.RasterServerLayer;
+import org.geomajas.gwt2.client.map.render.FixedScaleRenderer;
+import org.geomajas.gwt2.client.map.render.TileLevelRenderedEvent;
+import org.geomajas.gwt2.client.map.render.TileLevelRenderedHandler;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlImageImpl;
 import org.geomajas.layer.tile.RasterTile;
@@ -190,7 +193,7 @@ public class RasterServerLayerScaleRenderer implements FixedScaleRenderer {
 	 */
 	private class ImageCounter implements Callback<String, String> {
 
-		// In case of failure, we can't just sit and wait. Instead we immediately consider the scale level rendered.
+		// In case of failure, we can't just sit and wait. Instead we immediately consider the scale level rendered?!?
 		public void onFailure(String reason) {
 		}
 
