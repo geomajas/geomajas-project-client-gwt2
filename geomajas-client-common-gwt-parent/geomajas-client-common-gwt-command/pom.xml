@@ -92,7 +92,9 @@
 			<groupId>org.jibx</groupId>
 			<artifactId>jibx-run</artifactId>
 			<scope>test</scope>
-		</dependency>	</dependencies>
+		</dependency>
+
+	</dependencies>
 
 	<build>
 		<resources>

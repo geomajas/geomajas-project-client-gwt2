@@ -13,11 +13,12 @@
 	<packaging>jar</packaging>
 
 	<parent>
-		<groupId>org.geomajas</groupId>
+		<groupId>org.geomajas.project</groupId>
 		<artifactId>geomajas-client-gwt2-parent</artifactId>
 		<version>2.0.0-PURE120-SNAPSHOT</version>
 	</parent>
 
+	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-client-gwt2-impl</artifactId>
 	<name>Geomajas GWT2 client: Main - Implementation</name>
 	<description>Geomajas GWT2 client: Main - Implementation</description>

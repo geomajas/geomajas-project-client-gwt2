@@ -18,6 +18,7 @@
 		<version>1.0.9</version>
 	</parent>
 
+	<groupId>org.geomajas.project</groupId>
 	<artifactId>geomajas-client-gwt2-parent</artifactId>
 	<version>2.0.0-PURE120-SNAPSHOT</version>
 
@@ -38,7 +39,7 @@
 		<module>geomajas-client-gwt2-example-base</module>
 		<module>geomajas-client-gwt2-example-jar</module>
  		<module>geomajas-client-gwt2-documentation</module>
-  		<!-- <module>geomajas-client-gwt2-plugin-parent</module> -->
+  		<module>geomajas-client-gwt2-plugin-parent</module>
 		<module>geomajas-client-gwt2-example</module>
 	</modules>
 
@@ -51,7 +52,7 @@
 
 	<dependencyManagement>
 		<dependencies>
-
+		
 			<!-- Artifacts within this project -->
 			<dependency>
 				<groupId>org.geomajas</groupId>
