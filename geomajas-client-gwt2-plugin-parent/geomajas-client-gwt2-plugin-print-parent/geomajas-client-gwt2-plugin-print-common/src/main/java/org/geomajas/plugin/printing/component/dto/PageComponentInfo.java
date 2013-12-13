@@ -34,7 +34,7 @@ public class PageComponentInfo extends PrintComponentInfo implements Serializabl
 	 * 
 	 * @return locale
 	 *			which should be used for error messages in the print
-	 * @since 2.4.0
+	 * @since 2.0.0
 	 */
 	@Api
 	public String getLocale() {
@@ -46,7 +46,7 @@ public class PageComponentInfo extends PrintComponentInfo implements Serializabl
 	 * 
 	 * @param locale
 	 *			which should be used for error messages in the print
-	 * @since 2.4.0
+	 * @since 2.0.0
 	 */
 	@Api
 	public void setLocale(String locale) {

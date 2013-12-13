@@ -25,9 +25,9 @@ public interface PageComponent extends PrintComponent<PageComponentInfo> {
 	/**
 	 * Get the locale.
 	 * 
-	 * @param locale
+	 * @return  locale
 	 *            which should be used for error messages in the print
-	 * @since 2.4.0
+	 * @since 2.0.0
 	 */
 
 	String getLocale();
@@ -35,9 +35,9 @@ public interface PageComponent extends PrintComponent<PageComponentInfo> {
 	/**
 	 * Set the locale.
 	 * 
-	 * @return locale
+	 * @param locale
 	 *            which should be used for error messages in the print
-	 * @since 2.4.0
+	 * @since 2.0.0
 	 */
 	void setLocale(String locale);
 	
