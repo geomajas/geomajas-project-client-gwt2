@@ -11,6 +11,8 @@
 
 package org.geomajas.plugin.editing.gwt.client;
 
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import org.geomajas.gwt2.client.controller.MapController;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
@@ -20,6 +22,8 @@ import org.geomajas.plugin.editing.client.event.GeometryEditStartEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
+import org.geomajas.plugin.editing.client.handler.EdgeMapHandlerFactory;
+import org.geomajas.plugin.editing.client.handler.VertexMapHandlerFactory;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditServiceImpl;
 import org.geomajas.plugin.editing.client.snap.SnapService;
@@ -129,5 +133,15 @@ public class GeometryEditorImpl implements GeometryEditor, GeometryEditStartHand
 
 	public void setBaseController(EditGeometryBaseController baseController) {
 		this.baseController = baseController;
+	}
+
+	@Override
+	public void addVertexHandlerFactory(VertexMapHandlerFactory factory) {
+		renderer.addVertexHandlerFactory(factory);
+	}
+
+	@Override
+	public void addEdgeHandlerFactory(EdgeMapHandlerFactory factory) {
+		renderer.addEdgeHandlerFactory(factory);
 	}
 }

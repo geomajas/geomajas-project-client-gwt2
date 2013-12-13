@@ -12,6 +12,8 @@ package org.geomajas.plugin.editing.gwt.client;
 
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.plugin.editing.client.BaseGeometryEditor;
+import org.geomajas.plugin.editing.client.handler.EdgeMapHandlerFactory;
+import org.geomajas.plugin.editing.client.handler.VertexMapHandlerFactory;
 import org.geomajas.plugin.editing.gwt.client.controller.EditGeometryBaseController;
 
 /**
@@ -43,4 +45,8 @@ public interface GeometryEditor extends BaseGeometryEditor {
 	 *            controller
 	 */
 	void setBaseController(EditGeometryBaseController baseController);
+
+	void addVertexHandlerFactory(VertexMapHandlerFactory factory);
+
+	void addEdgeHandlerFactory(EdgeMapHandlerFactory factory);
 }

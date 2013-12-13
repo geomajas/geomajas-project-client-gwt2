@@ -19,15 +19,15 @@
 		<version>2.0.0-PURE120-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>geomajas-plugin-graphicsediting-gwt2</artifactId>
-	<name>Geomajas GWT2 client: Plugin Graphics - Definition</name>
-	<description>Geomajas GWT2 client: Plugin Graphics -  Definition</description>
+	<artifactId>geomajas-client-gwt2-plugin-graphicsediting</artifactId>
+	<name>Geomajas GWT2 client: Plugin GraphicsEditing - Definition</name>
+	<description>Geomajas GWT2 client: Plugin GraphicsEditing -  Definition</description>
 
 	<dependencies>
 		<!-- Geomajas Project dependencies -->
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-editing-gwt2</artifactId>
+			<artifactId>geomajas-client-gwt2-plugin-editing-impl</artifactId>
 		</dependency>
 		
 		<!-- Geomajas Project dependencies -->

@@ -19,6 +19,7 @@ import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.geometry.Matrix;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt2.client.controller.MapController;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
@@ -55,6 +56,8 @@ import org.geomajas.plugin.editing.client.event.state.GeometryIndexMarkForDeleti
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexSelectedEvent;
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexSelectedHandler;
 import org.geomajas.plugin.editing.client.gfx.GeometryRenderer;
+import org.geomajas.plugin.editing.client.handler.EdgeMapHandlerFactory;
+import org.geomajas.plugin.editing.client.handler.VertexMapHandlerFactory;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
@@ -64,6 +67,10 @@ import org.vaadin.gwtgraphics.client.VectorObject;
 import org.vaadin.gwtgraphics.client.shape.Path;
 import org.vaadin.gwtgraphics.client.shape.path.LineTo;
 import org.vaadin.gwtgraphics.client.shape.path.MoveTo;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Renderer for geometries during the editing process.
@@ -426,6 +433,16 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 		if (container != null) {
 			container.setVisible(visible);
 		}
+	}
+
+	@Override
+	public void addVertexHandlerFactory(VertexMapHandlerFactory factory) {
+		((DefaultGeometryIndexControllerFactory) controllerFactory).addVertexHandlerFactory(factory);
+	}
+
+	@Override
+	public void addEdgeHandlerFactory(EdgeMapHandlerFactory factory) {
+		((DefaultGeometryIndexControllerFactory) controllerFactory).addEdgeHandlerFactory(factory);
 	}
 
 	// ------------------------------------------------------------------------

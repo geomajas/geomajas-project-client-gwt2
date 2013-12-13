@@ -15,11 +15,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
-		<artifactId>geomajas-plugin-graphicsediting-parent</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<artifactId>geomajas-client-gwt2-plugin-graphicsediting-parent</artifactId>
+		<version>2.0.0-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>geomajas-plugin-graphicsediting-gwt2-example</artifactId>
+	<artifactId>geomajas-client-gwt2-plugin-graphicsediting-example</artifactId>
 	<packaging>war</packaging>
 	
 	<name>Geomajas Graphics Editing Showcase Example Application</name>
@@ -27,34 +27,15 @@
 	<url>http://www.geomajas.org/</url>
 
 	<dependencies>
-		<!-- Geomajas dependencies -->
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-impl</artifactId>
+			<artifactId>geomajas-client-gwt2-example-base</artifactId>
 		</dependency>
-		
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-api</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-command</artifactId>
-		</dependency>
-		
+
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-graphicsediting-gwt2-example-jar</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-rasterizing</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-testdata</artifactId>
+			<artifactId>geomajas-client-gwt2-plugin-graphicsediting-example-jar</artifactId>
+			<version>2.0.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
@@ -97,7 +78,6 @@
 
 	<build>
 		<plugins>
-
 			<!-- Run the application using "mvn jetty:run" -->
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
@@ -115,28 +95,31 @@
 				</configuration>
 			</plugin>
 
+			<!-- some default config, added to in profiles -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
-				<version>2.5.0</version>
+				<version>${version-gwt}</version>
 				<dependencies>
 					<dependency>
 						<groupId>com.google.gwt</groupId>
 						<artifactId>gwt-user</artifactId>
-						<version>${gwt-version}</version>
+						<version>${version-gwt}</version>
 					</dependency>
 					<dependency>
 						<groupId>com.google.gwt</groupId>
 						<artifactId>gwt-dev</artifactId>
-						<version>${gwt-version}</version>
+						<version>${version-gwt}</version>
 					</dependency>
 				</dependencies>
 				<configuration>
+					<disableCastChecking>true</disableCastChecking>
+					<disableClassMetadata>false</disableClassMetadata>
+					<draftCompile>true</draftCompile>
+					<optimizationLevel>0</optimizationLevel>
+					<extraJvmArgs>-Xmx1024M -Xss1024k</extraJvmArgs>
 					<module>org.geomajas.plugin.graphicsediting.gwt2.example.GraphicsEditingGwt2Example</module>
 					<runTarget>index.html</runTarget>
-					<disableCastChecking>true</disableCastChecking>
-					<disableClassMetadata>true</disableClassMetadata>
-					<extraJvmArgs>-Xmx1024M -Xss1024k</extraJvmArgs>
 					<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
 					<copyWebapp>true</copyWebapp>
 				</configuration>
@@ -184,7 +167,7 @@
 						<deployables>
 							<deployable>
 								<groupId>org.geomajas.plugin</groupId>
-								<artifactId>geomajas-plugin-graphicsediting-gwt2-example</artifactId>
+								<artifactId>geomajas-client-gwt2-plugin-graphicsediting-example</artifactId>
 								<type>war</type>
 								<properties>
 									<context>graphics-editing</context>
@@ -226,7 +209,7 @@
 				<dependency>
 					<groupId>com.google.gwt</groupId>
 					<artifactId>gwt-dev</artifactId>
-					<version>${gwt-version}</version>
+					<version>${version-gwt}</version>
 					<scope>provided</scope>
 				</dependency>
 			</dependencies>
@@ -318,7 +301,7 @@
 	</profiles>
 
 	<properties>
-		<gwt-version>2.5.0</gwt-version>
+		<!--<gwt-version>2.5.0</gwt-version>-->
 		<gwt.compiler.skip>false</gwt.compiler.skip>
 	</properties>
 

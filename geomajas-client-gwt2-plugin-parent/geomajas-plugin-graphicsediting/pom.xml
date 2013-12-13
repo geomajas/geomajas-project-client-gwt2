@@ -19,10 +19,9 @@
 		<version>2.0.0-PURE120-SNAPSHOT</version>
 	</parent>
 
-	<groupId>org.geomajas.plugin</groupId>
-	<artifactId>geomajas-plugin-graphicsediting-parent</artifactId>
+	<artifactId>geomajas-client-gwt2-plugin-graphicsediting-parent</artifactId>
 
-	<name>Geomajas GWT2 client: Plugin Graphics - Parent</name>
+	<name>Geomajas GWT2 client: Plugin GraphicsEditing - Parent</name>
 	<description>
 		Geomajas Graphics Editing plugin. The graphics editing plugin defines a set of interfaces and controllers for editing graphical objects in maps based on gwt-graphics.
 		It can be used as a basis for annotations (based on SVG/VML elements) as well as to extend 
@@ -35,7 +34,8 @@
 
 	<modules>
 		<module>graphicsediting-gwt2</module>
-		<module>graphicsediting-gwt2-example-jar</module>
+		<!--<module>graphicsediting-gwt2-example</module>-->
+		<!--<module>graphicsediting-gwt2-example-jar</module>-->
 	</modules>
 
 </project>

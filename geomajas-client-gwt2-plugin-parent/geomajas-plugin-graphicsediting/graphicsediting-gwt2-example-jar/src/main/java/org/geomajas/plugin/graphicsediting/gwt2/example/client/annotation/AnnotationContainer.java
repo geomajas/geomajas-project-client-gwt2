@@ -41,6 +41,7 @@ public class AnnotationContainer extends AbstractGraphicsObjectContainer impleme
 		super(eventBus);
 		this.mapPresenter = mapPresenter;
 		mapPresenter.getEventBus().addViewPortChangedHandler(this);
+		setBackGround(mapPresenter.asWidget());
 	}
 
 	@Override

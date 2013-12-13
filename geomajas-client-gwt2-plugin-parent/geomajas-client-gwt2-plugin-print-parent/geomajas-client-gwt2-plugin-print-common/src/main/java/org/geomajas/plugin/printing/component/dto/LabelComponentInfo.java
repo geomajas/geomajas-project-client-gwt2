@@ -201,7 +201,7 @@ public class LabelComponentInfo extends PrintComponentInfo {
 	/**
 	 * @return the max. width of the rendered text excl. margins (in point units); If 0, it there's no limit imposed by
 	 *         the client
-	 * @since 2.4.0
+	 * @since 2.0.0
 	 */
 	public float getMaxWidthText() {
 		return maxWidthText;
@@ -213,7 +213,7 @@ public class LabelComponentInfo extends PrintComponentInfo {
 	 * 
 	 * @param maxWidthText
 	 *            max. width of the rendered text excl. margin (in point units)
-	 * @since 2.4.0
+	 * @since 2.0.0
 	 */
 	public void setMaxWidthText(float maxWidthText) {
 		this.maxWidthText = maxWidthText;

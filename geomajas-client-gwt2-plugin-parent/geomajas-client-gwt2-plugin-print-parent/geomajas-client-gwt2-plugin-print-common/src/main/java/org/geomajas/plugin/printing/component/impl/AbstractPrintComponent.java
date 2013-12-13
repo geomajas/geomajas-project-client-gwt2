@@ -20,7 +20,7 @@ import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
  * Variant of {@link PrintComponentImpl} which uses better class name.
  *
  * @author Jan De Moerloose
- * @since 2.1.0
+ * @since 2.0.0
  *
  * @param <T> DTO object class
  *
