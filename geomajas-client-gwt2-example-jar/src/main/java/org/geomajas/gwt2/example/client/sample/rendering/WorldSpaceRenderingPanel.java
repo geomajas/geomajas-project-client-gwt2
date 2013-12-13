@@ -17,13 +17,14 @@ import org.geomajas.geometry.Matrix;
 import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.geometry.service.WktException;
 import org.geomajas.geometry.service.WktService;
+import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.event.MapInitializationEvent;
 import org.geomajas.gwt2.client.event.MapInitializationHandler;
 import org.geomajas.gwt2.client.gfx.GfxUtil;
 import org.geomajas.gwt2.client.gfx.VectorContainer;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
-import org.geomajas.gwt2.example.client.ExampleJar;
 import org.vaadin.gwtgraphics.client.VectorObject;
 import org.vaadin.gwtgraphics.client.shape.Circle;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
@@ -65,7 +66,7 @@ public class WorldSpaceRenderingPanel implements SamplePanel {
 		Widget layout = UI_BINDER.createAndBindUi(this);
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = ExampleJar.getInjector().getMapPresenter();
+		mapPresenter = GeomajasImpl.getInstance().createMapPresenter();
 		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 
@@ -75,7 +76,7 @@ public class WorldSpaceRenderingPanel implements SamplePanel {
 		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("gwt-app", "mapOsm");
+		GeomajasServerExtension.initializeMap(mapPresenter, "gwt-app", "mapOsm");
 		return layout;
 	}
 
@@ -126,7 +127,7 @@ public class WorldSpaceRenderingPanel implements SamplePanel {
 
 	private VectorObject scaleAndStyle(Geometry geom) {
 		Matrix scale = new Matrix(1000000, 0, 0, 1000000, 0, 0);
-		GfxUtil util = ExampleJar.getInjector().getGfxUtil();
+		GfxUtil util = GeomajasImpl.getInstance().getGfxUtil();
 		VectorObject shape = util.toShape(transform(geom, scale));
 		util.applyStroke(shape, "#CC9900", 0.8, 1, "2 5");
 		util.applyFill(shape, "#CC9900", geom.getGeometryType().endsWith("String") ? 0f : 0.5f);

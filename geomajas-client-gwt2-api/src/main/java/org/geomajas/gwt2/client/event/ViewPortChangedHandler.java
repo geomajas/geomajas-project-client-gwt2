@@ -39,20 +39,4 @@ public interface ViewPortChangedHandler extends EventHandler {
 	 *            The actual {@link org.geomajas.gwt2.client.event.ViewPortChangedEvent}.
 	 */
 	void onViewPortChanged(ViewPortChangedEvent event);
-
-	/**
-	 * Catches events where the <code>ViewPort</code> scaled only.
-	 * 
-	 * @param event
-	 *            The actual {@link org.geomajas.gwt2.client.event.ViewPortScaledEvent}.
-	 */
-	void onViewPortScaled(ViewPortScaledEvent event);
-
-	/**
-	 * Catches events where the <code>ViewPort</code> has translated only.
-	 * 
-	 * @param event
-	 *            The actual {@link org.geomajas.gwt2.client.event.ViewPortTranslatedEvent}.
-	 */
-	void onViewPortTranslated(ViewPortTranslatedEvent event);
 }

@@ -19,7 +19,6 @@ import org.geomajas.gwt2.example.base.client.widget.ShowcaseDialogBox;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.inject.client.Ginjector;
 import com.google.gwt.user.client.Window;
 
 /**
@@ -29,16 +28,15 @@ import com.google.gwt.user.client.Window;
  */
 public class ExampleBase implements EntryPoint {
 
-	// private static final GeomajasGinjector GEOMAJASINJECTOR = GWT.create(GeomajasGinjector.class);
-	private static Ginjector ginjector;
-
 	private static final ShowcaseResource RESOURCE = GWT.create(ShowcaseResource.class);
 
 	private static final ShowcaseLayout LAYOUT = new ShowcaseLayout();
 
-	public static final Bbox BBOX_ITALY = new Bbox(868324, 4500612, 1174072, 1174072);
+	public static final Bbox BBOX_ITALY = new Bbox(41581, 4189061, 2348145, 2348145);
 
 	public static final Bbox BBOX_AFRICA = new Bbox(-2915614, -4324501, 9392582, 9392582);
+
+	public static final Bbox BBOX_LATLON_USA = new Bbox(-142.5, -16, 90.0, 90.0);
 
 	public void onModuleLoad() {
 		// Prepare styling:
@@ -47,14 +45,6 @@ public class ExampleBase implements EntryPoint {
 
 	public static ShowcaseLayout getLayout() {
 		return LAYOUT;
-	}
-
-	public static Ginjector getInjector() {
-		return ginjector;
-	}
-
-	public static void setInjector(Ginjector injector) {
-		ginjector = injector;
 	}
 
 	public static ShowcaseResource getShowcaseResource() {

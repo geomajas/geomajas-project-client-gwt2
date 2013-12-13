@@ -10,15 +10,20 @@
  */
 package org.geomajas.plugin.wmsclient.printing.client;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.gwt2.client.gfx.tile.Tile;
 import org.geomajas.gwt2.client.map.MapPresenter;
-import org.geomajas.gwt2.client.map.ZoomStrategy.ZoomOption;
 import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.client.map.layer.OpacitySupported;
+import org.geomajas.layer.tile.RasterTile;
+import org.geomajas.layer.tile.TileCode;
 import org.geomajas.plugin.printing.client.template.PrintableLayerBuilder;
 import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
-import org.geomajas.plugin.wmsclient.client.layer.WmsLayer;
+import org.geomajas.plugin.wms.client.layer.WmsLayer;
 import org.geomajas.plugin.wmsclient.printing.server.dto.WmsClientLayerInfo;
 
 /**
@@ -32,13 +37,15 @@ public class WmsLayerBuilder implements PrintableLayerBuilder {
 	public ClientLayerInfo build(MapPresenter mapPresenter, Layer layer, Bbox worldBounds, double scale) {
 		WmsLayer wmsLayer = (WmsLayer) layer;
 
-		// fromDto()
 		WmsClientLayerInfo info = new WmsClientLayerInfo();
-		info.setTiles(wmsLayer.getTiles(scale, worldBounds));
+		List<RasterTile> tiles = new ArrayList<RasterTile>();
+		for (Tile tile : wmsLayer.getTiles(scale, worldBounds)) {
+			tiles.add(toRasterTile(tile));
+		}
+		info.setTiles(tiles);
 		info.setTileHeight(wmsLayer.getTileConfig().getTileHeight());
 		info.setTileWidth(wmsLayer.getTileConfig().getTileWidth());
-		// the actual scale may be different !
-		info.setScale(mapPresenter.getViewPort().getZoomStrategy().checkScale(scale, ZoomOption.LEVEL_CLOSEST));
+		info.setScale(scale);
 
 		info.setId(wmsLayer.getId());
 		RasterLayerRasterizingInfo rasterInfo = new RasterLayerRasterizingInfo();
@@ -56,5 +63,12 @@ public class WmsLayerBuilder implements PrintableLayerBuilder {
 	@Override
 	public boolean supports(Layer layer) {
 		return layer instanceof WmsLayer;
+	}
+
+	private RasterTile toRasterTile(Tile tile) {
+		RasterTile rTile = new RasterTile(tile.getBounds(), tile.getCode().toString());
+		rTile.setCode(new TileCode(tile.getCode().getTileLevel(), tile.getCode().getX(), tile.getCode().getY()));
+		rTile.setUrl(tile.getUrl());
+		return rTile;
 	}
 }

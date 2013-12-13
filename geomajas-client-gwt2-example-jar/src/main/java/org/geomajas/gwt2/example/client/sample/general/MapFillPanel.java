@@ -11,12 +11,13 @@
 
 package org.geomajas.gwt2.example.client.sample.general;
 
+import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.event.MapInitializationEvent;
 import org.geomajas.gwt2.client.event.MapInitializationHandler;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.widget.MapLayoutPanel;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
-import org.geomajas.gwt2.example.client.ExampleJar;
 
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -38,12 +39,12 @@ public class MapFillPanel implements SamplePanel {
 		resizeLayoutPanel.setSize("100%", "100%");
 
 		// Create the MapPresenter and add to the layout:
-		mapPresenter = ExampleJar.getInjector().getMapPresenter();
+		mapPresenter = GeomajasImpl.getInstance().createMapPresenter();
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 		layout.setPresenter(mapPresenter);
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("gwt-app", "mapOsm");
+		GeomajasServerExtension.initializeMap(mapPresenter, "gwt-app", "mapOsm");
 		return resizeLayoutPanel;
 	}
 

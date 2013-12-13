@@ -89,6 +89,26 @@ public final class DomService {
 		Dom.setStyleAttribute(element, "left", left + "px");
 	}
 
+	public static void applyTransition(Element element, String[] properties, Integer[] millis) {
+		if (properties != null && properties.length > 0 && millis != null && millis.length == properties.length) {
+			StringBuilder builder = new StringBuilder();
+			for (int i = 0; i < properties.length; i++) {
+				if (i > 0) {
+					builder.append(", ");
+				}
+				builder.append(properties[i]);
+				builder.append(" ");
+				builder.append((double) millis[i] / 1000.0);
+				builder.append("s");
+			}
+			String value = builder.toString();
+			element.getStyle().setProperty("transition", value);
+			element.getStyle().setProperty("WebkitTransition", value);
+			element.getStyle().setProperty("MozTransition", value);
+			element.getStyle().setProperty("OTransition", value);
+		}
+	}
+
 	// ------------------------------------------------------------------------
 	// Private methods:
 	// ------------------------------------------------------------------------

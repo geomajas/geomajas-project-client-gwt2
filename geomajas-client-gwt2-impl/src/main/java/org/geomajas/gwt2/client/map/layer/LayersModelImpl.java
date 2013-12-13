@@ -14,69 +14,54 @@ package org.geomajas.gwt2.client.map.layer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.configuration.client.ClientLayerInfo;
-import org.geomajas.configuration.client.ClientMapInfo;
-import org.geomajas.configuration.client.ClientRasterLayerInfo;
-import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.gwt2.client.event.LayerAddedEvent;
 import org.geomajas.gwt2.client.event.LayerDeselectedEvent;
 import org.geomajas.gwt2.client.event.LayerOrderChangedEvent;
 import org.geomajas.gwt2.client.event.LayerRemovedEvent;
 import org.geomajas.gwt2.client.event.LayerSelectedEvent;
 import org.geomajas.gwt2.client.event.LayerSelectionHandler;
+import org.geomajas.gwt2.client.map.MapConfiguration;
 import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.ViewPort;
-
-import com.google.inject.Inject;
 
 /**
  * Default implementation of the {@link LayersModel} interface.
  * 
  * @author Pieter De Graef
  */
-public final class LayersModelImpl implements LayersModel {
+public class LayersModelImpl implements LayersModel {
 
-	private ClientMapInfo mapInfo;
+	private final ViewPort viewPort;
 
-	private ViewPort viewPort;
+	private final MapEventBus eventBus;
 
-	private MapEventBus eventBus;
+	private final MapConfiguration configuration;
 
 	/**
 	 * An ordered list of layers. The drawing order on the map is as follows: the first layer will be placed at the
 	 * bottom, the last layer on top.
 	 */
-	private List<Layer> layers = new ArrayList<Layer>();
-
-	@Inject
-	private LayerFactory layerFactory;
+	private final List<Layer> layers;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	@Inject
-	private LayersModelImpl() {
-	}
-
-	// ------------------------------------------------------------------------
-	// MapModel implementation:
-	// ------------------------------------------------------------------------
-
 	/**
-	 * Initialization method for the layers model.
+	 * Create a new LayersModel.
 	 * 
-	 * @param mapInfo
-	 *            The configuration object from which this model should build itself.
 	 * @param viewPort
-	 *            The view port that is associated with the same map this layer model belongs to.
+	 *            The map ViewPort.
 	 * @param eventBus
-	 *            Event bus that governs all event related to this layers model.
+	 *            The same maps eventBus
+	 * @param configuration
+	 *            The maps configuration object.
 	 */
-	public void initialize(ClientMapInfo mapInfo, ViewPort viewPort, MapEventBus eventBus) {
-		this.mapInfo = mapInfo;
+	public LayersModelImpl(ViewPort viewPort, MapEventBus eventBus, MapConfiguration configuration) {
 		this.viewPort = viewPort;
 		this.eventBus = eventBus;
+		this.configuration = configuration;
+		this.layers = new ArrayList<Layer>();
 
 		// Add a layer selection handler that allows only one selected layer at a time:
 		eventBus.addLayerSelectionHandler(new LayerSelectionHandler() {
@@ -92,14 +77,11 @@ public final class LayersModelImpl implements LayersModel {
 			public void onDeselectLayer(LayerDeselectedEvent event) {
 			}
 		});
-
-		// Create all the layers:
-		layers = new ArrayList<Layer>();
-		for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
-			Layer layer = createLayer(layerInfo);
-			addLayer(layer);
-		}
 	}
+
+	// ------------------------------------------------------------------------
+	// MapModel implementation:
+	// ------------------------------------------------------------------------
 
 	@Override
 	public boolean addLayer(Layer layer) {
@@ -113,50 +95,26 @@ public final class LayersModelImpl implements LayersModel {
 				aLayer.setViewPort(viewPort);
 				aLayer.setEventBus(eventBus);
 			}
+			configuration.setAnimated(layer, layers.size() == 1);
 			eventBus.fireEvent(new LayerAddedEvent(layer));
 			return true;
 		}
 		return false;
 	}
 
-	private Layer createLayer(ClientLayerInfo layerInfo) {
-		ServerLayer<?> layer = null;
-		switch (layerInfo.getLayerType()) {
-			case RASTER:
-				layer = layerFactory.createRasterLayer((ClientRasterLayerInfo) layerInfo, viewPort, eventBus);
-				break;
-			default:
-				layer = layerFactory.createVectorLayer((ClientVectorLayerInfo) layerInfo, viewPort, eventBus);
-				break;
-		}
-		if (!mapInfo.getLayers().contains(layer.getLayerInfo())) {
-			mapInfo.getLayers().add(layer.getLayerInfo());
-		}
-		return layer;
-	}
-
+	@Override
 	public boolean removeLayer(String id) {
 		Layer layer = getLayer(id);
 		if (layer != null) {
 			int index = getLayerPosition(layer);
 			layers.remove(layer);
-			if (layer instanceof ServerLayer) {
-				ServerLayer<?> serverLayer = (ServerLayer<?>) layer;
-				mapInfo.getLayers().remove(serverLayer.getLayerInfo());
-			}
 			eventBus.fireEvent(new LayerRemovedEvent(layer, index));
 			return true;
 		}
 		return false;
 	}
 
-	/**
-	 * Get a single layer by its identifier.
-	 * 
-	 * @param id
-	 *            The layers unique identifier within this map.
-	 * @return Returns the layer, or null if it could not be found.
-	 */
+	@Override
 	public Layer getLayer(String id) {
 		if (id == null) {
 			throw new IllegalArgumentException("Null ID passed to the getLayer method.");
@@ -169,15 +127,12 @@ public final class LayersModelImpl implements LayersModel {
 		return null;
 	}
 
-	/**
-	 * Return the total number of layers within this map.
-	 * 
-	 * @return The layer count.
-	 */
+	@Override
 	public int getLayerCount() {
 		return layers.size();
 	}
 
+	@Override
 	public boolean moveLayer(Layer layer, int index) {
 		int currentIndex = getLayerPosition(layer);
 		// Check the new index:
@@ -190,31 +145,6 @@ public final class LayersModelImpl implements LayersModel {
 			return false;
 		}
 
-		
-		ClientLayerInfo layerInfo = null;
-		int newIndexMapInfo = -1;
-		// Check if both the layer with whom the specified layer will swap (concerning the ordering) and 
-		// the specified layer are server layers. If so their position in the mapInfo.getLayers() must also be swapped 
-		if (layer instanceof ServerLayer && layers.get(index) instanceof ServerLayer) {
-			ServerLayer<?> serverLayer = (ServerLayer<?>) layer;
-			layerInfo = serverLayer.getLayerInfo();
-			
-			int idx = 0;
-			for (ClientLayerInfo layerInMapInfo : mapInfo.getLayers()) {
-				if (layerInMapInfo.getId().equals(layerInfo.getId())) {
-					
-					if (index > currentIndex) {
-						newIndexMapInfo = idx + 1; 
-					} else {
-						newIndexMapInfo = idx - 1;
-					}
-					break; // Stop when found
-				}
-				idx++;
-			}
-		}
-
-		
 		// Index might have been altered; check again if it is really a change:
 		if (currentIndex == index) {
 			return false;
@@ -225,32 +155,22 @@ public final class LayersModelImpl implements LayersModel {
 		// Change the order:
 		layers.add(index, layer);
 
-		if (layerInfo != null && newIndexMapInfo >= 0) {
-			mapInfo.getLayers().remove(layerInfo); // remove from mapInfo.layers
-			mapInfo.getLayers().add(newIndexMapInfo, layerInfo); // put back (changed order)
-		}
-
 		// Send out the correct event:
 		eventBus.fireEvent(new LayerOrderChangedEvent(currentIndex, index));
 		return true;
 	}
 
+	@Override
 	public boolean moveLayerUp(Layer layer) {
 		return moveLayer(layer, getLayerPosition(layer) + 1);
 	}
 
+	@Override
 	public boolean moveLayerDown(Layer layer) {
 		return moveLayer(layer, getLayerPosition(layer) - 1);
 	}
 
-	/**
-	 * Get the position of a certain layer in this map model.
-	 * 
-	 * @param layer
-	 *            The layer to return the position for.
-	 * @return Returns the position of the layer in the map. This position determines layer order. If the layer was not
-	 *         found, than -1 is returned.
-	 */
+	@Override
 	public int getLayerPosition(Layer layer) {
 		if (layer == null) {
 			throw new IllegalArgumentException("Null value passed to the getLayerPosition method.");
@@ -263,22 +183,12 @@ public final class LayersModelImpl implements LayersModel {
 		return -1;
 	}
 
-	/**
-	 * Return the layer at a certain index. If the index can't be found, null is returned.
-	 * 
-	 * @param index
-	 *            The specified index.
-	 * @return Returns the layer, or null if the index can't be found.
-	 */
+	@Override
 	public Layer getLayer(int index) {
 		return layers.get(index);
 	}
 
-	/**
-	 * Return the currently selected layer within this map model.
-	 * 
-	 * @return Returns the selected layer, or null if no layer is selected.
-	 */
+	@Override
 	public Layer getSelectedLayer() {
 		if (layers != null) {
 			for (Layer layer : layers) {

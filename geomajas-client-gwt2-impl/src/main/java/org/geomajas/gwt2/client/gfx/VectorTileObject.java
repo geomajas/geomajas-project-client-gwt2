@@ -12,7 +12,6 @@
 package org.geomajas.gwt2.client.gfx;
 
 import org.geomajas.gwt.client.util.Dom;
-import org.geomajas.gwt2.client.map.render.VectorTilePresenter.TileView;
 import org.vaadin.gwtgraphics.client.Group;
 import org.vaadin.gwtgraphics.client.VectorObject;
 
@@ -26,7 +25,7 @@ import com.google.gwt.user.client.Element;
  * 
  * @author Pieter De Graef
  */
-public class VectorTileObject extends VectorObject implements TileView {
+public class VectorTileObject extends VectorObject {
 
 	/**
 	 * Set the actual tile contents. This string will probably come from the server which has the capability to create

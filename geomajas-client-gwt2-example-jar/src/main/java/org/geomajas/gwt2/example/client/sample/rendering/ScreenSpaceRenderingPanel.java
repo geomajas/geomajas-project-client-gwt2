@@ -13,12 +13,13 @@ package org.geomajas.gwt2.example.client.sample.rendering;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.event.MapInitializationEvent;
 import org.geomajas.gwt2.client.event.MapInitializationHandler;
 import org.geomajas.gwt2.client.gfx.VectorContainer;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
-import org.geomajas.gwt2.example.client.ExampleJar;
 import org.vaadin.gwtgraphics.client.Shape;
 import org.vaadin.gwtgraphics.client.shape.Circle;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
@@ -61,7 +62,7 @@ public class ScreenSpaceRenderingPanel implements SamplePanel {
 		Widget layout = UI_BINDER.createAndBindUi(this);
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = ExampleJar.getInjector().getMapPresenter();
+		mapPresenter = GeomajasImpl.getInstance().createMapPresenter();
 		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 
@@ -71,7 +72,7 @@ public class ScreenSpaceRenderingPanel implements SamplePanel {
 		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("gwt-app", "mapOsm");
+		GeomajasServerExtension.initializeMap(mapPresenter, "gwt-app", "mapOsm");
 		return layout;
 	}
 
@@ -112,7 +113,7 @@ public class ScreenSpaceRenderingPanel implements SamplePanel {
 				new Coordinate(190, 230), new Coordinate(140, 230), new Coordinate(140, 180) });
 		geometry.setGeometries(new Geometry[] { shell, hole });
 
-		Shape shape = (Shape) ExampleJar.getInjector().getGfxUtil().toShape(geometry);
+		Shape shape = (Shape) GeomajasImpl.getInstance().getGfxUtil().toShape(geometry);
 		shape.setFillColor("#0066AA");
 		shape.setFillOpacity(0.4);
 		shape.setStrokeColor("#004499");

@@ -72,6 +72,12 @@ public interface SampleMessages extends Messages {
 
 	String generalControlsDescription();
 
+	String generalTraceNavigationTitle();
+
+	String generalTraceNavigationShort();
+
+	String generalTraceNavigationDescription();
+
 	// ------------------------------------------------------------------------
 	// Category: Layers
 	// ------------------------------------------------------------------------

@@ -12,13 +12,14 @@
 package org.geomajas.gwt2.client.event;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.gwt2.client.map.ViewPort;
+import org.geomajas.gwt2.client.animation.Trajectory;
+import org.geomajas.gwt2.client.map.View;
 
 import com.google.web.bindery.event.shared.Event;
 
 /**
- * Event that is fired when the view on the {@link ViewPort} has been changed so that both scaling and translation have
- * occurred or the view has resized.
+ * Event that is fired when the view on the {@link org.geomajas.gwt2.client.map.ViewPort} has been changed so that both
+ * scaling and translation have occurred or the view has resized.
  * 
  * @author Pieter De Graef
  * @since 1.0.0
@@ -26,7 +27,11 @@ import com.google.web.bindery.event.shared.Event;
 @Api(allMethods = true)
 public class ViewPortChangedEvent extends Event<ViewPortChangedHandler> {
 
-	private final ViewPort viewPort;
+	private final View from;
+
+	private final View to;
+
+	private final Trajectory trajectory;
 
 	// -------------------------------------------------------------------------
 	// Constructor:
@@ -34,10 +39,13 @@ public class ViewPortChangedEvent extends Event<ViewPortChangedHandler> {
 	/**
 	 * Create an event for the specified view port.
 	 * 
-	 * @param viewPort the view port
+	 * @param viewPort
+	 *            the view port
 	 */
-	public ViewPortChangedEvent(ViewPort viewPort) {
-		this.viewPort = viewPort;
+	public ViewPortChangedEvent(View from, View to, Trajectory trajectory) {
+		this.from = from;
+		this.to = to;
+		this.trajectory = trajectory;
 	}
 
 	// -------------------------------------------------------------------------
@@ -49,20 +57,39 @@ public class ViewPortChangedEvent extends Event<ViewPortChangedHandler> {
 		return ViewPortChangedHandler.TYPE;
 	}
 
-	/**
-	 * Get the view port that has changed.
-	 * 
-	 * @return the view port
-	 */
-	public ViewPort getViewPort() {
-		return viewPort;
-	}
-
 	// ------------------------------------------------------------------------
 	// Protected methods:
 	// ------------------------------------------------------------------------
 
 	protected void dispatch(ViewPortChangedHandler handler) {
 		handler.onViewPortChanged(this);
+	}
+
+	/**
+	 * Get the previous view on the map.
+	 * 
+	 * @return The previous view on the map.
+	 */
+	public View getFrom() {
+		return from;
+	}
+
+	/**
+	 * Get the current view on the map.
+	 * 
+	 * @return The current view on the map.
+	 */
+	public View getTo() {
+		return to;
+	}
+
+	/**
+	 * If this ViewPort update is part of a navigation animation, this trajectory will describe it's course.
+	 * 
+	 * @return The trajectory this update is part of. This value may be null if this update is not part of a navigation
+	 *         animation.
+	 */
+	public Trajectory getTrajectory() {
+		return trajectory;
 	}
 }

@@ -21,8 +21,6 @@ import com.google.gwt.dom.client.Touch;
 import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseEvent;
 import com.google.gwt.event.dom.client.TouchEvent;
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 
 /**
  * Utility methods for acquiring information out of events that come from the map.
@@ -37,9 +35,9 @@ public class MapEventParserImpl implements MapEventParser {
 	 * This object must be initialized with the map it's supposed to interpret the events from.
 	 * 
 	 * @param mapPresenter
+	 *            The map that is the origin of the events.
 	 */
-	@Inject
-	public MapEventParserImpl(@Assisted MapPresenter mapPresenter) {
+	public MapEventParserImpl(MapPresenter mapPresenter) {
 		this.mapPresenter = mapPresenter;
 	}
 
@@ -48,7 +46,8 @@ public class MapEventParserImpl implements MapEventParser {
 		switch (renderSpace) {
 			case WORLD:
 				Coordinate screen = getLocation(event, RenderSpace.SCREEN);
-				return mapPresenter.getViewPort().transform(screen, RenderSpace.SCREEN, RenderSpace.WORLD);
+				return mapPresenter.getViewPort().getTransformationService()
+						.transform(screen, RenderSpace.SCREEN, RenderSpace.WORLD);
 			case SCREEN:
 			default:
 				if (event instanceof MouseEvent<?>) {

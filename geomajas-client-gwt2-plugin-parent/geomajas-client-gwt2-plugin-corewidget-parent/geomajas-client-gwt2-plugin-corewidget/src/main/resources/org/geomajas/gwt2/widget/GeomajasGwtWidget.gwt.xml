@@ -11,9 +11,7 @@
 
 <module>
     <inherits name="org.geomajas.gwt2.GeomajasClientImpl"/>
-<!-- 
-    <inherits name="com.google.gwt.inject.Inject"/>
- -->
+
     <source path="client">
         <exclude name="*Test*.java"/>
     </source>

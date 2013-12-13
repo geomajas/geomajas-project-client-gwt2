@@ -59,7 +59,7 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 	protected boolean shift;
 
 	protected VectorContainer container;
-	
+
 	protected boolean dragging;
 
 	// ------------------------------------------------------------------------
@@ -104,7 +104,8 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 			updateRectangle(event);
 
 			Bbox bounds = new Bbox(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
-			execute(mapPresenter.getViewPort().transform(bounds, RenderSpace.SCREEN, RenderSpace.WORLD));
+			execute(mapPresenter.getViewPort().getTransformationService()
+					.transform(bounds, RenderSpace.SCREEN, RenderSpace.WORLD));
 
 			stopDragging();
 			dragging = false;
@@ -146,7 +147,8 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 	/**
 	 * Set the fill color of the rectangle.
 	 * 
-	 * @param fillColor the css fill color
+	 * @param fillColor
+	 *            the css fill color
 	 */
 	public void setRectangleFillColor(String fillColor) {
 		this.fillColor = fillColor;
@@ -164,7 +166,8 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 	/**
 	 * Set the fill opacity of the rectangle.
 	 * 
-	 * @param fillOpacity the fill opacity
+	 * @param fillOpacity
+	 *            the fill opacity
 	 */
 	public void setRectangleFillOpacity(float fillOpacity) {
 		this.fillOpacity = fillOpacity;
@@ -182,7 +185,8 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 	/**
 	 * Set the stroke color of the rectangle.
 	 * 
-	 * @param strokeColor the css stroke color
+	 * @param strokeColor
+	 *            the css stroke color
 	 */
 	public void setRectangleStrokeColor(String strokeColor) {
 		this.strokeColor = strokeColor;
@@ -200,7 +204,8 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 	/**
 	 * Set the stroke opacity of the rectangle.
 	 * 
-	 * @param strokeOpacity the stroke opacity
+	 * @param strokeOpacity
+	 *            the stroke opacity
 	 */
 	public void setRectangleStrokeOpacity(float strokeOpacity) {
 		this.strokeOpacity = strokeOpacity;
@@ -218,7 +223,8 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 	/**
 	 * Set the stroke width of the rectangle.
 	 * 
-	 * @param strokeWidth the stroke width
+	 * @param strokeWidth
+	 *            the stroke width
 	 */
 	public void setRectangleStrokeWidth(int strokeWidth) {
 		this.strokeWidth = strokeWidth;

@@ -16,19 +16,17 @@ import java.util.List;
 
 import org.geomajas.gwt2.client.gfx.CanvasContainer;
 import org.geomajas.gwt2.client.gfx.CanvasContainerImpl;
-import org.geomajas.gwt2.client.gfx.HtmlContainer;
-import org.geomajas.gwt2.client.gfx.HtmlGroup;
 import org.geomajas.gwt2.client.gfx.TransformableWidgetContainer;
 import org.geomajas.gwt2.client.gfx.TransformableWidgetContainerImpl;
 import org.geomajas.gwt2.client.gfx.VectorContainer;
 import org.geomajas.gwt2.client.gfx.VectorGroup;
 import org.geomajas.gwt2.client.map.MapPresenterImpl.MapWidget;
+import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
+import org.geomajas.gwt2.client.map.render.dom.container.HtmlGroup;
 import org.vaadin.gwtgraphics.client.DrawingArea;
 import org.vaadin.gwtgraphics.client.Group;
 import org.vaadin.gwtgraphics.client.Transformable;
-import org.vaadin.gwtgraphics.client.Transparent;
 
-import com.google.gwt.animation.client.Animation;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.GestureChangeEvent;
@@ -58,18 +56,15 @@ import com.google.gwt.event.dom.client.TouchMoveHandler;
 import com.google.gwt.event.dom.client.TouchStartEvent;
 import com.google.gwt.event.dom.client.TouchStartHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.RequiresResize;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
 
 /**
  * <p>
- * Implementation of the MapWidget interface as described by the
- * {@link org.geomajas.gwt2.client.map.MapPresenterImpl}. It represents the MVP 'view' of the map's presenter (aka
- * MapPresenter).
+ * Implementation of the MapWidget interface as described by the {@link org.geomajas.gwt2.client.map.MapPresenterImpl}.
+ * It represents the MVP 'view' of the map's presenter (aka MapPresenter).
  * </p>
  * <p>
  * This widget is able to render all required objects that the MapPresenter supports, and does this in the following
@@ -98,7 +93,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 
 	// Parent container for all canvases:
 	private AbsolutePanel canvasPanel;
-	
+
 	// Parent container for all transformable widget containers
 	private FlowPanel widgetPanel;
 
@@ -117,18 +112,16 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	// List of all world transformables (canvas + vector):
 	private List<Transformable> worldTransformables = new ArrayList<Transformable>();
 
-	private Scaler scaler = new Scaler();
-
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	@Inject
-	private MapWidgetImpl() {
+	public MapWidgetImpl() {
 		super();
 
 		// Attach an HtmlContainer inside the clipping area (used for rendering layers):
-		layerHtmlContainer = new HtmlGroup(100, 100); 
+		layerHtmlContainer = new HtmlGroup();
+		layerHtmlContainer.asWidget().getElement().getStyle().setZIndex(0);
 		add(layerHtmlContainer, 0, 0);
 
 		// Add a panel to hold the canvases (this should come before vectors or it catches all events !)
@@ -142,7 +135,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		// First child within the vector drawing area is a group for the map to render it's non-HTML layers:
 		layerVectorContainer = new VectorGroup();
 		drawingArea.add(layerVectorContainer);
-		
+
 		widgetPanel = new FlowPanel();
 		add(widgetPanel, 0, 0);
 
@@ -220,7 +213,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		worldTransformables.add(container);
 		return container;
 	}
-	
+
 	@Override
 	public TransformableWidgetContainer getNewWorldWidgetContainer() {
 		TransformableWidgetContainerImpl container = new TransformableWidgetContainerImpl();
@@ -246,8 +239,6 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		}
 		return false;
 	}
-	
-	
 
 	@Override
 	public boolean removeWorldWidgetContainer(TransformableWidgetContainer container) {
@@ -369,7 +360,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 
 	public HandlerRegistration addMouseOverHandler(MouseOverHandler handler) {
 		return addDomHandler(handler, MouseOverEvent.getType());
-		
+
 	}
 
 	public HandlerRegistration addMouseMoveHandler(MouseMoveHandler handler) {
@@ -383,11 +374,11 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	public HandlerRegistration addDoubleClickHandler(DoubleClickHandler handler) {
 		return addDomHandler(handler, DoubleClickEvent.getType());
 	}
-	
+
 	// ------------------------------------------------------------------------
 	// Touch event catch methods:
 	// ------------------------------------------------------------------------
-	
+
 	@Override
 	public HandlerRegistration addTouchStartHandler(TouchStartHandler handler) {
 		return addDomHandler(handler, TouchStartEvent.getType());
@@ -407,7 +398,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	public HandlerRegistration addTouchMoveHandler(TouchMoveHandler handler) {
 		return addDomHandler(handler, TouchMoveEvent.getType());
 	}
-	
+
 	// ------------------------------------------------------------------------
 	// Gesture event catch methods:
 	// ------------------------------------------------------------------------
@@ -424,99 +415,5 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	@Override
 	public HandlerRegistration addGestureEndHandler(GestureEndHandler handler) {
 		return addDomHandler(handler, GestureEndEvent.getType());
-	}
-	
-	public void scheduleScale(double xx, double yy, int animationMillis) {
-		for (Transformable t : getWorldTransformables()) {
-			if (t instanceof Transparent) {
-				((Transparent) t).setOpacity(0.0);
-			}
-		}
-		scaler.cancel();
-		scaler.setXx(xx);
-		scaler.setYy(yy);
-		scaler.schedule(animationMillis);
-	}
-
-	@Override
-	public void scheduleTransform(double xx, double yy, double dx, double dy, int animationMillis) {
-		for (Transformable t : getWorldTransformables()) {
-			if (t instanceof Transparent) {
-				((Transparent) t).setOpacity(0.0);
-			}
-		}
-		scaler.cancel();
-		scaler.setDx(dx);
-		scaler.setDy(dy);
-		scaler.setXx(xx);
-		scaler.setYy(yy);
-		scaler.schedule(animationMillis);
-	}
-
-	/**
-	 * Timer for applying scheduled transformations to world containers.
-	 * 
-	 * @author Jan De Moerloose
-	 */
-	class Scaler extends Timer {
-
-		private double xx = 1.0;
-
-		private double yy = 1.0;
-
-		private double dx;
-
-		private double dy;
-
-		@Override
-		public void run() {
-			for (Transformable transformable : getWorldTransformables()) {
-				transformable.setTranslation(dx, dy);
-				transformable.setScale(xx, yy);
-			}
-			Fader fader = new Fader();
-			fader.run(250);
-		}
-
-		public void setXx(double xx) {
-			this.xx = xx;
-		}
-
-		public void setYy(double yy) {
-			this.yy = yy;
-		}
-
-		public void setDx(double dx) {
-			this.dx = dx;
-		}
-
-		public void setDy(double dy) {
-			this.dy = dy;
-		}
-	}
-
-	/**
-	 * Lets the world containers fade in after scaling. Not supported for IE as group opacity is not supported for VML.
-	 * 
-	 * @author Jan De Moerloose
-	 */
-	class Fader extends Animation {
-
-		@Override
-		protected void onUpdate(double progress) {
-			for (Transformable t : getWorldTransformables()) {
-				if (t instanceof Transparent) {
-					((Transparent) t).setOpacity(progress);
-				}
-			}
-		}
-
-		protected void onComplete() {
-			for (Transformable t : getWorldTransformables()) {
-				if (t instanceof Transparent) {
-					((Transparent) t).setOpacity(1.0);
-				}
-			}
-		}
 	}
 }

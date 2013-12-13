@@ -14,7 +14,6 @@ package org.geomajas.gwt2.client.map;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.gwt2.client.map.layer.Layer;
 
 /**
@@ -24,27 +23,30 @@ import org.geomajas.gwt2.client.map.layer.Layer;
  */
 public class MapConfigurationImpl implements MapConfiguration {
 
-	public static final Boolean ANIMATION_ENABLED_DEFAULT = true;
+	public static final Integer ANIMATION_TIME_DEFAULT = 400;
 
-	public static final Long ANIMATION_TIME_DEFAULT = 400L;
+	public static final Integer FADE_IN_TIME_DEFAULT = 250;
+
+	public static final Boolean ANIMATION_CANCEL_SUPPORT_DEFAULT = false;
 
 	private final Map<Layer, Boolean> layerAnimation;
 
 	private Map<MapHint<?>, Object> hintValues;
 
-	private ClientMapInfo mapInfo;
+	private MapOptions mapOptions;
 
 	// ------------------------------------------------------------------------
 	// Constructor:
 	// ------------------------------------------------------------------------
 
-	protected MapConfigurationImpl() {
+	public MapConfigurationImpl() {
 		hintValues = new HashMap<MapHint<?>, Object>();
 		layerAnimation = new HashMap<Layer, Boolean>();
 
 		// Now apply the default values:
-		setMapHintValue(MapConfiguration.ANIMATION_ENABLED, ANIMATION_ENABLED_DEFAULT);
 		setMapHintValue(MapConfiguration.ANIMATION_TIME, ANIMATION_TIME_DEFAULT);
+		setMapHintValue(MapConfiguration.FADE_IN_TIME, FADE_IN_TIME_DEFAULT);
+		setMapHintValue(MapConfiguration.ANIMATION_CANCEL_SUPPORT, ANIMATION_CANCEL_SUPPORT_DEFAULT);
 	}
 
 	// ------------------------------------------------------------------------
@@ -70,18 +72,18 @@ public class MapConfigurationImpl implements MapConfiguration {
 	// ------------------------------------------------------------------------
 
 	@Override
-	public ClientMapInfo getServerConfiguration() {
-		return mapInfo;
+	public MapOptions getMapOptions() {
+		return mapOptions;
 	}
 
 	/**
-	 * Protected method used by the MapPresenterImpl to set the server configuration (when it arrives from the server).
+	 * Protected method used by the MapPresenterImpl to set the options object.
 	 * 
-	 * @param mapInfo
-	 *            The server configuration object.
+	 * @param mapOptions
+	 *            The map options configuration object.
 	 */
-	protected void setServerConfiguration(ClientMapInfo mapInfo) {
-		this.mapInfo = mapInfo;
+	protected void setMapOptions(MapOptions mapOptions) {
+		this.mapOptions = mapOptions;
 	}
 
 	@Override

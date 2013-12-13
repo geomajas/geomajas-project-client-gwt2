@@ -16,7 +16,6 @@ import java.util.Map;
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
-import org.geomajas.layer.feature.Attribute;
 
 /**
  * Client side feature definition. It defines the features of
@@ -24,7 +23,7 @@ import org.geomajas.layer.feature.Attribute;
  * 
  * @author Pieter De Graef
  * @author Jan De Moerloose
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public interface Feature {
@@ -80,18 +79,4 @@ public interface Feature {
 	 * @return Returns the layer. This value can never be null.
 	 */
 	FeaturesSupported getLayer();
-
-	/**
-	 * Is the logged in user allowed to edit this feature?
-	 * 
-	 * @return true when edit/update is allowed for this feature
-	 */
-	boolean isUpdatable();
-
-	/**
-	 * Is the logged in user allowed to delete this feature?
-	 * 
-	 * @return true when delete is allowed for this feature
-	 */
-	boolean isDeletable();
 }

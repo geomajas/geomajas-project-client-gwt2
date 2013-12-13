@@ -29,7 +29,6 @@ import com.google.gwt.event.dom.client.TouchEndEvent;
 import com.google.gwt.event.dom.client.TouchMoveEvent;
 import com.google.gwt.event.dom.client.TouchStartEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.inject.Inject;
 
 /**
  * Utility class concerning custom graphics rendering on the map.
@@ -38,8 +37,16 @@ import com.google.inject.Inject;
  */
 public final class GfxUtilImpl implements GfxUtil {
 
-	@Inject
+	private static GfxUtil instance;
+
 	private GfxUtilImpl() {
+	}
+
+	public static GfxUtil getInstance() {
+		if (instance == null) {
+			instance = new GfxUtilImpl();
+		}
+		return instance;
 	}
 
 	@Override
@@ -61,6 +68,7 @@ public final class GfxUtilImpl implements GfxUtil {
 		}
 	}
 
+	@Override
 	public List<HandlerRegistration> applyController(VectorObject shape, MapController mapController) {
 		List<HandlerRegistration> registrations = new ArrayList<HandlerRegistration>();
 		registrations.add(shape.addMouseDownHandler(mapController));
@@ -77,6 +85,7 @@ public final class GfxUtilImpl implements GfxUtil {
 		return registrations;
 	}
 
+	@Override
 	public VectorObject toShape(Geometry geometry) {
 		if (geometry != null) {
 			if (GeometryService.getNumPoints(geometry) == 0) {
@@ -136,7 +145,7 @@ public final class GfxUtilImpl implements GfxUtil {
 		strokeable.setStrokeWidth(strokeWidth);
 		strokeable.setDashArray(dashArray);
 	}
-	
+
 	private void fillGroup(Group group, String fillColor, double fillOpacity) {
 		for (int i = 0; i < group.getVectorObjectCount(); i++) {
 			VectorObject child = group.getVectorObject(i);
@@ -150,5 +159,4 @@ public final class GfxUtilImpl implements GfxUtil {
 		shape.setFillColor(fillColor);
 		shape.setFillOpacity(fillOpacity);
 	}
-
 }

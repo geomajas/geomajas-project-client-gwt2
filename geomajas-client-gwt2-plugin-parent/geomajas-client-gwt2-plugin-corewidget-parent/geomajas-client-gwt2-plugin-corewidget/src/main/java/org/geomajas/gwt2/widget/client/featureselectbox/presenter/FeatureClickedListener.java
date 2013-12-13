@@ -19,12 +19,13 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.controller.AbstractController;
 import org.geomajas.gwt.client.map.RenderSpace;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.controller.MapController;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.client.map.feature.FeatureMapFunction;
-import org.geomajas.gwt2.client.map.feature.FeatureService.QueryType;
-import org.geomajas.gwt2.client.map.feature.FeatureService.SearchLayerType;
+import org.geomajas.gwt2.client.map.feature.ServerFeatureService.QueryType;
+import org.geomajas.gwt2.client.map.feature.ServerFeatureService.SearchLayerType;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
 import org.geomajas.gwt2.widget.client.featureselectbox.event.FeatureClickedEvent;
 import org.geomajas.gwt2.widget.client.featureselectbox.view.FeatureSelectBox;
@@ -64,8 +65,9 @@ public class FeatureClickedListener extends AbstractController implements MapCon
 	}
 
 	/**
-	 *
-	 * @param pixelBuffer minimum distance between features to show context menu with features labels.
+	 * 
+	 * @param pixelBuffer
+	 *            minimum distance between features to show context menu with features labels.
 	 */
 	public FeatureClickedListener(int pixelBuffer) {
 		super(false);
@@ -113,8 +115,9 @@ public class FeatureClickedListener extends AbstractController implements MapCon
 		Geometry point = new Geometry(Geometry.POINT, 0, -1);
 		point.setCoordinates(new Coordinate[] { location });
 
-		mapPresenter.getFeatureService().search(point, calculateBufferFromPixelTolerance(), QueryType.INTERSECTS,
-				SearchLayerType.SEARCH_ALL_LAYERS, -1, new FeatureMapFunction() {
+		GeomajasServerExtension.getServerFeatureService().search(mapPresenter, point,
+				calculateBufferFromPixelTolerance(), QueryType.INTERSECTS, SearchLayerType.SEARCH_ALL_LAYERS, -1,
+				new FeatureMapFunction() {
 
 					@Override
 					public void execute(Map<FeaturesSupported, List<Feature>> featureMap) {
@@ -175,10 +178,10 @@ public class FeatureClickedListener extends AbstractController implements MapCon
 	}
 
 	private double calculateBufferFromPixelTolerance() {
-		Coordinate c1 = mapPresenter.getViewPort().transform(new Coordinate(0, 0), RenderSpace.SCREEN,
-				RenderSpace.WORLD);
-		Coordinate c2 = mapPresenter.getViewPort().transform(new Coordinate(pixelBuffer, 0), RenderSpace.SCREEN,
-				RenderSpace.WORLD);
+		Coordinate c1 = mapPresenter.getViewPort().getTransformationService()
+				.transform(new Coordinate(0, 0), RenderSpace.SCREEN, RenderSpace.WORLD);
+		Coordinate c2 = mapPresenter.getViewPort().getTransformationService()
+				.transform(new Coordinate(pixelBuffer, 0), RenderSpace.SCREEN, RenderSpace.WORLD);
 		return c1.distance(c2);
 	}
 
