@@ -35,6 +35,8 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
  */
 public final class ViewPortImpl implements ViewPort {
 
+	private static final double METER_PER_INCH = 0.0254;
+
 	private final MapEventBus eventBus;
 
 	private final MapConfiguration configuration;
@@ -329,8 +331,8 @@ public final class ViewPortImpl implements ViewPort {
 
 	@Override
 	public double toScale(double scaleDenominator) {
-		// return mapInfo.getUnitLength() / (mapInfo.getPixelLength() * scaleDenominator);
-		return 1 / (configuration.getMapOptions().getPixelsPerUnit() * scaleDenominator);
+		double pixelsPerUnit = getPixelLength() / configuration.getMapOptions().getUnitLength();
+		return 1 / (pixelsPerUnit * scaleDenominator);
 	}
 
 	@Override
@@ -357,6 +359,10 @@ public final class ViewPortImpl implements ViewPort {
 	// -------------------------------------------------------------------------
 	// Private functions:
 	// -------------------------------------------------------------------------
+	
+	protected double getPixelLength() {
+		return METER_PER_INCH / configuration.getMapHintValue(MapConfiguration.DPI);
+	}
 
 	private void applyScale(double newScale, Coordinate rescalePoint, ZoomOption zoomOption) {
 		double limitedScale = checkScale(newScale, zoomOption);

@@ -38,7 +38,6 @@ public class MapOptionsExt extends MapOptions {
 		setInitialBounds(mapInfo.getInitialBounds());
 		setMaxBounds(mapInfo.getMaxBounds());
 		setMaximumScale(mapInfo.getScaleConfiguration().getMaximumScale().getPixelPerUnit());
-		setPixelLength(mapInfo.getPixelLength());
 		setUnitLength(mapInfo.getUnitLength());
 		List<Double> resolutions = new ArrayList<Double>();
 		for (ScaleInfo scale : mapInfo.getScaleConfiguration().getZoomLevels()) {

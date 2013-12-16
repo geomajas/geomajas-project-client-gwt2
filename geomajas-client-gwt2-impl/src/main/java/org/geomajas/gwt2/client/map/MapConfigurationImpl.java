@@ -23,11 +23,14 @@ import org.geomajas.gwt2.client.map.layer.Layer;
  */
 public class MapConfigurationImpl implements MapConfiguration {
 
-	public static final Integer ANIMATION_TIME_DEFAULT = 400;
+	public static final Integer DEFAULT_ANIMATION_TIME = 400;
 
-	public static final Integer FADE_IN_TIME_DEFAULT = 250;
+	public static final Integer DEFAULT_FADE_IN_TIME = 250;
 
-	public static final Boolean ANIMATION_CANCEL_SUPPORT_DEFAULT = false;
+	public static final Boolean DEFAULT_ANIMATION_CANCEL_SUPPORT = false;
+
+	/** This default DPI value equals the default as proposed in the WMS specification. */
+	public static final Double DEFAULT_DPI = 90.714285714;
 
 	private final Map<Layer, Boolean> layerAnimation;
 
@@ -44,9 +47,10 @@ public class MapConfigurationImpl implements MapConfiguration {
 		layerAnimation = new HashMap<Layer, Boolean>();
 
 		// Now apply the default values:
-		setMapHintValue(MapConfiguration.ANIMATION_TIME, ANIMATION_TIME_DEFAULT);
-		setMapHintValue(MapConfiguration.FADE_IN_TIME, FADE_IN_TIME_DEFAULT);
-		setMapHintValue(MapConfiguration.ANIMATION_CANCEL_SUPPORT, ANIMATION_CANCEL_SUPPORT_DEFAULT);
+		setMapHintValue(MapConfiguration.ANIMATION_TIME, DEFAULT_ANIMATION_TIME);
+		setMapHintValue(MapConfiguration.FADE_IN_TIME, DEFAULT_FADE_IN_TIME);
+		setMapHintValue(MapConfiguration.ANIMATION_CANCEL_SUPPORT, DEFAULT_ANIMATION_CANCEL_SUPPORT);
+		setMapHintValue(MapConfiguration.DPI, DEFAULT_DPI);
 	}
 
 	// ------------------------------------------------------------------------

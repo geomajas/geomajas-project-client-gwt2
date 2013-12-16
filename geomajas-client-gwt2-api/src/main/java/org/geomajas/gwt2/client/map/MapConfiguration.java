@@ -52,6 +52,13 @@ public interface MapConfiguration {
 	 */
 	MapHint<Boolean> ANIMATION_CANCEL_SUPPORT = new MapHint<Boolean>("animation_cancel_support");
 
+	/**
+	 * {@link MapHint} used to determine the DPI on the map.
+	 * 
+	 * @since 2.0.0
+	 */
+	MapHint<Double> DPI = new MapHint<Double>("dpi");
+
 	// ------------------------------------------------------------------------
 	// Working with map hints:
 	// ------------------------------------------------------------------------
@@ -75,23 +82,6 @@ public interface MapConfiguration {
 	 * @return The map hint value.
 	 */
 	<T> T getMapHintValue(MapHint<T> hint);
-
-	// ------------------------------------------------------------------------
-	// Getters and setters:
-	// ------------------------------------------------------------------------
-	//
-	// /**
-	// * <p>
-	// * Get the server-side configuration object associated with this map. This configuration only becomes available
-	// * after the map has been successfully initialized, as this object first needs to be fetched from the server.
-	// * </p>
-	// * <p>
-	// * Never change the values within this object!
-	// * </p>
-	// *
-	// * @return The server-side configuration object associated with this map.
-	// */
-	// ClientMapInfo getServerConfiguration();
 
 	/**
 	 * Get the general options that where used to configure this map.

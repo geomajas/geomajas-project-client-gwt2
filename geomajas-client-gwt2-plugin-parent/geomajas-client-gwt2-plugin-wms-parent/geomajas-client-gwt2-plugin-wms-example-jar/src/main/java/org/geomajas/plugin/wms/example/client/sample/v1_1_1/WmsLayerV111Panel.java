@@ -61,7 +61,6 @@ public class WmsLayerV111Panel implements SamplePanel {
 		mapOptions.setCrs(EPSG);
 		mapOptions.setMaxBounds(new Bbox(-180, -90, 360, 180));
 		mapOptions.setMaximumScale(8192);
-		mapOptions.setPixelLength(0.0002645833333333333);
 		mapOptions.setUnitLength(111319.4907932264);
 		MapPresenter mapPresenter = GeomajasImpl.getInstance().createMapPresenter(mapOptions, 480, 480);
 

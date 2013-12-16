@@ -34,8 +34,6 @@ public class MapOptions {
 
 	private double unitLength = 1.0;
 
-	private double pixelLength = 0.0002645833333333333; // default length of a pixel...
-
 	private double maximumScale;
 
 	private List<Double> resolutions = new ArrayList<Double>();
@@ -103,15 +101,6 @@ public class MapOptions {
 	}
 
 	/**
-	 * Get the pixel per unit length.
-	 * 
-	 * @return pixels per unit.
-	 */
-	public double getPixelsPerUnit() {
-		return pixelLength / unitLength;
-	}
-
-	/**
 	 * Returns the list of resolutions (inverse scale values) allowed by this map. This determines the predefined scale
 	 * levels at which this map will be shown. If this list is non-empty, the map will not adjust to arbitrary scale
 	 * levels but will instead snap to one of the scale levels defined in this list when zooming.
@@ -172,24 +161,5 @@ public class MapOptions {
 	 */
 	public void setUnitLength(double unitLength) {
 		this.unitLength = unitLength;
-	}
-
-	/**
-	 * Get the length in meters of a pixel on the map.
-	 * 
-	 * @return length in meters of a pixel on the map (measured at the center of the map)
-	 */
-	public double getPixelLength() {
-		return pixelLength;
-	}
-
-	/**
-	 * Set the unit length in meters of a pixel the map (auto-set by Spring).
-	 * 
-	 * @param pixelLength
-	 *            length of pixel in m
-	 */
-	public void setPixelLength(double pixelLength) {
-		this.pixelLength = pixelLength;
 	}
 }

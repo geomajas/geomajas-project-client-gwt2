@@ -31,7 +31,7 @@ public class TestConfigUtil {
 		mapOptions.setInitialBounds(mapInfo.getInitialBounds());
 		mapOptions.setMaxBounds(mapInfo.getMaxBounds());
 		mapOptions.setMaximumScale(mapInfo.getScaleConfiguration().getMaximumScale().getPixelPerUnit());
-		mapOptions.setPixelLength(mapInfo.getPixelLength());
+		//mapOptions.setPixelLength(mapInfo.getPixelLength());
 		mapOptions.setUnitLength(mapInfo.getUnitLength());
 		List<Double> resolutions = new ArrayList<Double>();
 		for (ScaleInfo scale : mapInfo.getScaleConfiguration().getZoomLevels()) {
