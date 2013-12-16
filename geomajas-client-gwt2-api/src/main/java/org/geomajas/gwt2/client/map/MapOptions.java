@@ -26,6 +26,23 @@ import org.geomajas.geometry.Bbox;
 @Api(allMethods = true)
 public class MapOptions {
 
+	/**
+	 * Defines the type of coordinate reference system used on the map. Most coordinate system are expressed in degrees
+	 * or meters.
+	 * 
+	 * @author Pieter De Graef
+	 */
+	public enum CrsType {
+		/** Defines a coordinate system of which the units are expressed in meters, such as Mercator. */
+		METRIC,
+
+		/** Defines a coordinate system of which the units are expressed in degrees, such as EPSG:4326. */
+		DEGREES,
+
+		/** Used for other coordinate systems. */
+		CUSTOM
+	}
+
 	private Bbox initialBounds;
 
 	private Bbox maxBounds;
@@ -95,8 +112,36 @@ public class MapOptions {
 	 * 
 	 * @param crs
 	 *            the CRS (SRS notation)
+	 * @param crsType
+	 *            The type of CRS. Use this method if the units of the CRS are expressed in either meters or degrees.
+	 *            Otherwise use the {@link #setCrs(String, double)} method.
 	 */
-	public void setCrs(String crs) {
+	public void setCrs(String crs, CrsType crsType) {
+		this.crs = crs;
+		switch (crsType) {
+			case DEGREES:
+				unitLength = 111319.4907932264;
+				break;
+			case METRIC:
+				unitLength = 1.0;
+				break;
+			case CUSTOM:
+			default:
+				throw new IllegalArgumentException("When the CrsType is custom, please provide a 'unitLength'");
+		}
+	}
+
+	/**
+	 * Set the coordinate reference system of this map (SRS notation).
+	 * 
+	 * @param crs
+	 *            the CRS (SRS notation)
+	 * @param unitLength
+	 *            The length of a single unit of this map in actual meters. This is an approximate value in the
+	 *            horizontal direction and in the initial center of the map. If the units of your CRS are expressed in
+	 *            either meters or degrees, you can use the convenience method {@link #setCrs(String, CrsType)}.
+	 */
+	public void setCrs(String crs, double unitLength) {
 		this.crs = crs;
 	}
 
@@ -151,15 +196,5 @@ public class MapOptions {
 	 */
 	public double getUnitLength() {
 		return unitLength;
-	}
-
-	/**
-	 * Set the unit length of the map (auto-set by Spring).
-	 * 
-	 * @param unitLength
-	 *            unit length in m
-	 */
-	public void setUnitLength(double unitLength) {
-		this.unitLength = unitLength;
 	}
 }

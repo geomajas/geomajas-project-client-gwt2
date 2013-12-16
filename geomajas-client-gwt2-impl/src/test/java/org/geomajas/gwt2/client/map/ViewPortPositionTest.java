@@ -19,6 +19,7 @@ import junit.framework.Assert;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.map.MapOptions.CrsType;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -74,7 +75,7 @@ public class ViewPortPositionTest {
 
 	private MapConfiguration getMapConfig() {
 		MapOptions options = new MapOptions();
-		options.setCrs("EPSG:4326");
+		options.setCrs("EPSG:4326", CrsType.DEGREES);
 		options.setInitialBounds(new Bbox(-100, -100, 200, 200));
 		options.setMaxBounds(new Bbox(-100, -100, 200, 200));
 		List<Double> resolutions = new ArrayList<Double>();

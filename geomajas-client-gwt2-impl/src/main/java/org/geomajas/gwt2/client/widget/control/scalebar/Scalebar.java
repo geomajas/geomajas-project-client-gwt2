@@ -88,8 +88,6 @@ public class Scalebar extends AbstractMapWidget {
 
 	private UnitType unitType = UnitType.METRIC;
 
-	private double unitLength;
-
 	// -- for internal use, holds the last calculated best value
 	private int widthInUnits;
 
@@ -127,7 +125,6 @@ public class Scalebar extends AbstractMapWidget {
 	public Scalebar(MapPresenter mapPresenter, ScalebarResource resource) {
 		super(mapPresenter);
 		resource.css().ensureInjected();
-		this.unitLength = mapPresenter.getConfiguration().getMapOptions().getUnitLength();
 
 		mapPresenter.getEventBus().addViewPortChangedHandler(new ViewPortChangedHandler() {
 
@@ -182,6 +179,7 @@ public class Scalebar extends AbstractMapWidget {
 	 * @return closest fit in units (will be miles or yards for English, m for metric, unit for CRS)
 	 */
 	private void calculateBestFit(double scale) {
+		double unitLength = mapPresenter.getConfiguration().getMapOptions().getUnitLength();
 		int len = 0;
 		long px = 0;
 		if (UnitType.ENGLISH.equals(unitType)) {

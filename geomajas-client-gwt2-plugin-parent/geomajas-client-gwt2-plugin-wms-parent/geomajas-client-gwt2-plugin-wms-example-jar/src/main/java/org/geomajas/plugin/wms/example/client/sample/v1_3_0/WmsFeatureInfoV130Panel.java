@@ -16,6 +16,7 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.map.MapOptions;
 import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.client.map.MapOptions.CrsType;
 import org.geomajas.gwt2.client.widget.MapLayoutPanel;
 import org.geomajas.gwt2.example.base.client.ExampleBase;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
@@ -69,11 +70,10 @@ public class WmsFeatureInfoV130Panel implements SamplePanel {
 
 		// Create the mapPresenter and add an InitializationHandler:
 		MapOptions mapOptions = new MapOptions();
-		mapOptions.setCrs(EPSG);
+		mapOptions.setCrs(EPSG, CrsType.DEGREES);
 		mapOptions.setMaxBounds(new Bbox(-180, -90, 360, 180));
 		mapOptions.setInitialBounds(ExampleBase.BBOX_LATLON_USA);
 		mapOptions.setMaximumScale(8192);
-		mapOptions.setUnitLength(111319.4907932264);
 		MapPresenter mapPresenter = GeomajasImpl.getInstance().createMapPresenter(mapOptions, 480, 480);
 
 		// Now create a WMS layer and add it to the map:

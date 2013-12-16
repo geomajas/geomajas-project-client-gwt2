@@ -34,11 +34,10 @@ public class MapOptionsExt extends MapOptions {
 	 */
 	public MapOptionsExt(ClientMapInfo mapInfo) {
 		this.mapInfo = mapInfo;
-		setCrs(mapInfo.getCrs());
+		setCrs(mapInfo.getCrs(), mapInfo.getUnitLength());
 		setInitialBounds(mapInfo.getInitialBounds());
 		setMaxBounds(mapInfo.getMaxBounds());
 		setMaximumScale(mapInfo.getScaleConfiguration().getMaximumScale().getPixelPerUnit());
-		setUnitLength(mapInfo.getUnitLength());
 		List<Double> resolutions = new ArrayList<Double>();
 		for (ScaleInfo scale : mapInfo.getScaleConfiguration().getZoomLevels()) {
 			resolutions.add(scale.getPixelPerUnit());

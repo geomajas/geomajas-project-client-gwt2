@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.geometry.Bbox;
+import org.geomajas.gwt2.client.map.MapOptions.CrsType;
 
 /**
  * Test utility.
@@ -25,7 +26,7 @@ public class TestConfigUtil {
 
 	public static MapConfiguration getMapConfig() {
 		MapOptions options = new MapOptions();
-		options.setCrs("EPSG:4326");
+		options.setCrs("EPSG:4326", CrsType.DEGREES);
 		options.setInitialBounds(new Bbox(-100, -100, 200, 200));
 		options.setMaxBounds(new Bbox(-100, -100, 200, 200));
 		List<Double> resolutions = new ArrayList<Double>();

@@ -49,6 +49,16 @@ public final class GeomajasImpl implements Geomajas {
 		return instance;
 	}
 
+	/**
+	 * Apply a new singleton instance. This method provides a way to overwrite the default Geomajas implementations.
+	 * 
+	 * @param geomajas
+	 *            The new Geomajas starting point.
+	 */
+	public static void setInstance(Geomajas geomajas) {
+		instance = geomajas;
+	}
+
 	@Override
 	public MapPresenter createMapPresenter() {
 		return new MapPresenterImpl(getEventBus());
