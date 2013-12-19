@@ -17,7 +17,7 @@
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
 		<artifactId>geomajas-client-gwt2-plugin-editing-parent</artifactId>
-		<version>2.0.0-SNAPSHOT</version>
+		<version>2.0.0-AAA-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>geomajas-client-gwt2-plugin-editing-impl</artifactId>
