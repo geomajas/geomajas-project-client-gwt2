@@ -40,14 +40,18 @@
   			<artifactId>geomajas-client-gwt2-plugin-print-common</artifactId>
 		</dependency>
 
-		 <dependency>
-  			<groupId>org.geomajas</groupId>
-  			<artifactId>geomajas-face-common-gwt</artifactId>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-client-common-gwt</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-client-common-gwt-command</artifactId>
 		</dependency>
 
 		<dependency>
 		    <groupId>org.geomajas</groupId>
-		    <artifactId>geomajas-client-gwt2-impl</artifactId>
+		    <artifactId>geomajas-client-gwt2-server-extension</artifactId>
 		</dependency>
 
 		<dependency>

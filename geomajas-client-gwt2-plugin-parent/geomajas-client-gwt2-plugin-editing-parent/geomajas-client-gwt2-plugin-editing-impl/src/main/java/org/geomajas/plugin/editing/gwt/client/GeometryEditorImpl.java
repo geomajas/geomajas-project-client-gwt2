@@ -11,13 +11,9 @@
 
 package org.geomajas.plugin.editing.gwt.client;
 
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 import org.geomajas.gwt2.client.controller.MapController;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
-import org.geomajas.gwt2.client.event.ViewPortScaledEvent;
-import org.geomajas.gwt2.client.event.ViewPortTranslatedEvent;
 import org.geomajas.gwt2.client.gfx.GfxUtil;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartEvent;
@@ -55,8 +51,7 @@ public class GeometryEditorImpl implements GeometryEditor, GeometryEditStartHand
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	@Inject
-	public GeometryEditorImpl(@Assisted MapPresenter mapPresenter, GfxUtil gfxUtil) {
+	public GeometryEditorImpl(MapPresenter mapPresenter, GfxUtil gfxUtil) {
 		this.mapPresenter = mapPresenter;
 
 		// Initialize the editing service:
@@ -70,14 +65,6 @@ public class GeometryEditorImpl implements GeometryEditor, GeometryEditStartHand
 		renderer = new GeometryRendererImpl(mapPresenter, editService, gfxUtil);
 
 		mapPresenter.getEventBus().addViewPortChangedHandler(new ViewPortChangedHandler() {
-
-			public void onViewPortTranslated(ViewPortTranslatedEvent event) {
-				editService.getIndexStateService().highlightEndAll();
-			}
-
-			public void onViewPortScaled(ViewPortScaledEvent event) {
-				editService.getIndexStateService().highlightEndAll();
-			}
 
 			public void onViewPortChanged(ViewPortChangedEvent event) {
 				editService.getIndexStateService().highlightEndAll();

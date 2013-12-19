@@ -27,7 +27,7 @@ import org.springframework.stereotype.Component;
  *  
  * @author An Buyle
  *
- * @since 2.4.0
+ * @since 2.0.0
  */
 @Component()
 public class PrintGetTemplateExtCommand implements Command<PrintGetTemplateExtRequest, PrintGetTemplateExtResponse> {

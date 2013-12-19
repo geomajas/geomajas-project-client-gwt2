@@ -18,6 +18,7 @@ import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.gwt2.client.map.MapOptionsExt;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.Layer;
@@ -94,6 +95,7 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 	@Override
 	protected MapComponentInfo buildMap() {
 		ViewPort viewPort = mapPresenter.getViewPort();
+		MapOptionsExt mapOptions = (MapOptionsExt) mapPresenter.getConfiguration().getMapOptions();
 		double printWidth = getPageWidth() - 2 * marginX;
 		double printHeight = getPageHeight() - 2 * marginY;
 
@@ -107,9 +109,7 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 		map.setPpUnit((float) (printWidth / fittingBox.getWidth()));
 
 		map.setTag("map");
-		// GWT:map.setMapId(mapModel.getMapInfo().getId());
-		// Old puregwt: map.setMapId(mapPresenter.getConfiguration().getId());
-		map.setMapId(mapPresenter.getConfiguration().getServerConfiguration().getId());
+		map.setMapId(mapOptions.getServerId());
 
 		map.setApplicationId(applicationId);
 		map.setRasterResolution(rasterDpi);
@@ -122,7 +122,7 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 
 		List<PrintComponentInfo> layers = new ArrayList<PrintComponentInfo>();
 		RasterizedLayersComponentInfo rasterizedLayersComponentInfo = new RasterizedLayersComponentInfo();
-		rasterizedLayersComponentInfo.setMapInfo(mapPresenter.getConfiguration().getServerConfiguration());
+		rasterizedLayersComponentInfo.setMapInfo(mapOptions.getServerConfiguration());
 
 		layers.add(rasterizedLayersComponentInfo);
 		map.getChildren().addAll(0, layers);
@@ -154,18 +154,16 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 		style.setStyle(PrintingLayout.templateDefaultFontStyle);
 		style.setSize((int) PrintingLayout.templateDefaultFontSize);
 		legend.setFont(style);
-		legend.setMapId(mapPresenter.getConfiguration().getServerConfiguration().getId());
-		// Old puregwt: legend.setMapId(mapPresenter.getConfiguration().getId());
+		MapOptionsExt mapOptions = (MapOptionsExt) mapPresenter.getConfiguration().getMapOptions();
+		legend.setMapId(mapOptions.getServerId());
 
 		legend.setTag("legend");
-		// GWT:for (Layer layer : mapModel.getLayers())
 		LayersModel layersModel = this.mapPresenter.getLayersModel();
 		for (int i = 0; i < layersModel.getLayerCount(); i++) {
 			Layer layer = layersModel.getLayer(i);
 			if (layer instanceof VectorServerLayer && layer.isShowing()) {
 				VectorServerLayer vectorLayer = (VectorServerLayer) layer;
 				ClientVectorLayerInfo layerInfo = vectorLayer.getLayerInfo();
-				// String label = layerInfo.getLabel();
 				FeatureTypeStyleInfo fts = layerInfo.getNamedStyleInfo().getUserStyle().getFeatureTypeStyleList()
 						.get(0);
 				for (RuleInfo rule : fts.getRuleList()) {

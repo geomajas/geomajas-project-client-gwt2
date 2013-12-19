@@ -18,7 +18,7 @@ import org.geomajas.annotation.Api;
  * Extension of {@link org.geomajas.plugin.printing.command.dto.PrintGetTemplateRequest} class.
  *
  * @author An Buyle
- * @since 2.4.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class PrintGetTemplateExtRequest extends PrintGetTemplateRequest {
@@ -28,7 +28,7 @@ public class PrintGetTemplateExtRequest extends PrintGetTemplateRequest {
 	/**
 	 * Command name constant for request object.
 	 *
-	 * @since 2.4.0
+	 * @since 2.0.0
 	 */
 	public static final String COMMAND = "command.print.GetTemplateExt";
 
@@ -36,7 +36,7 @@ public class PrintGetTemplateExtRequest extends PrintGetTemplateRequest {
 	/**
 	 * Default output format.
 	 *
-	 * @since 2.4.0
+	 * @since 2.0.0
 	 */	
 	public static final String DEFAULT_OUTPUT_FORMAT = "pdf";
 

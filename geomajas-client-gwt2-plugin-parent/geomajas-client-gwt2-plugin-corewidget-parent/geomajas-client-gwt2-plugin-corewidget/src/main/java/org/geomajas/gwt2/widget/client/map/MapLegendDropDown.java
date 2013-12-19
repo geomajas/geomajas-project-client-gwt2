@@ -11,9 +11,11 @@
 
 package org.geomajas.gwt2.widget.client.map;
 
-import com.google.gwt.core.client.GWT;
 import org.geomajas.annotation.Api;
+import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.widget.client.i18n.WidgetCoreInternationalization;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Timer;
@@ -21,8 +23,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
-import org.geomajas.gwt2.widget.client.i18n.WidgetCoreInternationalization;
-import org.geomajas.gwt2.client.map.MapPresenter;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Drop down button that displays the {@link LegendPopupPanel}. When this widget is added to a MapPresenter's widget
@@ -135,7 +136,8 @@ public class MapLegendDropDown extends Button {
 		int left = calculateLeft(offsetWidth);
 
 		int popupRight = left + popup.getOffsetWidth();
-		int mapRight = mapPresenter.getWidgetPane().getAbsoluteLeft() + mapPresenter.getWidgetPane().getOffsetWidth();
+		Widget widget = (Widget) mapPresenter.getWidgetPane();
+		int mapRight = widget.getAbsoluteLeft() + widget.getOffsetWidth();
 		if (popupRight > mapRight) {
 			// Align right:
 			int buttonRight = getAbsoluteLeft() + getOffsetWidth();

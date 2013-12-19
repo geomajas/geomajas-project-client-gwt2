@@ -11,12 +11,15 @@
 
 package org.geomajas.gwt2.example.client.sample.layer;
 
-import org.geomajas.gwt2.client.event.MapInitializationEvent;
-import org.geomajas.gwt2.client.event.MapInitializationHandler;
+import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
+import org.geomajas.gwt2.client.event.LayerAddedEvent;
+import org.geomajas.gwt2.client.event.LayerRemovedEvent;
+import org.geomajas.gwt2.client.event.MapCompositionHandler;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.layer.Layer;
+import org.geomajas.gwt2.example.base.client.resource.ShowcaseResource;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
-import org.geomajas.gwt2.example.client.ExampleJar;
 
 import com.allen_sauer.gwt.dnd.client.DragEndEvent;
 import com.allen_sauer.gwt.dnd.client.DragHandler;
@@ -51,6 +54,8 @@ public class LayerOrderPanel implements SamplePanel {
 
 	private static final MyUiBinder UI_BINDER = GWT.create(MyUiBinder.class);
 
+	private static final ShowcaseResource RESOURCE = GWT.create(ShowcaseResource.class);
+
 	private MapPresenter mapPresenter;
 
 	private PickupDragController layerDragController;
@@ -65,6 +70,8 @@ public class LayerOrderPanel implements SamplePanel {
 	protected AbsolutePanel dndBoundary;
 
 	public Widget asWidget() {
+		RESOURCE.css().ensureInjected();
+
 		// Define the left layout:
 		Widget layout = UI_BINDER.createAndBindUi(this);
 
@@ -74,9 +81,9 @@ public class LayerOrderPanel implements SamplePanel {
 		layerDragController.addDragHandler(new LayerDragHandler());
 
 		// Create the MapPresenter and add an InitializationHandler:
-		mapPresenter = ExampleJar.getInjector().getMapPresenter();
+		mapPresenter = GeomajasImpl.getInstance().createMapPresenter();
 		mapPresenter.setSize(480, 480);
-		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
+		mapPresenter.getEventBus().addMapCompositionHandler(new MyLayerAddHandler());
 
 		// Define the whole layout:
 		DecoratorPanel mapDecorator = new DecoratorPanel();
@@ -84,7 +91,7 @@ public class LayerOrderPanel implements SamplePanel {
 		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		mapPresenter.initialize("gwt-app", "mapLegend");
+		GeomajasServerExtension.initializeMap(mapPresenter, "gwt-app", "mapLegend");
 		return layout;
 	}
 
@@ -102,8 +109,10 @@ public class LayerOrderPanel implements SamplePanel {
 		private Layer dragLayer;
 
 		public void onDragEnd(DragEndEvent event) {
-			int dropIndex = layerPanel.getWidgetIndex(event.getContext().selectedWidgets.get(0)) - 1;
-			mapPresenter.getLayersModel().moveLayer(dragLayer, dropIndex);
+			// The order has been reversed to better display the situation on the map....
+			int dropIndex = layerPanel.getWidgetIndex(event.getContext().selectedWidgets.get(0));
+			mapPresenter.getLayersModel().moveLayer(dragLayer,
+					mapPresenter.getLayersModel().getLayerCount() - dropIndex);
 		}
 
 		public void onDragStart(DragStartEvent event) {
@@ -118,18 +127,21 @@ public class LayerOrderPanel implements SamplePanel {
 	}
 
 	/**
-	 * When the map initializes: add draggable layer labels to the layer panel.
+	 * Add a draggable label to the layer panel.
 	 * 
 	 * @author Pieter De Graef
 	 */
-	private class MyMapInitializationHandler implements MapInitializationHandler {
+	private class MyLayerAddHandler implements MapCompositionHandler {
 
-		public void onMapInitialized(MapInitializationEvent event) {
-			for (int i = 0; i < mapPresenter.getLayersModel().getLayerCount(); i++) {
-				LayerWidget widget = new LayerWidget(mapPresenter.getLayersModel().getLayer(i));
-				layerDragController.makeDraggable(widget);
-				layerPanel.add(widget);
-			}
+		@Override
+		public void onLayerAdded(LayerAddedEvent event) {
+			LayerWidget widget = new LayerWidget(event.getLayer());
+			layerDragController.makeDraggable(widget);
+			layerPanel.add(widget);
+		}
+
+		@Override
+		public void onLayerRemoved(LayerRemovedEvent event) {
 		}
 	}
 
@@ -146,6 +158,7 @@ public class LayerOrderPanel implements SamplePanel {
 			super(layer.getTitle());
 			setWidth("100%");
 			this.layer = layer;
+			addStyleName(RESOURCE.css().sampleHasBorder());
 		}
 
 		public Layer getLayer() {

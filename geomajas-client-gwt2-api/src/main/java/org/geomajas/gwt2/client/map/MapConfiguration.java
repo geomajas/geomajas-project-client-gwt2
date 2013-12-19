@@ -12,7 +12,6 @@
 package org.geomajas.gwt2.client.map;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.gwt2.client.map.layer.Layer;
 
 /**
@@ -30,19 +29,28 @@ public interface MapConfiguration {
 	// ------------------------------------------------------------------------
 
 	/**
-	 * {@link MapHint} that determines whether or not animation is used during navigation. This setting overrides the
-	 * individual layer animation settings in the {@link MapConfiguration}. It's value should be of type
-	 * <code>Boolean</code>.
-	 */
-	MapHint<Boolean> ANIMATION_ENABLED = new MapHint<Boolean>("animation_enabled");
-
-	/**
 	 * {@link MapHint} used to determine how long the animations should take during navigation (zooming). The value
 	 * should be expressed in milliseconds. It's value should be of type <code>Long</code>.
 	 * 
 	 * @since 1.0.0
 	 */
-	MapHint<Long> ANIMATION_TIME = new MapHint<Long>("animation_time");
+	MapHint<Integer> ANIMATION_TIME = new MapHint<Integer>("animation_time");
+
+	/**
+	 * {@link MapHint} used to determine how long fading in of scale or tiles should take while rendering the map.
+	 * 
+	 * @since 1.0.0
+	 */
+	MapHint<Integer> FADE_IN_TIME = new MapHint<Integer>("fade_in_time");
+
+	/**
+	 * {@link MapHint} that determines whether or not the {@link ViewPort} will cancel the currently running animation
+	 * in favor of a new animation. If this value is false, the new animation will keep running, and the new animation
+	 * is discarded. If this value is true, the current animation is discontinued, and the new one is started.
+	 * 
+	 * @since 1.0.0
+	 */
+	MapHint<Boolean> ANIMATION_CANCEL_SUPPORT = new MapHint<Boolean>("animation_cancel_support");
 
 	// ------------------------------------------------------------------------
 	// Working with map hints:
@@ -62,28 +70,35 @@ public interface MapConfiguration {
 	 * Get the value for a specific map hint. All hints have a default value, so this method will never return
 	 * <code>null</code>.
 	 * 
-	 * @param hint The hint to retrieve the current value for.
+	 * @param hint
+	 *            The hint to retrieve the current value for.
 	 * @return The map hint value.
 	 */
 	<T> T getMapHintValue(MapHint<T> hint);
 
-
 	// ------------------------------------------------------------------------
 	// Getters and setters:
 	// ------------------------------------------------------------------------
+	//
+	// /**
+	// * <p>
+	// * Get the server-side configuration object associated with this map. This configuration only becomes available
+	// * after the map has been successfully initialized, as this object first needs to be fetched from the server.
+	// * </p>
+	// * <p>
+	// * Never change the values within this object!
+	// * </p>
+	// *
+	// * @return The server-side configuration object associated with this map.
+	// */
+	// ClientMapInfo getServerConfiguration();
 
 	/**
-	 * <p>
-	 * Get the server-side configuration object associated with this map. This configuration only becomes available
-	 * after the map has been successfully initialized, as this object first needs to be fetched from the server.
-	 * </p>
-	 * <p>
-	 * Never change the values within this object!
-	 * </p>
+	 * Get the general options that where used to configure this map.
 	 * 
-	 * @return The server-side configuration object associated with this map.
+	 * @return The general map options.
 	 */
-	ClientMapInfo getServerConfiguration();
+	MapOptions getMapOptions();
 
 	/**
 	 * Turn animation for a certain layer on or off.

@@ -19,11 +19,12 @@ import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.gwt.client.util.StyleUtil;
+import org.geomajas.gwt2.client.map.MapOptionsExt;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.client.map.layer.VectorServerLayer;
-import org.geomajas.gwt.client.util.StyleUtil;
 import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
 import org.geomajas.sld.RuleInfo;
 
@@ -52,25 +53,21 @@ public class VectorServerLayerBuilder implements PrintableLayerBuilder {
 				featureIds.add(feature.getId());
 			}
 			vectorRasterizingInfo.setSelectedFeatureIds(featureIds.toArray(new String[selectedFeatures.size()]));
+			MapOptionsExt mapOptions = (MapOptionsExt) mapPresenter.getConfiguration().getMapOptions();
 			FeatureStyleInfo selectStyle;
 			switch (layerInfo.getLayerType()) {
 				case GEOMETRY:
 				case LINESTRING:
 				case MULTILINESTRING:
-					selectStyle = mapPresenter.getConfiguration().getServerConfiguration().getLineSelectStyle();
-					// Old puregwt: selectStyle = mapPresenter.getConfiguration().getLineSelectStyle();
+					selectStyle = mapOptions.getServerConfiguration().getLineSelectStyle();
 					break;
 				case MULTIPOINT:
 				case POINT:
-					selectStyle = mapPresenter.getConfiguration().getServerConfiguration().getPointSelectStyle();
-					// Old puregwt: selectStyle = mapPresenter.getConfiguration().getPointSelectStyle();
-
+					selectStyle = mapOptions.getServerConfiguration().getPointSelectStyle();
 					break;
 				case MULTIPOLYGON:
 				case POLYGON:
-					selectStyle = mapPresenter.getConfiguration().getServerConfiguration().getPolygonSelectStyle();
-					// Old puregwt: selectStyle = mapPresenter.getConfiguration().getPolygonSelectStyle();
-
+					selectStyle = mapOptions.getServerConfiguration().getPolygonSelectStyle();
 					break;
 				default:
 					throw new IllegalArgumentException("Unknown layer type " + layerInfo.getLayerType());

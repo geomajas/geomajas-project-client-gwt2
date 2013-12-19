@@ -10,8 +10,16 @@
  */
 package org.geomajas.plugin.graphicsediting.gwt2.example.client.annotation;
 
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.MouseMoveHandler;
+import com.google.gwt.event.dom.client.MouseOutHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
+import com.google.gwt.event.dom.client.MouseUpHandler;
+import com.google.gwt.event.dom.client.MouseWheelHandler;
 import org.geomajas.graphics.client.controller.MetaController;
 import org.geomajas.graphics.client.object.GraphicsObject;
+import org.geomajas.graphics.client.service.AbstractGraphicsObjectContainer;
 import org.geomajas.graphics.client.service.GraphicsService;
 import org.geomajas.gwt2.client.map.MapPresenter;
 
@@ -29,7 +37,9 @@ import com.google.gwt.event.dom.client.MouseWheelEvent;
  * @author Jan De Moerloose
  * 
  */
-public class NavigationMetaController extends MetaController {
+public class NavigationMetaController extends MetaController implements
+		MouseUpHandler, MouseMoveHandler, MouseWheelHandler, MouseOutHandler, ClickHandler,
+			MouseOverHandler{
 
 	private IntervalNavigationController navigationController;
 	
@@ -105,7 +115,7 @@ public class NavigationMetaController extends MetaController {
 	@Override
 	public void onMouseDown(MouseDownEvent event) {
 		if (isActive()) {
-			if (!isObjectActive() && getVectorObjects().contains(event.getSource())) {
+			if (!isObjectActive() && getObjectContainer().isObject(event)) {
 				// activate controllers for this object
 				for (GraphicsObject object : getObjectContainer().getObjects()) {
 					if (object.asObject() == event.getSource()) {
@@ -173,4 +183,8 @@ public class NavigationMetaController extends MetaController {
 		}
 	}
 
+	@Override
+	public void onMouseOver(MouseOverEvent event) {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
 }

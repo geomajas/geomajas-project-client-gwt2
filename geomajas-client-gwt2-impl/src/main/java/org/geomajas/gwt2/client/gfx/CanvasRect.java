@@ -19,7 +19,6 @@ import com.google.gwt.canvas.client.Canvas;
  * Draws a rectangle in canvas world space.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class CanvasRect implements CanvasShape {
 
@@ -67,5 +66,4 @@ public class CanvasRect implements CanvasShape {
 	public void setStrokeWidthPixels(double strokeWidthPixels) {
 		this.strokeWidthPixels = strokeWidthPixels;
 	}
-
 }

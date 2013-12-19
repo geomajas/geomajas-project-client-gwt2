@@ -45,7 +45,7 @@ public class DefaultGeometryIndexShapeFactory implements GeometryIndexShapeFacto
 	private final MapPresenter mapPresenter;
 
 	private final RenderSpace targetSpace;
-	
+
 	private GfxUtil gfxUtil;
 
 	// ------------------------------------------------------------------------
@@ -106,7 +106,7 @@ public class DefaultGeometryIndexShapeFactory implements GeometryIndexShapeFacto
 		Geometry geometry = editService.getGeometry();
 		Coordinate v = editService.getIndexService().getVertex(geometry, index);
 		if (!targetSpace.equals(RenderSpace.WORLD)) {
-			v = mapPresenter.getViewPort().transform(v, RenderSpace.WORLD, targetSpace);
+			v = mapPresenter.getViewPort().getTransformationService().transform(v, RenderSpace.WORLD, targetSpace);
 		}
 		return new Rectangle(v.getX() - VERTEX_HALF_SIZE, v.getY() - VERTEX_HALF_SIZE, VERTEX_SIZE, VERTEX_SIZE);
 	}
@@ -116,8 +116,10 @@ public class DefaultGeometryIndexShapeFactory implements GeometryIndexShapeFacto
 		Geometry geometry = editService.getGeometry();
 		Coordinate[] e = editService.getIndexService().getEdge(geometry, index);
 		if (!targetSpace.equals(RenderSpace.WORLD)) {
-			e[0] = mapPresenter.getViewPort().transform(e[0], RenderSpace.WORLD, targetSpace);
-			e[1] = mapPresenter.getViewPort().transform(e[1], RenderSpace.WORLD, targetSpace);
+			e[0] = mapPresenter.getViewPort().getTransformationService()
+					.transform(e[0], RenderSpace.WORLD, targetSpace);
+			e[1] = mapPresenter.getViewPort().getTransformationService()
+					.transform(e[1], RenderSpace.WORLD, targetSpace);
 		}
 		Path edge = new Path(e[0].getX(), e[0].getY());
 		edge.lineTo(e[1].getX(), e[1].getY());
@@ -132,7 +134,7 @@ public class DefaultGeometryIndexShapeFactory implements GeometryIndexShapeFacto
 		}
 		Geometry g = geometry;
 		if (!targetSpace.equals(RenderSpace.WORLD)) {
-			g = mapPresenter.getViewPort().transform(g, RenderSpace.WORLD, targetSpace);
+			g = mapPresenter.getViewPort().getTransformationService().transform(g, RenderSpace.WORLD, targetSpace);
 		}
 		return gfxUtil.toShape(g);
 	}
@@ -148,7 +150,7 @@ public class DefaultGeometryIndexShapeFactory implements GeometryIndexShapeFacto
 			Geometry geometry = editService.getGeometry();
 			Coordinate v = editService.getIndexService().getVertex(geometry, index);
 			if (!targetSpace.equals(RenderSpace.WORLD)) {
-				v = mapPresenter.getViewPort().transform(v, RenderSpace.WORLD, targetSpace);
+				v = mapPresenter.getViewPort().getTransformationService().transform(v, RenderSpace.WORLD, targetSpace);
 			}
 			rectangle.setUserX(v.getX() - VERTEX_HALF_SIZE);
 			rectangle.setUserY(v.getY() - VERTEX_HALF_SIZE);
@@ -162,8 +164,10 @@ public class DefaultGeometryIndexShapeFactory implements GeometryIndexShapeFacto
 			Geometry geometry = editService.getGeometry();
 			Coordinate[] edge = editService.getIndexService().getEdge(geometry, index);
 			if (!targetSpace.equals(RenderSpace.WORLD)) {
-				edge[0] = mapPresenter.getViewPort().transform(edge[0], RenderSpace.WORLD, targetSpace);
-				edge[1] = mapPresenter.getViewPort().transform(edge[1], RenderSpace.WORLD, targetSpace);
+				edge[0] = mapPresenter.getViewPort().getTransformationService()
+						.transform(edge[0], RenderSpace.WORLD, targetSpace);
+				edge[1] = mapPresenter.getViewPort().getTransformationService()
+						.transform(edge[1], RenderSpace.WORLD, targetSpace);
 			}
 			path.setStep(0, new MoveTo(false, edge[0].getX(), edge[0].getY()));
 			path.setStep(1, new LineTo(false, edge[1].getX(), edge[1].getY()));
@@ -178,7 +182,7 @@ public class DefaultGeometryIndexShapeFactory implements GeometryIndexShapeFacto
 		}
 		Geometry g = geometry;
 		if (!targetSpace.equals(RenderSpace.WORLD)) {
-			g = mapPresenter.getViewPort().transform(g, RenderSpace.WORLD, targetSpace);
+			g = mapPresenter.getViewPort().getTransformationService().transform(g, RenderSpace.WORLD, targetSpace);
 		}
 		if (object instanceof GeometryPath) {
 			GeometryPath path = (GeometryPath) object;

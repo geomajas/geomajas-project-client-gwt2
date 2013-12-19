@@ -32,8 +32,10 @@ import org.geomajas.gwt2.client.event.LayerVisibilityMarkedEvent;
 import org.geomajas.gwt2.client.event.MapCompositionHandler;
 import org.geomajas.gwt2.client.event.MapInitializationHandler;
 import org.geomajas.gwt2.client.event.MapResizedHandler;
+import org.geomajas.gwt2.client.event.NavigationStartHandler;
+import org.geomajas.gwt2.client.event.NavigationStopHandler;
+import org.geomajas.gwt2.client.event.NavigationUpdateHandler;
 import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
-import org.geomajas.gwt2.client.event.ViewPortChangingHandler;
 import org.geomajas.gwt2.client.map.layer.Layer;
 
 import com.google.web.bindery.event.shared.Event;
@@ -131,9 +133,21 @@ public class MapEventBusImpl implements MapEventBus {
 		return eventBus.addHandlerToSource(ViewPortChangedHandler.TYPE, source, handler);
 	}
 
-	public HandlerRegistration addViewPortChangingHandler(ViewPortChangingHandler handler) {
-		return eventBus.addHandlerToSource(ViewPortChangingHandler.TYPE, source, handler);
+	@Override
+	public HandlerRegistration addNavigationStartHandler(NavigationStartHandler handler) {
+		return eventBus.addHandlerToSource(NavigationStartHandler.TYPE, source, handler);
 	}
+
+	@Override
+	public HandlerRegistration addNavigationUpdateHandler(NavigationUpdateHandler handler) {
+		return eventBus.addHandlerToSource(NavigationUpdateHandler.TYPE, source, handler);
+	}
+
+	@Override
+	public HandlerRegistration addNavigationStopHandler(NavigationStopHandler handler) {
+		return eventBus.addHandlerToSource(NavigationStopHandler.TYPE, source, handler);
+	}
+
 	public <H> void fireEvent(Event<H> event) {
 		eventBus.fireEventFromSource(event, source);
 	}
@@ -213,7 +227,6 @@ public class MapEventBusImpl implements MapEventBus {
 	 * Wraps {@link LayerRefreshedHandler} for layer filtering.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	class LayerRefreshedWrapper implements LayerRefreshedHandler {
 
@@ -231,7 +244,6 @@ public class MapEventBusImpl implements MapEventBus {
 				handler.onLayerRefreshed(event);
 			}
 		}
-
 	}
 
 	/**
@@ -324,5 +336,4 @@ public class MapEventBusImpl implements MapEventBus {
 			}
 		}
 	}
-
 }

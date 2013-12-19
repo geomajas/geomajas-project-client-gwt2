@@ -30,7 +30,6 @@ import com.google.gwt.user.client.ui.Widget;
  * Default implementation of {@link TransformableWidgetContainer}.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class TransformableWidgetContainerImpl extends Panel implements TransformableWidgetContainer, Transparent {
 
@@ -189,12 +188,10 @@ public class TransformableWidgetContainerImpl extends Panel implements Transform
 			w.setScale(scaleX, scaleY);
 			w.setTranslation(panX, panY);
 		}
-
 	}
 
 	@Override
 	public void setOpacity(double opacity) {
 		getElement().getStyle().setOpacity(opacity);
 	}
-
 }

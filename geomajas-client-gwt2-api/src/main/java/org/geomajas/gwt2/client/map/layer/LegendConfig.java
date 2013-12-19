@@ -12,8 +12,8 @@
 package org.geomajas.gwt2.client.map.layer;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.gwt2.client.gfx.FontStyle;
 
 /**
  * Generic configuration object for legend creation, used in the {@link LegendUrlSupported} interface. It is important
@@ -26,29 +26,17 @@ import org.geomajas.geometry.Bbox;
 @Api(allMethods = true)
 public class LegendConfig {
 
-	/** Default font family used in legend text rendering. */
-	public static final String DEFAULT_FONT_FAMILY = "arial";
-
-	/** Default font size used for legend style labels. */
-	public static final int DEFAULT_FONT_SIZE = 13;
-
-	/** Default font color used in legend text rendering. */
-	public static final String DEFAULT_FONT_COLOR = "0x000000";
-
 	/** Default icon size used the legend icons. */
 	public static final int DEFAULT_ICON_SIZE = 20;
 
 	/** Default icon size used the legend icons. */
 	public static final String DEFAULT_IMAGE_FORMAT = "PNG";
 
-	/** Default DPI used for legend images. */
-	public static final int DEFAULT_DPI = 72;
-
 	private int iconWidth = DEFAULT_ICON_SIZE;
 
 	private int iconHeight = DEFAULT_ICON_SIZE;
 
-	private FontStyleInfo fontStyle;
+	private FontStyle fontStyle;
 
 	private String imageFormat = DEFAULT_IMAGE_FORMAT;
 
@@ -56,20 +44,9 @@ public class LegendConfig {
 
 	private Bbox bounds;
 
-	private int styleIndex;
-
-	private int dpi = DEFAULT_DPI;
-
 	/** Default constructor. Makes sure everything has a default value, to minimize the chance of a NPE. */
 	public LegendConfig() {
-		fontStyle = new FontStyleInfo();
-		fontStyle.setColor(DEFAULT_FONT_COLOR);
-		fontStyle.setFamily(DEFAULT_FONT_FAMILY);
-		fontStyle.setOpacity(1);
-		fontStyle.setSize(DEFAULT_FONT_SIZE);
-		fontStyle.setStyle("normal");
-		fontStyle.setWeight("normal");
-		fontStyle.applyDefaults();
+		fontStyle = new FontStyle();
 	}
 
 	/**
@@ -115,7 +92,7 @@ public class LegendConfig {
 	 * 
 	 * @return The preferred font style.
 	 */
-	public FontStyleInfo getFontStyle() {
+	public FontStyle getFontStyle() {
 		return fontStyle;
 	}
 
@@ -125,7 +102,7 @@ public class LegendConfig {
 	 * @param fontStyle
 	 *            The preferred font style.
 	 */
-	public void setFontStyle(FontStyleInfo fontStyle) {
+	public void setFontStyle(FontStyle fontStyle) {
 		this.fontStyle = fontStyle;
 	}
 
@@ -169,24 +146,6 @@ public class LegendConfig {
 		this.bounds = bounds;
 	}
 
-	/** Get the DPI used for legend images.
-	 *
-	 * @return The DPI used for legend images.
-	 */
-	public int getDpi() {
-		return dpi;
-	}
-
-	/** Set the DPI used for legend images.
-	 *
-	 * @param dpi
-	 * 			The DPI used for legend images.
-	 */
-
-	public void setDpi(int dpi) {
-		this.dpi = dpi;
-	}
-
 	/**
 	 * Get the mimetype to be used in case of an exception.
 	 * 
@@ -194,20 +153,6 @@ public class LegendConfig {
 	 */
 	public String getExceptions() {
 		return exceptions;
-	}
-
-	/**
-	 * @return  The index of the desired active style
-	 */
-	public int getStyleIndex() {
-		return styleIndex;
-	}
-
-	/**
-	 * @param styleIndex The index of the desired active style
-	 */
-	public void setStyleIndex(int styleIndex) {
-		this.styleIndex = styleIndex;
 	}
 
 	/**

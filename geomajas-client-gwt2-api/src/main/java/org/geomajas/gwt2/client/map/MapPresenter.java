@@ -19,10 +19,10 @@ import org.geomajas.gwt2.client.controller.MapController;
 import org.geomajas.gwt2.client.gfx.CanvasContainer;
 import org.geomajas.gwt2.client.gfx.TransformableWidgetContainer;
 import org.geomajas.gwt2.client.gfx.VectorContainer;
-import org.geomajas.gwt2.client.map.feature.FeatureService;
 import org.geomajas.gwt2.client.map.layer.LayersModel;
+import org.geomajas.gwt2.client.map.render.LayersModelRenderer;
 
-import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -35,13 +35,14 @@ import com.google.gwt.user.client.ui.Widget;
  */
 @Api(allMethods = true)
 public interface MapPresenter extends IsWidget {
-
-	/**
-	 * Initialize the map. This method will try to fetch the associated map configuration from the server and apply it
-	 * on return. A special {@link org.geomajas.gwt2.client.event.MapInitializationEvent} will be fired once
-	 * initialization is done.
-	 */
-	void initialize(String applicationId, String id);
+	// TODO remove this...
+//
+//	/**
+//	 * Initialize the map. This method will try to fetch the associated map configuration from the server and apply it
+//	 * on return. A special {@link org.geomajas.gwt2.client.event.MapInitializationEvent} will be fired once
+//	 * initialization is done.
+//	 */
+//	void initialize(String applicationId, String id);
 
 	/**
 	 * Get the event bus for this map. All events regarding this map, it's layers and it's features will originate from
@@ -53,6 +54,14 @@ public interface MapPresenter extends IsWidget {
 
 	/** Return the widget that displays the map in the HTML page. */
 	Widget asWidget();
+
+	/**
+	 * Get the renderer for the {@link LayersModel}. This renderer is responsible for rendering the list of layers on
+	 * the map.
+	 * 
+	 * @return The renderer.
+	 */
+	LayersModelRenderer getRenderer();
 
 	/**
 	 * Apply a new width and height on the map. Both parameters are expressed in pixels.
@@ -79,7 +88,7 @@ public interface MapPresenter extends IsWidget {
 	 * @return Returns the world vector container.
 	 */
 	VectorContainer addWorldContainer();
-	
+
 	/**
 	 * <p>
 	 * Create a new container in world space to which one can add transformable widgets and return it. Note that all
@@ -129,7 +138,8 @@ public interface MapPresenter extends IsWidget {
 	/**
 	 * Remove an existing widget container from the map.
 	 * 
-	 * @param container The identifier of the container. If no such container exists, false will be returned.
+	 * @param container
+	 *            The identifier of the container. If no such container exists, false will be returned.
 	 * @return Was the removal successful or not?
 	 */
 	boolean removeWorldWidgetContainer(TransformableWidgetContainer container);
@@ -160,13 +170,6 @@ public interface MapPresenter extends IsWidget {
 	 * @return Returns the view port.
 	 */
 	ViewPort getViewPort();
-
-	/**
-	 * Get a service for feature searching/manipulation, specific for this map.
-	 * 
-	 * @return The feature service.
-	 */
-	FeatureService getFeatureService();
 
 	/**
 	 * Apply a new {@link MapController} on the map. This controller will handle all mouse-events that are global for
@@ -241,7 +244,7 @@ public interface MapPresenter extends IsWidget {
 	 * 
 	 * @return A panel onto which widgets can be added.
 	 */
-	AbsolutePanel getWidgetPane();
+	HasWidgets getWidgetPane();
 
 	/**
 	 * Get the map configuration object. This object contains the server-side configuration and a series of map hints.

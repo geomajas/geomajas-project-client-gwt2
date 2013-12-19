@@ -12,20 +12,16 @@
 package org.geomajas.gwt2.client.map;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.geometry.Geometry;
-import org.geomajas.geometry.Matrix;
-import org.geomajas.gwt.client.map.RenderSpace;
-import org.geomajas.gwt2.client.map.ZoomStrategy.ZoomOption;
+import org.geomajas.gwt2.client.animation.NavigationAnimation;
 
 /**
  * <p>
  * Central view port definition that determines and influences that position of the map. It allows for zooming in and
  * out, translation, etc.<br/>
- * Note that all coordinates and bounding boxes must always be expressed in world space. See {@link RenderSpace} for
- * more information.
+ * Note that all coordinates and bounding boxes must always be expressed in world space. See
+ * {@link org.geomajas.gwt.client.map.RenderSpace} for more information.
  * </p>
  * <p>
  * Next to storing and changing the map location, implementation of this interface will also send out several types of
@@ -40,23 +36,6 @@ import org.geomajas.gwt2.client.map.ZoomStrategy.ZoomOption;
 @Api(allMethods = true)
 public interface ViewPort {
 
-	// -------------------------------------------------------------------------
-	// Configuration stuff:
-	// -------------------------------------------------------------------------
-
-	/**
-	 * Initialization method. Only when this method has been executed can the <code>ViewPort</code> be expected to
-	 * function properly. This initialization should therefore be a part of the whole {@link MapPresenter}
-	 * initialization procedure.
-	 * 
-	 * @param mapInfo
-	 *            The map information meta-data from which to initialize the <code>ViewPort</code>.
-	 * @param eventBus
-	 *            The {@link MapPresenter}s event bus. Events regarding ViewPort changes (zoom, pan, ...) are fired upon
-	 *            this bus.
-	 */
-	void initialize(ClientMapInfo mapInfo, MapEventBus eventBus);
-
 	/**
 	 * Get the maximum zooming extent that is allowed on this view port. These bounds are determined by the map
 	 * configuration.
@@ -64,6 +43,53 @@ public interface ViewPort {
 	 * @return The maximum zooming extent that is allowed on this view port.
 	 */
 	Bbox getMaximumBounds();
+
+	/**
+	 * Return the minimum allowed scale. This means the maximum zoom out.
+	 * 
+	 * @return The minimum allowed scale.
+	 */
+	double getMinimumScale();
+
+	/**
+	 * Return the maximum allowed scale. This means the maximum zoom in.
+	 * 
+	 * @return The maximum allowed scale.
+	 */
+	double getMaximumScale();
+
+	/**
+	 * Returns a list of preferred fixed scale for the map to be in. These are typically the scales at which tiled
+	 * layers will retrieve their tiles.
+	 * 
+	 * @return The list of preferred scales (zoom steps).
+	 */
+
+	/**
+	 * Get the total number of preferred fixed scales. These scales are used among others by the zooming controls on the
+	 * map.
+	 * 
+	 * @return The total number of fixed zoom scales, or -1 if no fixed list of scales is known.
+	 */
+	int getFixedScaleCount();
+
+	/**
+	 * Get a preferred fixed scale at a certain index.
+	 * 
+	 * @param index
+	 *            The index to get a scale for. Index 0 means the minimum scale (=zoomed out).
+	 * @return Returns the preferred scale.
+	 */
+	double getFixedScale(int index);
+
+	/**
+	 * Get the index for the fixed scale that is closest to the provided scale.
+	 * 
+	 * @param scale
+	 *            The scale to request the closest fixed scale level for.
+	 * @return Returns the fixed scale level index.
+	 */
+	int getFixedScaleIndex(double scale);
 
 	/**
 	 * Set the map's width and height in pixels. <code>ViewPort</code> implementations should pass these values to the
@@ -115,6 +141,13 @@ public interface ViewPort {
 	double getScale();
 
 	/**
+	 * Get the current view on the map.
+	 * 
+	 * @return Returns the current view on the map.
+	 */
+	View getView();
+
+	/**
 	 * Return the currently visible bounds on the map. These bounds are expressed in the CRS of the map.
 	 * 
 	 * @return Returns the maps bounding box.
@@ -126,22 +159,16 @@ public interface ViewPort {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Get the zoom strategy that is currently used to determine allowed scale levels.
+	 * Register an animation to be executed as soon as possible. By default, animations registered here in IE8 will not
+	 * actually run, but go directly to the final View.
 	 * 
-	 * @return The active zoom strategy.
+	 * @param animation
+	 *            The navigation animation to run.
 	 */
-	ZoomStrategy getZoomStrategy();
+	void registerAnimation(NavigationAnimation animation);
 
 	/**
-	 * Set a new zoom strategy to use for determining allowed scale levels.
-	 * 
-	 * @param zoomStrategy
-	 *            The new zoom strategy to use.
-	 */
-	void setZoomStrategy(ZoomStrategy zoomStrategy);
-
-	/**
-	 * Re-centers the map to a new position.
+	 * Re-centers the map to a new position while keeping the same scale.
 	 * 
 	 * @param coordinate
 	 *            the new center position
@@ -149,18 +176,8 @@ public interface ViewPort {
 	void applyPosition(Coordinate coordinate);
 
 	/**
-	 * Re-centers the map to a new position while dragging. This call should eventually be followed by
-	 * {@link #applyPosition(Coordinate)}) when the dragging stops.
-	 * 
-	 * @param coordinate
-	 *            the new center position
-	 */
-	void dragToPosition(Coordinate coordinate);
-
-	/**
-	 * Apply a new scale level on the map. In case the are fixed resolutions defined on this MapView, it will
-	 * automatically snap to the nearest resolution. In case the maximum extents are exceeded, it will pan to avoid
-	 * this.
+	 * Apply a new scale level on the map. This value needs to be between the minimum and maximum allowed scales, but is
+	 * totally free otherwise. It will not be constrained to fixed resolutions.
 	 * 
 	 * @param scale
 	 *            The preferred new scale.
@@ -168,42 +185,15 @@ public interface ViewPort {
 	void applyScale(double scale);
 
 	/**
-	 * Apply a new scale level on the map. In case the are fixed resolutions defined on this MapView, it will
-	 * automatically snap to the nearest resolution. In case the maximum extents are exceeded, it will pan to avoid
-	 * this.
+	 * Apply a new scale level on the map. This value needs to be between the minimum and maximum allowed scales, but is
+	 * totally free otherwise. It will not be constrained to fixed resolutions.
 	 * 
 	 * @param scale
 	 *            The preferred new scale.
-	 * @param rescalePoint
-	 *            After zooming, this point will still be on the same position in the view as before. Makes for easy
-	 *            double clicking on the map without it moving away.
+	 * @param zoomOption
+	 *            An extra option that allows you to restrain the scaling.
 	 */
-	void applyScale(double scale, Coordinate rescalePoint);
-
-	/**
-	 * Apply a new scale level on the map, but only perform the animation phase. Call this method when you want to avoid
-	 * intermediate rendering during an animation (e.g pinch-zooming). Warning: calls to his method must be eventually
-	 * be followed by a call to {@link #applyScale(double)} at the end of the animation to perform the actual rendering
-	 * of the scale.
-	 * 
-	 * @param scale
-	 *            The preferred new scale.
-	 */
-	void dragToScale(double scale);
-
-	/**
-	 * Apply a new scale level on the map, but only perform the animation phase. Call this method when you want to avoid
-	 * intermediate rendering during an animation (e.g pinch-zooming). Warning: calls to his method must be eventually
-	 * be followed by a call to {@link #applyScale(double, Coordinate)} at the end of the animation to perform the
-	 * actual rendering of the scale.
-	 * 
-	 * @param scale
-	 *            The preferred new scale.
-	 * @param rescalePoint
-	 *            After zooming, this point will still be on the same position in the view as before. Makes for easy
-	 *            double clicking on the map without it moving away.
-	 */
-	void dragToScale(double scale, Coordinate rescalePoint);
+	void applyScale(double scale, ZoomOption zoomOption);
 
 	/**
 	 * <p>
@@ -238,81 +228,42 @@ public interface ViewPort {
 	 */
 	void applyBounds(Bbox bounds, ZoomOption zoomOption);
 
+	/**
+	 * Apply a new view on the map.
+	 * 
+	 * @param view
+	 *            The new view to apply on the map.
+	 */
+	void applyView(View view);
+
+	/**
+	 * Apply a new view on the map.
+	 * 
+	 * @param view
+	 *            The new view to apply on the map.
+	 */
+	void applyView(View view, ZoomOption zoomOption);
+
 	// ------------------------------------------------------------------------
 	// ViewPort transformation methods:
 	// ------------------------------------------------------------------------
 
 	/**
-	 * Transform the given coordinate from a certain rendering space to another.
+	 * Get a transformation service that is capable of transforming geometric objects between different
+	 * {@link org.geomajas.gwt.client.map.RenderSpace}s.
 	 * 
-	 * @param coordinate
-	 *            The coordinate to transform. The X and Y ordinates are expected to be expressed in the 'from'
-	 *            rendering space.
-	 * @param from
-	 *            The rendering space that expresses the X and Y ordinates of the given coordinate.
-	 * @param to
-	 *            The rendering space where to the coordinate should be transformed.
-	 * @return The transformed coordinate.
+	 * @return
 	 */
-	Coordinate transform(Coordinate coordinate, RenderSpace from, RenderSpace to);
-
-	/**
-	 * Transform the given geometry from a certain rendering space to another.
-	 * 
-	 * @param geometry
-	 *            The geometry to transform. The coordinates are expected to be expressed in the 'from' rendering space.
-	 * @param from
-	 *            The rendering space that expresses the coordinates of the given geometry.
-	 * @param to
-	 *            The rendering space where to the geometry should be transformed.
-	 * @return The transformed geometry.
-	 */
-	Geometry transform(Geometry geometry, RenderSpace from, RenderSpace to);
-
-	/**
-	 * Transform the given bounding box from a certain rendering space to another.
-	 * 
-	 * @param bbox
-	 *            The bounding box to transform. The coordinates are expected to be expressed in the 'from' rendering
-	 *            space.
-	 * @param from
-	 *            The rendering space that expresses the values (x, y, width, height) of the given bounding box.
-	 * @param to
-	 *            The rendering space where to the bounding box should be transformed.
-	 * @return The transformed bounding box.
-	 */
-	Bbox transform(Bbox bbox, RenderSpace from, RenderSpace to);
-
-	/**
-	 * Get the transformation matrix to transform spatial objects from one render space to another. This matrix should
-	 * contain both scale and translation factors.
-	 * 
-	 * @param from
-	 *            The rendering space that describes the origin of the objects to transform.
-	 * @param to
-	 *            The rendering space that describes where to objects should be transformed.
-	 * @return The matrix that describes the requested transformation.
-	 */
-	Matrix getTransformationMatrix(RenderSpace from, RenderSpace to);
-
-	/**
-	 * Get the translation matrix to transform spatial objects from one render space to another. This matrix should
-	 * contain only translation factors, no scaling factors.
-	 * 
-	 * @param from
-	 *            The rendering space that describes the origin of the objects to transform.
-	 * @param to
-	 *            The rendering space that describes where to objects should be transformed.
-	 * @return The matrix that describes the requested transformation.
-	 */
-	Matrix getTranslationMatrix(RenderSpace from, RenderSpace to);
+	ViewPortTransformationService getTransformationService();
 
 	/**
 	 * Returns whether the view port is ready to be used. Mainly for internal use, normal clients should depend on map
 	 * initialization.
 	 * 
 	 * @return true if ready to be used.
+	 * @deprecated Do we still need this?
 	 */
+	@Deprecated
 	boolean isInitialized();
 
 	/**
@@ -323,4 +274,24 @@ public interface ViewPort {
 	 * @return Returns a scale value for this view port.
 	 */
 	double toScale(double scaleDenominator);
+
+	/**
+	 * Transform a certain view into a bounding box.
+	 * 
+	 * @param view
+	 *            A view on the map.
+	 * @return The bounding box that relates to the provided view.
+	 */
+	Bbox asBounds(View view);
+
+	/**
+	 * Transform a bounding box into a view on the map.
+	 * 
+	 * @param bounds
+	 *            The bounding box to request a view for.
+	 * @param zoomOption
+	 *            An option to constrain the returned view to fixed scale levels.
+	 * @return The view that relates to the provided bounding box.
+	 */
+	View asView(Bbox bounds, ZoomOption zoomOption);
 }

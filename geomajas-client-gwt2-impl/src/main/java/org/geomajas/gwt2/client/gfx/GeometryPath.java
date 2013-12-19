@@ -30,7 +30,6 @@ import org.vaadin.gwtgraphics.client.shape.path.ScaleHelper;
  * Path based on a coordinate array. Can be used to represent a geometry.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class GeometryPath extends Shape {
 
@@ -387,7 +386,6 @@ public class GeometryPath extends Shape {
 	 * Inner class for tracking sub-paths.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	class SubPath {
 
@@ -407,7 +405,5 @@ public class GeometryPath extends Shape {
 		public boolean isClosed() {
 			return closed;
 		}
-
 	}
-
 }
