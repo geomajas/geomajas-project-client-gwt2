@@ -78,6 +78,12 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 
 	private boolean started;
 
+	/**
+	 * boolean to indicate whether an inserted vertex can create a line that intersects with the current shape of
+	 * the geometry.
+	 */
+	private boolean polygonInsertLinesCanIntersect = true;
+
 	// ------------------------------------------------------------------------
 	// Public constructors:
 	// ------------------------------------------------------------------------
@@ -312,5 +318,14 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	@Override
 	public GeometryIndex addEmptyChild(GeometryIndex index) throws GeometryOperationFailedException {
 		return operationService.addEmptyChild(index);
+	}
+
+	public boolean isPolygonInsertLinesCanIntersect() {
+		return polygonInsertLinesCanIntersect;
+	}
+
+	@Override
+	public void setPolygonInsertLinesCanIntersect(boolean linesCanIntersect) {
+		this.polygonInsertLinesCanIntersect = linesCanIntersect;
 	}
 }

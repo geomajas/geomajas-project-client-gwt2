@@ -11,6 +11,7 @@
 
 package org.geomajas.plugin.editing.gwt.example.client;
 
+import com.google.gwt.user.client.ui.CheckBox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt2.client.event.MapResizedEvent;
@@ -99,6 +100,17 @@ public class Showcase implements EntryPoint, MapResizedHandler {
 		bufferDistance.setValue("50000");
 		buttonPanel.add(bufferDistance);
 		buttonPanel.add(new BufferAllButton(geometryToShapeConverter, bufferDistance));
+
+		final CheckBox polygonInsertCanIntersect = new CheckBox("On insert for polygon, lines can intersect");
+		polygonInsertCanIntersect.setValue(true);
+		editService.setPolygonInsertLinesCanIntersect(true);
+		polygonInsertCanIntersect.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				editService.setPolygonInsertLinesCanIntersect(polygonInsertCanIntersect.getValue());
+			}
+		});
+		buttonPanel.add(polygonInsertCanIntersect);
 
 		RootLayoutPanel.get().add(layout);
 		// Initialize the map:
