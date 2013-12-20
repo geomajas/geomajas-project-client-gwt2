@@ -21,13 +21,14 @@
 
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-client-common-gwt-parent</artifactId>
+	<version>2.0.0-AAA-SNAPSHOT</version>
 	<name>Geomajas GWT2 client: Commons - Parent</name>
 	<description>Geomajas GWT2 client: Parent for common client-side code</description>
 
 	<modules>
 		<module>geomajas-client-common-gwt</module>
 		<module>geomajas-client-common-gwt-command</module>
-		<!--<module>geomajas-client-common-gwt-documentation</module>-->
+		<!--<module>geomajas-client-	common-gwt-documentation</module>-->
 	</modules>
 
 </project>
