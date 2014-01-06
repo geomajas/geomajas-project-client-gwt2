@@ -18,8 +18,6 @@ import org.geomajas.graphics.client.util.BboxPosition;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
-import org.geomajas.gwt2.client.event.ViewPortScaledEvent;
-import org.geomajas.gwt2.client.event.ViewPortTranslatedEvent;
 import org.geomajas.gwt2.client.map.MapPresenter;
 
 import com.google.gwt.dom.client.Element;
@@ -47,21 +45,14 @@ public class AnnotationContainer extends AbstractGraphicsObjectContainer impleme
 	@Override
 	public void onViewPortChanged(ViewPortChangedEvent event) {
 		if (mask != null) {
-			mask.setUserBounds(event.getViewPort().getBounds());
-		}
-	}
-
-	@Override
-	public void onViewPortScaled(ViewPortScaledEvent event) {
-		if (mask != null) {
-			mask.setUserBounds(event.getViewPort().getBounds());
-		}
-	}
-
-	@Override
-	public void onViewPortTranslated(ViewPortTranslatedEvent event) {
-		if (mask != null) {
-			mask.setUserBounds(event.getViewPort().getBounds());
+//			does not work anymore:
+//			mask.setUserBounds(event.getViewPort().getBounds());
+//			try to get alternative TODO check, this is just some dumy code
+			Coordinate from =   event.getFrom().getPosition();
+			Coordinate to =   event.getFrom().getPosition();
+			Bbox box = new Bbox(Math.min(from.getX(), to.getX()), Math.min(from.getY(), to.getY()),
+					Math.abs(from.getX() - to.getX()), Math.abs(from.getY() - to.getY()));
+			mask.setUserBounds(box);
 		}
 	}
 
@@ -73,12 +64,12 @@ public class AnnotationContainer extends AbstractGraphicsObjectContainer impleme
 
 	@Override
 	public Coordinate transform(Coordinate coordinate, Space from, Space to) {
-		return mapPresenter.getViewPort().transform(coordinate, convert(from), convert(to));
+		return mapPresenter.getViewPort().getTransformationService().transform(coordinate, convert(from), convert(to));
 	}
 
 	@Override
 	public Bbox transform(Bbox bounds, Space from, Space to) {
-		return mapPresenter.getViewPort().transform(bounds, convert(from), convert(to));
+		return mapPresenter.getViewPort().getTransformationService().transform(bounds, convert(from), convert(to));
 	}
 
 	private RenderSpace convert(Space space) {
