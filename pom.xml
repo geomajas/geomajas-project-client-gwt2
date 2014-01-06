@@ -170,12 +170,17 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-client-gwt2-plugin-graphicsediting-parent-example</artifactId>
+				<artifactId>geomajas-client-gwt2-plugin-graphicsediting</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-client-gwt2-plugin-graphicsediting-parent-example-jar</artifactId>
+				<artifactId>geomajas-client-gwt2-plugin-graphicsediting-example-jar</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-client-gwt2-plugin-graphicsediting-example-jar</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
