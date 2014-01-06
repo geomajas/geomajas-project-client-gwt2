@@ -35,7 +35,7 @@
 	<modules>
 		<module>graphicsediting-gwt2</module>
 		<!--<module>graphicsediting-gwt2-example</module>-->
-		<!--<module>graphicsediting-gwt2-example-jar</module>-->
+		<module>graphicsediting-gwt2-example-jar</module>
 	</modules>
 
 </project>
