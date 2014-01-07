@@ -1,0 +1,59 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+	<ui:with field='resource' type='org.geomajas.gwt2.example.base.client.resource.ShowcaseResource' />
+	<ui:with field='messages' type='org.geomajas.plugin.editing.example.client.i18n.SampleMessages' />
+	<ui:with field='html' type='org.geomajas.plugin.editing.example.client.i18n.SafeHtmlMessages' />
+
+	<g:DockLayoutPanel unit="PX" width="100%" height="100%">
+		<g:west size="350">
+			<g:HTMLPanel addStyleNames="{resource.css.sampleLeftLayout}">
+				<h2>
+					<ui:text from="{messages.editLineSubTitle}" />
+				</h2>
+				<div class="{resource.css.sampleRow}">
+					<table>
+						<tr>
+							<td width="90" valign="top">
+								<g:Button ui:field="createBtn" width="85">
+									<ui:text from="{messages.generalCreate}" />
+								</g:Button>
+							</td>
+							<td>
+								<ui:text from="{messages.editLineCreate}" />
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="{resource.css.sampleRow}">
+					<table>
+						<tr>
+							<td width="90" valign="top">
+								<g:Button ui:field="editBtn" width="85">
+									<ui:text from="{messages.generalEdit}" />
+								</g:Button>
+							</td>
+							<td>
+								<ui:text from="{messages.editLineEdit}" />
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div style="margin-top: 20px; text-align: justify;">
+					<ui:safehtml from="{html.explanation}" />
+				</div>
+				<div style="text-align:right; padding-top: 30px;">
+					<g:Button ui:field="stopBtn">
+						<ui:text from="{messages.generalStopEditing}" />
+					</g:Button>
+				</div>
+			</g:HTMLPanel>
+		</g:west>
+		<g:center>
+			<g:SimplePanel addStyleNames="{resource.css.sampleContentLayout}">
+				<g:ResizeLayoutPanel ui:field="mapPanel" width="100%" height="100%" />
+			</g:SimplePanel>
+		</g:center>
+	</g:DockLayoutPanel>
+
+</ui:UiBinder> 
