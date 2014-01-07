@@ -38,7 +38,7 @@ import com.google.gwt.event.shared.SimpleEventBus;
  * Service for the process of merging multiple geometries into a single geometry.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class GeometryMergeService {

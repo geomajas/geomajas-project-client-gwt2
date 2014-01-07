@@ -22,23 +22,24 @@ import org.geomajas.plugin.editing.client.service.GeometryIndex;
  * Event which is passed when some part of a geometry has snapped to another geometry during editing.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class GeometryIndexSnappingBeginEvent extends AbstractGeometryEditEvent<GeometryIndexSnappingBeginHandler> {
 
 	/**
 	 * Main constructor for this event.
-	 * @param geometry that has snapped to another geometry
-	 * @param indices 
+	 * 
+	 * @param geometry
+	 *            that has snapped to another geometry
+	 * @param indices
+	 *            The indices that are snapping.
 	 */
 	public GeometryIndexSnappingBeginEvent(Geometry geometry, List<GeometryIndex> indices) {
 		super(geometry, indices);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Override
 	public Type<GeometryIndexSnappingBeginHandler> getAssociatedType() {
 		return GeometryIndexSnappingBeginHandler.TYPE;
 	}

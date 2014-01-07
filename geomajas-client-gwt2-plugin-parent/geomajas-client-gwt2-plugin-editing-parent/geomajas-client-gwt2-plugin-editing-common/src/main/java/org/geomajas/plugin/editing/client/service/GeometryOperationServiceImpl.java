@@ -40,10 +40,10 @@ import com.google.gwt.core.client.Callback;
  * </ul>
  * 
  * @author Emiel Ackermann
- *
  */
 public class GeometryOperationServiceImpl implements GeometryOperationService {
 
+	@Override
 	public void buffer(Geometry geometry, BufferInfo bufferInfo, final Callback<Geometry, Throwable> callback) {
 		List<Geometry> geometries = new ArrayList<Geometry>();
 		geometries.add(geometry);
@@ -56,10 +56,10 @@ public class GeometryOperationServiceImpl implements GeometryOperationService {
 			public void onSuccess(List<Geometry> result) {
 				callback.onSuccess(result.get(0));
 			}
-			
 		});
 	}
 
+	@Override
 	public void buffer(List<Geometry> geometries, BufferInfo bufferInfo, 
 			final Callback<List<Geometry>, Throwable> callback) {
 		GeometryBufferRequest request = new GeometryBufferRequest();
@@ -79,6 +79,7 @@ public class GeometryOperationServiceImpl implements GeometryOperationService {
 		});
 	}
 
+	@Override
 	public void union(List<Geometry> geometries, UnionInfo unionInfo, final Callback<Geometry, Throwable> callback) {
 		GeometryMergeRequest request = new GeometryMergeRequest();
 		request.setGeometries(geometries);
@@ -97,6 +98,7 @@ public class GeometryOperationServiceImpl implements GeometryOperationService {
 		});
 	}
 
+	@Override
 	public void convexHull(Geometry geometry, final Callback<Geometry, Throwable> callback) {
 		List<Geometry> geometries = new ArrayList<Geometry>();
 		geometries.add(geometry);
@@ -112,6 +114,7 @@ public class GeometryOperationServiceImpl implements GeometryOperationService {
 		});
 	}
 
+	@Override
 	public void convexHull(List<Geometry> geometries, final Callback<List<Geometry>, Throwable> callback) {
 		GeometryConvexHullRequest request = new GeometryConvexHullRequest();
 		request.setGeometries(geometries);
@@ -128,6 +131,7 @@ public class GeometryOperationServiceImpl implements GeometryOperationService {
 		});
 	}
 
+	@Override
 	public void bounds(List<Geometry> geometries, Callback<Bbox, Throwable> callback) {
 		try {
 			Bbox result = GeometryService.getBounds(geometries.get(0));
@@ -159,5 +163,4 @@ public class GeometryOperationServiceImpl implements GeometryOperationService {
 			callback.onFailure(e);
 		}
 	}
-
 }

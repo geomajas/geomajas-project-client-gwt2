@@ -13,7 +13,7 @@ package org.geomajas.plugin.editing.client.event;
 
 import java.util.List;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 
@@ -21,15 +21,18 @@ import org.geomajas.plugin.editing.client.service.GeometryIndex;
  * Event which is passed when some part of a geometry has been moved during geometry editing.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
-@FutureApi(allMethods = true)
+@Api(allMethods = true)
 public class GeometryEditMoveEvent extends AbstractGeometryEditEvent<GeometryEditMoveHandler> {
 
 	/**
 	 * Main constructor.
-	 * @param geometry geometry
-	 * @param indices indices
+	 * 
+	 * @param geometry
+	 *            geometry
+	 * @param indices
+	 *            indices
 	 */
 	public GeometryEditMoveEvent(Geometry geometry, List<GeometryIndex> indices) {
 		super(geometry, indices);

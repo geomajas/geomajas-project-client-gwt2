@@ -18,7 +18,7 @@ import org.geomajas.annotation.Api;
  * "type", this sub-part can be a vertex, an edge or a sub-geometry.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class GeometryIndex {

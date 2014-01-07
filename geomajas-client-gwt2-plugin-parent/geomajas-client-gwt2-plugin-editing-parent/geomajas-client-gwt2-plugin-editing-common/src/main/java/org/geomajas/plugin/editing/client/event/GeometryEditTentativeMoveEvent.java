@@ -10,7 +10,7 @@
  */
 package org.geomajas.plugin.editing.client.event;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
 
 import com.google.gwt.event.shared.GwtEvent;
@@ -19,15 +19,23 @@ import com.google.gwt.event.shared.GwtEvent;
  * Event that reports mouse move events that don't necessarily have to commit to anything.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
-@FutureApi(allMethods = true)
+@Api(allMethods = true)
 public class GeometryEditTentativeMoveEvent extends GwtEvent<GeometryEditTentativeMoveHandler> {
 
 	private final Coordinate origin;
 
 	private final Coordinate currentPosition;
 
+	/**
+	 * Create a new event.
+	 * 
+	 * @param origin
+	 *            The original position.
+	 * @param currentPosition
+	 *            The current tentative position.
+	 */
 	public GeometryEditTentativeMoveEvent(Coordinate origin, Coordinate currentPosition) {
 		this.origin = origin;
 		this.currentPosition = currentPosition;
@@ -43,10 +51,20 @@ public class GeometryEditTentativeMoveEvent extends GwtEvent<GeometryEditTentati
 		geometryEditInsertMoveHandler.onTentativeMove(this);
 	}
 
+	/**
+	 * Get the original position.
+	 * 
+	 * @return The position.
+	 */
 	public Coordinate getOrigin() {
 		return origin;
 	}
 
+	/**
+	 * Get the tentative move position (where the mouse currently is).
+	 * 
+	 * @return The current tentative move position.
+	 */
 	public Coordinate getCurrentPosition() {
 		return currentPosition;
 	}

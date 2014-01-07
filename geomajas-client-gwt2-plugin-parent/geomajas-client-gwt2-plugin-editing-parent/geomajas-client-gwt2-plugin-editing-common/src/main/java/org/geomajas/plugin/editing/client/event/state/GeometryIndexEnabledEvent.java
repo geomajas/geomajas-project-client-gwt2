@@ -13,7 +13,7 @@ package org.geomajas.plugin.editing.client.event.state;
 
 import java.util.List;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.plugin.editing.client.event.AbstractGeometryEditEvent;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
@@ -22,15 +22,24 @@ import org.geomajas.plugin.editing.client.service.GeometryIndex;
  * Event which is passed when some part of a geometry has been enabled during geometry editing.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
-@FutureApi(allMethods = true)
+@Api(allMethods = true)
 public class GeometryIndexEnabledEvent extends AbstractGeometryEditEvent<GeometryIndexEnabledHandler> {
 
+	/**
+	 * Create a new event.
+	 * 
+	 * @param geometry
+	 *            The geometry being edited.
+	 * @param indices
+	 *            The indices that are enabled.
+	 */
 	public GeometryIndexEnabledEvent(Geometry geometry, List<GeometryIndex> indices) {
 		super(geometry, indices);
 	}
 
+	@Override
 	public Type<GeometryIndexEnabledHandler> getAssociatedType() {
 		return GeometryIndexEnabledHandler.TYPE;
 	}

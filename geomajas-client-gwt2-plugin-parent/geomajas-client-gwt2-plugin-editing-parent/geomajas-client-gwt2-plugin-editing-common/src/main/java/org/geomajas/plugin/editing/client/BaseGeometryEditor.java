@@ -10,6 +10,7 @@
  */
 package org.geomajas.plugin.editing.client;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.plugin.editing.client.gfx.GeometryRenderer;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.snap.SnapService;
@@ -18,8 +19,9 @@ import org.geomajas.plugin.editing.client.snap.SnapService;
  * Base interface for geometry editors in all faces. TODO: check for redundant methods.
  * 
  * @author Jan De Moerloose
- * 
+ * @since 2.0.0
  */
+@Api(allMethods = true)
 public interface BaseGeometryEditor {
 
 	/**
@@ -63,7 +65,6 @@ public interface BaseGeometryEditor {
 	 * @param true if snapping is on
 	 */
 	void setSnapOnDrag(boolean b);
-	
 
 	/**
 	 * Set whether to snap while in insert mode.
@@ -71,5 +72,4 @@ public interface BaseGeometryEditor {
 	 * @param true if snapping is on
 	 */
 	void setSnapOnInsert(boolean b);
-
 }

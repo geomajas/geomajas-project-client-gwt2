@@ -11,12 +11,16 @@
 
 package org.geomajas.plugin.editing.client.service;
 
+import org.geomajas.annotation.Api;
+
 /**
  * The type of sub-part of a geometry that a {@link GeometryIndex} can point to. Supported parts are sub-geometries,
  * vertices and edges.
  * 
  * @author Pieter De Graef
+ * @since 2.0.0
  */
+@Api(allMethods = true)
 public enum GeometryIndexType {
 
 	/** Points to the geometry itself or one of it's sub-geometries. */

@@ -11,23 +11,42 @@
 
 package org.geomajas.plugin.editing.client.operation;
 
+import org.geomajas.annotation.Api;
+
 /**
  * Exception that is thrown when an operation onto a geometry has failed.
  * 
  * @author Pieter De Graef
+ * @since 2.0.0
  */
+@Api(allMethods = true)
 public class GeometryOperationFailedException extends Exception {
 
 	private static final long serialVersionUID = 100L;
 
+	/**
+	 * Default constructor.
+	 */
 	public GeometryOperationFailedException() {
 		super();
 	}
 
+	/**
+	 * Create an exception using the given message.
+	 * 
+	 * @param message
+	 *            The exception message.
+	 */
 	public GeometryOperationFailedException(String message) {
 		super(message);
 	}
 
+	/**
+	 * Constructor used to catch and rethrow another exception.
+	 * 
+	 * @param throwable
+	 *            The original exception.
+	 */
 	public GeometryOperationFailedException(Throwable throwable) {
 		super(throwable);
 	}

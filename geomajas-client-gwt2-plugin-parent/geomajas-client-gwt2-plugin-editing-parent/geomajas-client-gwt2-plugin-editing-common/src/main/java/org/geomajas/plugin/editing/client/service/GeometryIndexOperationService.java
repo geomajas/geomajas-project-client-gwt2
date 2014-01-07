@@ -13,6 +13,7 @@ package org.geomajas.plugin.editing.client.service;
 
 import java.util.List;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 
@@ -33,7 +34,9 @@ import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedExcep
  * </p>
  * 
  * @author Pieter De Graef
+ * @since 2.0.0
  */
+@Api(allMethods = true)
 public interface GeometryIndexOperationService {
 
 	// ------------------------------------------------------------------------
@@ -149,6 +152,7 @@ public interface GeometryIndexOperationService {
 	 */
 	//TODO Remove this method in favor of the addEmptyChild(GeometryIndex index)?
 	GeometryIndex addEmptyChild() throws GeometryOperationFailedException;
+
 	/**
 	 * Add an empty child at the lowest sub-geometry level.
 	 * 

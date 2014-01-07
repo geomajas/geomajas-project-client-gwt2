@@ -11,6 +11,7 @@
 
 package org.geomajas.plugin.editing.client.service;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateHandler;
@@ -46,7 +47,9 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * </p>
  * 
  * @author Pieter De Graef
+ * @since 2.0.0
  */
+@Api(allMethods = true)
 public interface GeometryEditService extends GeometryIndexOperationService {
 
 	// ------------------------------------------------------------------------

@@ -21,7 +21,7 @@ import com.google.gwt.event.shared.GwtEvent;
  * Handler for catching events for geometries being added to the merging list.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 @UserImplemented

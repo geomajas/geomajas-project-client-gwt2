@@ -28,7 +28,8 @@ import org.geomajas.plugin.editing.example.client.sample.button.BufferAllButton;
 import org.geomajas.plugin.editing.example.client.sample.button.CancelButton;
 import org.geomajas.plugin.editing.example.client.sample.button.RedoButton;
 import org.geomajas.plugin.editing.example.client.sample.button.UndoButton;
-import org.geomajas.plugin.editing.gwt.client.GeometryEditorImpl;
+import org.geomajas.plugin.editing.gwt.client.Editing;
+import org.geomajas.plugin.editing.gwt.client.GeometryEditor;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -74,7 +75,7 @@ public class EditingPanel implements SamplePanel {
 	private RedoButton redoButton;
 
 	private GeometryToShapeConverter geometryToShapeConverter;
-	
+
 	private GeometryEditService editService;
 
 	public Widget asWidget() {
@@ -93,10 +94,10 @@ public class EditingPanel implements SamplePanel {
 		GeomajasServerExtension.initializeMap(mapPresenter, "gwt-app", "mapOsm");
 
 		// Prepare editing:
-		GeometryEditorImpl editor = new GeometryEditorImpl(mapPresenter, GeomajasImpl.getInstance().getGfxUtil());
+		GeometryEditor editor = Editing.getInstance().createGeometryEditor(mapPresenter);
 		editService = editor.getEditService();
 		geometryToShapeConverter = new GeometryToShapeConverter(editService, mapPresenter);
-		
+
 		addButtons();
 
 		return layout;

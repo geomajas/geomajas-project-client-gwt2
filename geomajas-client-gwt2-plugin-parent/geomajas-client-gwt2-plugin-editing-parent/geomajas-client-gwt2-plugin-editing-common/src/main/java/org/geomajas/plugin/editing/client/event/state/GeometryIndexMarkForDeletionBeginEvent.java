@@ -13,7 +13,7 @@ package org.geomajas.plugin.editing.client.event.state;
 
 import java.util.List;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.plugin.editing.client.event.AbstractGeometryEditEvent;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
@@ -23,16 +23,25 @@ import org.geomajas.plugin.editing.client.service.GeometryIndex;
  * does not signal the actual deletion though.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
-@FutureApi(allMethods = true)
-public class GeometryIndexMarkForDeletionBeginEvent extends 
-		AbstractGeometryEditEvent<GeometryIndexMarkForDeletionBeginHandler> {
+@Api(allMethods = true)
+public class GeometryIndexMarkForDeletionBeginEvent
+	extends AbstractGeometryEditEvent<GeometryIndexMarkForDeletionBeginHandler> {
 
+	/**
+	 * Create a new event.
+	 * 
+	 * @param geometry
+	 *            The geometry being edited.
+	 * @param indices
+	 *            The indices that are marked for deletion.
+	 */
 	public GeometryIndexMarkForDeletionBeginEvent(Geometry geometry, List<GeometryIndex> indices) {
 		super(geometry, indices);
 	}
 
+	@Override
 	public Type<GeometryIndexMarkForDeletionBeginHandler> getAssociatedType() {
 		return GeometryIndexMarkForDeletionBeginHandler.TYPE;
 	}

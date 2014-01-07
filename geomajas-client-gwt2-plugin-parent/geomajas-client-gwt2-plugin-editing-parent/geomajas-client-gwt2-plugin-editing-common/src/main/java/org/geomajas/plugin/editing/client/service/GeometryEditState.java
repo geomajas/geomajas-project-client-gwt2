@@ -18,7 +18,7 @@ import org.geomajas.annotation.Api;
  * on the map, and thus changes the behavior.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public enum GeometryEditState {

@@ -10,7 +10,7 @@
  */
 package org.geomajas.plugin.editing.client.event;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
 
 import com.google.gwt.event.shared.GwtEvent;
@@ -19,9 +19,9 @@ import com.google.gwt.event.shared.GwtEvent;
  * Event that reports the changing of the general geometry editing state.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
-@FutureApi(allMethods = true)
+@Api(allMethods = true)
 public class GeometryEditChangeStateEvent extends GwtEvent<GeometryEditChangeStateHandler> {
 
 	private final GeometryEditState editingState;

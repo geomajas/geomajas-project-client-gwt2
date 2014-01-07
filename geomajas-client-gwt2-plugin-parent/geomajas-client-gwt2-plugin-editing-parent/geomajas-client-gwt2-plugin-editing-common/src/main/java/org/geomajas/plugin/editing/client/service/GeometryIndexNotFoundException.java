@@ -18,7 +18,7 @@ import org.geomajas.annotation.Api;
  * {@link org.geomajas.geometry.Geometry}. Used mainly in the {@link GeometryIndexService}.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class GeometryIndexNotFoundException extends Exception {

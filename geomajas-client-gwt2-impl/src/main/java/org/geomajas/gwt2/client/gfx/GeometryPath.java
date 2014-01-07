@@ -349,7 +349,9 @@ public class GeometryPath extends Shape {
 			for (int i = 1; i < polygon.getGeometries().length; i++) {
 				Geometry ring = polygon.getGeometries()[i];
 				Coordinate[] pathCoords = removeLastCoordinate(ring);
-				addSubPath(pathCoords, true);
+				if (pathCoords != null && pathCoords.length > 0) {
+					addSubPath(pathCoords, true);
+				}
 			}
 		}
 	}
@@ -376,6 +378,9 @@ public class GeometryPath extends Shape {
 	}
 
 	private Coordinate[] removeLastCoordinate(Geometry ring) {
+		if (ring.getCoordinates() == null) {
+			return new Coordinate[0];
+		}
 		Coordinate[] coordinates = ring.getCoordinates();
 		Coordinate[] pathCoords = new Coordinate[coordinates.length - 1];
 		System.arraycopy(coordinates, 0, pathCoords, 0, coordinates.length - 1);

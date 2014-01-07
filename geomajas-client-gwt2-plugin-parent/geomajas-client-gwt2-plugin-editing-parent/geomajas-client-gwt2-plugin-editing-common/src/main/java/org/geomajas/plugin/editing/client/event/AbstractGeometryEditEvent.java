@@ -13,7 +13,7 @@ package org.geomajas.plugin.editing.client.event;
 
 import java.util.List;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 
@@ -24,17 +24,25 @@ import com.google.gwt.event.shared.GwtEvent;
  * Base event type for events that signal changes on a geometry that is being edited.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  * @param <H>
  *            Type of handler for the event.
  */
-@FutureApi(allMethods = true)
+@Api(allMethods = true)
 public abstract class AbstractGeometryEditEvent<H extends EventHandler> extends GwtEvent<H> {
 
 	private final Geometry geometry;
 
 	private final List<GeometryIndex> indices;
 
+	/**
+	 * Base geometry editing event.
+	 * 
+	 * @param geometry
+	 *            The geometry being edited.
+	 * @param indices
+	 *            The indices on which an operation is performed (see implementations).
+	 */
 	public AbstractGeometryEditEvent(Geometry geometry, List<GeometryIndex> indices) {
 		this.geometry = geometry;
 		this.indices = indices;

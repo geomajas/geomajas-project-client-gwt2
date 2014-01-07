@@ -20,10 +20,10 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.map.RenderSpace;
+import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.controller.MapController;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
-import org.geomajas.gwt2.client.gfx.GfxUtil;
 import org.geomajas.gwt2.client.gfx.VectorContainer;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateEvent;
@@ -84,8 +84,6 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 
 	private final GeometryEditService editService;
 
-	private GfxUtil gfxUtil;
-
 	private final StyleProvider styleProvider;
 
 	private final Map<GeometryIndex, VectorObject> shapes;
@@ -101,10 +99,6 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 	private Path tentativeMoveLine;
 
 	private VectorObject nullShape;
-//
-//	private double previousDx;
-//
-//	private double previousDy;
 
 	// ------------------------------------------------------------------------
 	// Constructor:
@@ -118,17 +112,16 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 	 * @param editService
 	 *            The geometry editing service to listen to.
 	 */
-	public GeometryRendererImpl(MapPresenter mapPresenter, GeometryEditService editService, GfxUtil gfxUtil) {
+	public GeometryRendererImpl(MapPresenter mapPresenter, GeometryEditService editService) {
 		this.mapPresenter = mapPresenter;
-		this.gfxUtil = gfxUtil;
 		this.editService = editService;
 		this.styleProvider = new StyleProvider();
 		this.shapes = new HashMap<GeometryIndex, VectorObject>();
 
 		// Initialize default factories:
-		this.shapeFactory = new DefaultGeometryIndexShapeFactory(mapPresenter, RenderSpace.SCREEN, gfxUtil);
+		this.shapeFactory = new DefaultGeometryIndexShapeFactory(mapPresenter, RenderSpace.SCREEN);
 		this.styleFactory = new DefaultGeometryIndexStyleFactory(styleProvider);
-		this.controllerFactory = new DefaultGeometryIndexControllerFactory(mapPresenter, gfxUtil);
+		this.controllerFactory = new DefaultGeometryIndexControllerFactory(mapPresenter);
 
 		// Add ViewPortChangedHandler:
 		mapPresenter.getEventBus().addHandler(ViewPortChangedHandler.TYPE, this);
@@ -158,10 +151,6 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 
 	/** Clear everything and completely redraw the edited geometry. */
 	public void redraw() {
-//		previousDx = mapPresenter.getViewPort().getTransformationService()
-//				.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN).getDx();
-//		previousDy = mapPresenter.getViewPort().getTransformationService()
-//				.getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN).getDy();
 		shapes.clear();
 		if (container != null) {
 			container.setTranslation(0, 0);
@@ -170,8 +159,11 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 				tentativeMoveLine = new Path(-5, -5);
 				tentativeMoveLine.lineTo(-5, -5);
 				FeatureStyleInfo style = styleProvider.getEdgeTentativeMoveStyle();
-				gfxUtil.applyStroke(tentativeMoveLine, style.getStrokeColor(), style.getStrokeOpacity(),
-						style.getStrokeWidth(), style.getDashArray());
+				GeomajasImpl
+						.getInstance()
+						.getGfxUtil()
+						.applyStroke(tentativeMoveLine, style.getStrokeColor(), style.getStrokeOpacity(),
+								style.getStrokeWidth(), style.getDashArray());
 				container.add(tentativeMoveLine);
 
 				draw();
@@ -455,9 +447,12 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 			if (shape != null) {
 				// We don't consider position at this point. Just style:
 				FeatureStyleInfo style = styleFactory.create(editService, index);
-				gfxUtil.applyStroke(shape, style.getStrokeColor(), style.getStrokeOpacity(), style.getStrokeWidth(),
-						style.getDashArray());
-				gfxUtil.applyFill(shape, style.getFillColor(), style.getFillOpacity());
+				GeomajasImpl
+						.getInstance()
+						.getGfxUtil()
+						.applyStroke(shape, style.getStrokeColor(), style.getStrokeOpacity(), style.getStrokeWidth(),
+								style.getDashArray());
+				GeomajasImpl.getInstance().getGfxUtil().applyFill(shape, style.getFillColor(), style.getFillOpacity());
 
 				// Now update the location:
 				shapeFactory.update(shape, editService, index);
@@ -498,7 +493,7 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 				drawIndex(parentIndex);
 			}
 
-			// Than, we draw all LinearRings one by one:
+			// Then, we draw all LinearRings one by one:
 			for (int i = 0; i < geometry.getGeometries().length; i++) {
 				GeometryIndex index = editService.getIndexService().addChildren(parentIndex,
 						GeometryIndexType.TYPE_GEOMETRY, i);
@@ -515,7 +510,11 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 		int[] indices = null;
 		if (geometry.getCoordinates() != null) {
 			int max = geometry.getCoordinates().length - 1;
-			if (editService.getEditingState().equals(GeometryEditState.INSERTING)) {
+
+			// If we are inserting in this particular LinearRing, display one less edge/vertex to make it look closable:
+			GeometryIndex insertIndex = editService.getInsertIndex();
+			if (insertIndex != null && editService.getEditingState().equals(GeometryEditState.INSERTING)
+					&& editService.getIndexService().isChildOf(parentIndex, insertIndex)) {
 				max--;
 			}
 			// limit to maximum 50 visible indices if max > 50
@@ -590,15 +589,18 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 
 		// Apply style:
 		FeatureStyleInfo style = styleFactory.create(editService, index);
-		gfxUtil.applyStroke(shape, style.getStrokeColor(), style.getStrokeOpacity(), style.getStrokeWidth(),
-				style.getDashArray());
-		gfxUtil.applyFill(shape, style.getFillColor(), style.getFillOpacity());
+		GeomajasImpl
+				.getInstance()
+				.getGfxUtil()
+				.applyStroke(shape, style.getStrokeColor(), style.getStrokeOpacity(), style.getStrokeWidth(),
+						style.getDashArray());
+		GeomajasImpl.getInstance().getGfxUtil().applyFill(shape, style.getFillColor(), style.getFillOpacity());
 
 		// Apply controller:
 		MapController controller = controllerFactory.create(editService, index);
 		if (controller != null) {
 			controller.onActivate(mapPresenter);
-			gfxUtil.applyController(shape, controller);
+			GeomajasImpl.getInstance().getGfxUtil().applyController(shape, controller);
 		}
 
 		container.add(shape);

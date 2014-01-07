@@ -23,7 +23,6 @@ import com.google.gwt.core.client.Callback;
  * Service to perform common geometry operations (buffer, union, convex hull, etc...).
  * 
  * @author Jan De Moerloose
- * 
  */
 public interface GeometryOperationService {
 
@@ -80,5 +79,4 @@ public interface GeometryOperationService {
 	 * @param callback callback
 	 */
 	void bounds(List<Geometry> geometries, Callback<Bbox, Throwable> callback);
-
 }

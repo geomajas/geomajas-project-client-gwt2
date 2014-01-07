@@ -16,9 +16,9 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt.client.handler.MapDownHandler;
 import org.geomajas.gwt.client.map.RenderSpace;
+import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
-import org.geomajas.gwt2.client.gfx.GfxUtil;
 import org.geomajas.gwt2.client.gfx.VectorContainer;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
@@ -35,7 +35,7 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 
 /**
- * ...
+ * Handler that marks edge when hovering over them.
  * 
  * @author Pieter De Graef
  */
@@ -51,20 +51,16 @@ public class EdgeMarkerHandler implements MouseOutHandler, MouseOverHandler, Mou
 
 	private MapEventParser eventParser;
 
-	private GfxUtil gfxUtil;
-
 	private VectorContainer container;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	public EdgeMarkerHandler(MapPresenter mapPresenter, GeometryEditService service, MapEventParser eventParser,
-			GfxUtil gfxUtil) {
+	public EdgeMarkerHandler(MapPresenter mapPresenter, GeometryEditService service, MapEventParser eventParser) {
 		this.mapPresenter = mapPresenter;
 		this.service = service;
 		this.eventParser = eventParser;
-		this.gfxUtil = gfxUtil;
 
 		style = new FeatureStyleInfo();
 		style.setFillColor("#444444");
@@ -138,26 +134,38 @@ public class EdgeMarkerHandler implements MouseOutHandler, MouseOverHandler, Mou
 			// Top:
 			Path top = new Path(tl.getX(), tl.getY());
 			top.lineTo(tr.getX(), tr.getY());
-			gfxUtil.applyStroke(top, style.getStrokeColor(), style.getStrokeOpacity(), style.getStrokeWidth(),
-					style.getDashArray());
+			GeomajasImpl
+					.getInstance()
+					.getGfxUtil()
+					.applyStroke(top, style.getStrokeColor(), style.getStrokeOpacity(), style.getStrokeWidth(),
+							style.getDashArray());
 			container.add(top);
 
 			Path right = new Path(tr.getX(), tr.getY());
 			right.lineTo(br.getX(), br.getY());
-			gfxUtil.applyStroke(right, style.getStrokeColor(), style.getStrokeOpacity(), style.getStrokeWidth(),
-					style.getDashArray());
+			GeomajasImpl
+					.getInstance()
+					.getGfxUtil()
+					.applyStroke(right, style.getStrokeColor(), style.getStrokeOpacity(), style.getStrokeWidth(),
+							style.getDashArray());
 			container.add(right);
 
 			Path bottom = new Path(br.getX(), br.getY());
 			bottom.lineTo(bl.getX(), bl.getY());
-			gfxUtil.applyStroke(bottom, style.getStrokeColor(), style.getStrokeOpacity(), style.getStrokeWidth(),
-					style.getDashArray());
+			GeomajasImpl
+					.getInstance()
+					.getGfxUtil()
+					.applyStroke(bottom, style.getStrokeColor(), style.getStrokeOpacity(), style.getStrokeWidth(),
+							style.getDashArray());
 			container.add(bottom);
 
 			Path left = new Path(bl.getX(), bl.getY());
 			left.lineTo(tl.getX(), tl.getY());
-			gfxUtil.applyStroke(left, style.getStrokeColor(), style.getStrokeOpacity(), style.getStrokeWidth(),
-					style.getDashArray());
+			GeomajasImpl
+					.getInstance()
+					.getGfxUtil()
+					.applyStroke(left, style.getStrokeColor(), style.getStrokeOpacity(), style.getStrokeWidth(),
+							style.getDashArray());
 			container.add(left);
 		}
 	}

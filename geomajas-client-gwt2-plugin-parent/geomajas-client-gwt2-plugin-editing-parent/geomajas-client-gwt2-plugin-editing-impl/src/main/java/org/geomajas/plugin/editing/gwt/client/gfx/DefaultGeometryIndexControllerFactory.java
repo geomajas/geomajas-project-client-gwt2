@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.gwt2.client.controller.MapController;
-import org.geomajas.gwt2.client.gfx.GfxUtil;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.plugin.editing.client.handler.AbstractGeometryIndexMapHandler;
 import org.geomajas.plugin.editing.client.handler.EdgeMapHandlerFactory;
@@ -34,8 +33,8 @@ import org.geomajas.plugin.editing.gwt.client.controller.CompositeGeometryIndexC
 import org.geomajas.plugin.editing.gwt.client.controller.EdgeMarkerHandler;
 
 /**
- * Default implementation of the {@link GeometryIndexControllerFactory}. Provides the default editing behavior.
- * It is possible to add custom handlers on top of the default ones.
+ * Default implementation of the {@link GeometryIndexControllerFactory}. Provides the default editing behavior. It is
+ * possible to add custom handlers on top of the default ones.
  * 
  * @author Pieter De Graef
  * @author Jan Venstermans
@@ -47,12 +46,10 @@ public class DefaultGeometryIndexControllerFactory implements GeometryIndexContr
 	private final List<EdgeMapHandlerFactory> edgeFactories = new ArrayList<EdgeMapHandlerFactory>();
 
 	private final MapPresenter mapPresenter;
-	
-	private final GfxUtil gfxUtil;
 
 	/**
 	 * Private factory definition for create a handler for vertices.
-	 *
+	 * 
 	 * @author Pieter De Graef
 	 */
 	private interface VertexHandlerFactory extends VertexMapHandlerFactory {
@@ -62,7 +59,7 @@ public class DefaultGeometryIndexControllerFactory implements GeometryIndexContr
 
 	/**
 	 * Private factory definition for create a handler for edges.
-	 *
+	 * 
 	 * @author Pieter De Graef
 	 */
 	private interface EdgeHandlerFactory extends EdgeMapHandlerFactory {
@@ -74,9 +71,8 @@ public class DefaultGeometryIndexControllerFactory implements GeometryIndexContr
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	public DefaultGeometryIndexControllerFactory(MapPresenter mapPresenter, GfxUtil gfxUtil) {
+	public DefaultGeometryIndexControllerFactory(MapPresenter mapPresenter) {
 		this.mapPresenter = mapPresenter;
-		this.gfxUtil = gfxUtil;
 
 		// Create all the default vertex handler factories:
 		vertexFactories.add(new VertexHandlerFactory() {
@@ -179,7 +175,7 @@ public class DefaultGeometryIndexControllerFactory implements GeometryIndexContr
 			controller.addMapHandler(factory.create());
 		}
 
-		EdgeMarkerHandler edgeMarkerHandler = new EdgeMarkerHandler(mapPresenter, editService, controller, gfxUtil);
+		EdgeMarkerHandler edgeMarkerHandler = new EdgeMarkerHandler(mapPresenter, editService, controller);
 		controller.addMouseOutHandler(edgeMarkerHandler);
 		controller.addMouseMoveHandler(edgeMarkerHandler);
 		controller.addMapDownHandler(edgeMarkerHandler);

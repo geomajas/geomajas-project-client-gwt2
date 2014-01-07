@@ -10,7 +10,7 @@
  */
 package org.geomajas.plugin.editing.client.event;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Geometry;
 
 import com.google.gwt.event.shared.GwtEvent;
@@ -19,13 +19,19 @@ import com.google.gwt.event.shared.GwtEvent;
  * Event that reports the editing of a geometry has ended.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
-@FutureApi(allMethods = true)
+@Api(allMethods = true)
 public class GeometryEditStopEvent extends GwtEvent<GeometryEditStopHandler> {
 
 	private final Geometry geometry;
 
+	/**
+	 * Create a new event.
+	 * 
+	 * @param geometry
+	 *            The final geometry.
+	 */
 	public GeometryEditStopEvent(Geometry geometry) {
 		this.geometry = geometry;
 	}

@@ -31,7 +31,7 @@ import com.google.gwt.event.shared.SimpleEventBus;
  * snapping will never occur. It is also possible to add a handler to listen to snapping events.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class SnapService {

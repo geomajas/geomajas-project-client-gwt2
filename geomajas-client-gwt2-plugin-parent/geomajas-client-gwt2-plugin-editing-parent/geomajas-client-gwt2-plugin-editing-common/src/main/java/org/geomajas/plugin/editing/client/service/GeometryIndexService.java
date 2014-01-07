@@ -22,7 +22,7 @@ import org.geomajas.geometry.Geometry;
  * Service for managing sub-parts of geometries through special geometry indices.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class GeometryIndexService {

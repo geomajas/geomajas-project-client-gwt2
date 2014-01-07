@@ -11,7 +11,6 @@
 
 package org.geomajas.plugin.editing.client.operation;
 
-import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 
@@ -20,9 +19,7 @@ import org.geomajas.plugin.editing.client.service.GeometryIndex;
  * deleting vertices or sub-geometries.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
  */
-@Api(allMethods = true)
 public interface GeometryIndexOperation {
 
 	/**

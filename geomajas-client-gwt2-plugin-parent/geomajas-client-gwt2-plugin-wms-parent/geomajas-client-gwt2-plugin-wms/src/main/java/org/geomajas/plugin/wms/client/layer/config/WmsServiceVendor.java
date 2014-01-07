@@ -11,12 +11,16 @@
 
 package org.geomajas.plugin.wms.client.layer.config;
 
+import org.geomajas.annotation.Api;
+
 /**
  * Type of service that provides the URL. If specified, this allows for extra service/vendor options. E.g.
  * legend_options=fontName:... in case of Geoserver WMS getLegend request
  * 
  * @author An Buyle
+ * @since 2.0.0
  */
+@Api
 public enum WmsServiceVendor {
 
 	/** Wms service provided by GeoServer. */

@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.editing.client.event;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 import org.geomajas.annotation.UserImplemented;
 
 import com.google.gwt.event.shared.EventHandler;
@@ -21,12 +21,13 @@ import com.google.gwt.event.shared.GwtEvent;
  * Handler for catching edit start events.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
-@FutureApi(allMethods = true)
+@Api(allMethods = true)
 @UserImplemented
 public interface GeometryEditStartHandler extends EventHandler {
 
+	/** The type of the handler. */
 	GwtEvent.Type<GeometryEditStartHandler> TYPE = new GwtEvent.Type<GeometryEditStartHandler>();
 
 	/**

@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.editing.client.event;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 import org.geomajas.annotation.UserImplemented;
 
 import com.google.gwt.event.shared.EventHandler;
@@ -23,13 +23,20 @@ import com.google.gwt.event.shared.GwtEvent;
  * operations.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
-@FutureApi(allMethods = true)
+@Api(allMethods = true)
 @UserImplemented
 public interface GeometryEditShapeChangedHandler extends EventHandler {
 
+	/** The type of the handler. */
 	GwtEvent.Type<GeometryEditShapeChangedHandler> TYPE = new GwtEvent.Type<GeometryEditShapeChangedHandler>();
 
+	/**
+	 * Executed on a GeometryEditShapeChangedEvent.
+	 * 
+	 * @param event
+	 *            The event.
+	 */
 	void onGeometryShapeChanged(GeometryEditShapeChangedEvent event);
 }

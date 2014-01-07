@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.editing.client.event;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 import org.geomajas.annotation.UserImplemented;
 
 import com.google.gwt.event.shared.EventHandler;
@@ -22,12 +22,13 @@ import com.google.gwt.event.shared.GwtEvent;
  * (vertices/edges/sub-geometries) of a geometry that have been deleted.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
-@FutureApi(allMethods = true)
+@Api(allMethods = true)
 @UserImplemented
 public interface GeometryEditRemoveHandler extends EventHandler {
 
+	/** The type of the handler. */
 	GwtEvent.Type<GeometryEditRemoveHandler> TYPE = new GwtEvent.Type<GeometryEditRemoveHandler>();
 
 	/**

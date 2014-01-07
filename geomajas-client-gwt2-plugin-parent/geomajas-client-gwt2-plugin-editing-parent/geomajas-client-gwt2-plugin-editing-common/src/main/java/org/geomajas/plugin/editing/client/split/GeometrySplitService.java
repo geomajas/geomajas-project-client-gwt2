@@ -22,7 +22,6 @@ import org.geomajas.plugin.editing.client.GeometryArrayFunction;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
-import org.geomajas.plugin.editing.client.service.GeometryEditServiceImpl;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 import org.geomajas.plugin.editing.client.split.event.GeometrySplitStartEvent;
@@ -57,13 +56,6 @@ public class GeometrySplitService {
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
-
-	/**
-	 * Default constructor.
-	 */
-	public GeometrySplitService() {
-		this(new GeometryEditServiceImpl());
-	}
 
 	/**
 	 * Constructor with a {@link GeometryEditService}, that if stopped, stops this service as well.

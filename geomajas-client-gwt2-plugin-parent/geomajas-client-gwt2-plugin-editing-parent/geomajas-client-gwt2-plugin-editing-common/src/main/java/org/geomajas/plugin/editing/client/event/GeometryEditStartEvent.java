@@ -11,8 +11,8 @@
 
 package org.geomajas.plugin.editing.client.event;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.annotation.FutureApi;
 
 import com.google.gwt.event.shared.GwtEvent;
 
@@ -20,13 +20,19 @@ import com.google.gwt.event.shared.GwtEvent;
  * Event that reports the editing of a geometry has begun.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
-@FutureApi(allMethods = true)
+@Api(allMethods = true)
 public class GeometryEditStartEvent extends GwtEvent<GeometryEditStartHandler> {
 
 	private final Geometry geometry;
 
+	/**
+	 * Create a new event.
+	 * 
+	 * @param geometry
+	 *            The geometry being edited.
+	 */
 	public GeometryEditStartEvent(Geometry geometry) {
 		this.geometry = geometry;
 	}
@@ -43,6 +49,7 @@ public class GeometryEditStartEvent extends GwtEvent<GeometryEditStartHandler> {
 
 	/**
 	 * Get the geometry that will be edited.
+	 * 
 	 * @return The geometry that is to be edited.
 	 */
 	public Geometry getGeometry() {

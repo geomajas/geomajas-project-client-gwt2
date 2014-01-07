@@ -29,7 +29,7 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseWheelEvent;
 
 /**
- * ...
+ * Basic map controller used when editing geometries.
  * 
  * @author Pieter De Graef
  */

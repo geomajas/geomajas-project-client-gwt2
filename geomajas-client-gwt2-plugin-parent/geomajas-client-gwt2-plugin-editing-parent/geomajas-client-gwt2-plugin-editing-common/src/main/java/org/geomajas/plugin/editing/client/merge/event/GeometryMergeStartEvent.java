@@ -19,7 +19,7 @@ import com.google.gwt.event.shared.GwtEvent;
  * Event that reports the merging process for geometries has begun.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class GeometryMergeStartEvent extends GwtEvent<GeometryMergeStartHandler> {

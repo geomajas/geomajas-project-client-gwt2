@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.editing.client.event;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Geometry;
 
 import com.google.gwt.event.shared.GwtEvent;
@@ -21,17 +21,24 @@ import com.google.gwt.event.shared.GwtEvent;
  * undo/redo).
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
-@FutureApi(allMethods = true)
+@Api(allMethods = true)
 public class GeometryEditShapeChangedEvent extends GwtEvent<GeometryEditShapeChangedHandler> {
 
 	private final Geometry geometry;
 
+	/**
+	 * Create a new event.
+	 * 
+	 * @param geometry
+	 *            The current geometry shape.
+	 */
 	public GeometryEditShapeChangedEvent(Geometry geometry) {
 		this.geometry = geometry;
 	}
 
+	@Override
 	public Type<GeometryEditShapeChangedHandler> getAssociatedType() {
 		return GeometryEditShapeChangedHandler.TYPE;
 	}
@@ -40,6 +47,11 @@ public class GeometryEditShapeChangedEvent extends GwtEvent<GeometryEditShapeCha
 		handler.onGeometryShapeChanged(this);
 	}
 
+	/**
+	 * Get the current geometry.
+	 * 
+	 * @return The geometry.
+	 */
 	public Geometry getGeometry() {
 		return geometry;
 	}

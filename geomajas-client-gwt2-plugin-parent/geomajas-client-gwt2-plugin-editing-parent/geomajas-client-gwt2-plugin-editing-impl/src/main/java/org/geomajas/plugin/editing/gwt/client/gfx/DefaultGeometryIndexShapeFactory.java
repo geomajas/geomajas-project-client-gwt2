@@ -14,10 +14,10 @@ package org.geomajas.plugin.editing.gwt.client.gfx;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.geometry.service.GeometryService;
-import org.geomajas.gwt2.client.gfx.GeometryPath;
-import org.geomajas.gwt2.client.gfx.GfxUtil;
-import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt.client.map.RenderSpace;
+import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.gfx.GeometryPath;
+import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
@@ -46,16 +46,13 @@ public class DefaultGeometryIndexShapeFactory implements GeometryIndexShapeFacto
 
 	private final RenderSpace targetSpace;
 
-	private GfxUtil gfxUtil;
-
 	// ------------------------------------------------------------------------
 	// Constructor:
 	// ------------------------------------------------------------------------
 
-	public DefaultGeometryIndexShapeFactory(MapPresenter mapPresenter, RenderSpace targetSpace, GfxUtil gfxUtil) {
+	public DefaultGeometryIndexShapeFactory(MapPresenter mapPresenter, RenderSpace targetSpace) {
 		this.mapPresenter = mapPresenter;
 		this.targetSpace = targetSpace;
-		this.gfxUtil = gfxUtil;
 	}
 
 	// ------------------------------------------------------------------------
@@ -136,7 +133,7 @@ public class DefaultGeometryIndexShapeFactory implements GeometryIndexShapeFacto
 		if (!targetSpace.equals(RenderSpace.WORLD)) {
 			g = mapPresenter.getViewPort().getTransformationService().transform(g, RenderSpace.WORLD, targetSpace);
 		}
-		return gfxUtil.toShape(g);
+		return GeomajasImpl.getInstance().getGfxUtil().toShape(g);
 	}
 
 	// ------------------------------------------------------------------------
@@ -197,7 +194,7 @@ public class DefaultGeometryIndexShapeFactory implements GeometryIndexShapeFacto
 			// group, replace the children (multipoint case)
 			Group group = (Group) object;
 			group.clear();
-			Group newGroup = (Group) gfxUtil.toShape(g);
+			Group newGroup = (Group) GeomajasImpl.getInstance().getGfxUtil().toShape(g);
 			for (int i = 0; i < newGroup.getVectorObjectCount(); i++) {
 				VectorObject child = group.getVectorObject(i);
 				newGroup.remove(child);

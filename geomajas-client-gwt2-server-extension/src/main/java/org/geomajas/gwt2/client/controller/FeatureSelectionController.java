@@ -74,7 +74,10 @@ public class FeatureSelectionController extends NavigationController {
 		/**
 		 * Support both clicking an selection by dragging a rectangle. Dragging will no longer pan the map.
 		 */
-		CLICK_AND_DRAG
+		CLICK_AND_DRAG,
+
+		/** Allow only a single feature to be selected. */
+		SINGLE_SELECTION
 	}
 
 	private final SelectionRectangleController selectionRectangleController;
@@ -99,12 +102,21 @@ public class FeatureSelectionController extends NavigationController {
 	// Constructor:
 	// ------------------------------------------------------------------------
 
-	/**
-	 * Create a controller.
-	 */
+	/** Create a controller. */
 	public FeatureSelectionController() {
+		this(SelectionMethod.CLICK_ONLY);
+	}
+
+	/**
+	 * Create this controller, using the given selection method.
+	 * 
+	 * @param selectionMethod
+	 *            The preferred selection method.
+	 */
+	public FeatureSelectionController(SelectionMethod selectionMethod) {
 		super();
 		selectionRectangleController = new SelectionRectangleController();
+		setSelectionMethod(selectionMethod);
 	}
 
 	// ------------------------------------------------------------------------
@@ -180,13 +192,22 @@ public class FeatureSelectionController extends NavigationController {
 					selectionRectangleController.onUp(event);
 				}
 				break;
-			default:
+			case CLICK_ONLY:
 				stopPanning(null);
 				if (!event.isShiftKeyDown() && !event.isControlKeyDown()) {
 					super.onUp(event);
 				}
 				if (isDownPosition(event)) {
 					searchAtLocation(getLocation(event, RenderSpace.WORLD), event.isShiftKeyDown());
+				}
+				break;
+			default:
+				stopPanning(null);
+				if (!event.isShiftKeyDown() && !event.isControlKeyDown()) {
+					super.onUp(event);
+				}
+				if (isDownPosition(event)) {
+					searchAtLocation(getLocation(event, RenderSpace.WORLD), false);
 				}
 		}
 	}

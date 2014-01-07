@@ -22,23 +22,24 @@ import org.geomajas.plugin.editing.client.service.GeometryIndex;
  * Event which is passed when some part of a geometry has stopped snapping to another geometry during editing.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class GeometryIndexSnappingEndEvent extends AbstractGeometryEditEvent<GeometryIndexSnappingEndHandler> {
 
 	/**
 	 * Main constructor.
-	 * @param geometry that has stopped snapping
+	 * 
+	 * @param geometry
+	 *            The geometry being edited.
 	 * @param indices
+	 *            The indices that do not snap anymore.
 	 */
 	public GeometryIndexSnappingEndEvent(Geometry geometry, List<GeometryIndex> indices) {
 		super(geometry, indices);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Override
 	public Type<GeometryIndexSnappingEndHandler> getAssociatedType() {
 		return GeometryIndexSnappingEndHandler.TYPE;
 	}

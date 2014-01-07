@@ -13,7 +13,7 @@ package org.geomajas.plugin.editing.client.event.state;
 
 import java.util.List;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.plugin.editing.client.event.AbstractGeometryEditEvent;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
@@ -22,11 +22,19 @@ import org.geomajas.plugin.editing.client.service.GeometryIndex;
  * Event which is passed when a part of a geometry is deselected during geometry editing.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
-@FutureApi(allMethods = true)
+@Api(allMethods = true)
 public class GeometryIndexDeselectedEvent extends AbstractGeometryEditEvent<GeometryIndexDeselectedHandler> {
 
+	/**
+	 * Create a new event.
+	 * 
+	 * @param geometry
+	 *            The geometry being edited.
+	 * @param indices
+	 *            The indices that are deselected.
+	 */
 	public GeometryIndexDeselectedEvent(Geometry geometry, List<GeometryIndex> indices) {
 		super(geometry, indices);
 	}

@@ -29,7 +29,6 @@ import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.feature.FeatureSelectionRenderer;
 import org.geomajas.gwt2.client.map.feature.ServerFeatureService;
 import org.geomajas.gwt2.client.map.feature.ServerFeatureServiceImpl;
-import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.client.map.layer.RasterServerLayerImpl;
 import org.geomajas.gwt2.client.map.layer.ServerLayer;
 import org.geomajas.gwt2.client.map.layer.VectorServerLayerImpl;
@@ -135,7 +134,7 @@ public final class GeomajasServerExtension {
 	 *            The map eventBus.
 	 * @return The new layer object. It has NOT been added to the map just yet.
 	 */
-	public static Layer createLayer(ClientLayerInfo layerInfo, ViewPort viewPort, MapEventBus eventBus) {
+	public static ServerLayer<?> createLayer(ClientLayerInfo layerInfo, ViewPort viewPort, MapEventBus eventBus) {
 		ServerLayer<?> layer = null;
 		switch (layerInfo.getLayerType()) {
 			case RASTER:

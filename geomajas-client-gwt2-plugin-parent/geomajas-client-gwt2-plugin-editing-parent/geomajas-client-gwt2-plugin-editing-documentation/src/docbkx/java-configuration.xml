@@ -1,0 +1,720 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<chapter id="chapter-java-configuration">
+  <title>Editing API</title>
+
+  <section>
+    <title>Getting started</title>
+
+    <para>As with most Geomajas plugins, the editing plugin has a single class
+    that provides access to all the services and functionalities within the
+    plugin:</para>
+
+    <programlisting>org.geomajas.plugin.editing.gwt.client.Editing</programlisting>
+
+    <para>From here on, it's a simple matter of getting the required services
+    and using them. This class provides the following services:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para><emphasis>GeometryEditor</emphasis>: The GeometryEditor is a map
+        specific entity for managing the geometry editing process. It is used
+        to visually create a new geometry on the map, or manipulating an
+        existing geometry on the map. Note that this is a visual process. The
+        GeometryEditor will automatically make sure that the special
+        controllers are in place to ensure the correct user interaction with
+        the map, and it will also install a renderer to visually aid the
+        editing process.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>GeometrySplitService</emphasis>: This service assists
+        in splitting an existing geometry into multiple parts. It will allow
+        the user to draw a "splitting line" by which the splitting process is
+        calculated.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>GeometryMergeService</emphasis>: This service assists
+        in merging multiple geometries into a single union.</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>In the sections that follow, we will go over these services one by
+    one, starting with the most important one: the basic geometry
+    editing.</para>
+  </section>
+
+  <section>
+    <title>Geometry editing</title>
+
+    <para>This section describes how to use the basic geometry editor. The
+    GeometryEditor is used to let the user create new geometries, or change
+    the shape of existing geometries. Since this process works through user
+    interaction on a map, a GeometryEditor is always bound to a single map.
+    The following piece of code create a new GeometryEditor:</para>
+
+    <programlisting>GeometryEditor editor = Editing.getInstance().createGeometryEditor(mapPresenter);</programlisting>
+
+    <para>Once you have a GeometryEditor, you can immediately start editing
+    geometries. But before you do, allow us to better explain how exactly it
+    works.</para>
+
+    <section>
+      <title>GeometryEditor behind the screens</title>
+
+      <para>In essence the GeometryEditor uses the tried and tested
+      Model-View-Controller principle:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>Model</emphasis>: The
+          <code>GeometryEditService</code>. It keep track of the geometry
+          editing process. It provides methods for starting and stopping the
+          editing process, as well as altering the shape of the geometry.
+          Furthermore, it even provides undo/redo methods. This is the central
+          geometry editing service.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>View</emphasis>: The <code>GeometryRenderer</code>.
+          While manipulating the geometry through the
+          <code>GeometryEditService</code>, it fires events. These events are
+          then caught be the <code>GeometryRenderer</code> who renders the
+          geometry accordingly.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>Controller</emphasis>: While rendering the geometry
+          on the map, the <code>GeometryRenderer</code> installs a series of
+          controllers/handlers on the different vertices and edges that are
+          drawn. These controllers allow the user to i.e. drag vertices to
+          different locations, by making calls to the
+          <code>GeometryEditService</code>.</para>
+        </listitem>
+      </itemizedlist>
+
+      <note>
+        <para>The renderer is one example of a listener to the many events
+        that the <code>GeometryEditService</code> fires, but essentially
+        anyone can listen to those events. If you need to react to any change
+        in a geometry's shape, just add the correct handler.</para>
+      </note>
+    </section>
+
+    <section>
+      <title>General workflow</title>
+
+      <para>The central service determining the editing workflow is the
+      GeometryEditService. It can be acquired as such:</para>
+
+      <programlisting>GeometryEditService editService = editor.getEditService();</programlisting>
+
+      <para>Editing a geometry comes down to starting the editing process,
+      applying some operations and then stopping the process again. Starting
+      and stopping happens through the <code><code>start</code></code> and
+      <code><code>stop</code></code> methods:</para>
+
+      <programlisting>// Start the editing process on some geometry:
+editService.start(geometry);
+
+// The user now performs several operations on the map (dragging point, inserting points, deleting points, ...)
+// ....
+
+// Finally through some button the user decides the geometry editing is ready, so he stops the editing process:
+editService.stop();</programlisting>
+
+      <para>The editing process happens through user interaction. Usually
+      there will be some buttons or other widgets that help in that process,
+      such as a "save" button, or undo/redo buttons. Such buttons are not
+      provided out-of-the-box. It is up to you to determine how the editing
+      process should be implemented in your applications.</para>
+
+      <note>
+        <para>Know that operations onto the geometry really do apply on the
+        same geometry that was passed with the <code>start</code> method. In
+        other words, this service changes the original geometry. If you want
+        to support some roll-back functionality within your code, make sure to
+        create a clone of the geometry before starting this edit
+        service.</para>
+      </note>
+    </section>
+
+    <section>
+      <title>The GeometryIndex concept</title>
+
+      <para>Before trying to figure out how the
+      <code>GeometryEditService</code> works, it is important to understand
+      the <code>GeometryIndex</code> concept. A <code>GeometryIndex</code> is
+      an index within a geometry that points to a single vertex, edge or
+      sub-geometry. All operations within the <code>GeometryEditService</code>
+      operate on a list of such <code>GeometryIndices</code>.</para>
+
+      <para>Take for example the "move" operation. This operation will move
+      the given <code>GeometryIndex</code> to the specified location. This
+      operation is used when the user drags a vertex around on the map, but
+      this operation could also be used to let the user drag an interior ring
+      within a polygon, or an entire LineString within a MultiLineString, or
+      event the whole geometry.</para>
+
+      <para>The GeometryIndex is based on the internal structure of the
+      geometry, which may contain 4 or more levels:</para>
+
+      <orderedlist>
+        <listitem>
+          <para>Geometry collection level: this is the highest structural
+          level for geometry collections: multipolygon, multilinestring or
+          arbitrary geometry collections. In theory a geometry collection may
+          contain other geometry collections, but this is rarely
+          encountered.</para>
+        </listitem>
+
+        <listitem>
+          <para>Geometry level: this is the level of a basic geometry like
+          polygon, linestring or point</para>
+        </listitem>
+
+        <listitem>
+          <para>Ring level: for a polygon, this is the level of the linear
+          rings. There is usually an exterior ring (boundary), but there may
+          also be additional interior rings (holes)</para>
+        </listitem>
+
+        <listitem>
+          <para>Vertex or edge level: this is the level of the individual
+          vertices and edges. A single edge connects 2 vertices.</para>
+        </listitem>
+      </orderedlist>
+
+      <para>The elements at each level have a fixed ordering, which makes it
+      possible to uniquely determine such an element by its order at each
+      level of the structural tree. This combination of order numbers,
+      together with a type to distinguish between edges, vertices or higher
+      level structures (which we generally call geometries) forms the
+      <code>GeometryIndex</code>.</para>
+
+      <para>Lets give some examples to clarify this. The following table shows
+      at the left column a geometry in WKT format with a highlighted section
+      and the corresponding <code>GeometryIndex</code>. The GeometryIndex is
+      an array of integers combined with a type. For edge, the type is
+      <code>edge</code>, for vertex it is <code>vertex</code> and for all
+      other structures it is <code>geometry</code>. The last row contains a
+      multipolygon with 2 polygons. The highlighted section is a couple of
+      points that determines an edge of the interior ring of the first
+      polygon. The indices are 0 (for the first polygon), 1 (for the interior
+      ring) and 2 for being the 3rd edge of this ring (counting starts with
+      index 0 in all cases).</para>
+
+      <table>
+        <title>Geometry index samples</title>
+
+        <tgroup cols="2">
+          <thead>
+            <row>
+              <entry align="center">WKT</entry>
+
+              <entry align="center">Geometry index</entry>
+            </row>
+          </thead>
+
+          <tbody>
+            <row>
+              <entry>POINT(<emphasis role="bold">0 0</emphasis>)</entry>
+
+              <entry>[0], type = vertex</entry>
+            </row>
+
+            <row>
+              <entry>LINESTRING (30 10, <emphasis role="bold">10
+              30</emphasis>, 40 40)</entry>
+
+              <entry>[1], type = vertex</entry>
+            </row>
+
+            <row>
+              <entry>LINESTRING (<emphasis role="bold">30 10</emphasis>, 10
+              30, <emphasis role="bold">40 40</emphasis>)</entry>
+
+              <entry>[2], type = edge</entry>
+            </row>
+
+            <row>
+              <entry>POLYGON ((35 10, 10 20, 15 40, 45 45, 35 10), <emphasis
+              role="bold">(20 30, 35 35, 30 20, 20 30)</emphasis>)</entry>
+
+              <entry>[1], type = geometry</entry>
+            </row>
+
+            <row>
+              <entry>POLYGON ((35 10, 10 20, 15 40, 45 45, 35 10), (20 30, 35
+              35, <emphasis role="bold">30 20</emphasis>, 20 30))</entry>
+
+              <entry>[1,2], type = vertex</entry>
+            </row>
+
+            <row>
+              <entry>MULTIPOLYGON (((35 10, 10 20, 15 40, 45 45, 35 10), (20
+              30, 35 35, <emphasis role="bold">30 20, 20 30</emphasis>)),((35
+              10, 10 20, 15 40, 45 45, 35 10)))</entry>
+
+              <entry>[0,1,2], type = edge</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+
+    <section>
+      <title>The central editing services</title>
+
+      <para>There are 3 central services that help in the editing process. All
+      three have a very distinct responsibility:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>GeometryEditService</emphasis>: Defines the editing
+          workflow and the basic operations (with undo/redo) that are
+          supported. Also allows to add handlers to all events.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>GeometryIndexService</emphasis>: This service
+          defines operations for creating and manipulating GeometryIndices. It
+          also supports retrieving information based upon a certain geometry
+          and index. For example what are the adjacent vertices to a certain
+          edge within a given geometry?</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>GeometryIndexStateService</emphasis>: Keeps track of
+          the state of all indices that make up the geometry being edited. It
+          allows for selecting/deselecting, enabling/disabling, highlighting,
+          etc any vertices/edges/sub-geometries during the editing process.
+          This state can then be used by the controllers. For example, a
+          controller could allow only selected vertices to be dragged by the
+          user.</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>There are more services then the 3 mentioned above such as a
+      <code>SnapService</code>, <code>GeometryMergeService</code> and
+      <code>GeometrySplitService</code>, but those just add more functionality
+      to the basic set that the 3 above already provide. They will be
+      discussed later.</para>
+    </section>
+
+    <section>
+      <title>The editing state</title>
+
+      <para>At any time during the editing process, the
+      <code>GeometryEditService</code> has a general state that tells you
+      what's going on. This state is defined in the
+      <code>GeometryEditState</code>. Currently there are 3 possible states
+      for the editing process to be in:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>IDLE</emphasis>: The default state. The editing
+          process always reverts to this state when the user is not
+          interacting with the controllers on the map or the handlers on the
+          edges and vertices.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>INSERTING</emphasis>: The user is currently
+          inserting new points into the geometry. The
+          <code>GeometryEditService</code> has an "insertIndex" (of the type
+          <code>GeometryIndex</code>), that points to the next suggested
+          insert location. The controllers pick up on this index to insert
+          points (or edges, or geometries).</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>DRAGGING</emphasis>: The user is currently dragging
+          a part of the geometry. The <code>GeometryIndexStateService</code>
+          can select vertices/edges/sub-geometries, which can then be dragged
+          around.</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>As you may have noticed from the descriptions, the
+      GeometryEditState is used mainly within the controllers that operate on
+      the map. An insert controller will only be active when the edit state is
+      "INSERTING". Likewise a drag controller will only be active when the
+      edit state is "DRAGGING".</para>
+    </section>
+
+    <section>
+      <title>Examples</title>
+
+      <para>Now that the basic concepts have been described, it is time to
+      show by example.</para>
+
+      <section>
+        <title>Editing an existing geometry</title>
+
+        <para>Let's start of with the most basic of examples: how to let the
+        user edit a certain geometry. Let's say this geometry comes from a
+        feature within a FeaturesSupported layer:</para>
+
+        <programlisting>GeometryEditor editor = Editing.getInstance().createGeometryEditor(mapPresenter);
+GeometryEditService editService = editor.getEditService();
+
+Geometry geometry = feature.getGeometry();
+editService.start(geometry);</programlisting>
+
+        <para>And that's it. The geometry editing process has been started on
+        the features geometry.</para>
+      </section>
+
+      <section>
+        <title>Creating a new geometry</title>
+
+        <para>This example shows how to create a new LineString geometry using
+        the editing process. The idea is that the user just clicks on the map
+        to determine where to add/insert additional points into the geometry.
+        Therefore we start the editing process using an empty geometry and set
+        the editing state to "INSERTING":</para>
+
+        <programlisting>// Create an empty point geometry. It has no coordinates yet. That is up to the user...
+Geometry line = new Geometry(Geometry.LINE_STRING, 0, -1);
+editService.start(line);
+
+// Set the editing service in "INSERTING" mode. 
+
+// Make sure it starts inserting in the correct index: the first vertex within the LineString:
+GeometryIndex index = editService.getIndexService().create(GeometryIndexType.TYPE_VERTEX, 0);
+editService.setEditingState(GeometryEditState.INSERTING);
+editService.setInsertIndex(index);
+
+// Et voila, the use may now click on the map...</programlisting>
+
+        <para>Perhaps some extra clarification is in order here. We want the
+        user to start adding points to our empty LineString. In order to do
+        this, we change the editing state to "INSERTING". The problem is that
+        the service does not yet know where in the geometry it should insert
+        points, so we must provide that information. For a LineString this may
+        seem overly complex, but consider a MultiPolygon where we want to add
+        a new inner ring in one of the Polygons. We better pick the correct
+        Polygon to insert an inner ring.</para>
+
+        <para>In any case, when switching to "INSERTING" state, you need to
+        provide an "InsertIndex". We use the <code>GeometryIndexService</code>
+        to create such an index. In this case, the first vertex within the
+        LineString geometry.</para>
+      </section>
+    </section>
+  </section>
+
+  <section>
+    <title>Using snapping while editing</title>
+
+    <section>
+      <title>Snapping options</title>
+
+      <para>The editing plug-in has support for snapping while inserting or
+      dragging. The controllers are equipped with a <code>SnapService</code>
+      which can convert the mouse event locations into snapped locations,
+      before they are passed to the <code>GeometryEditService</code> for
+      operation execution. This <code>SnapService</code> is actually provided
+      by the <code>GeometryEditor</code>.</para>
+
+      <para>In order to activate snapping for both inserting and dragging
+      state, use the following code:</para>
+
+      <programlisting>editor.setSnapOnDrag(true);
+editor.setSnapOnInsert(true);</programlisting>
+    </section>
+
+    <section>
+      <title>Snapping rules</title>
+
+      <para>The <code>SnapService</code> works through a series of rules that
+      need to be active. Without any snapping rules, the
+      <code>SnapService</code> will not snap. Adding snapping rules, goes
+      through the "<code>addSnappingRule</code>" method, and requires the
+      following parameters:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>algorithm</emphasis>: The snapping algorithm to be
+          used. For example, snap to end-points only, or also to edges,
+          or...</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>sourceProvider</emphasis>: The provider of target
+          geometries where to snap. For example, snap to features of a layer,
+          or to a grid, or...</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>distance</emphasis>: The maximum distance to bridge
+          during snapping. Expressed in the unit of the map CRS.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>highPriority</emphasis>: High priority means that
+          this rule will always be executed. Low priority means that if a
+          previous snapping algorithm has found a snapping candidate, this
+          algorithm will not be executed anymore.</para>
+        </listitem>
+      </itemizedlist>
+
+      <section>
+        <title>SnapSourceProvider</title>
+
+        <para>Let us start with the <code>SnapSourceProvider</code>. It's task
+        is to provide sources (geometries) for the <code>SnapService</code> to
+        snap to. An often used source of geometries to snap to, are the
+        features of some <code>FeaturesSupported</code> layer. The
+        SnapSourceProvider has only 2 methods:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para><emphasis>update</emphasis>: This method is called every
+            time the map navigates. It provides the current location on the
+            map. This is used so that the <code>SnapSourceProvider</code> may
+            better choose which geometries to provide for the snapping
+            process.</para>
+          </listitem>
+
+          <listitem>
+            <para><emphasis>getSnappingSources</emphasis>: This method is
+            always called after the <code>update</code> method. This is when
+            the <code>SnapSourceProvider</code> is asked for a list of
+            geometries for the <code>SnapService</code> to use.</para>
+          </listitem>
+        </itemizedlist>
+
+        <para>Let's consider the case of snapping to the features of a
+        "Countries" layer. The countries layer contains all the countries in
+        the world. When zooming in to North America, it's no use for the
+        <code>SnapSourceProvider</code> to also provide the countries of
+        Europe or Asia. By knowing the map extent, the
+        <code>SnapSourceProvider</code> may provide a shorter list of
+        geometries, making the snapping process more efficient.</para>
+
+        <note>
+          <para>Right now, there are no default implementations of the
+          SnapSourceProvider. You will have to implement this yourself.</para>
+        </note>
+      </section>
+
+      <section>
+        <title>Snapping algorithms</title>
+
+        <para>Next are the snapping algorithms. There are multiple ways of
+        snapping. The editing plugin provides multiple algorithms out of the
+        box:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para><emphasis>NearestVertexSnapAlgorithm</emphasis>: This
+            algorithm snaps only to the vertices of a geometry.</para>
+          </listitem>
+
+          <listitem>
+            <para><emphasis>NearestEdgeSnapAlgorithm</emphasis>: This snapping
+            algorithm snaps not only to the vertices of a geometry but also to
+            any point along the edges. Of course this snapping algorithm takes
+            more processing time than the
+            <code>NearestVertexSnapAlgorithm</code>, but gives a far smoother
+            snapping experience.</para>
+          </listitem>
+        </itemizedlist>
+      </section>
+
+      <section>
+        <title>Defining snapping rules</title>
+
+        <para>Now let us proceed to actually show how to add snapping rules.
+        First note that is it possible to add multiple snapping rules. Each
+        rule may provide it's own <code>SnapSourceProvider</code> and
+        <code>SnappingAlgorithm</code>. Through the "highPriority" setting,
+        they <code>SnapService</code> will determine order and whether or not
+        they should always be used.</para>
+
+        <para>More about that later, let us first demonstrate how to add a
+        single snapping rule. In this example we assume that we have created a
+        <code>SnapSourceProvider</code> implementation called
+        <code>CountriesLayerProvider</code>. This implementation can actually
+        be found within the examples that come with this plugin (see
+        showcase).</para>
+
+        <programlisting>SnapAlgorithm snapAlgorithm = new NearestVertexSnapAlgorithm();
+SnapSourceProvider sourceProvider = new CountriesLayerProvider();
+editor.getSnappingService().addSnappingRule(snapAlgorithm, sourceProvider, 1000.0, true);</programlisting>
+
+        <para>If the editing process should start now, it would make use of
+        this snapping rule while inserting points or dragging points (assuming
+        we have activated both).</para>
+
+        <para>Note that the "<code>highPriority</code>" setting has been set
+        to <code>true</code>. If there is only one snapping rule this makes no
+        difference. But if we should add a second snapping algorithm, it is
+        important to understand this setting. Setting it to true means that it
+        is always used. When snapping, the <code>SnapService</code> will go
+        over all snapping rules. From the moment it finds a point to snap to
+        (because it can find a vertex/edge within the snapping distance for a
+        certain rule), it will not execute any other snapping rules anymore
+        where the "<code>highPriority</code>" setting is set to
+        <code>false</code>.</para>
+
+        <para>Let's present an example:</para>
+
+        <programlisting>SnapAlgorithm snapAlgorithm1 = new NearestVertexSnapAlgorithm();
+SnapAlgorithm snapAlgorithm2 = new NearestEdgeSnapAlgorithm();
+SnapSourceProvider sourceProvider = new CountriesLayerProvider();
+
+editor.getSnappingService().addSnappingRule(snapAlgorithm1, sourceProvider, 500.0, true);
+editor.getSnappingService().addSnappingRule(snapAlgorithm2, sourceProvider, 1000.0, false);</programlisting>
+
+        <para>In the example above 2 snapping rules have been added. The first
+        has a high priority while the second does not. So when the
+        <code>SnapService</code> checks if a certain point can snap, it starts
+        with the first rule. Only if it cannot snap to a vertex within 500 map
+        units, will it try to use the second rule.</para>
+      </section>
+    </section>
+  </section>
+
+  <section>
+    <title>Merging geometries</title>
+
+    <para>Next to the default geometry editing, this plugin also provides a
+    service for merging geometries. Just as the
+    <code>GeometryEditService</code>, this service is meant to be used
+    visually, on the map. The <code>GeometryMergeService</code> can be
+    acquired as such:</para>
+
+    <programlisting>GeometryMergeService mergeService = Editing.getInstance().getGeometryMergeService();</programlisting>
+
+    <para>Just like the <code>GeometryEditService</code>, the
+    <code>GeometryMergeService</code> uses a <code>start</code> and a
+    <code>stop</code> method to start and stop the merging process. In between
+    the <code>start</code> and <code>stop</code> calls, it is possible to add
+    (or remove again) geometries to the service. The <code>stop</code> method
+    will then execute the merge on the list of geometries added to the
+    <code>GeometryMergeService</code>.</para>
+
+    <para>Here is a simple example:</para>
+
+    <programlisting>GeometryMergeService mergeService = Editing.getInstance().getGeometryMergeService();
+mergeService.start();
+mergeService.addGeometry(feature1.getGeometry());
+mergeService.addGeometry(feature2.getGeometry());
+mergeService.stop(new GeometryFunction() {
+
+    public void execute(Geometry geometry) {
+        // Do something with the resulting geometry ...
+    }
+});</programlisting>
+
+    <para>Every method in the GeometryMergeService fires an appropriate event,
+    so it is always possible to have multiple listeners to the geometry
+    merging process:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para><emphasis>GeometryMergeStartEvent</emphasis>: fired when the
+        start method is called. This signals the start of the geometry merging
+        process.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>GeometryMergeStopEvent</emphasis>: signals the end of
+        the geometry merging process. It is fired at the very end, after the
+        result has been processed.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>GeometryMergeAddedEvent</emphasis>: fired when a
+        geometry has been added to the
+        <code>GeometryMergeService</code>.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>GeometryMergeRemovedEvent</emphasis>: fired when a
+        geometry has been removed again from the
+        <code>GeometryMergeService</code>.</para>
+      </listitem>
+    </itemizedlist>
+  </section>
+
+  <section>
+    <title>Splitting geometries</title>
+
+    <para>Of course, if it's possible to merge geometries, it must also be
+    possible to split geometries. This can be achieved through the
+    <code>GeometrySplitService</code>. The <code>GeometrySplitService</code>
+    lets the user draw a "splitting line", that is then used to split up the
+    original geometry into multiple parts, as indicated by the splitting line.
+    The splitting line is drawn through a <code>GeometryEditService</code>
+    that lets the user create a new <code>LineString</code> geometry. This
+    <code>LineString</code> is then used to split the original
+    geometry.</para>
+
+    <para>A GeometrySplitService can be acquired as follows:</para>
+
+    <programlisting>GeometryEditor editor = Editing.getInstance().createGeometryEditor(mapPresenter);
+GeometryEditService editService = editor.getEditService();
+GeometrySplitService splitService = Editing.getInstance().createGeometrySplitService(editService);</programlisting>
+
+    <para>Analogous with the previous services, this service too uses a
+    <code>start</code> and a <code>stop</code> method. The start method
+    requires you to pass the original geometry. It will automatically invoke
+    the <code>GeometryEditService</code> to let the user create a new
+    <code>LineString</code> geometry (the splitting line). Once it's decided
+    that the splitting line is sufficient, the stop method on the
+    <code>GeometrySplitService</code> can be called.</para>
+
+    <para>This is how to start the service:</para>
+
+    <programlisting>splitService.start(feature.getGeometry());</programlisting>
+
+    <para>Usually some button will be foreseen that calls the stop method.
+    Stopping goes as follows:</para>
+
+    <programlisting>splitService.stop(new GeometryArrayFunction() {
+
+    public void execute(Geometry[] geometries) {
+        // Do something with the resulting geometries ...
+    }
+});</programlisting>
+
+    <para>The <code>GeometrySplitService</code> too will fire events on the
+    start and stop methods:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para><emphasis>GeometrySplitStartEvent</emphasis>: Fired when the
+        splitting process is started.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>GeometrySplitStopEvent</emphasis>: Fired when the
+        splitting process has stopped. It is fired at the very end, after the
+        resulting geometries have been processed.</para>
+      </listitem>
+    </itemizedlist>
+
+    <note>
+      <para>While the user is busy drawing the splitting line, the
+      <code>GeometryEditService</code> will fires it's normal events. That
+      means it's also possible to listen to those events as well during the
+      drawing phase.</para>
+    </note>
+  </section>
+</chapter>
