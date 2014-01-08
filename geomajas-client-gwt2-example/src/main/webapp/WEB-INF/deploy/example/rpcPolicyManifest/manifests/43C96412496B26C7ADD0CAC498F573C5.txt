@@ -1,2 +1,0 @@
-serviceClass: org.geomajas.gwt.client.GeomajasService
-path: 7B06F3793B53A812ED690399BA21DBB6.gwt.rpc
