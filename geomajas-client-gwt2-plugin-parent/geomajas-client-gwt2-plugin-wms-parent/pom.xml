@@ -28,6 +28,7 @@
 		<!--<module>geomajas-client-gwt2-plugin-wms-print</module>-->
 		<module>geomajas-client-gwt2-plugin-wms-documentation</module>
 		<module>geomajas-client-gwt2-plugin-wms-example-jar</module>
+		<module>geomajas-client-gwt2-plugin-wms-server-extension</module>
 	</modules>
 
 </project>
