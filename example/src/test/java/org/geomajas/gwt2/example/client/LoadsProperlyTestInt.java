@@ -57,7 +57,7 @@ public class LoadsProperlyTestInt {
 		wait.until(new ExpectedCondition<Boolean>() {
 
 			public Boolean apply(WebDriver d) {
-				return d.findElements(By.cssSelector("gwt-ListBox")).size() > 0;
+				return d.findElements(By.className("gwt-ListBox")).size() > 0;
 			}
 		});
 	}
