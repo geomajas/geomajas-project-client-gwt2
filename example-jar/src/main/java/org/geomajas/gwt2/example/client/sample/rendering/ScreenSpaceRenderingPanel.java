@@ -135,7 +135,7 @@ public class ScreenSpaceRenderingPanel implements SamplePanel {
 	private class MyMapInitializationHandler implements MapInitializationHandler {
 
 		public void onMapInitialized(MapInitializationEvent event) {
-			container = mapPresenter.addScreenContainer();
+			container = mapPresenter.getContainerManager().addScreenContainer();
 		}
 	}
 }

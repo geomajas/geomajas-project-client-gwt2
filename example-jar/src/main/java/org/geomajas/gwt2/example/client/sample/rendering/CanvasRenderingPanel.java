@@ -176,7 +176,7 @@ public class CanvasRenderingPanel implements SamplePanel {
 
 		public void onMapInitialized(MapInitializationEvent event) {
 			if (Canvas.isSupported()) {
-				container = mapPresenter.addWorldCanvas();
+				container = mapPresenter.getContainerManager().addWorldCanvasContainer();
 			} else {
 				label.setText(ExampleJar.getMessages().renderingMissingCanvas());
 				label.setVisible(true);

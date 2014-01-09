@@ -73,7 +73,7 @@ public class DrawingInteractionPanel implements SamplePanel {
 	private class MyMapInitializationHandler implements MapInitializationHandler {
 
 		public void onMapInitialized(MapInitializationEvent event) {
-			VectorContainer container = mapPresenter.addScreenContainer();
+			VectorContainer container = mapPresenter.getContainerManager().addScreenContainer();
 			rectangle = new Rectangle(60, 40, 200, 80);
 			rectangle.setFillColor("#CC9900");
 			rectangle.setFillOpacity(0.4);

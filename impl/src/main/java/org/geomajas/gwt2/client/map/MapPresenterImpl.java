@@ -198,23 +198,25 @@ public final class MapPresenterImpl implements MapPresenter {
 
 	private final MapEventParser mapEventParser;
 
-	private List<HandlerRegistration> handlers;
+	private final LayersModel layersModel;
+
+	private final ViewPort viewPort;
+
+	private final MapWidget display;
+
+	private final ContainerManager containerManager;
+
+	private final MapConfiguration configuration;
 
 	private final Map<MapController, List<HandlerRegistration>> listeners;
+
+	private List<HandlerRegistration> handlers;
 
 	private MapController mapController;
 
 	private MapController fallbackController;
 
-	private LayersModel layersModel;
-
-	private ViewPort viewPort;
-
 	private LayersModelRenderer renderer;
-
-	private MapWidget display;
-
-	private MapConfiguration configuration;
 
 	private boolean isMobileBrowser;
 
@@ -228,6 +230,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		this.layersModel = new LayersModelImpl(this.viewPort, this.eventBus, this.configuration);
 		this.mapEventParser = new MapEventParserImpl(this);
 		this.renderer = new LayersModelRendererImpl(layersModel, viewPort, this.eventBus, this.configuration);
+		this.containerManager = new ContainerManagerImpl(display, viewPort);
 		this.isMobileBrowser = Dom.isMobile();
 
 		this.eventBus.addViewPortChangedHandler(new ViewPortChangedHandler() {
@@ -261,7 +264,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		}
 
 		// Configure the ViewPort. This will immediately zoom to the initial bounds:
-		//viewPort.setMapSize(display.getWidth(), display.getHeight());
+		// viewPort.setMapSize(display.getWidth(), display.getHeight());
 		((ViewPortImpl) viewPort).initialize(mapOptions);
 
 		// Immediately zoom to the initial bounds as configured:
@@ -290,7 +293,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		this.renderer = renderer;
 	}
 
-	public LayersModelRenderer getRenderer() {
+	public LayersModelRenderer getLayersModelRenderer() {
 		return renderer;
 	}
 
@@ -306,59 +309,6 @@ public final class MapPresenterImpl implements MapPresenter {
 			viewPort.setMapSize(width, height);
 		}
 		eventBus.fireEvent(new MapResizedEvent(width, height));
-	}
-
-	@Override
-	public VectorContainer addWorldContainer() {
-		VectorContainer container = display.getNewWorldContainer();
-		// set transform parameters once, after that all is handled by WorldContainerRenderer
-		Matrix matrix = viewPort.getTransformationService().getTransformationMatrix(RenderSpace.WORLD,
-				RenderSpace.SCREEN);
-		container.setScale(matrix.getXx(), matrix.getYy());
-		container.setTranslation(matrix.getDx(), matrix.getDy());
-		return container;
-	}
-
-	@Override
-	public TransformableWidgetContainer addWorldWidgetContainer() {
-		TransformableWidgetContainer container = display.getNewWorldWidgetContainer();
-		// set transform parameters once, after that all is handled by WorldContainerRenderer
-		Matrix matrix = viewPort.getTransformationService().getTransformationMatrix(RenderSpace.WORLD,
-				RenderSpace.SCREEN);
-		container.setScale(matrix.getXx(), matrix.getYy());
-		container.setTranslation(matrix.getDx(), matrix.getDy());
-		return container;
-	}
-
-	@Override
-	public CanvasContainer addWorldCanvas() {
-		CanvasContainer container = display.getNewWorldCanvas();
-		// set transform parameters once, after that all is handled by WorldContainerRenderer
-		Matrix matrix = viewPort.getTransformationService().getTransformationMatrix(RenderSpace.WORLD,
-				RenderSpace.SCREEN);
-		container.setScale(matrix.getXx(), matrix.getYy());
-		container.setTranslation(matrix.getDx(), matrix.getDy());
-		return container;
-	}
-
-	@Override
-	public VectorContainer addScreenContainer() {
-		return display.getNewScreenContainer();
-	}
-
-	@Override
-	public boolean removeWorldWidgetContainer(TransformableWidgetContainer container) {
-		return display.removeWorldWidgetContainer(container);
-	}
-
-	@Override
-	public boolean removeVectorContainer(VectorContainer container) {
-		return display.removeVectorContainer(container);
-	}
-
-	@Override
-	public boolean bringToFront(VectorContainer container) {
-		return display.bringToFront(container);
 	}
 
 	@Override
@@ -478,6 +428,11 @@ public final class MapPresenterImpl implements MapPresenter {
 	@Override
 	public HasWidgets getWidgetPane() {
 		return display.getWidgetContainer();
+	}
+
+	@Override
+	public ContainerManager getContainerManager() {
+		return containerManager;
 	}
 
 	// ------------------------------------------------------------------------

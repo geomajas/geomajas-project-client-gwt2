@@ -50,7 +50,7 @@ public class FeatureSelectionRenderer implements FeatureSelectionHandler, LayerV
 	private FeatureStyleInfo ringStyle;
 
 	public FeatureSelectionRenderer(MapPresenter mapPresenter) {
-		container = mapPresenter.addWorldContainer();
+		container = mapPresenter.getContainerManager().addWorldContainer();
 		shapes = new HashMap<String, VectorObject>();
 	}
 

@@ -102,7 +102,7 @@ public class HtmlMarkerPanel implements SamplePanel {
 	private class MyMapInitializationHandler implements MapInitializationHandler {
 
 		public void onMapInitialized(MapInitializationEvent event) {
-			container = mapPresenter.addWorldWidgetContainer();
+			container = mapPresenter.getContainerManager().addWorldWidgetContainer();
 		}
 	}
 

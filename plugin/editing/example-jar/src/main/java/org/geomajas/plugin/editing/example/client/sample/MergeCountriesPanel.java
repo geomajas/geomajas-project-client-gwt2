@@ -122,7 +122,7 @@ public class MergeCountriesPanel implements SamplePanel {
 		});
 
 		// Create a container wherein the result of the splitting will be shown:
-		resultContainer = mapPresenter.addWorldContainer();
+		resultContainer = mapPresenter.getContainerManager().addWorldContainer();
 
 		// Prepare merging:
 		mergeService = Editing.getInstance().getGeometryMergeService();

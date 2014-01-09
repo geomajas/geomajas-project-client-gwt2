@@ -81,7 +81,7 @@ public class SetAnnotationPresenterImpl implements SetAnnotationPresenter, SetAn
 	@Override
 	public void onMapInitialized(MapInitializationEvent event) {		
 		annotationContainer = new AnnotationContainer(mapPresenter, eventBus);
-		annotationContainer.setRootContainer(mapPresenter.addWorldContainer());
+		annotationContainer.setRootContainer(mapPresenter.getContainerManager().addWorldContainer());
 		annotationContainer.addGraphicsObjectContainerHandler(this);
 		graphicsService.setMetaControllerFactory(new MetaControllerFactory() {
 

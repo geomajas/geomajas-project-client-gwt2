@@ -65,7 +65,7 @@ public class MapTraceNavigationPanel implements SamplePanel {
 	private class MyMapInitializationHandler implements MapInitializationHandler {
 
 		public void onMapInitialized(MapInitializationEvent event) {
-			CanvasContainer container = mapPresenter.addWorldCanvas();
+			CanvasContainer container = mapPresenter.getContainerManager().addWorldCanvasContainer();
 			final TracingLayer layer = new TracingLayer(mapPresenter.getViewPort(), container);
 			mapPresenter.getLayersModel().addLayer(layer);
 			mapPresenter.getConfiguration().setAnimated(layer, true);

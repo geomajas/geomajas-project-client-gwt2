@@ -169,7 +169,7 @@ public class WorldSpaceRenderingPanel implements SamplePanel {
 	private class MyMapInitializationHandler implements MapInitializationHandler {
 
 		public void onMapInitialized(MapInitializationEvent event) {
-			container = mapPresenter.addWorldContainer();
+			container = mapPresenter.getContainerManager().addWorldContainer();
 		}
 	}
 }
