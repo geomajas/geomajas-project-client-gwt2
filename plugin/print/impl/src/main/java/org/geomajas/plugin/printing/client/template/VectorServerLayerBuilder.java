@@ -17,10 +17,11 @@ import java.util.List;
 
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt.client.util.StyleUtil;
-import org.geomajas.gwt2.client.map.MapOptionsExt;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.client.map.layer.Layer;
@@ -53,21 +54,21 @@ public class VectorServerLayerBuilder implements PrintableLayerBuilder {
 				featureIds.add(feature.getId());
 			}
 			vectorRasterizingInfo.setSelectedFeatureIds(featureIds.toArray(new String[selectedFeatures.size()]));
-			MapOptionsExt mapOptions = (MapOptionsExt) mapPresenter.getConfiguration().getMapOptions();
+			ClientMapInfo mapInfo = mapPresenter.getConfiguration().getMapHintValue(GeomajasServerExtension.MAPINFO);
 			FeatureStyleInfo selectStyle;
 			switch (layerInfo.getLayerType()) {
 				case GEOMETRY:
 				case LINESTRING:
 				case MULTILINESTRING:
-					selectStyle = mapOptions.getServerConfiguration().getLineSelectStyle();
+					selectStyle = mapInfo.getLineSelectStyle();
 					break;
 				case MULTIPOINT:
 				case POINT:
-					selectStyle = mapOptions.getServerConfiguration().getPointSelectStyle();
+					selectStyle = mapInfo.getPointSelectStyle();
 					break;
 				case MULTIPOLYGON:
 				case POLYGON:
-					selectStyle = mapOptions.getServerConfiguration().getPolygonSelectStyle();
+					selectStyle = mapInfo.getPolygonSelectStyle();
 					break;
 				default:
 					throw new IllegalArgumentException("Unknown layer type " + layerInfo.getLayerType());

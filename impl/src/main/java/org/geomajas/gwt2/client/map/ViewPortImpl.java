@@ -39,9 +39,9 @@ public final class ViewPortImpl implements ViewPort {
 
 	private final MapEventBus eventBus;
 
-	private final MapConfiguration configuration;
-
 	private final ViewPortTransformationService transformationService;
+
+	private MapConfiguration configuration;
 
 	/** The map's width in pixels. */
 	private int mapWidth;
@@ -62,17 +62,14 @@ public final class ViewPortImpl implements ViewPort {
 
 	private Coordinate position;
 
-	private boolean initialized;
-
 	private NavigationAnimation currentAnimation;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
 
-	public ViewPortImpl(MapEventBus eventBus, MapConfiguration configuration) {
+	public ViewPortImpl(MapEventBus eventBus) {
 		this.eventBus = eventBus;
-		this.configuration = configuration;
 		this.transformationService = new ViewPortTransformationServiceImpl(this);
 		this.position = new Coordinate();
 
@@ -83,34 +80,32 @@ public final class ViewPortImpl implements ViewPort {
 				currentAnimation = null;
 			}
 		});
-		if (configuration.getMapOptions() != null) {
-			initialize(configuration.getMapOptions());
-		}
 	}
 
 	// -------------------------------------------------------------------------
 	// Configuration stuff:
 	// -------------------------------------------------------------------------
 
-	protected void initialize(MapOptions mapOptions) {
-		crs = mapOptions.getCrs();
+	protected void initialize(MapConfiguration configuration) {
+		this.configuration = configuration;
+		crs = configuration.getCrs();
 
 		// Calculate maximum bounds:
-		maxBounds = new Bbox(mapOptions.getMaxBounds().getX(), mapOptions.getMaxBounds().getY(), mapOptions
-				.getMaxBounds().getWidth(), mapOptions.getMaxBounds().getHeight());
+		maxBounds = new Bbox(configuration.getMaxBounds().getX(), configuration.getMaxBounds().getY(), configuration
+				.getMaxBounds().getWidth(), configuration.getMaxBounds().getHeight());
 
-		if (mapOptions.getResolutions() != null && mapOptions.getResolutions().size() > 0) {
-			for (Double resolution : mapOptions.getResolutions()) {
+		if (configuration.getResolutions() != null && configuration.getResolutions().size() > 0) {
+			for (Double resolution : configuration.getResolutions()) {
 				fixedScales.add(resolution);
 			}
-		} else if (mapOptions.getMaximumScale() != 0) {
+		} else if (configuration.getMaximumScale() != 0) {
 			// If there are no fixed scale levels, we'll calculate them:
 			double tempScale = getMaxBoundsScale();
 			if (tempScale == 0.0) {
 				throw new IllegalStateException("Could not initialize the map. Could it be it has no size?");
 			}
 			fixedScales.add(tempScale);
-			while (tempScale < mapOptions.getMaximumScale()) {
+			while (tempScale < configuration.getMaximumScale()) {
 				tempScale *= 2;
 				fixedScales.add(tempScale);
 			}
@@ -119,8 +114,6 @@ public final class ViewPortImpl implements ViewPort {
 					"The map configuration must either contain fixed resolutions or a maximum scale");
 		}
 		Collections.sort(fixedScales);
-
-		initialized = true;
 	}
 
 	@Override
@@ -325,13 +318,8 @@ public final class ViewPortImpl implements ViewPort {
 	}
 
 	@Override
-	public boolean isInitialized() {
-		return initialized;
-	}
-
-	@Override
 	public double toScale(double scaleDenominator) {
-		double pixelsPerUnit = getPixelLength() / configuration.getMapOptions().getUnitLength();
+		double pixelsPerUnit = getPixelLength() / configuration.getUnitLength();
 		return 1 / (pixelsPerUnit * scaleDenominator);
 	}
 
@@ -359,7 +347,7 @@ public final class ViewPortImpl implements ViewPort {
 	// -------------------------------------------------------------------------
 	// Private functions:
 	// -------------------------------------------------------------------------
-	
+
 	protected double getPixelLength() {
 		return METER_PER_INCH / configuration.getMapHintValue(MapConfiguration.DPI);
 	}

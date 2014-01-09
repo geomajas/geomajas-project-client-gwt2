@@ -68,7 +68,7 @@ public class MapTraceNavigationPanel implements SamplePanel {
 			CanvasContainer container = mapPresenter.getContainerManager().addWorldCanvasContainer();
 			final TracingLayer layer = new TracingLayer(mapPresenter.getViewPort(), container);
 			mapPresenter.getLayersModel().addLayer(layer);
-			mapPresenter.getConfiguration().setAnimated(layer, true);
+			mapPresenter.getLayersModelRenderer().setAnimated(layer, true);
 			Timer timer = new Timer() {
 
 				private boolean zoomOut;

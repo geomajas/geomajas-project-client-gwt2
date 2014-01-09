@@ -15,7 +15,6 @@ import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.gwt2.client.GeomajasImpl;
-import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.event.LayerAddedEvent;
 import org.geomajas.gwt2.client.event.LayerDeselectedEvent;
 import org.geomajas.gwt2.client.event.LayerOrderChangedEvent;
@@ -88,14 +87,15 @@ public class LayersModelEventTest {
 		// Initialize main components:
 		MapConfiguration mapConfig = TestConfigUtil.create(mapInfo);
 		eventBus = new MapEventBusImpl(this, GeomajasImpl.getInstance().getEventBus());
-		viewPort = new ViewPortImpl(eventBus, mapConfig);
-		layersModel = new LayersModelImpl(viewPort, eventBus, mapConfig);
+		viewPort = new ViewPortImpl(eventBus);
+		((ViewPortImpl) viewPort).initialize(mapConfig);
+		layersModel = new LayersModelImpl(viewPort, eventBus);
 
 		// Now add layers:
 		for (int i = 1; i < 4; i++) {
 			for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
 				if (("beans" + i + "Layer").equals(layerInfo.getId())) {
-					Layer layer = new VectorServerLayerImpl((ClientVectorLayerInfo)layerInfo, viewPort, eventBus);
+					Layer layer = new VectorServerLayerImpl((ClientVectorLayerInfo) layerInfo, viewPort, eventBus);
 					layersModel.addLayer(layer);
 				}
 			}

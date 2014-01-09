@@ -14,9 +14,10 @@ package org.geomajas.plugin.wms.example.client.sample.v1_3_0;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.GeomajasImpl;
-import org.geomajas.gwt2.client.map.MapOptions;
+import org.geomajas.gwt2.client.map.MapConfiguration;
+import org.geomajas.gwt2.client.map.MapConfiguration.CrsType;
+import org.geomajas.gwt2.client.map.MapConfigurationImpl;
 import org.geomajas.gwt2.client.map.MapPresenter;
-import org.geomajas.gwt2.client.map.MapOptions.CrsType;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.plugin.wms.client.layer.WmsLayerImpl;
 import org.geomajas.plugin.wms.client.layer.config.WmsLayerConfiguration;
@@ -58,11 +59,11 @@ public class WmsLayerV130Panel implements SamplePanel {
 		Widget layout = UI_BINDER.createAndBindUi(this);
 
 		// Create the mapPresenter and add an InitializationHandler:
-		MapOptions mapOptions = new MapOptions();
-		mapOptions.setCrs(EPSG, CrsType.DEGREES);
-		mapOptions.setMaxBounds(new Bbox(-180, -90, 360, 180));
-		mapOptions.setMaximumScale(8192);
-		MapPresenter mapPresenter = GeomajasImpl.getInstance().createMapPresenter(mapOptions, 480, 480);
+		MapConfiguration configuration = new MapConfigurationImpl();
+		configuration.setCrs(EPSG, CrsType.DEGREES);
+		configuration.setMaxBounds(new Bbox(-180, -90, 360, 180));
+		configuration.setMaximumScale(8192);
+		MapPresenter mapPresenter = GeomajasImpl.getInstance().createMapPresenter(configuration, 480, 480);
 
 		// Now create a WMS layer and add it to the map:
 		WmsTileConfiguration tileConfig = new WmsTileConfiguration(256, 256, new Coordinate(-180, -90));

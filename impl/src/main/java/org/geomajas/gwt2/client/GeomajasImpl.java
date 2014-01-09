@@ -14,7 +14,7 @@ package org.geomajas.gwt2.client;
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.client.gfx.GfxUtil;
 import org.geomajas.gwt2.client.gfx.GfxUtilImpl;
-import org.geomajas.gwt2.client.map.MapOptions;
+import org.geomajas.gwt2.client.map.MapConfiguration;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.MapPresenterImpl;
 
@@ -65,10 +65,10 @@ public final class GeomajasImpl implements Geomajas {
 	}
 
 	@Override
-	public MapPresenter createMapPresenter(MapOptions mapOptions, int mapWidth, int mapHeight) {
+	public MapPresenter createMapPresenter(MapConfiguration configuration, int mapWidth, int mapHeight) {
 		MapPresenterImpl mapPresenter = new MapPresenterImpl(getEventBus());
 		mapPresenter.setSize(mapWidth, mapHeight);
-		mapPresenter.initialize(mapOptions);
+		mapPresenter.initialize(configuration);
 		return mapPresenter;
 	}
 

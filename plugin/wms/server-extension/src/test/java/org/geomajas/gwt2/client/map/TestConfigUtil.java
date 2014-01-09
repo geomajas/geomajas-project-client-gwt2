@@ -16,7 +16,7 @@ import java.util.List;
 
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ScaleInfo;
-import org.geomajas.gwt2.client.map.MapOptions.CrsType;
+import org.geomajas.gwt2.client.map.MapConfiguration.CrsType;
 
 /**
  * Test utility.
@@ -27,17 +27,15 @@ public class TestConfigUtil {
 
 	public static MapConfiguration create(ClientMapInfo mapInfo) {
 		MapConfigurationImpl mapConfig = new MapConfigurationImpl();
-		MapOptions mapOptions = new MapOptions();
-		mapOptions.setCrs(mapInfo.getCrs(), CrsType.DEGREES);
-		mapOptions.setInitialBounds(mapInfo.getInitialBounds());
-		mapOptions.setMaxBounds(mapInfo.getMaxBounds());
-		mapOptions.setMaximumScale(mapInfo.getScaleConfiguration().getMaximumScale().getPixelPerUnit());
+		mapConfig.setCrs(mapInfo.getCrs(), CrsType.DEGREES);
+		mapConfig.setMapHintValue(MapConfiguration.INITIAL_BOUNDS, mapInfo.getInitialBounds());
+		mapConfig.setMaxBounds(mapInfo.getMaxBounds());
+		mapConfig.setMaximumScale(mapInfo.getScaleConfiguration().getMaximumScale().getPixelPerUnit());
 		List<Double> resolutions = new ArrayList<Double>();
 		for (ScaleInfo scale : mapInfo.getScaleConfiguration().getZoomLevels()) {
 			resolutions.add(scale.getPixelPerUnit());
 		}
-		mapOptions.setResolutions(resolutions);
-		mapConfig.setMapOptions(mapOptions);
+		mapConfig.setResolutions(resolutions);
 		return mapConfig;
 	}
 }

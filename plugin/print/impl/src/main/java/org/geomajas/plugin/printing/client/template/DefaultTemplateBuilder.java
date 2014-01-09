@@ -15,10 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.configuration.FontStyleInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.gwt2.client.map.MapOptionsExt;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.Layer;
@@ -95,7 +96,7 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 	@Override
 	protected MapComponentInfo buildMap() {
 		ViewPort viewPort = mapPresenter.getViewPort();
-		MapOptionsExt mapOptions = (MapOptionsExt) mapPresenter.getConfiguration().getMapOptions();
+		ClientMapInfo mapInfo = mapPresenter.getConfiguration().getMapHintValue(GeomajasServerExtension.MAPINFO);
 		double printWidth = getPageWidth() - 2 * marginX;
 		double printHeight = getPageHeight() - 2 * marginY;
 
@@ -109,7 +110,7 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 		map.setPpUnit((float) (printWidth / fittingBox.getWidth()));
 
 		map.setTag("map");
-		map.setMapId(mapOptions.getServerId());
+		map.setMapId(mapInfo.getId());
 
 		map.setApplicationId(applicationId);
 		map.setRasterResolution(rasterDpi);
@@ -122,7 +123,7 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 
 		List<PrintComponentInfo> layers = new ArrayList<PrintComponentInfo>();
 		RasterizedLayersComponentInfo rasterizedLayersComponentInfo = new RasterizedLayersComponentInfo();
-		rasterizedLayersComponentInfo.setMapInfo(mapOptions.getServerConfiguration());
+		rasterizedLayersComponentInfo.setMapInfo(mapInfo);
 
 		layers.add(rasterizedLayersComponentInfo);
 		map.getChildren().addAll(0, layers);
@@ -154,8 +155,8 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 		style.setStyle(PrintingLayout.templateDefaultFontStyle);
 		style.setSize((int) PrintingLayout.templateDefaultFontSize);
 		legend.setFont(style);
-		MapOptionsExt mapOptions = (MapOptionsExt) mapPresenter.getConfiguration().getMapOptions();
-		legend.setMapId(mapOptions.getServerId());
+		ClientMapInfo mapInfo = mapPresenter.getConfiguration().getMapHintValue(GeomajasServerExtension.MAPINFO);
+		legend.setMapId(mapInfo.getId());
 
 		legend.setTag("legend");
 		LayersModel layersModel = this.mapPresenter.getLayersModel();

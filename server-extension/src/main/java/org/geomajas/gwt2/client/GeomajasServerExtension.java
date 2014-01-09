@@ -11,6 +11,9 @@
 
 package org.geomajas.gwt2.client;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.annotation.Api;
 import org.geomajas.command.dto.GetMapConfigurationRequest;
 import org.geomajas.command.dto.GetMapConfigurationResponse;
@@ -18,11 +21,13 @@ import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
+import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
+import org.geomajas.gwt2.client.map.MapConfiguration;
+import org.geomajas.gwt2.client.map.MapConfigurationImpl;
 import org.geomajas.gwt2.client.map.MapEventBus;
-import org.geomajas.gwt2.client.map.MapOptions;
-import org.geomajas.gwt2.client.map.MapOptionsExt;
+import org.geomajas.gwt2.client.map.MapHint;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.MapPresenterImpl;
 import org.geomajas.gwt2.client.map.ViewPort;
@@ -45,6 +50,9 @@ import org.geomajas.gwt2.client.service.EndPointServiceImpl;
  */
 @Api(allMethods = true)
 public final class GeomajasServerExtension {
+
+	/** {@link MapHint} used to save the server-side configuration object into the {@link MapConfiguration}. */
+	public static final MapHint<ClientMapInfo> MAPINFO = new MapHint<ClientMapInfo>("mapInfo");
 
 	private static CommandService commandService = new CommandServiceImpl();
 
@@ -111,8 +119,8 @@ public final class GeomajasServerExtension {
 				}
 
 				// Initialize the map:
-				MapOptions mapOptions = new MapOptionsExt(mapInfo);
-				((MapPresenterImpl) mapPresenter).initialize(mapOptions);
+				MapConfiguration configuration = createMapConfiguration(mapInfo);
+				((MapPresenterImpl) mapPresenter).initialize(configuration);
 
 				// Also add a renderer for feature selection:
 				FeatureSelectionRenderer renderer = new FeatureSelectionRenderer(mapPresenter);
@@ -145,5 +153,24 @@ public final class GeomajasServerExtension {
 				break;
 		}
 		return layer;
+	}
+
+	// ------------------------------------------------------------------------
+	// Private methods:
+	// ------------------------------------------------------------------------
+
+	private static MapConfiguration createMapConfiguration(ClientMapInfo mapInfo) {
+		MapConfiguration configuration = new MapConfigurationImpl();
+		configuration.setCrs(mapInfo.getCrs(), mapInfo.getUnitLength());
+		configuration.setMapHintValue(MapConfiguration.INITIAL_BOUNDS, mapInfo.getInitialBounds());
+		configuration.setMaxBounds(mapInfo.getMaxBounds());
+		configuration.setMaximumScale(mapInfo.getScaleConfiguration().getMaximumScale().getPixelPerUnit());
+		List<Double> resolutions = new ArrayList<Double>();
+		for (ScaleInfo scale : mapInfo.getScaleConfiguration().getZoomLevels()) {
+			resolutions.add(scale.getPixelPerUnit());
+		}
+		configuration.setResolutions(resolutions);
+		configuration.setMapHintValue(MAPINFO, mapInfo);
+		return configuration;
 	}
 }

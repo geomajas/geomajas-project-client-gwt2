@@ -13,7 +13,7 @@ package org.geomajas.gwt2.client;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.client.gfx.GfxUtil;
-import org.geomajas.gwt2.client.map.MapOptions;
+import org.geomajas.gwt2.client.map.MapConfiguration;
 import org.geomajas.gwt2.client.map.MapPresenter;
 
 import com.google.web.bindery.event.shared.EventBus;
@@ -40,7 +40,7 @@ public interface Geomajas {
 	/**
 	 * Create a new empty map and immediately provide the necessary initialization configuration.
 	 * 
-	 * @param mapOptions
+	 * @param configuration
 	 *            The map configuration.
 	 * @param mapWidth
 	 *            This initial map width in pixels.
@@ -48,7 +48,7 @@ public interface Geomajas {
 	 *            This initial map height in pixels.
 	 * @return An initialized map. Time to add some layers!
 	 */
-	MapPresenter createMapPresenter(MapOptions mapOptions, int mapWidth, int mapHeight);
+	MapPresenter createMapPresenter(MapConfiguration configuration, int mapWidth, int mapHeight);
 
 	/**
 	 * Get the {@link GfxUtil} singleton. Utility service that helps out when rendering custom shapes on the map.

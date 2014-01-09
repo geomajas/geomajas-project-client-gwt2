@@ -18,7 +18,7 @@ import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.gwt2.client.map.MapOptionsExt;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.Layer;
@@ -63,8 +63,7 @@ public class PrintableMapBuilder {
 		List<ClientLayerInfo> selectedLayers = new ArrayList<ClientLayerInfo>();
 		mapRasterizingInfo.setExtraLayers(selectedLayers);
 
-		MapOptionsExt mapOptions = (MapOptionsExt) mapPresenter.getConfiguration().getMapOptions();
-		ClientMapInfo mapInfo = mapOptions.getServerConfiguration();
+		ClientMapInfo mapInfo = mapPresenter.getConfiguration().getMapHintValue(GeomajasServerExtension.MAPINFO);
 		mapInfo.getWidgetInfo().put(MapRasterizingInfo.WIDGET_KEY, mapRasterizingInfo);
 		// Note: mapRasterizingInfo at this time is pretty empty (rastering info for
 		// layers not yet filled in)
@@ -82,7 +81,7 @@ public class PrintableMapBuilder {
 				}
 			}
 		}
-		MapOptionsExt mapOptions = (MapOptionsExt) mapPresenter.getConfiguration().getMapOptions();
-		mapOptions.getServerConfiguration().setLayers(clientLayers);
+		ClientMapInfo mapInfo = mapPresenter.getConfiguration().getMapHintValue(GeomajasServerExtension.MAPINFO);
+		mapInfo.setLayers(clientLayers);
 	}
 }

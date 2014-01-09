@@ -70,8 +70,9 @@ public class LayersModelTest {
 		// Initialize main components:
 		MapConfiguration mapConfig = TestConfigUtil.create(mapInfo);
 		eventBus = new MapEventBusImpl(this, GeomajasImpl.getInstance().getEventBus());
-		viewPort = new ViewPortImpl(eventBus, mapConfig);
-		layersModel = new LayersModelImpl(viewPort, eventBus, mapConfig);
+		viewPort = new ViewPortImpl(eventBus);
+		((ViewPortImpl) viewPort).initialize(mapConfig);
+		layersModel = new LayersModelImpl(viewPort, eventBus);
 
 		// Now add layers:
 		for (int i = 1; i < 4; i++) {

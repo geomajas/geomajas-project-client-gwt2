@@ -25,6 +25,9 @@ import org.geomajas.gwt2.client.controller.MapController;
 import org.geomajas.gwt2.client.controller.MapEventParserImpl;
 import org.geomajas.gwt2.client.controller.NavigationController;
 import org.geomajas.gwt2.client.controller.TouchNavigationController;
+import org.geomajas.gwt2.client.event.LayerAddedEvent;
+import org.geomajas.gwt2.client.event.LayerRemovedEvent;
+import org.geomajas.gwt2.client.event.MapCompositionHandler;
 import org.geomajas.gwt2.client.event.MapInitializationEvent;
 import org.geomajas.gwt2.client.event.MapResizedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
@@ -206,9 +209,9 @@ public final class MapPresenterImpl implements MapPresenter {
 
 	private final ContainerManager containerManager;
 
-	private final MapConfiguration configuration;
-
 	private final Map<MapController, List<HandlerRegistration>> listeners;
+
+	private MapConfiguration configuration;
 
 	private List<HandlerRegistration> handlers;
 
@@ -224,12 +227,11 @@ public final class MapPresenterImpl implements MapPresenter {
 		this.handlers = new ArrayList<HandlerRegistration>();
 		this.listeners = new HashMap<MapController, List<HandlerRegistration>>();
 		this.eventBus = new MapEventBusImpl(this, eventBus);
-		this.configuration = new MapConfigurationImpl();
 		this.display = new MapWidgetImpl();
-		this.viewPort = new ViewPortImpl(this.eventBus, this.configuration);
-		this.layersModel = new LayersModelImpl(this.viewPort, this.eventBus, this.configuration);
+		this.viewPort = new ViewPortImpl(this.eventBus);
+		this.layersModel = new LayersModelImpl(this.viewPort, this.eventBus);
 		this.mapEventParser = new MapEventParserImpl(this);
-		this.renderer = new LayersModelRendererImpl(layersModel, viewPort, this.eventBus, this.configuration);
+		this.renderer = new LayersModelRendererImpl(layersModel, viewPort, this.eventBus);
 		this.containerManager = new ContainerManagerImpl(display, viewPort);
 		this.isMobileBrowser = Dom.isMobile();
 
@@ -238,6 +240,19 @@ public final class MapPresenterImpl implements MapPresenter {
 			@Override
 			public void onViewPortChanged(ViewPortChangedEvent event) {
 				renderer.render(new RenderingInfo(display.getMapHtmlContainer(), event.getTo(), event.getTrajectory()));
+			}
+		});
+		this.eventBus.addMapCompositionHandler(new MapCompositionHandler() {
+
+			@Override
+			public void onLayerRemoved(LayerRemovedEvent event) {
+			}
+
+			@Override
+			public void onLayerAdded(LayerAddedEvent event) {
+				if (layersModel.getLayerCount() == 1) {
+					renderer.setAnimated(event.getLayer(), true);
+				}
 			}
 		});
 
@@ -257,18 +272,20 @@ public final class MapPresenterImpl implements MapPresenter {
 	// MapPresenter implementation:
 	// ------------------------------------------------------------------------
 
-	public void initialize(MapOptions mapOptions) {
-		// Initialize the LayersModel and ViewPort:
-		if (configuration instanceof MapConfigurationImpl) {
-			((MapConfigurationImpl) configuration).setMapOptions(mapOptions);
+	public void initialize(MapConfiguration configuration) {
+		this.configuration = configuration;
+
+		// Apply this configuration on the LayersModelRenderer:
+		if (renderer instanceof LayersModelRendererImpl) {
+			((LayersModelRendererImpl) renderer).setMapConfiguration(configuration);
 		}
 
 		// Configure the ViewPort. This will immediately zoom to the initial bounds:
 		// viewPort.setMapSize(display.getWidth(), display.getHeight());
-		((ViewPortImpl) viewPort).initialize(mapOptions);
+		((ViewPortImpl) viewPort).initialize(configuration);
 
 		// Immediately zoom to the initial bounds as configured:
-		viewPort.applyBounds(mapOptions.getInitialBounds(), ZoomOption.LEVEL_CLOSEST);
+		viewPort.applyBounds(configuration.getMapHintValue(MapConfiguration.INITIAL_BOUNDS), ZoomOption.LEVEL_CLOSEST);
 		renderer.render(new RenderingInfo(display.getMapHtmlContainer(), viewPort.getView(), null));
 
 		// Adding the default map control widgets:

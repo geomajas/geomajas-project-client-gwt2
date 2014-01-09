@@ -166,11 +166,11 @@ public class NavigationOptionPanel implements SamplePanel {
 			for (int i = 0; i < mapPresenter.getLayersModel().getLayerCount(); i++) {
 				final Layer layer = mapPresenter.getLayersModel().getLayer(i);
 				CheckBox cb = new CheckBox("Animate: " + layer.getTitle());
-				cb.setValue(mapPresenter.getConfiguration().isAnimated(layer));
+				cb.setValue(mapPresenter.getLayersModelRenderer().isAnimated(layer));
 				cb.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
 
 					public void onValueChange(ValueChangeEvent<Boolean> event) {
-						mapPresenter.getConfiguration().setAnimated(layer, event.getValue());
+						mapPresenter.getLayersModelRenderer().setAnimated(layer, event.getValue());
 					}
 				});
 				layerPanel.add(cb);

@@ -14,9 +14,10 @@ package org.geomajas.plugin.wms.example.client.sample.v1_3_0;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.GeomajasImpl;
-import org.geomajas.gwt2.client.map.MapOptions;
+import org.geomajas.gwt2.client.map.MapConfiguration;
+import org.geomajas.gwt2.client.map.MapConfiguration.CrsType;
+import org.geomajas.gwt2.client.map.MapConfigurationImpl;
 import org.geomajas.gwt2.client.map.MapPresenter;
-import org.geomajas.gwt2.client.map.MapOptions.CrsType;
 import org.geomajas.gwt2.client.widget.MapLayoutPanel;
 import org.geomajas.gwt2.example.base.client.ExampleBase;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
@@ -69,12 +70,12 @@ public class WmsFeatureInfoV130Panel implements SamplePanel {
 		Widget layout = UI_BINDER.createAndBindUi(this);
 
 		// Create the mapPresenter and add an InitializationHandler:
-		MapOptions mapOptions = new MapOptions();
-		mapOptions.setCrs(EPSG, CrsType.DEGREES);
-		mapOptions.setMaxBounds(new Bbox(-180, -90, 360, 180));
-		mapOptions.setInitialBounds(ExampleBase.BBOX_LATLON_USA);
-		mapOptions.setMaximumScale(8192);
-		MapPresenter mapPresenter = GeomajasImpl.getInstance().createMapPresenter(mapOptions, 480, 480);
+		MapConfiguration configuration = new MapConfigurationImpl();
+		configuration.setCrs(EPSG, CrsType.DEGREES);
+		configuration.setMaxBounds(new Bbox(-180, -90, 360, 180));
+		configuration.setMapHintValue(MapConfiguration.INITIAL_BOUNDS, ExampleBase.BBOX_LATLON_USA);
+		configuration.setMaximumScale(8192);
+		MapPresenter mapPresenter = GeomajasImpl.getInstance().createMapPresenter(configuration, 480, 480);
 
 		// Now create a WMS layer and add it to the map:
 		WmsTileConfiguration tileConfig = new WmsTileConfiguration(256, 256, new Coordinate(-180, -90));

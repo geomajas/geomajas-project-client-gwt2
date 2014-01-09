@@ -114,7 +114,7 @@ public class CapabilitiesV111Panel implements SamplePanel {
 									public void onValueChange(ValueChangeEvent<Boolean> event) {
 										if (event.getValue()) {
 											mapPresenter.getLayersModel().addLayer(layer);
-											mapPresenter.getConfiguration().setAnimated(layer, true);
+											mapPresenter.getLayersModelRenderer().setAnimated(layer, true);
 										} else {
 											mapPresenter.getLayersModel().removeLayer(layer.getId());
 										}
