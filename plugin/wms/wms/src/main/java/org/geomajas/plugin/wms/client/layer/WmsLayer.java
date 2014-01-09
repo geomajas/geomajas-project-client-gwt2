@@ -15,12 +15,12 @@ import java.util.List;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.gwt2.client.gfx.tile.Tile;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.HasLegendWidget;
 import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.client.map.layer.LegendUrlSupported;
 import org.geomajas.gwt2.client.map.layer.OpacitySupported;
+import org.geomajas.gwt2.client.map.render.Tile;
 import org.geomajas.plugin.wms.client.layer.config.WmsLayerConfiguration;
 import org.geomajas.plugin.wms.client.layer.config.WmsTileConfiguration;
 

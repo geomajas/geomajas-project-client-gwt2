@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.client.gfx.tile;
+package org.geomajas.gwt2.client.map.render;
 
 import java.io.Serializable;
 

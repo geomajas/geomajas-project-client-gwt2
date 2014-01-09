@@ -17,11 +17,11 @@ import java.util.Map;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.service.BboxService;
-import org.geomajas.gwt2.client.gfx.tile.Tile;
-import org.geomajas.gwt2.client.gfx.tile.TileCode;
 import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.render.FixedScaleRenderer;
+import org.geomajas.gwt2.client.map.render.Tile;
+import org.geomajas.gwt2.client.map.render.TileCode;
 import org.geomajas.gwt2.client.map.render.TileLevelRenderedEvent;
 import org.geomajas.gwt2.client.map.render.TileLevelRenderedHandler;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;

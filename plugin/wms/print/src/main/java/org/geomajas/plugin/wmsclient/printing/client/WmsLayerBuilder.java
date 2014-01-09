@@ -15,10 +15,10 @@ import java.util.List;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.gwt2.client.gfx.tile.Tile;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.client.map.layer.OpacitySupported;
+import org.geomajas.gwt2.client.map.render.Tile;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.plugin.printing.client.template.PrintableLayerBuilder;

@@ -16,8 +16,6 @@ import java.util.List;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.client.event.LayerStyleChangedEvent;
-import org.geomajas.gwt2.client.gfx.tile.Tile;
-import org.geomajas.gwt2.client.gfx.tile.TileCode;
 import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.AbstractLayer;
@@ -25,6 +23,8 @@ import org.geomajas.gwt2.client.map.layer.LegendConfig;
 import org.geomajas.gwt2.client.map.render.FixedScaleLayerRenderer;
 import org.geomajas.gwt2.client.map.render.FixedScaleRenderer;
 import org.geomajas.gwt2.client.map.render.LayerRenderer;
+import org.geomajas.gwt2.client.map.render.Tile;
+import org.geomajas.gwt2.client.map.render.TileCode;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
 import org.geomajas.plugin.wms.client.WmsClient;
 import org.geomajas.plugin.wms.client.layer.config.WmsLayerConfiguration;
