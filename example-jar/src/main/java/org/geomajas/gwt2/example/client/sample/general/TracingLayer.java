@@ -74,4 +74,12 @@ public class TracingLayer implements Layer {
 		renderer.setEnabled(enabled);
 	}
 
+	@Override
+	public void setOpacity(double opacity) {
+	}
+
+	@Override
+	public double getOpacity() {
+		return 0;
+	}
 }

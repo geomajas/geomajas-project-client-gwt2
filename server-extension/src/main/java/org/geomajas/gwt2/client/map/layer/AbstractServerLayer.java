@@ -22,8 +22,7 @@ import org.geomajas.gwt2.client.map.ViewPort;
  *            The layer meta-data. Some extension of {@link ClientLayerInfo}.
  * @author Pieter De Graef
  */
-public abstract class AbstractServerLayer<T extends ClientLayerInfo> extends AbstractLayer 
-		implements OpacitySupported {
+public abstract class AbstractServerLayer<T extends ClientLayerInfo> extends AbstractLayer {
 
 	protected static final String LEGEND_ICON_EXTENSION = ".png";
 
@@ -60,12 +59,10 @@ public abstract class AbstractServerLayer<T extends ClientLayerInfo> extends Abs
 	// Layer implementation:
 	// ------------------------------------------------------------------------
 
-	/** @todo javadoc unknown. */
 	public String getServerLayerId() {
 		return layerInfo.getServerLayerId();
 	}
 
-	/** @todo javadoc unknown. */
 	public T getLayerInfo() {
 		return layerInfo;
 	}

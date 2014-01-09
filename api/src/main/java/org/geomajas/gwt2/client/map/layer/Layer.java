@@ -92,4 +92,22 @@ public interface Layer {
 	 * @return The layer specific renderer.
 	 */
 	LayerRenderer getRenderer();
+
+	/**
+	 * Apply a new opacity on the entire layer. Changing the opacity on a layer does NOT fire a layer style changed
+	 * event.
+	 * 
+	 * @param opacity
+	 *            The new opacity value. Must be a value between 0 and 1, where 0 means invisible and 1 is totally
+	 *            visible.
+	 */
+	void setOpacity(double opacity);
+
+	/**
+	 * Get the current opacity value for this layer. Must be a value between 0 and 1, where 0 means invisible and 1 is
+	 * totally visible.
+	 * 
+	 * @return The current opacity value for this layer.
+	 */
+	double getOpacity();
 }
