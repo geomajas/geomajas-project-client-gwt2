@@ -112,6 +112,18 @@
 				<version>${project.version}</version>
 			</dependency>
 
+			<!-- Tools plugin -->
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-client-gwt2-plugin-tools</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-client-gwt2-plugin-tools-example-jar</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
 			<!-- Editing plugin -->
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
