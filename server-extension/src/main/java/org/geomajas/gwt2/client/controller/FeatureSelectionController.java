@@ -276,8 +276,11 @@ public class FeatureSelectionController extends NavigationController {
 		Geometry point = new Geometry(Geometry.POINT, 0, -1);
 		point.setCoordinates(new Coordinate[] { location });
 
-		GeomajasServerExtension.getServerFeatureService().search(mapPresenter, point, pixelsToUnits(pixelTolerance),
-				QueryType.INTERSECTS, searchLayerType, -1, new SelectionCallback(isShift, false));
+		GeomajasServerExtension
+				.getInstance()
+				.getServerFeatureService()
+				.search(mapPresenter, point, pixelsToUnits(pixelTolerance), QueryType.INTERSECTS, searchLayerType, -1,
+						new SelectionCallback(isShift, false));
 	}
 
 	/**
@@ -307,9 +310,11 @@ public class FeatureSelectionController extends NavigationController {
 	private class SelectionRectangleController extends AbstractRectangleController {
 
 		public void execute(Bbox worldBounds) {
-			GeomajasServerExtension.getServerFeatureService().search(mapPresenter,
-					GeometryService.toPolygon(worldBounds), 0, QueryType.INTERSECTS, searchLayerType,
-					intersectionRatio, new SelectionCallback(shift, true));
+			GeomajasServerExtension
+					.getInstance()
+					.getServerFeatureService()
+					.search(mapPresenter, GeometryService.toPolygon(worldBounds), 0, QueryType.INTERSECTS,
+							searchLayerType, intersectionRatio, new SelectionCallback(shift, true));
 		}
 
 		public void cleanup() {

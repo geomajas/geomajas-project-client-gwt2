@@ -110,7 +110,7 @@ public class SnapToCountriesPanel implements SamplePanel {
 		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		GeomajasServerExtension.initializeMap(mapPresenter, "gwt-app", "mapCountries");
+		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "gwt-app", "mapCountries");
 		mapPresenter.getEventBus().addMapInitializationHandler(new MapInitializationHandler() {
 
 			@Override
@@ -230,19 +230,22 @@ public class SnapToCountriesPanel implements SamplePanel {
 		public void getSnappingSources(final GeometryArrayFunction callback) {
 			if (fetch) {
 				final FeaturesSupported layer = (FeaturesSupported) mapPresenter.getLayersModel().getLayer(1);
-				GeomajasServerExtension.getServerFeatureService().search(mapPresenter.getViewPort().getCrs(), layer,
-						GeometryService.toPolygon(mapBounds), 0.0, new FeatureMapFunction() {
+				GeomajasServerExtension
+						.getInstance()
+						.getServerFeatureService()
+						.search(mapPresenter.getViewPort().getCrs(), layer, GeometryService.toPolygon(mapBounds), 0.0,
+								new FeatureMapFunction() {
 
-							@Override
-							public void execute(Map<FeaturesSupported, List<Feature>> featureMap) {
-								List<Feature> features = featureMap.get(layer);
-								Geometry[] geometries = new Geometry[features.size()];
-								for (int i = 0; i < features.size(); i++) {
-									geometries[i] = features.get(i).getGeometry();
-								}
-								callback.execute(geometries);
-							}
-						});
+									@Override
+									public void execute(Map<FeaturesSupported, List<Feature>> featureMap) {
+										List<Feature> features = featureMap.get(layer);
+										Geometry[] geometries = new Geometry[features.size()];
+										for (int i = 0; i < features.size(); i++) {
+											geometries[i] = features.get(i).getGeometry();
+										}
+										callback.execute(geometries);
+									}
+								});
 			}
 		}
 

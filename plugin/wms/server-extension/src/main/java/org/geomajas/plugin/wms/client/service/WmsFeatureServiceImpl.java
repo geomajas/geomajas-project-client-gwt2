@@ -73,7 +73,9 @@ public class WmsFeatureServiceImpl extends WmsServiceImpl implements WmsFeatureS
 			public void execute(GetFeatureInfoResponse response) {
 				List<Feature> features = new ArrayList<Feature>();
 				for (org.geomajas.layer.feature.Feature feature : response.getFeatures()) {
-					features.add(GeomajasServerExtension.getServerFeatureService().create(feature, layer));
+					Feature newFeature = GeomajasServerExtension.getInstance().getServerFeatureService()
+							.create(feature, layer);
+					features.add(newFeature);
 				}
 
 				callback.onSuccess(new FeatureCollection(features, response.getAttributeDescriptors()));

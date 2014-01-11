@@ -27,7 +27,7 @@
 	<modules>
 		<module>geocoder</module>
 		<module>example-jar</module>
-		<module>example</module>
+		<!-- <module>example</module> -->
 	</modules>
 
  </project>

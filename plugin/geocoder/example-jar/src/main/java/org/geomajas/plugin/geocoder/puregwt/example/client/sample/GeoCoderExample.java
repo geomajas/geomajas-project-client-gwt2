@@ -65,7 +65,7 @@ public class GeoCoderExample implements SamplePanel {
 
 		// Initialize the map
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
-		GeomajasServerExtension.initializeMap(mapPresenter, "geocoder-app", "mapOsm");
+		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "geocoder-app", "mapOsm");
 		ResizeLayoutPanel resizeLayoutPanel = new ResizeLayoutPanel();
 		final MapLayoutPanel layout = new MapLayoutPanel();
 		resizeLayoutPanel.setWidget(layout);

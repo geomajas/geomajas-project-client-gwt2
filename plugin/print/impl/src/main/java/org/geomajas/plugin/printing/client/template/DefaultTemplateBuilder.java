@@ -164,7 +164,7 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 			Layer layer = layersModel.getLayer(i);
 			if (layer instanceof VectorServerLayer && layer.isShowing()) {
 				VectorServerLayer vectorLayer = (VectorServerLayer) layer;
-				ClientVectorLayerInfo layerInfo = vectorLayer.getLayerInfo();
+				ClientVectorLayerInfo layerInfo = (ClientVectorLayerInfo) vectorLayer.getLayerInfo();
 				FeatureTypeStyleInfo fts = layerInfo.getNamedStyleInfo().getUserStyle().getFeatureTypeStyleList()
 						.get(0);
 				for (RuleInfo rule : fts.getRuleList()) {

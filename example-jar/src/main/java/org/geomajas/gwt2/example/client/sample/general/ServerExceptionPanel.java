@@ -60,13 +60,14 @@ public class ServerExceptionPanel implements SamplePanel {
 		GwtCommand command = new GwtCommand();
 		command.setCommandName("command.GetSimpleExceptionCommand");
 		command.setCommandRequest(request);
-		GeomajasServerExtension.getCommandService().execute(command, new AbstractCommandCallback<CommandResponse>() {
+		GeomajasServerExtension.getInstance().getCommandService()
+				.execute(command, new AbstractCommandCallback<CommandResponse>() {
 
-			@Override
-			public void execute(CommandResponse response) {
-				// don't do anything. An Exception will been thrown at
-				// server-side
-			}
-		});
+					@Override
+					public void execute(CommandResponse response) {
+						// don't do anything. An Exception will been thrown at
+						// server-side
+					}
+				});
 	}
 }

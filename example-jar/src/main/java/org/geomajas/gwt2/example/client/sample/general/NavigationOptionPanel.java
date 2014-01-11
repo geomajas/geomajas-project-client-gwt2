@@ -84,7 +84,7 @@ public class NavigationOptionPanel implements SamplePanel {
 		mapPresenter = GeomajasImpl.getInstance().createMapPresenter();
 		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
-		GeomajasServerExtension.initializeMap(mapPresenter, "gwt-app", "mapCountries");
+		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "gwt-app", "mapCountries");
 		DecoratorPanel mapDecorator = new DecoratorPanel();
 		mapDecorator.add(mapPresenter.asWidget());
 		mapPanel.add(mapDecorator);

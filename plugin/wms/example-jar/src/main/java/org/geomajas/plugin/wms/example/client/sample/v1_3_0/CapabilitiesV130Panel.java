@@ -91,7 +91,7 @@ public class CapabilitiesV130Panel implements SamplePanel {
 		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		GeomajasServerExtension.initializeMap(mapPresenter, "gwt-app", "mapEmpty");
+		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "gwt-app", "mapEmpty");
 
 		WmsClient.getInstance().getWmsService()
 				.getCapabilities(WMS_BASE_URL, WmsVersion.V1_3_0, new Callback<WmsGetCapabilitiesInfo, String>() {

@@ -63,7 +63,7 @@ public class GraphicsEditingExample implements SamplePanel {
 		// Initialize the map
 		mapPresenter = GeomajasImpl.getInstance().createMapPresenter();
 		// Initialize the map, and return the layout:
-		GeomajasServerExtension.initializeMap(mapPresenter, "appGraphicsEditing", "mapGraphicsEditing");
+		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "appGraphicsEditing", "mapGraphicsEditing");
 		mapPresenter.getConfiguration().setMapHintValue(MapConfiguration.ANIMATION_TIME, 300);
 		MapLayoutPanel mapLayout = new MapLayoutPanel();
 		mapLayout.setPresenter(mapPresenter);

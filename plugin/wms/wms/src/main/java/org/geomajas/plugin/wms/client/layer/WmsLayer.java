@@ -16,7 +16,6 @@ import java.util.List;
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.client.map.ViewPort;
-import org.geomajas.gwt2.client.map.layer.HasLegendWidget;
 import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.client.map.layer.LegendUrlSupported;
 import org.geomajas.gwt2.client.map.render.Tile;
@@ -34,7 +33,7 @@ import org.geomajas.plugin.wms.client.layer.config.WmsTileConfiguration;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public interface WmsLayer extends Layer, LegendUrlSupported, HasLegendWidget {
+public interface WmsLayer extends Layer, LegendUrlSupported {
 
 	/**
 	 * Get the main WMS options. These options are translated into HTTP GET parameters for the WMS calls.

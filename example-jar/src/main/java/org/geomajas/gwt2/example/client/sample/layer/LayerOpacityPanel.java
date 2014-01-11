@@ -71,7 +71,7 @@ public class LayerOpacityPanel implements SamplePanel {
 		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		GeomajasServerExtension.initializeMap(mapPresenter, "gwt-app", "mapOsm");
+		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "gwt-app", "mapOsm");
 
 		// Make sure the text box also reacts to the "Enter" key:
 		opacityBox.addKeyUpHandler(new KeyUpHandler() {

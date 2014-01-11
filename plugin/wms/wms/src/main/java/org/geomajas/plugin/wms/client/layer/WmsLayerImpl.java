@@ -31,9 +31,6 @@ import org.geomajas.plugin.wms.client.layer.config.WmsLayerConfiguration;
 import org.geomajas.plugin.wms.client.layer.config.WmsTileConfiguration;
 import org.geomajas.plugin.wms.client.service.WmsTileServiceImpl;
 
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.IsWidget;
-
 /**
  * Default implementation of a {@link WmsLayer}.
  * 
@@ -173,15 +170,6 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 	@Override
 	public String getLegendImageUrl(LegendConfig legendConfig) {
 		return WmsClient.getInstance().getWmsService().getLegendGraphicUrl(wmsConfig, legendConfig);
-	}
-
-	// ------------------------------------------------------------------------
-	// HasLegendWidget implementation:
-	// ------------------------------------------------------------------------
-
-	@Override
-	public IsWidget buildLegendWidget() {
-		return new Image(getLegendImageUrl(wmsConfig.getLegendConfig()));
 	}
 
 	// ------------------------------------------------------------------------
