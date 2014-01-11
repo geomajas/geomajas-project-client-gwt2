@@ -12,7 +12,6 @@
 package org.geomajas.gwt2.client.map.layer;
 
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
-import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.ViewPort;
@@ -21,9 +20,6 @@ import org.geomajas.gwt2.client.map.render.FixedScaleRenderer;
 import org.geomajas.gwt2.client.map.render.LayerRenderer;
 import org.geomajas.gwt2.client.map.render.dom.RasterServerLayerScaleRenderer;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
-
-import com.google.gwt.http.client.URL;
-import com.google.gwt.user.client.ui.IsWidget;
 
 /**
  * The client side representation of a raster layer defined on the backend.
@@ -55,13 +51,6 @@ public class RasterServerLayerImpl extends AbstractServerLayer<ClientRasterLayer
 	@Override
 	public LayerRenderer getRenderer() {
 		return renderer;
-	}
-
-	@Override
-	public IsWidget buildLegendWidget() {
-		String url = GeomajasServerExtension.getEndPointService().getLegendServiceUrl();
-		addPath(url, getServerLayerId() + LEGEND_ICON_EXTENSION);
-		return new ServerLayerStyleWidget(URL.encode(url), getTitle(), null);
 	}
 
 	/**

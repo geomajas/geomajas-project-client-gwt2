@@ -83,7 +83,7 @@ public class VectorTilePresenter {
 	/** Render this tile. */
 	public void render() {
 		GwtCommand command = createCommand();
-		deferred = GeomajasServerExtension.getCommandService().execute(command,
+		deferred = GeomajasServerExtension.getInstance().getCommandService().execute(command,
 				new AbstractCommandCallback<GetVectorTileResponse>() {
 
 					public void execute(GetVectorTileResponse response) {

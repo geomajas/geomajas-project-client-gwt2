@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.client.map.layer;
+package org.geomajas.gwt2.client.widget.legend;
 
 import org.geomajas.sld.RuleInfo;
 
@@ -23,15 +23,14 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * <p>
- * Widget that displays a single style for a {@link ServerLayer}. For a {@link VectorServerLayer} that widget will
- * represent a single SLD rule, for a {@link RasterServerLayer} this widget is used as the entire legend widget.
- * </p>
- * <p>
- * As this widget is used only by both the {@link VectorServerLayer} and the {@link RasterServerLayer}, the constructor
- * has protected visibility.
+ * Widget that displays a single style for a {@link org.geomajas.gwt2.client.map.layer.ServerLayer}. For a
+ * {@link org.geomajas.gwt2.client.map.layer.VectorServerLayer} that widget will represent a single SLD rule, for a
+ * {@link org.geomajas.gwt2.client.map.layer.RasterServerLayer} this widget is used as the entire legend widget.
  * </p>
  * 
  * @author Pieter De Graef
+ * @see DynamicVectorServerLayerLegend
+ * @see RasterServerLayerLegend
  */
 public class ServerLayerStyleWidget implements IsWidget {
 
@@ -44,6 +43,8 @@ public class ServerLayerStyleWidget implements IsWidget {
 	}
 
 	private static final ContentWidgetViewUiBinder UI_BINDER = GWT.create(ContentWidgetViewUiBinder.class);
+
+	protected static final String LEGEND_ICON_EXTENSION = ".png";
 
 	private final String title;
 
@@ -84,5 +85,16 @@ public class ServerLayerStyleWidget implements IsWidget {
 
 	public RuleInfo getRule() {
 		return rule;
+	}
+
+	protected static String addPath(String baseUrl, String path) {
+		if (path.startsWith("/") && baseUrl.endsWith("/")) {
+			baseUrl = baseUrl + path.substring(1);
+		} else if (baseUrl.endsWith("/")) {
+			baseUrl = baseUrl + path;
+		} else {
+			baseUrl = baseUrl + "/" + path;
+		}
+		return baseUrl;
 	}
 }
