@@ -184,7 +184,8 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 				throw new GeometryIndexNotFoundException("Vertex index out of bounds.");
 			} else {
 				if (isInsertedVertexIntersectsWithExistingLines(geom.getCoordinates(), coordinate)) {
-					throw new GeometryOperationFailedException("Inserted vertex will result in intersecting edges.");
+					throw new GeometryOperationFailedException(GeometryOperationExceptionMessages.
+							getInstance().getPolygonLinesCannotIntersectMessage());
 				}
 				Coordinate[] result = new Coordinate[geom.getCoordinates().length + 1];
 				int count = 0;

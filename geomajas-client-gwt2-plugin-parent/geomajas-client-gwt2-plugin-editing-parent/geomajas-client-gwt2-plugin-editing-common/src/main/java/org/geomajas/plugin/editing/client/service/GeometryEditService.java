@@ -265,4 +265,15 @@ public interface GeometryEditService extends GeometryIndexOperationService {
 	 * @param  polygonInsertLinesCanIntersect boolean value.
 	 */
 	void setPolygonInsertLinesCanIntersect(boolean polygonInsertLinesCanIntersect);
+
+	/**
+	 * To set a boolean value to indicate whether or not upon creating or editing of a polygon,
+	 * an inserted vertex can create an intersecting line with rest of existing geometry.
+	 * Default value is true: yes, it can intersect.
+	 *
+	 * @param  polygonInsertLinesCanIntersect boolean value.
+	 * @param exceptionMessage customizable Exception Message
+	 */
+	void setPolygonInsertLinesCanIntersect(boolean polygonInsertLinesCanIntersect,
+										   String exceptionMessage);
 }
