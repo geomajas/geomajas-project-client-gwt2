@@ -13,10 +13,12 @@ package org.geomajas.plugin.editing.client.controller;
 
 import java.util.Collections;
 
+import com.google.gwt.core.client.GWT;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt.client.map.RenderSpace;
+import org.geomajas.plugin.editing.client.i18n.EditingCommonMessages;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
@@ -66,7 +68,8 @@ public class GeometryIndexInsertController extends AbstractGeometryIndexControll
 					service.setEditingState(GeometryEditState.IDLE);
 				}
 			} catch (GeometryOperationFailedException e) {
-				Window.alert("Exception during editing: " + e.getMessage());
+				EditingCommonMessages messages = (EditingCommonMessages) GWT.create(EditingCommonMessages.class);
+				Window.alert(messages.exceptionDuringEditing() + " " + e.getMessage());
 			}
 		}
 	}

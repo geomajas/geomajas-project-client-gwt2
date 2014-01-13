@@ -11,6 +11,7 @@
 
 package org.geomajas.plugin.editing.client.service;
 
+import com.google.gwt.event.shared.HandlerRegistration;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateHandler;
@@ -21,8 +22,6 @@ import org.geomajas.plugin.editing.client.event.GeometryEditShapeChangedHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveHandler;
-
-import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
  * <p>

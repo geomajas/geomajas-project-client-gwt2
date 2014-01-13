@@ -11,8 +11,9 @@
 
 package org.geomajas.plugin.editing.client.service;
 
-import java.util.List;
-
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.event.shared.SimpleEventBus;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateEvent;
@@ -27,12 +28,10 @@ import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveHandler;
-import org.geomajas.plugin.editing.client.operation.GeometryOperationExceptionMessages;
+import org.geomajas.plugin.editing.client.operation.EditingCommonCustomMessages;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 
-import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.event.shared.SimpleEventBus;
+import java.util.List;
 
 /**
  * <p>
@@ -334,7 +333,7 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	public void setPolygonInsertLinesCanIntersect(boolean polygonInsertLinesCanIntersect, String exceptionMessage) {
 		this.polygonInsertLinesCanIntersect = polygonInsertLinesCanIntersect;
 		if (exceptionMessage != null && !exceptionMessage.isEmpty())  {
-			GeometryOperationExceptionMessages.getInstance().setPolygonLinesCannotIntersectMessage(exceptionMessage);
+			EditingCommonCustomMessages.getInstance().setPolygonLinesCannotIntersectMessage(exceptionMessage);
 		}
 	}
 }

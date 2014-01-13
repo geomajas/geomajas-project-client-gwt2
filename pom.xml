@@ -35,12 +35,12 @@
 		<module>geomajas-client-common-gwt-parent</module>
 		<module>geomajas-client-gwt2-api</module>
 		<module>geomajas-client-gwt2-impl</module>
-		<!--<module>geomajas-client-gwt2-server-extension</module>-->
-		<!--<module>geomajas-client-gwt2-example-base</module>-->
-		<!--<module>geomajas-client-gwt2-example-jar</module>-->
+		<module>geomajas-client-gwt2-server-extension</module>
+		<module>geomajas-client-gwt2-example-base</module>
+		<module>geomajas-client-gwt2-example-jar</module>
  		<!--<module>geomajas-client-gwt2-documentation</module>-->
   		<module>geomajas-client-gwt2-plugin-parent</module>
-		<!--<module>geomajas-client-gwt2-example</module>-->
+		<module>geomajas-client-gwt2-example</module>
 	</modules>
 
 	<properties>

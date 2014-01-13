@@ -10,7 +10,13 @@
   -->
 
 <module>
+
 	<inherits name="org.geomajas.gwt.GeomajasCommonGwt"/>
+
+	<!--languages-->
+	<!--<inherits name="com.google.gwt.i18n.I18N"/>-->
+	<!-- Dutch language, independent of country -->
+	<extend-property name="locale" values="nl"/>
 
 	<source path="client" />
 	<source path="dto" />

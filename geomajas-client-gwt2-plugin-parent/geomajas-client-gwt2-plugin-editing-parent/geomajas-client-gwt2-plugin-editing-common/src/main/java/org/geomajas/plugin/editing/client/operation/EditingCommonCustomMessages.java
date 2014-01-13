@@ -11,27 +11,32 @@
 
 package org.geomajas.plugin.editing.client.operation;
 
+import com.google.gwt.core.client.GWT;
+import org.geomajas.plugin.editing.client.i18n.EditingCommonMessages;
+
 /**
  * Messages fed to Exception that are thrown in one of the GeometryOperations.
  * 
  * @author Jan Venstermans
  */
-public final class GeometryOperationExceptionMessages {
+public final class EditingCommonCustomMessages {
 
-	private static GeometryOperationExceptionMessages messages;
+	private static EditingCommonCustomMessages customMessages;
 
-	private static String polygonLinesCannotIntersectMessage
-			= "Inserted/edited vertex will result in intersecting edges.";
+	private static EditingCommonMessages messages = GWT.create(EditingCommonMessages.class);
 
-	private GeometryOperationExceptionMessages() {
+	private static String polygonLinesCannotIntersectMessage = messages.intersectionException();
+
+	private EditingCommonCustomMessages() {
 		super();
 	}
 
-	public static GeometryOperationExceptionMessages getInstance() {
+	public static EditingCommonCustomMessages getInstance() {
 		 if (messages == null) {
-			 messages = new GeometryOperationExceptionMessages();
+			 customMessages = new EditingCommonCustomMessages();
+
 		 }
-		return messages;
+		return customMessages;
 	}
 
 	public String getPolygonLinesCannotIntersectMessage() {

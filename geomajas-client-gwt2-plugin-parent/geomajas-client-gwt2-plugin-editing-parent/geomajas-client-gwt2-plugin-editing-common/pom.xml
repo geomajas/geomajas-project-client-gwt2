@@ -82,6 +82,7 @@
 
 	</dependencies>
 
+<!--
 	<build>
 		<resources>
 			<resource>
@@ -89,6 +90,7 @@
 				<filtering>true</filtering>
 				<includes>
 					<include>META-INF/geomajasContext.xml</include>
+					<include>**/*.properties</include>
 				</includes>
 			</resource>
 			<resource>
@@ -99,6 +101,7 @@
 			</resource>
 		</resources>
 	</build>
+-->
 
 	<profiles>
 		<!--  include sources in build -->
@@ -116,6 +119,7 @@
 						<directory>src/main/java</directory>
 						<includes>
 							<include>**/*.java</include>
+							<include>**/*.properties</include>
 						</includes>
 					</resource>
 				</resources>
