@@ -32,7 +32,7 @@ public final class EditingCommonCustomMessages {
 	}
 
 	public static EditingCommonCustomMessages getInstance() {
-		 if (messages == null) {
+		 if (customMessages == null) {
 			 customMessages = new EditingCommonCustomMessages();
 
 		 }
