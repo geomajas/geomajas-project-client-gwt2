@@ -41,6 +41,14 @@
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-client-gwt2-example-base</artifactId>
 		</dependency>
+		<dependency>
+		<groupId>org.geomajas</groupId>
+		<artifactId>geomajas-client-gwt2-impl</artifactId>
+	</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-client-gwt2-server-extension</artifactId>
+		</dependency>
 
 		<!-- Geomajas Layer plugins: -->
 		<dependency>
