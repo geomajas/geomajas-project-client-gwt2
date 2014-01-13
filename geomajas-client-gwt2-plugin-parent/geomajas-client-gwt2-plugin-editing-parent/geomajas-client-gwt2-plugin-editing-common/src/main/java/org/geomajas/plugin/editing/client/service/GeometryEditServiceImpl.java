@@ -27,6 +27,7 @@ import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveHandler;
+import org.geomajas.plugin.editing.client.operation.GeometryOperationExceptionMessages;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 
 import com.google.gwt.event.shared.EventBus;
@@ -326,6 +327,14 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 
 	@Override
 	public void setPolygonInsertLinesCanIntersect(boolean linesCanIntersect) {
-		this.polygonInsertLinesCanIntersect = linesCanIntersect;
+		setPolygonInsertLinesCanIntersect(linesCanIntersect, null);
+	}
+
+	@Override
+	public void setPolygonInsertLinesCanIntersect(boolean polygonInsertLinesCanIntersect, String exceptionMessage) {
+		this.polygonInsertLinesCanIntersect = polygonInsertLinesCanIntersect;
+		if (exceptionMessage != null && !exceptionMessage.isEmpty())  {
+			GeometryOperationExceptionMessages.getInstance().setPolygonLinesCannotIntersectMessage(exceptionMessage);
+		}
 	}
 }
