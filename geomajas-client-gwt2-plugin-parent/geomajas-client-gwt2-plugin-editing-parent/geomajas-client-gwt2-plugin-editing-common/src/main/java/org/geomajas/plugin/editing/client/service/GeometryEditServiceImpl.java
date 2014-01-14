@@ -82,7 +82,7 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	 * boolean to indicate whether an inserted vertex can create a line that intersects with the current shape of
 	 * the geometry.
 	 */
-	private boolean polygonInsertLinesCanIntersect = true;
+	private boolean polygonEdgesCanIntersect = true;
 
 	// ------------------------------------------------------------------------
 	// Public constructors:
@@ -320,20 +320,21 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 		return operationService.addEmptyChild(index);
 	}
 
-	public boolean isPolygonInsertLinesCanIntersect() {
-		return polygonInsertLinesCanIntersect;
+	@Override
+	public void setPolygonEdgesCanIntersect(boolean polygonEdgesCanIntersect) {
+		setPolygonEdgesCanIntersect(polygonEdgesCanIntersect, null);
 	}
 
 	@Override
-	public void setPolygonInsertLinesCanIntersect(boolean linesCanIntersect) {
-		setPolygonInsertLinesCanIntersect(linesCanIntersect, null);
-	}
-
-	@Override
-	public void setPolygonInsertLinesCanIntersect(boolean polygonInsertLinesCanIntersect, String exceptionMessage) {
-		this.polygonInsertLinesCanIntersect = polygonInsertLinesCanIntersect;
+	public void setPolygonEdgesCanIntersect(boolean polygonInsertLinesCanIntersect, String exceptionMessage) {
+		this.polygonEdgesCanIntersect = polygonInsertLinesCanIntersect;
 		if (exceptionMessage != null && !exceptionMessage.isEmpty())  {
 			EditingCommonCustomMessages.getInstance().setPolygonLinesCannotIntersectMessage(exceptionMessage);
 		}
+	}
+
+	@Override
+	public boolean isPolygonEdgesCanIntersect() {
+		return polygonEdgesCanIntersect;
 	}
 }

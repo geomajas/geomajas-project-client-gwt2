@@ -13,6 +13,8 @@ package org.geomajas.plugin.editing.client.operation;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.plugin.editing.client.service.GeometryEditService;
+import org.geomajas.plugin.editing.client.service.GeometryEditServiceImpl;
 import org.geomajas.plugin.editing.client.service.GeometryIndexService;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 import org.junit.Assert;
@@ -27,7 +29,9 @@ public class DeleteVertexOperationTest {
 
 	private static final double DELTA = 0.0001;
 
-	private GeometryIndexService service = new GeometryIndexService();
+	private GeometryEditService editService;
+
+	private GeometryIndexService service;
 
 	private Geometry point = new Geometry(Geometry.POINT, 0, 0);
 
@@ -48,6 +52,8 @@ public class DeleteVertexOperationTest {
 	// ------------------------------------------------------------------------
 
 	public DeleteVertexOperationTest() {
+		editService = new GeometryEditServiceImpl();
+		service = editService.getIndexService();
 		point.setCoordinates(new Coordinate[] { new Coordinate(1, 1) });
 		lineString
 				.setCoordinates(new Coordinate[] { new Coordinate(1, 1), new Coordinate(2, 2), new Coordinate(3, 3) });
@@ -88,7 +94,7 @@ public class DeleteVertexOperationTest {
 
 	@Test
 	public void testEmptyPoint() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteVertexOperation(service);
+		GeometryIndexOperation operation = new DeleteVertexOperation(editService);
 		Geometry point = new Geometry(Geometry.POINT, 0, 0);
 
 		// Geometry index of wrong type:
@@ -102,7 +108,7 @@ public class DeleteVertexOperationTest {
 
 	@Test
 	public void testPoint() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteVertexOperation(service);
+		GeometryIndexOperation operation = new DeleteVertexOperation(editService);
 		double value = point.getCoordinates()[0].getX();
 
 		// Remove the single vertex:
@@ -116,7 +122,7 @@ public class DeleteVertexOperationTest {
 
 	@Test
 	public void testPointCornerCases() {
-		GeometryIndexOperation operation = new DeleteVertexOperation(service);
+		GeometryIndexOperation operation = new DeleteVertexOperation(editService);
 
 		// Geometry index of wrong type:
 		try {
@@ -157,7 +163,7 @@ public class DeleteVertexOperationTest {
 	public void testErrorPoint() {
 		Geometry point = new Geometry(Geometry.POINT, 0, 0);
 		point.setCoordinates(new Coordinate[] { new Coordinate(1, 1), new Coordinate(2, 2) });
-		GeometryIndexOperation operation = new DeleteVertexOperation(service);
+		GeometryIndexOperation operation = new DeleteVertexOperation(editService);
 
 		// Point with 2 coordinates...
 		try {
@@ -170,7 +176,7 @@ public class DeleteVertexOperationTest {
 
 	@Test
 	public void testEmptyLineString() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteVertexOperation(service);
+		GeometryIndexOperation operation = new DeleteVertexOperation(editService);
 		Geometry lineString = new Geometry(Geometry.LINE_STRING, 0, 0);
 
 		// Insert the first point:
@@ -184,7 +190,7 @@ public class DeleteVertexOperationTest {
 
 	@Test
 	public void testLineStringVertexAtBegin() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteVertexOperation(service);
+		GeometryIndexOperation operation = new DeleteVertexOperation(editService);
 		int count = lineString.getCoordinates().length;
 		double x = lineString.getCoordinates()[1].getX();
 
@@ -201,7 +207,7 @@ public class DeleteVertexOperationTest {
 
 	@Test
 	public void testLineStringVertexInMiddle() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteVertexOperation(service);
+		GeometryIndexOperation operation = new DeleteVertexOperation(editService);
 		int count = lineString.getCoordinates().length;
 		double x = lineString.getCoordinates()[2].getX();
 
@@ -218,7 +224,7 @@ public class DeleteVertexOperationTest {
 
 	@Test
 	public void testLineStringVertexAtEnd() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteVertexOperation(service);
+		GeometryIndexOperation operation = new DeleteVertexOperation(editService);
 		int count = lineString.getCoordinates().length;
 		double x = lineString.getCoordinates()[2].getX();
 
@@ -234,7 +240,7 @@ public class DeleteVertexOperationTest {
 
 	@Test
 	public void testLineStringCornerCases() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteVertexOperation(service);
+		GeometryIndexOperation operation = new DeleteVertexOperation(editService);
 
 		// Geometry index of wrong type:
 		try {
@@ -273,7 +279,7 @@ public class DeleteVertexOperationTest {
 
 	@Test
 	public void testEmptyLinearRing() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteVertexOperation(service);
+		GeometryIndexOperation operation = new DeleteVertexOperation(editService);
 		Geometry linearRing = new Geometry(Geometry.LINEAR_RING, 0, 0);
 
 		// Insert the first point:
@@ -287,7 +293,7 @@ public class DeleteVertexOperationTest {
 
 	@Test
 	public void testLinearRingVertexAtBegin() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteVertexOperation(service);
+		GeometryIndexOperation operation = new DeleteVertexOperation(editService);
 		int count = linearRing.getCoordinates().length;
 		double x = linearRing.getCoordinates()[1].getX();
 
@@ -305,7 +311,7 @@ public class DeleteVertexOperationTest {
 
 	@Test
 	public void testLinearRingVertexInMiddle() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteVertexOperation(service);
+		GeometryIndexOperation operation = new DeleteVertexOperation(editService);
 		int count = linearRing.getCoordinates().length;
 		double x = linearRing.getCoordinates()[2].getX();
 
@@ -323,7 +329,7 @@ public class DeleteVertexOperationTest {
 
 	@Test
 	public void testLinearRingVertexAtEnd() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteVertexOperation(service);
+		GeometryIndexOperation operation = new DeleteVertexOperation(editService);
 		int count = linearRing.getCoordinates().length;
 		double x = linearRing.getCoordinates()[3].getX();
 
@@ -341,7 +347,7 @@ public class DeleteVertexOperationTest {
 
 	@Test
 	public void testLinearRingCornerCases() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteVertexOperation(service);
+		GeometryIndexOperation operation = new DeleteVertexOperation(editService);
 
 		// Geometry index of wrong type:
 		try {
@@ -380,7 +386,7 @@ public class DeleteVertexOperationTest {
 
 	@Test
 	public void testEmptyPolygon() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteVertexOperation(service);
+		GeometryIndexOperation operation = new DeleteVertexOperation(editService);
 		Geometry polygon = new Geometry(Geometry.POLYGON, 0, 0);
 
 		try {
@@ -393,7 +399,7 @@ public class DeleteVertexOperationTest {
 
 	@Test
 	public void testPolygon() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteVertexOperation(service);
+		GeometryIndexOperation operation = new DeleteVertexOperation(editService);
 		int count = polygon.getGeometries()[0].getCoordinates().length;
 		double x = polygon.getGeometries()[0].getCoordinates()[1].getX();
 
@@ -409,7 +415,7 @@ public class DeleteVertexOperationTest {
 
 	@Test
 	public void testPolygonCornerCases() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteVertexOperation(service);
+		GeometryIndexOperation operation = new DeleteVertexOperation(editService);
 
 		// Geometry index of wrong type:
 		try {
@@ -448,7 +454,7 @@ public class DeleteVertexOperationTest {
 
 	@Test
 	public void testEmptyMultiPoint() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteVertexOperation(service);
+		GeometryIndexOperation operation = new DeleteVertexOperation(editService);
 		Geometry multiPoint = new Geometry(Geometry.MULTI_POINT, 0, 0);
 
 		// First a correct index. This should work:
@@ -462,7 +468,7 @@ public class DeleteVertexOperationTest {
 
 	@Test
 	public void testMultiPoint() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteVertexOperation(service);
+		GeometryIndexOperation operation = new DeleteVertexOperation(editService);
 		double x = multiPoint.getGeometries()[0].getCoordinates()[0].getX();
 
 		// Remove the single vertex:
@@ -476,7 +482,7 @@ public class DeleteVertexOperationTest {
 
 	@Test
 	public void testMultiPointCornerCases() {
-		GeometryIndexOperation operation = new DeleteVertexOperation(service);
+		GeometryIndexOperation operation = new DeleteVertexOperation(editService);
 
 		// Geometry index of wrong type:
 		try {
@@ -503,7 +509,7 @@ public class DeleteVertexOperationTest {
 
 	@Test
 	public void testEmptyMultiLineString() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteVertexOperation(service);
+		GeometryIndexOperation operation = new DeleteVertexOperation(editService);
 		Geometry multiLineString = new Geometry(Geometry.MULTI_LINE_STRING, 0, 0);
 
 		// First a correct index. This should work:
@@ -517,7 +523,7 @@ public class DeleteVertexOperationTest {
 
 	@Test
 	public void testMultiLineString() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteVertexOperation(service);
+		GeometryIndexOperation operation = new DeleteVertexOperation(editService);
 		double x = multiLineString.getGeometries()[1].getCoordinates()[3].getX();
 
 		// First a correct index. This should work:
@@ -531,7 +537,7 @@ public class DeleteVertexOperationTest {
 
 	@Test
 	public void testMultiLineStringCornerCases() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteVertexOperation(service);
+		GeometryIndexOperation operation = new DeleteVertexOperation(editService);
 
 		// Geometry index of wrong type:
 		try {
@@ -564,7 +570,7 @@ public class DeleteVertexOperationTest {
 
 	@Test
 	public void testEmptyMultiPolygon() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteVertexOperation(service);
+		GeometryIndexOperation operation = new DeleteVertexOperation(editService);
 		Geometry multiPolygon = new Geometry(Geometry.MULTI_POLYGON, 0, 0);
 
 		// First a correct index. This should work:
@@ -578,7 +584,7 @@ public class DeleteVertexOperationTest {
 
 	@Test
 	public void testMultiPolygon() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteVertexOperation(service);
+		GeometryIndexOperation operation = new DeleteVertexOperation(editService);
 		double x = multiPolygon.getGeometries()[0].getGeometries()[0].getCoordinates()[2].getX();
 
 		// First a correct index. This should work:
@@ -592,7 +598,7 @@ public class DeleteVertexOperationTest {
 
 	@Test
 	public void testMultiPolygonCornerCases() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteVertexOperation(service);
+		GeometryIndexOperation operation = new DeleteVertexOperation(editService);
 
 		// Geometry index of wrong type:
 		try {

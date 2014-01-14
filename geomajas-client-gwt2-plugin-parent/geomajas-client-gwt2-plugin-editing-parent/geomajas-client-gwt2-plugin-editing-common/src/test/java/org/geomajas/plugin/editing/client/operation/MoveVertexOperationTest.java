@@ -13,6 +13,8 @@ package org.geomajas.plugin.editing.client.operation;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.plugin.editing.client.service.GeometryEditService;
+import org.geomajas.plugin.editing.client.service.GeometryEditServiceImpl;
 import org.geomajas.plugin.editing.client.service.GeometryIndexService;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 import org.junit.Assert;
@@ -29,7 +31,9 @@ public class MoveVertexOperationTest {
 
 	private static final double NEW_VALUE = 342;
 
-	private GeometryIndexService service = new GeometryIndexService();
+	private GeometryEditService editService;
+
+	private GeometryIndexService service;
 
 	private Geometry point = new Geometry(Geometry.POINT, 0, 0);
 
@@ -50,6 +54,8 @@ public class MoveVertexOperationTest {
 	// ------------------------------------------------------------------------
 
 	public MoveVertexOperationTest() {
+		editService = new GeometryEditServiceImpl();
+		service = editService.getIndexService();
 		point.setCoordinates(new Coordinate[] { new Coordinate(1, 1) });
 		lineString
 				.setCoordinates(new Coordinate[] { new Coordinate(1, 1), new Coordinate(2, 2), new Coordinate(3, 3) });
@@ -90,7 +96,7 @@ public class MoveVertexOperationTest {
 
 	@Test
 	public void testPoint() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new MoveVertexOperation(service, new Coordinate(NEW_VALUE, 0));
+		GeometryIndexOperation operation = new MoveVertexOperation(editService, new Coordinate(NEW_VALUE, 0));
 
 		// First a correct index. This should work:
 		Geometry result = operation.execute(point, service.create(GeometryIndexType.TYPE_VERTEX, 0));
@@ -104,7 +110,7 @@ public class MoveVertexOperationTest {
 
 	@Test
 	public void testPointCornerCases() {
-		GeometryIndexOperation operation = new MoveVertexOperation(service, new Coordinate(NEW_VALUE, 0));
+		GeometryIndexOperation operation = new MoveVertexOperation(editService, new Coordinate(NEW_VALUE, 0));
 
 		// Geometry index of wrong type:
 		try {
@@ -131,7 +137,7 @@ public class MoveVertexOperationTest {
 
 	@Test
 	public void testLineString() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new MoveVertexOperation(service, new Coordinate(NEW_VALUE, 0));
+		GeometryIndexOperation operation = new MoveVertexOperation(editService, new Coordinate(NEW_VALUE, 0));
 
 		// First a correct index. This should work:
 		Geometry result = operation.execute(lineString, service.create(GeometryIndexType.TYPE_VERTEX, 1));
@@ -145,7 +151,7 @@ public class MoveVertexOperationTest {
 
 	@Test
 	public void testLineStringCornerCases() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new MoveVertexOperation(service, new Coordinate(NEW_VALUE, 0));
+		GeometryIndexOperation operation = new MoveVertexOperation(editService, new Coordinate(NEW_VALUE, 0));
 
 		// Geometry index of wrong type:
 		try {
@@ -172,7 +178,7 @@ public class MoveVertexOperationTest {
 
 	@Test
 	public void testLinearRing() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new MoveVertexOperation(service, new Coordinate(NEW_VALUE, 0));
+		GeometryIndexOperation operation = new MoveVertexOperation(editService, new Coordinate(NEW_VALUE, 0));
 
 		// First a correct index. This should work:
 		Geometry result = operation.execute(linearRing, service.create(GeometryIndexType.TYPE_VERTEX, 1));
@@ -186,7 +192,7 @@ public class MoveVertexOperationTest {
 
 	@Test
 	public void testLinearRingIsClosed() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new MoveVertexOperation(service, new Coordinate(NEW_VALUE, 0));
+		GeometryIndexOperation operation = new MoveVertexOperation(editService, new Coordinate(NEW_VALUE, 0));
 
 		// First a correct index. This should simply work:
 		Geometry result = operation.execute(linearRing, service.create(GeometryIndexType.TYPE_VERTEX, 0));
@@ -203,7 +209,7 @@ public class MoveVertexOperationTest {
 
 	@Test
 	public void testLinearRingCornerCases() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new MoveVertexOperation(service, new Coordinate(NEW_VALUE, 0));
+		GeometryIndexOperation operation = new MoveVertexOperation(editService, new Coordinate(NEW_VALUE, 0));
 
 		// Geometry index of wrong type:
 		try {
@@ -230,7 +236,7 @@ public class MoveVertexOperationTest {
 
 	@Test
 	public void testPolygon() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new MoveVertexOperation(service, new Coordinate(NEW_VALUE, 0));
+		GeometryIndexOperation operation = new MoveVertexOperation(editService, new Coordinate(NEW_VALUE, 0));
 
 		// First a correct index. This should work:
 		Geometry result = operation.execute(polygon, service.create(GeometryIndexType.TYPE_VERTEX, 0, 1));
@@ -245,7 +251,7 @@ public class MoveVertexOperationTest {
 
 	@Test
 	public void testPolygonCornerCases() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new MoveVertexOperation(service, new Coordinate(NEW_VALUE, 0));
+		GeometryIndexOperation operation = new MoveVertexOperation(editService, new Coordinate(NEW_VALUE, 0));
 
 		// Geometry index of wrong type:
 		try {
@@ -278,7 +284,7 @@ public class MoveVertexOperationTest {
 
 	@Test
 	public void testMultiPoint() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new MoveVertexOperation(service, new Coordinate(NEW_VALUE, 0));
+		GeometryIndexOperation operation = new MoveVertexOperation(editService, new Coordinate(NEW_VALUE, 0));
 
 		// First a correct index. This should work:
 		Geometry result = operation.execute(multiPoint, service.create(GeometryIndexType.TYPE_VERTEX, 1, 0));
@@ -293,7 +299,7 @@ public class MoveVertexOperationTest {
 
 	@Test
 	public void testMultiPointCornerCases() {
-		GeometryIndexOperation operation = new MoveVertexOperation(service, new Coordinate(NEW_VALUE, 0));
+		GeometryIndexOperation operation = new MoveVertexOperation(editService, new Coordinate(NEW_VALUE, 0));
 
 		// Geometry index of wrong type:
 		try {
@@ -326,7 +332,7 @@ public class MoveVertexOperationTest {
 
 	@Test
 	public void testMultiLineString() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new MoveVertexOperation(service, new Coordinate(NEW_VALUE, 0));
+		GeometryIndexOperation operation = new MoveVertexOperation(editService, new Coordinate(NEW_VALUE, 0));
 
 		// First a correct index. This should work:
 		Geometry result = operation.execute(multiLineString, service.create(GeometryIndexType.TYPE_VERTEX, 1, 1));
@@ -341,7 +347,7 @@ public class MoveVertexOperationTest {
 
 	@Test
 	public void testMultiLineStringCornerCases() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new MoveVertexOperation(service, new Coordinate(NEW_VALUE, 0));
+		GeometryIndexOperation operation = new MoveVertexOperation(editService, new Coordinate(NEW_VALUE, 0));
 
 		// Geometry index of wrong type:
 		try {
@@ -374,7 +380,7 @@ public class MoveVertexOperationTest {
 
 	@Test
 	public void testMultiPolygon() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new MoveVertexOperation(service, new Coordinate(NEW_VALUE, 0));
+		GeometryIndexOperation operation = new MoveVertexOperation(editService, new Coordinate(NEW_VALUE, 0));
 
 		// First a correct index. This should work:
 		Geometry result = operation.execute(multiPolygon, service.create(GeometryIndexType.TYPE_VERTEX, 0, 0, 1));
@@ -389,7 +395,7 @@ public class MoveVertexOperationTest {
 
 	@Test
 	public void testMultiPolygonCornerCases() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new MoveVertexOperation(service, new Coordinate(NEW_VALUE, 0));
+		GeometryIndexOperation operation = new MoveVertexOperation(editService, new Coordinate(NEW_VALUE, 0));
 
 		// Geometry index of wrong type:
 		try {

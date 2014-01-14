@@ -13,6 +13,8 @@ package org.geomajas.plugin.editing.client.operation;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.plugin.editing.client.service.GeometryEditService;
+import org.geomajas.plugin.editing.client.service.GeometryEditServiceImpl;
 import org.geomajas.plugin.editing.client.service.GeometryIndexService;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 import org.junit.Assert;
@@ -29,7 +31,9 @@ public class InsertVertexOperationTest {
 
 	private static final double NEW_VALUE = 342;
 
-	private GeometryIndexService service = new GeometryIndexService();
+	private GeometryEditService editService;
+
+	private GeometryIndexService service;
 
 	private Coordinate target = new Coordinate(NEW_VALUE, NEW_VALUE);
 
@@ -52,6 +56,8 @@ public class InsertVertexOperationTest {
 	// ------------------------------------------------------------------------
 
 	public InsertVertexOperationTest() {
+		editService = new GeometryEditServiceImpl();
+		service = editService.getIndexService();
 		point.setCoordinates(new Coordinate[] { new Coordinate(1, 1) });
 		lineString
 				.setCoordinates(new Coordinate[] { new Coordinate(1, 1), new Coordinate(2, 2), new Coordinate(3, 3) });
@@ -92,7 +98,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testEmptyPoint() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 		Geometry point = new Geometry(Geometry.POINT, 0, 0);
 
 		// First a correct index. This should work:
@@ -106,7 +112,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testPoint() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 
 		// Cannot insert any vertices into a point that already has a coordinate:
 		try {
@@ -119,7 +125,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testPointCornerCases() {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 		Geometry point = new Geometry(Geometry.POINT, 0, 0);
 
 		// Geometry index of wrong type:
@@ -159,7 +165,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testEmptyLineString() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 		Geometry lineString = new Geometry(Geometry.LINE_STRING, 0, 0);
 
 		// Insert the first point:
@@ -173,7 +179,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testEmptyLineStringCornerCases() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 		Geometry lineString = new Geometry(Geometry.LINE_STRING, 0, 0);
 
 		// First we try some faulty indices:
@@ -205,7 +211,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testLineStringVertex0() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 		int count = lineString.getCoordinates().length;
 		double value = lineString.getCoordinates()[0].getX();
 
@@ -222,7 +228,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testLineStringVertex1() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 		int count = lineString.getCoordinates().length;
 		double value = lineString.getCoordinates()[1].getX();
 
@@ -239,7 +245,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testLineStringVertexAtEnd() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 		int count = lineString.getCoordinates().length;
 
 		// Add a vertex at the end:
@@ -254,7 +260,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testLineStringEdge0() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 		int count = lineString.getCoordinates().length;
 		double value = lineString.getCoordinates()[1].getX();
 
@@ -271,7 +277,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testLineStringEdge1() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 		int count = lineString.getCoordinates().length;
 		double value = lineString.getCoordinates()[2].getX();
 
@@ -288,7 +294,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testLineStringCornerCases() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 
 		// Geometry index of wrong type:
 		try {
@@ -339,7 +345,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testEmptyLinearRing() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 		Geometry linearRing = new Geometry(Geometry.LINEAR_RING, 0, 0);
 
 		// Insert the first point:
@@ -354,7 +360,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testEmptyLinearRingCornerCases() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 		Geometry linearRing = new Geometry(Geometry.LINEAR_RING, 0, 0);
 
 		// First we try some faulty indices:
@@ -386,7 +392,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testLinearRingVertex0() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 		int count = linearRing.getCoordinates().length;
 		double value = linearRing.getCoordinates()[0].getX();
 
@@ -405,7 +411,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testLinearRingVertex1() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 		int count = linearRing.getCoordinates().length;
 		double value = linearRing.getCoordinates()[1].getX();
 
@@ -422,7 +428,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testLinearRingVertexAtEnd() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 		int count = linearRing.getCoordinates().length;
 		double value = linearRing.getCoordinates()[3].getX();
 
@@ -439,7 +445,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testLinearRingEdge0() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 		int count = linearRing.getCoordinates().length;
 		double value = linearRing.getCoordinates()[1].getX();
 
@@ -457,7 +463,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testLinearRingEdge1() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 		int count = linearRing.getCoordinates().length;
 		double value = linearRing.getCoordinates()[2].getX();
 
@@ -475,7 +481,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testLinearRingEdge2() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 		int count = linearRing.getCoordinates().length;
 		double value = linearRing.getCoordinates()[3].getX();
 
@@ -493,7 +499,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testLinearRingCornerCases() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 
 		// Geometry index of wrong type:
 		try {
@@ -544,7 +550,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testEmptyPolygon() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 		Geometry polygon = new Geometry(Geometry.POLYGON, 0, 0);
 
 		// Insert into a non-existent LinearRing will fail:
@@ -558,7 +564,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testPolygonWithEmptyRing() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 		Geometry polygon = new Geometry(Geometry.POLYGON, 0, 0);
 		Geometry emptyRing = new Geometry(Geometry.LINEAR_RING, 0, 0);
 		polygon.setGeometries(new Geometry[] { emptyRing });
@@ -575,7 +581,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testPolygon() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 		int count = polygon.getGeometries()[0].getCoordinates().length;
 		double value = polygon.getGeometries()[0].getCoordinates()[0].getX();
 
@@ -592,7 +598,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testPolygonCornerCases() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 
 		// Geometry index of wrong type:
 		try {
@@ -625,7 +631,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testEmptyMultiPoint() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 		Geometry multiPoint = new Geometry(Geometry.MULTI_POINT, 0, 0);
 
 		// We can't expect it to create an extra Point:
@@ -639,7 +645,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testMultiPointWithEmptyPoint() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 		Geometry multiPoint = new Geometry(Geometry.MULTI_POINT, 0, 0);
 		Geometry emptyPoint = new Geometry(Geometry.POINT, 0, 0);
 		multiPoint.setGeometries(new Geometry[] { emptyPoint });
@@ -655,7 +661,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testMultiPointCornerCases() {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 
 		// Geometry index of wrong type:
 		try {
@@ -688,7 +694,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testEmptyMultiLineString() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 		Geometry multiLineString = new Geometry(Geometry.MULTI_LINE_STRING, 0, 0);
 
 		// We can't expect it to create an extra LineString:
@@ -702,7 +708,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testMultiLineStringWithEmptyLine() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 		Geometry multiLineString = new Geometry(Geometry.MULTI_LINE_STRING, 0, 0);
 		Geometry emptyLineString = new Geometry(Geometry.LINE_STRING, 0, 0);
 		multiLineString.setGeometries(new Geometry[] { emptyLineString });
@@ -719,7 +725,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testMultiLineString() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 		double value = multiLineString.getGeometries()[1].getCoordinates()[2].getX();
 
 		// First a correct index. This should work:
@@ -734,7 +740,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testMultiLineStringCornerCases() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 
 		// Geometry index of wrong type:
 		try {
@@ -767,7 +773,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testEmptyMultiPolygon() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 		Geometry multiPolygon = new Geometry(Geometry.MULTI_POLYGON, 0, 0);
 
 		// We can't expect it to create an extra Polygon:
@@ -781,7 +787,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testMultiPolygonWithEmptyPolyRing() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 		Geometry multiPolygon = new Geometry(Geometry.MULTI_POLYGON, 0, 0);
 		Geometry polygon = new Geometry(Geometry.POLYGON, 0, 0);
 		Geometry emptyRing = new Geometry(Geometry.LINEAR_RING, 0, 0);
@@ -800,7 +806,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testMultiPolygon() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 		double value = multiPolygon.getGeometries()[0].getGeometries()[0].getCoordinates()[1].getX();
 
 		// First a correct index. This should work:
@@ -815,7 +821,7 @@ public class InsertVertexOperationTest {
 
 	@Test
 	public void testMultiPolygonCornerCases() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertVertexOperation(service, target);
+		GeometryIndexOperation operation = new InsertVertexOperation(editService, target);
 
 		// Geometry index of wrong type:
 		try {

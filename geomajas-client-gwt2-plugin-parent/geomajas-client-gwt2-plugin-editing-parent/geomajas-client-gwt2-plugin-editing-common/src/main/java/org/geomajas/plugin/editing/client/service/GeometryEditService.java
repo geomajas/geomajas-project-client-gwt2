@@ -257,22 +257,29 @@ public interface GeometryEditService extends GeometryIndexOperationService {
 	GeometryIndexStateService getIndexStateService();
 
 	/**
-	 * To set a boolean value to indicate whether or not upon creating or editing of a polygon,
-	 * an inserted vertex can create an intersecting line with rest of existing geometry.
+	 * To set the boolean value that indicates whether or not upon creating or editing of a polygon,
+	 * an inserted vertex can create an intersecting edge with the rest of existing geometry.
 	 * Default value is true: yes, it can intersect.
 	 *
-	 * @param  polygonInsertLinesCanIntersect boolean value.
+	 * @param  polygonEdgesCanIntersect boolean value.
 	 */
-	void setPolygonInsertLinesCanIntersect(boolean polygonInsertLinesCanIntersect);
+	void setPolygonEdgesCanIntersect(boolean polygonEdgesCanIntersect);
 
 	/**
-	 * To set a boolean value to indicate whether or not upon creating or editing of a polygon,
-	 * an inserted vertex can create an intersecting line with rest of existing geometry.
+	 * To set the boolean value that indicates whether or not upon creating or editing of a polygon,
+	 * an inserted vertex can create an intersecting edge with the rest of existing geometry.
 	 * Default value is true: yes, it can intersect.
 	 *
-	 * @param  polygonInsertLinesCanIntersect boolean value.
-	 * @param exceptionMessage customizable Exception Message
+	 * @param  polygonEdgesCanIntersect boolean value.
+	 * @param exceptionMessage customizable Exception Message. If null provided: default message is displayed.
 	 */
-	void setPolygonInsertLinesCanIntersect(boolean polygonInsertLinesCanIntersect,
-										   String exceptionMessage);
+	void setPolygonEdgesCanIntersect(boolean polygonEdgesCanIntersect, String exceptionMessage);
+
+	/**
+	 * To get the boolean value that indicates whether or not upon creating or editing of a polygon,
+	 * an inserted vertex can create an intersecting edge with the rest of existing geometry.
+	 *
+	 * @return boolean
+	 */
+	boolean isPolygonEdgesCanIntersect();
 }

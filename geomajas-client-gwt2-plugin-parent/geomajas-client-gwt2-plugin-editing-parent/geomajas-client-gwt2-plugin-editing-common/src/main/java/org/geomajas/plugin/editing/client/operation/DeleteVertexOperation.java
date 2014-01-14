@@ -13,6 +13,8 @@ package org.geomajas.plugin.editing.client.operation;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.geometry.service.GeometryService;
+import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
 import org.geomajas.plugin.editing.client.service.GeometryIndexService;
@@ -26,6 +28,8 @@ import org.geomajas.plugin.editing.client.service.GeometryIndexType;
  */
 public class DeleteVertexOperation implements GeometryIndexOperation {
 
+	private final GeometryEditService editService;
+
 	private final GeometryIndexService service;
 
 	private GeometryIndex index;
@@ -33,13 +37,14 @@ public class DeleteVertexOperation implements GeometryIndexOperation {
 	private Coordinate coordinate;
 
 	/**
-	 * Initialize this operation with an indexing service.
+	 * Initialize this operation with an edit service.
 	 * 
-	 * @param service
-	 *            geometry index service.
+	 * @param editService
+	 *            geometry edit service.
 	 */
-	public DeleteVertexOperation(GeometryIndexService service) {
-		this.service = service;
+	public DeleteVertexOperation(GeometryEditService editService) {
+		this.editService = editService;
+		this.service = editService.getIndexService();
 	}
 
 	@Override
@@ -59,7 +64,7 @@ public class DeleteVertexOperation implements GeometryIndexOperation {
 
 	@Override
 	public GeometryIndexOperation getInverseOperation() {
-		return new InsertVertexOperation(service, coordinate);
+		return new InsertVertexOperation(editService, coordinate);
 	}
 
 	@Override
@@ -71,7 +76,8 @@ public class DeleteVertexOperation implements GeometryIndexOperation {
 	// Private methods:
 	// ------------------------------------------------------------------------
 
-	private void delete(Geometry geom, GeometryIndex index) throws GeometryIndexNotFoundException {
+	private void delete(Geometry geom, GeometryIndex index) throws GeometryIndexNotFoundException,
+			GeometryOperationFailedException {
 		if (index.hasChild() && geom.getGeometries() != null && geom.getGeometries().length > index.getValue()) {
 			delete(geom.getGeometries()[index.getValue()], index.getChild());
 		} else if (index.getType() == GeometryIndexType.TYPE_VERTEX) {
@@ -81,7 +87,8 @@ public class DeleteVertexOperation implements GeometryIndexOperation {
 		}
 	}
 
-	private void deleteVertex(Geometry geom, GeometryIndex index) throws GeometryIndexNotFoundException {
+	private void deleteVertex(Geometry geom, GeometryIndex index) throws GeometryIndexNotFoundException,
+			GeometryOperationFailedException {
 		if (Geometry.POINT.equals(geom.getGeometryType())) {
 			if (geom.getCoordinates() != null && geom.getCoordinates().length == 1) {
 				geom.setCoordinates(null);
@@ -114,6 +121,10 @@ public class DeleteVertexOperation implements GeometryIndexOperation {
 			if (geom.getCoordinates().length == 2) {
 				geom.setCoordinates(null);
 			} else {
+				if (isDeletedVertexCreatingIntersection(geom.getCoordinates(), index.getValue())) {
+					throw new GeometryOperationFailedException(EditingCommonCustomMessages.
+							getInstance().getPolygonLinesCannotIntersectMessage());
+				}
 				Coordinate[] result = new Coordinate[geom.getCoordinates().length - 1];
 				int count = 0;
 				for (int i = 0; i < geom.getCoordinates().length; i++) {
@@ -128,5 +139,44 @@ public class DeleteVertexOperation implements GeometryIndexOperation {
 		} else {
 			throw new GeometryIndexNotFoundException("Could not match index with given geometry");
 		}
+	}
+
+	private boolean isDeletedVertexCreatingIntersection(Coordinate[] currentGeometryCoordinates,
+															 int vertexValueCoordinateToBeDeleted) {
+		if (!editService.isPolygonEdgesCanIntersect() && currentGeometryCoordinates.length >= 6) {
+			// coordinates of the (line) geometry without the selected point
+			Coordinate[] geometryCoordinates = new Coordinate[currentGeometryCoordinates.length - 2];
+			// fill the geometryCoordinates
+			int count = 0;
+			for (int i = vertexValueCoordinateToBeDeleted + 1 ;  i < currentGeometryCoordinates.length - 1; i++) {
+				geometryCoordinates[count++] = currentGeometryCoordinates[i];
+			}
+			for (int j = 0 ; j < vertexValueCoordinateToBeDeleted; j++) {
+				geometryCoordinates[count++] = currentGeometryCoordinates[j];
+			}
+			// check if there are enough points
+			if (count != geometryCoordinates.length) {
+				//something is wrong
+				return false;
+			}
+
+			// construct geometries
+			Geometry existingGeom = new Geometry();
+			existingGeom.setCoordinates(geometryCoordinates);
+			int leftIndex = vertexValueCoordinateToBeDeleted > 0 ? vertexValueCoordinateToBeDeleted - 1 :
+					currentGeometryCoordinates.length - 2 ;
+			int rightIndex = vertexValueCoordinateToBeDeleted < currentGeometryCoordinates.length - 1
+					? vertexValueCoordinateToBeDeleted + 1 : 0 ;
+			Coordinate[] lineCoordinates = {currentGeometryCoordinates[leftIndex],
+					currentGeometryCoordinates[rightIndex]};
+			Geometry lineGeom1 = new Geometry();
+			lineGeom1.setCoordinates(lineCoordinates);
+
+			// compare geometries for intersection
+			if (GeometryService.intersects(existingGeom, lineGeom1)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

@@ -193,7 +193,7 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 		}
 		for (int i = 0; i < indices.size(); i++) {
 			if (indexService.getType(indices.get(i)) == GeometryIndexType.TYPE_VERTEX) {
-				GeometryIndexOperation op = new MoveVertexOperation(indexService, coordinates.get(i).get(0));
+				GeometryIndexOperation op = new MoveVertexOperation(service, coordinates.get(i).get(0));
 				op.execute(geometry, indices.get(i));
 				seq.addOperation(op);
 			} else {
@@ -245,8 +245,7 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 					if (coordinates == null || coordinates.size() < indices.size()) {
 						throw new GeometryOperationFailedException("No coordinates passed to insert.");
 					}
-					GeometryIndexOperation op2 = new InsertVertexOperation(indexService, coordinates.get(i).get(0),
-							service.isPolygonInsertLinesCanIntersect());
+					GeometryIndexOperation op2 = new InsertVertexOperation(service, coordinates.get(i).get(0));
 					op2.execute(geometry, indices.get(i));
 					seq.addOperation(op2);
 			}
@@ -281,7 +280,7 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 					op = new DeleteGeometryOperation(indexService);
 					break;
 				default:
-					op = new DeleteVertexOperation(indexService);
+					op = new DeleteVertexOperation(service);
 			}
 			op.execute(geometry, indices.get(i));
 			seq.addOperation(op);

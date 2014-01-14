@@ -14,6 +14,7 @@ package org.geomajas.plugin.editing.client.operation;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.geometry.service.GeometryService;
+import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
 import org.geomajas.plugin.editing.client.service.GeometryIndexService;
@@ -31,8 +32,11 @@ import org.geomajas.plugin.editing.client.service.GeometryIndexType;
  * </p>
  * 
  * @author Pieter De Graef
+ * @author Jan Venstermanns
  */
 public class InsertVertexOperation implements GeometryIndexOperation {
+
+	private final GeometryEditService editService;
 
 	private final GeometryIndexService service;
 
@@ -41,32 +45,15 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 	private GeometryIndex index;
 
 	/**
-	 * boolean to indicate whether an inserted vertex can create a line that intersects with the current shape of
-	 * the geometry.
-	 */
-	private boolean polygonLinesCanIntersect;
-
-	/**
-	 * Initialize this operation with an indexing service.
+	 * Initialize this operation with an edit service.
 	 *
-	 * @param service
-	 *            geometry index service.
+	 * @param editService
+	 *            geometry edit service.
 	 */
-	public InsertVertexOperation(GeometryIndexService service, Coordinate coordinate) {
-		this(service, coordinate, true);
-	}
-
-	/**
-	 * Initialize this operation with an indexing service.
-	 * 
-	 * @param service
-	 *            geometry index service.
-	 */
-	public InsertVertexOperation(GeometryIndexService service, Coordinate coordinate,
-								 boolean polygonLinesCanIntersect) {
-		this.service = service;
+	public InsertVertexOperation(GeometryEditService editService, Coordinate coordinate) {
+		this.editService = editService;
+		this.service = editService.getIndexService();
 		this.coordinate = coordinate;
-		this.polygonLinesCanIntersect = polygonLinesCanIntersect;
 	}
 
 	@Override
@@ -86,7 +73,7 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 
 	@Override
 	public GeometryIndexOperation getInverseOperation() {
-		return new DeleteVertexOperation(service);
+		return new DeleteVertexOperation(editService);
 	}
 
 	@Override
@@ -208,7 +195,7 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 
 	private boolean isInsertedVertexIntersectsWithExistingLines(Coordinate[] currentGeometryCoordinates,
 																Coordinate newCoordinate) {
-		if (!polygonLinesCanIntersect && currentGeometryCoordinates != null
+		if (!editService.isPolygonEdgesCanIntersect() && currentGeometryCoordinates != null
 				&& currentGeometryCoordinates.length >= 3) {
 			int relevantGeometryCoordinates = currentGeometryCoordinates.length;
 			if (currentGeometryCoordinates[0].equals(
