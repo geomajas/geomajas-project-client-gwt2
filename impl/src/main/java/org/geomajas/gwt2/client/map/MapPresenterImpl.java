@@ -219,16 +219,25 @@ public final class MapPresenterImpl implements MapPresenter {
 	private boolean isMobileBrowser;
 
 	public MapPresenterImpl(final EventBus eventBus) {
+		this(eventBus, new MapWidgetImpl());
+	}
+
+	public MapPresenterImpl(final EventBus eventBus, MapWidget mapWidget) {
 		this.handlers = new ArrayList<HandlerRegistration>();
 		this.listeners = new HashMap<MapController, List<HandlerRegistration>>();
 		this.eventBus = new MapEventBusImpl(this, eventBus);
 		this.configuration = new MapConfigurationImpl();
-		this.display = new MapWidgetImpl();
+		this.display = mapWidget;
 		this.viewPort = new ViewPortImpl(this.eventBus, this.configuration);
 		this.layersModel = new LayersModelImpl(this.viewPort, this.eventBus, this.configuration);
 		this.mapEventParser = new MapEventParserImpl(this);
 		this.renderer = new LayersModelRendererImpl(layersModel, viewPort, this.eventBus, this.configuration);
-		this.isMobileBrowser = Dom.isMobile();
+		try {
+			this.isMobileBrowser = Dom.isMobile();
+		} catch (NoClassDefFoundError e) {
+			//We are in a unit test.
+			this.isMobileBrowser = false;
+		}
 
 		this.eventBus.addViewPortChangedHandler(new ViewPortChangedHandler() {
 
