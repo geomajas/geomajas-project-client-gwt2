@@ -21,6 +21,7 @@ import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.handler.MapDragHandler;
 import org.geomajas.gwt.client.handler.MapUpHandler;
 import org.geomajas.plugin.editing.client.i18n.EditingCommonMessages;
+import org.geomajas.plugin.editing.client.operation.EdgesIntersectFailedException;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
@@ -90,6 +91,10 @@ public class GeometryIndexSnapToDeleteHandler extends AbstractGeometryIndexMapHa
 				service.getIndexStateService().markForDeletionEnd(toDelete);
 				service.getIndexStateService().deselectAll();
 				service.remove(toDelete);
+			} catch (EdgesIntersectFailedException e) {
+				EditingCommonMessages messages = (EditingCommonMessages) GWT.create(EditingCommonMessages.class);
+				Window.alert(messages.exceptionDuringEditing() + " " + e.getMessage());
+				e.printStackTrace();
 			} catch (GeometryOperationFailedException e) {
 				EditingCommonMessages messages = (EditingCommonMessages) GWT.create(EditingCommonMessages.class);
 				Window.alert(messages.exceptionDuringEditing() + " " + e.getMessage());

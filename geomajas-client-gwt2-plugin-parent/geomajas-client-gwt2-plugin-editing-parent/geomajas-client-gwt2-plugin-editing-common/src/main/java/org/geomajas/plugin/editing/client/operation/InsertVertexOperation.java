@@ -91,7 +91,7 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 	// ------------------------------------------------------------------------
 
 	private void insert(Geometry geom, GeometryIndex index, Coordinate coordinate)
-			throws GeometryIndexNotFoundException, GeometryOperationFailedException {
+			throws GeometryIndexNotFoundException, EdgesIntersectFailedException {
 		if (index.hasChild() && geom.getGeometries() != null && geom.getGeometries().length > index.getValue()) {
 			insert(geom.getGeometries()[index.getValue()], index.getChild(), coordinate);
 		} else if (index.getType() == GeometryIndexType.TYPE_EDGE) {
@@ -137,7 +137,7 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 	}
 
 	private void insertAfterVertex(Geometry geom, GeometryIndex index, Coordinate coordinate)
-			throws GeometryIndexNotFoundException, GeometryOperationFailedException {
+			throws GeometryIndexNotFoundException, EdgesIntersectFailedException {
 		// First we check the geometry type (allow only Point, LineString and LinearRing):
 		if (Geometry.POINT.equals(geom.getGeometryType())) {
 			if (index.getValue() != 0 || geom.getCoordinates() != null) {
@@ -171,7 +171,7 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 				throw new GeometryIndexNotFoundException("Vertex index out of bounds.");
 			} else {
 				if (isInsertedVertexIntersectsWithExistingLines(geom.getCoordinates(), coordinate)) {
-					throw new GeometryOperationFailedException(EditingCommonCustomMessages.
+					throw new EdgesIntersectFailedException(EditingCommonCustomMessages.
 							getInstance().getPolygonLinesCannotIntersectMessage());
 				}
 				Coordinate[] result = new Coordinate[geom.getCoordinates().length + 1];

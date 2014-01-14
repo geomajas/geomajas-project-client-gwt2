@@ -81,7 +81,7 @@ public class MoveVertexOperation implements GeometryIndexOperation {
 	// ------------------------------------------------------------------------
 
 	private void setVertex(Geometry geom, GeometryIndex index, Coordinate coordinate)
-			throws GeometryIndexNotFoundException, GeometryOperationFailedException {
+			throws GeometryIndexNotFoundException, EdgesIntersectFailedException {
 		if (index.hasChild() && geom.getGeometries() != null && geom.getGeometries().length > index.getValue()) {
 			setVertex(geom.getGeometries()[index.getValue()], index.getChild(), coordinate);
 		} else if (index.getType() == GeometryIndexType.TYPE_VERTEX && geom.getCoordinates() != null
@@ -90,7 +90,7 @@ public class MoveVertexOperation implements GeometryIndexOperation {
 				// In case of a closed ring, the last vertex is not allowed to be moved:
 				if ((geom.getCoordinates().length - 1) > index.getValue()) {
 					if (isMovedVertexIntersectsWithExistingLines(geom.getCoordinates(), index.getValue(), coordinate)) {
-						throw new GeometryOperationFailedException(EditingCommonCustomMessages.
+						throw new EdgesIntersectFailedException(EditingCommonCustomMessages.
 								getInstance().getPolygonLinesCannotIntersectMessage());
 					}
 					geom.getCoordinates()[index.getValue()] = coordinate;

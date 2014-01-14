@@ -70,6 +70,7 @@ public class GeometryIndexInsertController extends AbstractGeometryIndexControll
 			} catch (GeometryOperationFailedException e) {
 				EditingCommonMessages messages = (EditingCommonMessages) GWT.create(EditingCommonMessages.class);
 				Window.alert(messages.exceptionDuringEditing() + " " + e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}

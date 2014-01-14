@@ -77,7 +77,7 @@ public class DeleteVertexOperation implements GeometryIndexOperation {
 	// ------------------------------------------------------------------------
 
 	private void delete(Geometry geom, GeometryIndex index) throws GeometryIndexNotFoundException,
-			GeometryOperationFailedException {
+			EdgesIntersectFailedException {
 		if (index.hasChild() && geom.getGeometries() != null && geom.getGeometries().length > index.getValue()) {
 			delete(geom.getGeometries()[index.getValue()], index.getChild());
 		} else if (index.getType() == GeometryIndexType.TYPE_VERTEX) {
@@ -88,7 +88,7 @@ public class DeleteVertexOperation implements GeometryIndexOperation {
 	}
 
 	private void deleteVertex(Geometry geom, GeometryIndex index) throws GeometryIndexNotFoundException,
-			GeometryOperationFailedException {
+			EdgesIntersectFailedException {
 		if (Geometry.POINT.equals(geom.getGeometryType())) {
 			if (geom.getCoordinates() != null && geom.getCoordinates().length == 1) {
 				geom.setCoordinates(null);
@@ -122,7 +122,7 @@ public class DeleteVertexOperation implements GeometryIndexOperation {
 				geom.setCoordinates(null);
 			} else {
 				if (isDeletedVertexCreatingIntersection(geom.getCoordinates(), index.getValue())) {
-					throw new GeometryOperationFailedException(EditingCommonCustomMessages.
+					throw new EdgesIntersectFailedException(EditingCommonCustomMessages.
 							getInstance().getPolygonLinesCannotIntersectMessage());
 				}
 				Coordinate[] result = new Coordinate[geom.getCoordinates().length - 1];
