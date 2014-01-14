@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.tools.action;
+package org.geomajas.gwt2.tools.client;
 
 import org.geomajas.annotation.Api;
 

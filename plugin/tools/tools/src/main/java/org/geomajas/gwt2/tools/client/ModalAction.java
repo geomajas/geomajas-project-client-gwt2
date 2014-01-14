@@ -8,13 +8,13 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.tools.action;
+package org.geomajas.gwt2.tools.client;
 
 import com.google.gwt.core.client.Callback;
 import org.geomajas.annotation.Api;
 
 /**
- *
+ * Abstract modal action class.
  *
  * @author Oliver May
  * @param <ST> The type returned on selection success
@@ -24,28 +24,7 @@ import org.geomajas.annotation.Api;
  * @since 2.0.0
  */
 @Api(allMethods = true)
-public abstract class ModalAction<ST, SF, DT, DF> extends Action {
-
-	/**
-	 * Create a new ModalAction.
-	 *
-	 * @param icon the icon
-	 * @param tooltip the tooltip
-	 */
-	public ModalAction(String icon, String tooltip) {
-		super(icon, tooltip);
-	}
-
-	/**
-	 * Create a new ModalAction.
-	 *
-	 * @param icon the icon
-	 * @param title the title
-	 * @param tooltip the tooltip
-	 */
-	public ModalAction(String icon, String title, String tooltip) {
-		super(icon, title, tooltip);
-	}
+public abstract class ModalAction<ST, SF, DT, DF> extends BaseAction {
 
 	/**
 	 * Perform the selection action.

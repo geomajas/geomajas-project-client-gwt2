@@ -12,6 +12,10 @@
 package org.geomajas.gwt2.tools.example.client;
 
 import com.google.gwt.core.client.EntryPoint;
+import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
+import org.geomajas.gwt2.example.base.client.sample.SamplePanelRegistry;
+import org.geomajas.gwt2.example.base.client.sample.ShowcaseSampleDefinition;
+import org.geomajas.gwt2.example.client.sample.general.NavigationOptionPanel;
 
 /**
  * Example jar entry point.
@@ -20,8 +24,37 @@ import com.google.gwt.core.client.EntryPoint;
  */
 public class ExampleJar implements EntryPoint {
 
+	public static final String CATEGORY_TOOLBAR = "Toolbar samples";
+
+
 	@Override
 	public void onModuleLoad() {
+		SamplePanelRegistry.registerCategory(CATEGORY_TOOLBAR, 100);
+		SamplePanelRegistry.registerFactory(CATEGORY_TOOLBAR, new ShowcaseSampleDefinition() {
+
+			public SamplePanel create() {
+				return new ToolPanel();
+			}
+
+			public String getTitle() {
+				//FIXME: i18n
+				return "Toolbar sample";
+			}
+
+			public String getShortDescription() {
+				//FIXME: i18n
+				return "Toolbar sample";
+			}
+
+			public String getDescription() {
+				//FIXME: i18n
+				return "Toolbar sample";
+			}
+
+			public String getCategory() {
+				return CATEGORY_TOOLBAR;
+			}
+		});
 
 	}
 }

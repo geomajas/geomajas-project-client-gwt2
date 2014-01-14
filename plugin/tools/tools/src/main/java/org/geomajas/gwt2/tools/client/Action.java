@@ -8,26 +8,24 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.tools.action.tool.zoomin;
+package org.geomajas.gwt2.tools.client;
 
 import com.google.gwt.core.client.Callback;
-import org.geomajas.gwt2.tools.action.Action;
 
 /**
+ * Abstract action class.
+ *
+ * @param <T> The type returned on success
+ * @param <F> The type returned on failure
+ *
  * @author Oliver May
  */
-public class ZoomInAction extends Action<Boolean, Boolean> {
+public abstract class Action<T, F> extends BaseAction {
 
-	public ZoomInAction(String icon, String tooltip) {
-		super(icon, tooltip);
-	}
-
-	public ZoomInAction(String icon, String title, String tooltip) {
-		super(icon, title, tooltip);
-	}
-
-	@Override
-	public void actionPerformed(Callback<Boolean, Boolean> callback) {
-
-	}
+	/**
+	 * Perform the action.
+	 *
+	 * @param callback failure and success callback.
+	 */
+	public abstract void actionPerformed(Callback<T, F> callback);
 }
