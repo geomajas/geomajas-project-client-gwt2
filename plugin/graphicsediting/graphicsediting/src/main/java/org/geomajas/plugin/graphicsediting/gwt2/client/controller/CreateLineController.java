@@ -18,6 +18,7 @@ import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.operation.AddOperation;
 import org.geomajas.graphics.client.service.AbstractGraphicsController;
 import org.geomajas.graphics.client.service.GraphicsService;
+import org.geomajas.plugin.editing.gwt.client.Editing;
 import org.geomajas.plugin.graphicsediting.gwt2.client.object.GGeometryPath;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
@@ -27,7 +28,6 @@ import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 import org.geomajas.plugin.editing.gwt.client.GeometryEditor;
-import org.geomajas.plugin.editing.gwt.client.GeometryEditorFactory;
 import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 
 import com.google.web.bindery.event.shared.HandlerRegistration;
@@ -52,17 +52,13 @@ public class CreateLineController extends AbstractGraphicsController implements 
 
 	private MapPresenter mapPresenter;
 
-	private GeometryEditorFactory editorFactory;
-
 	private GeometryEditService editService;
 
 	private GeometryEditor editor;
 
-	public CreateLineController(GraphicsService graphicsService, GeometryEditorFactory editorFactory,
-			MapPresenter mapPresenter) {
+	public CreateLineController(GraphicsService graphicsService, MapPresenter mapPresenter) {
 		super(graphicsService);
 		this.mapPresenter = mapPresenter;
-		this.editorFactory = editorFactory;
 		container = createContainer();
 	}
 
@@ -132,7 +128,7 @@ public class CreateLineController extends AbstractGraphicsController implements 
 	}
 
 	public GeometryEditService createEditService() {
-		editor = editorFactory.create(mapPresenter);
+		editor = Editing.getInstance().createGeometryEditor(mapPresenter);
 		editor.getBaseController().setClickToStop(true);
 		return editor.getEditService();
 	}

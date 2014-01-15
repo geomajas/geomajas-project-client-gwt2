@@ -92,7 +92,7 @@ public class SetAnnotationPresenterImpl implements SetAnnotationPresenter, SetAn
 		});
 		graphicsService.setObjectContainer(annotationContainer);
 		PopupMenuControllerFactory popupFactory = new PopupMenuControllerFactory(new PopupMenuFactory(), 1.3, 1.3);
-		popupFactory.registerAction(new EditAction(mapPresenter, new GeometryEditorFactoryImpl()));
+		popupFactory.registerAction(new EditAction(mapPresenter));
 		popupFactory.registerAction(new DeleteAction());
 		popupFactory.registerEditor(new LabelEditor());
 		popupFactory.registerEditor(new StrokeFillEditor());
@@ -106,8 +106,7 @@ public class SetAnnotationPresenterImpl implements SetAnnotationPresenter, SetAn
 //		graphicsService.registerControllerFactory(new PropertyEditControllerFactory());
 		graphicsService.registerControllerFactory(popupFactory);
 		controllerMap.put(Action.CREATE_LINE, new CreatePathController(graphicsService, false));
-		controllerMap.put(Action.CREATE_POLYGON, new CreatePolygonController(graphicsService,
-				new GeometryEditorFactoryImpl(), mapPresenter));
+		controllerMap.put(Action.CREATE_POLYGON, new CreatePolygonController(graphicsService, mapPresenter));
 		controllerMap.put(Action.CREATE_RECTANGLE, new CreateRectangleController(graphicsService));
 		controllerMap.put(Action.CREATE_TEXT, new CreateTextController(graphicsService));
 		controllerMap.put(Action.CREATE_ANCHORED_TEXT, new CreateAnchoredTextController(graphicsService));
