@@ -78,7 +78,7 @@ public class GraphicsEditingExample implements SamplePanel, MapInitializationHan
 
 	@Override
 	public void onMapInitialized(MapInitializationEvent event) {
-		mapPresenter.getConfiguration().setMapHintValue(MapConfiguration.ANIMATION_TIME, 300);
+		mapPresenter.getConfiguration().setHintValue(MapConfiguration.ANIMATION_TIME, 300);
 	}
 
 }
