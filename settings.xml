@@ -19,6 +19,7 @@
 					</snapshots>
 				</repository>
 			</repositories>
+
 			<pluginRepositories>
 				<pluginRepository>
 					<id>Geomajas</id>
