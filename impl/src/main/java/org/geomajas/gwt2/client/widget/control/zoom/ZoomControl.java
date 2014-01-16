@@ -102,14 +102,18 @@ public class ZoomControl extends AbstractMapWidget {
 		getElement().getStyle().setLeft(5, Unit.PX);
 
 		if (Dom.isMobile()) {
-			initializeForMobile();
+
 		} else {
-			initializeForDesktop();
+
 		}
+
+		initializeForDesktop();
+		initializeForMobile();
 	}
 
 	/** Initialize handlers for desktop browser. */
 	private void initializeForDesktop() {
+		jsLog("initializeForDesktop()");
 		StopPropagationHandler preventWeirdBehaviourHandler = new StopPropagationHandler();
 		addDomHandler(preventWeirdBehaviourHandler, MouseDownEvent.getType());
 		addDomHandler(preventWeirdBehaviourHandler, MouseUpEvent.getType());
@@ -122,6 +126,7 @@ public class ZoomControl extends AbstractMapWidget {
 		zoomInElement.addDomHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
+				jsLog("zoomInElement - > onClick");
 				int index = viewPort.getFixedScaleIndex(viewPort.getScale());
 				if (index < viewPort.getFixedScaleCount() - 1) {
 					viewPort.registerAnimation(NavigationAnimationFactory.createZoomIn(mapPresenter));
@@ -134,6 +139,7 @@ public class ZoomControl extends AbstractMapWidget {
 		zoomOutElement.addDomHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
+				jsLog("zoomOutElement - > onClick");
 				int index = viewPort.getFixedScaleIndex(viewPort.getScale());
 				if (index > 0) {
 					viewPort.registerAnimation(NavigationAnimationFactory.createZoomOut(mapPresenter));
@@ -145,17 +151,20 @@ public class ZoomControl extends AbstractMapWidget {
 
 	/** Initialize handlers for mobile devices. */
 	private void initializeForMobile() {
+		jsLog("initializeForMobile()");
 		// Add touch handlers to the zoom in button:
 		zoomInElement.addDomHandler(new TouchStartHandler() {
 
 			@Override
 			public void onTouchStart(TouchStartEvent event) {
-				zoomInElement.addStyleName(resource.css().zoomControlZoomInTouch());
+				jsLog("onTouchStart");
 				ViewPort viewPort = mapPresenter.getViewPort();
 				int index = viewPort.getFixedScaleIndex(viewPort.getScale());
+
 				if (index < viewPort.getFixedScaleCount() - 1) {
-					viewPort.applyScale(viewPort.getFixedScale(index - 1));
+					viewPort.registerAnimation(NavigationAnimationFactory.createZoomIn(mapPresenter));
 				}
+
 				event.stopPropagation();
 			}
 		}, TouchStartEvent.getType());
@@ -163,6 +172,7 @@ public class ZoomControl extends AbstractMapWidget {
 
 			@Override
 			public void onTouchEnd(TouchEndEvent event) {
+				jsLog("zoomInElement - > onTouchEnd");
 				zoomInElement.removeStyleName(resource.css().zoomControlZoomInTouch());
 			}
 		}, TouchEndEvent.getType());
@@ -172,12 +182,14 @@ public class ZoomControl extends AbstractMapWidget {
 
 			@Override
 			public void onTouchStart(TouchStartEvent event) {
-				zoomOutElement.addStyleName(resource.css().zoomControlZoomOutTouch());
 				ViewPort viewPort = mapPresenter.getViewPort();
 				int index = viewPort.getFixedScaleIndex(viewPort.getScale());
-				if (index < viewPort.getFixedScaleCount() - 1) {
-					viewPort.applyScale(viewPort.getFixedScale(index + 1));
+				jsLog("zoomOutElement - > onTouchStart");
+
+				if (index > 0) {
+					viewPort.registerAnimation(NavigationAnimationFactory.createZoomOut(mapPresenter));
 				}
+
 				event.stopPropagation();
 			}
 		}, TouchStartEvent.getType());
@@ -185,8 +197,14 @@ public class ZoomControl extends AbstractMapWidget {
 
 			@Override
 			public void onTouchEnd(TouchEndEvent event) {
-				zoomOutElement.removeStyleName(resource.css().zoomControlZoomOutTouch());
+				jsLog("zoomOutElement - > onTouchEnd");
 			}
 		}, TouchEndEvent.getType());
 	}
+
+	public static native void jsLog(String msg) /*-{
+		if(window.console){
+			console.log(msg);
+		}
+	}-*/;
 }
