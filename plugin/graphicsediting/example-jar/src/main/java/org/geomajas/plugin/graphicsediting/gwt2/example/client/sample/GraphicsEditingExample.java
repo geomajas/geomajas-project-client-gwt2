@@ -18,6 +18,8 @@ import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
+import org.geomajas.gwt2.client.event.MapInitializationEvent;
+import org.geomajas.gwt2.client.event.MapInitializationHandler;
 import org.geomajas.gwt2.client.map.MapConfiguration;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.widget.MapLayoutPanel;
@@ -31,7 +33,7 @@ import org.geomajas.plugin.graphicsediting.gwt2.example.client.annotation.SetAnn
  * @author Jan De Moerloose
  * 
  */
-public class GraphicsEditingExample implements SamplePanel {
+public class GraphicsEditingExample implements SamplePanel, MapInitializationHandler {
 
 	protected DockLayoutPanel rootElement;
 
@@ -62,9 +64,9 @@ public class GraphicsEditingExample implements SamplePanel {
 
 		// Initialize the map
 		mapPresenter = GeomajasImpl.getInstance().createMapPresenter();
+		mapPresenter.getEventBus().addMapInitializationHandler(this);
 		// Initialize the map, and return the layout:
 		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "appGraphicsEditing", "mapGraphicsEditing");
-		mapPresenter.getConfiguration().setMapHintValue(MapConfiguration.ANIMATION_TIME, 300);
 		MapLayoutPanel mapLayout = new MapLayoutPanel();
 		mapLayout.setPresenter(mapPresenter);
 		AnnotationToolBar toolbar = new AnnotationToolBar();
@@ -72,6 +74,11 @@ public class GraphicsEditingExample implements SamplePanel {
 				mapPresenter);
 		mapPresenter.getWidgetPane().add(toolbar.asWidget());
 		contentPanel.setWidget(mapLayout);
+	}
+
+	@Override
+	public void onMapInitialized(MapInitializationEvent event) {
+		mapPresenter.getConfiguration().setMapHintValue(MapConfiguration.ANIMATION_TIME, 300);
 	}
 
 }

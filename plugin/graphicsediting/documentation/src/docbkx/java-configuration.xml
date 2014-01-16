@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<chapter id="chapter-java-configuration">
+  <title>Editing of Graphics Objects</title>
+
+  <section>
+    <title>The Graphics Action System</title>
+
+    <para>Different actions can be perfomed on a a graphics object. Clicking
+    the object enables changing it: resize buttons appear and in the top right
+    position, a cog symbol appears. Clicking the cog shows a number of
+    registered actions. Clicking <emphasis>Edit Shape</emphasis> brings the
+    object in an editing state.</para>
+
+    <screenshot>
+      <screeninfo>Two polygon objects. The right one has been
+      selected.</screeninfo>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center" fileref="images/polygon_selected.png" />
+        </imageobject>
+      </mediaobject>
+    </screenshot>
+
+    <screenshot>
+      <screeninfo>Clicking the cog shows an action menu.</screeninfo>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center" fileref="images/polygon_options_box.png" />
+        </imageobject>
+      </mediaobject>
+    </screenshot>
+
+    <screenshot>
+      <screeninfo>The polygon in the editing state.</screeninfo>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center" fileref="images/polygon_editing.png" />
+        </imageobject>
+      </mediaobject>
+    </screenshot>
+
+    <para>More detailed information on the graphics action registration system
+    is explained in the documentation of the Graphics Project. The content of
+    the cog menu depends on the properties of the graphics object. The
+    <emphasis>Edit Shape</emphasis> action will only appear if the object has
+    a <code> GeometryEditable</code> role.</para>
+  </section>
+</chapter>
