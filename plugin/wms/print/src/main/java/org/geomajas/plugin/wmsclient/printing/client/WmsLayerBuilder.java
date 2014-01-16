@@ -20,7 +20,7 @@ import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.client.map.render.Tile;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
-import org.geomajas.plugin.printing.client.template.PrintableLayerBuilder;
+import org.geomajas.plugin.print.client.template.PrintableLayerBuilder;
 import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
 import org.geomajas.plugin.wms.client.layer.WmsLayer;
 import org.geomajas.plugin.wmsclient.printing.server.dto.WmsClientLayerInfo;

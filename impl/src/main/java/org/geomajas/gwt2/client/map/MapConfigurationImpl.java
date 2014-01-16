@@ -42,26 +42,26 @@ public class MapConfigurationImpl implements MapConfiguration {
 
 	public static final Double DEFAULT_MAXIMUM_SCALE = 1024.0;
 
-	private Map<MapHint<?>, Object> hintValues;
+	private Map<Hint<?>, Object> hintValues;
 
 	// ------------------------------------------------------------------------
 	// Constructor:
 	// ------------------------------------------------------------------------
 
 	public MapConfigurationImpl() {
-		hintValues = new HashMap<MapHint<?>, Object>();
+		hintValues = new HashMap<Hint<?>, Object>();
 
 		// Now apply the default values:
-		setMapHintValue(MapConfiguration.ANIMATION_TIME, DEFAULT_ANIMATION_TIME);
-		setMapHintValue(MapConfiguration.FADE_IN_TIME, DEFAULT_FADE_IN_TIME);
-		setMapHintValue(MapConfiguration.ANIMATION_CANCEL_SUPPORT, DEFAULT_ANIMATION_CANCEL_SUPPORT);
-		setMapHintValue(MapConfiguration.DPI, DEFAULT_DPI);
-		setMapHintValue(MapConfiguration.MAXIMUM_BOUNDS, DEFAULT_BOUNDS);
-		setMapHintValue(MapConfiguration.INITIAL_BOUNDS, DEFAULT_BOUNDS);
-		setMapHintValue(MapConfiguration.CRS, DEFAULT_CRS);
-		setMapHintValue(MapConfiguration.UNIT_LENGTH, DEFAULT_UNIT_LENGTH);
-		setMapHintValue(MapConfiguration.MAXIMUM_SCALE, DEFAULT_MAXIMUM_SCALE);
-		setMapHintValue(MapConfiguration.RESOLUTIONS, new ArrayList<Double>());
+		setHintValue(MapConfiguration.ANIMATION_TIME, DEFAULT_ANIMATION_TIME);
+		setHintValue(MapConfiguration.FADE_IN_TIME, DEFAULT_FADE_IN_TIME);
+		setHintValue(MapConfiguration.ANIMATION_CANCEL_SUPPORT, DEFAULT_ANIMATION_CANCEL_SUPPORT);
+		setHintValue(MapConfiguration.DPI, DEFAULT_DPI);
+		setHintValue(MapConfiguration.MAXIMUM_BOUNDS, DEFAULT_BOUNDS);
+		setHintValue(MapConfiguration.INITIAL_BOUNDS, DEFAULT_BOUNDS);
+		setHintValue(MapConfiguration.CRS, DEFAULT_CRS);
+		setHintValue(MapConfiguration.UNIT_LENGTH, DEFAULT_UNIT_LENGTH);
+		setHintValue(MapConfiguration.MAXIMUM_SCALE, DEFAULT_MAXIMUM_SCALE);
+		setHintValue(MapConfiguration.RESOLUTIONS, new ArrayList<Double>());
 	}
 
 	// ------------------------------------------------------------------------
@@ -69,7 +69,7 @@ public class MapConfigurationImpl implements MapConfiguration {
 	// ------------------------------------------------------------------------
 
 	@Override
-	public <T> void setMapHintValue(MapHint<T> hint, T value) {
+	public <T> void setHintValue(Hint<T> hint, T value) {
 		if (value == null) {
 			throw new IllegalArgumentException("Null value passed.");
 		}
@@ -78,7 +78,7 @@ public class MapConfigurationImpl implements MapConfiguration {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T> T getMapHintValue(MapHint<T> hint) {
+	public <T> T getHintValue(Hint<T> hint) {
 		return (T) hintValues.get(hint);
 	}
 
@@ -88,31 +88,31 @@ public class MapConfigurationImpl implements MapConfiguration {
 
 	@Override
 	public Bbox getMaxBounds() {
-		return getMapHintValue(MapConfiguration.MAXIMUM_BOUNDS);
+		return getHintValue(MapConfiguration.MAXIMUM_BOUNDS);
 	}
 
 	@Override
 	public void setMaxBounds(Bbox maxBounds) {
-		setMapHintValue(MapConfiguration.MAXIMUM_BOUNDS, maxBounds);
-		if (getMapHintValue(MapConfiguration.INITIAL_BOUNDS) == null) {
-			setMapHintValue(MapConfiguration.INITIAL_BOUNDS, maxBounds);
+		setHintValue(MapConfiguration.MAXIMUM_BOUNDS, maxBounds);
+		if (getHintValue(MapConfiguration.INITIAL_BOUNDS) == null) {
+			setHintValue(MapConfiguration.INITIAL_BOUNDS, maxBounds);
 		}
 	}
 
 	@Override
 	public String getCrs() {
-		return getMapHintValue(MapConfiguration.CRS);
+		return getHintValue(MapConfiguration.CRS);
 	}
 
 	@Override
 	public void setCrs(String crs, CrsType crsType) {
-		setMapHintValue(MapConfiguration.CRS, crs);
+		setHintValue(MapConfiguration.CRS, crs);
 		switch (crsType) {
 			case DEGREES:
-				setMapHintValue(MapConfiguration.UNIT_LENGTH, DEFAULT_UNIT_LENGTH);
+				setHintValue(MapConfiguration.UNIT_LENGTH, DEFAULT_UNIT_LENGTH);
 				break;
 			case METRIC:
-				setMapHintValue(MapConfiguration.UNIT_LENGTH, 1.0);
+				setHintValue(MapConfiguration.UNIT_LENGTH, 1.0);
 				break;
 			default:
 				throw new IllegalArgumentException("When the CrsType is custom, please provide a 'unitLength'");
@@ -121,32 +121,32 @@ public class MapConfigurationImpl implements MapConfiguration {
 
 	@Override
 	public void setCrs(String crs, double unitLength) {
-		setMapHintValue(MapConfiguration.CRS, crs);
-		setMapHintValue(MapConfiguration.UNIT_LENGTH, unitLength);
+		setHintValue(MapConfiguration.CRS, crs);
+		setHintValue(MapConfiguration.UNIT_LENGTH, unitLength);
 	}
 
 	@Override
 	public List<Double> getResolutions() {
-		return getMapHintValue(MapConfiguration.RESOLUTIONS);
+		return getHintValue(MapConfiguration.RESOLUTIONS);
 	}
 
 	@Override
 	public void setResolutions(List<Double> resolutions) {
-		setMapHintValue(MapConfiguration.RESOLUTIONS, resolutions);
+		setHintValue(MapConfiguration.RESOLUTIONS, resolutions);
 	}
 
 	@Override
 	public double getMaximumScale() {
-		return getMapHintValue(MapConfiguration.MAXIMUM_SCALE);
+		return getHintValue(MapConfiguration.MAXIMUM_SCALE);
 	}
 
 	@Override
 	public void setMaximumScale(double maximumScale) {
-		setMapHintValue(MapConfiguration.MAXIMUM_SCALE, maximumScale);
+		setHintValue(MapConfiguration.MAXIMUM_SCALE, maximumScale);
 	}
 
 	@Override
 	public double getUnitLength() {
-		return getMapHintValue(MapConfiguration.UNIT_LENGTH);
+		return getHintValue(MapConfiguration.UNIT_LENGTH);
 	}
 }

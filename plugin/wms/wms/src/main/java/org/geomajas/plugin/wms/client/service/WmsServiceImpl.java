@@ -55,6 +55,8 @@ public class WmsServiceImpl implements WmsService {
 			final Callback<WmsGetCapabilitiesInfo, String> callback) {
 		String url = getCapabilitiesUrl(baseUrl, version);
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+		builder.setHeader("Cache-Control", "no-cache");
+		builder.setHeader("Pragma", "no-cache");
 		try {
 			builder.sendRequest(null, new RequestCallback() {
 
@@ -174,11 +176,6 @@ public class WmsServiceImpl implements WmsService {
 				url.append(";");
 			}
 
-			// TODO:
-			// int dpi = legendConfig.getDpi();
-			// if (dpi <= 0) {
-			// dpi = LEGEND_DPI;
-			// }
 			int dpi = LEGEND_DPI;
 			url.append("bgColor:0xFFFFFF;dpi:" + dpi);
 		}

@@ -20,7 +20,7 @@ import org.geomajas.gwt2.client.map.feature.Feature;
 
 /**
  * DTO containing a list of features + the attribute descriptors for all attributes that can be in use by the features.
- * 
+ *
  * @author An Buyle
  * @since 1.0.0
  */
@@ -43,7 +43,7 @@ public class FeatureCollection {
 
 	/**
 	 * Get the list of features within this collection.
-	 * 
+	 *
 	 * @return The list of features.
 	 */
 	public List<Feature> getFeatures() {
@@ -52,7 +52,7 @@ public class FeatureCollection {
 
 	/**
 	 * Get an ordered list of attribute descriptors for the features within this collection.
-	 * 
+	 *
 	 * @return List of attribute descriptors.
 	 */
 	public List<AbstractReadOnlyAttributeInfo> getAttributeDescriptors() {
