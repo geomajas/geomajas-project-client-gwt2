@@ -27,7 +27,7 @@
 		<module>corewidget</module>
 		<module>documentation</module>
 		<module>example-jar</module>
-		<!-- <module>example</module> -->
+		<module>example</module>
 	</modules>
 
 </project>

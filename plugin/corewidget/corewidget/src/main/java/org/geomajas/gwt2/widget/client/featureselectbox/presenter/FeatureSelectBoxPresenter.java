@@ -23,7 +23,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 public interface FeatureSelectBoxPresenter {
 
 	/**
-	 * View of FeatureSelectBox.
+	 * View of FeatureSelectWidget.
 	 * 
 	 * @author Dosi Bingov
 	 * 
@@ -53,7 +53,7 @@ public interface FeatureSelectBoxPresenter {
 	}
 
 	/**
-	 * Handler for FeatureSelectBox.
+	 * Handler for FeatureSelectWidget.
 	 * 
 	 * @author Dosi Bingov
 	 * 

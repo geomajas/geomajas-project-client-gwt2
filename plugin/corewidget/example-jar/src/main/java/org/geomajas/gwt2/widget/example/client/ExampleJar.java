@@ -22,6 +22,7 @@ import org.geomajas.gwt2.widget.example.client.resource.ExampleWidgetResource;
 import org.geomajas.gwt2.widget.example.client.sample.dialog.CloseableDialogExample;
 import org.geomajas.gwt2.widget.example.client.sample.dialog.MessageBoxExample;
 import org.geomajas.gwt2.widget.example.client.sample.featureselectbox.FeatureSelectedExample;
+import org.geomajas.gwt2.widget.example.client.sample.itemselect.ItemSelectExample;
 import org.geomajas.gwt2.widget.example.client.sample.map.LegendAddRemoveSample;
 import org.geomajas.gwt2.widget.example.client.sample.map.LegendOrderSample;
 import org.geomajas.gwt2.widget.example.client.sample.map.MapLegendDropDownSample;
@@ -213,6 +214,33 @@ public class ExampleJar implements EntryPoint {
 				return MESSAGES.featureMouseOverDescription();
 			}
 
+			public String getCategory() {
+				return CATEGORY_WIDGET;
+			}
+		});
+
+		SamplePanelRegistry.registerFactory(CATEGORY_WIDGET, new ShowcaseSampleDefinition() {
+			@Override
+			public SamplePanel create() {
+				return new ItemSelectExample();
+			}
+
+			@Override
+			public String getTitle() {
+				return "TODO";
+			}
+
+			@Override
+			public String getShortDescription() {
+				return "TODO";
+			}
+
+			@Override
+			public String getDescription() {
+				return "TODO";
+			}
+
+			@Override
 			public String getCategory() {
 				return CATEGORY_WIDGET;
 			}

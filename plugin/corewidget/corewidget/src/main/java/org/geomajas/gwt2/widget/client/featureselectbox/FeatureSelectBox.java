@@ -8,10 +8,11 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.client.featureselectbox.view;
+package org.geomajas.gwt2.widget.client.featureselectbox;
 
 import java.util.List;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.widget.client.featureselectbox.presenter.FeatureSelectBoxPresenter.Handler;
 import org.geomajas.gwt2.widget.client.featureselectbox.resource.FeatureSelectBoxResource;
 
@@ -26,11 +27,13 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Tool tip box that is shown when the MouseOverListener is added to the map.
+ * Tool tip box that displays a list of features from where one can be selected.
  * 
  * @author Dosi Bingov
- * 
+ * @author Oliver May
+ * @since 2.0.0
  */
+@Api(allMethods = true)
 public class FeatureSelectBox implements
 		org.geomajas.gwt2.widget.client.featureselectbox.presenter.FeatureSelectBoxPresenter.View {
 

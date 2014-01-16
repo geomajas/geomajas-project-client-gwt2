@@ -27,15 +27,15 @@ import org.geomajas.gwt2.client.map.feature.FeatureMapFunction;
 import org.geomajas.gwt2.client.map.feature.ServerFeatureService.QueryType;
 import org.geomajas.gwt2.client.map.feature.ServerFeatureService.SearchLayerType;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
+import org.geomajas.gwt2.widget.client.featureselectbox.FeatureSelectBox;
 import org.geomajas.gwt2.widget.client.featureselectbox.event.FeatureClickedEvent;
-import org.geomajas.gwt2.widget.client.featureselectbox.view.FeatureSelectBox;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 
 /**
- * Listener and presenter of FeatureSelectBox.
+ * Listener and presenter of FeatureSelectWidget.
  * 
  * @author Dosi Bingov
  * 
@@ -60,7 +60,7 @@ public class FeatureClickedListener extends AbstractController implements MapCon
 	// -------------------------------------------------------------------------
 
 	public FeatureClickedListener() {
-		// minimum distance between features to show FeatureSelectBox.
+		// minimum distance between features to show FeatureSelectWidget.
 		this(32);
 	}
 
