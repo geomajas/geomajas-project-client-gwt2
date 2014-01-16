@@ -12,8 +12,6 @@
 <module>
 	<inherits name="org.geomajas.gwt2.GeomajasClientApi" />
 
-	<entry-point class="org.geomajas.gwt2.client.GeomajasClient" />
-
 	<source path="client">
 		<exclude name="*Test*.java" />
 	</source>
