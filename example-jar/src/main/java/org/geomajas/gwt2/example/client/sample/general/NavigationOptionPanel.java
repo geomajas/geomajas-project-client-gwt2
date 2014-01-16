@@ -109,8 +109,8 @@ public class NavigationOptionPanel implements SamplePanel {
 		cancelAnimationSupport.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
 
 			public void onValueChange(ValueChangeEvent<Boolean> event) {
-				mapPresenter.getConfiguration().setMapHintValue(MapConfiguration.ANIMATION_CANCEL_SUPPORT,
-						cancelAnimationSupport.getValue());
+				mapPresenter.getConfiguration().setHintValue(MapConfiguration.ANIMATION_CANCEL_SUPPORT,
+				  cancelAnimationSupport.getValue());
 			}
 		});
 
@@ -134,10 +134,10 @@ public class NavigationOptionPanel implements SamplePanel {
 			time = Integer.parseInt(txt);
 		} catch (Exception e) { // NOSONAR
 			Window.alert("Could not parse milliseconds... Default value of " + defaultMillis + " is used");
-			mapPresenter.getConfiguration().setMapHintValue(MapConfiguration.ANIMATION_TIME, defaultMillis);
+			mapPresenter.getConfiguration().setHintValue(MapConfiguration.ANIMATION_TIME, defaultMillis);
 			millisBox.setValue(defaultMillis + "");
 		}
-		mapPresenter.getConfiguration().setMapHintValue(MapConfiguration.ANIMATION_TIME, time);
+		mapPresenter.getConfiguration().setHintValue(MapConfiguration.ANIMATION_TIME, time);
 	}
 
 	private void changeFadeInMillis() {
@@ -147,10 +147,10 @@ public class NavigationOptionPanel implements SamplePanel {
 			time = Integer.parseInt(txt);
 		} catch (Exception e) { // NOSONAR
 			Window.alert("Could not parse milliseconds... Default value of " + defaultFadeInMillis + " is used");
-			mapPresenter.getConfiguration().setMapHintValue(MapConfiguration.FADE_IN_TIME, defaultMillis);
+			mapPresenter.getConfiguration().setHintValue(MapConfiguration.FADE_IN_TIME, defaultMillis);
 			fadeInBox.setValue(defaultFadeInMillis + "");
 		}
-		mapPresenter.getConfiguration().setMapHintValue(MapConfiguration.FADE_IN_TIME, time);
+		mapPresenter.getConfiguration().setHintValue(MapConfiguration.FADE_IN_TIME, time);
 	}
 
 	/**

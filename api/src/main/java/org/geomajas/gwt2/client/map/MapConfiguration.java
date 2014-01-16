@@ -18,7 +18,7 @@ import org.geomajas.geometry.Bbox;
 
 /**
  * Map configuration definition. Contains a server configuration object and a series of map hints to apply specific
- * parameters. One should define a {@link MapHint} constant for each configuration parameter.
+ * parameters. One should define a {@link Hint} constant for each configuration parameter.
  * 
  * @author Pieter De Graef
  * @since 1.0.0
@@ -45,58 +45,58 @@ public interface MapConfiguration {
 	// ------------------------------------------------------------------------
 
 	/**
-	 * {@link MapHint} used to determine how long the animations should take during navigation (zooming). The value
+	 * {@link Hint} used to determine how long the animations should take during navigation (zooming). The value
 	 * should be expressed in milliseconds. It's value should be of type <code>Long</code>.
 	 * 
 	 * @since 2.0.0
 	 */
-	MapHint<Integer> ANIMATION_TIME = new MapHint<Integer>("animation_time");
+	Hint<Integer> ANIMATION_TIME = new Hint<Integer>("animation_time");
 
 	/**
-	 * {@link MapHint} used to determine how long fading in of scale or tiles should take while rendering the map.
+	 * {@link Hint} used to determine how long fading in of scale or tiles should take while rendering the map.
 	 * 
 	 * @since 2.0.0
 	 */
-	MapHint<Integer> FADE_IN_TIME = new MapHint<Integer>("fade_in_time");
+	Hint<Integer> FADE_IN_TIME = new Hint<Integer>("fade_in_time");
 
 	/**
-	 * {@link MapHint} that determines whether or not the {@link ViewPort} will cancel the currently running animation
+	 * {@link Hint} that determines whether or not the {@link ViewPort} will cancel the currently running animation
 	 * in favor of a new animation. If this value is false, the new animation will keep running, and the new animation
 	 * is discarded. If this value is true, the current animation is discontinued, and the new one is started.
 	 * 
 	 * @since 2.0.0
 	 */
-	MapHint<Boolean> ANIMATION_CANCEL_SUPPORT = new MapHint<Boolean>("animation_cancel_support");
+	Hint<Boolean> ANIMATION_CANCEL_SUPPORT = new Hint<Boolean>("animation_cancel_support");
 
 	/**
-	 * {@link MapHint} used to determine the DPI on the map.
+	 * {@link Hint} used to determine the DPI on the map.
 	 * 
 	 * @since 2.0.0
 	 */
-	MapHint<Double> DPI = new MapHint<Double>("dpi");
+	Hint<Double> DPI = new Hint<Double>("dpi");
 
 	/**
-	 * {@link MapHint} that determines the maximum extent of the map. It is not possible to navigate outside of this
+	 * {@link Hint} that determines the maximum extent of the map. It is not possible to navigate outside of this
 	 * region.
 	 * 
 	 * @since 2.0.0
 	 */
-	MapHint<Bbox> MAXIMUM_BOUNDS = new MapHint<Bbox>("maximum_bounds");
+	Hint<Bbox> MAXIMUM_BOUNDS = new Hint<Bbox>("maximum_bounds");
 
 	/**
-	 * {@link MapHint} that determines the initial extent of the map. This is the extent shown when the map is first
+	 * {@link Hint} that determines the initial extent of the map. This is the extent shown when the map is first
 	 * loaded. If no initial bounds is set, the map will take the maximum bounds as initial bounds.
 	 * 
 	 * @since 2.0.0
 	 */
-	MapHint<Bbox> INITIAL_BOUNDS = new MapHint<Bbox>("initial_bounds");
+	Hint<Bbox> INITIAL_BOUNDS = new Hint<Bbox>("initial_bounds");
 
 	/**
-	 * {@link MapHint} that determines the map Coordinate Reference System. The default value is EPSG:4326.
+	 * {@link Hint} that determines the map Coordinate Reference System. The default value is EPSG:4326.
 	 * 
 	 * @since 2.0.0
 	 */
-	MapHint<String> CRS = new MapHint<String>("crs");
+	Hint<String> CRS = new Hint<String>("crs");
 
 	/**
 	 * The length if a map unit, expressed in meter. This is an approximate value in the horizontal direction and in the
@@ -105,23 +105,23 @@ public interface MapConfiguration {
 	 * 
 	 * @since 2.0.0
 	 */
-	MapHint<Double> UNIT_LENGTH = new MapHint<Double>("unit_length");
+	Hint<Double> UNIT_LENGTH = new Hint<Double>("unit_length");
 
 	/**
-	 * {@link MapHint} that determines the maximum scale (maximum zoom in). This value is not required if a list of
+	 * {@link Hint} that determines the maximum scale (maximum zoom in). This value is not required if a list of
 	 * resolutions is passed.
 	 * 
 	 * @@since 2.0.0
 	 */
-	MapHint<Double> MAXIMUM_SCALE = new MapHint<Double>("maximum_scale");
+	Hint<Double> MAXIMUM_SCALE = new Hint<Double>("maximum_scale");
 
 	/**
-	 * {@link MapHint} that determines the set of resolutions used as fixed scales in the {@link ViewPort}. This list is
+	 * {@link Hint} that determines the set of resolutions used as fixed scales in the {@link ViewPort}. This list is
 	 * not required if a maximum scale value has been set.
 	 * 
 	 * @since 2.0.0
 	 */
-	MapHint<List<Double>> RESOLUTIONS = new MapHint<List<Double>>("resolutions");
+	Hint<List<Double>> RESOLUTIONS = new Hint<List<Double>>("resolutions");
 
 	// ------------------------------------------------------------------------
 	// Working with map hints:
@@ -135,7 +135,7 @@ public interface MapConfiguration {
 	 * @param value
 	 *            The new actual value. If the value is null, an IllegalArgumentException is thrown.
 	 */
-	<T> void setMapHintValue(MapHint<T> hint, T value);
+	<T> void setHintValue(Hint<T> hint, T value);
 
 	/**
 	 * Get the value for a specific map hint. All hints have a default value, so this method will never return
@@ -145,7 +145,7 @@ public interface MapConfiguration {
 	 *            The hint to retrieve the current value for.
 	 * @return The map hint value.
 	 */
-	<T> T getMapHintValue(MapHint<T> hint);
+	<T> T getHintValue(Hint<T> hint);
 
 	// ------------------------------------------------------------------------
 	// Convenience methods:

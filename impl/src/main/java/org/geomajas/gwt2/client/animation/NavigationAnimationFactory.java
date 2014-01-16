@@ -161,6 +161,6 @@ public final class NavigationAnimationFactory {
 	// ------------------------------------------------------------------------
 
 	private static int getMillis(MapPresenter mapPresenter) {
-		return mapPresenter.getConfiguration().getMapHintValue(MapConfiguration.ANIMATION_TIME);
+		return mapPresenter.getConfiguration().getHintValue(MapConfiguration.ANIMATION_TIME);
 	}
 }

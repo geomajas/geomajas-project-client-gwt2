@@ -144,7 +144,7 @@ public class LayersModelRendererImpl implements LayersModelRenderer {
 							DomService.applyTransition(layerContainer.asWidget().getElement(),
 									new String[] { "opacity" },
 									new Integer[] { LayersModelRendererImpl.this.configuration
-											.getMapHintValue(MapConfiguration.FADE_IN_TIME) });
+											.getHintValue(MapConfiguration.FADE_IN_TIME) });
 						}
 						layerContainer.asWidget().getElement().getStyle().setOpacity(1.0f);
 					}

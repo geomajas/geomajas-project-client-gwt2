@@ -27,7 +27,7 @@ import com.google.gwt.event.dom.client.MouseUpEvent;
 
 /**
  * Default map controller that executes WMS GetFeatureInfo requests on the registered layers.
- * 
+ *
  * @author Pieter De Graef
  * @since 1.0.0
  */
@@ -42,6 +42,8 @@ public class WmsGetFeatureInfoController extends AbstractMapController {
 
 	private GetFeatureInfoFormat format = GetFeatureInfoFormat.GML2;
 
+	private int maxCoordsPerFeature = -1;
+
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
@@ -55,9 +57,8 @@ public class WmsGetFeatureInfoController extends AbstractMapController {
 
 	/**
 	 * Create a new GetFeatureInfoController.
-	 * 
-	 * @param layer
-	 *            Immediately add a layer onto which to execute GetFeatureInfo requests.
+	 *
+	 * @param layer Immediately add a layer onto which to execute GetFeatureInfo requests.
 	 */
 	public WmsGetFeatureInfoController(FeaturesSupportedWmsLayer layer) {
 		super(false);
@@ -85,7 +86,7 @@ public class WmsGetFeatureInfoController extends AbstractMapController {
 		for (FeaturesSupportedWmsLayer layer : layers) {
 			switch (format) {
 				case GML2:
-                case GML3:
+				case GML3:
 					if (gmlCallback == null) {
 						throw new IllegalStateException("No callback has been set on the WmsGetFeatureInfoController");
 					}
@@ -102,9 +103,8 @@ public class WmsGetFeatureInfoController extends AbstractMapController {
 
 	/**
 	 * Add a layer for which a GetFeatureRequest should be fired on click.
-	 * 
-	 * @param layer
-	 *            The layer to add.
+	 *
+	 * @param layer The layer to add.
 	 */
 	public void addLayer(FeaturesSupportedWmsLayer layer) {
 		layers.add(layer);
@@ -112,9 +112,8 @@ public class WmsGetFeatureInfoController extends AbstractMapController {
 
 	/**
 	 * Remove a layer for which a GetFeatureInfoRequest should no longer be fired on click.
-	 * 
-	 * @param layer
-	 *            The layer to remove again.
+	 *
+	 * @param layer The layer to remove again.
 	 */
 	public void removeLayer(FeaturesSupportedWmsLayer layer) {
 		layers.remove(layer);
@@ -122,7 +121,7 @@ public class WmsGetFeatureInfoController extends AbstractMapController {
 
 	/**
 	 * Get the default GetFeatureInfoFormat. By default this is {@link GetFeatureInfoFormat#GML2}.
-	 * 
+	 *
 	 * @return the GetFeatureInfoFormat used.
 	 */
 	public GetFeatureInfoFormat getFormat() {
@@ -131,9 +130,8 @@ public class WmsGetFeatureInfoController extends AbstractMapController {
 
 	/**
 	 * Set a new GetFeatureInfoFormat to use in the GetFeatureInfoRequest.
-	 * 
-	 * @param format
-	 *            The new GetFeatureInfoFormat.
+	 *
+	 * @param format The new GetFeatureInfoFormat.
 	 */
 	public void setFormat(GetFeatureInfoFormat format) {
 		this.format = format;
@@ -141,10 +139,9 @@ public class WmsGetFeatureInfoController extends AbstractMapController {
 
 	/**
 	 * Set the callback to use in case the GetFeatureInfoFormat is {@link GetFeatureInfoFormat#GML2}.
-	 * 
-	 * @param gmlCallback
-	 *            The callback to execute when the response returns. This response already contains a
-	 *            {@link FeatureCollection}, and should not be parsed anymore.
+	 *
+	 * @param gmlCallback The callback to execute when the response returns. This response already contains a {@link
+	 *                    FeatureCollection}, and should not be parsed anymore.
 	 */
 	public void setGmlCallback(Callback<FeatureCollection, String> gmlCallback) {
 		this.gmlCallback = gmlCallback;
@@ -152,12 +149,31 @@ public class WmsGetFeatureInfoController extends AbstractMapController {
 
 	/**
 	 * Set the callback to use in case the GetFeatureInfoFormat is NOT {@link GetFeatureInfoFormat#GML2}.
-	 * 
-	 * @param htmlCallback
-	 *            The callback to execute when the response returns. Note that the response is the bare boned WMS
-	 *            GetFeatureInfo. It is up to you to parse it.
+	 *
+	 * @param htmlCallback The callback to execute when the response returns. Note that the response is the bare boned
+	 *                     WMS. GetFeatureInfo. It is up to you to parse it.
 	 */
 	public void setHtmlCallback(Callback<Object, String> htmlCallback) {
 		this.htmlCallback = htmlCallback;
+	}
+
+	/**
+	 * Get the maximum number of coordinates geometries may contain. This is only applied when the GetFeatureInfo format
+	 * is GML.
+	 *
+	 * @return The maximum number of coordinates per geometry.
+	 */
+	public int getMaxCoordsPerFeature() {
+		return maxCoordsPerFeature;
+	}
+
+	/**
+	 * Set the maximum number of coordinates geometries may contain. This is only applied when the GetFeatureInfo format
+	 * is GML.
+	 *
+	 * @param maxCoordsPerFeature The maximum number of coordinates per geometry.
+	 */
+	public void setMaxCoordsPerFeature(int maxCoordsPerFeature) {
+		this.maxCoordsPerFeature = maxCoordsPerFeature;
 	}
 }
