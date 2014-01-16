@@ -85,6 +85,7 @@ public class WmsGetFeatureInfoController extends AbstractMapController {
 		for (FeaturesSupportedWmsLayer layer : layers) {
 			switch (format) {
 				case GML2:
+                case GML3:
 					if (gmlCallback == null) {
 						throw new IllegalStateException("No callback has been set on the WmsGetFeatureInfoController");
 					}
