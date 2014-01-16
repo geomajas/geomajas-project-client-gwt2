@@ -15,16 +15,18 @@ import org.geomajas.command.CommandRequest;
 
 /**
  * Request for the GetFeatureInfoCommand. Should contain the actual request URL.
- * 
+ *
  * @author Pieter De Graef
  */
 public class GetFeatureInfoRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 100L;
-	
+
 	public static final String COMMAND_NAME = "command.GetFeatureInfo";
 
 	private String url;
+
+	private int maxCoordsPerFeature = -1;
 
 	public GetFeatureInfoRequest() {
 	}
@@ -33,11 +35,24 @@ public class GetFeatureInfoRequest implements CommandRequest {
 		this.url = url;
 	}
 
+	public GetFeatureInfoRequest(String url, int maxCoordsPerFeature) {
+		this.url = url;
+		this.maxCoordsPerFeature = maxCoordsPerFeature;
+	}
+
 	public String getUrl() {
 		return url;
 	}
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public int getMaxCoordsPerFeature() {
+		return maxCoordsPerFeature;
+	}
+
+	public void setMaxCoordsPerFeature(int maxCoordsPerFeature) {
+		this.maxCoordsPerFeature = maxCoordsPerFeature;
 	}
 }

@@ -96,7 +96,7 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 	@Override
 	protected MapComponentInfo buildMap() {
 		ViewPort viewPort = mapPresenter.getViewPort();
-		ClientMapInfo mapInfo = mapPresenter.getConfiguration().getMapHintValue(GeomajasServerExtension.MAPINFO);
+		ClientMapInfo mapInfo = mapPresenter.getConfiguration().getHintValue(GeomajasServerExtension.MAPINFO);
 		double printWidth = getPageWidth() - 2 * marginX;
 		double printHeight = getPageHeight() - 2 * marginY;
 
@@ -155,7 +155,7 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 		style.setStyle(PrintLayout.templateDefaultFontStyle);
 		style.setSize((int) PrintLayout.templateDefaultFontSize);
 		legend.setFont(style);
-		ClientMapInfo mapInfo = mapPresenter.getConfiguration().getMapHintValue(GeomajasServerExtension.MAPINFO);
+		ClientMapInfo mapInfo = mapPresenter.getConfiguration().getHintValue(GeomajasServerExtension.MAPINFO);
 		legend.setMapId(mapInfo.getId());
 
 		legend.setTag("legend");

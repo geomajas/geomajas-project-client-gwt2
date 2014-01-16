@@ -54,7 +54,7 @@ public class VectorServerLayerBuilder implements PrintableLayerBuilder {
 				featureIds.add(feature.getId());
 			}
 			vectorRasterizingInfo.setSelectedFeatureIds(featureIds.toArray(new String[selectedFeatures.size()]));
-			ClientMapInfo mapInfo = mapPresenter.getConfiguration().getMapHintValue(GeomajasServerExtension.MAPINFO);
+			ClientMapInfo mapInfo = mapPresenter.getConfiguration().getHintValue(GeomajasServerExtension.MAPINFO);
 			FeatureStyleInfo selectStyle;
 			switch (layerInfo.getLayerType()) {
 				case GEOMETRY:

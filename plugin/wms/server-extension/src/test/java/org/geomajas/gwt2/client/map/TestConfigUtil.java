@@ -28,7 +28,7 @@ public class TestConfigUtil {
 	public static MapConfiguration create(ClientMapInfo mapInfo) {
 		MapConfigurationImpl mapConfig = new MapConfigurationImpl();
 		mapConfig.setCrs(mapInfo.getCrs(), CrsType.DEGREES);
-		mapConfig.setMapHintValue(MapConfiguration.INITIAL_BOUNDS, mapInfo.getInitialBounds());
+		mapConfig.setHintValue(MapConfiguration.INITIAL_BOUNDS, mapInfo.getInitialBounds());
 		mapConfig.setMaxBounds(mapInfo.getMaxBounds());
 		mapConfig.setMaximumScale(mapInfo.getScaleConfiguration().getMaximumScale().getPixelPerUnit());
 		List<Double> resolutions = new ArrayList<Double>();

@@ -63,7 +63,7 @@ public class PrintableMapBuilder {
 		List<ClientLayerInfo> selectedLayers = new ArrayList<ClientLayerInfo>();
 		mapRasterizingInfo.setExtraLayers(selectedLayers);
 
-		ClientMapInfo mapInfo = mapPresenter.getConfiguration().getMapHintValue(GeomajasServerExtension.MAPINFO);
+		ClientMapInfo mapInfo = mapPresenter.getConfiguration().getHintValue(GeomajasServerExtension.MAPINFO);
 		mapInfo.getWidgetInfo().put(MapRasterizingInfo.WIDGET_KEY, mapRasterizingInfo);
 		// Note: mapRasterizingInfo at this time is pretty empty (rastering info for
 		// layers not yet filled in)
@@ -81,7 +81,7 @@ public class PrintableMapBuilder {
 				}
 			}
 		}
-		ClientMapInfo mapInfo = mapPresenter.getConfiguration().getMapHintValue(GeomajasServerExtension.MAPINFO);
+		ClientMapInfo mapInfo = mapPresenter.getConfiguration().getHintValue(GeomajasServerExtension.MAPINFO);
 		mapInfo.setLayers(clientLayers);
 	}
 }

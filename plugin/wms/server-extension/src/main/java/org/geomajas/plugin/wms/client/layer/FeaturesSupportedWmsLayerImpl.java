@@ -11,25 +11,24 @@
 
 package org.geomajas.plugin.wms.client.layer;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.google.gwt.core.client.Callback;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.event.FeatureDeselectedEvent;
 import org.geomajas.gwt2.client.event.FeatureSelectedEvent;
 import org.geomajas.gwt2.client.map.feature.Feature;
+import org.geomajas.plugin.wms.client.WmsServerExtension;
 import org.geomajas.plugin.wms.client.layer.config.WmsLayerConfiguration;
 import org.geomajas.plugin.wms.client.layer.config.WmsTileConfiguration;
 import org.geomajas.plugin.wms.client.service.FeatureCollection;
-import org.geomajas.plugin.wms.client.service.WmsFeatureServiceImpl;
 import org.geomajas.plugin.wms.client.service.WmsService.GetFeatureInfoFormat;
 
-import com.google.gwt.core.client.Callback;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Default implementation of the {@link FeaturesSupportedWmsLayer}.
- * 
+ *
  * @author Pieter De Graef
  * @author An Buyle (getSelectedFeatures())
  */
@@ -98,27 +97,27 @@ public class FeaturesSupportedWmsLayerImpl extends WmsLayerImpl implements Featu
 
 	@Override
 	public void getFeatureInfo(Coordinate location, Callback<FeatureCollection, String> callback) {
-		WmsFeatureServiceImpl.getInstance().getFeatureInfo(this, location, callback);
+		WmsServerExtension.getInstance().getFeatureService().getFeatureInfo(this, location, callback);
 	}
 
 	@Override
 	public void getFeatureInfo(Coordinate location, GetFeatureInfoFormat format, Callback<Object, String> callback) {
-		WmsFeatureServiceImpl.getInstance().getFeatureInfo(this, location, format, callback);
+		WmsServerExtension.getInstance().getFeatureService().getFeatureInfo(this, location, format, callback);
 	}
 
 	@Override
 	public void searchFeatures(Coordinate coordinate, double tolerance,
 			final Callback<FeatureCollection, String> callback) {
-		WmsFeatureServiceImpl.getInstance().getFeatureInfo(this, coordinate, 
+		WmsServerExtension.getInstance().getFeatureService().getFeatureInfo(this, coordinate,
 				new Callback<FeatureCollection, String>() {
 
-			public void onFailure(String reason) {
-				callback.onFailure(reason);
-			}
+					public void onFailure(String reason) {
+						callback.onFailure(reason);
+					}
 
-			public void onSuccess(FeatureCollection result) {
-				callback.onSuccess(result);
-			}
-		});
+					public void onSuccess(FeatureCollection result) {
+						callback.onSuccess(result);
+					}
+				});
 	}
 }

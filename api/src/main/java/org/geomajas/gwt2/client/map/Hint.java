@@ -22,7 +22,7 @@ import org.geomajas.annotation.Api;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public class MapHint<T> {
+public class Hint<T> {
 
 	private String name;
 
@@ -32,7 +32,7 @@ public class MapHint<T> {
 	 * @param name
 	 *            The name of the hint.
 	 */
-	public MapHint(String name) {
+	public Hint(String name) {
 		this.name = name;
 	}
 

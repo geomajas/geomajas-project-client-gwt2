@@ -246,7 +246,7 @@ public final class ViewPortImpl implements ViewPort {
 
 	@Override
 	public void registerAnimation(NavigationAnimation animation) {
-		boolean cancelSupport = configuration.getMapHintValue(MapConfiguration.ANIMATION_CANCEL_SUPPORT);
+		boolean cancelSupport = configuration.getHintValue(MapConfiguration.ANIMATION_CANCEL_SUPPORT);
 		if (!cancelSupport && currentAnimation != null) {
 			return;
 		}
@@ -349,7 +349,7 @@ public final class ViewPortImpl implements ViewPort {
 	// -------------------------------------------------------------------------
 
 	protected double getPixelLength() {
-		return METER_PER_INCH / configuration.getMapHintValue(MapConfiguration.DPI);
+		return METER_PER_INCH / configuration.getHintValue(MapConfiguration.DPI);
 	}
 
 	private void applyScale(double newScale, Coordinate rescalePoint, ZoomOption zoomOption) {

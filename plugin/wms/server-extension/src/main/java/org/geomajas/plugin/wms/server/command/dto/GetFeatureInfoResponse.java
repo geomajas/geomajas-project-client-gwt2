@@ -19,7 +19,7 @@ import org.geomajas.layer.feature.Feature;
 
 /**
  * Response for the GetFeatureInfo command. It returns the features found.
- * 
+ *
  * @author Pieter De Graef
  * @author An Buyle
  */

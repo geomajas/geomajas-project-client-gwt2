@@ -285,7 +285,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		((ViewPortImpl) viewPort).initialize(configuration);
 
 		// Immediately zoom to the initial bounds as configured:
-		viewPort.applyBounds(configuration.getMapHintValue(MapConfiguration.INITIAL_BOUNDS), ZoomOption.LEVEL_CLOSEST);
+		viewPort.applyBounds(configuration.getHintValue(MapConfiguration.INITIAL_BOUNDS), ZoomOption.LEVEL_CLOSEST);
 		renderer.render(new RenderingInfo(display.getMapHtmlContainer(), viewPort.getView(), null));
 
 		// Adding the default map control widgets:
