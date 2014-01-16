@@ -23,6 +23,7 @@ import org.geomajas.graphics.client.service.GraphicsObjectContainer.Space;
 import org.geomajas.graphics.client.service.GraphicsService;
 import org.geomajas.graphics.client.util.BboxPosition;
 import org.geomajas.graphics.client.util.GraphicsUtil;
+import org.geomajas.plugin.editing.gwt.client.Editing;
 import org.geomajas.plugin.graphicsediting.gwt2.client.object.GeometryEditable;
 import org.geomajas.plugin.graphicsediting.gwt2.client.operation.GeometryEditOperation;
 import org.geomajas.gwt2.client.map.MapPresenter;
@@ -32,7 +33,6 @@ import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.gwt.client.GeometryEditor;
-import org.geomajas.plugin.editing.gwt.client.GeometryEditorFactory;
 import org.vaadin.gwtgraphics.client.Image;
 import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 
@@ -63,8 +63,6 @@ public class GeometryEditController extends AbstractGraphicsController implement
 
 	private GeometryEditService service;
 
-	private GeometryEditorFactory editorFactory;
-
 	private MapPresenter mapPresenter;
 
 	/**
@@ -74,11 +72,9 @@ public class GeometryEditController extends AbstractGraphicsController implement
 
 	private EditHandler handler;
 
-	public GeometryEditController(GraphicsObject object, GraphicsService graphicsService,
-			GeometryEditorFactory editorFactory, MapPresenter mapPresenter) {
+	public GeometryEditController(GraphicsObject object, GraphicsService graphicsService, MapPresenter mapPresenter) {
 		super(graphicsService, object);
 		this.mapPresenter = mapPresenter;
-		this.editorFactory = editorFactory;
 		this.object = object.getRole(GeometryEditable.TYPE);
 		container = createContainer();
 		getObjectContainer().addGraphicsObjectContainerHandler(this);
@@ -149,7 +145,7 @@ public class GeometryEditController extends AbstractGraphicsController implement
 	}
 
 	public GeometryEditService createEditService() {
-		editor = editorFactory.create(mapPresenter);
+		editor = Editing.getInstance().createGeometryEditor(mapPresenter);
 		editor.getBaseController().setClickToStop(true);
 		return editor.getEditService();
 	}

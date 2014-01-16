@@ -10,10 +10,7 @@
  */
 package org.geomajas.plugin.graphicsediting.gwt2.example.client.annotation;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.google.web.bindery.event.shared.EventBus;
 import org.geomajas.graphics.client.action.AddTextAsAnchorAction;
 import org.geomajas.graphics.client.action.DeleteAction;
 import org.geomajas.graphics.client.action.ToggleLabelAction;
@@ -21,7 +18,6 @@ import org.geomajas.graphics.client.controller.AnchorControllerFactory;
 import org.geomajas.graphics.client.controller.CreateAnchoredIconController;
 import org.geomajas.graphics.client.controller.CreateAnchoredTextController;
 import org.geomajas.graphics.client.controller.CreateIconController;
-import org.geomajas.graphics.client.controller.CreatePathController;
 import org.geomajas.graphics.client.controller.CreateRectangleController;
 import org.geomajas.graphics.client.controller.CreateTextController;
 import org.geomajas.graphics.client.controller.DeleteControllerFactory;
@@ -37,13 +33,16 @@ import org.geomajas.graphics.client.service.GraphicsController;
 import org.geomajas.graphics.client.service.GraphicsService;
 import org.geomajas.graphics.client.service.GraphicsServiceImpl;
 import org.geomajas.graphics.client.service.MetaControllerFactory;
-import org.geomajas.plugin.graphicsediting.gwt2.client.action.EditAction;
-import org.geomajas.plugin.graphicsediting.gwt2.client.controller.CreatePolygonController;
 import org.geomajas.gwt2.client.event.MapInitializationEvent;
 import org.geomajas.gwt2.client.event.MapInitializationHandler;
 import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.plugin.graphicsediting.gwt2.client.action.EditAction;
+import org.geomajas.plugin.graphicsediting.gwt2.client.controller.CreateLineController;
+import org.geomajas.plugin.graphicsediting.gwt2.client.controller.CreatePolygonController;
 
-import com.google.web.bindery.event.shared.EventBus;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * SetAnnotationPresenterImpl.
@@ -92,7 +91,7 @@ public class SetAnnotationPresenterImpl implements SetAnnotationPresenter, SetAn
 		});
 		graphicsService.setObjectContainer(annotationContainer);
 		PopupMenuControllerFactory popupFactory = new PopupMenuControllerFactory(new PopupMenuFactory(), 1.3, 1.3);
-		popupFactory.registerAction(new EditAction(mapPresenter, new GeometryEditorFactoryImpl()));
+		popupFactory.registerAction(new EditAction(mapPresenter));
 		popupFactory.registerAction(new DeleteAction());
 		popupFactory.registerEditor(new LabelEditor());
 		popupFactory.registerEditor(new StrokeFillEditor());
@@ -105,9 +104,8 @@ public class SetAnnotationPresenterImpl implements SetAnnotationPresenter, SetAn
 		graphicsService.registerControllerFactory(new DeleteControllerFactory());
 //		graphicsService.registerControllerFactory(new PropertyEditControllerFactory());
 		graphicsService.registerControllerFactory(popupFactory);
-		controllerMap.put(Action.CREATE_LINE, new CreatePathController(graphicsService, false));
-		controllerMap.put(Action.CREATE_POLYGON, new CreatePolygonController(graphicsService,
-				new GeometryEditorFactoryImpl(), mapPresenter));
+		controllerMap.put(Action.CREATE_LINE, new CreateLineController(graphicsService, mapPresenter));
+		controllerMap.put(Action.CREATE_POLYGON, new CreatePolygonController(graphicsService, mapPresenter));
 		controllerMap.put(Action.CREATE_RECTANGLE, new CreateRectangleController(graphicsService));
 		controllerMap.put(Action.CREATE_TEXT, new CreateTextController(graphicsService));
 		controllerMap.put(Action.CREATE_ANCHORED_TEXT, new CreateAnchoredTextController(graphicsService));
