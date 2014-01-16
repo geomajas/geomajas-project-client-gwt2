@@ -24,8 +24,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -51,7 +51,7 @@ public class PrintExamplePanel implements SamplePanel {
 	protected ResizeLayoutPanel mapPanel;
 
 	@UiField
-	protected HorizontalPanel buttonPanel;
+	protected SimplePanel printPanel;
 
 	public Widget asWidget() {
 		Widget layout = UI_BINDER.createAndBindUi(this);
@@ -67,23 +67,11 @@ public class PrintExamplePanel implements SamplePanel {
 
 		// Initialize the map, and return the layout:
 		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "gwt-print-app", "mapPrint");
+		
+		PrintPanel panel = new PrintPanel(mapPresenter,"gwt-print-app");
+		printPanel.setWidget(panel);
 
 		return layout;
 	}
 
-	@UiHandler("printMapBtn")
-	public void onPrint(ClickEvent event) {
-		ShowcaseDialogBox dialogBox = new ShowcaseDialogBox();
-		dialogBox.setAnimationEnabled(true);
-		dialogBox.setAutoHideEnabled(false);
-		dialogBox.setModal(true);
-		dialogBox.setGlassEnabled(true);
-		dialogBox.setText("Print");
-		dialogBox.setWidth("500px");
-		dialogBox.setHeight("500px");
-		PrintPanel panel = new PrintPanel(mapPresenter,"gwt-print-app");
-		dialogBox.setWidget(panel);
-		dialogBox.center();
-		dialogBox.show();
-	}
 }

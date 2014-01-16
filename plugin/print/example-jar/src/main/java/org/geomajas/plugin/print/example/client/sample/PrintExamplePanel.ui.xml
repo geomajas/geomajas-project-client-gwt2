@@ -4,11 +4,9 @@
 	<ui:with field='resource' type='org.geomajas.gwt2.example.base.client.resource.ShowcaseResource' />
 
 	<g:DockLayoutPanel unit="PX" width="100%" height="100%">
-		<g:north size="40">
-			<g:HorizontalPanel ui:field="buttonPanel">
-				<g:Button ui:field="printMapBtn">Print map</g:Button>
-			</g:HorizontalPanel>
-		</g:north>
+		<g:west size="300">
+			<g:SimplePanel ui:field="printPanel"/>
+		</g:west>
 		<g:center>
 			<g:SimplePanel addStyleNames="{resource.css.sampleContentLayout}">
 				<g:ResizeLayoutPanel ui:field="mapPanel" width="100%" height="100%" />
