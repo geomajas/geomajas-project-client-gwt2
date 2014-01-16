@@ -8,18 +8,22 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+package org.geomajas.plugin.print.component;
 
-package org.geomajas.plugin.printing.component.dto;
-
-import org.geomajas.plugin.print.component.dto.PrintComponentInfo;
+import org.geomajas.plugin.print.component.dto.ViewPortComponentInfo;
 
 /**
- * Dummy implementation of {@link PrintComponentInfo}, adding no additional data.
- *
+ * Component representing a view port (small embedded map).
+ * 
  * @author Jan De Moerloose
+ *
  */
-public  class DummyComponentInfo extends PrintComponentInfo {
+public interface ViewPortComponent extends MapComponent<ViewPortComponentInfo> {
 
-	private static final long serialVersionUID = 1L;
+	float getZoomScale();
+
+	float getUserX();
+
+	float getUserY();
 
 }

@@ -8,18 +8,18 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+package org.geomajas.plugin.print.component;
 
-package org.geomajas.plugin.printing.component.dto;
-
-import org.geomajas.plugin.print.component.dto.PrintComponentInfo;
+import org.geomajas.plugin.print.component.dto.LabelComponentInfo;
 
 /**
- * Dummy implementation of {@link PrintComponentInfo}, adding no additional data.
- *
+ * Component representing a label.
+ * 
  * @author Jan De Moerloose
+ *
  */
-public  class DummyComponentInfo extends PrintComponentInfo {
+public interface LabelComponent extends PrintComponent<LabelComponentInfo> {
 
-	private static final long serialVersionUID = 1L;
+	void setText(String text);
 
 }

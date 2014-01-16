@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.printing.component;
 
-import org.geomajas.plugin.printing.component.PrintComponent;
+import org.geomajas.plugin.print.component.PrintComponent;
 
 
 // dummy component for testing

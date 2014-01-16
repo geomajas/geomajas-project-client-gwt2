@@ -8,18 +8,19 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+package org.geomajas.plugin.print.configuration;
 
-package org.geomajas.plugin.printing.component.dto;
-
-import org.geomajas.plugin.print.component.dto.PrintComponentInfo;
+import java.io.IOException;
+import java.util.List;
 
 /**
- * Dummy implementation of {@link PrintComponentInfo}, adding no additional data.
+ * Dao for accessing print templates.
  *
  * @author Jan De Moerloose
  */
-public  class DummyComponentInfo extends PrintComponentInfo {
+public interface PrintTemplateDao {
 
-	private static final long serialVersionUID = 1L;
-
+	List<PrintTemplate> findAll() throws IOException;
+	
+	void merge(PrintTemplate template) throws IOException;
 }

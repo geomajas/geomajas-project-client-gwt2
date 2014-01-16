@@ -11,10 +11,10 @@
 
 package org.geomajas.plugin.printing.component.impl;
 
+import org.geomajas.plugin.print.component.PrintComponentVisitor;
+import org.geomajas.plugin.print.component.impl.AbstractPrintComponent;
 import org.geomajas.plugin.printing.component.DummyComponent;
 import org.geomajas.layer.VectorLayerService;
-import org.geomajas.plugin.printing.component.PrintComponentVisitor;
-import org.geomajas.plugin.printing.component.impl.AbstractPrintComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;

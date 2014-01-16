@@ -13,7 +13,8 @@ package org.geomajas.plugin.printing.component.service;
 
 import junit.framework.Assert;
 
-import org.geomajas.plugin.printing.PrintingException;
+import org.geomajas.plugin.print.PrintingException;
+import org.geomajas.plugin.print.component.service.PrintDtoConverterService;
 import org.geomajas.plugin.printing.component.DummyComponent;
 import org.geomajas.plugin.printing.component.dto.DummyComponentInfo;
 import org.junit.Test;

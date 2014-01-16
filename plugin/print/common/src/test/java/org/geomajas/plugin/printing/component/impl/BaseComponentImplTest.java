@@ -13,9 +13,10 @@ package org.geomajas.plugin.printing.component.impl;
 
 import junit.framework.Assert;
 
-import org.geomajas.plugin.printing.component.LayoutConstraint;
-import org.geomajas.plugin.printing.component.PrintComponent;
-import org.geomajas.plugin.printing.component.PrintComponentVisitor;
+import org.geomajas.plugin.print.component.LayoutConstraint;
+import org.geomajas.plugin.print.component.PrintComponent;
+import org.geomajas.plugin.print.component.PrintComponentVisitor;
+import org.geomajas.plugin.print.component.impl.AbstractPrintComponent;
 import org.junit.Test;
 
 public class BaseComponentImplTest {
