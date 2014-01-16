@@ -42,10 +42,3 @@
 	border: 0px;
 	left: 23px;
 }
-
-@external gm-ZoomControl-zoomIn-touch, gm-ZoomControl-zoomOut-touch;
-.gm-ZoomControl-zoomIn:hover, .gm-ZoomControl-zoomIn-touch,
-.gm-ZoomControl-zoomOut:hover, .gm-ZoomControl-zoomOut-touch {
-	color: #337428;
-	background-color: #FFFFFF;
-}
