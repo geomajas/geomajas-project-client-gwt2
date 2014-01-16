@@ -35,7 +35,7 @@ import com.lowagie.text.Rectangle;
  * This class provides a static method that performs the first step in generating a template-based printout
  *  of for instance the specified map view, the map's legend,....
  * It returns the id of the document (possibly the rendering step is not yet completed).
- * The actual printout can be obtained via the PrintingController. 
+ * The actual printout can be obtained via the PrintController. 
  *
  * @author Oliver May
  * @author An Buyle

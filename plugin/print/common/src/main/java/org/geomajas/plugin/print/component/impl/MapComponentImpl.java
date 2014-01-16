@@ -98,7 +98,7 @@ public class MapComponentImpl<T extends MapComponentInfo> extends AbstractPrintC
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.printing.component.impl.MapComponent#getLocation()
+	 * @see org.geomajas.plugin.print.component.impl.MapComponent#getLocation()
 	 */
 	public Coordinate getLocation() {
 		return location;
@@ -109,7 +109,7 @@ public class MapComponentImpl<T extends MapComponentInfo> extends AbstractPrintC
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.printing.component.impl.MapComponent#getMapId()
+	 * @see org.geomajas.plugin.print.component.impl.MapComponent#getMapId()
 	 */
 	public String getMapId() {
 		return mapId;
@@ -128,7 +128,7 @@ public class MapComponentImpl<T extends MapComponentInfo> extends AbstractPrintC
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.printing.component.impl.MapComponent#getPpUnit()
+	 * @see org.geomajas.plugin.print.component.impl.MapComponent#getPpUnit()
 	 */
 	public float getPpUnit() {
 		return ppUnit;
@@ -139,7 +139,7 @@ public class MapComponentImpl<T extends MapComponentInfo> extends AbstractPrintC
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.printing.component.impl.MapComponent#getRasterResolution()
+	 * @see org.geomajas.plugin.print.component.impl.MapComponent#getRasterResolution()
 	 */
 	public double getRasterResolution() {
 		return rasterResolution;

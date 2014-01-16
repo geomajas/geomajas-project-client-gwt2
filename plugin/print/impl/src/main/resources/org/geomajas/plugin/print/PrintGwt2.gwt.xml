@@ -10,11 +10,11 @@
   -->
 
 
-<module rename-to="PrintingGwt2">
+<module rename-to="PrintGwt2">
 
 	<!-- Geomajas Client -->
     <inherits name="org.geomajas.gwt2.GeomajasClientImpl" />
-	<inherits name="org.geomajas.plugin.printing.theme.PrintingGwtTheme" />
+	<inherits name="org.geomajas.plugin.print.theme.PrintGwtTheme" />
  	<inherits name="org.geomajas.plugin.rasterizing.Rasterizing" />
  	
 	<source path="client" />
@@ -25,6 +25,6 @@
 	
 	
 	
-  	<entry-point class='org.geomajas.plugin.printing.client.Printing'/>
+  	<entry-point class='org.geomajas.plugin.print.client.Print'/>
 
 </module>

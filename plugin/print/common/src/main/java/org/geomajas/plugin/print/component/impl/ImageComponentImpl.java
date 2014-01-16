@@ -47,7 +47,7 @@ public class ImageComponentImpl extends AbstractPrintComponent<ImageComponentInf
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.geomajas.plugin.printing.component.impl.ImageComponent#getImagePath()
+	 * @see org.geomajas.plugin.print.component.impl.ImageComponent#getImagePath()
 	 */
 	public String getImagePath() {
 		return imagePath;

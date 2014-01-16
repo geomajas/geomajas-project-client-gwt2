@@ -55,7 +55,7 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
 public class LegendViaUrlComponentImpl extends AbstractPrintComponent<LegendViaUrlComponentInfo> implements
 LegendViaUrlComponent {
 
-	private static final String BUNDLE_NAME = "org/geomajas/plugin/printing/PrintingMessages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org/geomajas/plugin/print/PrintMessages"; //$NON-NLS-1$
 	@XStreamOmitField
 	private final Logger log = LoggerFactory.getLogger(LegendViaUrlComponentImpl.class);
 	

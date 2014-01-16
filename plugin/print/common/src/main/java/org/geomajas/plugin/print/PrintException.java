@@ -13,12 +13,12 @@ package org.geomajas.plugin.print;
 import org.geomajas.global.GeomajasException;
 
 /**
- * Common exception class for the printing plugin.
+ * Common exception class for the print plugin.
  * 
  * @author Jan De Moerloose
  * 
  */
-public class PrintingException extends GeomajasException {
+public class PrintException extends GeomajasException {
 
 	private static final long serialVersionUID = -7531673605025800128L;
 
@@ -35,7 +35,7 @@ public class PrintingException extends GeomajasException {
 	public static final int DTO_IMPLEMENTATION_NOT_FOUND = 5;
 
 	/**
-	 * Create new PrintingException.
+	 * Create new PrintException.
 	 * 
 	 * @param ex
 	 *            cause exception
@@ -44,25 +44,25 @@ public class PrintingException extends GeomajasException {
 	 * @param parameters
 	 *            possible extra parameters
 	 */
-	public PrintingException(Throwable ex, int exceptionCode, Object... parameters) {
+	public PrintException(Throwable ex, int exceptionCode, Object... parameters) {
 		super(ex, exceptionCode, parameters);
 	}
 
 	/**
-	 * Create new PrintingException.
+	 * Create new PrintException.
 	 * 
 	 * @param exceptionCode
 	 *            code which points to the message
 	 * @param parameters
 	 *            possible extra parameters
 	 */
-	public PrintingException(int exceptionCode, Object... parameters) {
+	public PrintException(int exceptionCode, Object... parameters) {
 		super(exceptionCode, parameters);
 	}
 
 	@Override
 	public String getResourceBundleName() {
-		return "org.geomajas.plugin.printing.PrintingException";
+		return "org.geomajas.plugin.print.PrintException";
 	}
 
 }

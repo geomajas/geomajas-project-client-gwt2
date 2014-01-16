@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.printing.document;
+package org.geomajas.plugin.print.document;
 
 import java.io.FileOutputStream;
 import java.util.List;
@@ -46,7 +46,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/plugin/printing/printing.xml", "/org/geomajas/testdata/layerBluemarble.xml",
+		"/org/geomajas/plugin/print/print.xml", "/org/geomajas/testdata/layerBluemarble.xml",
 		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/simplemixedContext.xml" })
 @Transactional(rollbackFor = { org.geomajas.global.GeomajasException.class })
 public class DefaultDocumentTest {

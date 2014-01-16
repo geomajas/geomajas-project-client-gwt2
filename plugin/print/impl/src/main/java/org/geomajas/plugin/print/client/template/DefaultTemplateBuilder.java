@@ -26,7 +26,7 @@ import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.client.map.layer.LayersModel;
 import org.geomajas.gwt2.client.map.layer.RasterServerLayer;
 import org.geomajas.gwt2.client.map.layer.VectorServerLayer;
-import org.geomajas.plugin.print.client.util.PrintingLayout;
+import org.geomajas.plugin.print.client.util.PrintLayout;
 import org.geomajas.plugin.print.command.dto.PrintTemplateInfo;
 import org.geomajas.plugin.print.component.dto.ImageComponentInfo;
 import org.geomajas.plugin.print.component.dto.LabelComponentInfo;
@@ -137,9 +137,9 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 			northarrow.setImagePath("/images/northarrow.gif");
 			northarrow.getLayoutConstraint().setAlignmentX(LayoutConstraintInfo.RIGHT);
 			northarrow.getLayoutConstraint().setAlignmentY(LayoutConstraintInfo.TOP);
-			northarrow.getLayoutConstraint().setMarginX((float) PrintingLayout.templateMarginX);
-			northarrow.getLayoutConstraint().setMarginY((float) PrintingLayout.templateMarginY);
-			northarrow.getLayoutConstraint().setWidth((float) PrintingLayout.templateNorthArrowWidth);
+			northarrow.getLayoutConstraint().setMarginX((float) PrintLayout.templateMarginX);
+			northarrow.getLayoutConstraint().setMarginY((float) PrintLayout.templateMarginY);
+			northarrow.getLayoutConstraint().setWidth((float) PrintLayout.templateNorthArrowWidth);
 			northarrow.setTag("arrow");
 			return northarrow;
 		} else {
@@ -151,9 +151,9 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 	protected LegendComponentInfo buildLegend() {
 		LegendComponentInfo legend = super.buildLegend();
 		FontStyleInfo style = new FontStyleInfo();
-		style.setFamily(PrintingLayout.templateDefaultFontFamily);
-		style.setStyle(PrintingLayout.templateDefaultFontStyle);
-		style.setSize((int) PrintingLayout.templateDefaultFontSize);
+		style.setFamily(PrintLayout.templateDefaultFontFamily);
+		style.setStyle(PrintLayout.templateDefaultFontStyle);
+		style.setSize((int) PrintLayout.templateDefaultFontSize);
 		legend.setFont(style);
 		ClientMapInfo mapInfo = mapPresenter.getConfiguration().getMapHintValue(GeomajasServerExtension.MAPINFO);
 		legend.setMapId(mapInfo.getId());
@@ -205,9 +205,9 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 
 	private LabelComponentInfo getLegendLabel(LegendComponentInfo legend, String text) {
 		LabelComponentInfo legendLabel = new LabelComponentInfo();
-		legendLabel.setBackgroundColor(PrintingLayout.templateDefaultBackgroundColor);
-		legendLabel.setBorderColor(PrintingLayout.templateDefaultBorderColor);
-		legendLabel.setFontColor(PrintingLayout.templateDefaultColor);
+		legendLabel.setBackgroundColor(PrintLayout.templateDefaultBackgroundColor);
+		legendLabel.setBorderColor(PrintLayout.templateDefaultBorderColor);
+		legendLabel.setFontColor(PrintLayout.templateDefaultColor);
 		legendLabel.setFont(legend.getFont());
 		legendLabel.setText(text);
 		legendLabel.setTextOnly(true);

@@ -13,7 +13,7 @@ package org.geomajas.plugin.print.client.template;
 
 import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.plugin.print.client.util.PrintingLayout;
+import org.geomajas.plugin.print.client.util.PrintLayout;
 import org.geomajas.plugin.print.command.dto.PrintTemplateInfo;
 import org.geomajas.plugin.print.component.dto.ImageComponentInfo;
 import org.geomajas.plugin.print.component.dto.LabelComponentInfo;
@@ -50,10 +50,10 @@ public abstract class AbstractTemplateBuilder {
 
 	protected MapComponentInfo buildMap(Bbox bounds) {
 		MapComponentInfo map = new MapComponentInfo();
-		if (PrintingLayout.templateIncludeScaleBar) {
+		if (PrintLayout.templateIncludeScaleBar) {
 			map.addChild(buildScaleBar());
 		}
-		if (PrintingLayout.templateIncludeLegend) {
+		if (PrintLayout.templateIncludeLegend) {
 			LegendComponentInfo legend;
 			if (null == bounds) {
 				legend = buildLegend();
@@ -62,7 +62,7 @@ public abstract class AbstractTemplateBuilder {
 			}
 			map.addChild(legend);
 		}
-		if (PrintingLayout.templateIncludeNorthArrow) {
+		if (PrintLayout.templateIncludeNorthArrow) {
 			map.addChild(buildArrow());
 		}
 		return map;
@@ -87,13 +87,13 @@ public abstract class AbstractTemplateBuilder {
 	protected LabelComponentInfo buildTitle() {
 		LabelComponentInfo label = new LabelComponentInfo();
 		FontStyleInfo style = new FontStyleInfo();
-		style.setFamily(PrintingLayout.templateDefaultFontFamily);
-		style.setStyle(PrintingLayout.templateDefaultFontStyle);
-		style.setSize((int) PrintingLayout.templateDefaultFontSize);
+		style.setFamily(PrintLayout.templateDefaultFontFamily);
+		style.setStyle(PrintLayout.templateDefaultFontStyle);
+		style.setSize((int) PrintLayout.templateDefaultFontSize);
 		label.setFont(style);
-		label.setBackgroundColor(PrintingLayout.templateDefaultBackgroundColor);
-		label.setBorderColor(PrintingLayout.templateDefaultBorderColor);
-		label.setFontColor(PrintingLayout.templateDefaultColor);
+		label.setBackgroundColor(PrintLayout.templateDefaultBackgroundColor);
+		label.setBorderColor(PrintLayout.templateDefaultBorderColor);
+		label.setFontColor(PrintLayout.templateDefaultColor);
 		label.getLayoutConstraint().setAlignmentY(LayoutConstraintInfo.TOP);
 		label.getLayoutConstraint().setAlignmentX(LayoutConstraintInfo.CENTER);
 		label.setTag("title");

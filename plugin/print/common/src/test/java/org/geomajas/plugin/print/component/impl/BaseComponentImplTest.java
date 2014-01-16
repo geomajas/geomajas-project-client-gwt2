@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.printing.component.impl;
+package org.geomajas.plugin.print.component.impl;
 
 import junit.framework.Assert;
 

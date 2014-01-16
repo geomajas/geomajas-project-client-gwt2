@@ -107,7 +107,7 @@ public class ViewPortComponentImpl extends MapComponentImpl<ViewPortComponentInf
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.printing.component.impl.ViewPortComponent#getZoomScale()
+	 * @see org.geomajas.plugin.print.component.impl.ViewPortComponent#getZoomScale()
 	 */
 	public float getZoomScale() {
 		return zoomScale;
@@ -118,7 +118,7 @@ public class ViewPortComponentImpl extends MapComponentImpl<ViewPortComponentInf
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.printing.component.impl.ViewPortComponent#getUserX()
+	 * @see org.geomajas.plugin.print.component.impl.ViewPortComponent#getUserX()
 	 */
 	public float getUserX() {
 		return userX;
@@ -129,7 +129,7 @@ public class ViewPortComponentImpl extends MapComponentImpl<ViewPortComponentInf
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geomajas.plugin.printing.component.impl.ViewPortComponent#getUserY()
+	 * @see org.geomajas.plugin.print.component.impl.ViewPortComponent#getUserY()
 	 */
 	public float getUserY() {
 		return userY;

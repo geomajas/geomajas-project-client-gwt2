@@ -22,15 +22,15 @@ import org.geomajas.annotation.Api;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public final class PrintingLayout {
+public final class PrintLayout {
 
 	// CHECKSTYLE VISIBILITY MODIFIER: OFF
 
 	/** Blank "waiting" image. */
-	public static String iconWaitBlank = "[ISOMORPHIC]/geomajas/plugin/printing/pleasewait-blank.gif";
+	public static String iconWaitBlank = "[ISOMORPHIC]/geomajas/plugin/print/pleasewait-blank.gif";
 
 	/** Moving "waiting" image. */
-	public static String iconWaitMoving = "[ISOMORPHIC]/geomajas/plugin/printing/pleasewait.gif";
+	public static String iconWaitMoving = "[ISOMORPHIC]/geomajas/plugin/print/pleasewait.gif";
 
 	/** Wait image width. */
 	public static int iconWaitWidth = 214;
@@ -88,7 +88,7 @@ public final class PrintingLayout {
 
 	// CHECKSTYLE VISIBILITY MODIFIER: ON
 
-	private PrintingLayout() {
+	private PrintLayout() {
 		// do not allow instantiation.
 	}
 }

@@ -193,7 +193,7 @@
 				<version>${project.version}</version>
 			</dependency>
 
-			<!-- Printing plugin -->
+			<!-- Print plugin -->
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-client-gwt2-plugin-print-common</artifactId>

@@ -13,7 +13,7 @@ package org.geomajas.plugin.print.service;
 import java.util.List;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.plugin.print.PrintingException;
+import org.geomajas.plugin.print.PrintException;
 import org.geomajas.plugin.print.configuration.PrintTemplate;
 import org.geomajas.plugin.print.document.Document;
 
@@ -30,20 +30,20 @@ public interface PrintService {
 	 * Retrieves all available templates.
 	 * 
 	 * @return a list of templates ordered by name
-	 * @throws PrintingException
+	 * @throws PrintException
 	 *             if the templates could not be fetched from db
 	 */
-	List<PrintTemplate> getAllTemplates() throws PrintingException;
+	List<PrintTemplate> getAllTemplates() throws PrintException;
 
 	/**
 	 * Saves a new template or updates an existing one.
 	 * 
 	 * @param template
 	 *            the template
-	 * @throws PrintingException
+	 * @throws PrintException
 	 *             if persistence failed
 	 */
-	void saveOrUpdateTemplate(PrintTemplate template) throws PrintingException;
+	void saveOrUpdateTemplate(PrintTemplate template) throws PrintException;
 
 	/**
 	 * Creates a new default template.
@@ -53,9 +53,9 @@ public interface PrintService {
 	 * @param landscape
 	 *            true for landscape orientation
 	 * @return the template
-	 * @throws PrintingException no template found
+	 * @throws PrintException no template found
 	 */
-	PrintTemplate createDefaultTemplate(String pageSize, boolean landscape) throws PrintingException;
+	PrintTemplate createDefaultTemplate(String pageSize, boolean landscape) throws PrintException;
 
 	/**
 	 * Puts a new document in the service.
@@ -72,8 +72,8 @@ public interface PrintService {
 	 *            unique key to reference the document
 	 * @return the document or null if no such document
 	 * 
-	 * @throws PrintingException
+	 * @throws PrintException
 	 *             if document does not exist
 	 */
-	Document removeDocument(String key) throws PrintingException;
+	Document removeDocument(String key) throws PrintException;
 }

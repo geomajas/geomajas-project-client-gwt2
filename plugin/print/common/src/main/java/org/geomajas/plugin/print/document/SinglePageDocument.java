@@ -28,7 +28,7 @@ import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.ImageOutputStream;
 
-import org.geomajas.plugin.print.PrintingException;
+import org.geomajas.plugin.print.PrintException;
 import org.geomajas.plugin.print.component.MapComponent;
 import org.geomajas.plugin.print.component.PageComponent;
 import org.geomajas.plugin.print.component.PdfContext;
@@ -94,11 +94,11 @@ public class SinglePageDocument extends AbstractDocument {
 	/**
 	 * Renders the document to the specified output stream.
 	 */
-	public void render(OutputStream outputStream, Format format) throws PrintingException {
+	public void render(OutputStream outputStream, Format format) throws PrintException {
 		try {
 			doRender(outputStream, format);
 		} catch (Exception e) { // NOSONAR
-			throw new PrintingException(e, PrintingException.DOCUMENT_RENDER_PROBLEM);
+			throw new PrintException(e, PrintException.DOCUMENT_RENDER_PROBLEM);
 		}
 	}
 
@@ -107,13 +107,13 @@ public class SinglePageDocument extends AbstractDocument {
 	 * to make sure that the latest document changes have been taken into account for rendering.
 	 *
 	 * @param format format
-	 * @throws PrintingException oops
+	 * @throws PrintException oops
 	 */
-	public void layout(Format format) throws PrintingException {
+	public void layout(Format format) throws PrintException {
 		try {
 			doRender(null, format);
 		} catch (Exception e) { // NOSONAR
-			throw new PrintingException(e, PrintingException.DOCUMENT_LAYOUT_PROBLEM);
+			throw new PrintException(e, PrintException.DOCUMENT_LAYOUT_PROBLEM);
 		}
 	}
 
@@ -124,10 +124,10 @@ public class SinglePageDocument extends AbstractDocument {
 	 * @param format format
 	 * @throws DocumentException oops
 	 * @throws IOException oops
-	 * @throws PrintingException oops
+	 * @throws PrintException oops
 	 */
 	private void doRender(OutputStream outputStream, Format format) throws IOException, DocumentException,
-			PrintingException {
+			PrintException {
 		// first render or re-render for different layout
 		if (outputStream == null || baos == null || null != format) {
 			if (baos == null) {
@@ -214,7 +214,7 @@ public class SinglePageDocument extends AbstractDocument {
 						
 						
 					} catch (PdfException e) {
-						throw new PrintingException(e, PrintingException.DOCUMENT_RENDER_PROBLEM);
+						throw new PrintException(e, PrintException.DOCUMENT_RENDER_PROBLEM);
 					}
 					
 					baos.reset();

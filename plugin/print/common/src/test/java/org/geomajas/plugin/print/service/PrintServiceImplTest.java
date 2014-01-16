@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.printing.service;
+package org.geomajas.plugin.print.service;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/plugin/printing/printing.xml" })
+		"/org/geomajas/plugin/print/print.xml" })
 @Transactional(rollbackFor = { org.geomajas.global.GeomajasException.class })
 public class PrintServiceImplTest {
 
