@@ -8,18 +8,26 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-
-package org.geomajas.plugin.printing.component.dto;
+package org.geomajas.plugin.print.component;
 
 import org.geomajas.plugin.print.component.dto.PrintComponentInfo;
 
 /**
- * Dummy implementation of {@link PrintComponentInfo}, adding no additional data.
+ * Base layer component for printing.
+ * 
+ * @param <T> DTO object class
  *
  * @author Jan De Moerloose
  */
-public  class DummyComponentInfo extends PrintComponentInfo {
+public interface BaseLayerComponent<T extends PrintComponentInfo> extends PrintComponent<T> {
 
-	private static final long serialVersionUID = 1L;
+	/** @todo javadoc incomplete. */
+	boolean isVisible();
+
+	/** @todo javadoc incomplete. */
+	boolean isSelected();
+
+	/** @todo javadoc incomplete. */
+	String getLayerId();
 
 }
