@@ -15,7 +15,7 @@ import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanelRegistry;
 import org.geomajas.gwt2.example.base.client.sample.ShowcaseSampleDefinition;
 import org.geomajas.plugin.print.example.client.i18n.SampleMessages;
-import org.geomajas.plugin.print.example.client.sample.PrintPanel;
+import org.geomajas.plugin.print.example.client.sample.PrintExamplePanel;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -45,7 +45,7 @@ public class ExampleJar implements EntryPoint {
 		SamplePanelRegistry.registerFactory(CATEGORY_PRINT, new ShowcaseSampleDefinition() {
 
 			public SamplePanel create() {
-				return new PrintPanel();
+				return new PrintExamplePanel();
 			}
 
 			public String getTitle() {
