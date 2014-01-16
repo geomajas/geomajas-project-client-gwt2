@@ -12,7 +12,7 @@ package org.geomajas.plugin.print.document;
 
 import java.io.OutputStream;
 
-import org.geomajas.plugin.print.PrintingException;
+import org.geomajas.plugin.print.PrintException;
 import org.springframework.util.StringUtils;
 
 /**
@@ -50,7 +50,7 @@ public interface Document {
 			return mimetype;
 		}
 
-		public static Format decode(String path) throws PrintingException {
+		public static Format decode(String path) throws PrintException {
 			String extension = StringUtils.getFilenameExtension(path).toLowerCase();
 			if (JPG.getExtension().equals(extension)) {
 				return JPG;
@@ -67,9 +67,9 @@ public interface Document {
 	 * 
 	 * @param os
 	 *            output stream
-	 * @throws PrintingException
+	 * @throws PrintException
 	 */
-	void render(OutputStream os, Format format) throws PrintingException;
+	void render(OutputStream os, Format format) throws PrintException;
 
 	/**
 	 * Gets the content length of the document.

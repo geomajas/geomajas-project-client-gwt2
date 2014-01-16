@@ -14,12 +14,12 @@ import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt2.client.map.MapPresenter;
-import org.geomajas.plugin.print.client.PrintingMessages;
+import org.geomajas.plugin.print.client.PrintMessages;
 import org.geomajas.plugin.print.client.template.DefaultTemplateBuilder;
 import org.geomajas.plugin.print.client.template.PageSize;
 import org.geomajas.plugin.print.client.template.PrintableLayerBuilder;
 import org.geomajas.plugin.print.client.template.PrintableMapBuilder;
-import org.geomajas.plugin.print.client.util.PrintingLayout;
+import org.geomajas.plugin.print.client.util.PrintLayout;
 import org.geomajas.plugin.print.client.util.UrlBuilder;
 import org.geomajas.plugin.print.command.dto.PrintGetTemplateRequest;
 import org.geomajas.plugin.print.command.dto.PrintGetTemplateResponse;
@@ -45,14 +45,14 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class PrintPanel extends Composite {
 
-	private static final PrintingMessages MESSAGES = GWT.create(PrintingMessages.class);
+	private static final PrintMessages MESSAGES = GWT.create(PrintMessages.class);
 
 	private static final String SAVE = "save";
 
 	private static final String OPEN = "open";
 
 	// private static final String EXTENSION = ".pdf";
-	private static final String URL_PATH = "d/printing";
+	private static final String URL_PATH = "d/print";
 
 	private static final String URL_DOCUMENT_ID = "documentId";
 
@@ -154,8 +154,8 @@ public class PrintPanel extends Composite {
 
 		builder.setApplicationId(this.applicationId);
 		builder.setMapPresenter(mapPresenter);
-		builder.setMarginX((int) PrintingLayout.templateMarginX);
-		builder.setMarginY((int) PrintingLayout.templateMarginY);
+		builder.setMarginX((int) PrintLayout.templateMarginX);
+		builder.setMarginY((int) PrintLayout.templateMarginY);
 		PageSize size = PageSize.A4;
 
 		if (optionLandscapeOrientation.getValue()) {
@@ -187,7 +187,7 @@ public class PrintPanel extends Composite {
 				url.addPath(URL_PATH);
 				url.addParameter(URL_DOCUMENT_ID, response.getDocumentId());
 				// url.addParameter(URL_NAME, (String) fileNameItem.getValue());
-				url.addParameter(URL_NAME, "mapPrinting.pdf");
+				url.addParameter(URL_NAME, "mapPrint.pdf");
 				url.addParameter(URL_TOKEN, command.getUserToken());
 				// TODO String downloadType = downloadTypeGroup.getValue()
 				String downloadType = OPEN;

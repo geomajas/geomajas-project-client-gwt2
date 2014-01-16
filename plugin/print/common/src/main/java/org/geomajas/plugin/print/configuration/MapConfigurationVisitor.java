@@ -17,7 +17,7 @@ import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
-import org.geomajas.plugin.print.PrintingException;
+import org.geomajas.plugin.print.PrintException;
 import org.geomajas.plugin.print.component.BaseLayerComponent;
 import org.geomajas.plugin.print.component.LegendComponent;
 import org.geomajas.plugin.print.component.MapComponent;
@@ -80,7 +80,7 @@ public class MapConfigurationVisitor extends TopDownVisitor {
 					VectorLayerComponentImpl comp = (VectorLayerComponentImpl) printDtoConverterService
 							.toInternal(vectorInfo);
 					layers.add(comp);
-				} catch (PrintingException e) {
+				} catch (PrintException e) {
 					// should never fail
 					log.error("unexpected exception while adding layers to map" , e);
 				}
@@ -95,7 +95,7 @@ public class MapConfigurationVisitor extends TopDownVisitor {
 					comp.setLayerId(info.getServerLayerId());
 					comp.setVisible(true);
 					layers.add(comp);
-				} catch (PrintingException e) {
+				} catch (PrintException e) {
 					// should never fail
 					log.error("unexpected exception while adding layers to map" , e);
 				}

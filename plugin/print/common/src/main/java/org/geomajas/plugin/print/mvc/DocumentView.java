@@ -27,25 +27,25 @@ import org.springframework.web.servlet.view.AbstractView;
  * @author Jan De Moerloose
  * @author An Buyle
  */
-@Component(PrintingController.DOCUMENT_VIEW_NAME)
+@Component(PrintController.DOCUMENT_VIEW_NAME)
 public class DocumentView extends AbstractView {
 
 	@Override
 	protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		Document doc = (Document) model.get(PrintingController.DOCUMENT_KEY);
-		String download = (String) model.get(PrintingController.DOWNLOAD_KEY);
-		String fileName = (String) model.get(PrintingController.FILENAME_KEY);
-		Format format = (Format) model.get(PrintingController.FORMAT_KEY);
+		Document doc = (Document) model.get(PrintController.DOCUMENT_KEY);
+		String download = (String) model.get(PrintController.DOWNLOAD_KEY);
+		String fileName = (String) model.get(PrintController.FILENAME_KEY);
+		Format format = (Format) model.get(PrintController.FORMAT_KEY);
 				
 		// Write content type and also length (determined via byte array).
 		response.setContentType(format.getMimetype());
 		
 		
 		// check download method
-		if (download.equals(PrintingController.DOWNLOAD_METHOD_SAVE)) {
+		if (download.equals(PrintController.DOWNLOAD_METHOD_SAVE)) {
 			response.setHeader("Content-Disposition", " attachment; filename=\"" + fileName + "\"");
-		} else if (download.equals(PrintingController.DOWNLOAD_METHOD_BROWSER)) {
+		} else if (download.equals(PrintController.DOWNLOAD_METHOD_BROWSER)) {
 			response.setHeader("Content-Disposition", " inline; filename=\"" + fileName + "\"");
 		} else {
 			throw new IllegalArgumentException("invalid download method " + download);

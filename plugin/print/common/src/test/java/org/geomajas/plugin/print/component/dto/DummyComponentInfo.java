@@ -9,12 +9,17 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.printing.component;
+package org.geomajas.plugin.print.component.dto;
 
-import org.geomajas.plugin.print.component.PrintComponent;
+import org.geomajas.plugin.print.component.dto.PrintComponentInfo;
 
+/**
+ * Dummy implementation of {@link PrintComponentInfo}, adding no additional data.
+ *
+ * @author Jan De Moerloose
+ */
+public  class DummyComponentInfo extends PrintComponentInfo {
 
-// dummy component for testing
-public interface DummyComponent extends PrintComponent {
-	public boolean isInjected();
+	private static final long serialVersionUID = 1L;
+
 }

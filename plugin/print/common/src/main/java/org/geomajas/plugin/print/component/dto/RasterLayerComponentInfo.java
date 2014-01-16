@@ -18,7 +18,7 @@ import org.geomajas.annotation.Api;
  * DTO object for RasterLayerComponent.
  * 
  * @author Jan De Moerloose
- * @see org.geomajas.plugin.printing.component.RasterLayerComponent
+ * @see org.geomajas.plugin.print.component.RasterLayerComponent
  * @since 2.0.0
  *
  */

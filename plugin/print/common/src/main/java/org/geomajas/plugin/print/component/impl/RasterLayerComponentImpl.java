@@ -89,7 +89,7 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 
 	protected static final Font ERROR_FONT = new Font("SansSerif", Font.PLAIN, 6); //$NON-NLS-1$
 
-	private static final String BUNDLE_NAME = "org/geomajas/extension/printing/rasterlayercomponent"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org/geomajas/extension/print/rasterlayercomponent"; //$NON-NLS-1$
 
 	// do not make this static, different requests might need different bundles
 	@XStreamOmitField
@@ -193,7 +193,7 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 									colored = toDirectColorModel(image);
 								} catch (Exception e) {
 									String msg = getLayerId() + " returned a null image.";
-									msg += " The printing plugin will not render this layer";
+									msg += " The print plugin will not render this layer";
 									log.error(msg, e);
 									continue;
 								}

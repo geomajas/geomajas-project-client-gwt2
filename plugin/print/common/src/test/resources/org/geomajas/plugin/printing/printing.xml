@@ -30,7 +30,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 	<!-- Hibernate SessionFactory -->
 	<bean id="testSessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
 		<property name="dataSource" ref="testDataSource" />
-		<property name="packagesToScan" value="org.geomajas.plugin.printing.configuration" />
+		<property name="packagesToScan" value="org.geomajas.plugin.print.configuration" />
 		<property name="hibernateProperties">
 			<value>
 				hibernate.dialect=org.hibernate.dialect.HSQLDialect
@@ -56,14 +56,14 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 			<util:constant static-field="com.thoughtworks.xstream.XStream.NO_REFERENCES" />
 		</property>
 		<property name="streamDriver">
-			<bean class="org.geomajas.plugin.printing.parser.PrettyPrintDriver" />
+			<bean class="org.geomajas.plugin.print.parser.PrettyPrintDriver" />
 		</property>
 		<property name="autodetectAnnotations" value="true" />
 	</bean>
 
-	<bean id="printTemplateDao" class="org.geomajas.plugin.printing.configuration.HibernatePrintTemplateDao" />
+	<bean id="printTemplateDao" class="org.geomajas.plugin.print.configuration.HibernatePrintTemplateDao" />
 
-	<context:component-scan base-package="org.geomajas.extension.printing.component" />
+	<context:component-scan base-package="org.geomajas.extension.print.component" />
 	
 	<bean class="org.geomajas.service.impl.StaticDispatcherUrlService" name="service.DispatcherUrlService">
 		<property name="dispatcherUrl" value="http://localhost:8080/d/"/>

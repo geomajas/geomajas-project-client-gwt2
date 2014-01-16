@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
  * of for instance the specified map view, the map's legend,....
  * The user can specify the format of the output document (default is PDF). 
  * It returns the id of the document (possibly the rendering step is not yet completed).
- * The actual printout can be obtained via the PrintingController.
+ * The actual printout can be obtained via the PrintController.
  *  
  * @author An Buyle
  *

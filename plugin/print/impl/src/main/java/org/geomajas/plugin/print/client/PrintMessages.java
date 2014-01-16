@@ -13,13 +13,13 @@ package org.geomajas.plugin.print.client;
 import com.google.gwt.i18n.client.Messages;
 
 /**
- * Message bundle for printing plugin.
+ * Message bundle for print plugin.
  * 
  * @author An Buyle
  * @author Jan De Moerloose
  * 
  */
-public interface PrintingMessages extends Messages {
+public interface PrintMessages extends Messages {
 
 	String printPrefsTitleLabel();
 	String printPrefsTitleTooltip();

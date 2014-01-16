@@ -9,14 +9,14 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.printing.component.service;
+package org.geomajas.plugin.print.component.service;
 
 import junit.framework.Assert;
 
-import org.geomajas.plugin.print.PrintingException;
+import org.geomajas.plugin.print.PrintException;
+import org.geomajas.plugin.print.component.DummyComponent;
+import org.geomajas.plugin.print.component.dto.DummyComponentInfo;
 import org.geomajas.plugin.print.component.service.PrintDtoConverterService;
-import org.geomajas.plugin.printing.component.DummyComponent;
-import org.geomajas.plugin.printing.component.dto.DummyComponentInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/plugin/printing/printing.xml", "/org/geomajas/testdata/layerBluemarble.xml",
+		"/org/geomajas/plugin/print/print.xml", "/org/geomajas/testdata/layerBluemarble.xml",
 		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/simplemixedContext.xml" })
 @Transactional(rollbackFor = { org.geomajas.global.GeomajasException.class })
 public class PrintDtoConverterServiceTest {
@@ -39,7 +39,7 @@ public class PrintDtoConverterServiceTest {
 	ApplicationContext context;
 
 	@Test
-	public void testPrototypeScope() throws PrintingException {
+	public void testPrototypeScope() throws PrintException {
 		DummyComponentInfo info = new DummyComponentInfo();
 		DummyComponent comp1 = (DummyComponent) service.toInternal(info);
 		DummyComponent comp2 = (DummyComponent) service.toInternal(info);
@@ -47,7 +47,7 @@ public class PrintDtoConverterServiceTest {
 	}
 	
 	@Test
-	public void testRuntimeInjection() throws PrintingException {
+	public void testRuntimeInjection() throws PrintException {
 		DummyComponentInfo info = new DummyComponentInfo();
 		DummyComponent comp = (DummyComponent) service.toInternal(info);
 		Assert.assertTrue(comp.isInjected());

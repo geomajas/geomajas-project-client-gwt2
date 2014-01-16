@@ -32,7 +32,7 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 /**
- * Basic container component for printing. Handles the size calculation, layout and rendering of its children.
+ * Basic container component for print. Handles the size calculation, layout and rendering of its children.
  * 
  * @author Jan De Moerloose
  * @since 2.0.0

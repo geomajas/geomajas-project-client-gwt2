@@ -29,7 +29,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.plugin.print.PrintingException;
+import org.geomajas.plugin.print.PrintException;
 import org.geomajas.plugin.print.component.dto.LayoutConstraintInfo;
 import org.geomajas.plugin.print.component.impl.ImageComponentImpl;
 import org.geomajas.plugin.print.component.impl.LabelComponentImpl;
@@ -80,18 +80,18 @@ public class PrintServiceImpl implements PrintService {
 	private ApplicationContext applicationContext;
 
 	@Autowired
-	@Qualifier("printing.printMarshaller")
+	@Qualifier("print.printMarshaller")
 	private Marshaller marshaller;
 
 	@Autowired
-	@Qualifier("printing.printMarshaller")
+	@Qualifier("print.printMarshaller")
 	private Unmarshaller unMarshaller;
 
 	private int jaiTileCacheInMb = 64;
 
 	private Map<String, Document> documentMap = Collections.synchronizedMap(new HashMap<String, Document>());
 
-	public List<PrintTemplate> getAllTemplates() throws PrintingException {
+	public List<PrintTemplate> getAllTemplates() throws PrintException {
 		List<PrintTemplate> allTemplates = new ArrayList<PrintTemplate>();
 		if (printTemplateDao != null) {
 			try {
@@ -122,29 +122,29 @@ public class PrintServiceImpl implements PrintService {
 		return allTemplates;
 	}
 
-	public PrintTemplate createDefaultTemplate(String pageSize, boolean landscape) throws PrintingException {
+	public PrintTemplate createDefaultTemplate(String pageSize, boolean landscape) throws PrintException {
 		PrintTemplate template = createTemplate(pageSize, landscape);
 		// calculate the sizes (if not already calculated !)
 		SinglePageDocument document = new SinglePageDocument(template.getPage(), null);
 		try {
 			document.layout(Format.PDF);
-		} catch (PrintingException e) {
+		} catch (PrintException e) {
 			// should not happen !
 			log.warn("Unexpected problem while laying out default print template", e);
 		}
 		return template;
 	}
 
-	public void saveOrUpdateTemplate(PrintTemplate template) throws PrintingException {
+	public void saveOrUpdateTemplate(PrintTemplate template) throws PrintException {
 		StringWriter sw = new StringWriter();
 		try {
 			marshaller.marshal(template.getPage(), new StreamResult(sw));
 			template.setPageXml(sw.toString());
 			printTemplateDao.merge(template);
 		} catch (XmlMappingException e) {
-			throw new PrintingException(e, PrintingException.PRINT_TEMPLATE_XML_PROBLEM);
+			throw new PrintException(e, PrintException.PRINT_TEMPLATE_XML_PROBLEM);
 		} catch (IOException e) {
-			throw new PrintingException(e, PrintingException.PRINT_TEMPLATE_PERSIST_PROBLEM);
+			throw new PrintException(e, PrintException.PRINT_TEMPLATE_PERSIST_PROBLEM);
 		}
 	}
 
@@ -167,15 +167,15 @@ public class PrintServiceImpl implements PrintService {
 	 *            unique key to reference the document
 	 * @return the document or null if no such document
 	 */
-	public Document removeDocument(String key) throws PrintingException {
+	public Document removeDocument(String key) throws PrintException {
 		if (documentMap.containsKey(key)) {
 			return documentMap.remove(key);
 		} else {
-			throw new PrintingException(PrintingException.DOCUMENT_NOT_FOUND, key);
+			throw new PrintException(PrintException.DOCUMENT_NOT_FOUND, key);
 		}
 	}
 
-	private List<PrintTemplate> getDefaults() throws PrintingException {
+	private List<PrintTemplate> getDefaults() throws PrintException {
 		List<PrintTemplate> allTemplates = new ArrayList<PrintTemplate>();
 		allTemplates.add(createDefaultTemplate("A4", true));
 		allTemplates.add(createDefaultTemplate("A3", true));

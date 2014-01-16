@@ -12,7 +12,7 @@ package org.geomajas.plugin.print.mvc;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.geomajas.plugin.print.PrintingException;
+import org.geomajas.plugin.print.PrintException;
 import org.geomajas.plugin.print.component.service.PrintConfigurationService;
 import org.geomajas.plugin.print.document.Document.Format;
 import org.geomajas.plugin.print.service.PrintService;
@@ -31,12 +31,12 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Jan De Moerloose
  * 
  */
-@Controller("/printing/**")
-public class PrintingController {
+@Controller("/print/**")
+public class PrintController {
 
-	public static final String DOCUMENT_VIEW_NAME = "plugin.printing.mvc.DocumentView";
+	public static final String DOCUMENT_VIEW_NAME = "plugin.print.mvc.DocumentView";
 
-	//public static final String IMAGE_VIEW_NAME = "plugin.printing.mvc.ImageView";
+	//public static final String IMAGE_VIEW_NAME = "plugin.print.mvc.ImageView";
 
 	public static final String DOCUMENT_KEY = "document";
 
@@ -58,11 +58,11 @@ public class PrintingController {
 	@Autowired
 	protected PrintConfigurationService configurationService;
 
-	@RequestMapping(value = "/printing", method = RequestMethod.GET)
+	@RequestMapping(value = "/print", method = RequestMethod.GET)
 	public ModelAndView printDocument(@RequestParam("documentId") String documentId,
 			@RequestParam(value = "download", defaultValue = DOWNLOAD_METHOD_SAVE) String download,
 			@RequestParam(value = "name", defaultValue = "geomajas.pdf") String fileName)
-			throws PrintingException {
+			throws PrintException {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName(DOCUMENT_VIEW_NAME);
 		mav.addObject(DOCUMENT_KEY, printService.removeDocument(documentId));
@@ -73,10 +73,10 @@ public class PrintingController {
 	}
 	
 	@ExceptionHandler
-	public ModelAndView exception(PrintingException exception, HttpServletResponse response) throws Exception {
+	public ModelAndView exception(PrintException exception, HttpServletResponse response) throws Exception {
 		response.setContentType("text/html");
 		switch (exception.getExceptionCode()) {
-			case PrintingException.DOCUMENT_NOT_FOUND:
+			case PrintException.DOCUMENT_NOT_FOUND:
 				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 				break;
 			default:

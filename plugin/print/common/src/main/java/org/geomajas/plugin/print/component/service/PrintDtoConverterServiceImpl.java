@@ -14,7 +14,7 @@ import java.awt.Color;
 import java.awt.Font;
 
 import org.geomajas.configuration.FontStyleInfo;
-import org.geomajas.plugin.print.PrintingException;
+import org.geomajas.plugin.print.PrintException;
 import org.geomajas.plugin.print.component.PdfContext;
 import org.geomajas.plugin.print.component.PrintComponent;
 import org.geomajas.plugin.print.component.dto.PrintComponentInfo;
@@ -37,13 +37,13 @@ public class PrintDtoConverterServiceImpl implements PrintDtoConverterService {
 	private PdfContext context = new PdfContext(null);
 
 	@SuppressWarnings("unchecked")
-	public <T extends PrintComponentInfo> PrintComponent<T> toInternal(T info) throws PrintingException {
+	public <T extends PrintComponentInfo> PrintComponent<T> toInternal(T info) throws PrintException {
 		// creates a new component, this is a prototype !!!
 		Object bean;
 		try {
 			bean = applicationContext.getBean(info.getPrototypeName(), PrintComponent.class);
 		} catch (BeansException be) {
-			throw new PrintingException(be, PrintingException.DTO_IMPLEMENTATION_NOT_FOUND,
+			throw new PrintException(be, PrintException.DTO_IMPLEMENTATION_NOT_FOUND,
 					info.getClass().getSimpleName(), info.getPrototypeName());
 		}
 		PrintComponent<T> component = (PrintComponent<T>) bean;

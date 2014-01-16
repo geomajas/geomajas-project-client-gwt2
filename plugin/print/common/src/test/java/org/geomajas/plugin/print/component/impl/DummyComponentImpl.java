@@ -9,11 +9,11 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.printing.component.impl;
+package org.geomajas.plugin.print.component.impl;
 
+import org.geomajas.plugin.print.component.DummyComponent;
 import org.geomajas.plugin.print.component.PrintComponentVisitor;
 import org.geomajas.plugin.print.component.impl.AbstractPrintComponent;
-import org.geomajas.plugin.printing.component.DummyComponent;
 import org.geomajas.layer.VectorLayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;

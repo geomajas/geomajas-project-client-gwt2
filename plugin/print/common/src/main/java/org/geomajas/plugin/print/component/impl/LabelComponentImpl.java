@@ -128,7 +128,7 @@ public class LabelComponentImpl extends AbstractPrintComponent<LabelComponentInf
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.geomajas.plugin.printing.component.impl.LabelComponent#getText()
+	 * @see org.geomajas.plugin.print.component.impl.LabelComponent#getText()
 	 */
 	public String getText() {
 		return text;
@@ -141,7 +141,7 @@ public class LabelComponentImpl extends AbstractPrintComponent<LabelComponentInf
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.geomajas.plugin.printing.component.impl.LabelComponent#getFont()
+	 * @see org.geomajas.plugin.print.component.impl.LabelComponent#getFont()
 	 */
 	public Font getFont() {
 		return font;
@@ -154,7 +154,7 @@ public class LabelComponentImpl extends AbstractPrintComponent<LabelComponentInf
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.geomajas.plugin.printing.component.impl.LabelComponent#isTextOnly()
+	 * @see org.geomajas.plugin.print.component.impl.LabelComponent#isTextOnly()
 	 */
 	public boolean isTextOnly() {
 		return textOnly;
@@ -167,7 +167,7 @@ public class LabelComponentImpl extends AbstractPrintComponent<LabelComponentInf
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.geomajas.plugin.printing.component.impl.LabelComponent#getLineWidth()
+	 * @see org.geomajas.plugin.print.component.impl.LabelComponent#getLineWidth()
 	 */
 	public float getLineWidth() {
 		return lineWidth;

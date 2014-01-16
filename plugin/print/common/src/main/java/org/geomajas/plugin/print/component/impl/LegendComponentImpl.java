@@ -92,7 +92,7 @@ public class LegendComponentImpl extends AbstractPrintComponent<LegendComponentI
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.geomajas.plugin.printing.component.impl.LegendComponent#getFont()
+	 * @see org.geomajas.plugin.print.component.impl.LegendComponent#getFont()
 	 */
 	public Font getFont() {
 		return font;
@@ -105,7 +105,7 @@ public class LegendComponentImpl extends AbstractPrintComponent<LegendComponentI
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.geomajas.plugin.printing.component.impl.LegendComponent#getTitle()
+	 * @see org.geomajas.plugin.print.component.impl.LegendComponent#getTitle()
 	 */
 	public String getTitle() {
 		return title;
@@ -140,7 +140,7 @@ public class LegendComponentImpl extends AbstractPrintComponent<LegendComponentI
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.geomajas.plugin.printing.component.impl.LegendComponent#getMapId()
+	 * @see org.geomajas.plugin.print.component.impl.LegendComponent#getMapId()
 	 */
 	public String getMapId() {
 		return mapId;

@@ -13,7 +13,7 @@ package org.geomajas.plugin.print.document;
 import java.io.OutputStream;
 import java.util.Map;
 
-import org.geomajas.plugin.print.PrintingException;
+import org.geomajas.plugin.print.PrintException;
 import org.geomajas.plugin.print.configuration.DefaultConfigurationVisitor;
 import org.geomajas.plugin.print.configuration.MapConfigurationVisitor;
 import org.geomajas.plugin.print.configuration.PrintTemplate;
@@ -37,7 +37,7 @@ public class DefaultDocument extends SinglePageDocument {
 	}
 
 	@Override
-	public void render(OutputStream outputStream, Format format) throws PrintingException {
+	public void render(OutputStream outputStream, Format format) throws PrintException {
 		defaultVisitor.visitTree(getPage());
 		visitor.visitTree(getPage());
 		super.render(outputStream, format);
