@@ -11,23 +11,24 @@
 
 package org.geomajas.plugin.wms.example.client;
 
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanelRegistry;
 import org.geomajas.gwt2.example.base.client.sample.ShowcaseSampleDefinition;
 import org.geomajas.plugin.wms.example.client.i18n.SampleMessages;
 import org.geomajas.plugin.wms.example.client.sample.v1_1_1.CapabilitiesV111Panel;
+import org.geomajas.plugin.wms.example.client.sample.v1_1_1.SelectStyleV111Panel;
 import org.geomajas.plugin.wms.example.client.sample.v1_1_1.WmsFeatureInfoV111Panel;
 import org.geomajas.plugin.wms.example.client.sample.v1_1_1.WmsLayerV111Panel;
 import org.geomajas.plugin.wms.example.client.sample.v1_3_0.CapabilitiesV130Panel;
+import org.geomajas.plugin.wms.example.client.sample.v1_3_0.SelectStyleV130Panel;
 import org.geomajas.plugin.wms.example.client.sample.v1_3_0.WmsFeatureInfoV130Panel;
 import org.geomajas.plugin.wms.example.client.sample.v1_3_0.WmsLayerV130Panel;
 
-import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
-
 /**
  * Entry point and main class for the GWT client example application.
- * 
+ *
  * @author Pieter De Graef
  */
 public class ExampleJar implements EntryPoint {
@@ -39,10 +40,6 @@ public class ExampleJar implements EntryPoint {
 	public void onModuleLoad() {
 		// Register all samples:
 		registerGeneralSamples();
-	}
-
-	public static SampleMessages getMessages() {
-		return MESSAGES;
 	}
 
 	private void registerGeneralSamples() {
@@ -112,6 +109,28 @@ public class ExampleJar implements EntryPoint {
 				return CATEGORY_WMS;
 			}
 		});
+		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
+
+			public SamplePanel create() {
+				return new SelectStyleV111Panel();
+			}
+
+			public String getTitle() {
+				return MESSAGES.selectStyleV111Title();
+			}
+
+			public String getShortDescription() {
+				return MESSAGES.selectStyleV111Short();
+			}
+
+			public String getDescription() {
+				return MESSAGES.selectStyleV111Description();
+			}
+
+			public String getCategory() {
+				return CATEGORY_WMS;
+			}
+		});
 
 		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
 
@@ -173,6 +192,28 @@ public class ExampleJar implements EntryPoint {
 
 			public String getDescription() {
 				return MESSAGES.wmsGetFeatureInfoV130Description();
+			}
+
+			public String getCategory() {
+				return CATEGORY_WMS;
+			}
+		});
+		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
+
+			public SamplePanel create() {
+				return new SelectStyleV130Panel();
+			}
+
+			public String getTitle() {
+				return MESSAGES.selectStyleV130Title();
+			}
+
+			public String getShortDescription() {
+				return MESSAGES.selectStyleV130Short();
+			}
+
+			public String getDescription() {
+				return MESSAGES.selectStyleV130Description();
 			}
 
 			public String getCategory() {

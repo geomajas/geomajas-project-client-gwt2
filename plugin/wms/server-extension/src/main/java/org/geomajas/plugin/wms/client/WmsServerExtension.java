@@ -13,12 +13,16 @@ package org.geomajas.plugin.wms.client;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.client.map.Hint;
+import org.geomajas.gwt2.client.map.ViewPort;
+import org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo;
 import org.geomajas.plugin.wms.client.layer.FeaturesSupportedWmsLayer;
 import org.geomajas.plugin.wms.client.layer.FeaturesSupportedWmsLayerImpl;
+import org.geomajas.plugin.wms.client.layer.WmsLayer;
 import org.geomajas.plugin.wms.client.layer.config.WmsLayerConfiguration;
 import org.geomajas.plugin.wms.client.layer.config.WmsTileConfiguration;
 import org.geomajas.plugin.wms.client.service.WmsFeatureService;
 import org.geomajas.plugin.wms.client.service.WmsFeatureServiceImpl;
+import org.geomajas.plugin.wms.client.service.WmsService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -62,17 +66,40 @@ public final class WmsServerExtension {
 	}
 
 	/**
+	 * <p>Create a new WMS layer. Use this method if you want to create a WMS layer from a GetCapabilities object you
+	 * have just acquired.</p> <p>This layer does not support a GetFeatureInfo call! If you need that, you'll have to
+	 * use the server extension of this plug-in.</p>
+	 *
+	 * @param viewPort   The map ViewPort.
+	 * @param baseUrl    The WMS base URL. This is the same URL you fed the GetCapabilities call.
+	 * @param version    The WMS version.
+	 * @param layerInfo  The layer info object. Acquired from a WMS GetCapabilities.
+	 * @param crs        The coordinate reference system to describe the configuration in.
+	 * @param tileWidth  The tile width in pixels.
+	 * @param tileHeight The tile height in pixels.
+	 * @return A new WMS layer.
+	 */
+	public WmsLayer createLayer(ViewPort viewPort, String baseUrl, WmsService.WmsVersion version,
+			WmsLayerInfo layerInfo, String crs, int tileWidth, int tileHeight) {
+		WmsTileConfiguration tileConf = WmsClient.getInstance().createTileConfig(layerInfo, crs, tileWidth, tileHeight);
+		WmsLayerConfiguration layerConf = WmsClient.getInstance().createLayerConfig(viewPort, layerInfo, baseUrl,
+				version);
+		return createFeatureSupportedLayer(layerInfo.getTitle(), tileConf, layerConf, layerInfo);
+	}
+
+	/**
 	 * Create a new WMS layer. This layer extends the default {@link org.geomajas.plugin.wms.client.layer.WmsLayer} by
 	 * supporting GetFeatureInfo calls.
 	 *
 	 * @param title       The layer title.
 	 * @param tileConfig  The tile configuration object.
 	 * @param layerConfig The layer configuration object.
+	 * @param layerInfo   The layer info object. Acquired from a WMS GetCapabilities. This is optional.
 	 * @return A new WMS layer.
 	 */
 	public FeaturesSupportedWmsLayer createFeatureSupportedLayer(String title, WmsTileConfiguration tileConfig,
-			WmsLayerConfiguration layerConfig) {
-		return new FeaturesSupportedWmsLayerImpl(title, layerConfig, tileConfig);
+			WmsLayerConfiguration layerConfig, WmsLayerInfo layerInfo) {
+		return new FeaturesSupportedWmsLayerImpl(title, layerConfig, tileConfig, layerInfo);
 	}
 
 	/**
