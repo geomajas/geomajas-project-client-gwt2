@@ -26,11 +26,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Generic controller that is used on touch mobile devices. Note that gestures and multi touch are not supported by some
- * mobile browsers.
+ * Generic controller that is used on touch devices. Note that gestures and multi touch are not supported by some mobile
+ * browsers.
  *
  * @author Dosi Bingov
- * @since 1.0.0
+ * @since 2.0.0
  */
 public class TouchNavigationController extends AbstractMapController {
 
@@ -42,12 +42,7 @@ public class TouchNavigationController extends AbstractMapController {
 
 	protected boolean zooming;
 
-	protected boolean dragging;
-
 	private double lastScale;
-
-	// middle point of a gesture spike !currently only works on apple devicesq
-	private Coordinate midPoint;
 
 	public TouchNavigationController() {
 		super(false);
@@ -59,6 +54,7 @@ public class TouchNavigationController extends AbstractMapController {
 
 	@Override
 	public void onTouchStart(TouchStartEvent event) {
+		logger.log(Level.INFO, "TouchNavigationController -> onTouchStart()");
 		event.preventDefault();
 		lastTouchedPosition = getLocation(event, RenderSpace.WORLD);
 		touchedOrigin = getLocation(event, RenderSpace.SCREEN);
@@ -66,20 +62,20 @@ public class TouchNavigationController extends AbstractMapController {
 
 	@Override
 	public void onTouchEnd(TouchEndEvent event) {
-		updateView(event);
+		logger.log(Level.INFO, "TouchNavigationController -> onTouchEnd()");
+		//TODO: it is never fired = find out what is wrong with that
 	}
 
 	@Override
 	public void onTouchMove(TouchMoveEvent event) {
 		logger.log(Level.INFO, "TouchNavigationController -> onTouchMove()");
 		event.preventDefault();
-		midPoint = mapPresenter.getViewPort().getTransformationService()
-		  .transform(getMidPoint(event), RenderSpace.SCREEN, RenderSpace.WORLD);
-		updateView(event);
+		panView(event);
 	}
 
 	@Override
 	public void onTouchCancel(TouchCancelEvent event) {
+		logger.log(Level.INFO, "TouchNavigationController -> onTouchCancel()");
 	}
 
 	// ------------------------------------------------------------------------
@@ -91,21 +87,30 @@ public class TouchNavigationController extends AbstractMapController {
 		logger.log(Level.INFO, "TouchNavigationController -> onGestureStart()");
 		event.preventDefault();
 		lastScale = mapPresenter.getViewPort().getScale();
-		zoomTo(event.getScale(), false);
+		zooming = true;
+		//zoomTo(event.getScale(), false);
 	}
 
 	@Override
 	public void onGestureEnd(GestureEndEvent event) {
 		logger.log(Level.INFO, "TouchNavigationController -> onGestureEnd()");
 		event.preventDefault();
-		zoomTo(event.getScale(), true);
+		event.stopPropagation();
+	/*	int index = mapPresenter.getViewPort().getFixedScaleIndex(event.getScale() * lastScale);
+		double scale = mapPresenter.getViewPort().getFixedScale(index);
+		Trajectory trajectory = new LinearTrajectory(mapPresenter.getViewPort().getView(),
+		  new View(mapPresenter.getViewPort().getPosition(), scale));
+		NavigationAnimation animation = NavigationAnimationFactory.create(mapPresenter, trajectory, 400);
+		mapPresenter.getViewPort().registerAnimation(animation);*/
+		//zoomTo(event.getScale());
+		zooming = false;
 	}
 
 	@Override
 	public void onGestureChange(GestureChangeEvent event) {
 		logger.log(Level.INFO, "TouchNavigationController -> onGestureChange()");
 		event.preventDefault();
-		zoomTo(event.getScale(), false);
+		zoomTo(event.getScale());
 	}
 
 	// ------------------------------------------------------------------------
@@ -122,14 +127,13 @@ public class TouchNavigationController extends AbstractMapController {
 	public void onDeactivate(MapPresenter mapPresenter) {
 	}
 
-	protected void zoomTo(double scale, boolean isGestureEnded) {
+	protected void zoomTo(double scale) {
 		logger.log(Level.INFO,
-		  "TouchNavigationController -> zoomTo(scale=" + scale + ",isGestureEnded " + isGestureEnded + " )");
-		//		if (midPoint != null) {
-		//			mapPresenter.getViewPort().applyScale(scale * lastScale, midPoint);
-		//		} else {
+		  "TouchNavigationController -> zoomTo(scale=" + scale + " )");
+
 		mapPresenter.getViewPort().applyScale(scale * lastScale);
-		//		}
+
+		zooming = true;
 	}
 
 	/**
@@ -163,8 +167,12 @@ public class TouchNavigationController extends AbstractMapController {
 	 *
 	 * @param event
 	 */
-	protected void updateView(TouchEvent<?> event) {
-		logger.log(Level.INFO, "TouchNavigationController -> updateView(TouchEvent<?> event, boolean isTouchEnded)");
+	protected void panView(TouchEvent<?> event) {
+		logger.log(Level.INFO, "TouchNavigationController -> panView(TouchEvent<?> event, boolean isTouchEnded)");
+		if (zooming) {
+			return;
+		}
+
 		Coordinate end = getMidPoint(event);
 
 		Coordinate beginWorld = mapPresenter.getViewPort().getTransformationService()

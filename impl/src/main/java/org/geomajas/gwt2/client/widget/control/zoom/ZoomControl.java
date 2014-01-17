@@ -42,6 +42,7 @@ import java.util.logging.Logger;
  * @author Dosi Bingov
  */
 public class ZoomControl extends AbstractMapWidget {
+
 	private static Logger logger = Logger.getLogger("");
 
 	/**
