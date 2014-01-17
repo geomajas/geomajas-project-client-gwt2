@@ -42,7 +42,7 @@ public class TouchNavigationController extends AbstractMapController {
 
 	private double lastScale;
 
-	// middle point of a gesture spike !only for multi-touch supported browsers
+	// middle point of a gesture spike !currently only works on apple devicesq
 	private Coordinate midPoint;
 
 	public TouchNavigationController() {
