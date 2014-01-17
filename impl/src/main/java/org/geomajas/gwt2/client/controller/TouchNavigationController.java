@@ -42,7 +42,9 @@ public class TouchNavigationController extends AbstractMapController {
 
 	protected boolean zooming;
 
-	private double lastScale;
+	protected Coordinate centerPoint;
+
+	private double beginScale;
 
 	public TouchNavigationController() {
 		super(false);
@@ -58,6 +60,7 @@ public class TouchNavigationController extends AbstractMapController {
 		event.preventDefault();
 		lastTouchedPosition = getLocation(event, RenderSpace.WORLD);
 		touchedOrigin = getLocation(event, RenderSpace.SCREEN);
+		centerPoint = getMidPoint(event);
 	}
 
 	@Override
@@ -70,11 +73,14 @@ public class TouchNavigationController extends AbstractMapController {
 	public void onTouchMove(TouchMoveEvent event) {
 		logger.log(Level.INFO, "TouchNavigationController -> onTouchMove()");
 		event.preventDefault();
+		event.stopPropagation();
 		panView(event);
 	}
 
 	@Override
 	public void onTouchCancel(TouchCancelEvent event) {
+		event.preventDefault();
+		event.stopPropagation();
 		logger.log(Level.INFO, "TouchNavigationController -> onTouchCancel()");
 	}
 
@@ -84,10 +90,11 @@ public class TouchNavigationController extends AbstractMapController {
 
 	@Override
 	public void onGestureStart(GestureStartEvent event) {
-		logger.log(Level.INFO, "TouchNavigationController -> onGestureStart()");
 		event.preventDefault();
-		lastScale = mapPresenter.getViewPort().getScale();
+		event.stopPropagation();
+		beginScale = mapPresenter.getViewPort().getScale();
 		zooming = true;
+		logger.log(Level.INFO, "TouchNavigationController -> onGestureStart() viewport scale=" + beginScale);
 		//zoomTo(event.getScale(), false);
 	}
 
@@ -96,13 +103,6 @@ public class TouchNavigationController extends AbstractMapController {
 		logger.log(Level.INFO, "TouchNavigationController -> onGestureEnd()");
 		event.preventDefault();
 		event.stopPropagation();
-	/*	int index = mapPresenter.getViewPort().getFixedScaleIndex(event.getScale() * lastScale);
-		double scale = mapPresenter.getViewPort().getFixedScale(index);
-		Trajectory trajectory = new LinearTrajectory(mapPresenter.getViewPort().getView(),
-		  new View(mapPresenter.getViewPort().getPosition(), scale));
-		NavigationAnimation animation = NavigationAnimationFactory.create(mapPresenter, trajectory, 400);
-		mapPresenter.getViewPort().registerAnimation(animation);*/
-		//zoomTo(event.getScale());
 		zooming = false;
 	}
 
@@ -110,6 +110,7 @@ public class TouchNavigationController extends AbstractMapController {
 	public void onGestureChange(GestureChangeEvent event) {
 		logger.log(Level.INFO, "TouchNavigationController -> onGestureChange()");
 		event.preventDefault();
+		event.stopPropagation();
 		zoomTo(event.getScale());
 	}
 
@@ -130,9 +131,11 @@ public class TouchNavigationController extends AbstractMapController {
 	protected void zoomTo(double scale) {
 		logger.log(Level.INFO,
 		  "TouchNavigationController -> zoomTo(scale=" + scale + " )");
-
-		mapPresenter.getViewPort().applyScale(scale * lastScale);
-
+		logger.log(Level.INFO, "begin viewport scale =" + beginScale);
+		double zoomScale = beginScale * scale;
+		logger.log(Level.INFO, "zoomScale=" + zoomScale);
+		mapPresenter.getViewPort().registerAnimation(null); // without animation for touch devices
+		mapPresenter.getViewPort().applyScale(zoomScale);
 		zooming = true;
 	}
 
@@ -169,20 +172,30 @@ public class TouchNavigationController extends AbstractMapController {
 	 */
 	protected void panView(TouchEvent<?> event) {
 		logger.log(Level.INFO, "TouchNavigationController -> panView(TouchEvent<?> event, boolean isTouchEnded)");
+		logger.log(Level.INFO, "zooming=" + zooming);
 		if (zooming) {
 			return;
 		}
 
 		Coordinate end = getMidPoint(event);
+		mapPresenter.getViewPort().applyPosition(transformToMapCoords(end));
+		touchedOrigin = end;
+	}
 
+	/**
+	 * Transforms pixel coordinates to map coordinates.
+	 *
+	 * @param pixelCoords
+	 * @return Coordinate object on the map
+	 */
+	protected Coordinate transformToMapCoords(Coordinate pixelCoords) {
 		Coordinate beginWorld = mapPresenter.getViewPort().getTransformationService()
 		  .transform(touchedOrigin, RenderSpace.SCREEN, RenderSpace.WORLD);
 		Coordinate endWorld = mapPresenter.getViewPort().getTransformationService()
-		  .transform(end, RenderSpace.SCREEN, RenderSpace.WORLD);
+		  .transform(pixelCoords, RenderSpace.SCREEN, RenderSpace.WORLD);
 		double x = mapPresenter.getViewPort().getPosition().getX() + beginWorld.getX() - endWorld.getX();
 		double y = mapPresenter.getViewPort().getPosition().getY() + beginWorld.getY() - endWorld.getY();
 
-		mapPresenter.getViewPort().applyPosition(new Coordinate(x, y));
-		touchedOrigin = end;
+		return new Coordinate(x, y);
 	}
 }
