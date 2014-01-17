@@ -15,6 +15,7 @@ import org.geomajas.graphics.client.action.Action;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.service.GraphicsService;
 import org.geomajas.graphics.client.util.Interruptible;
+import org.geomajas.plugin.editing.gwt.client.Editing;
 import org.geomajas.plugin.graphicsediting.gwt2.client.object.GeometryEditable;
 import org.geomajas.plugin.graphicsediting.gwt2.client.operation.GeometryEditOperation;
 import org.geomajas.gwt2.client.map.MapPresenter;
@@ -24,7 +25,6 @@ import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.gwt.client.GeometryEditor;
-import org.geomajas.plugin.editing.gwt.client.GeometryEditorFactory;
 
 /**
  * Action to delete a {@link GraphicsObject}.
@@ -45,16 +45,12 @@ public class EditAction implements Action, GeometryEditChangeStateHandler,
 
 	private MapPresenter mapPresenter;
 
-	private GeometryEditorFactory editorFactory;
-	
 	private String iconUrl;
 	
 	private boolean backToOriginal;
 
-	public EditAction(MapPresenter mapPresenter,
-			GeometryEditorFactory editorFactory) {
+	public EditAction(MapPresenter mapPresenter) {
 		this.mapPresenter = mapPresenter;
-		this.editorFactory = editorFactory;
 	}
 
 	public boolean supports(GraphicsObject object) {
@@ -89,7 +85,7 @@ public class EditAction implements Action, GeometryEditChangeStateHandler,
 	}
 
 	public GeometryEditService createEditService() {
-		editor = editorFactory.create(mapPresenter);
+		editor = Editing.getInstance().createGeometryEditor(mapPresenter);
 		editor.getBaseController().setClickToStop(true);
 		return editor.getEditService();
 	}

@@ -28,7 +28,7 @@ import com.google.gwt.core.client.GWT;
 public class GraphicsEditingExampleJar implements EntryPoint {
 	private static final  GraphicsEditingMessages  MESSAGES = GWT.create(GraphicsEditingMessages.class);
 
-	public static final String CATEGORY_GRAPHICS = "Graphics";
+	public static final String CATEGORY_GRAPHICS = "Graphics Editing";
 
 	public void onModuleLoad() {
 		// Register all samples:

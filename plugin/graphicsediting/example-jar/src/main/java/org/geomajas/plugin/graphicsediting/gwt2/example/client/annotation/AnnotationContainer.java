@@ -45,14 +45,7 @@ public class AnnotationContainer extends AbstractGraphicsObjectContainer impleme
 	@Override
 	public void onViewPortChanged(ViewPortChangedEvent event) {
 		if (mask != null) {
-//			does not work anymore:
-//			mask.setUserBounds(event.getViewPort().getBounds());
-//			try to get alternative TODO check, this is just some dumy code
-			Coordinate from =   event.getFrom().getPosition();
-			Coordinate to =   event.getFrom().getPosition();
-			Bbox box = new Bbox(Math.min(from.getX(), to.getX()), Math.min(from.getY(), to.getY()),
-					Math.abs(from.getX() - to.getX()), Math.abs(from.getY() - to.getY()));
-			mask.setUserBounds(box);
+			mask.setUserBounds(mapPresenter.getViewPort().getBounds());
 		}
 	}
 

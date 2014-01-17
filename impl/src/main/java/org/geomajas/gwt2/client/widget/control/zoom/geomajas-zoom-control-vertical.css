@@ -29,7 +29,7 @@
 	height: 22px;
 	position: absolute;
 	cursor: pointer;
-	background-color: #F6F6F6;
+	background-color: #
 	font-weight: bold;
 	text-align: center;
 	font-size: 18px;
@@ -42,11 +42,4 @@
 	border: 0px;
 	top: 23px;
 	left: 0px;
-}
-
-@external gm-ZoomControl-zoomIn-touch, gm-ZoomControl-zoomOut-touch;
-.gm-ZoomControl-zoomIn:hover, .gm-ZoomControl-zoomIn-touch,
-.gm-ZoomControl-zoomOut:hover, .gm-ZoomControl-zoomOut-touch {
-	color: #337428;
-	background-color: #FFFFFF;
 }
