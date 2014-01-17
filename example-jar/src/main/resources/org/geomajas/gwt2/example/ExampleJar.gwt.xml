@@ -16,4 +16,9 @@
     <inherits name='com.allen_sauer.gwt.dnd.gwt-dnd'/>
     <entry-point class="org.geomajas.gwt2.example.client.ExampleJar"/>
 	<source path='client'/>
+
+	<!-- enable logging-->
+	<set-property name="gwt.logging.enabled" value="TRUE"/>
+	<!-- client side logging handler (logs in browser console) -->
+	<set-property name="gwt.logging.consoleHandler" value="ENABLED"/>
 </module>

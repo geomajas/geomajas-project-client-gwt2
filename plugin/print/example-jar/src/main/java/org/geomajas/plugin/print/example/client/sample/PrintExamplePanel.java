@@ -16,14 +16,11 @@ import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.widget.MapLayoutPanel;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
-import org.geomajas.gwt2.example.base.client.widget.ShowcaseDialogBox;
 import org.geomajas.plugin.print.client.widget.PrintPanel;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -68,7 +65,7 @@ public class PrintExamplePanel implements SamplePanel {
 		// Initialize the map, and return the layout:
 		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "gwt-print-app", "mapPrint");
 		
-		PrintPanel panel = new PrintPanel(mapPresenter,"gwt-print-app");
+		PrintPanel panel = new PrintPanel(mapPresenter, "gwt-print-app");
 		printPanel.setWidget(panel);
 
 		return layout;

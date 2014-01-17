@@ -11,13 +11,6 @@
 
 package org.geomajas.gwt2.example.base.server.mvc;
 
-import java.io.IOException;
-import java.net.URLDecoder;
-import java.util.Enumeration;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -31,6 +24,12 @@ import org.apache.http.params.HttpParams;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URLDecoder;
+import java.util.Enumeration;
 
 /**
  * Controller that proxies Ajax requests to a specified URL.
@@ -70,7 +69,7 @@ public class AjaxProxyController {
 				Enumeration<?> paramNames = request.getParameterNames();
 				while (paramNames.hasMoreElements()) {
 					String paramName = (String) paramNames.nextElement();
-					if (!paramName.equalsIgnoreCase("url")) {
+					if (!"url".equalsIgnoreCase("url")) {
 						params.setParameter(paramName, request.getParameter(paramName));
 					}
 				}
