@@ -26,7 +26,7 @@ import org.geomajas.plugin.wms.client.service.WmsServiceImpl;
 
 /**
  * Starting point for the WMS client plugin.
- * 
+ *
  * @author Pieter De Graef
  * @since 2.0.0
  */
@@ -43,7 +43,7 @@ public final class WmsClient {
 
 	/**
 	 * Get a singleton instance.
-	 * 
+	 *
 	 * @return Return WmsClient!
 	 */
 	public static WmsClient getInstance() {
@@ -58,19 +58,51 @@ public final class WmsClient {
 	// ------------------------------------------------------------------------
 
 	/**
+	 * <p>Create a new WMS layer. Use this method if you want to create a WMS layer from a GetCapabilities object you
+	 * have just acquired.</p> <p>This layer does not support a GetFeatureInfo call! If you need that, you'll have to
+	 * use the server extension of this plug-in.</p>
+	 *
+	 * @param viewPort   The map ViewPort.
+	 * @param baseUrl    The WMS base URL. This is the same URL you fed the GetCapabilities call. See {@link
+	 *                   WmsService#getCapabilities(String, WmsVersion, com.google.gwt.core.client.Callback)}.
+	 * @param version    The WMS version.
+	 * @param layerInfo  The layer info object. Acquired from a WMS GetCapabilities.
+	 * @param crs        The coordinate reference system to describe the configuration in.
+	 * @param tileWidth  The tile width in pixels.
+	 * @param tileHeight The tile height in pixels.
+	 * @return A new WMS layer.
+	 */
+	public WmsLayer createLayer(ViewPort viewPort, String baseUrl, WmsVersion version, WmsLayerInfo layerInfo,
+			String crs, int tileWidth, int tileHeight) {
+		WmsTileConfiguration tileConf = createTileConfig(layerInfo, crs, tileWidth, tileHeight);
+		WmsLayerConfiguration layerConf = createLayerConfig(viewPort, layerInfo, baseUrl, version);
+		return createLayer(layerInfo.getTitle(), tileConf, layerConf, layerInfo);
+	}
+
+	/**
+	 * Create a new WMS layer. This layer does not support a GetFeatureInfo call! If you need that, you'll have to use
+	 * the server extension of this plug-in.
+	 *
+	 * @param title       The layer title.
+	 * @param tileConfig  The tile configuration object.
+	 * @param layerConfig The layer configuration object.
+	 * @param layerInfo   The layer info object. Acquired from a WMS GetCapabilities. This object is optional.
+	 * @return A new WMS layer.
+	 */
+	public WmsLayer createLayer(String title, WmsTileConfiguration tileConfig, WmsLayerConfiguration layerConfig,
+			WmsLayerInfo layerInfo) {
+		return new WmsLayerImpl(title, layerConfig, tileConfig, layerInfo);
+	}
+
+	/**
 	 * Create a new tile configuration object from a WmsLayerInfo object.
-	 * 
-	 * @param layerInfo
-	 *            The layer info object. Acquired from a WMS GetCapabilities.
-	 * @param crs
-	 *            The coordinate reference system to describe the configuration in.
-	 * @param tileWidth
-	 *            The tile width in pixels.
-	 * @param tileHeight
-	 *            The tile height in pixels.
+	 *
+	 * @param layerInfo  The layer info object. Acquired from a WMS GetCapabilities.
+	 * @param crs        The coordinate reference system to describe the configuration in.
+	 * @param tileWidth  The tile width in pixels.
+	 * @param tileHeight The tile height in pixels.
 	 * @return Returns a tile configuration object.
-	 * @throws IllegalArgumentException
-	 *             Throw when the CRS is not supported for this layerInfo object.
+	 * @throws IllegalArgumentException Throw when the CRS is not supported for this layerInfo object.
 	 */
 	public WmsTileConfiguration createTileConfig(WmsLayerInfo layerInfo, String crs, int tileWidth, int tileHeight)
 			throws IllegalArgumentException {
@@ -84,16 +116,12 @@ public final class WmsClient {
 
 	/**
 	 * Create a WMS layer configuration object from a LayerInfo object acquired through a WMS GetCapabilities call.
-	 * 
-	 * @param viewPort
-	 *            The map ViewPort.
-	 * @param layerInfo
-	 *            The layer info object. Acquired from a WMS GetCapabilities.
-	 * @param baseUrl
-	 *            The WMS base URL. This is the same URL you fed the GetCapabilities call. See
-	 *            {@link WmsService#getCapabilities(String, WmsVersion, com.google.gwt.core.client.Callback)}.
-	 * @param version
-	 *            The WMS version.
+	 *
+	 * @param viewPort  The map ViewPort.
+	 * @param layerInfo The layer info object. Acquired from a WMS GetCapabilities.
+	 * @param baseUrl   The WMS base URL. This is the same URL you fed the GetCapabilities call. See {@link
+	 *                  WmsService#getCapabilities(String, WmsVersion, com.google.gwt.core.client.Callback)}.
+	 * @param version   The WMS version.
 	 * @return Returns the WMS layer configuration object.
 	 */
 	public WmsLayerConfiguration createLayerConfig(ViewPort viewPort, WmsLayerInfo layerInfo, String baseUrl,
@@ -121,29 +149,13 @@ public final class WmsClient {
 		return layerConfig;
 	}
 
-	/**
-	 * Create a new WMS layer. This layer does not support a GetFeatureInfo call! If you need that, you'll have to use
-	 * the server extension of this plug-in.
-	 * 
-	 * @param title
-	 *            The layer title.
-	 * @param tileConfig
-	 *            The tile configuration object.
-	 * @param layerConfig
-	 *            The layer configuration object.
-	 * @return A new WMS layer.
-	 */
-	public WmsLayer createLayer(String title, WmsTileConfiguration tileConfig, WmsLayerConfiguration layerConfig) {
-		return new WmsLayerImpl(title, layerConfig, tileConfig);
-	}
-
 	// ------------------------------------------------------------------------
 	// Getting services:
 	// ------------------------------------------------------------------------
 
 	/**
 	 * Get a service that is able to execute various WMS calls.
-	 * 
+	 *
 	 * @return The WMS service.
 	 */
 	public WmsService getWmsService() {

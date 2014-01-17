@@ -15,7 +15,7 @@ import com.google.gwt.i18n.client.Messages;
 
 /**
  * Specific messages for the many samples.
- * 
+ *
  * @author Pieter De Graef
  */
 public interface SampleMessages extends Messages {
@@ -38,6 +38,12 @@ public interface SampleMessages extends Messages {
 
 	String wmsGetFeatureInfoV111Description();
 
+	String selectStyleV111Title();
+
+	String selectStyleV111Short();
+
+	String selectStyleV111Description();
+
 	String capabilitiesV130Title();
 
 	String capabilitiesV130Short();
@@ -55,4 +61,10 @@ public interface SampleMessages extends Messages {
 	String wmsGetFeatureInfoV130Short();
 
 	String wmsGetFeatureInfoV130Description();
+
+	String selectStyleV130Title();
+
+	String selectStyleV130Short();
+
+	String selectStyleV130Description();
 }

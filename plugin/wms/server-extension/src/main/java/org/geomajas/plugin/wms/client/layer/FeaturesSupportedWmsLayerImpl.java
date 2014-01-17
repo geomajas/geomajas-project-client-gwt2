@@ -17,6 +17,7 @@ import org.geomajas.gwt2.client.event.FeatureDeselectedEvent;
 import org.geomajas.gwt2.client.event.FeatureSelectedEvent;
 import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.plugin.wms.client.WmsServerExtension;
+import org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo;
 import org.geomajas.plugin.wms.client.layer.config.WmsLayerConfiguration;
 import org.geomajas.plugin.wms.client.layer.config.WmsTileConfiguration;
 import org.geomajas.plugin.wms.client.service.FeatureCollection;
@@ -39,8 +40,8 @@ public class FeaturesSupportedWmsLayerImpl extends WmsLayerImpl implements Featu
 	private String filter;
 
 	public FeaturesSupportedWmsLayerImpl(String title, WmsLayerConfiguration wmsLayerConfig,
-			WmsTileConfiguration wmsTileConfig) {
-		super(title, wmsLayerConfig, wmsTileConfig);
+			WmsTileConfiguration wmsTileConfig, WmsLayerInfo layerInfo) {
+		super(title, wmsLayerConfig, wmsTileConfig, layerInfo);
 	}
 
 	// ------------------------------------------------------------------------

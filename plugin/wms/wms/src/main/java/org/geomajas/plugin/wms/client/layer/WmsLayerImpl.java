@@ -11,9 +11,6 @@
 
 package org.geomajas.plugin.wms.client.layer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.client.event.LayerStyleChangedEvent;
 import org.geomajas.gwt2.client.map.View;
@@ -27,13 +24,17 @@ import org.geomajas.gwt2.client.map.render.Tile;
 import org.geomajas.gwt2.client.map.render.TileCode;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
 import org.geomajas.plugin.wms.client.WmsClient;
+import org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo;
 import org.geomajas.plugin.wms.client.layer.config.WmsLayerConfiguration;
 import org.geomajas.plugin.wms.client.layer.config.WmsTileConfiguration;
 import org.geomajas.plugin.wms.client.service.WmsTileServiceImpl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Default implementation of a {@link WmsLayer}.
- * 
+ *
  * @author Pieter De Graef
  * @author An Buyle
  */
@@ -47,16 +48,20 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 
 	protected final WmsTileConfiguration tileConfig;
 
+	protected final WmsLayerInfo layerCapabilities;
+
 	protected LayerRenderer renderer;
 
 	private double opacity = 1.0;
 
-	public WmsLayerImpl(String title, WmsLayerConfiguration wmsConfig, WmsTileConfiguration tileConfig) {
+	public WmsLayerImpl(String title, WmsLayerConfiguration wmsConfig, WmsTileConfiguration tileConfig,
+			WmsLayerInfo layerCapabilities) {
 		super(wmsConfig.getLayers());
 
+		this.title = title;
 		this.wmsConfig = wmsConfig;
 		this.tileConfig = tileConfig;
-		this.title = title;
+		this.layerCapabilities = layerCapabilities;
 	}
 
 	// ------------------------------------------------------------------------
@@ -73,9 +78,14 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 		return tileConfig;
 	}
 
+	@Override
+	public WmsLayerInfo getCapabilities() {
+		return layerCapabilities;
+	}
+
 	/**
 	 * Returns the view port CRS. This layer should always have the same CRS as the map!
-	 * 
+	 *
 	 * @return The layer CRS (=map CRS).
 	 */
 	public String getCrs() {
@@ -113,7 +123,7 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 	@Override
 	public boolean isShowing() {
 		if (markedAsVisible) {
-			if (viewPort.getScale() >= wmsConfig.getMinimumScale() && viewPort.getScale() < 
+			if (viewPort.getScale() >= wmsConfig.getMinimumScale() && viewPort.getScale() <
 					wmsConfig.getMaximumScale()) {
 				return true;
 			}
@@ -150,7 +160,7 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 				Bbox bounds = WmsTileServiceImpl.getInstance().getWorldBoundsForTile(getViewPort(), tileConfig, code);
 				Tile tile = new Tile(getScreenBounds(actualScale, bounds));
 				tile.setCode(code);
-				tile.setUrl(WmsClient.getInstance().getWmsService().getMapUrl(getConfig(), getCrs(), bounds, 
+				tile.setUrl(WmsClient.getInstance().getWmsService().getMapUrl(getConfig(), getCrs(), bounds,
 						tileConfig.getTileWidth(), tileConfig.getTileHeight()));
 				tiles.add(tile);
 			}
@@ -179,7 +189,7 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 	private Bbox getScreenBounds(double scale, Bbox worldBounds) {
 		return new Bbox(Math.round(scale * worldBounds.getX()), -Math.round(scale * worldBounds.getMaxY()),
 				Math.round(scale * worldBounds.getMaxX()) - Math.round(scale * worldBounds.getX()), Math.round(scale
-						* worldBounds.getMaxY())
-						- Math.round(scale * worldBounds.getY()));
+				* worldBounds.getMaxY())
+				- Math.round(scale * worldBounds.getY()));
 	}
 }
