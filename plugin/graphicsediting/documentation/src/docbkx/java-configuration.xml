@@ -15,13 +15,45 @@
   <title>Editing of Graphics Objects</title>
 
   <section>
+    <title>The Graphics Controller System</title>
+
+    <para>A number of functions can be attributed to a graphics object; this is done by registering controllers.
+		If you click the created polygon or line, these controlers will become active. In the example below, the object
+		can be resized (see the square handlers that make up a box around the object), dragged and also,
+		there is a pencil image visible on the left hand top position. If you click this, you will go to the editing mode
+		of the object. You can change the shape of the object by dragging the existing points or add/delete points.</para>
+	  <screenshot>
+		  <screeninfo>A line and polygon graphics object. The right one has been
+			  selected.</screeninfo>
+
+		  <mediaobject>
+			  <imageobject>
+				  <imagedata align="center" fileref="images/graphicsediting_controller_select.png" />
+			  </imageobject>
+		  </mediaobject>
+	  </screenshot>
+
+	  <screenshot>
+		  <screeninfo>Clicking the pencil image puts the object in editing mode.</screeninfo>
+
+		  <mediaobject>
+			  <imageobject>
+				  <imagedata align="center" fileref="images/graphicsediting_controller_edit.png" />
+			  </imageobject>
+		  </mediaobject>
+	  </screenshot>
+  </section>
+
+  <section>
     <title>The Graphics Action System</title>
 
-    <para>Different actions can be perfomed on a a graphics object. Clicking
-    the object enables changing it: resize buttons appear and in the top right
-    position, a cog symbol appears. Clicking the cog shows a number of
-    registered actions. Clicking <emphasis>Edit Shape</emphasis> brings the
-    object in an editing state.</para>
+    <para>The graphics project has a second way to register actions on an object. They are registered in a special controller.
+		This controller will show up as a cog image on the top left position of the object's box, when you click the object.
+		Clicking the cog shows a number of registered actions. Clicking <emphasis>Edit Shape</emphasis> brings the
+    object again in an editing state. </para>
+	  <para>The advantage of using the action system as supposed to the controller system for editing object, is
+		  that more than one action can be registered at the same time. You see in the example below that
+		  also actions <emphasis>Delete</emphasis> and <emphasis>Edit Style</emphasis> are active.</para>
 
     <screenshot>
       <screeninfo>Two polygon objects. The right one has been
@@ -29,7 +61,7 @@
 
       <mediaobject>
         <imageobject>
-          <imagedata align="center" fileref="images/polygon_selected.png" />
+          <imagedata align="center" fileref="images/graphicsediting_action_select.png" />
         </imageobject>
       </mediaobject>
     </screenshot>
@@ -39,7 +71,7 @@
 
       <mediaobject>
         <imageobject>
-          <imagedata align="center" fileref="images/polygon_options_box.png" />
+          <imagedata align="center" fileref="images/graphicsediting_action_menu.png" />
         </imageobject>
       </mediaobject>
     </screenshot>
@@ -49,7 +81,7 @@
 
       <mediaobject>
         <imageobject>
-          <imagedata align="center" fileref="images/polygon_editing.png" />
+          <imagedata align="center" fileref="images/graphicsediting_action_edit.png" />
         </imageobject>
       </mediaobject>
     </screenshot>

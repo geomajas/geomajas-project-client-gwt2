@@ -14,7 +14,7 @@ package org.geomajas.plugin.graphicsediting.gwt2.example.client;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanelRegistry;
 import org.geomajas.gwt2.example.base.client.sample.ShowcaseSampleDefinition;
-import org.geomajas.plugin.graphicsediting.gwt2.example.client.i18n.GraphicsEditingMessages;
+import org.geomajas.plugin.graphicsediting.gwt2.example.client.i18n.GraphicsEditingSampleMessages;
 import org.geomajas.plugin.graphicsediting.gwt2.example.client.sample.GraphicsEditingExample;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -26,42 +26,69 @@ import com.google.gwt.core.client.GWT;
  * @author Jan De Moerloose
  */
 public class GraphicsEditingExampleJar implements EntryPoint {
-	private static final  GraphicsEditingMessages  MESSAGES = GWT.create(GraphicsEditingMessages.class);
+	private static final GraphicsEditingSampleMessages MESSAGES = GWT.create(GraphicsEditingSampleMessages.class);
 
-	public static final String CATEGORY_GRAPHICS = "Graphics Editing";
+	public static final String CATEGORY_GRAPHICS_EDITING = "Graphics Editing Plugin";
 
 	public void onModuleLoad() {
 		// Register all samples:
 		registerSamples();
 	}
 	
-	public static GraphicsEditingMessages getMessages() {
+	public static GraphicsEditingSampleMessages getMessages() {
 		return MESSAGES;
 	}
 
 	private void registerSamples() {
-		SamplePanelRegistry.registerFactory(CATEGORY_GRAPHICS, new ShowcaseSampleDefinition() {
+		SamplePanelRegistry.registerFactory(CATEGORY_GRAPHICS_EDITING, new ShowcaseSampleDefinition() {
 
 			public SamplePanel create() {
-				return new GraphicsEditingExample();
+				return new GraphicsEditingExample(GraphicsEditingExample.EXAMPLE.CONTROLLER);
 			}
 
 			@Override
 			public String getTitle() {
-				return MESSAGES.graphicsEditingTitle();
+				return MESSAGES.graphicsEditingGeometryEditControllerTitle();
 			}
 
 			@Override
 			public String getDescription() {
-				return MESSAGES.graphicsEditingDescription();
+				return MESSAGES.graphicsEditingGeometryEditControllerDescription();
 			}
 
 			public String getShortDescription() {
-				return MESSAGES.graphicsEditingShortDescr();
+				return MESSAGES.graphicsEditingGeometryEditControllerShortDescr();
 			}
 
 			public String getCategory() {
-				return CATEGORY_GRAPHICS;
+				return CATEGORY_GRAPHICS_EDITING;
+			}
+		});
+		SamplePanelRegistry.registerFactory(CATEGORY_GRAPHICS_EDITING, new ShowcaseSampleDefinition() {
+
+			@Override
+			public SamplePanel create() {
+				return new GraphicsEditingExample(GraphicsEditingExample.EXAMPLE.ACTION);
+			}
+
+			@Override
+			public String getTitle() {
+				return MESSAGES.graphicsEditingEditActionTitle();
+			}
+
+			@Override
+			public String getShortDescription() {
+				return MESSAGES.graphicsEditingEditActionShortDescr();
+			}
+
+			@Override
+			public String getDescription() {
+				return MESSAGES.graphicsEditingEditActionDescription();
+			}
+
+			@Override
+			public String getCategory() {
+				return CATEGORY_GRAPHICS_EDITING;
 			}
 		});
 	}

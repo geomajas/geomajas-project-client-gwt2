@@ -60,7 +60,7 @@
 
     <programlisting>&lt;dependency&gt;
     &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
-    &lt;artifactId&gt;geomajas-client-gwt2-plugin-graphicsediting&lt;/artifactId&gt;
+    &lt;artifactId&gt;geomajas-client-gwt2-plugin-graphicsediting-impl&lt;/artifactId&gt;
 &lt;/dependency&gt;</programlisting>
   </sect1>
 </chapter>
