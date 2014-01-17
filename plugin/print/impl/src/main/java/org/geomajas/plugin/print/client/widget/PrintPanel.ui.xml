@@ -11,7 +11,7 @@
   -->
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
-	<ui:with field='msg' type='org.geomajas.plugin.print.client.PrintMessages' />
+	<ui:with field='msg' type='org.geomajas.plugin.print.client.i18n.PrintMessages' />
 	<ui:with field='resource' type='org.geomajas.plugin.print.client.widget.PrintPanelResource' />
 
 	<g:FlowPanel > <!-- no width: 100% here ? -->
