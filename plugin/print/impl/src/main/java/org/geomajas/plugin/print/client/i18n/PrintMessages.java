@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.print.client;
+package org.geomajas.plugin.print.client.i18n;
 
 import com.google.gwt.i18n.client.Messages;
 

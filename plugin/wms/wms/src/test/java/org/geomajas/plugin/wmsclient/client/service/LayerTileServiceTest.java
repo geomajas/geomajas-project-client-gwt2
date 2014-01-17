@@ -21,7 +21,7 @@ import org.geomajas.gwt2.client.map.MapEventBusImpl;
 import org.geomajas.gwt2.client.map.TestConfigUtil;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.render.TileCode;
-import org.geomajas.plugin.wms.client.layer.config.WmsTileConfiguration;
+import org.geomajas.plugin.wms.client.layer.WmsTileConfiguration;
 import org.geomajas.plugin.wms.client.service.WmsTileService;
 import org.geomajas.plugin.wms.client.service.WmsTileServiceImpl;
 import org.junit.Assert;

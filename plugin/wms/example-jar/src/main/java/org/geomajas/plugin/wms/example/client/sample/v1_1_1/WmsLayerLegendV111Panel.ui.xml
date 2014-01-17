@@ -6,7 +6,7 @@
 	<g:DockLayoutPanel unit="PX" width="100%" height="100%">
 		<g:west size="300">
 			<g:HTMLPanel addStyleNames="{resource.css.sampleLeftLayout}">
-				<h2>WMS 1.1.1 Selecting styles</h2>
+				<h2>WMS 1.1.1 Layer legend</h2>
 				<p>This example uses the following base WMS url:</p>
 				<p>http://apps.geomajas.org/geoserver/demo_world/ows</p>
 				<h3>Available layers:</h3>
