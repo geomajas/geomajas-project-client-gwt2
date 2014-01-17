@@ -11,24 +11,24 @@
 
 package org.geomajas.plugin.wms.client.layer;
 
-import java.util.List;
-
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.client.map.layer.LegendUrlSupported;
 import org.geomajas.gwt2.client.map.render.Tile;
+import org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo;
 import org.geomajas.plugin.wms.client.layer.config.WmsLayerConfiguration;
 import org.geomajas.plugin.wms.client.layer.config.WmsTileConfiguration;
 
+import java.util.List;
+
 /**
- * <p>
- * Base client-side WMS layer definition. Note that a WMS service can use either a raster data set or a vector data set,
- * we too make that distinction here. This layer definition does not support interaction with the WMS service. If you
- * need support for features or a GetFeatureInfo request, have a look at the {@link FeaturesSupportedWmsLayer}.
+ * <p> Base client-side WMS layer definition. Note that a WMS service can use either a raster data set or a vector data
+ * set, we too make that distinction here. This layer definition does not support interaction with the WMS service. If
+ * you need support for features or a GetFeatureInfo request, have a look at the <code>FeaturesSupportedWmsLayer</code>.
  * </p>
- * 
+ *
  * @author Pieter De Graef
  * @since 1.0.0
  */
@@ -37,38 +37,46 @@ public interface WmsLayer extends Layer, LegendUrlSupported {
 
 	/**
 	 * Get the main WMS options. These options are translated into HTTP GET parameters for the WMS calls.
-	 * 
+	 *
 	 * @return Get the main WMS options object.
 	 */
 	WmsLayerConfiguration getConfig();
 
 	/**
 	 * Get this layers tile configuration object.
-	 * 
-	 * @return
+	 *
+	 * @return The tile configuration object.
 	 */
 	WmsTileConfiguration getTileConfig();
 
 	/**
+	 * Get the capabilities object that describes this layer. This object is part from the WMS GetCapabilities request
+	 * and is only present if the WMS layer has been created using this. This value can be null.
+	 *
+	 * @return Returns part of the WMS GetCapabilities that describes this layer. This value can be null.
+	 */
+	WmsLayerInfo getCapabilities();
+
+	/**
 	 * Returns the view port CRS. This layer should always have the same CRS as the map!
-	 * 
+	 *
 	 * @return The layer CRS (=map CRS).
 	 */
 	String getCrs();
 
 	/**
 	 * Get the view port for this layer.
-	 * 
+	 *
 	 * @return The ViewPort, or null if the layer has not been added to a map.
 	 */
 	ViewPort getViewPort();
 
 	/**
 	 * Get the tiles for the specified scale and world bounds.
-	 * 
-	 * @param scale
-	 * @param worldBounds
-	 * @return
+	 *
+	 * @param scale       The scale at which to ask for tiles.
+	 * @param worldBounds The bounds in WorldSpace at which to ask for tiles.
+	 * @return The list of tiles fitting the given parameters.
 	 */
 	List<Tile> getTiles(double scale, Bbox worldBounds);
 }
