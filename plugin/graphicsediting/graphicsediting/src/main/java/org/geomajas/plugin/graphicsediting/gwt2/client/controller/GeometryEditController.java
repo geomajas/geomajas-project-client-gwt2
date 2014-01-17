@@ -10,6 +10,7 @@
  */
 package org.geomajas.plugin.graphicsediting.gwt2.client.controller;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
@@ -23,7 +24,7 @@ import org.geomajas.graphics.client.service.GraphicsObjectContainer.Space;
 import org.geomajas.graphics.client.service.GraphicsService;
 import org.geomajas.graphics.client.util.BboxPosition;
 import org.geomajas.graphics.client.util.GraphicsUtil;
-import org.geomajas.plugin.editing.gwt.client.Editing;
+import org.geomajas.plugin.graphicsediting.gwt2.client.GraphicsEditingUtil;
 import org.geomajas.plugin.graphicsediting.gwt2.client.object.GeometryEditable;
 import org.geomajas.plugin.graphicsediting.gwt2.client.operation.GeometryEditOperation;
 import org.geomajas.gwt2.client.map.MapPresenter;
@@ -32,24 +33,28 @@ import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
-import org.geomajas.plugin.editing.gwt.client.GeometryEditor;
 import org.vaadin.gwtgraphics.client.Image;
 import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
 
 /**
- * Controller for {@link GeometryEditable} objects.
+ * Controller for {@link GeometryEditable} objects. The controller will show a pencil icon in the upper left
+ * corner when the object is selected.
  * 
  * @author Jan De Moerloose
+ * @since 2.0.0
  * 
  */
+@Api(allMethods = true)
 public class GeometryEditController extends AbstractGraphicsController implements GeometryEditChangeStateHandler,
 		GeometryEditStopHandler, GraphicsObjectContainerEvent.Handler {
 
+	/**
+	 * Default value of indentation of pencil button from the object bound.
+	 */
 	public static final int IMG_DIST = 16;
 
 	/**
@@ -57,13 +62,11 @@ public class GeometryEditController extends AbstractGraphicsController implement
 	 */
 	private boolean active;
 
-	private GeometryEditable object;
-
-	private GeometryEditor editor;
+	private final GeometryEditable object;
 
 	private GeometryEditService service;
 
-	private MapPresenter mapPresenter;
+	private final MapPresenter mapPresenter;
 
 	/**
 	 * Our own container.
@@ -72,7 +75,14 @@ public class GeometryEditController extends AbstractGraphicsController implement
 
 	private EditHandler handler;
 
-	public GeometryEditController(GraphicsObject object, GraphicsService graphicsService, MapPresenter mapPresenter) {
+	/**
+	 * Default contstructor of {@link GeometryEditController}.
+	 * @param object
+	 * @param graphicsService
+	 * @param mapPresenter
+	 */
+	public GeometryEditController(GraphicsObject object, GraphicsService graphicsService,
+								  MapPresenter mapPresenter) {
 		super(graphicsService, object);
 		this.mapPresenter = mapPresenter;
 		this.object = object.getRole(GeometryEditable.TYPE);
@@ -124,7 +134,7 @@ public class GeometryEditController extends AbstractGraphicsController implement
 
 	private void startEditing() {
 		if (service == null) {
-			service = createEditService();
+			service = GraphicsEditingUtil.createClickToStopEditService(mapPresenter);
 			service.addGeometryEditChangeStateHandler(this);
 			service.addGeometryEditStopHandler(this);
 		}
@@ -140,24 +150,22 @@ public class GeometryEditController extends AbstractGraphicsController implement
 
 	@Override
 	public void onChangeEditingState(GeometryEditChangeStateEvent event) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public GeometryEditService createEditService() {
-		editor = Editing.getInstance().createGeometryEditor(mapPresenter);
-		editor.getBaseController().setClickToStop(true);
-		return editor.getEditService();
+		// do nothing
 	}
 
 	@Override
 	public void destroy() {
 	}
 
+	@Override
+	public void setVisible(boolean visible) {
+		// this controller has no visible elements
+	}
+
 	/**
-	 * 
+	 *  Handler for the pencil icon that is shown on selection of the object.
 	 */
-	class EditHandler implements MouseUpHandler {
+	private class EditHandler implements MouseUpHandler {
 
 		private Image propertyImage;
 
@@ -204,15 +212,6 @@ public class GeometryEditController extends AbstractGraphicsController implement
 			event.stopPropagation();
 		}
 
-		public void onClick(ClickEvent event) {
-		}
-
-	}
-
-	@Override
-	public void setVisible(boolean visible) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

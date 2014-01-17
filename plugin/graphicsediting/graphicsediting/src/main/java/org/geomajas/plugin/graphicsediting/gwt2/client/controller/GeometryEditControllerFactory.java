@@ -10,6 +10,7 @@
  */
 package org.geomajas.plugin.graphicsediting.gwt2.client.controller;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.service.GraphicsController;
 import org.geomajas.graphics.client.service.GraphicsControllerFactory;
@@ -21,12 +22,18 @@ import org.geomajas.gwt2.client.map.MapPresenter;
  * Factory for the {@link GeometryEditController}.
  * 
  * @author Jan De Moerloose
+ * @since 2.0.0
  * 
  */
+@Api(allMethods = true)
 public class GeometryEditControllerFactory implements GraphicsControllerFactory {
 
-	private MapPresenter mapPresenter;
+	private final MapPresenter mapPresenter;
 
+	/**
+	 * Default constructor.
+	 * @param mapPresenter
+	 */
 	public GeometryEditControllerFactory(MapPresenter mapPresenter) {
 		this.mapPresenter = mapPresenter;
 	}

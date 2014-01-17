@@ -23,14 +23,14 @@ import org.geomajas.plugin.graphicsediting.gwt2.client.object.GeometryEditable;
  */
 public class GeometryEditOperation implements GraphicsOperation {
 
-	private Geometry beforeGeometry;
+	private final Geometry beforeGeometry;
 
-	private Geometry afterGeometry;
+	private final Geometry afterGeometry;
 
-	private GraphicsObject geometryEditable;
+	private final GraphicsObject geometryEditable;
 
 	public GeometryEditOperation(GraphicsObject geometryEditable,
-			Geometry beforeGeometry, Geometry afterGeometry) {
+			Geometry beforeGeometry, Geometry afterGeometry	) {
 		this.beforeGeometry = beforeGeometry;
 		this.afterGeometry = afterGeometry;
 		this.geometryEditable = geometryEditable;

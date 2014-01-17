@@ -23,12 +23,12 @@ import org.geomajas.gwt2.client.gfx.GeometryPath;
 import org.vaadin.gwtgraphics.client.VectorObject;
 
 /**
- * GGeometryPath objects are standard Geometry Resizable objects.
+ * {@link GGeometryPath} objects are standard Geometry Resizable objects.
+ * The first G is for Graphics, like in all Graphics objects.
  * 
  * @author Jan De Moerloose
- * 
  */
-public class GGeometryPath extends ResizableGraphicsObject implements Fillable, Strokable, GeometryEditable {
+public class GGeometryPath extends ResizableGraphicsObject implements GeometryEditable {
 
 	public GGeometryPath(Geometry geometry, String text) {
 		this(new ResizableGeometryPath(geometry), text);
@@ -41,9 +41,9 @@ public class GGeometryPath extends ResizableGraphicsObject implements Fillable, 
 	public GGeometryPath(ResizableGeometryPath path, String text) {
 		super(path);
 		addRole(GeometryEditable.TYPE, this);
-		addRole(Strokable.TYPE, this);
+		addRole(Strokable.TYPE, path);
 		if (getPath().isClosed()) {
-			addRole(Fillable.TYPE, this);
+			addRole(Fillable.TYPE, path);
 		}
 	}
 
@@ -55,50 +55,9 @@ public class GGeometryPath extends ResizableGraphicsObject implements Fillable, 
 		return clone;
 	}
 
-	public void setFillColor(String fillColor) {
-		getPath().setFillColor(fillColor);
-	}
-
-	public void setFillOpacity(double fillOpacity) {
-		getPath().setFillOpacity(fillOpacity);
-	}
-
-	public String getFillColor() {
-		return getPath().getFillColor();
-	}
-
-	public double getFillOpacity() {
-		return getPath().getFillOpacity();
-	}
-
-	public String getStrokeColor() {
-		return getPath().getStrokeColor();
-	}
-
-	public void setStrokeColor(String strokeColor) {
-		getPath().setStrokeColor(strokeColor);
-	}
-
-	public int getStrokeWidth() {
-		return getPath().getStrokeWidth();
-	}
-
-	public void setStrokeWidth(int strokeWidth) {
-		getPath().setStrokeWidth(strokeWidth);
-	}
-
-	public double getStrokeOpacity() {
-		return getPath().getStrokeOpacity();
-	}
-
-	public void setStrokeOpacity(double strokeOpacity) {
-		getPath().setStrokeOpacity(strokeOpacity);
-	}
-
 	private ResizableGeometryPath getPath() {
 		return (ResizableGeometryPath) getResizable();
 	}
-	
 
 	@Override
 	public void setGeometry(Geometry geometry) {
@@ -122,10 +81,6 @@ public class GGeometryPath extends ResizableGraphicsObject implements Fillable, 
 
 		ResizableGeometryPath(Geometry geometry) {
 			path = new GeometryPath(geometry);
-			// TODO this should be done in GeometryPath class!
-			if (!path.isClosed()) {
-				path.setFillOpacity(0);
-			}
 			this.geometry = geometry;
 		}
 

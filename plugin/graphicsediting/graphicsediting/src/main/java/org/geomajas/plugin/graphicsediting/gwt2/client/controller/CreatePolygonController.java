@@ -10,16 +10,17 @@
  */
 package org.geomajas.plugin.graphicsediting.gwt2.client.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.google.gwt.event.dom.client.DoubleClickEvent;
+import com.google.gwt.event.dom.client.DoubleClickHandler;
+import com.google.web.bindery.event.shared.HandlerRegistration;
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.graphics.client.object.GraphicsObject;
+import org.geomajas.graphics.client.object.role.Fillable;
+import org.geomajas.graphics.client.object.role.Strokable;
 import org.geomajas.graphics.client.operation.AddOperation;
 import org.geomajas.graphics.client.service.AbstractGraphicsController;
 import org.geomajas.graphics.client.service.GraphicsService;
-import org.geomajas.plugin.editing.gwt.client.Editing;
-import org.geomajas.plugin.graphicsediting.gwt2.client.object.GGeometryPath;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
@@ -28,19 +29,21 @@ import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
-import org.geomajas.plugin.editing.gwt.client.GeometryEditor;
+import org.geomajas.plugin.graphicsediting.gwt2.client.GraphicsEditingUtil;
+import org.geomajas.plugin.graphicsediting.gwt2.client.object.GGeometryPath;
 import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 
-import com.google.gwt.event.dom.client.DoubleClickEvent;
-import com.google.gwt.event.dom.client.DoubleClickHandler;
-import com.google.web.bindery.event.shared.HandlerRegistration;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Controller for Polygon objects.
  * 
  * @author Jan De Moerloose
- * 
+ * @since 2.0.0
+ *
  */
+@Api(allMethods = true)
 public class CreatePolygonController extends AbstractGraphicsController implements GeometryEditStopHandler,
 		DoubleClickHandler {
 
@@ -52,18 +55,16 @@ public class CreatePolygonController extends AbstractGraphicsController implemen
 
 	private VectorObjectContainer container;
 
-	private String fillColor = "#CCFF66";
-
-	private double fillOpacity;
-
-	private String text;
-
-	private MapPresenter mapPresenter;
+	private final MapPresenter mapPresenter;
 
 	private GeometryEditService editService;
 
-	private GeometryEditor editor;
-
+	/**
+	 * Default constructor of
+	 * {@link org.geomajas.plugin.graphicsediting.gwt2.client.controller.CreatePolygonController}.
+	 * @param graphicsService
+	 * @param mapPresenter
+	 */
 	public CreatePolygonController(GraphicsService graphicsService, MapPresenter mapPresenter) {
 		super(graphicsService);
 		this.mapPresenter = mapPresenter;
@@ -102,11 +103,11 @@ public class CreatePolygonController extends AbstractGraphicsController implemen
 	public void destroy() {
 	}
 
-	public void startEditing() {
+	private void startEditing() {
 		if (path == null) {
 			Geometry polygon = new Geometry(Geometry.POLYGON, 0, -1);
 			if (editService == null) {
-				editService = createEditService();
+				editService = GraphicsEditingUtil.createClickToStopEditService(mapPresenter);
 				editService.addGeometryEditStopHandler(this);
 			}
 			editService.start(polygon);
@@ -138,41 +139,20 @@ public class CreatePolygonController extends AbstractGraphicsController implemen
 	@Override
 	public void onDoubleClick(DoubleClickEvent event) {
 		editService.stop();
-//		event.stopPropagation();
 	}
 
 	protected GraphicsObject createObject(Geometry geometry) {
-		GGeometryPath path = new GGeometryPath(geometry, text);
-		path.setFillColor(fillColor);
-		path.setFillOpacity(fillOpacity);
+		GGeometryPath path = new GGeometryPath(geometry, null);
+		path.getRole(Fillable.TYPE).setFillColor(GraphicsEditingUtil.getPolygonCreateFillColor());
+		path.getRole(Fillable.TYPE).setFillOpacity(GraphicsEditingUtil.getPolygonCreateFillOpacity());
+		path.getRole(Strokable.TYPE).setStrokeColor(GraphicsEditingUtil.getPolygonCreateStrokeColor());
+		path.getRole(Strokable.TYPE).setStrokeOpacity(GraphicsEditingUtil.getPolygonCreateStrokeOpacity());
+		path.getRole(Strokable.TYPE).setStrokeWidth(GraphicsEditingUtil.getPolygonCreateStrokeWidth());
 		return path;
-	}
-
-	public GeometryEditService createEditService() {
-		editor = Editing.getInstance().createGeometryEditor(mapPresenter);
-		editor.getBaseController().setClickToStop(true);
-		return editor.getEditService();
-	}
-
-	public void setFillColor(String fillColor) {
-		this.fillColor = fillColor;
-	}
-
-	public void setFillOpacity(double fillOpacity) {
-		this.fillOpacity = fillOpacity;
-	}
-
-	public String getFillColor() {
-		return fillColor;
-	}
-
-	public double getFillOpacity() {
-		return fillOpacity;
 	}
 
 	@Override
 	public void setVisible(boolean visible) {
-		// TODO Auto-generated method stub
-		
+		// this controller has no visible elements
 	}
 }

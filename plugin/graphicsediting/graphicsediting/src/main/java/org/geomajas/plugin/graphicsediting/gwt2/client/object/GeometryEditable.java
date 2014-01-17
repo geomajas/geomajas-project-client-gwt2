@@ -10,6 +10,7 @@
  */
 package org.geomajas.plugin.graphicsediting.gwt2.client.object;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.graphics.client.object.role.RoleType;
 
@@ -17,14 +18,32 @@ import org.geomajas.graphics.client.object.role.RoleType;
  * Implemented by graphics objects that have a {@link Geometry} representation.
  * 
  * @author Jan De Moerloose
+ * @since 2.0.0
  * 
  */
+@Api(allMethods = true)
 public interface GeometryEditable {
 
-	RoleType<GeometryEditable> TYPE = new RoleType<GeometryEditable>("GeometryEditable");
+	/**
+	 * The name for the {@link org.geomajas.graphics.client.object.role.RoleType}.
+	 */
+	String TYPE_NAME = "GeometryEditable";
 
+	/**
+	 * The {@link org.geomajas.graphics.client.object.role.RoleType} for this role.
+	 */
+	RoleType<GeometryEditable> TYPE = new RoleType<GeometryEditable>(TYPE_NAME);
+
+	/**
+	 * Set the geometry.
+	 * @param geometry
+	 */
 	void setGeometry(Geometry geometry);
 
+	/**
+	 * Get the geometry.
+	 * @return
+	 */
 	Geometry getGeometry();
 
 }

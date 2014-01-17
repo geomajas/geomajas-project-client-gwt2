@@ -10,12 +10,13 @@
  */
 package org.geomajas.plugin.graphicsediting.gwt2.client.action;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.graphics.client.action.Action;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.service.GraphicsService;
 import org.geomajas.graphics.client.util.Interruptible;
-import org.geomajas.plugin.editing.gwt.client.Editing;
+import org.geomajas.plugin.graphicsediting.gwt2.client.GraphicsEditingUtil;
 import org.geomajas.plugin.graphicsediting.gwt2.client.object.GeometryEditable;
 import org.geomajas.plugin.graphicsediting.gwt2.client.operation.GeometryEditOperation;
 import org.geomajas.gwt2.client.map.MapPresenter;
@@ -24,22 +25,21 @@ import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
-import org.geomajas.plugin.editing.gwt.client.GeometryEditor;
 
 /**
  * Action to delete a {@link GraphicsObject}.
  * 
  * @author Jan De Moerloose
+ * @since 2.0.0
  * 
  */
+@Api(allMethods = true)
 public class EditAction implements Action, GeometryEditChangeStateHandler,
 		GeometryEditStopHandler, Interruptible {
 
 	private GraphicsService service;
 	
 	private GraphicsObject object;
-
-	private GeometryEditor editor;
 
 	private GeometryEditService editService;
 
@@ -49,21 +49,23 @@ public class EditAction implements Action, GeometryEditChangeStateHandler,
 	
 	private boolean backToOriginal;
 
+	/**
+	 * Default Constructor.
+	 * @param mapPresenter
+	 */
 	public EditAction(MapPresenter mapPresenter) {
 		this.mapPresenter = mapPresenter;
 	}
 
+	@Override
 	public boolean supports(GraphicsObject object) {
 		return object.hasRole(GeometryEditable.TYPE);
 	}
 
+	@Override
 	public void execute(GraphicsObject object) {
 		this.object = object;
-		if (editService == null) {
-			editService = createEditService();
-			editService.addGeometryEditChangeStateHandler(this);
-			editService.addGeometryEditStopHandler(this);
-		}
+		checkOrCreateEditService();
 		service.getMetaController().setActive(false);
 		editService.start(this.object.getRole(GeometryEditable.TYPE).getGeometry());
 	}
@@ -80,14 +82,7 @@ public class EditAction implements Action, GeometryEditChangeStateHandler,
 
 	@Override
 	public void onChangeEditingState(GeometryEditChangeStateEvent event) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public GeometryEditService createEditService() {
-		editor = Editing.getInstance().createGeometryEditor(mapPresenter);
-		editor.getBaseController().setClickToStop(true);
-		return editor.getEditService();
+		// do nothing
 	}
 
 	@Override
@@ -110,11 +105,8 @@ public class EditAction implements Action, GeometryEditChangeStateHandler,
 	public String getIconUrl() {
 		return iconUrl;
 	}
-	
-	public GeometryEditService getGeometryEditorService() {
-		return editService;
-	}
-	
+
+	@Override
 	public void stop() {
 		editService.stop();
 	}
@@ -149,12 +141,16 @@ public class EditAction implements Action, GeometryEditChangeStateHandler,
 
 	@Override
 	public boolean isInProgress() {
+		checkOrCreateEditService();
+		return editService.isStarted();
+	}
+
+	private void checkOrCreateEditService() {
 		if (editService == null) {
-			editService = createEditService();
+			editService = GraphicsEditingUtil.createClickToStopEditService(mapPresenter);
 			editService.addGeometryEditChangeStateHandler(this);
 			editService.addGeometryEditStopHandler(this);
 		}
-		return editService.isStarted();
 	}
 
 	@Override

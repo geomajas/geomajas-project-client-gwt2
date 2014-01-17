@@ -10,16 +10,15 @@
  */
 package org.geomajas.plugin.graphicsediting.gwt2.client.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.google.web.bindery.event.shared.HandlerRegistration;
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.graphics.client.object.GraphicsObject;
+import org.geomajas.graphics.client.object.role.Fillable;
+import org.geomajas.graphics.client.object.role.Strokable;
 import org.geomajas.graphics.client.operation.AddOperation;
 import org.geomajas.graphics.client.service.AbstractGraphicsController;
 import org.geomajas.graphics.client.service.GraphicsService;
-import org.geomajas.plugin.editing.gwt.client.Editing;
-import org.geomajas.plugin.graphicsediting.gwt2.client.object.GGeometryPath;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
@@ -27,17 +26,21 @@ import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
-import org.geomajas.plugin.editing.gwt.client.GeometryEditor;
+import org.geomajas.plugin.graphicsediting.gwt2.client.GraphicsEditingUtil;
+import org.geomajas.plugin.graphicsediting.gwt2.client.object.GGeometryPath;
 import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 
-import com.google.web.bindery.event.shared.HandlerRegistration;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Controller for Polygon objects.
  * 
  * @author Jan De Moerloose
+ * @since 2.0.0
  * 
  */
+@Api(allMethods = true)
 public class CreateLineController extends AbstractGraphicsController implements GeometryEditStopHandler {
 
 	private boolean active;
@@ -48,14 +51,15 @@ public class CreateLineController extends AbstractGraphicsController implements 
 
 	private VectorObjectContainer container;
 
-	private String text;
-
-	private MapPresenter mapPresenter;
+	private final MapPresenter mapPresenter;
 
 	private GeometryEditService editService;
 
-	private GeometryEditor editor;
-
+	/**
+	 * Default constructor for{@link CreateLineController} .
+	 * @param graphicsService
+	 * @param mapPresenter
+	 */
 	public CreateLineController(GraphicsService graphicsService, MapPresenter mapPresenter) {
 		super(graphicsService);
 		this.mapPresenter = mapPresenter;
@@ -93,12 +97,12 @@ public class CreateLineController extends AbstractGraphicsController implements 
 	public void destroy() {
 	}
 
-	public void startEditing() {
+	private void startEditing() {
 		if (path == null) {
 			
 			Geometry line = new Geometry(Geometry.LINE_STRING, 0, -1);
 			if (editService == null) {
-				editService = createEditService();
+				editService = GraphicsEditingUtil.createClickToStopEditService(mapPresenter);
 				editService.addGeometryEditStopHandler(this);
 			}
 			editService.start(line);
@@ -123,19 +127,18 @@ public class CreateLineController extends AbstractGraphicsController implements 
 	}
 
 	protected GraphicsObject createObject(Geometry geometry) {
-		GGeometryPath path = new GGeometryPath(geometry, text);
+		GGeometryPath path = new GGeometryPath(geometry, null);
+		if (path.hasRole(Fillable.TYPE)) {
+			path.getRole(Fillable.TYPE).setFillOpacity(0);
+		}
+		path.getRole(Strokable.TYPE).setStrokeColor(GraphicsEditingUtil.getLineCreateStrokeColor());
+		path.getRole(Strokable.TYPE).setStrokeOpacity(GraphicsEditingUtil.getLineCreateStrokeOpacity());
+		path.getRole(Strokable.TYPE).setStrokeWidth(GraphicsEditingUtil.getLineCreateStrokeWidth());
 		return path;
-	}
-
-	public GeometryEditService createEditService() {
-		editor = Editing.getInstance().createGeometryEditor(mapPresenter);
-		editor.getBaseController().setClickToStop(true);
-		return editor.getEditService();
 	}
 
 	@Override
 	public void setVisible(boolean visible) {
-		// TODO Auto-generated method stub
-		
+		// this controller has no visible elements
 	}
 }

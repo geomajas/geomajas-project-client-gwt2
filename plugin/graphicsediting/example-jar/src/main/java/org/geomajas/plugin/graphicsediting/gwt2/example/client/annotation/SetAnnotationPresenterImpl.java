@@ -102,6 +102,7 @@ public class SetAnnotationPresenterImpl implements SetAnnotationPresenter, SetAn
 		graphicsService.registerControllerFactory(new DragControllerFactory());
 		graphicsService.registerControllerFactory(new AnchorControllerFactory());
 		graphicsService.registerControllerFactory(new DeleteControllerFactory());
+//		graphicsService.registerControllerFactory(new GeometryEditControllerFactory(mapPresenter));
 //		graphicsService.registerControllerFactory(new PropertyEditControllerFactory());
 		graphicsService.registerControllerFactory(popupFactory);
 		controllerMap.put(Action.CREATE_LINE, new CreateLineController(graphicsService, mapPresenter));
