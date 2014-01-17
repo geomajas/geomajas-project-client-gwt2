@@ -18,38 +18,43 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DecoratorPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
+import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.example.base.client.ExampleBase;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.plugin.wms.client.WmsClient;
 import org.geomajas.plugin.wms.client.capabilities.WmsGetCapabilitiesInfo;
 import org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo;
+import org.geomajas.plugin.wms.client.capabilities.WmsLayerStyleInfo;
 import org.geomajas.plugin.wms.client.layer.WmsLayer;
 import org.geomajas.plugin.wms.client.layer.WmsLayerConfiguration;
 import org.geomajas.plugin.wms.client.layer.WmsTileConfiguration;
 import org.geomajas.plugin.wms.client.service.WmsService.WmsRequest;
 import org.geomajas.plugin.wms.client.service.WmsService.WmsUrlTransformer;
 import org.geomajas.plugin.wms.client.service.WmsService.WmsVersion;
+import org.geomajas.plugin.wms.client.widget.WmsLayerLegend;
 
 /**
  * ContentPanel that demonstrates rendering abilities in world space with a map that supports resizing.
- * 
+ *
  * @author Pieter De Graef
  */
-public class CapabilitiesV130Panel implements SamplePanel {
+public class WmsLayerLegendV130Panel implements SamplePanel {
 
 	/**
 	 * UI binder for this widget.
-	 * 
+	 *
 	 * @author Pieter De Graef
 	 */
-	interface MyUiBinder extends UiBinder<Widget, CapabilitiesV130Panel> {
+	interface MyUiBinder extends UiBinder<Widget, WmsLayerLegendV130Panel> {
 	}
 
 	private static final MyUiBinder UI_BINDER = GWT.create(MyUiBinder.class);
@@ -105,22 +110,10 @@ public class CapabilitiesV130Panel implements SamplePanel {
 										mapPresenter.getViewPort(), layerInfo, WMS_BASE_URL, WmsVersion.V1_3_0);
 								final WmsLayer layer = WmsClient.getInstance().createLayer(layerInfo.getTitle(),
 										tileConfig, layerConfig, layerInfo);
+								mapPresenter.getLayersModel().addLayer(layer);
+								mapPresenter.getLayersModelRenderer().setAnimated(layer, true);
 
-								CheckBox layerBox = new CheckBox(layer.getTitle());
-								layerBox.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
-
-									@Override
-									public void onValueChange(ValueChangeEvent<Boolean> event) {
-										if (event.getValue()) {
-											mapPresenter.getLayersModel().addLayer(layer);
-											mapPresenter.getLayersModelRenderer().setAnimated(layer, true);
-										} else {
-											mapPresenter.getLayersModel().removeLayer(layer.getId());
-										}
-									}
-								});
-
-								layerList.add(layerBox);
+								layerList.add(new LayerPresenter(mapPresenter.getEventBus(), layer));
 							}
 						}
 					}
@@ -132,5 +125,42 @@ public class CapabilitiesV130Panel implements SamplePanel {
 				});
 
 		return layout;
+	}
+
+	/**
+	 * Widget that represents the Layer and it's available styles.
+	 *
+	 * @author Pieter De Graef
+	 */
+	private static final class LayerPresenter extends VerticalPanel {
+
+		private LayerPresenter(MapEventBus eventBus, final WmsLayer layer) {
+			setStyleName(ExampleBase.getShowcaseResource().css().sampleRow());
+			setWidth("100%");
+			add(new Label(layer.getTitle()));
+			WmsLayerInfo capabilities = layer.getCapabilities();
+			boolean first = true;
+			if (capabilities != null) {
+				for (final WmsLayerStyleInfo styleInfo : capabilities.getStyleInfo()) {
+					final RadioButton styleWidget = new RadioButton(layer.getId() + "Radio", styleInfo.getTitle());
+					styleWidget.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+
+						@Override
+						public void onValueChange(ValueChangeEvent<Boolean> event) {
+							if (event.getValue()) {
+								layer.getConfig().setStyles(styleInfo.getName());
+								layer.refresh();
+							}
+						}
+					});
+					if (first) {
+						styleWidget.setValue(true);
+						first = false;
+					}
+					add(styleWidget);
+				}
+				add(new WmsLayerLegend(eventBus, layer));
+			}
+		}
 	}
 }

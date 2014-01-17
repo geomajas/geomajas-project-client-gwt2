@@ -10,7 +10,7 @@
 				<p>This example uses the following base WMS url:</p>
 				<p>http://apps.geomajas.org/geoserver/demo_world/ows</p>
 				<h3>Available layers:</h3>
-				<g:VerticalPanel ui:field="layerList" />
+				<g:VerticalPanel ui:field="layerList" width="100%" />
 			</g:HTMLPanel>
 		</g:west>
 		<g:center>

@@ -27,8 +27,8 @@ import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.plugin.wms.client.WmsClient;
 import org.geomajas.plugin.wms.client.layer.WmsLayer;
-import org.geomajas.plugin.wms.client.layer.config.WmsLayerConfiguration;
-import org.geomajas.plugin.wms.client.layer.config.WmsTileConfiguration;
+import org.geomajas.plugin.wms.client.layer.WmsLayerConfiguration;
+import org.geomajas.plugin.wms.client.layer.WmsTileConfiguration;
 import org.geomajas.plugin.wms.client.service.WmsService.WmsVersion;
 
 /**

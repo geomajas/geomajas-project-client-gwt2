@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.wms.client.layer.config;
+package org.geomajas.plugin.wms.client.layer;
 
 import org.geomajas.annotation.Api;
 

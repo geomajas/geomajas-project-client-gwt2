@@ -15,7 +15,7 @@ import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.client.map.layer.LegendConfig;
 import org.geomajas.plugin.wms.client.capabilities.WmsGetCapabilitiesInfo;
-import org.geomajas.plugin.wms.client.layer.config.WmsLayerConfiguration;
+import org.geomajas.plugin.wms.client.layer.WmsLayerConfiguration;
 
 import com.google.gwt.core.client.Callback;
 
@@ -171,7 +171,7 @@ public interface WmsService {
 	 *            Specific legend configuration that overrides the default legend configuration from within the
 	 *            wmsConfig object. Note that by default WMS does not support these options, although some vendors have
 	 *            added extra options to allows for this configuration (such as GeoServer, see
-	 *            {@link org.geomajas.plugin.wms.client.layer.config.WmsServiceVendor}).
+	 *            {@link org.geomajas.plugin.wms.client.layer.WmsServiceVendor}).
 	 * 
 	 * @return Returns the URL that points to the legend image.
 	 */

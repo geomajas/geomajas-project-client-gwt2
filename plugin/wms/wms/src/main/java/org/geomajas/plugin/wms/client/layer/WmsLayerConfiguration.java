@@ -9,11 +9,13 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.wms.client.layer.config;
+package org.geomajas.plugin.wms.client.layer;
 
 import java.io.Serializable;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.gwt2.client.event.LayerStyleChangedEvent;
+import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.layer.LegendConfig;
 import org.geomajas.plugin.wms.client.service.WmsService.WmsVersion;
 
@@ -21,7 +23,7 @@ import org.geomajas.plugin.wms.client.service.WmsService.WmsVersion;
  * General WMS configuration object. The values herein will be translated into parameters for the WMS service. Note that
  * this configuration object has fields that are not directly supported through WMS. Some WMS vendors have added such
  * extra options though, so be sure to specify the {@link WmsServiceVendor} if possible.
- * 
+ *
  * @author Pieter De Graef
  * @author An Buyle
  * @since 1.0.0
@@ -53,13 +55,16 @@ public class WmsLayerConfiguration implements Serializable {
 
 	private double maximumScale; // maximum zoom in
 
+	private MapEventBus eventBus;
+	private WmsLayer parentLayer;
+
 	// ------------------------------------------------------------------------
 	// Getters and setters:
 	// ------------------------------------------------------------------------
 
 	/**
 	 * Get the type of service that provides the WMS. This can be a specific brand, such as GeoServer.
-	 * 
+	 *
 	 * @return Type of service that provides the WMS service.
 	 */
 	public WmsServiceVendor getWmsServiceVendor() {
@@ -70,7 +75,7 @@ public class WmsLayerConfiguration implements Serializable {
 	 * Set the WMS service type to used. This may trigger vendor specific options to be used. E.g. If the WMS service is
 	 * provided by a Geoserver, there is the possibility to configure the legend_options when performing a
 	 * GetLegendGraphic request.
-	 * 
+	 *
 	 * @param wmsServiceVendor
 	 */
 	public void setWmsServiceVendor(WmsServiceVendor wmsServiceVendor) {
@@ -79,7 +84,7 @@ public class WmsLayerConfiguration implements Serializable {
 
 	/**
 	 * Get the GetMap image format. The default value is "image/png".
-	 * 
+	 *
 	 * @return The GetMap image format.
 	 */
 	public String getFormat() {
@@ -88,9 +93,8 @@ public class WmsLayerConfiguration implements Serializable {
 
 	/**
 	 * Set the GetMap image format. The default value is "image/png".
-	 * 
-	 * @param format
-	 *            The GetMap image format.
+	 *
+	 * @param format The GetMap image format.
 	 */
 	public void setFormat(String format) {
 		this.format = format;
@@ -98,7 +102,7 @@ public class WmsLayerConfiguration implements Serializable {
 
 	/**
 	 * Get the layers parameter used in the GetMap requests.
-	 * 
+	 *
 	 * @return The GetMap layers parameter.
 	 */
 	public String getLayers() {
@@ -107,9 +111,8 @@ public class WmsLayerConfiguration implements Serializable {
 
 	/**
 	 * Set the layers parameter used in the GetMap requests.
-	 * 
-	 * @param layers
-	 *            The GetMap layers parameter.
+	 *
+	 * @param layers The GetMap layers parameter.
 	 */
 	public void setLayers(String layers) {
 		this.layers = layers;
@@ -117,7 +120,7 @@ public class WmsLayerConfiguration implements Serializable {
 
 	/**
 	 * Get the styles parameter to be used in the GetMap requests.
-	 * 
+	 *
 	 * @return The styles parameter to be used in the GetMap requests.
 	 */
 	public String getStyles() {
@@ -126,18 +129,20 @@ public class WmsLayerConfiguration implements Serializable {
 
 	/**
 	 * Set the styles parameter to be used in the GetMap requests.
-	 * 
-	 * @param styles
-	 *            The styles parameter to be used in the GetMap requests.
+	 *
+	 * @param styles The styles parameter to be used in the GetMap requests.
 	 */
 	public void setStyles(String styles) {
 		this.styles = styles;
+		if (eventBus != null && parentLayer != null) {
+			eventBus.fireEvent(new LayerStyleChangedEvent(parentLayer));
+		}
 	}
 
 	/**
 	 * Get the filter parameter used in GetMap requests. Note this parameter is not a default WMS parameter, and not all
 	 * WMS servers may support this.
-	 * 
+	 *
 	 * @return The GetMap filter parameter.
 	 */
 	public String getFilter() {
@@ -147,9 +152,8 @@ public class WmsLayerConfiguration implements Serializable {
 	/**
 	 * Set the filter parameter used in GetMap requests. Note this parameter is not a default WMS parameter, and not all
 	 * WMS servers may support this.
-	 * 
-	 * @param filter
-	 *            The GetMap filter parameter.
+	 *
+	 * @param filter The GetMap filter parameter.
 	 */
 	public void setFilter(String filter) {
 		this.filter = filter;
@@ -157,7 +161,7 @@ public class WmsLayerConfiguration implements Serializable {
 
 	/**
 	 * Get the GetMap transparent parameter. Default value is 'true'.
-	 * 
+	 *
 	 * @return The GetMap transparent parameter.
 	 */
 	public boolean isTransparent() {
@@ -166,9 +170,8 @@ public class WmsLayerConfiguration implements Serializable {
 
 	/**
 	 * Set the transparent parameter used in the GetMap requests. Default value is 'true'.
-	 * 
-	 * @param transparent
-	 *            The GetMap transparent parameter.
+	 *
+	 * @param transparent The GetMap transparent parameter.
 	 */
 	public void setTransparent(boolean transparent) {
 		this.transparent = transparent;
@@ -176,7 +179,7 @@ public class WmsLayerConfiguration implements Serializable {
 
 	/**
 	 * Get the WMS version used. Default value is '1.3.0'.
-	 * 
+	 *
 	 * @return The WMS version.
 	 */
 	public WmsVersion getVersion() {
@@ -185,9 +188,8 @@ public class WmsLayerConfiguration implements Serializable {
 
 	/**
 	 * Set the WMS version. Default value is '1.3.0'.
-	 * 
-	 * @param version
-	 *            The WMS version.
+	 *
+	 * @param version The WMS version.
 	 */
 	public void setVersion(WmsVersion version) {
 		this.version = version;
@@ -195,7 +197,7 @@ public class WmsLayerConfiguration implements Serializable {
 
 	/**
 	 * Get the base URL to the WMS service. This URL should not contain any WMS parameters.
-	 * 
+	 *
 	 * @return The base URL to the WMS service.
 	 */
 	public String getBaseUrl() {
@@ -204,9 +206,8 @@ public class WmsLayerConfiguration implements Serializable {
 
 	/**
 	 * Set the base URL to the WMS service. This URL should not contain any WMS parameters.
-	 * 
-	 * @param baseUrl
-	 *            The base URL to the WMS service.
+	 *
+	 * @param baseUrl The base URL to the WMS service.
 	 */
 	public void setBaseUrl(String baseUrl) {
 		this.baseUrl = baseUrl;
@@ -215,7 +216,7 @@ public class WmsLayerConfiguration implements Serializable {
 	/**
 	 * Get the default legend configuration for this layer. By default WMS does not support any of the options herein,
 	 * but some WMS vendors have added extra options to allow for these.
-	 * 
+	 *
 	 * @return The default legend creation configuration for this layer.
 	 */
 	public LegendConfig getLegendConfig() {
@@ -225,9 +226,8 @@ public class WmsLayerConfiguration implements Serializable {
 	/**
 	 * Set the default legend configuration for this layer. By default WMS does not support any of the options herein,
 	 * but some WMS vendors have added extra options to allow for these.
-	 * 
-	 * @param legendConfig
-	 *            The default legend creation configuration for this layer.
+	 *
+	 * @param legendConfig The default legend creation configuration for this layer.
 	 */
 	public void setLegendConfig(LegendConfig legendConfig) {
 		this.legendConfig = legendConfig;
@@ -235,7 +235,7 @@ public class WmsLayerConfiguration implements Serializable {
 
 	/**
 	 * Get the minimum scale for which this layer should be visible (maximum zoom out).
-	 * 
+	 *
 	 * @return the minimum scale (unit type is defined in )
 	 */
 	public double getMinimumScale() {
@@ -244,9 +244,8 @@ public class WmsLayerConfiguration implements Serializable {
 
 	/**
 	 * Set the minimum scale for which this layer should be visible (maximum zoom out).
-	 * 
-	 * @param minimumScale
-	 *            the minimum scale
+	 *
+	 * @param minimumScale the minimum scale
 	 */
 	public void setMinimumScale(double minimumScale) {
 		this.minimumScale = minimumScale;
@@ -254,7 +253,7 @@ public class WmsLayerConfiguration implements Serializable {
 
 	/**
 	 * Get the maximum scale for which this layer should be visible (maximum zoom in).
-	 * 
+	 *
 	 * @return the maximum scale
 	 */
 	public double getMaximumScale() {
@@ -263,11 +262,19 @@ public class WmsLayerConfiguration implements Serializable {
 
 	/**
 	 * Set the maximum scale for which this layer should be visible (maximum zoom in).
-	 * 
-	 * @param maximumScale
-	 *            the maximum scale
+	 *
+	 * @param maximumScale the maximum scale
 	 */
 	public void setMaximumScale(double maximumScale) {
 		this.maximumScale = maximumScale;
+	}
+
+	// ------------------------------------------------------------------------
+	// Protected methods:
+	// ------------------------------------------------------------------------
+
+	protected void setParentLayer(MapEventBus eventBus, WmsLayer parentLayer) {
+		this.eventBus = eventBus;
+		this.parentLayer = parentLayer;
 	}
 }
