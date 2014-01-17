@@ -28,6 +28,7 @@ import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.example.base.client.ExampleBase;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.plugin.wms.client.WmsClient;
 import org.geomajas.plugin.wms.client.capabilities.WmsGetCapabilitiesInfo;
@@ -134,6 +135,8 @@ public class WmsLayerLegendV111Panel implements SamplePanel {
 	private static final class LayerPresenter extends VerticalPanel {
 
 		private LayerPresenter(MapEventBus eventBus, final WmsLayer layer) {
+			setStyleName(ExampleBase.getShowcaseResource().css().sampleRow());
+			setWidth("100%");
 			add(new Label(layer.getTitle()));
 			WmsLayerInfo capabilities = layer.getCapabilities();
 			boolean first = true;
@@ -155,8 +158,9 @@ public class WmsLayerLegendV111Panel implements SamplePanel {
 						first = false;
 					}
 					add(styleWidget);
-					add(new WmsLayerLegend(eventBus, layer));
 				}
+				add(new WmsLayerLegend(eventBus, layer));
 			}
 		}
-	}}
+	}
+}

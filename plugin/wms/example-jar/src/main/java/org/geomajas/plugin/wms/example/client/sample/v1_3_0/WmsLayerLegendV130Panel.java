@@ -26,6 +26,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
+import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.example.base.client.ExampleBase;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
@@ -39,20 +40,21 @@ import org.geomajas.plugin.wms.client.layer.WmsTileConfiguration;
 import org.geomajas.plugin.wms.client.service.WmsService.WmsRequest;
 import org.geomajas.plugin.wms.client.service.WmsService.WmsUrlTransformer;
 import org.geomajas.plugin.wms.client.service.WmsService.WmsVersion;
+import org.geomajas.plugin.wms.client.widget.WmsLayerLegend;
 
 /**
  * ContentPanel that demonstrates rendering abilities in world space with a map that supports resizing.
  *
  * @author Pieter De Graef
  */
-public class SelectStyleV130Panel implements SamplePanel {
+public class WmsLayerLegendV130Panel implements SamplePanel {
 
 	/**
 	 * UI binder for this widget.
 	 *
 	 * @author Pieter De Graef
 	 */
-	interface MyUiBinder extends UiBinder<Widget, SelectStyleV130Panel> {
+	interface MyUiBinder extends UiBinder<Widget, WmsLayerLegendV130Panel> {
 	}
 
 	private static final MyUiBinder UI_BINDER = GWT.create(MyUiBinder.class);
@@ -110,7 +112,8 @@ public class SelectStyleV130Panel implements SamplePanel {
 										tileConfig, layerConfig, layerInfo);
 								mapPresenter.getLayersModel().addLayer(layer);
 								mapPresenter.getLayersModelRenderer().setAnimated(layer, true);
-								layerList.add(new LayerPresenter(layer));
+
+								layerList.add(new LayerPresenter(mapPresenter.getEventBus(), layer));
 							}
 						}
 					}
@@ -131,7 +134,7 @@ public class SelectStyleV130Panel implements SamplePanel {
 	 */
 	private static final class LayerPresenter extends VerticalPanel {
 
-		private LayerPresenter(final WmsLayer layer) {
+		private LayerPresenter(MapEventBus eventBus, final WmsLayer layer) {
 			setStyleName(ExampleBase.getShowcaseResource().css().sampleRow());
 			setWidth("100%");
 			add(new Label(layer.getTitle()));
@@ -156,6 +159,7 @@ public class SelectStyleV130Panel implements SamplePanel {
 					}
 					add(styleWidget);
 				}
+				add(new WmsLayerLegend(eventBus, layer));
 			}
 		}
 	}

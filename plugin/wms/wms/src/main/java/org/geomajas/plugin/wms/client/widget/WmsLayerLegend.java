@@ -19,7 +19,8 @@ import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.plugin.wms.client.layer.WmsLayer;
 
 /**
- * Legend widget that displays an image of the WMS GetLegendGraphic URL.
+ * Legend widget that displays an image of the WMS GetLegendGraphic URL for a specific {@link WmsLayer}. This widget
+ * will update it's content when the layer changes style, making sure it always shows the correct styles in the legend.
  *
  * @author Pieter De Graef
  * @since 2.0.0
@@ -29,6 +30,13 @@ public class WmsLayerLegend extends Image {
 
 	private final WmsLayer layer;
 
+	/**
+	 * Create a new legend widget for the given WMS layer.
+	 *
+	 * @param eventBus The maps event bus. Needed to react to {@link LayerStyleChangedEvent}s. If this value is null,
+	 *                 the legend will not change it's content when a layers style changes.
+	 * @param layer    The layer to display a legend for.
+	 */
 	public WmsLayerLegend(MapEventBus eventBus, WmsLayer layer) {
 		super();
 		this.layer = layer;
@@ -45,6 +53,11 @@ public class WmsLayerLegend extends Image {
 		});
 	}
 
+	/**
+	 * Get the layer for which this widget displays a legend.
+	 *
+	 * @return The layer.
+	 */
 	public WmsLayer getLayer() {
 		return layer;
 	}

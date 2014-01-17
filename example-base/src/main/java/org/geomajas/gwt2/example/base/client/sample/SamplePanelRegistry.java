@@ -20,7 +20,7 @@ import java.util.Map;
 
 /**
  * Singleton that stores all known samples.
- * 
+ *
  * @author Pieter De Graef
  */
 public final class SamplePanelRegistry {
@@ -70,7 +70,7 @@ public final class SamplePanelRegistry {
 
 	public static List<ShowcaseSampleDefinition> getFactories() {
 		List<ShowcaseSampleDefinition> factories = new ArrayList<ShowcaseSampleDefinition>();
-		
+
 		for (String category : getCategories()) {
 			factories.addAll(FACTORIES.get(category));
 		}
@@ -83,6 +83,8 @@ public final class SamplePanelRegistry {
 
 	/**
 	 * Category Comparator class.
+	 *
+	 * @author Jan De Moerloose
 	 */
 	private static class CategoryComparator implements Comparator<String> {
 		public int compare(String o1, String o2) {
@@ -95,6 +97,6 @@ public final class SamplePanelRegistry {
 				return w;
 			}
 		}
-		
+
 	}
 }

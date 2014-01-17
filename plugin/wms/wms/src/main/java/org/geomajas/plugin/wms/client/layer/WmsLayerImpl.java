@@ -13,6 +13,7 @@ package org.geomajas.plugin.wms.client.layer;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.client.event.LayerStyleChangedEvent;
+import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.AbstractLayer;
@@ -60,7 +61,11 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 		this.wmsConfig = wmsConfig;
 		this.tileConfig = tileConfig;
 		this.layerCapabilities = layerCapabilities;
+	}
 
+	@Override
+	protected void setEventBus(MapEventBus eventBus) {
+		super.setEventBus(eventBus);
 		this.wmsConfig.setParentLayer(eventBus, this);
 	}
 
