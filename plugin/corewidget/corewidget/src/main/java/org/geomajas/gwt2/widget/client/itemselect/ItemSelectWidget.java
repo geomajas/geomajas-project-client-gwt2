@@ -11,23 +11,23 @@
 package org.geomajas.gwt2.widget.client.itemselect;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.DecoratedPopupPanel;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.annotation.Api;
-import org.geomajas.gwt2.widget.client.itemselect.resources.ItemSelectResource;
 
 import java.util.List;
 
 /**
  * Widget that shows a list of items from where one can be selected. The widget will display the item's toString() as
- * label.
+ * label. This widget uses a menu bar for it's internal representation.
+ *
+ * FIXME: move this widget to YAWL
+ * FIXME: what to do with layout distinction between popupPanels?
  *
  * @param <T> The type of the item.
  * @author Dosi Bingov
@@ -37,7 +37,7 @@ import java.util.List;
 @Api(allMethods = true)
 public class ItemSelectWidget<T> implements ItemSelectView<T>, IsWidget {
 
-	private PopupPanel layout;
+	private DecoratedPopupPanel layout;
 
 	/**
 	 * UI binder interface.
@@ -59,7 +59,7 @@ public class ItemSelectWidget<T> implements ItemSelectView<T>, IsWidget {
 	private int yPos;
 
 	@UiField
-	protected VerticalPanel contentPanel;
+	protected MenuBar menuBar;
 
 	public ItemSelectWidget() {
 		this((ItemSelectResource) GWT.create(ItemSelectResource.class));
@@ -77,23 +77,20 @@ public class ItemSelectWidget<T> implements ItemSelectView<T>, IsWidget {
 	@Override
 	public void setItems(List<T> data) {
 		asWidget();
-		contentPanel.clear();
+
+		menuBar.clearItems();
 
 		if (data != null) {
 			for (final T s : data) {
-				Label label = new Label();
-				label.addStyleName(resource.css().itemSelectWidgetCell());
-				label.setText(s.toString());
-				label.addClickHandler(new ClickHandler() {
+				menuBar.addItem(s.toString(), new Scheduler.ScheduledCommand() {
 					@Override
-					public void onClick(ClickEvent event) {
+					public void execute() {
 						hide();
 						if (handler != null) {
 							handler.itemSelected(s);
 						}
 					}
 				});
-				contentPanel.add(label);
 			}
 		}
 	}
@@ -108,6 +105,11 @@ public class ItemSelectWidget<T> implements ItemSelectView<T>, IsWidget {
 		layout.hide();
 	}
 
+	@Override
+	public void show(int x, int y) {
+		popup(x, y, true);
+	}
+
 	/**
 	 * Display this widget in a popup.
 	 * This does not show anything when there are no items set.
@@ -116,20 +118,25 @@ public class ItemSelectWidget<T> implements ItemSelectView<T>, IsWidget {
 	 * @param yPos the y position
 	 * @param animate true if animation is wanted
 	 */
-	public void popup(int xPos, int yPos, boolean animate) {
+	private void popup(int xPos, int yPos, boolean animate) {
 		asWidget();
-		if (contentPanel.getWidgetCount() > 0) {
-			layout.setPopupPosition(xPos, yPos);
-			layout.setAnimationEnabled(animate);
-			layout.show();
-		}
+		layout.setPopupPosition(xPos, yPos);
+		layout.setAnimationEnabled(animate);
+		layout.show();
+	}
+
+	/**
+	 * Get the internal menubar that is used to render.
+	 */
+	public MenuBar getMenuBar() {
+		return menuBar;
 	}
 
 	@Override
 	public Widget asWidget() {
 		this.resource.css().ensureInjected();
 		if (layout == null) {
-			layout = (PopupPanel) uiBinder.createAndBindUi(this);
+			layout = (DecoratedPopupPanel) uiBinder.createAndBindUi(this);
 			layout.addStyleName(resource.css().itemSelectWidget());
 		}
 		return layout;

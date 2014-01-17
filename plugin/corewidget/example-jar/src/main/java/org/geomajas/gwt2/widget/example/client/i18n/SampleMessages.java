@@ -88,4 +88,18 @@ public interface SampleMessages extends Messages {
 	String mapLegendDropDownDescrShort();
 
 	String mapLegendDropDownDescription();
+
+	String itemSelectTitle();
+
+	String itemSelectDescrShort();
+
+	String itemSelectDescription();
+
+	String itemSelectFirstItem();
+
+	String itemSelectSecondItem();
+
+	String itemSelectThirdItem();
+
+	String itemSelectYouSelected(String item);
 }

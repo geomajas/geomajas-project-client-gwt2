@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.client.itemselect.resources;
+package org.geomajas.gwt2.widget.client.itemselect;
 
 import com.google.gwt.resources.client.CssResource;
 

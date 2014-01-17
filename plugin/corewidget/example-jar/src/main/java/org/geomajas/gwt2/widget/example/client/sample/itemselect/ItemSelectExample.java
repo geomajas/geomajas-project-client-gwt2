@@ -16,12 +16,13 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.gwt2.widget.client.itemselect.ItemSelectView;
 import org.geomajas.gwt2.widget.client.itemselect.ItemSelectWidget;
+import org.geomajas.gwt2.widget.example.client.i18n.SampleMessages;
 
 import java.util.Arrays;
 
@@ -32,31 +33,35 @@ import java.util.Arrays;
  */
 public class ItemSelectExample implements SamplePanel {
 
+	private static final SampleMessages MESSAGES = GWT.create(SampleMessages.class);
+
 	protected DockLayoutPanel rootElement;
 
 	@UiField
-	protected Button selectButton;
+	protected FocusPanel selectPanel;
 
 	@Override
 	public Widget asWidget() {
 		if (rootElement == null) {
 			rootElement = uiBinder.createAndBindUi(this);
-			selectButton.addClickHandler(new ClickHandler() {
+			selectPanel.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
 					ItemSelectWidget<String> itemSelectWidget = new ItemSelectWidget<String>();
 					itemSelectWidget.addItemSelectHandler(new ItemSelectView.ItemSelectHandler<String>() {
 						@Override
 						public void itemSelected(String item) {
-							Window.alert(item);
+							Window.alert(MESSAGES.itemSelectYouSelected(item));
 						}
 					});
-					itemSelectWidget.setItems(Arrays.asList("One", "Two", "Three"));
+					itemSelectWidget.setItems(Arrays.asList(MESSAGES.itemSelectFirstItem(),
+							MESSAGES.itemSelectSecondItem(),
+							MESSAGES.itemSelectThirdItem()));
 					itemSelectWidget.popup(event.getClientX(), event.getClientY(), true);
 				}
 			});
+
 		}
-		// return root layout element
 		return rootElement;
 	}
 

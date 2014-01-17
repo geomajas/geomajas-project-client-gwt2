@@ -16,8 +16,8 @@ import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.client.widget.MapLayoutPanel;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
-import org.geomajas.gwt2.widget.client.featureselectbox.event.FeatureClickedEvent;
-import org.geomajas.gwt2.widget.client.featureselectbox.event.FeatureClickedHandler;
+import org.geomajas.gwt2.widget.client.event.FeatureClickedEvent;
+import org.geomajas.gwt2.widget.client.event.FeatureClickedHandler;
 import org.geomajas.gwt2.widget.client.featureselectbox.presenter.FeatureClickedListener;
 
 import com.google.gwt.core.client.GWT;
@@ -70,7 +70,7 @@ public class FeatureSelectedExample implements SamplePanel {
 		// Create the MapPresenter
 		mapPresenter = GeomajasImpl.getInstance().createMapPresenter();
 
-		// add FeatureClickedHandler where we handle FeatureClickedEvent
+		// add FeatureClickedHandler where we handle FeaturesClickedEvent
 		mapPresenter.getEventBus().addHandler(FeatureClickedHandler.TYPE, new MyFeatureClickedHandler());
 
 		// Define the layout:
@@ -90,7 +90,7 @@ public class FeatureSelectedExample implements SamplePanel {
 	}
 
 	/**
-	 * Handler that handles FeatureClickedEvent.
+	 * Handler that handles FeaturesClickedEvent.
 	 */
 	private class MyFeatureClickedHandler implements FeatureClickedHandler {
 

@@ -41,6 +41,11 @@ public interface ItemSelectView<T> {
 	void hide();
 
 	/**
+	 * Show the view on the current position.
+	 */
+	void show(int x, int y);
+
+	/**
 	 * The item select handler.
 	 *
 	 * @param <T> the type of item

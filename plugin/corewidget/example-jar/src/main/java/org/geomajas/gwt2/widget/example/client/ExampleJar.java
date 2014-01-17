@@ -227,17 +227,17 @@ public class ExampleJar implements EntryPoint {
 
 			@Override
 			public String getTitle() {
-				return "TODO";
+				return MESSAGES.itemSelectTitle();
 			}
 
 			@Override
 			public String getShortDescription() {
-				return "TODO";
+				return MESSAGES.itemSelectDescrShort();
 			}
 
 			@Override
 			public String getDescription() {
-				return "TODO";
+				return MESSAGES.itemSelectDescription();
 			}
 
 			@Override
