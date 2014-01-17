@@ -40,7 +40,6 @@ public class GraphicsEditingExampleJar implements EntryPoint {
 	}
 
 	private void registerSamples() {
-		SamplePanelRegistry.registerCategory(CATEGORY_GRAPHICS, 120);
 		SamplePanelRegistry.registerFactory(CATEGORY_GRAPHICS, new ShowcaseSampleDefinition() {
 
 			public SamplePanel create() {

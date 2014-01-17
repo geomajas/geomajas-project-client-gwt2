@@ -60,14 +60,7 @@ public final class SamplePanelRegistry {
 
 	public static List<String> getCategories() {
 		List<String> categoryList = new ArrayList<String>(CATEGORIES.keySet());
-		Collections.sort(categoryList, new Comparator<String>() {
-
-			public int compare(String o1, String o2) {
-				Integer weight1 = CATEGORIES.get(o1);
-				Integer weight2 = CATEGORIES.get(o2);
-				return weight2.compareTo(weight1); // Inverse order!
-			}
-		});
+		Collections.sort(categoryList, new CategoryComparator());
 		return categoryList;
 	}
 
@@ -77,13 +70,28 @@ public final class SamplePanelRegistry {
 
 	public static List<ShowcaseSampleDefinition> getFactories() {
 		List<ShowcaseSampleDefinition> factories = new ArrayList<ShowcaseSampleDefinition>();
-		for (List<ShowcaseSampleDefinition> factoriesPerCategory : FACTORIES.values()) {
-			factories.addAll(factoriesPerCategory);
+		
+		for (String category : getCategories()) {
+			factories.addAll(FACTORIES.get(category));
 		}
 		return factories;
 	}
 
 	public static int getLowestCategoryWeight() {
 		return lowestWeight;
+	}
+	
+	private static class CategoryComparator implements Comparator<String> {
+		public int compare(String o1, String o2) {
+			Integer weight1 = CATEGORIES.get(o1);
+			Integer weight2 = CATEGORIES.get(o2);
+			int w = weight2.compareTo(weight1); // Inverse order!
+			if(w == 0) {
+				return o1.compareTo(o2);
+			} else {
+				return w;
+			}
+		}
+		
 	}
 }

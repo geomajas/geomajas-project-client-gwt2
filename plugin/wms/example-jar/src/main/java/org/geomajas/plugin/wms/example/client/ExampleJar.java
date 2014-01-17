@@ -46,7 +46,6 @@ public class ExampleJar implements EntryPoint {
 	}
 
 	private void registerGeneralSamples() {
-		SamplePanelRegistry.registerCategory(CATEGORY_WMS, 110);
 		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
 
 			public SamplePanel create() {
