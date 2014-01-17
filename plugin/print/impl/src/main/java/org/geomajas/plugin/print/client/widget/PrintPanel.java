@@ -45,6 +45,18 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class PrintPanel extends Composite {
 
+	/**
+	 * UI binder definition for the {@link } widget.
+	 * 
+	 * @author An Buyle
+	 */
+	interface PrintPanelUiBinder extends UiBinder<Widget, PrintPanel> {
+	}
+
+	private final PrintPanelResource resource;
+
+	private final PrintPanelUiBinder uiBinder;
+
 	private static final PrintMessages MESSAGES = GWT.create(PrintMessages.class);
 
 	private static final String SAVE = "save";
@@ -65,16 +77,6 @@ public class PrintPanel extends Composite {
 	private static final String URL_DOWNLOAD_YES = "1";
 
 	private static final String URL_DOWNLOAD_NO = "0";
-
-	/**
-	 * UI binder definition for the {@link } widget.
-	 * 
-	 * @author An Buyle
-	 */
-	interface PrintPanelUIBinder extends UiBinder<Widget, PrintPanel> {
-	}
-
-	private static final PrintPanelUIBinder UI_BINDER = GWT.create(PrintPanelUIBinder.class);
 
 	@UiField
 	protected Button printButton;
@@ -100,15 +102,36 @@ public class PrintPanel extends Composite {
 
 	private PrintableMapBuilder mapBuilder = new PrintableMapBuilder();
 
-	public void registerLayerBuilder(PrintableLayerBuilder layerBuilder) {
-		mapBuilder.registerLayerBuilder(layerBuilder);
+	/** Default constructor. Create an instance using the default resource bundle and layout. */
+	public PrintPanel(MapPresenter mapPresenter, String applicationId) {
+		this((PrintPanelResource) GWT.create(PrintPanelResource.class), mapPresenter, applicationId);
 	}
 
-	public PrintPanel(MapPresenter mapPresenter, String applicationId) {
-		assert (mapPresenter != null) : "mapPresenter must be specified when constructing PrintPanel";
-		assert (applicationId != null) : "applicationId must be specified when constructing PrintPanel";
+	/**
+	 * Create a new instance using a custom resource bundle.
+	 * 
+	 * @param resource The custom resource bundle to use.
+	 */
+	public PrintPanel(PrintPanelResource resource, MapPresenter mapPresenter, String applicationId) {
+		this(resource, (PrintPanelUiBinder) GWT.create(PrintPanelUiBinder.class), mapPresenter, applicationId);
+	}
 
-		initWidget(UI_BINDER.createAndBindUi(this));
+	/**
+	 * Create a new instance using a custom resource bundle and UiBinder construct.
+	 * 
+	 * @param resource The ustom resource bundle to use.
+	 * @param uiBinder The custom UiBinder construct.
+	 */
+	public PrintPanel(PrintPanelResource resource, PrintPanelUiBinder uiBinder, MapPresenter mapPresenter,
+			String applicationId) {
+		this.resource = resource;
+		this.uiBinder = uiBinder;
+
+		// Inject the CSS and create the GUI:
+		this.resource.css().ensureInjected();
+		this.uiBinder.createAndBindUi(this);
+
+		initWidget(uiBinder.createAndBindUi(this));
 
 		this.mapPresenter = mapPresenter;
 		this.applicationId = applicationId;
@@ -126,13 +149,16 @@ public class PrintPanel extends Composite {
 				}
 			}
 		};
-
 		optionLandscapeOrientation.addClickHandler(orientationOptionClickedHandler);
 		optionPortraitOrientation.addClickHandler(orientationOptionClickedHandler);
 
 		// Defayult = Landscape
 		optionLandscapeOrientation.setValue(true);
 		optionPortraitOrientation.setValue(false);
+	}
+
+	public void registerLayerBuilder(PrintableLayerBuilder layerBuilder) {
+		mapBuilder.registerLayerBuilder(layerBuilder);
 	}
 
 	@UiHandler("printButton")

@@ -22,39 +22,43 @@ import com.google.gwt.i18n.client.Messages;
 public interface PrintMessages extends Messages {
 
 	String printPrefsTitleLabel();
+
 	String printPrefsTitleTooltip();
+
 	String printButtonTitle();
-	
+
+	String printPrefsHeader();
+
 	String printPrefsChoose();
-	
+
 	String printPrefsPrint();
-	
+
 	String printPrefsSize();
-	
+
 	String printPrefsOrientation();
-	
+
 	String printPrefsPortrait();
-	
+
 	String printPrefsLandscape();
 
 	String printPrefsWithArrow();
-	
+
 	String printPrefsWithScaleBar();
-	
+
 	String printPrefsRasterDPI();
-	
+
 	String printPrefsStatus();
-	
+
 	String printPrefsDownloadType();
-	
+
 	String printPrefsSaveAsFile();
 
 	String printPrefsOpenInBrowserWindow();
 
 	String printPrefsFileName();
 
-	
 	String printPrefsTitlePlaceholder();
+
 	String defaultPrintTitle();
 
 }
