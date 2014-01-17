@@ -17,7 +17,7 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.render.TileCode;
-import org.geomajas.plugin.wms.client.layer.config.WmsTileConfiguration;
+import org.geomajas.plugin.wms.client.layer.WmsTileConfiguration;
 
 /**
  * Service definition with helper methods for tile calculations. These may help when rendering a tile based layer. This

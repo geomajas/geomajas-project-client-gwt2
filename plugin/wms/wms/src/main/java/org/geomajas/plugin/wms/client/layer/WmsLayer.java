@@ -18,8 +18,6 @@ import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.client.map.layer.LegendUrlSupported;
 import org.geomajas.gwt2.client.map.render.Tile;
 import org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo;
-import org.geomajas.plugin.wms.client.layer.config.WmsLayerConfiguration;
-import org.geomajas.plugin.wms.client.layer.config.WmsTileConfiguration;
 
 import java.util.List;
 

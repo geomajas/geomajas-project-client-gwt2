@@ -25,8 +25,6 @@ import org.geomajas.gwt2.client.map.render.TileCode;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
 import org.geomajas.plugin.wms.client.WmsClient;
 import org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo;
-import org.geomajas.plugin.wms.client.layer.config.WmsLayerConfiguration;
-import org.geomajas.plugin.wms.client.layer.config.WmsTileConfiguration;
 import org.geomajas.plugin.wms.client.service.WmsTileServiceImpl;
 
 import java.util.ArrayList;
@@ -62,6 +60,8 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 		this.wmsConfig = wmsConfig;
 		this.tileConfig = tileConfig;
 		this.layerCapabilities = layerCapabilities;
+
+		this.wmsConfig.setParentLayer(eventBus, this);
 	}
 
 	// ------------------------------------------------------------------------
