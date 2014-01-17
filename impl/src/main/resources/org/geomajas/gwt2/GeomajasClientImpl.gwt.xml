@@ -22,4 +22,18 @@
 		<exclude name="*Test*.java" />
 	</source>
 
+	<!--GWT logging -->
+	<!--in code use private static Logger rootLogger = Logger.getLogger("")-->
+	<inherits name="com.google.gwt.logging.Logging"/>
+
+	<!-- BEGIN configure logging-->
+	<!-- enable loggging in module of your choice-->
+	<set-property name="gwt.logging.enabled" value="FALSE"/>
+	<!-- client side logging handler (logs in browser console) -->
+	<set-property name="gwt.logging.consoleHandler" value="DISABLED"/>
+	<!-- server side logging handler (logs using RPC call) -->
+	<set-property name="gwt.logging.simpleRemoteHandler" value="DISABLED" />
+
+	<!-- END configure logging-->
+
 </module>
