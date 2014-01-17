@@ -11,20 +11,6 @@
 
 package org.geomajas.plugin.wms.example.client.sample.v1_1_1;
 
-import org.geomajas.gwt2.client.GeomajasImpl;
-import org.geomajas.gwt2.client.GeomajasServerExtension;
-import org.geomajas.gwt2.client.map.MapPresenter;
-import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
-import org.geomajas.plugin.wms.client.WmsClient;
-import org.geomajas.plugin.wms.client.capabilities.WmsGetCapabilitiesInfo;
-import org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo;
-import org.geomajas.plugin.wms.client.layer.WmsLayerImpl;
-import org.geomajas.plugin.wms.client.layer.config.WmsLayerConfiguration;
-import org.geomajas.plugin.wms.client.layer.config.WmsTileConfiguration;
-import org.geomajas.plugin.wms.client.service.WmsService.WmsRequest;
-import org.geomajas.plugin.wms.client.service.WmsService.WmsUrlTransformer;
-import org.geomajas.plugin.wms.client.service.WmsService.WmsVersion;
-
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -37,6 +23,19 @@ import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
+import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
+import org.geomajas.plugin.wms.client.WmsClient;
+import org.geomajas.plugin.wms.client.capabilities.WmsGetCapabilitiesInfo;
+import org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo;
+import org.geomajas.plugin.wms.client.layer.WmsLayer;
+import org.geomajas.plugin.wms.client.layer.config.WmsLayerConfiguration;
+import org.geomajas.plugin.wms.client.layer.config.WmsTileConfiguration;
+import org.geomajas.plugin.wms.client.service.WmsService.WmsRequest;
+import org.geomajas.plugin.wms.client.service.WmsService.WmsUrlTransformer;
+import org.geomajas.plugin.wms.client.service.WmsService.WmsVersion;
 
 /**
  * ContentPanel that demonstrates rendering abilities in world space with a map that supports resizing.
@@ -104,8 +103,8 @@ public class CapabilitiesV111Panel implements SamplePanel {
 										mapPresenter.getViewPort().getCrs(), 256, 256);
 								WmsLayerConfiguration layerConfig = WmsClient.getInstance().createLayerConfig(
 										mapPresenter.getViewPort(), layerInfo, WMS_BASE_URL, WmsVersion.V1_1_1);
-								final WmsLayerImpl layer = new WmsLayerImpl(layerInfo.getTitle(), layerConfig,
-										tileConfig);
+								final WmsLayer layer = WmsClient.getInstance().createLayer(layerInfo.getTitle(),
+										tileConfig, layerConfig, layerInfo);
 
 								CheckBox layerBox = new CheckBox(layer.getTitle());
 								layerBox.addValueChangeHandler(new ValueChangeHandler<Boolean>() {

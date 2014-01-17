@@ -32,10 +32,6 @@ public interface ZoomControlCssResource extends CssResource {
 	@ClassName("gm-ZoomControl-zoomIn")
 	String zoomControlZoomIn();
 
-	/** Zoom in button in the {@link org.geomajas.gwt2.client.widget.control.zoom.ZoomControl} when being touched. */
-	@ClassName("gm-ZoomControl-zoomIn-touch")
-	String zoomControlZoomInTouch();
-
 	/** Zoom out button in the {@link org.geomajas.gwt2.client.widget.control.zoom.ZoomControl}. */
 	@ClassName("gm-ZoomControl-zoomOut")
 	String zoomControlZoomOut();

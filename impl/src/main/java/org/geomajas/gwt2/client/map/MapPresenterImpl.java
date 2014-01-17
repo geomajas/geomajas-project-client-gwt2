@@ -221,7 +221,7 @@ public final class MapPresenterImpl implements MapPresenter {
 
 	private LayersModelRenderer renderer;
 
-	private boolean isMobileBrowser;
+	private boolean isTouchSupported;
 
 	public MapPresenterImpl(final EventBus eventBus) {
 		this.handlers = new ArrayList<HandlerRegistration>();
@@ -233,7 +233,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		this.mapEventParser = new MapEventParserImpl(this);
 		this.renderer = new LayersModelRendererImpl(layersModel, viewPort, this.eventBus);
 		this.containerManager = new ContainerManagerImpl(display, viewPort);
-		this.isMobileBrowser = Dom.isMobile();
+		this.isTouchSupported = Dom.isTouchSupported();
 
 		this.eventBus.addViewPortChangedHandler(new ViewPortChangedHandler() {
 
@@ -258,7 +258,7 @@ public final class MapPresenterImpl implements MapPresenter {
 
 		this.eventBus.addViewPortChangedHandler(new WorldTransformableRenderer());
 
-		if (isMobileBrowser) {
+		if (isTouchSupported) {
 			fallbackController = new TouchNavigationController();
 		} else {
 			fallbackController = new NavigationController();
@@ -293,7 +293,7 @@ public final class MapPresenterImpl implements MapPresenter {
 			getWidgetPane().add(new Watermark());
 			getWidgetPane().add(new Scalebar(MapPresenterImpl.this));
 			getWidgetPane().add(new ZoomControl(MapPresenterImpl.this));
-			if (!isMobileBrowser) {
+			if (!isTouchSupported) {
 				getWidgetPane().add(new ZoomToRectangleControl(MapPresenterImpl.this));
 			}
 		}
@@ -357,7 +357,7 @@ public final class MapPresenterImpl implements MapPresenter {
 			mapController = fallbackController;
 		}
 		if (mapController != null) {
-			if (isMobileBrowser) {
+			if (isTouchSupported) {
 				handlers.add(display.addTouchStartHandler(mapController));
 				handlers.add(display.addTouchMoveHandler(mapController));
 				handlers.add(display.addTouchCancelHandler(mapController));
@@ -390,7 +390,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		if (mapListener != null && !listeners.containsKey(mapListener)) {
 			List<HandlerRegistration> registrations = new ArrayList<HandlerRegistration>();
 
-			if (isMobileBrowser) {
+			if (isTouchSupported) {
 				registrations.add(display.addTouchStartHandler(mapListener));
 				registrations.add(display.addTouchMoveHandler(mapListener));
 				registrations.add(display.addTouchCancelHandler(mapListener));

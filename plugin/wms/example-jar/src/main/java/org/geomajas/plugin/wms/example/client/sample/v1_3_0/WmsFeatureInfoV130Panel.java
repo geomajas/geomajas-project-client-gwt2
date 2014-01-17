@@ -99,7 +99,7 @@ public class WmsFeatureInfoV130Panel implements SamplePanel {
 		layerConfig.setMinimumScale(0);
 
 		FeaturesSupportedWmsLayer wmsLayer = WmsServerExtension.getInstance().createFeatureSupportedLayer("Countries",
-				tileConfig, layerConfig);
+				tileConfig, layerConfig, null);
 		mapPresenter.getLayersModel().addLayer(wmsLayer);
 
 		// Define the whole layout:
