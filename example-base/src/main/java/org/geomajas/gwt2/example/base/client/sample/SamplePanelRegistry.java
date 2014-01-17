@@ -80,13 +80,16 @@ public final class SamplePanelRegistry {
 	public static int getLowestCategoryWeight() {
 		return lowestWeight;
 	}
-	
+
+	/**
+	 * Category Comparator class.
+	 */
 	private static class CategoryComparator implements Comparator<String> {
 		public int compare(String o1, String o2) {
 			Integer weight1 = CATEGORIES.get(o1);
 			Integer weight2 = CATEGORIES.get(o2);
 			int w = weight2.compareTo(weight1); // Inverse order!
-			if(w == 0) {
+			if (w == 0) {
 				return o1.compareTo(o2);
 			} else {
 				return w;
