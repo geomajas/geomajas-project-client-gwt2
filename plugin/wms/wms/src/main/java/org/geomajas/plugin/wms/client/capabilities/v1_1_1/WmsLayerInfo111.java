@@ -11,25 +11,24 @@
 
 package org.geomajas.plugin.wms.client.capabilities.v1_1_1;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.google.gwt.xml.client.Element;
+import com.google.gwt.xml.client.NamedNodeMap;
+import com.google.gwt.xml.client.Node;
+import com.google.gwt.xml.client.NodeList;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.plugin.wms.client.capabilities.AbstractXmlNodeWrapper;
 import org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo;
 import org.geomajas.plugin.wms.client.capabilities.WmsLayerMetadataUrlInfo;
 import org.geomajas.plugin.wms.client.capabilities.WmsLayerStyleInfo;
 
-import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.NamedNodeMap;
-import com.google.gwt.xml.client.Node;
-import com.google.gwt.xml.client.NodeList;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Implementation of the {@link WmsLayerInfo} for WMS version 1.1.1.
- * 
+ *
  * @author Pieter De Graef
  */
 public class WmsLayerInfo111 extends AbstractXmlNodeWrapper implements WmsLayerInfo {
@@ -149,16 +148,16 @@ public class WmsLayerInfo111 extends AbstractXmlNodeWrapper implements WmsLayerI
 		}
 		return styleInfo;
 	}
-	
+
 	public int getMinScaleDenominator() {
-		if (minScaleDenominator == -1) {
+		if (name == null) {
 			parse(getNode());
 		}
 		return minScaleDenominator;
 	}
-	
+
 	public int getMaxScaleDenominator() {
-		if (maxScaleDenominator == -1) {
+		if (name == null) {
 			parse(getNode());
 		}
 		return maxScaleDenominator;
@@ -177,6 +176,7 @@ public class WmsLayerInfo111 extends AbstractXmlNodeWrapper implements WmsLayerI
 
 	protected void parse(Node node) {
 		queryable = isQueryable(node);
+		styleInfo.clear();
 
 		NodeList childNodes = node.getChildNodes();
 		for (int i = 0; i < childNodes.getLength(); i++) {
@@ -211,10 +211,7 @@ public class WmsLayerInfo111 extends AbstractXmlNodeWrapper implements WmsLayerI
 	private boolean isQueryable(Node layerNode) {
 		NamedNodeMap attributes = layerNode.getAttributes();
 		Node q = attributes.getNamedItem("queryable");
-		if (q != null) {
-			return "1".equals(q.getNodeValue());
-		}
-		return false;
+		return q != null && "1".equals(q.getNodeValue());
 	}
 
 	private void addKeyWords(Node keywordListNode) {

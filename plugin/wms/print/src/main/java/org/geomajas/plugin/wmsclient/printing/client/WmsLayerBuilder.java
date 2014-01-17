@@ -10,9 +10,6 @@
  */
 package org.geomajas.plugin.wmsclient.printing.client;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.client.map.MapPresenter;
@@ -24,6 +21,9 @@ import org.geomajas.plugin.print.client.template.PrintableLayerBuilder;
 import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
 import org.geomajas.plugin.wms.client.layer.WmsLayer;
 import org.geomajas.plugin.wmsclient.printing.server.dto.WmsClientLayerInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Builder for WMS layer.

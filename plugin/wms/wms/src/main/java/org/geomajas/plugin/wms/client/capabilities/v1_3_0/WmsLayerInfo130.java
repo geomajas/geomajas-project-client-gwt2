@@ -160,14 +160,14 @@ public class WmsLayerInfo130 extends AbstractXmlNodeWrapper implements WmsLayerI
 	}
 	
 	public int getMinScaleDenominator() {
-		if (minScaleDenominator == -1) {
+		if (name == null) {
 			parse(getNode());
 		}
 		return minScaleDenominator;
 	}
 	
 	public int getMaxScaleDenominator() {
-		if (maxScaleDenominator == -1) {
+		if (name == null) {
 			parse(getNode());
 		}
 		return maxScaleDenominator;
@@ -179,6 +179,7 @@ public class WmsLayerInfo130 extends AbstractXmlNodeWrapper implements WmsLayerI
 
 	protected void parse(Node node) {
 		queryable = isQueryable(node);
+		styleInfo.clear();
 
 		NodeList childNodes = node.getChildNodes();
 		for (int i = 0; i < childNodes.getLength(); i++) {
