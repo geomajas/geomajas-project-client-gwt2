@@ -18,12 +18,20 @@ import com.google.gwt.i18n.client.Messages;
  * @author Jan De Moerloose
  * 
  */
-public interface GraphicsEditingMessages extends Messages {
+public interface GraphicsEditingSampleMessages extends Messages {
 
-	String graphicsEditingTitle();
+	/* for example using GeometryEditController */
+	String graphicsEditingGeometryEditControllerTitle();
 
-	String graphicsEditingDescription();
+	String graphicsEditingGeometryEditControllerDescription();
 
-	String graphicsEditingShortDescr();
+	String graphicsEditingGeometryEditControllerShortDescr();
+
+	/* for example using EditAction */
+	String graphicsEditingEditActionTitle();
+
+	String graphicsEditingEditActionDescription();
+
+	String graphicsEditingEditActionShortDescr();
 
 }

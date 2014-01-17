@@ -15,7 +15,8 @@
   <title>How-to</title>
 
   <para>This chapter shows how to work with the <code>GeometryEditable</code>
-  interface.</para>
+  interface. Only Graphics Objects that have this interface as a role, will be
+  able to be edited.</para>
 
   <section>
     <title>How to create and store <code>GeometryEditable</code>
@@ -23,16 +24,21 @@
 
     <para>You will need to define a custom
     <code>AbstractGraphicsObjectContainer</code> to store the created graphics
-    objects.</para>
+    objects. This container needs to be linked to the</para>
 
-    <programlisting>// e.g. in onMapInitialized method:
+    <programlisting>// in a constructor: create a GraphicsService object
+GraphicsService graphicsService = new GraphicsServiceImpl(eventBus, true, false);
+
+// when map is initialized: (e.g. in onMapInitialized method); make and register object container
 annotationContainer = new AbstractGraphicsObjectContainer(eventBus);  // this will have to be an implementation!
-annotationContainer.setRootContainer(mapPresenter.getContainerManager().addWorldContainer());</programlisting>
+annotationContainer.setRootContainer(mapPresenter.getContainerManager().addWorldContainer());
+graphicsService.setObjectContainer(annotationContainer);</programlisting>
 
     <para>Only objects that have <code>GeometryEditable</code> role will
-    display the <code>EditAction</code> in their cog dropdown menu. There is a
-    default implementation for creating editable polygons and lines. This is
-    done using the <code>CreateLineController</code> and
+    display the pencil image or the <code>EditAction</code> in their cog
+    dropdown menu. There is a default implementation for creating editable
+    polygons and lines. This is done using the
+    <code>CreateLineController</code> and
     <code>CreatePolygonController</code>, that will alow you to create line or
     polyogon point-by-point, ending in a double click. If you use a button to
     indicate the start of the creation process (like in the screenshot in the
@@ -60,8 +66,18 @@ public void onAction(GraphicsObjectContainerEvent event) {  // method of Graphic
   </section>
 
   <section>
-    <title>How to registrate the <code>EditAction</code> in the cog
-    menu</title>
+    <title>How to add the pencil-showing
+    <code>GeometryEditController</code></title>
+
+    <para>Register the <code>GeometryEditControllerFactory</code> to the
+    <code>GraphicsService</code>.</para>
+
+    <programlisting>graphicsService.registerControllerFactory(new GeometryEditControllerFactory(mapPresenter));</programlisting>
+  </section>
+
+  <section>
+    <title>How to add the cog menu and registrate the
+    <code>EditAction</code></title>
 
     <para>The editing action is registered as any other action, in the
     <code>PopupMenuControllerFactory</code>. The actions registered in the
@@ -72,6 +88,65 @@ public void onAction(GraphicsObjectContainerEvent event) {  // method of Graphic
 popupFactory.registerAction(new EditAction(mapPresenter)); // registration of the editing action
 ... // register other actions or editors
 graphicsService.registerControllerFactory(popupFactory);</programlisting>
+  </section>
+
+  <section>
+    <title>How to change the position of the pencil or cog item</title>
+
+    <para>In the constructor of both the
+    <code>GeometryEditControllerFactory</code> and PopupMenuControllerFactory,
+    you can add two offset parameters. In the code above, two values 1.3 are
+    provided. The first value is the x-offset of the pencil or cog image, the
+    second is the y-offset. The values indicate the amount of times the image
+    is translated away from the graphics object. This means e.g. the larger
+    the x-value, the more to the left it will appear. The larger the y value,
+    the higher the cog or pencil will appear. The translation unit is the size
+    of the pencil/cog.</para>
+
+    <para>Here is the code to set the position of the pencil image of the
+    edit-controller system. If you don't provide offset parameters to the
+    GeometryEditControllerFactory (see previous example), value 1.3 is used
+    for x- and y-offset, resulting in position just outside the resize
+    box.</para>
+
+    <programlisting>graphicsService.registerControllerFactory(new GeometryEditControllerFactory(mapPresenter, 0, 1.3));</programlisting>
+
+    <screenshot>
+      <screeninfo>The pencil image for position x=0 y=1.3.</screeninfo>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center"
+                     fileref="images/graphicsediting_position_pencil.png" />
+        </imageobject>
+      </mediaobject>
+    </screenshot>
+  </section>
+
+  <section>
+    <title>How to change the fill and stroke parameters of created
+    polygons/lines</title>
+
+    <para>To change the default fill and stroke paramters of polygons or lines
+    when they are created, use the static setting methods of
+    <code>GraphicsEditingUtil</code>.</para>
+
+    <programlisting>// some examples:
+GraphicsEditingUtil.setPolygonCreateFillColor("red");
+GraphicsEditingUtil.setPolygonCreateStrokeColor("yellow");
+GraphicsEditingUtil.setLineCreateStrokeOpacity(0.5);
+GraphicsEditingUtil.setLineCreateStrokeWidth(5);</programlisting>
+
+    <screenshot>
+      <screeninfo>Result of changes in fill and stroke values.</screeninfo>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center"
+                     fileref="images/graphicsediting_fillstroke.png" />
+        </imageobject>
+      </mediaobject>
+    </screenshot>
   </section>
 
   <section>
@@ -99,18 +174,9 @@ graphicsService.registerControllerFactory(popupFactory);</programlisting>
   <section>
     <title>How to create a custum action</title>
 
-    <para>This is related to the documentation of the Graphics Project.</para>
+    <para>This is related to the documentation of the Graphics Project. You will need to define an action class, that defines what happens when it is executed and when the action needs to be undone. </para>
 
-    <para>You will need te following:</para>
+    <para>Inspiration: <code>EditAction</code>.</para>
 
-    <itemizedlist>
-      <listitem>
-        <para>An action class. Inspiration: <code>EditAction.</code></para>
-      </listitem>
-
-      <listitem>
-        <para><code></code></para>
-      </listitem>
-    </itemizedlist>
   </section>
 </chapter>

@@ -10,11 +10,12 @@
  */
 package org.geomajas.plugin.graphicsediting.gwt2.client.controller;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.MouseUpEvent;
+import com.google.gwt.event.dom.client.MouseUpHandler;
 import org.geomajas.annotation.Api;
-import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.geometry.service.BboxService;
 import org.geomajas.graphics.client.event.GraphicsObjectContainerEvent;
 import org.geomajas.graphics.client.object.Draggable;
 import org.geomajas.graphics.client.object.GraphicsObject;
@@ -22,23 +23,19 @@ import org.geomajas.graphics.client.object.Resizable;
 import org.geomajas.graphics.client.service.AbstractGraphicsController;
 import org.geomajas.graphics.client.service.GraphicsObjectContainer.Space;
 import org.geomajas.graphics.client.service.GraphicsService;
+import org.geomajas.graphics.client.shape.AnchoredImage;
 import org.geomajas.graphics.client.util.BboxPosition;
 import org.geomajas.graphics.client.util.GraphicsUtil;
-import org.geomajas.plugin.graphicsediting.gwt2.client.GraphicsEditingUtil;
-import org.geomajas.plugin.graphicsediting.gwt2.client.object.GeometryEditable;
-import org.geomajas.plugin.graphicsediting.gwt2.client.operation.GeometryEditOperation;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
-import org.vaadin.gwtgraphics.client.Image;
+import org.geomajas.plugin.graphicsediting.gwt2.client.GraphicsEditingUtil;
+import org.geomajas.plugin.graphicsediting.gwt2.client.object.GeometryEditable;
+import org.geomajas.plugin.graphicsediting.gwt2.client.operation.GeometryEditOperation;
 import org.vaadin.gwtgraphics.client.VectorObjectContainer;
-
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.MouseUpEvent;
-import com.google.gwt.event.dom.client.MouseUpHandler;
 
 /**
  * Controller for {@link GeometryEditable} objects. The controller will show a pencil icon in the upper left
@@ -75,18 +72,27 @@ public class GeometryEditController extends AbstractGraphicsController implement
 
 	private EditHandler handler;
 
+	// values that determines the offset of the pencil image from the left hand side of the resizable it is linked to.
+	private double offsetX;
+
+	private double offsetY;
+
 	/**
-	 * Default contstructor of {@link GeometryEditController}.
+	 * Default constructor of {@link GeometryEditController}.
 	 * @param object
 	 * @param graphicsService
 	 * @param mapPresenter
+	 * @param offsetX the x value of the offset of the pencil image
+	 * @param offsetY the y value of the offset of the pencil image
 	 */
 	public GeometryEditController(GraphicsObject object, GraphicsService graphicsService,
-								  MapPresenter mapPresenter) {
+								  MapPresenter mapPresenter, double offsetX, double offsetY) {
 		super(graphicsService, object);
 		this.mapPresenter = mapPresenter;
 		this.object = object.getRole(GeometryEditable.TYPE);
 		container = createContainer();
+		this.offsetX = offsetX;
+		this.offsetY = offsetY;
 		getObjectContainer().addGraphicsObjectContainerHandler(this);
 	}
 
@@ -159,7 +165,8 @@ public class GeometryEditController extends AbstractGraphicsController implement
 
 	@Override
 	public void setVisible(boolean visible) {
-		// this controller has no visible elements
+		// toggle visibility of the pencil image
+		handler.setVisible(visible);
 	}
 
 	/**
@@ -167,33 +174,31 @@ public class GeometryEditController extends AbstractGraphicsController implement
 	 */
 	private class EditHandler implements MouseUpHandler {
 
-		private Image propertyImage;
+		private AnchoredImage propertyImage;
 
 		public EditHandler() {
-			propertyImage = new Image(0, 0, 16, 16, GWT.getModuleBaseURL() + "image/pencil16.png");
+			propertyImage = new AnchoredImage(0, 0, 16, 16, GWT.getModuleBaseURL() + "image/pencil16.png",
+					offsetX, offsetY);
 			propertyImage.setFixedSize(true);
 			propertyImage.addMouseUpHandler(this);
 		}
 
 		public void update() {
-			double posX = IMG_DIST;
-			double posY = IMG_DIST;
 			if (getObject().hasRole(Resizable.TYPE)) {
-				Bbox userBounds = getObject().getRole(Resizable.TYPE).getUserBounds();
-				Bbox screenBounds = transform(userBounds, Space.USER, Space.SCREEN);
-				screenBounds = BboxService.buffer(screenBounds, IMG_DIST);
-				userBounds = transform(screenBounds, Space.SCREEN, Space.USER);
-				Coordinate location = GraphicsUtil.getPosition(userBounds,
-						transform(BboxPosition.CORNER_UL, Space.SCREEN, Space.USER));
-				posX = location.getX();
-				posY = location.getY();
+				BboxPosition bboxPos = transform(BboxPosition.CORNER_UL, Space.SCREEN, Space.USER);
+				Coordinate pos = transform(new Coordinate(IMG_DIST, IMG_DIST), Space.SCREEN, Space.USER);
+				if (getObject().hasRole(Resizable.TYPE)) {
+					pos = GraphicsUtil.getPosition(getObject().getRole(Resizable.TYPE).getUserBounds(), bboxPos);
+				} else if (getObject().hasRole(Draggable.TYPE)) {
+					pos = GraphicsUtil.getPosition(getObject().getRole(Draggable.TYPE).getUserBounds(), bboxPos);
+				}
+				propertyImage.setUserX(pos.getX());
+				propertyImage.setUserY(pos.getY());
 			} else if (getObject().hasRole(Draggable.TYPE)) {
 				Coordinate position = getObject().getRole(Draggable.TYPE).getPosition();
-				posX = position.getX();
-				posY = position.getY();
+				propertyImage.setUserX(position.getX());
+				propertyImage.setUserY(position.getY());
 			}
-			propertyImage.setUserX(posX);
-			propertyImage.setUserY(posY);
 		}
 
 		public void remove(VectorObjectContainer container) {
@@ -210,6 +215,10 @@ public class GeometryEditController extends AbstractGraphicsController implement
 				startEditing();
 			}
 			event.stopPropagation();
+		}
+
+		public void setVisible(boolean visible) {
+			propertyImage.setVisible(visible);
 		}
 
 	}

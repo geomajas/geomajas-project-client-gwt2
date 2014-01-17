@@ -28,7 +28,7 @@
 
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-client-gwt2-plugin-graphicsediting</artifactId>
+			<artifactId>geomajas-client-gwt2-plugin-graphicsediting-impl</artifactId>
 		</dependency>
 		
 		<!-- Geomajas GWT Client example jar (to use existing map config): -->

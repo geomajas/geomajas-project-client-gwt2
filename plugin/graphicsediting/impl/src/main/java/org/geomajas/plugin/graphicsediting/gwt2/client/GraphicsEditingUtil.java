@@ -29,7 +29,7 @@ import org.geomajas.plugin.editing.gwt.client.GeometryEditor;
 public final class GraphicsEditingUtil {
 
 	private static String polygonCreateFillColor = "#CCFF66";
-	private static double polygonCreateFillOpacity = 1;
+	private static double polygonCreateFillOpacity = 0.3;
 	private static String polygonCreateStrokeColor = "black";
 	private static double polygonCreateStrokeOpacity = 1;
 	private static int polygonCreateStrokeWidth = 1;

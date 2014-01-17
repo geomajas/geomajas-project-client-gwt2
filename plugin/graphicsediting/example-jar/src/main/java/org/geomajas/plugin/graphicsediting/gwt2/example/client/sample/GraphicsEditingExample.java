@@ -59,7 +59,7 @@ public class GraphicsEditingExample implements SamplePanel, MapInitializationHan
 
 	private static final MyBinder UIBINDER = GWT.create(MyBinder.class);
 
-	public GraphicsEditingExample() {
+	public GraphicsEditingExample(EXAMPLE exampleType) {
 		rootElement = UIBINDER.createAndBindUi(this);
 
 		// Initialize the map
@@ -71,7 +71,7 @@ public class GraphicsEditingExample implements SamplePanel, MapInitializationHan
 		mapLayout.setPresenter(mapPresenter);
 		AnnotationToolBar toolbar = new AnnotationToolBar();
 		new SetAnnotationPresenterImpl(toolbar, GeomajasImpl.getInstance().getEventBus(),
-				mapPresenter);
+				mapPresenter, exampleType);
 		mapPresenter.getWidgetPane().add(toolbar.asWidget());
 		contentPanel.setWidget(mapLayout);
 	}
@@ -81,4 +81,10 @@ public class GraphicsEditingExample implements SamplePanel, MapInitializationHan
 		mapPresenter.getConfiguration().setHintValue(MapConfiguration.ANIMATION_TIME, 300);
 	}
 
+	/**
+	 * To distinguish between examples of editing via a controller registration or a an action registration.
+	 */
+	public enum EXAMPLE {
+		CONTROLLER, ACTION;
+	}
 }

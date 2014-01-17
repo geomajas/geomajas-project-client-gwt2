@@ -14,7 +14,6 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.graphics.client.object.GraphicsObject;
-import org.geomajas.graphics.client.object.role.Fillable;
 import org.geomajas.graphics.client.object.role.Strokable;
 import org.geomajas.graphics.client.operation.AddOperation;
 import org.geomajas.graphics.client.service.AbstractGraphicsController;
@@ -128,9 +127,6 @@ public class CreateLineController extends AbstractGraphicsController implements 
 
 	protected GraphicsObject createObject(Geometry geometry) {
 		GGeometryPath path = new GGeometryPath(geometry, null);
-		if (path.hasRole(Fillable.TYPE)) {
-			path.getRole(Fillable.TYPE).setFillOpacity(0);
-		}
 		path.getRole(Strokable.TYPE).setStrokeColor(GraphicsEditingUtil.getLineCreateStrokeColor());
 		path.getRole(Strokable.TYPE).setStrokeOpacity(GraphicsEditingUtil.getLineCreateStrokeOpacity());
 		path.getRole(Strokable.TYPE).setStrokeWidth(GraphicsEditingUtil.getLineCreateStrokeWidth());

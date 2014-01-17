@@ -30,12 +30,28 @@ public class GeometryEditControllerFactory implements GraphicsControllerFactory 
 
 	private final MapPresenter mapPresenter;
 
+	private final double offsetX;
+
+	private final double offsetY;
+
 	/**
 	 * Default constructor.
 	 * @param mapPresenter
 	 */
 	public GeometryEditControllerFactory(MapPresenter mapPresenter) {
+		this(mapPresenter, 1.3, 1.3);
+	}
+
+	/**
+	 * Constructor with offset parameters for offset of pencil image.
+	 * @param mapPresenter
+	 * @param offsetX
+	 * @param offsetY
+	 */
+	public GeometryEditControllerFactory(MapPresenter mapPresenter, double offsetX, double offsetY) {
 		this.mapPresenter = mapPresenter;
+		this.offsetX = offsetX;
+		this.offsetY = offsetY;
 	}
 
 	@Override
@@ -45,7 +61,7 @@ public class GeometryEditControllerFactory implements GraphicsControllerFactory 
 
 	@Override
 	public GraphicsController createController(GraphicsService graphicsService, GraphicsObject object) {
-		return new GeometryEditController(object, graphicsService, mapPresenter);
+		return new GeometryEditController(object, graphicsService, mapPresenter, offsetX, offsetY);
 	}
 
 }

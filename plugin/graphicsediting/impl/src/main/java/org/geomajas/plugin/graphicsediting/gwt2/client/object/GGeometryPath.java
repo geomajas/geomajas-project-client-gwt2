@@ -81,6 +81,10 @@ public class GGeometryPath extends ResizableGraphicsObject implements GeometryEd
 
 		ResizableGeometryPath(Geometry geometry) {
 			path = new GeometryPath(geometry);
+			// TODO this should be done in GeometryPath class!
+			if (!path.isClosed()) {
+				path.setFillOpacity(0);
+			}
 			this.geometry = geometry;
 		}
 
