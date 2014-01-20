@@ -203,13 +203,13 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 				relevantGeometryCoordinates = currentGeometryCoordinates.length - 1;
 			}
 			if (relevantGeometryCoordinates >= 3) {
-				Coordinate[] geometryCoordinates = new Coordinate[relevantGeometryCoordinates - 1];
+				Coordinate[] geometryCoordinates = new Coordinate[relevantGeometryCoordinates];
 				for (int i = 0 ; i < geometryCoordinates.length ; i++) {
 				   geometryCoordinates[i] = currentGeometryCoordinates[i];
 				}
 				Coordinate[] lineCoordinates1 = {currentGeometryCoordinates[relevantGeometryCoordinates - 1],
 						newCoordinate};
-				Coordinate[] lineCoordinates2 = {geometryCoordinates[0], newCoordinate};
+				Coordinate[] lineCoordinates2 = {currentGeometryCoordinates[0], newCoordinate};
 				Geometry existingGeom = new Geometry();
 				existingGeom.setCoordinates(geometryCoordinates);
 				Geometry lineGeom1 = new Geometry();
