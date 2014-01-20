@@ -207,13 +207,17 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 				for (int i = 0 ; i < geometryCoordinates.length ; i++) {
 				   geometryCoordinates[i] = currentGeometryCoordinates[i];
 				}
-				Coordinate[] lineCoordinates = {currentGeometryCoordinates[relevantGeometryCoordinates - 1],
+				Coordinate[] lineCoordinates1 = {currentGeometryCoordinates[relevantGeometryCoordinates - 1],
 						newCoordinate};
+				Coordinate[] lineCoordinates2 = {geometryCoordinates[0], newCoordinate};
 				Geometry existingGeom = new Geometry();
 				existingGeom.setCoordinates(geometryCoordinates);
-				Geometry lineGeom = new Geometry();
-				lineGeom.setCoordinates(lineCoordinates);
-				if (GeometryService.intersects(existingGeom, lineGeom) ) {
+				Geometry lineGeom1 = new Geometry();
+				Geometry lineGeom2 = new Geometry();
+				lineGeom1.setCoordinates(lineCoordinates1);
+				lineGeom2.setCoordinates(lineCoordinates2);
+				if (GeometryService.intersects(existingGeom, lineGeom1)  ||
+						GeometryService.intersects(existingGeom, lineGeom2)) {
 					return true;
 				}
 			}
