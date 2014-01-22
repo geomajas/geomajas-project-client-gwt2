@@ -11,35 +11,38 @@
 
 package org.geomajas.plugin.editing.client.snap.algorithm;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.geometry.service.MathService;
 import org.geomajas.plugin.editing.client.snap.SnapAlgorithm;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 /**
- * <p>
- * Snapping algorithm that snaps to the closest end-point (vertex) of a geometry. Only coordinates that are effectively
- * stored in the geometries come into account. This makes it a pretty fast algorithm.
- * </p>
- * <p>
- * Also, when applying the list of geometries to snap to, this list is sorted into 2lists of coordinates: one sorted by
+ * <p> Snapping algorithm that snaps to the closest end-point (vertex) of a geometry. Only coordinates that are
+ * effectively stored in the geometries come into account. This makes it a pretty fast algorithm. </p> <p> Also, when
+ * applying the list of geometries to snap to, this list is sorted into 2 lists of coordinates: one sorted by
  * X-ordinates, one sorted by Y-ordinates. This may take some time initially, but afterwards you'll reap the results, as
- * possible snapping points can quickly be fetched using the binary search algorithm.
- * </p>
- * 
+ * possible snapping points can quickly be fetched using the binary search algorithm. </p>
+ *
  * @author Pieter De Graef
+ * @since 2.0.0
  */
+@Api(allMethods = true)
 public class NearestVertexSnapAlgorithm implements SnapAlgorithm {
 
-	/** List of coordinates, all sorted (ascending) by their X-ordinate. */
+	/**
+	 * List of coordinates, all sorted (ascending) by their X-ordinate.
+	 */
 	private List<Coordinate> sortedX;
 
-	/** List of coordinates, all sorted (ascending) by their Y-ordinate. */
+	/**
+	 * List of coordinates, all sorted (ascending) by their Y-ordinate.
+	 */
 	private List<Coordinate> sortedY;
 
 	private double calculatedDistance;
@@ -52,11 +55,9 @@ public class NearestVertexSnapAlgorithm implements SnapAlgorithm {
 
 	/**
 	 * Execute the snap operation.
-	 * 
-	 * @param coordinate
-	 *            The original location.
-	 * @param distance
-	 *            The maximum distance allowed for snapping.
+	 *
+	 * @param coordinate The original location.
+	 * @param distance   The maximum distance allowed for snapping.
 	 * @return The new location. If no snapping target was found, this may return the original location.
 	 */
 	public Coordinate snap(Coordinate coordinate, double distance) {
@@ -83,9 +84,8 @@ public class NearestVertexSnapAlgorithm implements SnapAlgorithm {
 
 	/**
 	 * Set the full list of target geometries. These are the geometries where to this snapping algorithm can snap.
-	 * 
-	 * @param geometries
-	 *            The list of target geometries.
+	 *
+	 * @param geometries The list of target geometries.
 	 */
 	public void setGeometries(Geometry[] geometries) {
 		List<Coordinate> coordinates = getCoordinates(geometries);
@@ -96,7 +96,7 @@ public class NearestVertexSnapAlgorithm implements SnapAlgorithm {
 	/**
 	 * Get the effective distance that was bridged during the snap operation. In case snapping occurred, this distance
 	 * will be smaller than the given "distance" value during the last call to snap.
-	 * 
+	 *
 	 * @return The effective snapping distance. Only valid if snapping actually occurred.
 	 */
 	public double getCalculatedDistance() {
@@ -106,7 +106,7 @@ public class NearestVertexSnapAlgorithm implements SnapAlgorithm {
 	/**
 	 * Has snapping actually occurred during the last call to the <code>snap</code> method? If so the returned snap
 	 * location was different from the original location.
-	 * 
+	 *
 	 * @return Returns if the returned location from the snap method differs from the original location.
 	 */
 	public boolean hasSnapped() {
@@ -117,7 +117,9 @@ public class NearestVertexSnapAlgorithm implements SnapAlgorithm {
 	// Private methods:
 	// -------------------------------------------------------------------------
 
-	/** Get a single list of coordinates from an array of geometries. */
+	/**
+	 * Get a single list of coordinates from an array of geometries.
+	 */
 	private List<Coordinate> getCoordinates(Geometry[] geometries) {
 		List<Coordinate> coordinates = new ArrayList<Coordinate>();
 		for (Geometry geometry : geometries) {
@@ -126,7 +128,9 @@ public class NearestVertexSnapAlgorithm implements SnapAlgorithm {
 		return coordinates;
 	}
 
-	/** Add all coordinates within the geometry to the list. */
+	/**
+	 * Add all coordinates within the geometry to the list.
+	 */
 	private void addCoordinateArrays(Geometry geometry, List<Coordinate> coordinates) {
 		if (geometry.getGeometries() != null) {
 			for (Geometry child : geometry.getGeometries()) {
@@ -197,7 +201,7 @@ public class NearestVertexSnapAlgorithm implements SnapAlgorithm {
 
 	/**
 	 * Private class that compares a coordinate's X values.
-	 * 
+	 *
 	 * @author Pieter De Graef
 	 */
 	private class XComparator implements Comparator<Coordinate> {
@@ -215,7 +219,7 @@ public class NearestVertexSnapAlgorithm implements SnapAlgorithm {
 
 	/**
 	 * Private class that compares a coordinate's Y values.
-	 * 
+	 *
 	 * @author Pieter De Graef
 	 */
 	private class YComparator implements Comparator<Coordinate> {

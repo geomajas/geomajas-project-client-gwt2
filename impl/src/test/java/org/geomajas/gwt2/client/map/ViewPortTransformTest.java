@@ -11,9 +11,6 @@
 
 package org.geomajas.gwt2.client.map;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
@@ -24,6 +21,9 @@ import org.geomajas.gwt2.client.map.MapConfiguration.CrsType;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Unit test that checks if the correct events are fired by the ViewPortImpl.
@@ -40,12 +40,12 @@ public class ViewPortTransformTest {
 
 	private MapEventBus eventBus;
 
-	private ViewPort viewPort;
+	private ViewPortImpl viewPort;
 
 	public ViewPortTransformTest() {
 		eventBus = new MapEventBusImpl(this, GeomajasImpl.getInstance().getEventBus());
 		viewPort = new ViewPortImpl(eventBus);
-		((ViewPortImpl) viewPort).initialize(getMapConfig());
+		viewPort.initialize(getMapConfig());
 		viewPort.setMapSize(MAP_WIDTH, MAP_HEIGHT);
 	}
 

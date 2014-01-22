@@ -23,9 +23,6 @@ interface PrintPanelCssResource extends CssResource {
 	@ClassName("gm-print-button")
 	String printButton();
 
-	@ClassName("gm-print-button-button")
-	String printButtonButton();
-
 	@ClassName("gm-print-buttons")
 	String buttons();
 

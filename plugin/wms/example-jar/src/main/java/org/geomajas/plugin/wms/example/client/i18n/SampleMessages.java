@@ -44,6 +44,12 @@ public interface SampleMessages extends Messages {
 
 	String selectStyleV111Description();
 
+	String wmsLayerLegendV111Title();
+
+	String wmsLayerLegendV111Short();
+
+	String wmsLayerLegendV111Description();
+
 	String capabilitiesV130Title();
 
 	String capabilitiesV130Short();
@@ -67,4 +73,10 @@ public interface SampleMessages extends Messages {
 	String selectStyleV130Short();
 
 	String selectStyleV130Description();
+
+	String wmsLayerLegendV130Title();
+
+	String wmsLayerLegendV130Short();
+
+	String wmsLayerLegendV130Description();
 }

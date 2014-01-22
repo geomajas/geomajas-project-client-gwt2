@@ -16,8 +16,8 @@ import org.geomajas.gwt2.client.map.layer.LegendConfig;
 import org.geomajas.plugin.wms.client.capabilities.WmsGetCapabilitiesInfo;
 import org.geomajas.plugin.wms.client.capabilities.v1_1_1.WmsGetCapabilitiesInfo111;
 import org.geomajas.plugin.wms.client.capabilities.v1_3_0.WmsGetCapabilitiesInfo130;
-import org.geomajas.plugin.wms.client.layer.config.WmsLayerConfiguration;
-import org.geomajas.plugin.wms.client.layer.config.WmsServiceVendor;
+import org.geomajas.plugin.wms.client.layer.WmsLayerConfiguration;
+import org.geomajas.plugin.wms.client.layer.WmsServiceVendor;
 
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.http.client.Request;

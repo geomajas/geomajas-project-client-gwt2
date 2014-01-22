@@ -159,15 +159,17 @@ public class ZoomControl extends AbstractMapWidget {
 
 			@Override
 			public void onTouchStart(TouchStartEvent event) {
+				event.stopPropagation();
+				event.preventDefault();
+
 				logger.log(Level.INFO, "ZoomControl -> zoomInElement onTouchStart()");
 				ViewPort viewPort = mapPresenter.getViewPort();
 				int index = viewPort.getFixedScaleIndex(viewPort.getScale());
 
 				if (index < viewPort.getFixedScaleCount() - 1) {
-					viewPort.registerAnimation(NavigationAnimationFactory.createZoomIn(mapPresenter));
+					viewPort.applyScale(viewPort.getFixedScale(index + 1));
+					viewPort.getPosition();
 				}
-
-				event.stopPropagation();
 			}
 		}, TouchStartEvent.getType());
 
@@ -177,15 +179,17 @@ public class ZoomControl extends AbstractMapWidget {
 			@Override
 			public void onTouchStart(TouchStartEvent event) {
 				logger.log(Level.INFO, "zoomOutElement -> zoomInElement onTouchStart()");
+				event.stopPropagation();
+				event.preventDefault();
+
 				ViewPort viewPort = mapPresenter.getViewPort();
 				int index = viewPort.getFixedScaleIndex(viewPort.getScale());
 
 				if (index > 0) {
-					viewPort.registerAnimation(NavigationAnimationFactory.createZoomOut(mapPresenter));
+					viewPort.applyScale(viewPort.getFixedScale(index - 1));
 				}
-
-				event.stopPropagation();
 			}
 		}, TouchStartEvent.getType());
 	}
+
 }

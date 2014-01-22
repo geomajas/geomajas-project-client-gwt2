@@ -12,15 +12,13 @@
 package org.geomajas.plugin.wmsclient.client.service;
 
 import org.geomajas.geometry.Bbox;
-import org.geomajas.plugin.wms.client.layer.config.WmsLayerConfiguration;
+import org.geomajas.plugin.wms.client.layer.WmsLayerConfiguration;
 import org.geomajas.plugin.wms.client.service.WmsService;
 import org.geomajas.plugin.wms.client.service.WmsServiceImpl;
 import org.geomajas.plugin.wms.client.service.WmsService.WmsRequest;
 import org.geomajas.plugin.wms.client.service.WmsService.WmsUrlTransformer;
 import org.junit.Test;
 
-import com.google.gwt.http.client.URL;
-import com.google.gwt.junit.client.GWTTestCase;
 import com.vividsolutions.jts.util.Assert;
 
 /**

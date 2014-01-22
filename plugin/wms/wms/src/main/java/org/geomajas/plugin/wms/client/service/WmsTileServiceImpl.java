@@ -18,7 +18,7 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.render.TileCode;
-import org.geomajas.plugin.wms.client.layer.config.WmsTileConfiguration;
+import org.geomajas.plugin.wms.client.layer.WmsTileConfiguration;
 
 /**
  * Default implementation of the {@link WmsTileService}.

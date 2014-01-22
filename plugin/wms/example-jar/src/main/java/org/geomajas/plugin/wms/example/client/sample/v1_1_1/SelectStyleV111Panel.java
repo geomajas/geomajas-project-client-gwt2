@@ -27,14 +27,15 @@ import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.example.base.client.ExampleBase;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.plugin.wms.client.WmsClient;
 import org.geomajas.plugin.wms.client.capabilities.WmsGetCapabilitiesInfo;
 import org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo;
 import org.geomajas.plugin.wms.client.capabilities.WmsLayerStyleInfo;
 import org.geomajas.plugin.wms.client.layer.WmsLayer;
-import org.geomajas.plugin.wms.client.layer.config.WmsLayerConfiguration;
-import org.geomajas.plugin.wms.client.layer.config.WmsTileConfiguration;
+import org.geomajas.plugin.wms.client.layer.WmsLayerConfiguration;
+import org.geomajas.plugin.wms.client.layer.WmsTileConfiguration;
 import org.geomajas.plugin.wms.client.service.WmsService.WmsRequest;
 import org.geomajas.plugin.wms.client.service.WmsService.WmsUrlTransformer;
 import org.geomajas.plugin.wms.client.service.WmsService.WmsVersion;
@@ -131,6 +132,8 @@ public class SelectStyleV111Panel implements SamplePanel {
 	private static final class LayerPresenter extends VerticalPanel {
 
 		private LayerPresenter(final WmsLayer layer) {
+			setStyleName(ExampleBase.getShowcaseResource().css().sampleRow());
+			setWidth("100%");
 			add(new Label(layer.getTitle()));
 			WmsLayerInfo capabilities = layer.getCapabilities();
 			boolean first = true;
