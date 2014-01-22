@@ -60,7 +60,7 @@ public class Tile implements Serializable {
 	/**
 	 * Constructor setting the tile's unique ID and bounds.
 	 * 
-	 * @param code
+	 * @param tileCode
 	 *            The tile's code.
 	 * @param bounds
 	 *            Bounds for the image on the client side.

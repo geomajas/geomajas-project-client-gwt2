@@ -14,6 +14,7 @@ package org.geomajas.gwt2.client.map.feature;
 import java.util.Map;
 
 import org.geomajas.geometry.Geometry;
+import org.geomajas.gwt2.client.map.attribute.Attribute;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
 
 /**

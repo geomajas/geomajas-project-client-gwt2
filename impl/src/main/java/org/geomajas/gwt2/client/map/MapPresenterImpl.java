@@ -93,20 +93,20 @@ public final class MapPresenterImpl implements MapPresenter {
 		 * @return the container
 		 */
 		HtmlContainer getMapHtmlContainer();
-
-		/**
-		 * Returns the vector container that contains the vectorized tiles (SVG/VML) of vector layers.
-		 * 
-		 * @return the container
-		 */
-		VectorContainer getMapVectorContainer();
-
-		/**
-		 * Returns the list of user-defined vector containers for world-space objects.
-		 * 
-		 * @return the container
-		 */
-		List<VectorContainer> getWorldVectorContainers();
+//
+//		/**
+//		 * Returns the vector container that contains the vectorized tiles (SVG/VML) of vector layers.
+//		 *
+//		 * @return the container
+//		 */
+//		VectorContainer getMapVectorContainer();
+//
+//		/**
+//		 * Returns the list of user-defined vector containers for world-space objects.
+//		 *
+//		 * @return the container
+//		 */
+//		List<VectorContainer> getWorldVectorContainers();
 
 		/**
 		 * Returns the list of user-defined containers (vector + canvas) for world-space objects.
@@ -203,7 +203,7 @@ public final class MapPresenterImpl implements MapPresenter {
 
 	private final LayersModel layersModel;
 
-	private final ViewPort viewPort;
+	private final ViewPortImpl viewPort;
 
 	private final MapWidget display;
 
@@ -282,7 +282,7 @@ public final class MapPresenterImpl implements MapPresenter {
 
 		// Configure the ViewPort. This will immediately zoom to the initial bounds:
 		// viewPort.setMapSize(display.getWidth(), display.getHeight());
-		((ViewPortImpl) viewPort).initialize(configuration);
+		viewPort.initialize(configuration);
 
 		// Immediately zoom to the initial bounds as configured:
 		viewPort.applyBounds(configuration.getHintValue(MapConfiguration.INITIAL_BOUNDS), ZoomOption.LEVEL_CLOSEST);
@@ -322,9 +322,7 @@ public final class MapPresenterImpl implements MapPresenter {
 	@Override
 	public void setSize(int width, int height) {
 		display.setPixelSize(width, height);
-		if (viewPort != null) {
-			viewPort.setMapSize(width, height);
-		}
+		viewPort.setMapSize(width, height);
 		eventBus.fireEvent(new MapResizedEvent(width, height));
 	}
 

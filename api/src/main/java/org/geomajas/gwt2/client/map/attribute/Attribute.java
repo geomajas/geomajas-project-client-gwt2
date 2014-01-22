@@ -9,14 +9,14 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.client.map.feature;
+package org.geomajas.gwt2.client.map.attribute;
 
 import java.io.Serializable;
 
 import org.geomajas.annotation.Api;
 
 /**
- * Attribute definition.
+ * Attribute definition. Holds an attribute value.
  * 
  * @param <VALUE_TYPE>
  *            type for the attribute value

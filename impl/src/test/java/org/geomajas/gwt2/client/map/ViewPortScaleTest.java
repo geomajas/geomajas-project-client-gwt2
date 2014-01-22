@@ -11,15 +11,14 @@
 
 package org.geomajas.gwt2.client.map;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import junit.framework.Assert;
-
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.map.MapConfiguration.CrsType;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * TODO incorporate in ViewPort tests.
@@ -33,14 +32,14 @@ public class ViewPortScaleTest {
 
 	private static final double[] SCALES = new double[] { 1.0, 2.0, 4.0, 8.0 };
 
-	private ViewPort viewPort;
+	private ViewPortImpl viewPort;
 
 	private MapEventBus eventBus;
 
 	public ViewPortScaleTest() {
 		eventBus = new MapEventBusImpl(this, GeomajasImpl.getInstance().getEventBus());
 		viewPort = new ViewPortImpl(eventBus);
-		((ViewPortImpl) viewPort).initialize(getMapConfig());
+		viewPort.initialize(getMapConfig());
 		viewPort.setMapSize(100, 100);
 	}
 

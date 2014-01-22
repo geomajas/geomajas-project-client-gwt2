@@ -11,12 +11,12 @@
 
 package org.geomajas.gwt2.client.map;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.gwt2.client.map.MapConfiguration.CrsType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Test utility.
@@ -39,9 +39,10 @@ public class TestConfigUtil {
 		return mapConfig;
 	}
 
-	public static ViewPort createViewPort(MapEventBus eventBus, ClientMapInfo mapInfo) {
+	public static ViewPort createViewPort(MapEventBus eventBus, ClientMapInfo mapInfo, int width, int height) {
 		ViewPortImpl viewPort = new ViewPortImpl(eventBus);
 		viewPort.initialize(create(mapInfo));
+		viewPort.setMapSize(width, height);
 		return viewPort;
 	}
 }

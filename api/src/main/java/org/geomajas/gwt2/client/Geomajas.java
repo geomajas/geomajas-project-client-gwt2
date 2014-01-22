@@ -31,7 +31,7 @@ public interface Geomajas {
 	 * Create a new empty map. This map still needs to be initialized (it needs to fetch a configuration from the
 	 * server, only then is it initialized, and are any layers available). Use this method if you want to fetch a
 	 * configuration from the server, using the Geomajas server extensions. Otherwise it's better to use the
-	 * {@link #createMapPresenter(MapOptions)} method.
+	 * {@link #createMapPresenter(MapConfiguration, int, int)} method.
 	 * 
 	 * @return An empty map.
 	 */

@@ -11,17 +11,16 @@
 
 package org.geomajas.gwt2.client.map;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import junit.framework.Assert;
-
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.map.MapConfiguration.CrsType;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Unit test that checks if the ViewPortImpl positions correctly.
@@ -32,12 +31,12 @@ public class ViewPortPositionTest {
 
 	private MapEventBus eventBus;
 
-	private ViewPort viewPort;
+	private ViewPortImpl viewPort;
 
 	public ViewPortPositionTest() {
 		eventBus = new MapEventBusImpl(this, GeomajasImpl.getInstance().getEventBus());
 		viewPort = new ViewPortImpl(eventBus);
-		((ViewPortImpl) viewPort).initialize(getMapConfig());
+		viewPort.initialize(getMapConfig());
 		viewPort.setMapSize(200, 200);
 	}
 

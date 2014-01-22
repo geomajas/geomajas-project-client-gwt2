@@ -92,15 +92,15 @@ public interface ViewPort {
 	int getFixedScaleIndex(double scale);
 
 	/**
-	 * Set the map's width and height in pixels. <code>ViewPort</code> implementations should pass these values to the
-	 * {@link ZoomStrategy} they employ.
+	 * Set the map's width and height in pixels.
+	 * TODO Shouldn't this be package protected??
 	 * 
 	 * @param mapWidth
 	 *            The current map width in pixels.
 	 * @param mapHeight
 	 *            The current map height in pixels.
 	 */
-	void setMapSize(int mapWidth, int mapHeight);
+	//void setMapSize(int mapWidth, int mapHeight);
 
 	/**
 	 * Get the current map width in pixels.

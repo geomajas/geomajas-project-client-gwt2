@@ -26,6 +26,7 @@ import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.client.map.attribute.Attribute;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
 import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.client.map.layer.ServerLayer;

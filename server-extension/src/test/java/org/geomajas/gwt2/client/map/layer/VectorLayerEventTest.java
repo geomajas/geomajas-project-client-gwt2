@@ -12,7 +12,6 @@
 package org.geomajas.gwt2.client.map.layer;
 
 import junit.framework.Assert;
-
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.gwt2.client.GeomajasImpl;
@@ -59,9 +58,7 @@ public class VectorLayerEventTest {
 	public void initialize() {
 		// Initialize main components:
 		eventBus = new MapEventBusImpl(this, GeomajasImpl.getInstance().getEventBus());
-		viewPort = TestConfigUtil.createViewPort(eventBus, mapInfo);
-		viewPort.setMapSize(1000, 1000);
-
+		viewPort = TestConfigUtil.createViewPort(eventBus, mapInfo, 1000, 1000);
 		layerInfo = (ClientVectorLayerInfo) mapInfo.getLayers().get(0);
 	}
 
