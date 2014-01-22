@@ -18,7 +18,7 @@ import junit.framework.Assert;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.client.GeomajasImpl;
-import org.geomajas.gwt2.client.map.MapOptions.CrsType;
+import org.geomajas.gwt2.client.map.MapConfiguration.CrsType;
 import org.junit.Test;
 
 /**
@@ -39,7 +39,8 @@ public class ViewPortScaleTest {
 
 	public ViewPortScaleTest() {
 		eventBus = new MapEventBusImpl(this, GeomajasImpl.getInstance().getEventBus());
-		viewPort = new ViewPortImpl(eventBus, getMapConfig());
+		viewPort = new ViewPortImpl(eventBus);
+		((ViewPortImpl) viewPort).initialize(getMapConfig());
 		viewPort.setMapSize(100, 100);
 	}
 
@@ -138,19 +139,15 @@ public class ViewPortScaleTest {
 	}
 
 	private MapConfiguration getMapConfig() {
-		MapOptions options = new MapOptions();
-		options.setCrs("EPSG:4326", CrsType.DEGREES);
-		options.setInitialBounds(new Bbox(-100, -100, 200, 200));
-		options.setMaxBounds(new Bbox(-100, -100, 200, 200));
+		MapConfigurationImpl config = new MapConfigurationImpl();
+		config.setCrs("EPSG:4326", CrsType.DEGREES);
+		config.setMaxBounds(new Bbox(-100, -100, 200, 200));
 		List<Double> resolutions = new ArrayList<Double>();
 		resolutions.add(1.0);
 		resolutions.add(2.0);
 		resolutions.add(4.0);
 		resolutions.add(8.0);
-		options.setResolutions(resolutions);
-
-		MapConfigurationImpl config = new MapConfigurationImpl();
-		config.setMapOptions(options);
+		config.setResolutions(resolutions);
 		return config;
 	}
 }

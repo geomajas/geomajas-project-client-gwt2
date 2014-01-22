@@ -16,12 +16,11 @@ import java.util.List;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.GeomajasImpl;
-import org.geomajas.gwt2.client.gfx.tile.TileCode;
 import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.MapEventBusImpl;
 import org.geomajas.gwt2.client.map.TestConfigUtil;
 import org.geomajas.gwt2.client.map.ViewPort;
-import org.geomajas.gwt2.client.map.ViewPortImpl;
+import org.geomajas.gwt2.client.map.render.TileCode;
 import org.geomajas.plugin.wms.client.layer.config.WmsTileConfiguration;
 import org.geomajas.plugin.wms.client.service.WmsTileService;
 import org.geomajas.plugin.wms.client.service.WmsTileServiceImpl;
@@ -49,7 +48,7 @@ public class LayerTileServiceTest {
 	@Before
 	public void initialize2() {
 		eventBus = new MapEventBusImpl(this, GeomajasImpl.getInstance().getEventBus());
-		viewPort = new ViewPortImpl(eventBus, TestConfigUtil.getMapConfig());
+		viewPort = TestConfigUtil.createViewPort(eventBus, TestConfigUtil.getMapConfig());
 		viewPort.setMapSize(1000, 1000);
 		tileService = new WmsTileServiceImpl();
 

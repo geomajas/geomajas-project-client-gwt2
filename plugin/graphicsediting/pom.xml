@@ -34,8 +34,9 @@
 
 	<modules>
 		<module>graphicsediting</module>
-		<module>example</module>
 		<module>example-jar</module>
+		<!-- <module>example</module> -->
+		<module>documentation</module>
 	</modules>
 
 </project>

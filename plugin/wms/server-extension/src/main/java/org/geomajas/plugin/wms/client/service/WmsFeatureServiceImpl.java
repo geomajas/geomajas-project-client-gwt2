@@ -24,8 +24,9 @@ import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
-import org.geomajas.gwt2.client.gfx.tile.TileCode;
 import org.geomajas.gwt2.client.map.feature.Feature;
+import org.geomajas.gwt2.client.map.render.TileCode;
+import org.geomajas.plugin.wms.client.WmsServerExtension;
 import org.geomajas.plugin.wms.client.layer.FeaturesSupportedWmsLayer;
 import org.geomajas.plugin.wms.client.layer.WmsLayer;
 import org.geomajas.plugin.wms.server.command.dto.GetFeatureInfoRequest;
@@ -35,7 +36,7 @@ import com.google.gwt.core.client.Callback;
 
 /**
  * Default implementation of the {@link WmsFeatureService}.
- * 
+ *
  * @author Pieter De Graef
  * @author An Buyle
  */
@@ -44,16 +45,7 @@ public class WmsFeatureServiceImpl extends WmsServiceImpl implements WmsFeatureS
 	private static final double DEFAULT_PIXEL_TOLERANCE = 0.0; // Default tolerance for the location
 
 	private static final int DEFAULT_MAX_FEATURES = 20; // Default maximum number of feats returned by
-														// getFeatureInfo()
-
-	private static WmsFeatureService instance;
-
-	public static WmsFeatureService getInstance() {
-		if (instance == null) {
-			instance = new WmsFeatureServiceImpl();
-		}
-		return instance;
-	}
+	// getFeatureInfo()
 
 	// ------------------------------------------------------------------------
 	// WmsFeatureService implementation:
@@ -65,15 +57,19 @@ public class WmsFeatureServiceImpl extends WmsServiceImpl implements WmsFeatureS
 		final String url = getFeatureInfoUrl(layer, location, GetFeatureInfoFormat.GML2, DEFAULT_PIXEL_TOLERANCE,
 				DEFAULT_MAX_FEATURES);
 
+		Integer max = WmsServerExtension.getInstance().getHintValue(WmsServerExtension.GET_FEATUREINFO_MAX_COORDS);
+
 		GwtCommand command = new GwtCommand(GetFeatureInfoRequest.COMMAND_NAME);
-		command.setCommandRequest(new GetFeatureInfoRequest(url));
+		command.setCommandRequest(new GetFeatureInfoRequest(url, max));
 		GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback<GetFeatureInfoResponse>() {
 
 			@Override
 			public void execute(GetFeatureInfoResponse response) {
 				List<Feature> features = new ArrayList<Feature>();
 				for (org.geomajas.layer.feature.Feature feature : response.getFeatures()) {
-					features.add(GeomajasServerExtension.getServerFeatureService().create(feature, layer));
+					Feature newFeature = GeomajasServerExtension.getInstance().getServerFeatureService()
+							.create(feature, layer);
+					features.add(newFeature);
 				}
 
 				callback.onSuccess(new FeatureCollection(features, response.getAttributeDescriptors()));

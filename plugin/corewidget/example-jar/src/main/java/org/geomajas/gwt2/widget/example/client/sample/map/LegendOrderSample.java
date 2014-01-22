@@ -93,7 +93,7 @@ public class LegendOrderSample implements SamplePanel {
 		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		GeomajasServerExtension.initializeMap(mapPresenter, "gwt-app", "mapLegend");
+		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "gwt-app", "mapLegend");
 		return layout;
 	}
 

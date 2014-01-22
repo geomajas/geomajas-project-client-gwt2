@@ -32,7 +32,6 @@ import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.Layer;
-import org.geomajas.gwt2.client.map.layer.OpacitySupported;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlGroup;
 import org.geomajas.gwt2.client.service.DomService;
@@ -44,7 +43,7 @@ import com.google.gwt.user.client.ui.IsWidget;
  * 
  * @author Pieter De Graef
  */
-public abstract class FixedScaleLayerRenderer implements LayerRenderer, OpacitySupported {
+public abstract class FixedScaleLayerRenderer implements LayerRenderer {
 
 	private final ViewPort viewPort;
 
@@ -167,12 +166,10 @@ public abstract class FixedScaleLayerRenderer implements LayerRenderer, OpacityS
 	// OpacitySupported implementation:
 	// ------------------------------------------------------------------------
 
-	@Override
 	public void setOpacity(double opacity) {
 		container.setOpacity(opacity);
 	}
 
-	@Override
 	public double getOpacity() {
 		return container.getOpacity();
 	}

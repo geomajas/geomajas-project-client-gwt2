@@ -26,6 +26,8 @@
 	<modules>
 		<module>common</module>
 		<module>impl</module>
+		<module>example-jar</module>
+		<module>example</module>
 	</modules>
 
 </project>

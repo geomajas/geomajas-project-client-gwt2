@@ -40,7 +40,6 @@ public class GeoCoderExampleJar implements EntryPoint {
 	}
 
 	private void registerSamples() {
-		SamplePanelRegistry.registerCategory(CATEGORY_GEOCODER, 110);
 		SamplePanelRegistry.registerFactory(CATEGORY_GEOCODER, new ShowcaseSampleDefinition() {
 
 			public SamplePanel create() {

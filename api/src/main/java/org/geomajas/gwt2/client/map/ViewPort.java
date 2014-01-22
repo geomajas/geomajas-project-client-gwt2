@@ -257,16 +257,6 @@ public interface ViewPort {
 	ViewPortTransformationService getTransformationService();
 
 	/**
-	 * Returns whether the view port is ready to be used. Mainly for internal use, normal clients should depend on map
-	 * initialization.
-	 * 
-	 * @return true if ready to be used.
-	 * @deprecated Do we still need this?
-	 */
-	@Deprecated
-	boolean isInitialized();
-
-	/**
 	 * Transform a scale denominator (i.e. the number 5000 in scale 1:5000) into a usable scale for this view port.
 	 * 
 	 * @param scaleDenominator

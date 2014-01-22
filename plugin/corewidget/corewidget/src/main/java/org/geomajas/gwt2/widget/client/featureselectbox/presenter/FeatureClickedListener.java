@@ -115,7 +115,7 @@ public class FeatureClickedListener extends AbstractController implements MapCon
 		Geometry point = new Geometry(Geometry.POINT, 0, -1);
 		point.setCoordinates(new Coordinate[] { location });
 
-		GeomajasServerExtension.getServerFeatureService().search(mapPresenter, point,
+		GeomajasServerExtension.getInstance().getServerFeatureService().search(mapPresenter, point,
 				calculateBufferFromPixelTolerance(), QueryType.INTERSECTS, SearchLayerType.SEARCH_ALL_LAYERS, -1,
 				new FeatureMapFunction() {
 

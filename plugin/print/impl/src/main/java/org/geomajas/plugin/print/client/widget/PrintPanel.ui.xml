@@ -1,0 +1,73 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+	<ui:with field='msg' type='org.geomajas.plugin.print.client.i18n.PrintMessages' />
+	<ui:with field='resource' type='org.geomajas.plugin.print.client.widget.PrintPanelResource' />
+
+	<g:FlowPanel > <!-- no width: 100% here ? -->
+	
+		<g:HTMLPanel addStyleNames="{resource.css.subMenuPanel}">  <!-- no width: 100% here ! -->
+		<!--  title -->
+			<form>
+				<fieldset>
+	
+					<legend><ui:text from="{msg.printPrefsHeader}" /></legend>
+					<ul class="{resource.css.fieldList}" > <!--  extra for style: "border-width:1px;border-style:solid;" -->
+						<li>
+							<g:Label addStyleNames="{resource.css.fieldLabel}">
+								<ui:text from='{msg.printPrefsTitleLabel}' />
+								:
+							</g:Label>
+							
+							<g:TextBox ui:field="titleTextBox" width="180px" 
+								addStyleNames="{resource.css.textboxSuitableMargin}"	/> <!--  excl padding-left: 5px and padding-right: 2px -->
+						</li>
+						<li>
+							<g:Label addStyleNames="{resource.css.fieldLabel}">
+								<ui:text from='{msg.printPrefsOrientation}' />
+								:
+							</g:Label>
+							<g:HorizontalPanel addStyleNames="{resource.css.radioGroup}">
+								<g:Cell>
+									<g:RadioButton ui:field="optionLandscapeOrientation" name="orientationOption"
+												addStyleNames="{resource.css.radiobuttonMargin}" >
+										<ui:text from="{msg.printPrefsLandscape}" />
+									</g:RadioButton>
+								</g:Cell>
+								<g:Cell>
+									<g:RadioButton ui:field="optionPortraitOrientation" name="orientationOption"
+												addStyleNames="{resource.css.radiobuttonMargin}" >
+										<ui:text from="{msg.printPrefsPortrait}" />
+									</g:RadioButton>
+								</g:Cell>
+							</g:HorizontalPanel>
+						</li>
+	
+					</ul>
+	
+				</fieldset>
+			</form>
+		
+		</g:HTMLPanel>
+		
+		<g:FlowPanel addStyleNames="{resource.css.buttons}">
+			<g:Button ui:field="printButton"  styleName="{resource.css.printButton}">
+				<ui:text from="{msg.printButtonTitle}" />
+			</g:Button>
+			
+		</g:FlowPanel>
+	</g:FlowPanel>
+	
+	
+
+</ui:UiBinder> 

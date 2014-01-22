@@ -20,16 +20,12 @@ import org.geomajas.plugin.wms.client.service.WmsService.GetFeatureInfoFormat;
 import com.google.gwt.core.client.Callback;
 
 /**
- * <p>
- * Extension of the default {@link WmsLayer} that also supports features. Since a WMS service can use either a raster
- * data set or a vector data set, we too make that distinction here. If you know that a WMS services uses a vector data
- * set, this layer implementation will give you some more options.
- * </p>
- * <p>
- * These extra options include a WMS GetFeatureInfo request and general feature selection and filtering. Note though
- * that filtering is not a default WMS construct and may not always work. Some WMS servers will support it though.
- * </p>
- * 
+ * <p> Extension of the default {@link WmsLayer} that also supports features. Since a WMS service can use either a
+ * raster data set or a vector data set, we too make that distinction here. If you know that a WMS services uses a
+ * vector data set, this layer implementation will give you some more options. </p> <p> These extra options include a
+ * WMS GetFeatureInfo request and general feature selection and filtering. Note though that filtering is not a default
+ * WMS construct and may not always work. Some WMS servers will support it though. </p>
+ *
  * @author Pieter De Graef
  * @author An Buyle (getSelectedFeatures())
  * @since 1.0.0
@@ -40,38 +36,30 @@ public interface FeaturesSupportedWmsLayer extends WmsLayer, FeaturesSupported {
 
 	/**
 	 * Execute a WMS GetFeatureInfo request.
-	 * 
-	 * @param location
-	 *            The location in world space to get information for.
-	 * @param callback
-	 *            The callback that is executed when the response returns. If features are found at the requested
-	 *            location, they will be returned here.
+	 *
+	 * @param location The location in world space to get information for.
+	 * @param callback The callback that is executed when the response returns. If features are found at the requested
+	 *                 location, they will be returned here.
 	 */
 	void getFeatureInfo(Coordinate location, Callback<FeatureCollection, String> callback);
 
 	/**
 	 * Execute a WMS GetFeatureInfo request.
-	 * 
-	 * @param location
-	 *            The location in world space to get information for.
-	 * @param format
-	 *            The format for the response.
-	 * @param callback
-	 *            The callback that is executed when the response returns. If features are found at the requested
-	 *            location, they will be returned here. Note that the callback returns a string on success. It is up to
-	 *            you to parse this.
+	 *
+	 * @param location The location in world space to get information for.
+	 * @param format   The format for the response.
+	 * @param callback The callback that is executed when the response returns. If features are found at the requested
+	 *                 location, they will be returned here. Note that the callback returns a string on success. It is
+	 *                 up to you to parse this.
 	 */
 	void getFeatureInfo(Coordinate location, GetFeatureInfoFormat format, Callback<Object, String> callback);
 
 	/**
 	 * Search for features at the given location.
-	 * 
-	 * @param coordinate
-	 *            The location to search at.
-	 * @param tolerance
-	 *            Tolerance in pixels.
-	 * @param callback
-	 *            Callback containing the features.
+	 *
+	 * @param coordinate The location to search at.
+	 * @param tolerance  Tolerance in pixels.
+	 * @param callback   Callback containing the features.
 	 */
 	void searchFeatures(Coordinate coordinate, double tolerance, Callback<FeatureCollection, String> callback);
 }

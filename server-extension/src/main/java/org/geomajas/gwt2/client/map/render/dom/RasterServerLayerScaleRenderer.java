@@ -120,7 +120,7 @@ public class RasterServerLayerScaleRenderer implements FixedScaleRenderer {
 			command.setCommandRequest(request);
 
 			// Execute the fetch, and render on success:
-			deferred = GeomajasServerExtension.getCommandService().execute(command,
+			deferred = GeomajasServerExtension.getInstance().getCommandService().execute(command,
 					new AbstractCommandCallback<GetRasterTilesResponse>() {
 
 						public void execute(GetRasterTilesResponse response) {

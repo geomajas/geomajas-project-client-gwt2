@@ -10,21 +10,20 @@
  */
 package org.geomajas.plugin.wmsclient.printing.client;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.gwt2.client.gfx.tile.Tile;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.layer.Layer;
-import org.geomajas.gwt2.client.map.layer.OpacitySupported;
+import org.geomajas.gwt2.client.map.render.Tile;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
-import org.geomajas.plugin.printing.client.template.PrintableLayerBuilder;
+import org.geomajas.plugin.print.client.template.PrintableLayerBuilder;
 import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
 import org.geomajas.plugin.wms.client.layer.WmsLayer;
 import org.geomajas.plugin.wmsclient.printing.server.dto.WmsClientLayerInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Builder for WMS layer.
@@ -50,11 +49,7 @@ public class WmsLayerBuilder implements PrintableLayerBuilder {
 		info.setId(wmsLayer.getId());
 		RasterLayerRasterizingInfo rasterInfo = new RasterLayerRasterizingInfo();
 		rasterInfo.setShowing(wmsLayer.isShowing());
-		if (layer instanceof OpacitySupported) {
-			rasterInfo.setCssStyle(((OpacitySupported) wmsLayer).getOpacity() + "");
-		} else {
-			rasterInfo.setCssStyle("1");
-		}
+		rasterInfo.setCssStyle(wmsLayer.getOpacity() + "");
 
 		info.getWidgetInfo().put(RasterLayerRasterizingInfo.WIDGET_KEY, rasterInfo);
 		return info;

@@ -16,7 +16,6 @@ import org.geomajas.graphics.client.service.GraphicsControllerFactory;
 import org.geomajas.graphics.client.service.GraphicsService;
 import org.geomajas.plugin.graphicsediting.gwt2.client.object.GeometryEditable;
 import org.geomajas.gwt2.client.map.MapPresenter;
-import org.geomajas.plugin.editing.gwt.client.GeometryEditorFactory;
 
 /**
  * Factory for the {@link GeometryEditController}.
@@ -26,12 +25,9 @@ import org.geomajas.plugin.editing.gwt.client.GeometryEditorFactory;
  */
 public class GeometryEditControllerFactory implements GraphicsControllerFactory {
 
-	private GeometryEditorFactory editorFactory;
-
 	private MapPresenter mapPresenter;
 
-	public GeometryEditControllerFactory(GeometryEditorFactory editorFactory, MapPresenter mapPresenter) {
-		this.editorFactory = editorFactory;
+	public GeometryEditControllerFactory(MapPresenter mapPresenter) {
 		this.mapPresenter = mapPresenter;
 	}
 
@@ -42,7 +38,7 @@ public class GeometryEditControllerFactory implements GraphicsControllerFactory 
 
 	@Override
 	public GraphicsController createController(GraphicsService graphicsService, GraphicsObject object) {
-		return new GeometryEditController(object, graphicsService, editorFactory, mapPresenter);
+		return new GeometryEditController(object, graphicsService, mapPresenter);
 	}
 
 }

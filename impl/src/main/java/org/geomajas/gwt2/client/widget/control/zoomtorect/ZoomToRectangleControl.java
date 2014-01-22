@@ -118,7 +118,7 @@ public class ZoomToRectangleControl extends AbstractMapWidget {
 			escapeHandler.removeHandler();
 			escapeHandler = null;
 		}
-		mapPresenter.removeVectorContainer(container);
+		mapPresenter.getContainerManager().removeVectorContainer(container);
 	}
 
 	private void buildGui() {
@@ -138,7 +138,7 @@ public class ZoomToRectangleControl extends AbstractMapWidget {
 
 			public void onMouseUp(MouseUpEvent event) {
 				cleanup();
-				container = mapPresenter.addScreenContainer();
+				container = mapPresenter.getContainerManager().addScreenContainer();
 				zoomToRectangleGroup = new ZoomToRectGroup(mapPresenter.getViewPort());
 				escapeHandler = Event.addNativePreviewHandler(new NativePreviewHandler() {
 

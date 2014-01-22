@@ -20,7 +20,6 @@ import org.geomajas.gwt2.client.event.LayerOrderChangedEvent;
 import org.geomajas.gwt2.client.event.LayerRemovedEvent;
 import org.geomajas.gwt2.client.event.LayerSelectedEvent;
 import org.geomajas.gwt2.client.event.LayerSelectionHandler;
-import org.geomajas.gwt2.client.map.MapConfiguration;
 import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.ViewPort;
 
@@ -34,8 +33,6 @@ public class LayersModelImpl implements LayersModel {
 	private final ViewPort viewPort;
 
 	private final MapEventBus eventBus;
-
-	private final MapConfiguration configuration;
 
 	/**
 	 * An ordered list of layers. The drawing order on the map is as follows: the first layer will be placed at the
@@ -57,10 +54,9 @@ public class LayersModelImpl implements LayersModel {
 	 * @param configuration
 	 *            The maps configuration object.
 	 */
-	public LayersModelImpl(ViewPort viewPort, MapEventBus eventBus, MapConfiguration configuration) {
+	public LayersModelImpl(ViewPort viewPort, MapEventBus eventBus) {
 		this.viewPort = viewPort;
 		this.eventBus = eventBus;
-		this.configuration = configuration;
 		this.layers = new ArrayList<Layer>();
 
 		// Add a layer selection handler that allows only one selected layer at a time:
@@ -95,7 +91,6 @@ public class LayersModelImpl implements LayersModel {
 				aLayer.setViewPort(viewPort);
 				aLayer.setEventBus(eventBus);
 			}
-			configuration.setAnimated(layer, layers.size() == 1);
 			eventBus.fireEvent(new LayerAddedEvent(layer));
 			return true;
 		}

@@ -18,7 +18,7 @@ import junit.framework.Assert;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.client.GeomajasImpl;
-import org.geomajas.gwt2.client.map.MapOptions.CrsType;
+import org.geomajas.gwt2.client.map.MapConfiguration.CrsType;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,14 +33,16 @@ public class ViewPortMaxBoundsTest {
 	public ViewPortMaxBoundsTest() {
 		mapConfig = getMapConfig();
 		eventBus = new MapEventBusImpl(this, GeomajasImpl.getInstance().getEventBus());
-		viewPort = new ViewPortImpl(eventBus, mapConfig);
+		viewPort = new ViewPortImpl(eventBus);
+		((ViewPortImpl) viewPort).initialize(mapConfig);
 		viewPort.setMapSize(1000, 1000);
 	}
 
 	@Before
 	public void prepareTest() {
 		mapConfig = getMapConfig();
-		viewPort = new ViewPortImpl(eventBus, mapConfig);
+		viewPort = new ViewPortImpl(eventBus);
+		((ViewPortImpl) viewPort).initialize(mapConfig);
 	}
 
 	@Test
@@ -54,8 +56,9 @@ public class ViewPortMaxBoundsTest {
 
 	@Test
 	public void testSetMaxBounds() {
-		mapConfig.getMapOptions().setMaxBounds(new org.geomajas.geometry.Bbox(0, 0, 10, 10));
-		viewPort = new ViewPortImpl(eventBus, mapConfig);
+		mapConfig.setMaxBounds(new org.geomajas.geometry.Bbox(0, 0, 10, 10));
+		viewPort = new ViewPortImpl(eventBus);
+		((ViewPortImpl) viewPort).initialize(mapConfig);
 
 		Bbox maxBounds = viewPort.getMaximumBounds();
 		Assert.assertEquals(0.0, maxBounds.getX());
@@ -65,19 +68,15 @@ public class ViewPortMaxBoundsTest {
 	}
 
 	private MapConfiguration getMapConfig() {
-		MapOptions options = new MapOptions();
-		options.setCrs("EPSG:4326", CrsType.DEGREES);
-		options.setInitialBounds(new Bbox(-100, -100, 200, 200));
-		options.setMaxBounds(new Bbox(-100, -100, 200, 200));
+		MapConfigurationImpl config = new MapConfigurationImpl();
+		config.setCrs("EPSG:4326", CrsType.DEGREES);
+		config.setMaxBounds(new Bbox(-100, -100, 200, 200));
 		List<Double> resolutions = new ArrayList<Double>();
 		resolutions.add(1.0);
 		resolutions.add(2.0);
 		resolutions.add(4.0);
 		resolutions.add(8.0);
-		options.setResolutions(resolutions);
-
-		MapConfigurationImpl config = new MapConfigurationImpl();
-		config.setMapOptions(options);
+		config.setResolutions(resolutions);
 		return config;
 	}
 }

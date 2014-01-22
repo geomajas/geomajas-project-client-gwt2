@@ -11,10 +11,12 @@
 
 package org.geomajas.gwt2.client.map;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import org.geomajas.gwt2.client.map.layer.Layer;
+import org.geomajas.geometry.Bbox;
 
 /**
  * Default map configuration implementation.
@@ -32,25 +34,34 @@ public class MapConfigurationImpl implements MapConfiguration {
 	/** This default DPI value equals the default as proposed in the WMS specification. */
 	public static final Double DEFAULT_DPI = 90.714285714;
 
-	private final Map<Layer, Boolean> layerAnimation;
+	public static final String DEFAULT_CRS = "EPSG:4326";
 
-	private Map<MapHint<?>, Object> hintValues;
+	public static final Bbox DEFAULT_BOUNDS = new Bbox(-180, 90, 360, 180);
 
-	private MapOptions mapOptions;
+	public static final Double DEFAULT_UNIT_LENGTH = 111319.4907932264;
+
+	public static final Double DEFAULT_MAXIMUM_SCALE = 1024.0;
+
+	private Map<Hint<?>, Object> hintValues;
 
 	// ------------------------------------------------------------------------
 	// Constructor:
 	// ------------------------------------------------------------------------
 
 	public MapConfigurationImpl() {
-		hintValues = new HashMap<MapHint<?>, Object>();
-		layerAnimation = new HashMap<Layer, Boolean>();
+		hintValues = new HashMap<Hint<?>, Object>();
 
 		// Now apply the default values:
-		setMapHintValue(MapConfiguration.ANIMATION_TIME, DEFAULT_ANIMATION_TIME);
-		setMapHintValue(MapConfiguration.FADE_IN_TIME, DEFAULT_FADE_IN_TIME);
-		setMapHintValue(MapConfiguration.ANIMATION_CANCEL_SUPPORT, DEFAULT_ANIMATION_CANCEL_SUPPORT);
-		setMapHintValue(MapConfiguration.DPI, DEFAULT_DPI);
+		setHintValue(MapConfiguration.ANIMATION_TIME, DEFAULT_ANIMATION_TIME);
+		setHintValue(MapConfiguration.FADE_IN_TIME, DEFAULT_FADE_IN_TIME);
+		setHintValue(MapConfiguration.ANIMATION_CANCEL_SUPPORT, DEFAULT_ANIMATION_CANCEL_SUPPORT);
+		setHintValue(MapConfiguration.DPI, DEFAULT_DPI);
+		setHintValue(MapConfiguration.MAXIMUM_BOUNDS, DEFAULT_BOUNDS);
+		setHintValue(MapConfiguration.INITIAL_BOUNDS, DEFAULT_BOUNDS);
+		setHintValue(MapConfiguration.CRS, DEFAULT_CRS);
+		setHintValue(MapConfiguration.UNIT_LENGTH, DEFAULT_UNIT_LENGTH);
+		setHintValue(MapConfiguration.MAXIMUM_SCALE, DEFAULT_MAXIMUM_SCALE);
+		setHintValue(MapConfiguration.RESOLUTIONS, new ArrayList<Double>());
 	}
 
 	// ------------------------------------------------------------------------
@@ -58,7 +69,7 @@ public class MapConfigurationImpl implements MapConfiguration {
 	// ------------------------------------------------------------------------
 
 	@Override
-	public <T> void setMapHintValue(MapHint<T> hint, T value) {
+	public <T> void setHintValue(Hint<T> hint, T value) {
 		if (value == null) {
 			throw new IllegalArgumentException("Null value passed.");
 		}
@@ -67,7 +78,7 @@ public class MapConfigurationImpl implements MapConfiguration {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T> T getMapHintValue(MapHint<T> hint) {
+	public <T> T getHintValue(Hint<T> hint) {
 		return (T) hintValues.get(hint);
 	}
 
@@ -76,33 +87,66 @@ public class MapConfigurationImpl implements MapConfiguration {
 	// ------------------------------------------------------------------------
 
 	@Override
-	public MapOptions getMapOptions() {
-		return mapOptions;
-	}
-
-	/**
-	 * Protected method used by the MapPresenterImpl to set the options object.
-	 * 
-	 * @param mapOptions
-	 *            The map options configuration object.
-	 */
-	protected void setMapOptions(MapOptions mapOptions) {
-		this.mapOptions = mapOptions;
+	public Bbox getMaxBounds() {
+		return getHintValue(MapConfiguration.MAXIMUM_BOUNDS);
 	}
 
 	@Override
-	public boolean isAnimated(Layer layer) {
-		if (!layerAnimation.containsKey(layer)) {
-			return false;
+	public void setMaxBounds(Bbox maxBounds) {
+		setHintValue(MapConfiguration.MAXIMUM_BOUNDS, maxBounds);
+		if (getHintValue(MapConfiguration.INITIAL_BOUNDS) == null) {
+			setHintValue(MapConfiguration.INITIAL_BOUNDS, maxBounds);
 		}
-		return layerAnimation.get(layer);
 	}
 
 	@Override
-	public void setAnimated(Layer layer, boolean animated) {
-		if (layerAnimation.containsKey(layer)) {
-			layerAnimation.remove(layer);
+	public String getCrs() {
+		return getHintValue(MapConfiguration.CRS);
+	}
+
+	@Override
+	public void setCrs(String crs, CrsType crsType) {
+		setHintValue(MapConfiguration.CRS, crs);
+		switch (crsType) {
+			case DEGREES:
+				setHintValue(MapConfiguration.UNIT_LENGTH, DEFAULT_UNIT_LENGTH);
+				break;
+			case METRIC:
+				setHintValue(MapConfiguration.UNIT_LENGTH, 1.0);
+				break;
+			default:
+				throw new IllegalArgumentException("When the CrsType is custom, please provide a 'unitLength'");
 		}
-		layerAnimation.put(layer, animated);
+	}
+
+	@Override
+	public void setCrs(String crs, double unitLength) {
+		setHintValue(MapConfiguration.CRS, crs);
+		setHintValue(MapConfiguration.UNIT_LENGTH, unitLength);
+	}
+
+	@Override
+	public List<Double> getResolutions() {
+		return getHintValue(MapConfiguration.RESOLUTIONS);
+	}
+
+	@Override
+	public void setResolutions(List<Double> resolutions) {
+		setHintValue(MapConfiguration.RESOLUTIONS, resolutions);
+	}
+
+	@Override
+	public double getMaximumScale() {
+		return getHintValue(MapConfiguration.MAXIMUM_SCALE);
+	}
+
+	@Override
+	public void setMaximumScale(double maximumScale) {
+		setHintValue(MapConfiguration.MAXIMUM_SCALE, maximumScale);
+	}
+
+	@Override
+	public double getUnitLength() {
+		return getHintValue(MapConfiguration.UNIT_LENGTH);
 	}
 }

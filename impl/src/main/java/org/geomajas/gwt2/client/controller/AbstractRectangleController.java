@@ -263,7 +263,7 @@ public abstract class AbstractRectangleController extends AbstractMapController 
 
 	private VectorContainer getContainer() {
 		if (container == null) {
-			container = mapPresenter.addScreenContainer();
+			container = mapPresenter.getContainerManager().addScreenContainer();
 		}
 		return container;
 	}

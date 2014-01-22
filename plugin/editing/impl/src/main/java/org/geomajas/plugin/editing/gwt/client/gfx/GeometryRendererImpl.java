@@ -182,15 +182,6 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 		redraw();
 	}
 
-	// @Override
-	// public void onViewPortTranslating(ViewPortTranslatingEvent event) {
-	// // reflect intermediate changes by translating screen container
-	// if (container != null) {
-	// Matrix translation = event.getViewPort().getTranslationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
-	// container.setTranslation(translation.getDx() - previousDx, translation.getDy() - previousDy);
-	// }
-	// }
-
 	// ------------------------------------------------------------------------
 	// Start & stop handler implementations:
 	// ------------------------------------------------------------------------
@@ -198,16 +189,16 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 	/** Clean up the previous state, create a container to draw in and then draw the geometry. */
 	public void onGeometryEditStart(GeometryEditStartEvent event) {
 		if (container != null) {
-			mapPresenter.removeVectorContainer(container);
+			mapPresenter.getContainerManager().removeVectorContainer(container);
 		}
-		container = mapPresenter.addScreenContainer();
+		container = mapPresenter.getContainerManager().addScreenContainer();
 		redraw();
 	}
 
 	/** Clean up all rendering. */
 	public void onGeometryEditStop(GeometryEditStopEvent event) {
 		// Remove the vector container from the map:
-		mapPresenter.removeVectorContainer(container);
+		mapPresenter.getContainerManager().removeVectorContainer(container);
 		container = null;
 		shapes.clear();
 	}

@@ -25,6 +25,9 @@ import org.geomajas.gwt2.client.controller.MapController;
 import org.geomajas.gwt2.client.controller.MapEventParserImpl;
 import org.geomajas.gwt2.client.controller.NavigationController;
 import org.geomajas.gwt2.client.controller.TouchNavigationController;
+import org.geomajas.gwt2.client.event.LayerAddedEvent;
+import org.geomajas.gwt2.client.event.LayerRemovedEvent;
+import org.geomajas.gwt2.client.event.MapCompositionHandler;
 import org.geomajas.gwt2.client.event.MapInitializationEvent;
 import org.geomajas.gwt2.client.event.MapResizedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
@@ -198,46 +201,39 @@ public final class MapPresenterImpl implements MapPresenter {
 
 	private final MapEventParser mapEventParser;
 
-	private List<HandlerRegistration> handlers;
+	private final LayersModel layersModel;
+
+	private final ViewPort viewPort;
+
+	private final MapWidget display;
+
+	private final ContainerManager containerManager;
 
 	private final Map<MapController, List<HandlerRegistration>> listeners;
+
+	private MapConfiguration configuration;
+
+	private List<HandlerRegistration> handlers;
 
 	private MapController mapController;
 
 	private MapController fallbackController;
 
-	private LayersModel layersModel;
-
-	private ViewPort viewPort;
-
 	private LayersModelRenderer renderer;
 
-	private MapWidget display;
-
-	private MapConfiguration configuration;
-
-	private boolean isMobileBrowser;
+	private boolean isTouchSupported;
 
 	public MapPresenterImpl(final EventBus eventBus) {
-		this(eventBus, new MapWidgetImpl());
-	}
-
-	public MapPresenterImpl(final EventBus eventBus, MapWidget mapWidget) {
 		this.handlers = new ArrayList<HandlerRegistration>();
 		this.listeners = new HashMap<MapController, List<HandlerRegistration>>();
 		this.eventBus = new MapEventBusImpl(this, eventBus);
-		this.configuration = new MapConfigurationImpl();
-		this.display = mapWidget;
-		this.viewPort = new ViewPortImpl(this.eventBus, this.configuration);
-		this.layersModel = new LayersModelImpl(this.viewPort, this.eventBus, this.configuration);
+		this.display = new MapWidgetImpl();
+		this.viewPort = new ViewPortImpl(this.eventBus);
+		this.layersModel = new LayersModelImpl(this.viewPort, this.eventBus);
 		this.mapEventParser = new MapEventParserImpl(this);
-		this.renderer = new LayersModelRendererImpl(layersModel, viewPort, this.eventBus, this.configuration);
-		try {
-			this.isMobileBrowser = Dom.isMobile();
-		} catch (NoClassDefFoundError e) {
-			//We are in a unit test.
-			this.isMobileBrowser = false;
-		}
+		this.renderer = new LayersModelRendererImpl(layersModel, viewPort, this.eventBus);
+		this.containerManager = new ContainerManagerImpl(display, viewPort);
+		this.isTouchSupported = Dom.isTouchSupported();
 
 		this.eventBus.addViewPortChangedHandler(new ViewPortChangedHandler() {
 
@@ -246,10 +242,23 @@ public final class MapPresenterImpl implements MapPresenter {
 				renderer.render(new RenderingInfo(display.getMapHtmlContainer(), event.getTo(), event.getTrajectory()));
 			}
 		});
+		this.eventBus.addMapCompositionHandler(new MapCompositionHandler() {
+
+			@Override
+			public void onLayerRemoved(LayerRemovedEvent event) {
+			}
+
+			@Override
+			public void onLayerAdded(LayerAddedEvent event) {
+				if (layersModel.getLayerCount() == 1) {
+					renderer.setAnimated(event.getLayer(), true);
+				}
+			}
+		});
 
 		this.eventBus.addViewPortChangedHandler(new WorldTransformableRenderer());
 
-		if (isMobileBrowser) {
+		if (isTouchSupported) {
 			fallbackController = new TouchNavigationController();
 		} else {
 			fallbackController = new NavigationController();
@@ -263,18 +272,20 @@ public final class MapPresenterImpl implements MapPresenter {
 	// MapPresenter implementation:
 	// ------------------------------------------------------------------------
 
-	public void initialize(MapOptions mapOptions) {
-		// Initialize the LayersModel and ViewPort:
-		if (configuration instanceof MapConfigurationImpl) {
-			((MapConfigurationImpl) configuration).setMapOptions(mapOptions);
+	public void initialize(MapConfiguration configuration) {
+		this.configuration = configuration;
+
+		// Apply this configuration on the LayersModelRenderer:
+		if (renderer instanceof LayersModelRendererImpl) {
+			((LayersModelRendererImpl) renderer).setMapConfiguration(configuration);
 		}
 
 		// Configure the ViewPort. This will immediately zoom to the initial bounds:
-		//viewPort.setMapSize(display.getWidth(), display.getHeight());
-		((ViewPortImpl) viewPort).initialize(mapOptions);
+		// viewPort.setMapSize(display.getWidth(), display.getHeight());
+		((ViewPortImpl) viewPort).initialize(configuration);
 
 		// Immediately zoom to the initial bounds as configured:
-		viewPort.applyBounds(mapOptions.getInitialBounds(), ZoomOption.LEVEL_CLOSEST);
+		viewPort.applyBounds(configuration.getHintValue(MapConfiguration.INITIAL_BOUNDS), ZoomOption.LEVEL_CLOSEST);
 		renderer.render(new RenderingInfo(display.getMapHtmlContainer(), viewPort.getView(), null));
 
 		// Adding the default map control widgets:
@@ -282,7 +293,7 @@ public final class MapPresenterImpl implements MapPresenter {
 			getWidgetPane().add(new Watermark());
 			getWidgetPane().add(new Scalebar(MapPresenterImpl.this));
 			getWidgetPane().add(new ZoomControl(MapPresenterImpl.this));
-			if (!isMobileBrowser) {
+			if (!isTouchSupported) {
 				getWidgetPane().add(new ZoomToRectangleControl(MapPresenterImpl.this));
 			}
 		}
@@ -299,7 +310,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		this.renderer = renderer;
 	}
 
-	public LayersModelRenderer getRenderer() {
+	public LayersModelRenderer getLayersModelRenderer() {
 		return renderer;
 	}
 
@@ -315,59 +326,6 @@ public final class MapPresenterImpl implements MapPresenter {
 			viewPort.setMapSize(width, height);
 		}
 		eventBus.fireEvent(new MapResizedEvent(width, height));
-	}
-
-	@Override
-	public VectorContainer addWorldContainer() {
-		VectorContainer container = display.getNewWorldContainer();
-		// set transform parameters once, after that all is handled by WorldContainerRenderer
-		Matrix matrix = viewPort.getTransformationService().getTransformationMatrix(RenderSpace.WORLD,
-				RenderSpace.SCREEN);
-		container.setScale(matrix.getXx(), matrix.getYy());
-		container.setTranslation(matrix.getDx(), matrix.getDy());
-		return container;
-	}
-
-	@Override
-	public TransformableWidgetContainer addWorldWidgetContainer() {
-		TransformableWidgetContainer container = display.getNewWorldWidgetContainer();
-		// set transform parameters once, after that all is handled by WorldContainerRenderer
-		Matrix matrix = viewPort.getTransformationService().getTransformationMatrix(RenderSpace.WORLD,
-				RenderSpace.SCREEN);
-		container.setScale(matrix.getXx(), matrix.getYy());
-		container.setTranslation(matrix.getDx(), matrix.getDy());
-		return container;
-	}
-
-	@Override
-	public CanvasContainer addWorldCanvas() {
-		CanvasContainer container = display.getNewWorldCanvas();
-		// set transform parameters once, after that all is handled by WorldContainerRenderer
-		Matrix matrix = viewPort.getTransformationService().getTransformationMatrix(RenderSpace.WORLD,
-				RenderSpace.SCREEN);
-		container.setScale(matrix.getXx(), matrix.getYy());
-		container.setTranslation(matrix.getDx(), matrix.getDy());
-		return container;
-	}
-
-	@Override
-	public VectorContainer addScreenContainer() {
-		return display.getNewScreenContainer();
-	}
-
-	@Override
-	public boolean removeWorldWidgetContainer(TransformableWidgetContainer container) {
-		return display.removeWorldWidgetContainer(container);
-	}
-
-	@Override
-	public boolean removeVectorContainer(VectorContainer container) {
-		return display.removeVectorContainer(container);
-	}
-
-	@Override
-	public boolean bringToFront(VectorContainer container) {
-		return display.bringToFront(container);
 	}
 
 	@Override
@@ -399,7 +357,7 @@ public final class MapPresenterImpl implements MapPresenter {
 			mapController = fallbackController;
 		}
 		if (mapController != null) {
-			if (isMobileBrowser) {
+			if (isTouchSupported) {
 				handlers.add(display.addTouchStartHandler(mapController));
 				handlers.add(display.addTouchMoveHandler(mapController));
 				handlers.add(display.addTouchCancelHandler(mapController));
@@ -432,7 +390,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		if (mapListener != null && !listeners.containsKey(mapListener)) {
 			List<HandlerRegistration> registrations = new ArrayList<HandlerRegistration>();
 
-			if (isMobileBrowser) {
+			if (isTouchSupported) {
 				registrations.add(display.addTouchStartHandler(mapListener));
 				registrations.add(display.addTouchMoveHandler(mapListener));
 				registrations.add(display.addTouchCancelHandler(mapListener));
@@ -487,6 +445,11 @@ public final class MapPresenterImpl implements MapPresenter {
 	@Override
 	public HasWidgets getWidgetPane() {
 		return display.getWidgetContainer();
+	}
+
+	@Override
+	public ContainerManager getContainerManager() {
+		return containerManager;
 	}
 
 	// ------------------------------------------------------------------------

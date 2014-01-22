@@ -17,8 +17,8 @@ import org.geomajas.gwt2.client.event.LayerShowEvent;
 import org.geomajas.gwt2.client.event.LayerVisibilityHandler;
 import org.geomajas.gwt2.client.event.LayerVisibilityMarkedEvent;
 import org.geomajas.gwt2.client.map.MapEventBus;
-import org.geomajas.gwt2.client.map.layer.HasLegendWidget;
 import org.geomajas.gwt2.client.map.layer.Layer;
+import org.geomajas.gwt2.client.map.layer.LegendUrlSupported;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -28,7 +28,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -119,12 +119,11 @@ public class LayerLegendPanel extends Composite {
 		});
 
 		// Add the legend:
-		if (layer instanceof HasLegendWidget) {
-			HasLegendWidget hlw = (HasLegendWidget) layer;
-			IsWidget legendWidget = hlw.buildLegendWidget();
+		if (layer instanceof LegendUrlSupported) {
+			Image image = new Image(((LegendUrlSupported) layer).getLegendImageUrl());
 			final int row = legendTable.insertRow(legendTable.getRowCount());
 			legendTable.addCell(row);
-			legendTable.setWidget(row, 0, legendWidget);
+			legendTable.setWidget(row, 0, image);
 		}
 	}
 

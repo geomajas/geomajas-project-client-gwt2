@@ -95,7 +95,7 @@ public class CanvasRenderingPanel implements SamplePanel {
 		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		GeomajasServerExtension.initializeMap(mapPresenter, "gwt-app", "mapOsm");
+		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "gwt-app", "mapOsm");
 		label.setVisible(false);
 		for (int option : options) {
 			countBox.addItem(option + "");
@@ -176,7 +176,7 @@ public class CanvasRenderingPanel implements SamplePanel {
 
 		public void onMapInitialized(MapInitializationEvent event) {
 			if (Canvas.isSupported()) {
-				container = mapPresenter.addWorldCanvas();
+				container = mapPresenter.getContainerManager().addWorldCanvasContainer();
 			} else {
 				label.setText(ExampleJar.getMessages().renderingMissingCanvas());
 				label.setVisible(true);

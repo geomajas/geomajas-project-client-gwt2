@@ -15,7 +15,6 @@ import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.layer.Layer;
-import org.geomajas.gwt2.client.map.layer.OpacitySupported;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 
 import com.google.gwt.core.client.GWT;
@@ -72,7 +71,7 @@ public class LayerOpacityPanel implements SamplePanel {
 		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		GeomajasServerExtension.initializeMap(mapPresenter, "gwt-app", "mapOsm");
+		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "gwt-app", "mapOsm");
 
 		// Make sure the text box also reacts to the "Enter" key:
 		opacityBox.addKeyUpHandler(new KeyUpHandler() {
@@ -96,9 +95,7 @@ public class LayerOpacityPanel implements SamplePanel {
 			return;
 		}
 		Layer layer = mapPresenter.getLayersModel().getLayer(0);
-		if (layer != null && layer instanceof OpacitySupported) {
-			OpacitySupported os = (OpacitySupported) layer;
-
+		if (layer != null) {
 			String opacityTxt = opacityBox.getValue();
 			int opacity = MAX_OPACITY;
 			try {
@@ -110,10 +107,10 @@ public class LayerOpacityPanel implements SamplePanel {
 					opacity = 0;
 					opacityBox.setValue("0");
 				}
-				os.setOpacity((double) opacity / MAX_OPACITY);
+				layer.setOpacity((double) opacity / MAX_OPACITY);
 			} catch (Exception e) { // NOSONAR
 				Window.alert("Could not parse opacity... Default value of " + MAX_OPACITY + " is used");
-				os.setOpacity(1.0);
+				layer.setOpacity(1.0);
 				opacityBox.setValue(MAX_OPACITY + "");
 			}
 		}

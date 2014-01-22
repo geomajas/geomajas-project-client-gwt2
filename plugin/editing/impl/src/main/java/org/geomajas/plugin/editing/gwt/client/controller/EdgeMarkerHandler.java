@@ -115,7 +115,7 @@ public class EdgeMarkerHandler implements MouseOutHandler, MouseOverHandler, Mou
 
 	private void cleanup() {
 		if (container != null) {
-			mapPresenter.removeVectorContainer(container);
+			mapPresenter.getContainerManager().removeVectorContainer(container);
 			container = null;
 		}
 	}
@@ -123,7 +123,7 @@ public class EdgeMarkerHandler implements MouseOutHandler, MouseOverHandler, Mou
 	private void drawEdgeHighlightMarker(Coordinate location) {
 		if (service.getEditingState() == GeometryEditState.IDLE) {
 			if (container == null) {
-				container = mapPresenter.addScreenContainer();
+				container = mapPresenter.getContainerManager().addScreenContainer();
 			}
 			container.clear();
 			Coordinate tl = new Coordinate(location.getX() - MARKER_SIZE, location.getY() + MARKER_SIZE);

@@ -71,7 +71,7 @@ public class ListenerPanel implements SamplePanel {
 		// Create the MapPresenter and add an InitializationHandler:
 		mapPresenter = GeomajasImpl.getInstance().createMapPresenter();
 		mapPresenter.setSize(480, 480);
-		GeomajasServerExtension.initializeMap(mapPresenter, "gwt-app", "mapLayerVisibility");
+		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "gwt-app", "mapLayerVisibility");
 
 		// Add a passive listener that print out mouse coordinates:
 		mapPresenter.addMapListener(new MapMouseMoveListener());

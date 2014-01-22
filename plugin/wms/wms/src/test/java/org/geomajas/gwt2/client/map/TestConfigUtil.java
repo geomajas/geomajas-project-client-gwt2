@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.geometry.Bbox;
-import org.geomajas.gwt2.client.map.MapOptions.CrsType;
+import org.geomajas.gwt2.client.map.MapConfiguration.CrsType;
 
 /**
  * Test utility.
@@ -25,19 +25,21 @@ import org.geomajas.gwt2.client.map.MapOptions.CrsType;
 public class TestConfigUtil {
 
 	public static MapConfiguration getMapConfig() {
-		MapOptions options = new MapOptions();
-		options.setCrs("EPSG:4326", CrsType.DEGREES);
-		options.setInitialBounds(new Bbox(-100, -100, 200, 200));
-		options.setMaxBounds(new Bbox(-100, -100, 200, 200));
+		MapConfiguration configuration = new MapConfigurationImpl();
+		configuration.setCrs("EPSG:4326", CrsType.DEGREES);
+		configuration.setMaxBounds(new Bbox(-100, -100, 200, 200));
 		List<Double> resolutions = new ArrayList<Double>();
 		resolutions.add(1.0);
 		resolutions.add(2.0);
 		resolutions.add(4.0);
 		resolutions.add(8.0);
-		options.setResolutions(resolutions);
+		configuration.setResolutions(resolutions);
+		return configuration;
+	}
 
-		MapConfigurationImpl config = new MapConfigurationImpl();
-		config.setMapOptions(options);
-		return config;
+	public static ViewPort createViewPort(MapEventBus eventBus, MapConfiguration configuration) {
+		ViewPortImpl viewPort = new ViewPortImpl(eventBus);
+		viewPort.initialize(configuration);
+		return viewPort;
 	}
 }

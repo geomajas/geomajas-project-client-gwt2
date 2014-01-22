@@ -62,7 +62,7 @@ public class ServerFeatureServiceImpl implements ServerFeatureService {
 
 		GwtCommand command = new GwtCommand(SearchFeatureRequest.COMMAND);
 		command.setCommandRequest(request);
-		GeomajasServerExtension.getCommandService().execute(command,
+		GeomajasServerExtension.getInstance().getCommandService().execute(command,
 				new AbstractCommandCallback<SearchFeatureResponse>() {
 
 					public void execute(SearchFeatureResponse response) {
@@ -111,7 +111,7 @@ public class ServerFeatureServiceImpl implements ServerFeatureService {
 
 		GwtCommand command = new GwtCommand(SearchByLocationRequest.COMMAND);
 		command.setCommandRequest(request);
-		GeomajasServerExtension.getCommandService().execute(command,
+		GeomajasServerExtension.getInstance().getCommandService().execute(command,
 				new AbstractCommandCallback<SearchByLocationResponse>() {
 
 					public void execute(SearchByLocationResponse response) {
@@ -167,7 +167,7 @@ public class ServerFeatureServiceImpl implements ServerFeatureService {
 
 		GwtCommand command = new GwtCommand(SearchByLocationRequest.COMMAND);
 		command.setCommandRequest(request);
-		GeomajasServerExtension.getCommandService().execute(command,
+		GeomajasServerExtension.getInstance().getCommandService().execute(command,
 				new AbstractCommandCallback<SearchByLocationResponse>() {
 
 					public void execute(SearchByLocationResponse response) {

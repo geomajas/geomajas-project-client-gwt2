@@ -26,7 +26,7 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
 
 /**
  * Abstraction of the basic layer interface. Specific layer implementations can use this as a base.
- * 
+ *
  * @author Pieter De Graef
  */
 public abstract class AbstractLayer implements Layer {
@@ -53,9 +53,8 @@ public abstract class AbstractLayer implements Layer {
 
 	/**
 	 * Create a new layer that belongs to the given map model, using the given meta-data.
-	 * 
-	 * @param id
-	 *            The unique ID for this layer.
+	 *
+	 * @param id The unique ID for this layer.
 	 */
 	public AbstractLayer(String id) {
 		this.id = id;
@@ -79,10 +78,12 @@ public abstract class AbstractLayer implements Layer {
 	@Override
 	public void setSelected(boolean selected) {
 		this.selected = selected;
-		if (selected) {
-			eventBus.fireEvent(new LayerSelectedEvent(this));
-		} else {
-			eventBus.fireEvent(new LayerDeselectedEvent(this));
+		if (eventBus != null) {
+			if (selected) {
+				eventBus.fireEvent(new LayerSelectedEvent(this));
+			} else {
+				eventBus.fireEvent(new LayerDeselectedEvent(this));
+			}
 		}
 	}
 
@@ -94,13 +95,15 @@ public abstract class AbstractLayer implements Layer {
 	@Override
 	public void setMarkedAsVisible(boolean markedAsVisible) {
 		this.markedAsVisible = markedAsVisible;
-		eventBus.fireEvent(new LayerVisibilityMarkedEvent(this));
-		if (isShowing()) {
-			visibleAtPreviousScale = true;
-			eventBus.fireEvent(new LayerShowEvent(this));
-		} else {
-			visibleAtPreviousScale = false;
-			eventBus.fireEvent(new LayerHideEvent(this));
+		if (eventBus != null) {
+			eventBus.fireEvent(new LayerVisibilityMarkedEvent(this));
+			if (isShowing()) {
+				visibleAtPreviousScale = true;
+				eventBus.fireEvent(new LayerShowEvent(this));
+			} else {
+				visibleAtPreviousScale = false;
+				eventBus.fireEvent(new LayerHideEvent(this));
+			}
 		}
 	}
 
@@ -116,7 +119,9 @@ public abstract class AbstractLayer implements Layer {
 
 	@Override
 	public void refresh() {
-		eventBus.fireEvent(new LayerRefreshedEvent(this));
+		if (eventBus != null) {
+			eventBus.fireEvent(new LayerRefreshedEvent(this));
+		}
 	}
 
 	// ------------------------------------------------------------------------
@@ -141,7 +146,7 @@ public abstract class AbstractLayer implements Layer {
 
 	/**
 	 * Every time the scale on the map changes, this handler checks to see if the layer should become visible or not.
-	 * 
+	 *
 	 * @author Pieter De Graef
 	 */
 	protected class LayerScaleVisibilityHandler implements ViewPortChangedHandler {

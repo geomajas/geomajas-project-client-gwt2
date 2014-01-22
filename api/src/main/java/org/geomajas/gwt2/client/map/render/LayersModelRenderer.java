@@ -43,4 +43,23 @@ public interface LayersModelRenderer extends BasicRenderer {
 	 *         map, it's renderer will have been added automatically.
 	 */
 	LayerRenderer getLayerRenderer(Layer layer);
+
+	/**
+	 * Turn animation for a certain layer on or off.
+	 * 
+	 * @param layer
+	 *            The layer to enable or disable animation for.
+	 * @param animated
+	 *            Should animation during navigation be enabled or disabled?
+	 */
+	void setAnimated(Layer layer, boolean animated);
+
+	/**
+	 * Is a certain layer animated during map navigation or not?
+	 * 
+	 * @param layer
+	 *            The layer to ask for.
+	 * @return True or false.
+	 */
+	boolean isAnimated(Layer layer);
 }

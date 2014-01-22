@@ -20,7 +20,6 @@ import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.MapEventBusImpl;
 import org.geomajas.gwt2.client.map.TestConfigUtil;
 import org.geomajas.gwt2.client.map.ViewPort;
-import org.geomajas.gwt2.client.map.ViewPortImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,7 +51,7 @@ public class VectorLayerTest {
 	public void initialize() {
 		// Initialize main components:
 		eventBus = new MapEventBusImpl(this, GeomajasImpl.getInstance().getEventBus());
-		viewPort = new ViewPortImpl(eventBus, TestConfigUtil.create(mapInfo));
+		viewPort = TestConfigUtil.createViewPort(eventBus, mapInfo);
 		viewPort.setMapSize(1000, 1000);
 		layerInfo = (ClientVectorLayerInfo) mapInfo.getLayers().get(0);
 	}

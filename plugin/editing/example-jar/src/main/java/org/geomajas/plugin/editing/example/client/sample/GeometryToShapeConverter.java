@@ -49,7 +49,7 @@ public class GeometryToShapeConverter {
 	public GeometryToShapeConverter(GeometryEditService editService, MapPresenter mapPresenter) {
 		this.editService = editService;
 		gfxUtil = GeomajasImpl.getInstance().getGfxUtil();
-		shapeContainer = mapPresenter.addWorldContainer();
+		shapeContainer = mapPresenter.getContainerManager().addWorldContainer();
 	}
 
 	/**

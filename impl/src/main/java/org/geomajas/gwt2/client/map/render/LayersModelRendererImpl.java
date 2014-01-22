@@ -45,11 +45,13 @@ public class LayersModelRendererImpl implements LayersModelRenderer {
 
 	private final ViewPort viewPort;
 
-	private final MapConfiguration configuration;
-
 	private final Map<Layer, LayerRenderer> layerRenderers;
 
 	private final Map<Layer, HtmlContainer> layerContainers;
+
+	private final Map<Layer, Boolean> layerAnimation;
+
+	private MapConfiguration configuration;
 
 	private HtmlContainer layersModelContainer;
 
@@ -59,13 +61,12 @@ public class LayersModelRendererImpl implements LayersModelRenderer {
 	// Constructor:
 	// ------------------------------------------------------------------------
 
-	public LayersModelRendererImpl(LayersModel layersModel, ViewPort viewPort, MapEventBus eventBus,
-			MapConfiguration configuration) {
+	public LayersModelRendererImpl(LayersModel layersModel, ViewPort viewPort, MapEventBus eventBus) {
 		this.layersModel = layersModel;
 		this.viewPort = viewPort;
-		this.configuration = configuration;
 		this.layerRenderers = new HashMap<Layer, LayerRenderer>();
 		this.layerContainers = new HashMap<Layer, HtmlContainer>();
+		this.layerAnimation = new HashMap<Layer, Boolean>();
 
 		// Keep the list of LayerRenderers synchronized with the list of layers:
 		eventBus.addMapCompositionHandler(new MapCompositionHandler() {
@@ -113,7 +114,7 @@ public class LayersModelRendererImpl implements LayersModelRenderer {
 
 				// Go over all layer to see if they should be animated or not:
 				for (Layer layer : layerRenderers.keySet()) {
-					if (!LayersModelRendererImpl.this.configuration.isAnimated(layer)) {
+					if (!isAnimated(layer)) {
 						// This layer is not animated, hide it before the navigation starts:
 						HtmlContainer layerContainer = getOrCreateLayerContainer(layer);
 						LayerRenderer layerRenderer = layerRenderers.get(layer);
@@ -134,19 +135,26 @@ public class LayersModelRendererImpl implements LayersModelRenderer {
 
 				// Go over all layer to see if they should be animated or not:
 				for (Layer layer : layerRenderers.keySet()) {
-					if (!LayersModelRendererImpl.this.configuration.isAnimated(layer)) {
+					if (!isAnimated(layer)) {
 						// This layer is not animated, hide it before the navigation starts:
 						HtmlContainer layerContainer = getOrCreateLayerContainer(layer);
 						LayerRenderer layerRenderer = layerRenderers.get(layer);
 						layerRenderer.render(new RenderingInfo(layerContainer, event.getView(), null));
-						DomService.applyTransition(layerContainer.asWidget().getElement(), new String[] { "opacity" },
-								new Integer[] { LayersModelRendererImpl.this.configuration
-										.getMapHintValue(MapConfiguration.FADE_IN_TIME) });
+						if (LayersModelRendererImpl.this.configuration != null) {
+							DomService.applyTransition(layerContainer.asWidget().getElement(),
+									new String[] { "opacity" },
+									new Integer[] { LayersModelRendererImpl.this.configuration
+											.getHintValue(MapConfiguration.FADE_IN_TIME) });
+						}
 						layerContainer.asWidget().getElement().getStyle().setOpacity(1.0f);
 					}
 				}
 			}
 		});
+	}
+
+	public void setMapConfiguration(MapConfiguration configuration) {
+		this.configuration = configuration;
 	}
 
 	// ------------------------------------------------------------------------
@@ -185,7 +193,7 @@ public class LayersModelRendererImpl implements LayersModelRenderer {
 			Layer layer = layersModel.getLayer(i);
 
 			// If we're in the middle of an animation and the layer does not support it, skip this layer:
-			if (navigating && !configuration.isAnimated(layer)) {
+			if (navigating && !isAnimated(layer)) {
 				continue;
 			}
 
@@ -196,6 +204,26 @@ public class LayersModelRendererImpl implements LayersModelRenderer {
 			layerRenderer.render(layerInfo);
 		}
 	}
+
+	@Override
+	public boolean isAnimated(Layer layer) {
+		if (!layerAnimation.containsKey(layer)) {
+			return false;
+		}
+		return layerAnimation.get(layer);
+	}
+
+	@Override
+	public void setAnimated(Layer layer, boolean animated) {
+		if (layerAnimation.containsKey(layer)) {
+			layerAnimation.remove(layer);
+		}
+		layerAnimation.put(layer, animated);
+	}
+
+	// ------------------------------------------------------------------------
+	// Private methods:
+	// ------------------------------------------------------------------------
 
 	private HtmlContainer getOrCreateLayerContainer(Layer layer) {
 		if (layerContainers.containsKey(layer)) {

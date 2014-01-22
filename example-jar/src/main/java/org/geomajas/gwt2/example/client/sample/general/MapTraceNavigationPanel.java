@@ -48,12 +48,12 @@ public class MapTraceNavigationPanel implements SamplePanel {
 
 		// Create the MapPresenter and add to the layout:
 		mapPresenter = GeomajasImpl.getInstance().createMapPresenter();
-		mapPresenter.getConfiguration().setMapHintValue(MapConfiguration.ANIMATION_TIME, 1000);
+		mapPresenter.getConfiguration().setHintValue(MapConfiguration.ANIMATION_TIME, 1000);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 		layout.setPresenter(mapPresenter);
 
 		// Initialize the map, and return the layout:
-		GeomajasServerExtension.initializeMap(mapPresenter, "gwt-app", "mapOsm");
+		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "gwt-app", "mapOsm");
 		return resizeLayoutPanel;
 	}
 
@@ -65,10 +65,10 @@ public class MapTraceNavigationPanel implements SamplePanel {
 	private class MyMapInitializationHandler implements MapInitializationHandler {
 
 		public void onMapInitialized(MapInitializationEvent event) {
-			CanvasContainer container = mapPresenter.addWorldCanvas();
+			CanvasContainer container = mapPresenter.getContainerManager().addWorldCanvasContainer();
 			final TracingLayer layer = new TracingLayer(mapPresenter.getViewPort(), container);
 			mapPresenter.getLayersModel().addLayer(layer);
-			mapPresenter.getConfiguration().setAnimated(layer, true);
+			mapPresenter.getLayersModelRenderer().setAnimated(layer, true);
 			Timer timer = new Timer() {
 
 				private boolean zoomOut;

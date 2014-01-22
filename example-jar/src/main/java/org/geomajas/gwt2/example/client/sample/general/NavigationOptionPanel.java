@@ -84,7 +84,7 @@ public class NavigationOptionPanel implements SamplePanel {
 		mapPresenter = GeomajasImpl.getInstance().createMapPresenter();
 		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
-		GeomajasServerExtension.initializeMap(mapPresenter, "gwt-app", "mapCountries");
+		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "gwt-app", "mapCountries");
 		DecoratorPanel mapDecorator = new DecoratorPanel();
 		mapDecorator.add(mapPresenter.asWidget());
 		mapPanel.add(mapDecorator);
@@ -109,8 +109,8 @@ public class NavigationOptionPanel implements SamplePanel {
 		cancelAnimationSupport.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
 
 			public void onValueChange(ValueChangeEvent<Boolean> event) {
-				mapPresenter.getConfiguration().setMapHintValue(MapConfiguration.ANIMATION_CANCEL_SUPPORT,
-						cancelAnimationSupport.getValue());
+				mapPresenter.getConfiguration().setHintValue(MapConfiguration.ANIMATION_CANCEL_SUPPORT,
+				  cancelAnimationSupport.getValue());
 			}
 		});
 
@@ -134,10 +134,10 @@ public class NavigationOptionPanel implements SamplePanel {
 			time = Integer.parseInt(txt);
 		} catch (Exception e) { // NOSONAR
 			Window.alert("Could not parse milliseconds... Default value of " + defaultMillis + " is used");
-			mapPresenter.getConfiguration().setMapHintValue(MapConfiguration.ANIMATION_TIME, defaultMillis);
+			mapPresenter.getConfiguration().setHintValue(MapConfiguration.ANIMATION_TIME, defaultMillis);
 			millisBox.setValue(defaultMillis + "");
 		}
-		mapPresenter.getConfiguration().setMapHintValue(MapConfiguration.ANIMATION_TIME, time);
+		mapPresenter.getConfiguration().setHintValue(MapConfiguration.ANIMATION_TIME, time);
 	}
 
 	private void changeFadeInMillis() {
@@ -147,10 +147,10 @@ public class NavigationOptionPanel implements SamplePanel {
 			time = Integer.parseInt(txt);
 		} catch (Exception e) { // NOSONAR
 			Window.alert("Could not parse milliseconds... Default value of " + defaultFadeInMillis + " is used");
-			mapPresenter.getConfiguration().setMapHintValue(MapConfiguration.FADE_IN_TIME, defaultMillis);
+			mapPresenter.getConfiguration().setHintValue(MapConfiguration.FADE_IN_TIME, defaultMillis);
 			fadeInBox.setValue(defaultFadeInMillis + "");
 		}
-		mapPresenter.getConfiguration().setMapHintValue(MapConfiguration.FADE_IN_TIME, time);
+		mapPresenter.getConfiguration().setHintValue(MapConfiguration.FADE_IN_TIME, time);
 	}
 
 	/**
@@ -166,11 +166,11 @@ public class NavigationOptionPanel implements SamplePanel {
 			for (int i = 0; i < mapPresenter.getLayersModel().getLayerCount(); i++) {
 				final Layer layer = mapPresenter.getLayersModel().getLayer(i);
 				CheckBox cb = new CheckBox("Animate: " + layer.getTitle());
-				cb.setValue(mapPresenter.getConfiguration().isAnimated(layer));
+				cb.setValue(mapPresenter.getLayersModelRenderer().isAnimated(layer));
 				cb.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
 
 					public void onValueChange(ValueChangeEvent<Boolean> event) {
-						mapPresenter.getConfiguration().setAnimated(layer, event.getValue());
+						mapPresenter.getLayersModelRenderer().setAnimated(layer, event.getValue());
 					}
 				});
 				layerPanel.add(cb);

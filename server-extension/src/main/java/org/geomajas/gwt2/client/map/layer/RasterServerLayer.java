@@ -17,5 +17,5 @@ import org.geomajas.configuration.client.ClientRasterLayerInfo;
  * 
  * @author Jan De Moerloose
  */
-public interface RasterServerLayer extends ServerLayer<ClientRasterLayerInfo>, OpacitySupported {
+public interface RasterServerLayer extends ServerLayer<ClientRasterLayerInfo> {
 }

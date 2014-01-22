@@ -11,13 +11,8 @@
 
 package org.geomajas.plugin.wms.client.layer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.client.event.LayerStyleChangedEvent;
-import org.geomajas.gwt2.client.gfx.tile.Tile;
-import org.geomajas.gwt2.client.gfx.tile.TileCode;
 import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.AbstractLayer;
@@ -25,18 +20,21 @@ import org.geomajas.gwt2.client.map.layer.LegendConfig;
 import org.geomajas.gwt2.client.map.render.FixedScaleLayerRenderer;
 import org.geomajas.gwt2.client.map.render.FixedScaleRenderer;
 import org.geomajas.gwt2.client.map.render.LayerRenderer;
+import org.geomajas.gwt2.client.map.render.Tile;
+import org.geomajas.gwt2.client.map.render.TileCode;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
 import org.geomajas.plugin.wms.client.WmsClient;
+import org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo;
 import org.geomajas.plugin.wms.client.layer.config.WmsLayerConfiguration;
 import org.geomajas.plugin.wms.client.layer.config.WmsTileConfiguration;
 import org.geomajas.plugin.wms.client.service.WmsTileServiceImpl;
 
-import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.IsWidget;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Default implementation of a {@link WmsLayer}.
- * 
+ *
  * @author Pieter De Graef
  * @author An Buyle
  */
@@ -50,16 +48,20 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 
 	protected final WmsTileConfiguration tileConfig;
 
+	protected final WmsLayerInfo layerCapabilities;
+
 	protected LayerRenderer renderer;
 
 	private double opacity = 1.0;
 
-	public WmsLayerImpl(String title, WmsLayerConfiguration wmsConfig, WmsTileConfiguration tileConfig) {
+	public WmsLayerImpl(String title, WmsLayerConfiguration wmsConfig, WmsTileConfiguration tileConfig,
+			WmsLayerInfo layerCapabilities) {
 		super(wmsConfig.getLayers());
 
+		this.title = title;
 		this.wmsConfig = wmsConfig;
 		this.tileConfig = tileConfig;
-		this.title = title;
+		this.layerCapabilities = layerCapabilities;
 	}
 
 	// ------------------------------------------------------------------------
@@ -76,9 +78,14 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 		return tileConfig;
 	}
 
+	@Override
+	public WmsLayerInfo getCapabilities() {
+		return layerCapabilities;
+	}
+
 	/**
 	 * Returns the view port CRS. This layer should always have the same CRS as the map!
-	 * 
+	 *
 	 * @return The layer CRS (=map CRS).
 	 */
 	public String getCrs() {
@@ -116,7 +123,7 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 	@Override
 	public boolean isShowing() {
 		if (markedAsVisible) {
-			if (viewPort.getScale() >= wmsConfig.getMinimumScale() && viewPort.getScale() < 
+			if (viewPort.getScale() >= wmsConfig.getMinimumScale() && viewPort.getScale() <
 					wmsConfig.getMaximumScale()) {
 				return true;
 			}
@@ -153,7 +160,7 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 				Bbox bounds = WmsTileServiceImpl.getInstance().getWorldBoundsForTile(getViewPort(), tileConfig, code);
 				Tile tile = new Tile(getScreenBounds(actualScale, bounds));
 				tile.setCode(code);
-				tile.setUrl(WmsClient.getInstance().getWmsService().getMapUrl(getConfig(), getCrs(), bounds, 
+				tile.setUrl(WmsClient.getInstance().getWmsService().getMapUrl(getConfig(), getCrs(), bounds,
 						tileConfig.getTileWidth(), tileConfig.getTileHeight()));
 				tiles.add(tile);
 			}
@@ -176,22 +183,13 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 	}
 
 	// ------------------------------------------------------------------------
-	// HasLegendWidget implementation:
-	// ------------------------------------------------------------------------
-
-	@Override
-	public IsWidget buildLegendWidget() {
-		return new Image(getLegendImageUrl(wmsConfig.getLegendConfig()));
-	}
-
-	// ------------------------------------------------------------------------
 	// Private methods:
 	// ------------------------------------------------------------------------
 
 	private Bbox getScreenBounds(double scale, Bbox worldBounds) {
 		return new Bbox(Math.round(scale * worldBounds.getX()), -Math.round(scale * worldBounds.getMaxY()),
 				Math.round(scale * worldBounds.getMaxX()) - Math.round(scale * worldBounds.getX()), Math.round(scale
-						* worldBounds.getMaxY())
-						- Math.round(scale * worldBounds.getY()));
+				* worldBounds.getMaxY())
+				- Math.round(scale * worldBounds.getY()));
 	}
 }

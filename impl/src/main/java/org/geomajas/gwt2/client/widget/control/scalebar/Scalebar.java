@@ -179,7 +179,7 @@ public class Scalebar extends AbstractMapWidget {
 	 * @return closest fit in units (will be miles or yards for English, m for metric, unit for CRS)
 	 */
 	private void calculateBestFit(double scale) {
-		double unitLength = mapPresenter.getConfiguration().getMapOptions().getUnitLength();
+		double unitLength = mapPresenter.getConfiguration().getUnitLength();
 		int len = 0;
 		long px = 0;
 		if (UnitType.ENGLISH.equals(unitType)) {
