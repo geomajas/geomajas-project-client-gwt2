@@ -8,11 +8,10 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.editing.client.service;
 
-import java.util.ArrayList;
-import java.util.List;
+package org.geomajas.gwt2.client.service;
 
+import com.google.gwt.core.client.Callback;
 import org.geomajas.command.dto.BufferInfo;
 import org.geomajas.command.dto.GeometryBufferRequest;
 import org.geomajas.command.dto.GeometryBufferResponse;
@@ -28,17 +27,15 @@ import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 
-import com.google.gwt.core.client.Callback;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Service for available operations on {@link Geometry} instances. This class contains implementations for;
- * <ul>
- * <li>Applying a buffer distance on a geometry or several geometries</li>
- * <li>Merging several geometries (or obtaining a union)</li>
- * <li>Obtaining the convex hull of a geometry or several geometries</li>
- * <li>Obtaining the bounds between several geometries</li>
- * </ul>
- * 
+ * Service for available operations on {@link Geometry} instances. This class contains implementations for; <ul>
+ * <li>Applying a buffer distance on a geometry or several geometries</li> <li>Merging several geometries (or obtaining
+ * a union)</li> <li>Obtaining the convex hull of a geometry or several geometries</li> <li>Obtaining the bounds between
+ * several geometries</li> </ul>
+ *
  * @author Emiel Ackermann
  */
 public class GeometryOperationServiceImpl implements GeometryOperationService {
@@ -60,7 +57,7 @@ public class GeometryOperationServiceImpl implements GeometryOperationService {
 	}
 
 	@Override
-	public void buffer(List<Geometry> geometries, BufferInfo bufferInfo, 
+	public void buffer(List<Geometry> geometries, BufferInfo bufferInfo,
 			final Callback<List<Geometry>, Throwable> callback) {
 		GeometryBufferRequest request = new GeometryBufferRequest();
 		request.setGeometries(geometries);
@@ -139,18 +136,18 @@ public class GeometryOperationServiceImpl implements GeometryOperationService {
 			double minY = result.getY();
 			double maxX = result.getMaxX();
 			double maxY = result.getMaxY();
-			
-			for (int i = 1 ; i < geometries.size() ; i++) {
+
+			for (int i = 1; i < geometries.size(); i++) {
 				Bbox bounds = GeometryService.getBounds(geometries.get(i));
 				double boundsX = bounds.getX();
 				minX = boundsX < minX ? boundsX : minX;
-				
+
 				double boundsY = bounds.getY();
 				minY = boundsY < minY ? boundsY : minY;
-				
+
 				double boundsMaxX = bounds.getMaxX();
 				maxX = boundsMaxX > maxX ? boundsMaxX : maxX;
-				
+
 				double boundsMaxY = bounds.getMaxY();
 				maxY = boundsMaxY > maxY ? boundsMaxY : maxY;
 			}

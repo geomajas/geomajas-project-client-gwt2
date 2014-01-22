@@ -11,12 +11,15 @@
 
 package org.geomajas.plugin.editing.client.merge;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.google.gwt.core.client.Callback;
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.event.shared.SimpleEventBus;
 import org.geomajas.annotation.Api;
 import org.geomajas.command.dto.UnionInfo;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.gwt2.client.service.GeometryOperationService;
+import org.geomajas.gwt2.client.service.GeometryOperationServiceImpl;
 import org.geomajas.plugin.editing.client.GeometryFunction;
 import org.geomajas.plugin.editing.client.merge.event.GeometryMergeAddedEvent;
 import org.geomajas.plugin.editing.client.merge.event.GeometryMergeAddedHandler;
@@ -26,17 +29,13 @@ import org.geomajas.plugin.editing.client.merge.event.GeometryMergeStartEvent;
 import org.geomajas.plugin.editing.client.merge.event.GeometryMergeStartHandler;
 import org.geomajas.plugin.editing.client.merge.event.GeometryMergeStopEvent;
 import org.geomajas.plugin.editing.client.merge.event.GeometryMergeStopHandler;
-import org.geomajas.plugin.editing.client.service.GeometryOperationService;
-import org.geomajas.plugin.editing.client.service.GeometryOperationServiceImpl;
 
-import com.google.gwt.core.client.Callback;
-import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.event.shared.SimpleEventBus;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Service for the process of merging multiple geometries into a single geometry.
- * 
+ *
  * @author Pieter De Graef
  * @since 2.0.0
  */
@@ -69,9 +68,8 @@ public class GeometryMergeService {
 
 	/**
 	 * Register a {@link GeometryMergeStartHandler} to listen to events that signal the merging process has started.
-	 * 
-	 * @param handler
-	 *            The {@link GeometryMergeStartHandler} to add as listener.
+	 *
+	 * @param handler The {@link GeometryMergeStartHandler} to add as listener.
 	 * @return The registration of the handler.
 	 */
 	public HandlerRegistration addGeometryMergeStartHandler(GeometryMergeStartHandler handler) {
@@ -81,9 +79,8 @@ public class GeometryMergeService {
 	/**
 	 * Register a {@link GeometryMergeStopHandler} to listen to events that signal the merging process has ended (either
 	 * through stop or cancel).
-	 * 
-	 * @param handler
-	 *            The {@link GeometryMergeStopHandler} to add as listener.
+	 *
+	 * @param handler The {@link GeometryMergeStopHandler} to add as listener.
 	 * @return The registration of the handler.
 	 */
 	public HandlerRegistration addGeometryMergeStopHandler(GeometryMergeStopHandler handler) {
@@ -93,9 +90,8 @@ public class GeometryMergeService {
 	/**
 	 * Register a {@link GeometryMergeAddedHandler} to listen to events that signal a geometry has been added to the
 	 * list for merging.
-	 * 
-	 * @param handler
-	 *            The {@link GeometryMergeAddedHandler} to add as listener.
+	 *
+	 * @param handler The {@link GeometryMergeAddedHandler} to add as listener.
 	 * @return The registration of the handler.
 	 */
 	public HandlerRegistration addGeometryMergeAddedHandler(GeometryMergeAddedHandler handler) {
@@ -105,9 +101,8 @@ public class GeometryMergeService {
 	/**
 	 * Register a {@link GeometryMergeRemovedHandler} to listen to events that signal a geometry has been removed from
 	 * the list for merging.
-	 * 
-	 * @param handler
-	 *            The {@link GeometryMergeRemovedHandler} to add as listener.
+	 *
+	 * @param handler The {@link GeometryMergeRemovedHandler} to add as listener.
 	 * @return The registration of the handler.
 	 */
 	public HandlerRegistration addGeometryMergeRemovedHandler(GeometryMergeRemovedHandler handler) {
@@ -121,9 +116,8 @@ public class GeometryMergeService {
 	/**
 	 * Start the merging process. From this point on add some geometries and call either <code>stop</code> or
 	 * <code>cancel</code>.
-	 * 
-	 * @throws GeometryMergeException
-	 *             In case a merging process is already started.
+	 *
+	 * @throws GeometryMergeException In case a merging process is already started.
 	 */
 	public void start() throws GeometryMergeException {
 		if (busy) {
@@ -135,11 +129,9 @@ public class GeometryMergeService {
 
 	/**
 	 * Add a geometry to the list for merging. When <code>stop</code> is called, it is this list that is merged.
-	 * 
-	 * @param geometry
-	 *            The geometry to add.
-	 * @throws GeometryMergeException
-	 *             In case the merging process has not been started.
+	 *
+	 * @param geometry The geometry to add.
+	 * @throws GeometryMergeException In case the merging process has not been started.
 	 */
 	public void addGeometry(Geometry geometry) throws GeometryMergeException {
 		if (!busy) {
@@ -151,11 +143,9 @@ public class GeometryMergeService {
 
 	/**
 	 * Remove a geometry from the merging list again.
-	 * 
-	 * @param geometry
-	 *            The geometry to remove.
-	 * @throws GeometryMergeException
-	 *             In case the merging process has not been started.
+	 *
+	 * @param geometry The geometry to remove.
+	 * @throws GeometryMergeException In case the merging process has not been started.
 	 */
 	public void removeGeometry(Geometry geometry) throws GeometryMergeException {
 		if (!busy) {
@@ -167,9 +157,8 @@ public class GeometryMergeService {
 
 	/**
 	 * Clear the entire list of geometries for merging, basically resetting the process.
-	 * 
-	 * @throws GeometryMergeException
-	 *             In case the merging process has not been started.
+	 *
+	 * @throws GeometryMergeException In case the merging process has not been started.
 	 */
 	public void clearGeometries() throws GeometryMergeException {
 		if (!busy) {
@@ -184,11 +173,10 @@ public class GeometryMergeService {
 	/**
 	 * End the merging process by effectively executing the merge operation and returning the result through a
 	 * call-back.
-	 * 
-	 * @param callback
-	 *            The call-back function that will receive the merged geometry.
-	 * @throws GeometryMergeException
-	 *             Thrown in case the merging process has not been started or some other merging error.
+	 *
+	 * @param callback The call-back function that will receive the merged geometry.
+	 * @throws GeometryMergeException Thrown in case the merging process has not been started or some other merging
+	 *                                error.
 	 */
 	public void stop(final GeometryFunction callback) throws GeometryMergeException {
 		if (!busy) {
@@ -214,9 +202,8 @@ public class GeometryMergeService {
 
 	/**
 	 * End the merging process without executing the merge operation. This method will simply clean up.
-	 * 
-	 * @throws GeometryMergeException
-	 *             In case the merging process has not been started.
+	 *
+	 * @throws GeometryMergeException In case the merging process has not been started.
 	 */
 	public void cancel() throws GeometryMergeException {
 		clearGeometries();
@@ -226,7 +213,7 @@ public class GeometryMergeService {
 
 	/**
 	 * Is the merging process currently active or not?
-	 * 
+	 *
 	 * @return Is the merging process currently active or not?
 	 */
 	public boolean isBusy() {
@@ -235,7 +222,7 @@ public class GeometryMergeService {
 
 	/**
 	 * Get the current precision to be used when merging geometries.
-	 * 
+	 *
 	 * @return The current precision to be used when merging geometries.
 	 */
 	public int getPrecision() {
@@ -243,34 +230,29 @@ public class GeometryMergeService {
 	}
 
 	/**
-	 * Set the precision to be used when merging geometries. Basically there are 2 options:
-	 * <ul>
-	 * <li>-1: Use a floating point precision model. This is the default value.</li>
-	 * <li>&ge; 0: Use a fixed precision model. Know that larger values, although increasingly precise, can run into
-	 * robustness problems.</li>
-	 * </ul>
-	 * 
-	 * @param precision
-	 *            The new value.
+	 * Set the precision to be used when merging geometries. Basically there are 2 options: <ul> <li>-1: Use a floating
+	 * point precision model. This is the default value.</li> <li>&ge; 0: Use a fixed precision model. Know that larger
+	 * values, although increasingly precise, can run into robustness problems.</li> </ul>
+	 *
+	 * @param precision The new value.
 	 */
 	public void setPrecision(int precision) {
 		this.precision = precision;
 	}
-	
+
 	/**
-	 * Set the boolean that triggers the usage of the precision value as buffer.
-	 * <p><b>Default</b> = false<p>
+	 * Set the boolean that triggers the usage of the precision value as buffer. <p><b>Default</b> = false<p>
 	 * <p><b>Note</b>: If false all lines and points are ignored during the merging process.<p>
-	 * 
+	 *
 	 * @param usePrecisionAsBuffer
 	 */
 	public void setUsePrecisionAsBuffer(boolean usePrecisionAsBuffer) {
 		this.usePrecisionAsBuffer = usePrecisionAsBuffer;
 	}
-	
+
 	/**
 	 * Get the boolean that triggers the usage of the precision value as buffer.
-	 * 
+	 *
 	 * @return usePrecisionAsBuffer
 	 */
 	public boolean usePrecisionAsBuffer() {
@@ -287,11 +269,11 @@ public class GeometryMergeService {
 		unionInfo.setUsePrecisionAsBuffer(true);
 		unionInfo.setPrecision(precision);
 		operationService.union(geometries, unionInfo, new Callback<Geometry, Throwable>() {
-			
+
 			public void onSuccess(Geometry result) {
 				callback.execute(result);
 			}
-			
+
 			public void onFailure(Throwable reason) {
 				reason.printStackTrace();
 			}

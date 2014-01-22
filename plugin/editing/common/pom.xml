@@ -35,11 +35,7 @@
 		<!-- Geomajas dependencies -->
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-client-common-gwt</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-client-common-gwt-command</artifactId>
+			<artifactId>geomajas-client-gwt2-server-extension</artifactId>
 		</dependency>
 
 		<!-- Logging dependencies -->

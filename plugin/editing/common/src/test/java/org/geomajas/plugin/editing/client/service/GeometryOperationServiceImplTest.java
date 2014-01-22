@@ -11,19 +11,19 @@
 
 package org.geomajas.plugin.editing.client.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.google.gwt.core.client.Callback;
 import junit.framework.Assert;
-
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.gwt2.client.service.GeometryOperationService;
+import org.geomajas.gwt2.client.service.GeometryOperationServiceImpl;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.gwt.core.client.Callback;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Test case testing the method bounds() in the {@link GeometryOperationService}. 
