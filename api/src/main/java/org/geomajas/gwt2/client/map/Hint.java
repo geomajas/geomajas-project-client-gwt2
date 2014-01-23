@@ -17,8 +17,7 @@ import org.geomajas.annotation.Api;
  * 
  * @author Jan De Moerloose
  * 
- * @param <T>
- *            The hint type class
+ * @param <T> The hint type class
  * @since 1.0.0
  */
 @Api(allMethods = true)
@@ -26,14 +25,26 @@ public class Hint<T> {
 
 	private String name;
 
+	private T defaultValue;
+
 	/**
-	 * Construct a map hint with the following name.
+	 * Construct a map hint with the following name and default value null.
 	 * 
-	 * @param name
-	 *            The name of the hint.
+	 * @param name The name of the hint.
 	 */
 	public Hint(String name) {
+		this(name, null);
+	}
+
+	/**
+	 * Construct a map hint with the following name and default value.
+	 * 
+	 * @param name The name of the hint.
+	 * @param T The default value of the hint.
+	 */
+	public Hint(String name, T defaultValue) {
 		this.name = name;
+		this.defaultValue = defaultValue;
 	}
 
 	/**
@@ -43,6 +54,15 @@ public class Hint<T> {
 	 */
 	public String getName() {
 		return name;
+	}
+
+	/**
+	 * Get The default value of this hint.
+	 * 
+	 * @return
+	 */
+	public T getDefaultValue() {
+		return defaultValue;
 	}
 
 	@Override
