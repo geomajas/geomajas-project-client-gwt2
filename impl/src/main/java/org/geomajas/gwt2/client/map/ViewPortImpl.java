@@ -178,8 +178,7 @@ public final class ViewPortImpl implements ViewPort {
 		return 0;
 	}
 
-	@Override
-	public void setMapSize(int width, int height) {
+	protected void setMapSize(int width, int height) {
 		if (this.mapWidth != width || this.mapHeight != height) {
 			View oldView = getView();
 			Coordinate screen = new Coordinate((double) width / 2.0, (double) height / 2.0);

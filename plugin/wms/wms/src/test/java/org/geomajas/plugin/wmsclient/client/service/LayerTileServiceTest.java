@@ -11,8 +11,6 @@
 
 package org.geomajas.plugin.wmsclient.client.service;
 
-import java.util.List;
-
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.GeomajasImpl;
@@ -27,6 +25,8 @@ import org.geomajas.plugin.wms.client.service.WmsTileServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.List;
 
 /**
  * Testcases for the {@link WmsTileService} interface.
@@ -48,8 +48,7 @@ public class LayerTileServiceTest {
 	@Before
 	public void initialize2() {
 		eventBus = new MapEventBusImpl(this, GeomajasImpl.getInstance().getEventBus());
-		viewPort = TestConfigUtil.createViewPort(eventBus, TestConfigUtil.getMapConfig());
-		viewPort.setMapSize(1000, 1000);
+		viewPort = TestConfigUtil.createViewPort(eventBus, TestConfigUtil.getMapConfig(), 1000, 1000);
 		tileService = new WmsTileServiceImpl();
 
 		Bbox max = viewPort.getMaximumBounds();

@@ -37,9 +37,11 @@ public class TestConfigUtil {
 		return configuration;
 	}
 
-	public static ViewPort createViewPort(MapEventBus eventBus, MapConfiguration configuration) {
+	public static ViewPort createViewPort(MapEventBus eventBus, MapConfiguration configuration, int width,
+			int height) {
 		ViewPortImpl viewPort = new ViewPortImpl(eventBus);
 		viewPort.initialize(configuration);
+		viewPort.setMapSize(width, height);
 		return viewPort;
 	}
 }

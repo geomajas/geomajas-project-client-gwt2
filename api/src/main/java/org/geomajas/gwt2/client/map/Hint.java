@@ -24,7 +24,7 @@ import org.geomajas.annotation.Api;
 @Api(allMethods = true)
 public class Hint<T> {
 
-	private String name;
+	private final String name;
 
 	/**
 	 * Construct a map hint with the following name.

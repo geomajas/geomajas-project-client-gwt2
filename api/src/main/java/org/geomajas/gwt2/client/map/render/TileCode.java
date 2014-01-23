@@ -165,18 +165,6 @@ public class TileCode implements Serializable {
 	}
 
 	/**
-	 * String identifier which is guaranteed to include sufficient information to assure to be different for two
-	 * instances which could produce different result. It is typically used as basis for calculation of hash
-	 * codes (like MD5, SHA1, SHA2 etc) of (collections of) objects.
-	 *
-	 * @return cacheId
-	 * @since 1.8.0
-	 */
-	public String getCacheId() {
-		return tileLevel + "-" + x + "-" + y;
-	}
-
-	/**
 	 * Are the two objects equal?
 	 *
 	 * @param o object to compare

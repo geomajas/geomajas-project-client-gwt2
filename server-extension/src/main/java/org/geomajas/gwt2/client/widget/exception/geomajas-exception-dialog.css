@@ -5,8 +5,7 @@
 @external .exceptionDialogButtonPanel;
 .exceptionDialogButtonPanel {
 	text-align: right;
-	width: 680px;
-	padding: 5px;
+    padding: 5px;
 }
 
 @external .exceptionDialogStackTracePanel;
@@ -14,14 +13,15 @@
 	width: 680px;
 	max-height: 300px;
 	overflow: auto;
-	background: #DDD;
-	margin: 5px;
+	background: #E0E0E0;
+	margin: 0px 5px 5px 5px;
 	padding: 5px;
+    color: #444444;
 }
 
 @external .exceptionDialogMessageLabel;
 .exceptionDialogMessageLabel {
-	padding-left: 50 px;
+	padding: 5px 10px;
 }
 
 /*close icon*/
