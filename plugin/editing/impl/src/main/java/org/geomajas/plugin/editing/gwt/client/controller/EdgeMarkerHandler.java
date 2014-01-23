@@ -11,20 +11,6 @@
 
 package org.geomajas.plugin.editing.gwt.client.controller;
 
-import org.geomajas.configuration.FeatureStyleInfo;
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt.client.controller.MapEventParser;
-import org.geomajas.gwt.client.handler.MapDownHandler;
-import org.geomajas.gwt.client.map.RenderSpace;
-import org.geomajas.gwt2.client.GeomajasImpl;
-import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
-import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
-import org.geomajas.gwt2.client.gfx.VectorContainer;
-import org.geomajas.gwt2.client.map.MapPresenter;
-import org.geomajas.plugin.editing.client.service.GeometryEditService;
-import org.geomajas.plugin.editing.client.service.GeometryEditState;
-import org.vaadin.gwtgraphics.client.shape.Path;
-
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
@@ -33,17 +19,30 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.controller.MapEventParser;
+import org.geomajas.gwt.client.handler.MapDownHandler;
+import org.geomajas.gwt.client.map.RenderSpace;
+import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
+import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
+import org.geomajas.gwt2.client.gfx.ShapeStyle;
+import org.geomajas.gwt2.client.gfx.VectorContainer;
+import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.plugin.editing.client.service.GeometryEditService;
+import org.geomajas.plugin.editing.client.service.GeometryEditState;
+import org.vaadin.gwtgraphics.client.shape.Path;
 
 /**
  * Handler that marks edge when hovering over them.
- * 
+ *
  * @author Pieter De Graef
  */
 public class EdgeMarkerHandler implements MouseOutHandler, MouseOverHandler, MouseMoveHandler, MapDownHandler {
 
 	private static final int MARKER_SIZE = 6;
 
-	private FeatureStyleInfo style;
+	private ShapeStyle style;
 
 	private MapPresenter mapPresenter;
 
@@ -62,7 +61,7 @@ public class EdgeMarkerHandler implements MouseOutHandler, MouseOverHandler, Mou
 		this.service = service;
 		this.eventParser = eventParser;
 
-		style = new FeatureStyleInfo();
+		style = new ShapeStyle();
 		style.setFillColor("#444444");
 		style.setFillOpacity(0f);
 		style.setStrokeColor("#444444");
@@ -134,38 +133,22 @@ public class EdgeMarkerHandler implements MouseOutHandler, MouseOverHandler, Mou
 			// Top:
 			Path top = new Path(tl.getX(), tl.getY());
 			top.lineTo(tr.getX(), tr.getY());
-			GeomajasImpl
-					.getInstance()
-					.getGfxUtil()
-					.applyStroke(top, style.getStrokeColor(), style.getStrokeOpacity(), style.getStrokeWidth(),
-							style.getDashArray());
+			GeomajasImpl.getInstance().getGfxUtil().applyStyle(top, style);
 			container.add(top);
 
 			Path right = new Path(tr.getX(), tr.getY());
 			right.lineTo(br.getX(), br.getY());
-			GeomajasImpl
-					.getInstance()
-					.getGfxUtil()
-					.applyStroke(right, style.getStrokeColor(), style.getStrokeOpacity(), style.getStrokeWidth(),
-							style.getDashArray());
+			GeomajasImpl.getInstance().getGfxUtil().applyStyle(right, style);
 			container.add(right);
 
 			Path bottom = new Path(br.getX(), br.getY());
 			bottom.lineTo(bl.getX(), bl.getY());
-			GeomajasImpl
-					.getInstance()
-					.getGfxUtil()
-					.applyStroke(bottom, style.getStrokeColor(), style.getStrokeOpacity(), style.getStrokeWidth(),
-							style.getDashArray());
+			GeomajasImpl.getInstance().getGfxUtil().applyStyle(bottom, style);
 			container.add(bottom);
 
 			Path left = new Path(bl.getX(), bl.getY());
 			left.lineTo(tl.getX(), tl.getY());
-			GeomajasImpl
-					.getInstance()
-					.getGfxUtil()
-					.applyStroke(left, style.getStrokeColor(), style.getStrokeOpacity(), style.getStrokeWidth(),
-							style.getDashArray());
+			GeomajasImpl.getInstance().getGfxUtil().applyStyle(left, style);
 			container.add(left);
 		}
 	}

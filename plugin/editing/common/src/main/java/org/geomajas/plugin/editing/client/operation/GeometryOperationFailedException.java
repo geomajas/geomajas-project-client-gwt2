@@ -15,7 +15,7 @@ import org.geomajas.annotation.Api;
 
 /**
  * Exception that is thrown when an operation onto a geometry has failed.
- * 
+ *
  * @author Pieter De Graef
  * @since 2.0.0
  */
@@ -33,9 +33,8 @@ public class GeometryOperationFailedException extends Exception {
 
 	/**
 	 * Create an exception using the given message.
-	 * 
-	 * @param message
-	 *            The exception message.
+	 *
+	 * @param message The exception message.
 	 */
 	public GeometryOperationFailedException(String message) {
 		super(message);
@@ -43,9 +42,8 @@ public class GeometryOperationFailedException extends Exception {
 
 	/**
 	 * Constructor used to catch and rethrow another exception.
-	 * 
-	 * @param throwable
-	 *            The original exception.
+	 *
+	 * @param throwable The original exception.
 	 */
 	public GeometryOperationFailedException(Throwable throwable) {
 		super(throwable);

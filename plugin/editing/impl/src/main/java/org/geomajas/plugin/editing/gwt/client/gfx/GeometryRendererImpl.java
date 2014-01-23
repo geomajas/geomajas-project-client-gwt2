@@ -11,11 +11,6 @@
 
 package org.geomajas.plugin.editing.gwt.client.gfx;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
@@ -24,6 +19,7 @@ import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.controller.MapController;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
+import org.geomajas.gwt2.client.gfx.ShapeStyle;
 import org.geomajas.gwt2.client.gfx.VectorContainer;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateEvent;
@@ -67,9 +63,13 @@ import org.vaadin.gwtgraphics.client.shape.Path;
 import org.vaadin.gwtgraphics.client.shape.path.LineTo;
 import org.vaadin.gwtgraphics.client.shape.path.MoveTo;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Renderer for geometries during the editing process.
- * 
+ *
  * @author Pieter De Graef
  * @author Jan De Moerloose
  */
@@ -106,11 +106,9 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 
 	/**
 	 * Create a new renderer instance that renders on the given map and listens to the given editing service.
-	 * 
-	 * @param mapPresenter
-	 *            The map to render on.
-	 * @param editService
-	 *            The geometry editing service to listen to.
+	 *
+	 * @param mapPresenter The map to render on.
+	 * @param editService  The geometry editing service to listen to.
 	 */
 	public GeometryRendererImpl(MapPresenter mapPresenter, GeometryEditService editService) {
 		this.mapPresenter = mapPresenter;
@@ -149,7 +147,9 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 	// Public methods:
 	// ------------------------------------------------------------------------
 
-	/** Clear everything and completely redraw the edited geometry. */
+	/**
+	 * Clear everything and completely redraw the edited geometry.
+	 */
 	public void redraw() {
 		shapes.clear();
 		if (container != null) {
@@ -158,14 +158,9 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 			try {
 				tentativeMoveLine = new Path(-5, -5);
 				tentativeMoveLine.lineTo(-5, -5);
-				FeatureStyleInfo style = styleProvider.getEdgeTentativeMoveStyle();
-				GeomajasImpl
-						.getInstance()
-						.getGfxUtil()
-						.applyStroke(tentativeMoveLine, style.getStrokeColor(), style.getStrokeOpacity(),
-								style.getStrokeWidth(), style.getDashArray());
+				ShapeStyle style = styleProvider.getEdgeTentativeMoveStyle();
+				GeomajasImpl.getInstance().getGfxUtil().applyStyle(tentativeMoveLine, style);
 				container.add(tentativeMoveLine);
-
 				draw();
 			} catch (GeometryIndexNotFoundException e) {
 				// Happens when creating new geometries...can't render points that don't exist yet.
@@ -177,7 +172,9 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 	// ViewPortChangedHandler implementation:
 	// ------------------------------------------------------------------------
 
-	/** Redraw the geometry on the map. */
+	/**
+	 * Redraw the geometry on the map.
+	 */
 	public void onViewPortChanged(ViewPortChangedEvent event) {
 		redraw();
 	}
@@ -186,7 +183,9 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 	// Start & stop handler implementations:
 	// ------------------------------------------------------------------------
 
-	/** Clean up the previous state, create a container to draw in and then draw the geometry. */
+	/**
+	 * Clean up the previous state, create a container to draw in and then draw the geometry.
+	 */
 	public void onGeometryEditStart(GeometryEditStartEvent event) {
 		if (container != null) {
 			mapPresenter.getContainerManager().removeVectorContainer(container);
@@ -195,7 +194,9 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 		redraw();
 	}
 
-	/** Clean up all rendering. */
+	/**
+	 * Clean up all rendering.
+	 */
 	public void onGeometryEditStop(GeometryEditStopEvent event) {
 		// Remove the vector container from the map:
 		mapPresenter.getContainerManager().removeVectorContainer(container);
@@ -207,56 +208,72 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 	// GeometryIndex state change implementations:
 	// ------------------------------------------------------------------------
 
-	/** Update the styles of the geometry indices in the event. */
+	/**
+	 * Update the styles of the geometry indices in the event.
+	 */
 	public void onGeometryIndexMarkForDeletionEnd(GeometryIndexMarkForDeletionEndEvent event) {
 		for (GeometryIndex index : event.getIndices()) {
 			update(index, false);
 		}
 	}
 
-	/** Update the styles of the geometry indices in the event. */
+	/**
+	 * Update the styles of the geometry indices in the event.
+	 */
 	public void onGeometryIndexMarkForDeletionBegin(GeometryIndexMarkForDeletionBeginEvent event) {
 		for (GeometryIndex index : event.getIndices()) {
 			update(index, false);
 		}
 	}
 
-	/** Update the styles of the geometry indices in the event. */
+	/**
+	 * Update the styles of the geometry indices in the event.
+	 */
 	public void onGeometryIndexEnabled(GeometryIndexEnabledEvent event) {
 		for (GeometryIndex index : event.getIndices()) {
 			update(index, false);
 		}
 	}
 
-	/** Update the styles of the geometry indices in the event. */
+	/**
+	 * Update the styles of the geometry indices in the event.
+	 */
 	public void onGeometryIndexDisabled(GeometryIndexDisabledEvent event) {
 		for (GeometryIndex index : event.getIndices()) {
 			update(index, false);
 		}
 	}
 
-	/** Update the styles of the geometry indices in the event. */
+	/**
+	 * Update the styles of the geometry indices in the event.
+	 */
 	public void onGeometryIndexDeselected(GeometryIndexDeselectedEvent event) {
 		for (GeometryIndex index : event.getIndices()) {
 			update(index, false);
 		}
 	}
 
-	/** Update the styles of the geometry indices in the event. */
+	/**
+	 * Update the styles of the geometry indices in the event.
+	 */
 	public void onGeometryIndexSelected(GeometryIndexSelectedEvent event) {
 		for (GeometryIndex index : event.getIndices()) {
 			update(index, false);
 		}
 	}
 
-	/** Update the styles of the geometry indices in the event. */
+	/**
+	 * Update the styles of the geometry indices in the event.
+	 */
 	public void onGeometryIndexHighlightEnd(GeometryIndexHighlightEndEvent event) {
 		for (GeometryIndex index : event.getIndices()) {
 			update(index, false);
 		}
 	}
 
-	/** Update the styles of the geometry indices in the event. */
+	/**
+	 * Update the styles of the geometry indices in the event.
+	 */
 	public void onGeometryIndexHighlightBegin(GeometryIndexHighlightBeginEvent event) {
 		for (GeometryIndex index : event.getIndices()) {
 			update(index, false);
@@ -267,7 +284,9 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 	// GeometryEditChangeStateHandler implementation:
 	// ------------------------------------------------------------------------
 
-	/** Change the cursor while dragging. */
+	/**
+	 * Change the cursor while dragging.
+	 */
 	public void onChangeEditingState(GeometryEditChangeStateEvent event) {
 		switch (event.getEditingState()) {
 			case DRAGGING:
@@ -284,7 +303,9 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 	// Geometry shape change implementation:
 	// ------------------------------------------------------------------------
 
-	/** Redraw the geometry on the map. */
+	/**
+	 * Redraw the geometry on the map.
+	 */
 	public void onGeometryShapeChanged(GeometryEditShapeChangedEvent event) {
 		redraw();
 	}
@@ -302,7 +323,7 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 				if (!Geometry.POINT.equals(editService.getGeometry().getGeometryType())
 						&& !Geometry.MULTI_POINT.equals(editService.getGeometry().getGeometryType())) {
 					try {
-						List<GeometryIndex> neighbors = null;
+						List<GeometryIndex> neighbors;
 						switch (editService.getIndexService().getType(index)) {
 							case TYPE_VERTEX:
 								// Move current vertex to the back. This helps the delete operation.
@@ -429,7 +450,7 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 
 	private void update(GeometryIndex index, boolean moveToBack) {
 		try {
-			VectorObject shape = null;
+			VectorObject shape;
 			if (index == null) {
 				shape = nullShape;
 			} else {
@@ -437,13 +458,8 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 			}
 			if (shape != null) {
 				// We don't consider position at this point. Just style:
-				FeatureStyleInfo style = styleFactory.create(editService, index);
-				GeomajasImpl
-						.getInstance()
-						.getGfxUtil()
-						.applyStroke(shape, style.getStrokeColor(), style.getStrokeOpacity(), style.getStrokeWidth(),
-								style.getDashArray());
-				GeomajasImpl.getInstance().getGfxUtil().applyFill(shape, style.getFillColor(), style.getFillOpacity());
+				ShapeStyle style = styleFactory.create(editService, index);
+				GeomajasImpl.getInstance().getGfxUtil().applyStyle(shape, style);
 
 				// Now update the location:
 				shapeFactory.update(shape, editService, index);
@@ -579,13 +595,8 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 		}
 
 		// Apply style:
-		FeatureStyleInfo style = styleFactory.create(editService, index);
-		GeomajasImpl
-				.getInstance()
-				.getGfxUtil()
-				.applyStroke(shape, style.getStrokeColor(), style.getStrokeOpacity(), style.getStrokeWidth(),
-						style.getDashArray());
-		GeomajasImpl.getInstance().getGfxUtil().applyFill(shape, style.getFillColor(), style.getFillOpacity());
+		ShapeStyle style = styleFactory.create(editService, index);
+		GeomajasImpl.getInstance().getGfxUtil().applyStyle(shape, style);
 
 		// Apply controller:
 		MapController controller = controllerFactory.create(editService, index);

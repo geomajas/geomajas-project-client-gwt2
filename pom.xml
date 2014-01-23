@@ -123,6 +123,11 @@
 				<artifactId>geomajas-client-gwt2-plugin-editing-impl</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+            <dependency>
+                <groupId>org.geomajas.plugin</groupId>
+                <artifactId>geomajas-client-gwt2-plugin-editing-server-extension</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-client-gwt2-plugin-editing-example-jar</artifactId>

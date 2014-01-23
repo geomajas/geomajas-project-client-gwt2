@@ -11,14 +11,14 @@
 
 package org.geomajas.plugin.editing.gwt.client.gfx;
 
-import org.geomajas.configuration.FeatureStyleInfo;
+import org.geomajas.gwt2.client.gfx.ShapeStyle;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
 
 /**
  * Default implementation for the {@link GeometryIndexStyleFactory}.
- * 
+ *
  * @author Pieter De Graef
  */
 public class DefaultGeometryIndexStyleFactory implements GeometryIndexStyleFactory {
@@ -32,9 +32,8 @@ public class DefaultGeometryIndexStyleFactory implements GeometryIndexStyleFacto
 	/**
 	 * Create a {@link GeometryIndexStyleFactory} with the given {@link StyleProvider}. This service will be used for
 	 * getting the correct styles.
-	 * 
-	 * @param styleProvider
-	 *            The style service that will provide styles for states.
+	 *
+	 * @param styleProvider The style service that will provide styles for states.
 	 */
 	public DefaultGeometryIndexStyleFactory(StyleProvider styleProvider) {
 		this.styleProvider = styleProvider;
@@ -45,7 +44,7 @@ public class DefaultGeometryIndexStyleFactory implements GeometryIndexStyleFacto
 	// ------------------------------------------------------------------------
 
 	@Override
-	public FeatureStyleInfo create(GeometryEditService editService, GeometryIndex index)
+	public ShapeStyle create(GeometryEditService editService, GeometryIndex index)
 			throws GeometryIndexNotFoundException {
 		if (index == null) {
 			return findGeometryStyle(editService, index);
@@ -64,7 +63,9 @@ public class DefaultGeometryIndexStyleFactory implements GeometryIndexStyleFacto
 	// Public methods:
 	// ------------------------------------------------------------------------
 
-	/** Get the service that provides styles for states. */
+	/**
+	 * Get the service that provides styles for states.
+	 */
 	public StyleProvider getStyleService() {
 		return styleProvider;
 	}
@@ -73,7 +74,7 @@ public class DefaultGeometryIndexStyleFactory implements GeometryIndexStyleFacto
 	// Private methods:
 	// ------------------------------------------------------------------------
 
-	private FeatureStyleInfo findVertexStyle(GeometryEditService editService, GeometryIndex index) {
+	private ShapeStyle findVertexStyle(GeometryEditService editService, GeometryIndex index) {
 		if (editService.getIndexStateService().isMarkedForDeletion(index)) {
 			return styleProvider.getVertexMarkForDeletionStyle();
 		} else if (!editService.getIndexStateService().isEnabled(index)) {
@@ -94,7 +95,7 @@ public class DefaultGeometryIndexStyleFactory implements GeometryIndexStyleFacto
 		return styleProvider.getVertexStyle();
 	}
 
-	private FeatureStyleInfo findEdgeStyle(GeometryEditService editService, GeometryIndex index) {
+	private ShapeStyle findEdgeStyle(GeometryEditService editService, GeometryIndex index) {
 		if (editService.getIndexStateService().isMarkedForDeletion(index)) {
 			return styleProvider.getEdgeMarkForDeletionStyle();
 		} else if (!editService.getIndexStateService().isEnabled(index)) {
@@ -113,7 +114,7 @@ public class DefaultGeometryIndexStyleFactory implements GeometryIndexStyleFacto
 		return styleProvider.getEdgeStyle();
 	}
 
-	private FeatureStyleInfo findGeometryStyle(GeometryEditService editService, GeometryIndex index) {
+	private ShapeStyle findGeometryStyle(GeometryEditService editService, GeometryIndex index) {
 		if (index != null) {
 			if (!editService.getIndexStateService().isEnabled(index)) {
 				return styleProvider.getBackgroundDisabledStyle();

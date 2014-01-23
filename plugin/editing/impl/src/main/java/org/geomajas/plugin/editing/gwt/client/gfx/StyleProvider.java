@@ -11,186 +11,188 @@
 
 package org.geomajas.plugin.editing.gwt.client.gfx;
 
-import org.geomajas.configuration.FeatureStyleInfo;
+import org.geomajas.gwt2.client.gfx.ShapeStyle;
 
 /**
  * Provides styles to be used during the editing process. By default the color scheme is quite orange.
- * 
+ *
  * @author Pieter De Graef
  */
 public class StyleProvider {
 
-	private FeatureStyleInfo vertexStyle;
+	private ShapeStyle vertexStyle;
 
-	private FeatureStyleInfo vertexHoverStyle;
+	private ShapeStyle vertexHoverStyle;
 
-	private FeatureStyleInfo vertexSelectStyle;
+	private ShapeStyle vertexSelectStyle;
 
-	private FeatureStyleInfo vertexDisabledStyle;
+	private ShapeStyle vertexDisabledStyle;
 
-	private FeatureStyleInfo vertexSelectHoverStyle;
+	private ShapeStyle vertexSelectHoverStyle;
 
-	private FeatureStyleInfo vertexMarkForDeletionStyle;
+	private ShapeStyle vertexMarkForDeletionStyle;
 
-	private FeatureStyleInfo edgeStyle;
+	private ShapeStyle edgeStyle;
 
-	private FeatureStyleInfo edgeHoverStyle;
+	private ShapeStyle edgeHoverStyle;
 
-	private FeatureStyleInfo edgeSelectStyle;
+	private ShapeStyle edgeSelectStyle;
 
-	private FeatureStyleInfo edgeDisabledStyle;
+	private ShapeStyle edgeDisabledStyle;
 
-	private FeatureStyleInfo edgeSelectHoverStyle;
+	private ShapeStyle edgeSelectHoverStyle;
 
-	private FeatureStyleInfo edgeMarkForDeletionStyle;
+	private ShapeStyle edgeMarkForDeletionStyle;
 
-	private FeatureStyleInfo edgeInsertMoveStyle;
+	private ShapeStyle edgeInsertMoveStyle;
 
-	private FeatureStyleInfo lineStringStyle;
+	private ShapeStyle lineStringStyle;
 
-	private FeatureStyleInfo linearRingStyle;
+	private ShapeStyle linearRingStyle;
 
-	private FeatureStyleInfo backgroundStyle;
+	private ShapeStyle backgroundStyle;
 
-	private FeatureStyleInfo backgroundMarkedForDeletionStyle;
+	private ShapeStyle backgroundMarkedForDeletionStyle;
 
-	private FeatureStyleInfo backgroundDisabledStyle;
+	private ShapeStyle backgroundDisabledStyle;
 
-	private FeatureStyleInfo snappedVertexStyle;
+	private ShapeStyle snappedVertexStyle;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	/** Initializes all default styles. */
+	/**
+	 * Initializes all default styles.
+	 */
 	public StyleProvider() {
-		vertexStyle = new FeatureStyleInfo();
+		vertexStyle = new ShapeStyle();
 		vertexStyle.setFillColor("#FFFFFF");
 		vertexStyle.setFillOpacity(1);
 		vertexStyle.setStrokeColor("#CC6600");
 		vertexStyle.setStrokeOpacity(1);
 		vertexStyle.setStrokeWidth(1);
 
-		vertexHoverStyle = new FeatureStyleInfo();
+		vertexHoverStyle = new ShapeStyle();
 		vertexHoverStyle.setFillColor("#888888");
 		vertexHoverStyle.setFillOpacity(1);
 		vertexHoverStyle.setStrokeColor("#CC6600");
 		vertexHoverStyle.setStrokeOpacity(1);
 		vertexHoverStyle.setStrokeWidth(1);
 
-		vertexSelectStyle = new FeatureStyleInfo();
+		vertexSelectStyle = new ShapeStyle();
 		vertexSelectStyle.setFillColor("#666666");
 		vertexSelectStyle.setFillOpacity(1);
 		vertexSelectStyle.setStrokeColor("#FFFF33");
 		vertexSelectStyle.setStrokeOpacity(1);
 		vertexSelectStyle.setStrokeWidth(1);
 
-		vertexDisabledStyle = new FeatureStyleInfo();
+		vertexDisabledStyle = new ShapeStyle();
 		vertexDisabledStyle.setFillColor("#999999");
 		vertexDisabledStyle.setFillOpacity(1);
 		vertexDisabledStyle.setStrokeColor("#666666");
 		vertexDisabledStyle.setStrokeOpacity(1);
 		vertexDisabledStyle.setStrokeWidth(1);
 
-		vertexSelectHoverStyle = new FeatureStyleInfo();
+		vertexSelectHoverStyle = new ShapeStyle();
 		vertexSelectHoverStyle.setFillColor("#888888");
 		vertexSelectHoverStyle.setFillOpacity(1);
 		vertexSelectHoverStyle.setStrokeColor("#FFFF33");
 		vertexSelectHoverStyle.setStrokeOpacity(1);
 		vertexSelectHoverStyle.setStrokeWidth(1);
 
-		vertexMarkForDeletionStyle = new FeatureStyleInfo();
+		vertexMarkForDeletionStyle = new ShapeStyle();
 		vertexMarkForDeletionStyle.setFillColor("#FF0000");
 		vertexMarkForDeletionStyle.setFillOpacity(1);
 		vertexMarkForDeletionStyle.setStrokeColor("#990000");
 		vertexMarkForDeletionStyle.setStrokeOpacity(1);
 		vertexMarkForDeletionStyle.setStrokeWidth(2);
 
-		edgeStyle = new FeatureStyleInfo();
+		edgeStyle = new ShapeStyle();
 		edgeStyle.setFillColor("#FFFFFF");
 		edgeStyle.setFillOpacity(0);
 		edgeStyle.setStrokeColor("#FFAA00");
 		edgeStyle.setStrokeOpacity(1);
 		edgeStyle.setStrokeWidth(4);
 
-		edgeHoverStyle = new FeatureStyleInfo();
+		edgeHoverStyle = new ShapeStyle();
 		edgeHoverStyle.setFillColor("#FFFFFF");
 		edgeHoverStyle.setFillOpacity(0);
 		edgeHoverStyle.setStrokeColor("#FFCC33");
 		edgeHoverStyle.setStrokeOpacity(1);
 		edgeHoverStyle.setStrokeWidth(6);
 
-		edgeSelectStyle = new FeatureStyleInfo();
+		edgeSelectStyle = new ShapeStyle();
 		edgeSelectStyle.setFillColor("#FFFFFF");
 		edgeSelectStyle.setFillOpacity(0);
 		edgeSelectStyle.setStrokeColor("#CC8800");
 		edgeSelectStyle.setStrokeOpacity(1);
 		edgeSelectStyle.setStrokeWidth(6);
 
-		edgeDisabledStyle = new FeatureStyleInfo();
+		edgeDisabledStyle = new ShapeStyle();
 		edgeDisabledStyle.setFillColor("#FFFFFF");
 		edgeDisabledStyle.setFillOpacity(0);
 		edgeDisabledStyle.setStrokeColor("#999999");
 		edgeDisabledStyle.setStrokeOpacity(1);
 		edgeDisabledStyle.setStrokeWidth(4);
 
-		edgeSelectHoverStyle = new FeatureStyleInfo();
+		edgeSelectHoverStyle = new ShapeStyle();
 		edgeSelectHoverStyle.setFillColor("#FFFFFF");
 		edgeSelectHoverStyle.setFillOpacity(0);
 		edgeSelectHoverStyle.setStrokeColor("#FFCC33");
 		edgeSelectHoverStyle.setStrokeOpacity(1);
 		edgeSelectHoverStyle.setStrokeWidth(6);
 
-		edgeMarkForDeletionStyle = new FeatureStyleInfo();
+		edgeMarkForDeletionStyle = new ShapeStyle();
 		edgeMarkForDeletionStyle.setFillColor("#FF0000");
 		edgeMarkForDeletionStyle.setFillOpacity(0);
 		edgeMarkForDeletionStyle.setStrokeColor("#990000");
 		edgeMarkForDeletionStyle.setStrokeOpacity(1);
 		edgeMarkForDeletionStyle.setStrokeWidth(6);
 
-		edgeInsertMoveStyle = new FeatureStyleInfo();
+		edgeInsertMoveStyle = new ShapeStyle();
 		edgeInsertMoveStyle.setFillColor("#FFFFFF");
 		edgeInsertMoveStyle.setFillOpacity(0);
 		edgeInsertMoveStyle.setStrokeColor("#666666");
 		edgeInsertMoveStyle.setStrokeOpacity(1);
 		edgeInsertMoveStyle.setStrokeWidth(2);
 
-		lineStringStyle = new FeatureStyleInfo();
+		lineStringStyle = new ShapeStyle();
 		lineStringStyle.setFillColor("#FFFFFF");
 		lineStringStyle.setFillOpacity(0);
 		lineStringStyle.setStrokeColor("#FFFFFF");
 		lineStringStyle.setStrokeOpacity(0);
 		lineStringStyle.setStrokeWidth(0);
 
-		linearRingStyle = new FeatureStyleInfo();
+		linearRingStyle = new ShapeStyle();
 		linearRingStyle.setFillColor("#FFEE00");
 		linearRingStyle.setFillOpacity(0);
 		linearRingStyle.setStrokeColor("#FFAA00");
 		linearRingStyle.setStrokeOpacity(1);
 		linearRingStyle.setStrokeWidth(3);
 
-		backgroundStyle = new FeatureStyleInfo();
+		backgroundStyle = new ShapeStyle();
 		backgroundStyle.setFillColor("#FFCC00");
 		backgroundStyle.setFillOpacity(0.35f);
 		backgroundStyle.setStrokeColor("#FFAA00");
 		backgroundStyle.setStrokeOpacity(0);
 		backgroundStyle.setStrokeWidth(0);
 
-		backgroundMarkedForDeletionStyle = new FeatureStyleInfo();
+		backgroundMarkedForDeletionStyle = new ShapeStyle();
 		backgroundMarkedForDeletionStyle.setFillColor("#FF0000");
 		backgroundMarkedForDeletionStyle.setFillOpacity(0.35f);
 		backgroundMarkedForDeletionStyle.setStrokeColor("#CC0000");
 		backgroundMarkedForDeletionStyle.setStrokeOpacity(0);
 		backgroundMarkedForDeletionStyle.setStrokeWidth(0);
 
-		backgroundDisabledStyle = new FeatureStyleInfo();
+		backgroundDisabledStyle = new ShapeStyle();
 		backgroundDisabledStyle.setFillColor("#999999");
 		backgroundDisabledStyle.setFillOpacity(0.35f);
 		backgroundDisabledStyle.setStrokeColor("#999999");
 		backgroundDisabledStyle.setStrokeOpacity(0);
 		backgroundDisabledStyle.setStrokeWidth(0);
 
-		snappedVertexStyle = new FeatureStyleInfo();
+		snappedVertexStyle = new ShapeStyle();
 		snappedVertexStyle.setFillColor("#888888");
 		snappedVertexStyle.setFillOpacity(1);
 		snappedVertexStyle.setStrokeColor("#CC0000");
@@ -202,155 +204,155 @@ public class StyleProvider {
 	// StyleService implementation:
 	// ------------------------------------------------------------------------
 
-	public FeatureStyleInfo getEdgeMarkForDeletionStyle() {
+	public ShapeStyle getEdgeMarkForDeletionStyle() {
 		return edgeMarkForDeletionStyle;
 	}
 
-	public void setEdgeMarkForDeletionStyle(FeatureStyleInfo edgeMarkForDeletionStyle) {
+	public void setEdgeMarkForDeletionStyle(ShapeStyle edgeMarkForDeletionStyle) {
 		this.edgeMarkForDeletionStyle = edgeMarkForDeletionStyle;
 	}
 
-	public FeatureStyleInfo getVertexSelectHoverStyle() {
+	public ShapeStyle getVertexSelectHoverStyle() {
 		return vertexSelectHoverStyle;
 	}
 
-	public void setVertexSelectHoverStyle(FeatureStyleInfo vertexSelectHoverStyle) {
+	public void setVertexSelectHoverStyle(ShapeStyle vertexSelectHoverStyle) {
 		this.vertexSelectHoverStyle = vertexSelectHoverStyle;
 	}
 
-	public FeatureStyleInfo getEdgeSelectHoverStyle() {
+	public ShapeStyle getEdgeSelectHoverStyle() {
 		return edgeSelectHoverStyle;
 	}
 
-	public void setEdgeSelectHoverStyle(FeatureStyleInfo edgeSelectHoverStyle) {
+	public void setEdgeSelectHoverStyle(ShapeStyle edgeSelectHoverStyle) {
 		this.edgeSelectHoverStyle = edgeSelectHoverStyle;
 	}
 
-	public FeatureStyleInfo getVertexStyle() {
+	public ShapeStyle getVertexStyle() {
 		return vertexStyle;
 	}
 
-	public void setVertexStyle(FeatureStyleInfo vertexStyle) {
+	public void setVertexStyle(ShapeStyle vertexStyle) {
 		this.vertexStyle = vertexStyle;
 	}
 
-	public FeatureStyleInfo getVertexHoverStyle() {
+	public ShapeStyle getVertexHoverStyle() {
 		return vertexHoverStyle;
 	}
 
-	public void setVertexHoverStyle(FeatureStyleInfo vertexHoverStyle) {
+	public void setVertexHoverStyle(ShapeStyle vertexHoverStyle) {
 		this.vertexHoverStyle = vertexHoverStyle;
 	}
 
-	public FeatureStyleInfo getVertexSelectStyle() {
+	public ShapeStyle getVertexSelectStyle() {
 		return vertexSelectStyle;
 	}
 
-	public void setVertexSelectStyle(FeatureStyleInfo vertexSelectStyle) {
+	public void setVertexSelectStyle(ShapeStyle vertexSelectStyle) {
 		this.vertexSelectStyle = vertexSelectStyle;
 	}
 
-	public FeatureStyleInfo getVertexMarkForDeletionStyle() {
+	public ShapeStyle getVertexMarkForDeletionStyle() {
 		return vertexMarkForDeletionStyle;
 	}
 
-	public void setVertexMarkForDeletionStyle(FeatureStyleInfo vertexMarkForDeletionStyle) {
+	public void setVertexMarkForDeletionStyle(ShapeStyle vertexMarkForDeletionStyle) {
 		this.vertexMarkForDeletionStyle = vertexMarkForDeletionStyle;
 	}
 
-	public FeatureStyleInfo getEdgeStyle() {
+	public ShapeStyle getEdgeStyle() {
 		return edgeStyle;
 	}
 
-	public void setEdgeStyle(FeatureStyleInfo edgeStyle) {
+	public void setEdgeStyle(ShapeStyle edgeStyle) {
 		this.edgeStyle = edgeStyle;
 	}
 
-	public FeatureStyleInfo getEdgeHoverStyle() {
+	public ShapeStyle getEdgeHoverStyle() {
 		return edgeHoverStyle;
 	}
 
-	public void setEdgeHoverStyle(FeatureStyleInfo edgeHoverStyle) {
+	public void setEdgeHoverStyle(ShapeStyle edgeHoverStyle) {
 		this.edgeHoverStyle = edgeHoverStyle;
 	}
 
-	public FeatureStyleInfo getEdgeSelectStyle() {
+	public ShapeStyle getEdgeSelectStyle() {
 		return edgeSelectStyle;
 	}
 
-	public void setEdgeSelectStyle(FeatureStyleInfo edgeSelectStyle) {
+	public void setEdgeSelectStyle(ShapeStyle edgeSelectStyle) {
 		this.edgeSelectStyle = edgeSelectStyle;
 	}
 
-	public FeatureStyleInfo getLineStringStyle() {
+	public ShapeStyle getLineStringStyle() {
 		return lineStringStyle;
 	}
 
-	public void setLineStringStyle(FeatureStyleInfo lineStringStyle) {
+	public void setLineStringStyle(ShapeStyle lineStringStyle) {
 		this.lineStringStyle = lineStringStyle;
 	}
 
-	public FeatureStyleInfo getLinearRingStyle() {
+	public ShapeStyle getLinearRingStyle() {
 		return linearRingStyle;
 	}
 
-	public void setLinearRingStyle(FeatureStyleInfo linearRingStyle) {
+	public void setLinearRingStyle(ShapeStyle linearRingStyle) {
 		this.linearRingStyle = linearRingStyle;
 	}
 
-	public FeatureStyleInfo getBackgroundStyle() {
+	public ShapeStyle getBackgroundStyle() {
 		return backgroundStyle;
 	}
 
-	public void setBackgroundStyle(FeatureStyleInfo backgroundStyle) {
+	public void setBackgroundStyle(ShapeStyle backgroundStyle) {
 		this.backgroundStyle = backgroundStyle;
 	}
 
-	public FeatureStyleInfo getEdgeTentativeMoveStyle() {
+	public ShapeStyle getEdgeTentativeMoveStyle() {
 		return edgeInsertMoveStyle;
 	}
 
-	public void setEdgeInsertMoveStyle(FeatureStyleInfo edgeInsertMoveStyle) {
+	public void setEdgeInsertMoveStyle(ShapeStyle edgeInsertMoveStyle) {
 		this.edgeInsertMoveStyle = edgeInsertMoveStyle;
 	}
 
-	public FeatureStyleInfo getVertexDisabledStyle() {
+	public ShapeStyle getVertexDisabledStyle() {
 		return vertexDisabledStyle;
 	}
 
-	public void setVertexDisabledStyle(FeatureStyleInfo vertexDisabledStyle) {
+	public void setVertexDisabledStyle(ShapeStyle vertexDisabledStyle) {
 		this.vertexDisabledStyle = vertexDisabledStyle;
 	}
 
-	public FeatureStyleInfo getEdgeDisabledStyle() {
+	public ShapeStyle getEdgeDisabledStyle() {
 		return edgeDisabledStyle;
 	}
 
-	public void setEdgeDisabledStyle(FeatureStyleInfo edgeDisabledStyle) {
+	public void setEdgeDisabledStyle(ShapeStyle edgeDisabledStyle) {
 		this.edgeDisabledStyle = edgeDisabledStyle;
 	}
 
-	public FeatureStyleInfo getBackgroundDisabledStyle() {
+	public ShapeStyle getBackgroundDisabledStyle() {
 		return backgroundDisabledStyle;
 	}
 
-	public void setBackgroundDisabledStyle(FeatureStyleInfo backgroundDisabledStyle) {
+	public void setBackgroundDisabledStyle(ShapeStyle backgroundDisabledStyle) {
 		this.backgroundDisabledStyle = backgroundDisabledStyle;
 	}
 
-	public FeatureStyleInfo getBackgroundMarkedForDeletionStyle() {
+	public ShapeStyle getBackgroundMarkedForDeletionStyle() {
 		return backgroundMarkedForDeletionStyle;
 	}
 
-	public void setBackgroundMarkedForDeletionStyle(FeatureStyleInfo backgroundMarkedForDeletionStyle) {
+	public void setBackgroundMarkedForDeletionStyle(ShapeStyle backgroundMarkedForDeletionStyle) {
 		this.backgroundMarkedForDeletionStyle = backgroundMarkedForDeletionStyle;
 	}
 
-	public FeatureStyleInfo getVertexSnappedStyle() {
+	public ShapeStyle getVertexSnappedStyle() {
 		return snappedVertexStyle;
 	}
 
-	public void setSnappedVertexStyle(FeatureStyleInfo snappedVertexStyle) {
+	public void setSnappedVertexStyle(ShapeStyle snappedVertexStyle) {
 		this.snappedVertexStyle = snappedVertexStyle;
 	}
 }
