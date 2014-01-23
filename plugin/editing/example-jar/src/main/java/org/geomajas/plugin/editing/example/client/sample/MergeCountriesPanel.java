@@ -11,6 +11,18 @@
 
 package org.geomajas.plugin.editing.example.client.sample;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DecoratorPanel;
+import com.google.gwt.user.client.ui.ResizeLayoutPanel;
+import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
@@ -27,35 +39,22 @@ import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
 import org.geomajas.gwt2.example.base.client.ExampleBase;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
+import org.geomajas.plugin.editing.client.EditingServerExtension;
 import org.geomajas.plugin.editing.client.GeometryFunction;
 import org.geomajas.plugin.editing.client.merge.GeometryMergeException;
 import org.geomajas.plugin.editing.client.merge.GeometryMergeService;
-import org.geomajas.plugin.editing.gwt.client.Editing;
 import org.vaadin.gwtgraphics.client.VectorObject;
-
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.DecoratorPanel;
-import com.google.gwt.user.client.ui.ResizeLayoutPanel;
-import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Sample that demonstrates LineString editing.
- * 
+ *
  * @author Pieter De Graef
  */
 public class MergeCountriesPanel implements SamplePanel {
 
 	/**
 	 * UI binder for this widget.
-	 * 
+	 *
 	 * @author Pieter De Graef
 	 */
 	interface MyUiBinder extends UiBinder<Widget, MergeCountriesPanel> {
@@ -125,7 +124,7 @@ public class MergeCountriesPanel implements SamplePanel {
 		resultContainer = mapPresenter.getContainerManager().addWorldContainer();
 
 		// Prepare merging:
-		mergeService = Editing.getInstance().getGeometryMergeService();
+		mergeService = EditingServerExtension.getInstance().getGeometryMergeService();
 
 		return layout;
 	}
