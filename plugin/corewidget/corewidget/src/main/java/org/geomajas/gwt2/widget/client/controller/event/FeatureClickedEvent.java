@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.client.event;
+package org.geomajas.gwt2.widget.client.controller.event;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;

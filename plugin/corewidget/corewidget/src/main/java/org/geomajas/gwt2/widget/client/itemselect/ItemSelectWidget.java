@@ -18,7 +18,6 @@ import com.google.gwt.user.client.ui.DecoratedPopupPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.Widget;
-import org.geomajas.annotation.Api;
 
 import java.util.List;
 
@@ -32,9 +31,7 @@ import java.util.List;
  * @param <T> The type of the item.
  * @author Dosi Bingov
  * @author Oliver May
- * @since 2.0.0
  */
-@Api(allMethods = true)
 public class ItemSelectWidget<T> implements ItemSelectView<T>, IsWidget {
 
 	private DecoratedPopupPanel layout;

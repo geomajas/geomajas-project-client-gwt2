@@ -28,7 +28,7 @@ import org.geomajas.gwt2.client.map.feature.ServerFeatureService.QueryType;
 import org.geomajas.gwt2.client.map.feature.ServerFeatureService.SearchLayerType;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
 import org.geomajas.gwt2.widget.client.featureselectbox.FeatureSelectBox;
-import org.geomajas.gwt2.widget.client.event.FeatureClickedEvent;
+import org.geomajas.gwt2.widget.client.controller.event.FeatureClickedEvent;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.MouseDownEvent;

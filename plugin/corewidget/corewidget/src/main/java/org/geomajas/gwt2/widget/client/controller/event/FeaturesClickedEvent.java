@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.client.event;
+package org.geomajas.gwt2.widget.client.controller.event;
 
 import com.google.web.bindery.event.shared.Event;
 import org.geomajas.annotation.Api;
