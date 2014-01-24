@@ -132,9 +132,4 @@ public class CreateLineController extends AbstractGraphicsController implements 
 		path.getRole(Strokable.TYPE).setStrokeWidth(GraphicsEditingUtil.getLineCreateStrokeWidth());
 		return path;
 	}
-
-	@Override
-	public void setVisible(boolean visible) {
-		// this controller has no visible elements
-	}
 }

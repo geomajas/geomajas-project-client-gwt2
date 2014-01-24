@@ -150,9 +150,4 @@ public class CreatePolygonController extends AbstractGraphicsController implemen
 		path.getRole(Strokable.TYPE).setStrokeWidth(GraphicsEditingUtil.getPolygonCreateStrokeWidth());
 		return path;
 	}
-
-	@Override
-	public void setVisible(boolean visible) {
-		// this controller has no visible elements
-	}
 }

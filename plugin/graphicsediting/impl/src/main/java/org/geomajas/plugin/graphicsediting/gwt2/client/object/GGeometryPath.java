@@ -20,6 +20,7 @@ import org.geomajas.graphics.client.object.role.Fillable;
 import org.geomajas.graphics.client.object.role.Strokable;
 import org.geomajas.graphics.client.util.FlipState;
 import org.geomajas.gwt2.client.gfx.GeometryPath;
+import org.vaadin.gwtgraphics.client.Group;
 import org.vaadin.gwtgraphics.client.VectorObject;
 
 /**
@@ -27,6 +28,7 @@ import org.vaadin.gwtgraphics.client.VectorObject;
  * The first G is for Graphics, like in all Graphics objects.
  * 
  * @author Jan De Moerloose
+ * @author Jan Venstermans
  */
 public class GGeometryPath extends ResizableGraphicsObject implements GeometryEditable {
 
@@ -75,15 +77,38 @@ public class GGeometryPath extends ResizableGraphicsObject implements GeometryEd
 	 */
 	static class ResizableGeometryPath implements Resizable, Fillable, Strokable, GeometryEditable {
 
-		private GeometryPath path;
+		protected GeometryPath path;
 
-		private Geometry geometry;
+		/**
+		 * Transparent helper line object, still generating pointer events.
+		 * This is only used in case of a non closed geometry path.
+		 */
+		private GeometryPath clickArea;
+
+		/**
+		 * Group object collecting path and clickArea.
+		 * This is only used in case of a non closed geometry path.
+		 */
+		private Group group;
+
+		/**
+		 * Minimum mouse event buffer for a non closed geometry path.
+		 */
+		private static int pointerEventAreaminimumWidth = 10;
+
+		protected Geometry geometry;
 
 		ResizableGeometryPath(Geometry geometry) {
 			path = new GeometryPath(geometry);
-			// TODO this should be done in GeometryPath class!
 			if (!path.isClosed()) {
-				path.setFillOpacity(0);
+				path.setFillColor("none");
+				group = new Group();
+				group.add(path);
+				clickArea = new GeometryPath(geometry);
+				clickArea.setFillColor("none");
+				clickArea.setStrokeWidth(pointerEventAreaminimumWidth);
+				clickArea.setStrokeOpacity(0);  // makes it invisble, but mouse events will still be registered
+				group.add(clickArea);
 			}
 			this.geometry = geometry;
 		}
@@ -138,6 +163,9 @@ public class GGeometryPath extends ResizableGraphicsObject implements GeometryEd
 		@Override
 		public void setPosition(Coordinate position) {
 			path.setUserPosition(position);
+			if (!isClosed()) {
+				clickArea.setUserPosition(position);
+			}
 		}
 
 		@Override
@@ -146,7 +174,7 @@ public class GGeometryPath extends ResizableGraphicsObject implements GeometryEd
 		}
 
 		public VectorObject asObject() {
-			return path;
+			return isClosed() ? path : group;
 		}
 
 		public Object cloneObject() {
@@ -214,6 +242,14 @@ public class GGeometryPath extends ResizableGraphicsObject implements GeometryEd
 		@Override
 		public Geometry getGeometry() {
 			return geometry;
+		}
+
+		public static int getPointerEventAreaminimumWidth() {
+			return pointerEventAreaminimumWidth;
+		}
+
+		public static void setPointerEventAreaminimumWidth(int pointerEventAreaminimumWidth) {
+			ResizableGeometryPath.pointerEventAreaminimumWidth = pointerEventAreaminimumWidth;
 		}
 	}
 

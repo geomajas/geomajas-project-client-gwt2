@@ -23,6 +23,7 @@ import org.geomajas.graphics.client.object.Resizable;
 import org.geomajas.graphics.client.service.AbstractGraphicsController;
 import org.geomajas.graphics.client.service.GraphicsObjectContainer.Space;
 import org.geomajas.graphics.client.service.GraphicsService;
+import org.geomajas.graphics.client.service.VisibleOnActiveGraphicsController;
 import org.geomajas.graphics.client.shape.AnchoredImage;
 import org.geomajas.graphics.client.util.BboxPosition;
 import org.geomajas.graphics.client.util.GraphicsUtil;
@@ -47,7 +48,7 @@ import org.vaadin.gwtgraphics.client.VectorObjectContainer;
  */
 @Api(allMethods = true)
 public class GeometryEditController extends AbstractGraphicsController implements GeometryEditChangeStateHandler,
-		GeometryEditStopHandler, GraphicsObjectContainerEvent.Handler {
+		GeometryEditStopHandler, GraphicsObjectContainerEvent.Handler, VisibleOnActiveGraphicsController {
 
 	/**
 	 * Default value of indentation of pencil button from the object bound.
@@ -164,7 +165,7 @@ public class GeometryEditController extends AbstractGraphicsController implement
 	}
 
 	@Override
-	public void setVisible(boolean visible) {
+	public void setControllerElementsVisible(boolean visible) {
 		// toggle visibility of the pencil image
 		handler.setVisible(visible);
 	}
