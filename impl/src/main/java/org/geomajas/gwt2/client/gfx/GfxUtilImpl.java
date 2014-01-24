@@ -11,9 +11,11 @@
 
 package org.geomajas.gwt2.client.gfx;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.google.gwt.event.dom.client.TouchCancelEvent;
+import com.google.gwt.event.dom.client.TouchEndEvent;
+import com.google.gwt.event.dom.client.TouchMoveEvent;
+import com.google.gwt.event.dom.client.TouchStartEvent;
+import com.google.gwt.event.shared.HandlerRegistration;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.geometry.service.GeometryService;
@@ -24,15 +26,12 @@ import org.vaadin.gwtgraphics.client.Strokeable;
 import org.vaadin.gwtgraphics.client.VectorObject;
 import org.vaadin.gwtgraphics.client.shape.Circle;
 
-import com.google.gwt.event.dom.client.TouchCancelEvent;
-import com.google.gwt.event.dom.client.TouchEndEvent;
-import com.google.gwt.event.dom.client.TouchMoveEvent;
-import com.google.gwt.event.dom.client.TouchStartEvent;
-import com.google.gwt.event.shared.HandlerRegistration;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Utility class concerning custom graphics rendering on the map.
- * 
+ *
  * @author Pieter De Graef
  */
 public final class GfxUtilImpl implements GfxUtil {
@@ -66,6 +65,13 @@ public final class GfxUtilImpl implements GfxUtil {
 		} else if (object instanceof Group) {
 			fillGroup((Group) object, fillColor, fillOpacity);
 		}
+	}
+
+	@Override
+	public void applyStyle(VectorObject object, ShapeStyle style) {
+		applyStroke(object, style.getStrokeColor(), style.getStrokeOpacity(), style.getStrokeWidth(),
+				style.getDashArray());
+		applyFill(object, style.getFillColor(), style.getFillOpacity());
 	}
 
 	@Override

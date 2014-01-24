@@ -12,12 +12,12 @@ The build process is as follows:
 - run 'mvn install' on the projects you want to build
 
 Explanation of all folders in the root:
-* geomajas-client-common-gwt-parent: Libraries containing common code used in both Geomajas clients.
-* geomajas-client-gwt2-api: The client API
-* geomajas-client-gwt2-impl: The implementation of the API.
-* geomajas-client-gwt2-server-extension: Extension of the client to include the Geomajas server.
-* geomajas-client-gwt2-documentation: The main documentation artifact.
-* geomajas-client-gwt2-example-base: Library with showcase layout.
-* geomajas-client-gwt2-example-jar: Library containing showcases on the API
-* geomajas-client-gwt2-example: Showcase application.
-* geomajas-client-gwt2-plugin-parent: Folder containing all plugins for this client.
+* common-gwt: Libraries containing common code used in both Geomajas clients.
+* api: The client API
+* impl: The implementation of the API.
+* server-extension: Extension of the client to include the Geomajas server.
+* documentation: The main documentation artifact.
+* example-base: Library with showcase layout.
+* example-jar: Library containing showcases on the API
+* example: Showcase application.
+* plugin: Folder containing all plugins for this client.

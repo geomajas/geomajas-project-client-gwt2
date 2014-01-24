@@ -11,23 +11,25 @@
 
 package org.geomajas.plugin.editing.client.snap.algorithm;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.geometry.service.MathService;
 import org.geomajas.plugin.editing.client.snap.SnapAlgorithm;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * <p>
- * Snapping algorithm that not only snaps to end-points of nearby geometries, but to any point on any of the edges as
- * well. As you might guess, this is a heavier calculation then the {@link NearestVertexSnapAlgorithm}. It tries to
+ * <p> Snapping algorithm that not only snaps to end-points of nearby geometries, but to any point on any of the edges
+ * as well. As you might guess, this is a heavier calculation then the {@link NearestVertexSnapAlgorithm}. It tries to
  * calculate distances between the given coordinate, and any of the edges (one-by-one) and decides on the shortest.
  * </p>
- * 
+ *
  * @author Pieter De Graef
+ * @since 2.0.0
  */
+@Api(allMethods = true)
 public class NearestEdgeSnapAlgorithm implements SnapAlgorithm {
 
 	/**
@@ -46,11 +48,9 @@ public class NearestEdgeSnapAlgorithm implements SnapAlgorithm {
 
 	/**
 	 * Execute the snap operation.
-	 * 
-	 * @param coordinate
-	 *            The original location.
-	 * @param distance
-	 *            The maximum distance allowed for snapping.
+	 *
+	 * @param coordinate The original location.
+	 * @param distance   The maximum distance allowed for snapping.
 	 * @return The new location. If no snapping target was found, this may return the original location.
 	 */
 	public Coordinate snap(Coordinate coordinate, double distance) {
@@ -86,9 +86,8 @@ public class NearestEdgeSnapAlgorithm implements SnapAlgorithm {
 
 	/**
 	 * Set the full list of target geometries. These are the geometries where to this snapping algorithm can snap.
-	 * 
-	 * @param geometries
-	 *            The list of target geometries.
+	 *
+	 * @param geometries The list of target geometries.
 	 */
 	public void setGeometries(Geometry[] geometries) {
 		coordinates.clear();
@@ -100,7 +99,7 @@ public class NearestEdgeSnapAlgorithm implements SnapAlgorithm {
 	/**
 	 * Get the effective distance that was bridged during the snap operation. In case snapping occurred, this distance
 	 * will be smaller than the given "distance" value during the last call to snap.
-	 * 
+	 *
 	 * @return The effective snapping distance. Only valid if snapping actually occurred.
 	 */
 	public double getCalculatedDistance() {
@@ -110,7 +109,7 @@ public class NearestEdgeSnapAlgorithm implements SnapAlgorithm {
 	/**
 	 * Has snapping actually occurred during the last call to the <code>snap</code> method? If so the returned snap
 	 * location was different from the original location.
-	 * 
+	 *
 	 * @return Returns if the returned location from the snap method differs from the original location.
 	 */
 	public boolean hasSnapped() {

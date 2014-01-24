@@ -172,16 +172,16 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	public HtmlContainer getMapHtmlContainer() {
 		return layerHtmlContainer;
 	}
-
-	@Override
-	public VectorContainer getMapVectorContainer() {
-		return layerVectorContainer;
-	}
-
-	@Override
-	public List<VectorContainer> getWorldVectorContainers() {
-		return worldContainers;
-	}
+//
+//	@Override
+//	public VectorContainer getMapVectorContainer() {
+//		return layerVectorContainer;
+//	}
+//
+//	@Override
+//	public List<VectorContainer> getWorldVectorContainers() {
+//		return worldContainers;
+//	}
 
 	@Override
 	public List<Transformable> getWorldTransformables() {

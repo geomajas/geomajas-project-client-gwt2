@@ -11,16 +11,15 @@
 
 package org.geomajas.gwt2.client.map;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import junit.framework.Assert;
-
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.map.MapConfiguration.CrsType;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ViewPortMaxBoundsTest {
 
@@ -28,13 +27,13 @@ public class ViewPortMaxBoundsTest {
 
 	private MapEventBus eventBus;
 
-	private ViewPort viewPort;
+	private ViewPortImpl viewPort;
 
 	public ViewPortMaxBoundsTest() {
 		mapConfig = getMapConfig();
 		eventBus = new MapEventBusImpl(this, GeomajasImpl.getInstance().getEventBus());
 		viewPort = new ViewPortImpl(eventBus);
-		((ViewPortImpl) viewPort).initialize(mapConfig);
+		viewPort.initialize(mapConfig);
 		viewPort.setMapSize(1000, 1000);
 	}
 
