@@ -98,4 +98,8 @@ public class NearestEdgeOfIntersection implements SnapAlgorithm {
 	public boolean hasSnapped() {
 		return hasSnapped;
 	}
+	
+	public String toString() {
+		return "NearestEdgeOfIntersection";
+	}
 }

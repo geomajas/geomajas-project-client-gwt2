@@ -66,4 +66,9 @@ public class FirstCoordinateSnapAlgorithm implements SnapAlgorithm {
 		}
 		return geometry.getCoordinates()[0];
 	}
+	
+	public String toString() {
+		return "FirstCoordinateSnapAlgorithm";
+	}
+
 }

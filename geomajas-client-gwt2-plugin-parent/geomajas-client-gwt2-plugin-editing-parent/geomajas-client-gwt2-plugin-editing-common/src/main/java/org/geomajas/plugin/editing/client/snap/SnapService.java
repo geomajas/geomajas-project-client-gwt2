@@ -13,6 +13,7 @@ package org.geomajas.plugin.editing.client.snap;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
@@ -43,6 +44,8 @@ public class SnapService {
 	private boolean hasSnapped;
 
 	private double currentDistance;
+
+	private static final Logger LOGGER = Logger.getLogger(SnapService.class.getName());
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -85,17 +88,22 @@ public class SnapService {
 		Coordinate result = coordinate;
 		currentDistance = Double.MAX_VALUE;
 		hasSnapped = false;
-
+		LOGGER.fine("Start snapping for coordinate " + coordinate);
 		for (SnappingRule rule : rules) {
 			if (rule.isHighPriority() || !hasSnapped) {
+				LOGGER.fine("Checking rule " + rule);
 				double distance = Math.min(currentDistance, rule.getDistance());
+				LOGGER.fine("Distance = " + distance);
 				result = rule.getAlgorithm().snap(coordinate, distance);
 				if (rule.getAlgorithm().hasSnapped()) {
-					currentDistance = rule.getAlgorithm().getCalculatedDistance();
+					LOGGER.fine("Snapping succesfull : " + result);
 					hasSnapped = true;
 				}
+			} else {
+				LOGGER.fine("Skipping rule " + rule);
 			}
 		}
+		LOGGER.fine("Stopped snapping for coordinate " + coordinate);
 		eventBus.fireEvent(new CoordinateSnapEvent(coordinate, result));
 		return result;
 	}
@@ -202,5 +210,12 @@ public class SnapService {
 		public boolean isHighPriority() {
 			return highPriority;
 		}
+
+		@Override
+		public String toString() {
+			return "SnappingRule [algorithm=" + algorithm + ", distance=" + distance + ", highPriority=" + highPriority
+					+ "]";
+		}
+		
 	}
 }
