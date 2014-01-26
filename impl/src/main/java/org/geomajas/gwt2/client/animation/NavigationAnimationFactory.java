@@ -34,10 +34,9 @@ public final class NavigationAnimationFactory {
 	 * 
 	 * @param mapPresenter
 	 *            The map onto which you want the animation to run.
-	 * @param eventBus
-	 *            The EventBus that will fire navigation events. Must come from the same map as the ViewPort.
 	 * @param trajectory
 	 *            The trajectory to follow while navigating.
+	 * @param millis The amount of milliseconds the animation should take.
 	 * @return The animation. Just call "run" to have it animate the map.
 	 */
 	public static NavigationAnimation create(MapPresenter mapPresenter, Trajectory trajectory, int millis) {

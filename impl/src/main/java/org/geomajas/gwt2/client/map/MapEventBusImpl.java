@@ -220,7 +220,6 @@ public class MapEventBusImpl implements MapEventBus {
 				handler.onLabelMarked(event);
 			}
 		}
-
 	}
 
 	/**

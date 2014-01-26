@@ -44,8 +44,7 @@ public class WmsFeatureServiceImpl extends WmsServiceImpl implements WmsFeatureS
 
 	private static final double DEFAULT_PIXEL_TOLERANCE = 0.0; // Default tolerance for the location
 
-	private static final int DEFAULT_MAX_FEATURES = 20; // Default maximum number of feats returned by
-	// getFeatureInfo()
+	private static final int DEFAULT_MAX_FEATURES = 20; // Default maximum number of feats returned by GetFeatureInfo
 
 	// ------------------------------------------------------------------------
 	// WmsFeatureService implementation:
@@ -53,7 +52,7 @@ public class WmsFeatureServiceImpl extends WmsServiceImpl implements WmsFeatureS
 
 	@Override
 	public void getFeatureInfo(final FeaturesSupportedWmsLayer layer, Coordinate location,
-			final Callback<FeatureCollection, String> callback) {
+			final Callback<List<Feature>, String> callback) {
 		final String url = getFeatureInfoUrl(layer, location, GetFeatureInfoFormat.GML2, DEFAULT_PIXEL_TOLERANCE,
 				DEFAULT_MAX_FEATURES);
 
@@ -71,8 +70,7 @@ public class WmsFeatureServiceImpl extends WmsServiceImpl implements WmsFeatureS
 							.create(feature, layer);
 					features.add(newFeature);
 				}
-
-				callback.onSuccess(new FeatureCollection(features, response.getAttributeDescriptors()));
+				callback.onSuccess(features);
 			}
 
 			@Override
@@ -83,7 +81,6 @@ public class WmsFeatureServiceImpl extends WmsServiceImpl implements WmsFeatureS
 
 			@Override
 			public void onCommandException(CommandResponse response) {
-
 				String msg = "";
 				for (ExceptionDto error : response.getExceptions()) {
 					msg = error.getClassName() + ": " + error.getMessage();

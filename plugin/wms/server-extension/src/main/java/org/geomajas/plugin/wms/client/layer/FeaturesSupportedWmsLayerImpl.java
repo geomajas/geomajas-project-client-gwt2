@@ -13,16 +13,24 @@ package org.geomajas.plugin.wms.client.layer;
 
 import com.google.gwt.core.client.Callback;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.geometry.Geometry;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
+import org.geomajas.gwt.client.command.GwtCommand;
+import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt2.client.event.FeatureDeselectedEvent;
 import org.geomajas.gwt2.client.event.FeatureSelectedEvent;
+import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
 import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.plugin.wms.client.WmsServerExtension;
 import org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo;
-import org.geomajas.plugin.wms.client.service.FeatureCollection;
 import org.geomajas.plugin.wms.client.service.WmsService.GetFeatureInfoFormat;
+import org.geomajas.plugin.wms.server.command.dto.WfsDescribeLayerRequest;
+import org.geomajas.plugin.wms.server.command.dto.WfsDescribeLayerResponse;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,27 +43,17 @@ public class FeaturesSupportedWmsLayerImpl extends WmsLayerImpl implements Featu
 
 	private final Map<String, Feature> selection = new HashMap<String, Feature>();
 
-	private String filter;
+	private final List<AttributeDescriptor> descriptors = new ArrayList<AttributeDescriptor>();
 
 	public FeaturesSupportedWmsLayerImpl(String title, WmsLayerConfiguration wmsLayerConfig,
 			WmsTileConfiguration wmsTileConfig, WmsLayerInfo layerInfo) {
 		super(title, wmsLayerConfig, wmsTileConfig, layerInfo);
+		wfsDescribeLayer();
 	}
 
 	// ------------------------------------------------------------------------
 	// FeaturesSupported implementation:
 	// ------------------------------------------------------------------------
-
-	@Override
-	public void setFilter(String filter) {
-		this.filter = filter;
-		refresh();
-	}
-
-	@Override
-	public String getFilter() {
-		return filter;
-	}
 
 	@Override
 	public boolean isFeatureSelected(String featureId) {
@@ -95,7 +93,12 @@ public class FeaturesSupportedWmsLayerImpl extends WmsLayerImpl implements Featu
 	}
 
 	@Override
-	public void getFeatureInfo(Coordinate location, Callback<FeatureCollection, String> callback) {
+	public List<AttributeDescriptor> getAttributeDescriptors() {
+		return descriptors;
+	}
+
+	@Override
+	public void getFeatureInfo(Coordinate location, Callback<List<Feature>, String> callback) {
 		WmsServerExtension.getInstance().getFeatureService().getFeatureInfo(this, location, callback);
 	}
 
@@ -106,17 +109,38 @@ public class FeaturesSupportedWmsLayerImpl extends WmsLayerImpl implements Featu
 
 	@Override
 	public void searchFeatures(Coordinate coordinate, double tolerance,
-			final Callback<FeatureCollection, String> callback) {
+			final Callback<List<Feature>, String> callback) {
 		WmsServerExtension.getInstance().getFeatureService().getFeatureInfo(this, coordinate,
-				new Callback<FeatureCollection, String>() {
+				new Callback<List<Feature>, String>() {
 
 					public void onFailure(String reason) {
 						callback.onFailure(reason);
 					}
 
-					public void onSuccess(FeatureCollection result) {
+					public void onSuccess(List<Feature> result) {
 						callback.onSuccess(result);
 					}
 				});
+	}
+
+	@Override
+	public void searchFeatures(Geometry geometry, Callback<List<Feature>, String> callback) {
+
+	}
+
+	// ------------------------------------------------------------------------
+	// Private methods:
+	// ------------------------------------------------------------------------
+
+	private void wfsDescribeLayer() {
+		GwtCommand command = new GwtCommand(WfsDescribeLayerRequest.COMMAND_NAME);
+		command.setCommandRequest(new WfsDescribeLayerRequest(wmsConfig.getBaseUrl(), id));
+		GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback<WfsDescribeLayerResponse>() {
+
+			@Override
+			public void execute(WfsDescribeLayerResponse response) {
+				descriptors.addAll(response.getAttributeDescriptors());
+			}
+		});
 	}
 }

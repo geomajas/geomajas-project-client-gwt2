@@ -11,22 +11,29 @@
 
 package org.geomajas.gwt2.client.map.attribute;
 
-import org.geomajas.annotation.Api;
-
 /**
- * Attribute definition. Holds an attribute value.
+ * Default implementation of an {@link AttributeDescriptor}.
  *
- * @param <VALUE_TYPE> type for the attribute value
  * @author Pieter De Graef
- * @since 2.0.0
  */
-@Api(allMethods = true)
-public interface Attribute<VALUE_TYPE> {
+public class AttributeDescriptorImpl implements AttributeDescriptor {
 
-	/**
-	 * Get the value for this attribute.
-	 *
-	 * @return attribute value
-	 */
-	VALUE_TYPE getValue();
+	private final AttributeType type;
+
+	private final String name;
+
+	public AttributeDescriptorImpl(AttributeType type, String name) {
+		this.type = type;
+		this.name = name;
+	}
+
+	@Override
+	public AttributeType getType() {
+		return type;
+	}
+
+	@Override
+	public String getName() {
+		return name;
+	}
 }

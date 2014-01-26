@@ -40,10 +40,11 @@ import org.geomajas.plugin.wms.client.controller.WmsGetFeatureInfoController;
 import org.geomajas.plugin.wms.client.layer.FeaturesSupportedWmsLayer;
 import org.geomajas.plugin.wms.client.layer.WmsLayerConfiguration;
 import org.geomajas.plugin.wms.client.layer.WmsTileConfiguration;
-import org.geomajas.plugin.wms.client.service.FeatureCollection;
 import org.geomajas.plugin.wms.client.service.WmsService.GetFeatureInfoFormat;
 import org.geomajas.plugin.wms.client.service.WmsService.WmsVersion;
 import org.vaadin.gwtgraphics.client.VectorObject;
+
+import java.util.List;
 
 /**
  * ContentPanel that demonstrates rendering abilities in world space with a map that supports resizing.
@@ -123,7 +124,7 @@ public class WmsFeatureInfoV111Panel implements SamplePanel {
 				Window.alert("Something went wrong executing the WMS GetFeatureInfo request: " + reason);
 			}
 		});
-		controller.setGmlCallback(new Callback<FeatureCollection, String>() {
+		controller.setGmlCallback(new Callback<List<Feature>, String>() {
 
 			@Override
 			public void onFailure(String reason) {
@@ -131,9 +132,9 @@ public class WmsFeatureInfoV111Panel implements SamplePanel {
 			}
 
 			@Override
-			public void onSuccess(FeatureCollection result) {
+			public void onSuccess(List<Feature> result) {
 				featureContainer.clear();
-				for (Feature feature : result.getFeatures()) {
+				for (Feature feature : result) {
 					VectorObject shape = GeomajasImpl.getInstance().getGfxUtil().toShape(feature.getGeometry());
 					if (shape != null) {
 						GeomajasImpl.getInstance().getGfxUtil().applyFill(shape, "#CC0000", 0.7);

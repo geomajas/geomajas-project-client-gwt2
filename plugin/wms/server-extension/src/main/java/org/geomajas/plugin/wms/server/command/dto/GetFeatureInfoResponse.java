@@ -11,11 +11,10 @@
 
 package org.geomajas.plugin.wms.server.command.dto;
 
-import java.util.List;
-
 import org.geomajas.command.CommandResponse;
-import org.geomajas.configuration.AbstractReadOnlyAttributeInfo;
 import org.geomajas.layer.feature.Feature;
+
+import java.util.List;
 
 /**
  * Response for the GetFeatureInfo command. It returns the features found.
@@ -28,8 +27,6 @@ public class GetFeatureInfoResponse extends CommandResponse {
 	private static final long serialVersionUID = 1L;
 
 	private List<Feature> features;
-
-	private List<AbstractReadOnlyAttributeInfo> attributeDescriptors;
 
 	private String wmsResponse;
 
@@ -46,14 +43,6 @@ public class GetFeatureInfoResponse extends CommandResponse {
 
 	public void setFeatures(List<Feature> features) {
 		this.features = features;
-	}
-
-	public List<AbstractReadOnlyAttributeInfo> getAttributeDescriptors() {
-		return this.attributeDescriptors;
-	}
-
-	public void setAttributeDescriptors(List<AbstractReadOnlyAttributeInfo> attributeDescriptors) {
-		this.attributeDescriptors = attributeDescriptors;
 	}
 
 	public String getWmsResponse() {
