@@ -30,7 +30,6 @@
 		<module>corewidget</module>
 		<module>editing</module>
 		<module>geocoder</module>
-		<module>rasterizing</module>
 		<module>print</module>
 		<module>wms</module>
 		 <module>graphicsediting</module>
