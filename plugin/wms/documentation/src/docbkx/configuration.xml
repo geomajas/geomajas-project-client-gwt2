@@ -14,22 +14,424 @@
 <chapter id="chapter-configuration">
   <title>Configuration</title>
 
-  <para></para>
+  <section>
+    <title>Getting started</title>
 
-  <section id="dependencies">
-    <title>Dependencies</title>
+    <para>As most Geomajas plugins, the WMS client plugin too has a single
+    class that provides a starting point for most functionalities the plugin
+    supports. This starting point is the <code>WmsClient</code> class:</para>
 
-    <para>Make sure your include the plug-in in your project. If you are using
-    Maven, add the following dependency to your pom:</para>
+    <programlisting>org.geomajas.plugin.wms.client.WmsClient</programlisting>
 
-    <example>
-      <title>Plug-in dependency</title>
+    <para>From here on it is possible to create new WMS layers or execute WMS
+    GetCapabilities requests, or ...</para>
 
-      <programlisting language="xml">&lt;dependency&gt;
-    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
-    &lt;artifactId&gt;geomajas-plugin-wmsclient&lt;/artifactId&gt;
-    &lt;version&gt;1.0.0&lt;/version&gt;
-&lt;/dependency&gt;</programlisting>
-    </example>
+    <section>
+      <title>Using the WmsService</title>
+
+      <para>Before we explain how to create a client-side WMS layer, let us
+      first delve into the inner workings of the WMS client plugin. It
+      provides a client WMS service definition that supports WMS requests:
+      <code>org.geomajas.plugin.wmsclient.client.service.WmsService</code></para>
+
+      <para><code>This WmsService provides support for the following WMS
+      requests:</code></para>
+
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>GetCapabilities</emphasis>: Executes a WMS
+          GetCapabilities and parses the result into Java objects. This
+          capabilities object allows you to read the WMS contact information,
+          the list of supports coordinate reference systems, the list of known
+          layers, etc.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>GetMap</emphasis>: A GetMap request gets an image
+          for a certain location. This request is used by the layer
+          renderer.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>GetLegendGraphic</emphasis>: A GetLegendGraphic
+          request gets an image for the legend of a certain layer. This legend
+          displays styling information.</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>The WmsService is a singleton service that can be acquired as
+      follows:</para>
+
+      <programlisting>WmsService wmsService = WmsClient.getInstance().getWmsService();</programlisting>
+
+      <para>Using this WmsService it is possible to directly execute the
+      supported WMS requests. There is no need for a WMS layer.</para>
+    </section>
+
+    <section>
+      <title>Automatic URL transformation</title>
+
+      <para>One of the most common problems when executing Ajax requests from
+      within the browser is the security regarding cross domain requests. The
+      WMS server you want to communicate with, will most likely be located on
+      a different server that your web application.</para>
+
+      <para>For this purpose, the <code>WmsService</code> allows you to
+      specify a <code><code>WmsUrlTransformer</code></code> object that will
+      transform WMS request URLs to your liking. It can go as far as to
+      specify different transformations for different types of WMS request.
+      For example, you may want the <code>GetCapabilities</code> and
+      <code>GetFeatureInfo</code> requests to make use of a proxy servlet,
+      while your <code>GetMap</code> and <code>GetLegendGraphic</code>
+      requests must remain untouched (<code>GetMap</code> and
+      <code>GetLegendGraphic</code> URLs point to images, we apply them
+      directly onto an images href attribute, where the cross-domain problem
+      does not exist).</para>
+
+      <para>The following example will add a proxy servlet for the
+      <code>GetCapabilities</code> and <code>GetFeatureInfo</code> requests,
+      while the other WMS requests are left untouched:</para>
+
+      <programlisting>wmsService.setWmsUrlTransformer(new WmsUrlTransformer() {
+
+    public String transform(WmsRequest request, String url) {
+        switch (request) {
+            case GetCapabilities:
+            case GetFeatureInfo:
+                return "/proxy?url=" + url;
+            default:
+        }
+        return url;
+    }
+});</programlisting>
+    </section>
+  </section>
+
+  <section>
+    <title>WMS layers</title>
+
+    <section>
+      <title>Configuration objects</title>
+
+      <para>Before we go into the actual creating of a WMS layer, let us first
+      cover the required configuration objects. </para>
+
+      <para>The first is the <code>WmsTileConfiguration</code> object. It
+      provides the point of origin and the size of the tiles in pixels:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>tileOrigin</emphasis>: The origin for the layer
+          (coordinate that provides the minimum X and Y values). If you're
+          unsure, it's best to take a margin.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>tileWidth</emphasis>: The width in pixels for an
+          individual tile.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>tileHeight</emphasis>: The height in pixel for an
+          individual tile.</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>The other is the <code>WmsLayerConfiguration</code> object. It
+      provides all the parameters used in the <code>GetMap</code> requests for
+      a specific layer. These are the following:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>baseUrl</emphasis>: The base URL to the WMS server
+          (without any WMS params!)</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>format</emphasis>: The format for the images. The
+          default value is "image/png".</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>layers</emphasis>: The GetMap "layers" parameter. It
+          provides the layer(s) to display.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>styles</emphasis>: The GetMap "styles" parameter. It
+          provides the style for the requested layer.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>filter</emphasis>: Optional CQL parameter. This is
+          not part of the WMS specification, but some WMS servers do support
+          it.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>transparent</emphasis>: The GetMap "transparent"
+          parameter. The default value is "true".</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>version</emphasis>: The WMS version. The default
+          value is 1.3.0.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+
+    <section>
+      <title>Creating a WMS layer</title>
+
+      <para>Once you have your configuration objects (WmsTileConfiguration and
+      WmsLayerConfiguration) it's easy to create a new layer:</para>
+
+      <programlisting>// First we define a WMS configuration object:
+WmsLayerConfiguration layerConfig = new WmsLayerConfiguration();
+layerConfig.setFormat("image/jpeg");
+layerConfig.setLayers("bluemarble");
+layerConfig.setVersion(WmsVersion.v1_1_1);
+layerConfig.setBaseUrl("http://apps.geomajas.org/geoserver/wms");
+
+// Then we define a Tile Configuration object:
+Coordinate tileOrigin = new Coordinate(-360,-180);
+WmsTileConfiguration tileConfig = new WmsTileConfiguration(256, 256, tileOrigin);
+
+// Now create the layer:
+WmsLayer wmsLayer = WmsClient.getInstance().createLayer("Blue Marble", tileConfig, layerConfig, null);</programlisting>
+
+      <para>Once you have your layer, it is possible to add it to the
+      map:</para>
+
+      <programlisting>mapPresenter.getLayersModel().addLayer(wmsLayer);</programlisting>
+
+      <para>Et voila! A newly created client-side WMS layer has been added to
+      the map!</para>
+    </section>
+
+    <section>
+      <title>Changing the WMS layer configuration</title>
+
+      <para>As mentioned earlier, the WMS layer is build using a
+      WmsLayerConfiguration object, which is used internally to build GetMap
+      requests. Should you change any of the parameters in this configuration
+      object, it's effects will immediately take place (or at least by
+      refreshing the layer).</para>
+
+      <para>You can acquire the layer configuration objects from the layer
+      itself. The following example takes this configuration to change the
+      layer style on the fly:</para>
+
+      <programlisting>WmsLayerConfiguration layerConfig = wmsLayer.getConfig();
+layerConfig.setStyles("alternativeStyle");</programlisting>
+
+      <para>Setting the styles parameter is a special case, because it will
+      fire a <code>LayerStyleChangedEvent</code>, causing the layer to update
+      automatically. No refresh is needed.</para>
+    </section>
+
+    <section>
+      <title>Using WMS GetCapabilities</title>
+
+      <para>Ofcourse one does not always know beforehand which WMS layers to
+      add. Sometimes we need to ask a WMS Server for it's available layers,
+      and present the user with a choice. This can be achieved through the
+      GetCapabilities request, the result of which can than be used to create
+      WMS layers.</para>
+
+      <para>A WMS GetCapabilities request returns an object of the type
+      <code>WmsGetCapabilitiesInfo</code>. The following example executes a
+      GetCapabilities request:</para>
+
+      <programlisting>String wmsBaseUrl = "http://apps.geomajas.org/geoserver/demo_world/ows";
+WmsClient.getInstance().getWmsService()
+    .getCapabilities(wmsBaseUrl, WmsVersion.V1_1_1, new Callback&lt;WmsGetCapabilitiesInfo, String&gt;() {
+
+        @Override
+        public void onSuccess(WmsGetCapabilitiesInfo capabilities) {
+            // Do something with the result...
+        }
+
+        @Override
+        public void onFailure(String reason) {
+            Window.alert("We're very sorry, but something went wrong: " + reason);
+        }
+    });</programlisting>
+
+      <para>This object contains layer descriptions of the type
+      <code>WmsLayerInfo</code>, which can be accessed as follows:</para>
+
+      <programlisting>WmsGetCapabilitiesInfo capabilities; // Type of object in a GetCapabilities request.
+List&lt;WmsLayerInfo&gt; layerInfo = capabilities.getLayers();</programlisting>
+
+      <para>Now instead of having to set the <code>WmsTileConfiguration</code>
+      and <code>WmsLayerConfiguration</code> parameters manually, we can use
+      the values from the <code>WmsLayerInfo</code> object which came from the
+      GetCapabilities request. Luckily we don't have to do this ourselves. The
+      <code>WmsClient</code> helps out. Here is an example for creating a
+      <code>WmsTileConfiguration</code> object:</para>
+
+      <programlisting>// We need the tile origin in the correct coordinate system, so we use that of the map:
+String crs = mapPresenter.getViewPort().getCrs();
+
+// Now create a tile config object:
+WmsTileConfiguration tileConfig = WmsClient.getInstance().createTileConfig(layerInfo, crs, 256, 256);</programlisting>
+
+      <para>Next up is the WmsLayerConfiguration object:</para>
+
+      <programlisting>String wmsBaseUrl = "http://apps.geomajas.org/geoserver/demo_world/ows";
+ViewPort viewPort = mapPresenter.getViewPort();
+
+// Now create the layer config object:
+WmsLayerConfiguration layerConfig = WmsClient.getInstance().createLayerConfig(
+                        viewPort, layerInfo, wmsBaseUrl, WmsVersion.V1_1_1);</programlisting>
+
+      <para>We now have our configuration objects from which to create a WMS
+      layer. If we put it all together we get:</para>
+
+      <programlisting>String wmsBaseUrl = "http://apps.geomajas.org/geoserver/demo_world/ows";
+WmsClient.getInstance().getWmsService()
+    .getCapabilities(wmsBaseUrl, WmsVersion.V1_1_1, new Callback&lt;WmsGetCapabilitiesInfo, String&gt;() {
+
+        @Override
+        public void onSuccess(WmsGetCapabilitiesInfo result) {
+            if (result.getLayers() != null &amp;&amp; result.getLayers().size() &gt; 0) {
+                WmsLayerInfo layerInfo = result.getLayers().get(0);
+                WmsTileConfiguration tileConfig = WmsClient.getInstance().createTileConfig(layerInfo,
+                        mapPresenter.getViewPort().getCrs(), 256, 256);
+                WmsLayerConfiguration layerConfig = WmsClient.getInstance().createLayerConfig(
+                        mapPresenter.getViewPort(), layerInfo, WMS_BASE_URL, WmsVersion.V1_1_1);
+                WmsLayer layer = WmsClient.getInstance().createLayer(layerInfo.getTitle(), 
+                        tileConfig, layerConfig, layerInfo);
+                mapPresenter.getLayersModel().addLayer(layer);
+            }
+        }
+
+        @Override
+        public void onFailure(String reason) {
+            Window.alert("We're very sorry, but something went wrong: " + reason);
+        }
+    });</programlisting>
+    </section>
+  </section>
+
+  <section>
+    <title>WMS Server extension</title>
+
+    <para>Up until now we have handled the base WMS plugin artifact. This
+    section describes the extra features contained within the server-extension
+    artifact. If you want to use these features, make sure to include the
+    correct jar in your project.</para>
+
+    <note>
+      <para>It is our intention to move everything to the base WMS plugin jar.
+      We want to avoid having a dependency on the Geomajas server project from
+      this plugin. This might take some time though...</para>
+    </note>
+
+    <section>
+      <title>Features supported WMS layer</title>
+
+      <para>In essence, this artifact adds support for the WMS
+      <code>GetFeatureInfo</code> request. It provides a service, a new type
+      of layer and even MapControllers.</para>
+
+      <para>Let's start with the layer. It is called the
+      <code>FeaturesSupportedWmsLayer</code> and it implements both the
+      <code>WmsLayer</code> and <code>FeaturesSupported</code> interfaces,
+      effectively combining their functionalities. On top of that it also
+      provides methods for searching for features at given locations.</para>
+
+      <para>This artifact too provides a starting point that provides most
+      functionalities, such as creating this new layer type. It is called the
+      <code>WmsServerExtension</code>:</para>
+
+      <programlisting>org.geomajas.plugin.wms.client.WmsServerExtension</programlisting>
+
+      <para>From here, it is possible to create a new layer that supports
+      features:</para>
+
+      <programlisting>// Let's assume this time we already have a WmsTileConfiguration and WmsLayerConfiguration object:
+FeaturesSupportedWmsLayer wmsLayer = WmsServerExtension.getInstance().createFeatureSupportedLayer("Countries",
+        tileConfig, layerConfig, null);</programlisting>
+    </section>
+
+    <section>
+      <title>WmsGetFeatureInfoController</title>
+
+      <para>As a side dish, this plugin also provides a
+      <code>MapController</code> that is able to search for features in
+      <code>FeaturesSupportedWmsLayer</code>s by letting the user clicking on
+      the map. It is called the <code>WmsGetFeatureInfoController</code>. In
+      order to add this controller on the map it is best to first prepare it
+      (can also be done after applying it to the map). The
+      WmsGetFeatureInfoController uses the GetFeatureInfo request to know what
+      lies at certain locations. But it most first know for which layers it
+      must search and what the requested GetFeatureInfo format should
+      be.</para>
+
+      <para>As a first step, one should let the controller know which layers
+      to search in:</para>
+
+      <programlisting>WmsGetFeatureInfoController controller = new WmsGetFeatureInfoController();
+controller.addLayer(layer);</programlisting>
+
+      <para>Next, we let the controller know what format we expect. Be careful
+      now, because together with the format you need to add a callback to the
+      controller that will receive the result of the GetFeatureInfo requests.
+      Basically there are 2 cases:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>Format=GML. When you request a GML format, the result will
+          provide Feature objects. Behind the screens the GetFeatureInfo
+          request will already have been parsed and turned into fully fletched
+          feature objects. You can now play around with these as you see
+          fit.</para>
+        </listitem>
+
+        <listitem>
+          <para>Format=anything else. In this case the result will be an
+          Object. This is the actual Object that was returned from the
+          GetFeatureInfo request. It is up to you to either parse this, or use
+          directly (if it is HTML, you can add it directly to the DOM
+          somewhere).</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>So together with the format, you must supply a callback. Here is
+      an example in case the format is GML:</para>
+
+      <programlisting>conroller.setFormat(GetFeatureInfoFormat.GML2);
+controller.setGmlCallback(new Callback&lt;FeatureCollection, String&gt;() {
+
+    public void onFailure(String reason) {
+        Window.alert("Something went wrong executing the WMS GetFeatureInfo request: " + reason);
+    }
+
+    public void onSuccess(FeatureCollection result) {
+        // Do something usefull with the features...
+    }
+});</programlisting>
+
+      <para>An example in case the format it HTML, or TEXT, or ...</para>
+
+      <programlisting>conroller.setFormat(GetFeatureInfoFormat.HTML);
+controller.setHtmlCallback(new Callback&lt;Object, String&gt;() {
+
+    public void onSuccess(Object result) {
+        HTML html = new HTML((String) result);
+        RootLayoutPanel.get().add(html);
+    }
+
+    public void onFailure(String reason) {
+        Window.alert("Something went wrong executing the WMS GetFeatureInfo request: " + reason);
+    }
+});</programlisting>
+
+      <note>
+        <para>Do not forget both examples use a different callback.</para>
+      </note>
+    </section>
   </section>
 </chapter>
