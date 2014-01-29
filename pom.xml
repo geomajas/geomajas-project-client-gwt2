@@ -259,14 +259,7 @@
 				<artifactId>hsqldb</artifactId>
 				<version>1.8.0.7</version>
 			</dependency>
-			
-			<!-- Rasterizing plugin -->
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-client-gwt2-plugin-rasterizing</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			
+
 			<!-- WMS plugin -->
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>

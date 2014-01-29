@@ -19,56 +19,7 @@
 	<description>Geomajas GWT2 client: Plugin WMS - Library</description>
 
 	<dependencies>
-		<!-- GeoTools dependencies -->
-<!-- 		<dependency>
-			<groupId>org.geotools</groupId>
-			<artifactId>gt-xml</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>xalan</groupId>
-					<artifactId>xalan</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>xerces</groupId>
-					<artifactId>xercesImpl</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>xml-apis</groupId>
-					<artifactId>xml-apis-xerces</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.geotools</groupId>
-			<artifactId>gt-wms</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geotools</groupId>
-			<artifactId>gt-api</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>xerces</groupId>
-					<artifactId>xercesImpl</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.geotools</groupId>
-			<artifactId>gt-main</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geotools</groupId>
-			<artifactId>gt-cql</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geotools</groupId>
-			<artifactId>gt-referencing</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geotools</groupId>
-			<artifactId>gt-render</artifactId>
-		</dependency>
- -->
+
 		<dependency>
 			<groupId>org.geomajas.project</groupId>
 			<artifactId>geomajas-project-geometry-jts</artifactId>
@@ -94,16 +45,6 @@
 			</exclusions>
 		</dependency>
 
-		<!-- HTTP commons -->
-<!-- 		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpmime</artifactId>
-		</dependency>
- -->
 		<!-- Google dependencies -->
 		<dependency>
 			<groupId>com.google.gwt</groupId>
@@ -115,29 +56,7 @@
 			<artifactId>gwt-servlet</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-<!-- 
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-		</dependency>
 
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-dev</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-client-gwt2-impl</artifactId>
-			<classifier>tests</classifier>
-			<scope>test</scope>
-		</dependency>
- -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
