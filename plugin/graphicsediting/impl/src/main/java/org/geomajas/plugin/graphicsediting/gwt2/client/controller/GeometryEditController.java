@@ -23,7 +23,7 @@ import org.geomajas.graphics.client.object.Resizable;
 import org.geomajas.graphics.client.service.AbstractGraphicsController;
 import org.geomajas.graphics.client.service.GraphicsObjectContainer.Space;
 import org.geomajas.graphics.client.service.GraphicsService;
-import org.geomajas.graphics.client.service.VisibleOnActiveGraphicsController;
+import org.geomajas.graphics.client.controller.VisibleOnActiveGraphicsController;
 import org.geomajas.graphics.client.shape.AnchoredImage;
 import org.geomajas.graphics.client.util.BboxPosition;
 import org.geomajas.graphics.client.util.GraphicsUtil;
