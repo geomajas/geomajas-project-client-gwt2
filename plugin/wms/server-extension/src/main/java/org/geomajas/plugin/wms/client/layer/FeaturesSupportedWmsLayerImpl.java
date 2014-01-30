@@ -96,18 +96,18 @@ public class FeaturesSupportedWmsLayerImpl extends WmsLayerImpl implements Featu
 
 	@Override
 	public void getFeatureInfo(Coordinate location, Callback<FeatureCollection, String> callback) {
-		WmsServerExtension.getInstance().getFeatureService().getFeatureInfo(this, location, callback);
+		WmsServerExtension.getInstance().getFeatureService().getFeatureInfo(viewPort, this, location, callback);
 	}
 
 	@Override
 	public void getFeatureInfo(Coordinate location, GetFeatureInfoFormat format, Callback<Object, String> callback) {
-		WmsServerExtension.getInstance().getFeatureService().getFeatureInfo(this, location, format, callback);
+		WmsServerExtension.getInstance().getFeatureService().getFeatureInfo(viewPort, this, location, format, callback);
 	}
 
 	@Override
 	public void searchFeatures(Coordinate coordinate, double tolerance,
 			final Callback<FeatureCollection, String> callback) {
-		WmsServerExtension.getInstance().getFeatureService().getFeatureInfo(this, coordinate,
+		WmsServerExtension.getInstance().getFeatureService().getFeatureInfo(viewPort, this, coordinate,
 				new Callback<FeatureCollection, String>() {
 
 					public void onFailure(String reason) {

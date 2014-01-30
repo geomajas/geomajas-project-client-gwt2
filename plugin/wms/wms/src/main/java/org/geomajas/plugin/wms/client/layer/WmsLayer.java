@@ -56,20 +56,6 @@ public interface WmsLayer extends Layer, LegendUrlSupported {
 	WmsLayerInfo getCapabilities();
 
 	/**
-	 * Returns the view port CRS. This layer should always have the same CRS as the map!
-	 *
-	 * @return The layer CRS (=map CRS).
-	 */
-	String getCrs();
-
-	/**
-	 * Get the view port for this layer.
-	 *
-	 * @return The ViewPort, or null if the layer has not been added to a map.
-	 */
-	ViewPort getViewPort();
-
-	/**
 	 * Get the tiles for the specified scale and world bounds.
 	 *
 	 * @param scale       The scale at which to ask for tiles.

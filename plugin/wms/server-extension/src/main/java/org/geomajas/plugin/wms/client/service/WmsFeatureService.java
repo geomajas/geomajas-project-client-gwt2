@@ -11,10 +11,10 @@
 
 package org.geomajas.plugin.wms.client.service;
 
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.plugin.wms.client.layer.FeaturesSupportedWmsLayer;
-
 import com.google.gwt.core.client.Callback;
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt2.client.map.ViewPort;
+import org.geomajas.plugin.wms.client.layer.FeaturesSupportedWmsLayer;
 
 /**
  * Client service that assists in performing requests to the WMS server.
@@ -28,6 +28,7 @@ public interface WmsFeatureService extends WmsService {
 	 * Execute a WMS GetFeatureInfo request. This request will use the format 'application/vnd.ogc.gml', so that the
 	 * response can be parsed.
 	 *
+	 * @param viewPort The map ViewPort.
 	 * @param layer    The {@link FeaturesSupportedWmsLayer} to search features for. Note that a normal {@link
 	 *                 org.geomajas.plugin.wms.client.layer.WmsLayer} is not enough. It must support the GetFeatureInfo
 	 *                 request.
@@ -35,11 +36,13 @@ public interface WmsFeatureService extends WmsService {
 	 * @param cb       The callback that will return a {@link FeatureCollection} containing features that have been
 	 *                 found at the location. This can be an empty collection.
 	 */
-	void getFeatureInfo(FeaturesSupportedWmsLayer layer, Coordinate location, Callback<FeatureCollection, String> cb);
+	void getFeatureInfo(ViewPort viewPort, FeaturesSupportedWmsLayer layer, Coordinate location,
+			Callback<FeatureCollection, String> cb);
 
 	/**
 	 * Execute a WMS GetFeatureInfo request.
 	 *
+	 * @param viewPort The map ViewPort.
 	 * @param layer    The {@link FeaturesSupportedWmsLayer} to search features for. Note that a normal {@link
 	 *                 org.geomajas.plugin.wms.client.layer.WmsLayer} is not enough. It must support the GetFeatureInfo
 	 *                 request.
@@ -50,6 +53,6 @@ public interface WmsFeatureService extends WmsService {
 	 *                 response, depends on the requested format. In case the format is GML, a list of features will be
 	 *                 returned, otherwise, the result will be a string containing the HTTP body.
 	 */
-	void getFeatureInfo(FeaturesSupportedWmsLayer layer, Coordinate location, GetFeatureInfoFormat format,
-			Callback<Object, String> cb);
+	void getFeatureInfo(ViewPort viewPort, FeaturesSupportedWmsLayer layer, Coordinate location,
+			GetFeatureInfoFormat format, Callback<Object, String> cb);
 }

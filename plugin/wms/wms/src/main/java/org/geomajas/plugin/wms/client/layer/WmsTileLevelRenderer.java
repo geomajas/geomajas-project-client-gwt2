@@ -11,12 +11,11 @@
 
 package org.geomajas.plugin.wms.client.layer;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.google.gwt.core.client.Callback;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.service.BboxService;
+import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.render.FixedScaleRenderer;
@@ -29,14 +28,13 @@ import org.geomajas.gwt2.client.map.render.dom.container.HtmlImageImpl;
 import org.geomajas.plugin.wms.client.WmsClient;
 import org.geomajas.plugin.wms.client.service.WmsTileServiceImpl;
 
-import com.google.gwt.core.client.Callback;
-import com.google.web.bindery.event.shared.EventBus;
-import com.google.web.bindery.event.shared.HandlerRegistration;
-import com.google.web.bindery.event.shared.SimpleEventBus;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Definition for a renderer for WMS layers.
- * 
+ *
  * @author Pieter De Graef
  */
 public class WmsTileLevelRenderer implements FixedScaleRenderer {
@@ -54,9 +52,6 @@ public class WmsTileLevelRenderer implements FixedScaleRenderer {
 	private final ViewPort viewPort;
 
 	private int nrLoadingTiles;
-
-	// TODO replace me...
-	private final EventBus eventBus = new SimpleEventBus();
 
 	public WmsTileLevelRenderer(WmsLayer layer, int tileLevel, ViewPort viewPort, HtmlContainer container) {
 		this.layer = layer;
@@ -80,7 +75,7 @@ public class WmsTileLevelRenderer implements FixedScaleRenderer {
 	public void render(View view) {
 		if (layer.isShowing()) {
 			Bbox bounds = asBounds(view);
-			List<TileCode> tilesForBounds = WmsTileServiceImpl.getInstance().getTileCodesForBounds(layer.getViewPort(),
+			List<TileCode> tilesForBounds = WmsTileServiceImpl.getInstance().getTileCodesForBounds(viewPort,
 					layer.getTileConfig(), bounds, view.getScale());
 			for (TileCode tileCode : tilesForBounds) {
 				if (!tiles.containsKey(tileCode)) {
@@ -107,7 +102,7 @@ public class WmsTileLevelRenderer implements FixedScaleRenderer {
 
 	@Override
 	public HandlerRegistration addTileLevelRenderedHandler(TileLevelRenderedHandler handler) {
-		return eventBus.addHandler(TileLevelRenderedHandler.TYPE, handler);
+		return GeomajasImpl.getInstance().getEventBus().addHandler(TileLevelRenderedHandler.TYPE, handler);
 	}
 
 	// ------------------------------------------------------------------------
@@ -125,14 +120,14 @@ public class WmsTileLevelRenderer implements FixedScaleRenderer {
 	}
 
 	private Tile createTile(TileCode tileCode) {
-		Bbox worldBounds = WmsTileServiceImpl.getInstance().getWorldBoundsForTile(layer.getViewPort(),
+		Bbox worldBounds = WmsTileServiceImpl.getInstance().getWorldBoundsForTile(viewPort,
 				layer.getTileConfig(), tileCode);
 		Tile tile = new Tile(tileCode, getScreenBounds(worldBounds));
 		tile.setCode(tileCode);
 		tile.setUrl(WmsClient
 				.getInstance()
 				.getWmsService()
-				.getMapUrl(layer.getConfig(), layer.getCrs(), worldBounds, layer.getTileConfig().getTileWidth(),
+				.getMapUrl(layer.getConfig(), viewPort.getCrs(), worldBounds, layer.getTileConfig().getTileWidth(),
 						layer.getTileConfig().getTileHeight()));
 		return tile;
 	}
@@ -145,25 +140,24 @@ public class WmsTileLevelRenderer implements FixedScaleRenderer {
 	}
 
 	/**
-	 * Counts the number of images that are still inbound. If all images are effectively rendered, we call
-	 * {@link #onTilesRendered}.
-	 * 
+	 * Counts the number of images that are still inbound. If all images are effectively rendered, we fire an event.
+	 *
 	 * @author Pieter De Graef
 	 */
 	private class ImageCounter implements Callback<String, String> {
 
 		// In case of failure, we can't just sit and wait. Instead we immediately consider the scale level rendered.
 		public void onFailure(String reason) {
-			eventBus.fireEventFromSource(new TileLevelRenderedEvent(WmsTileLevelRenderer.this),
-					WmsTileLevelRenderer.this);
+			GeomajasImpl.getInstance().getEventBus().fireEventFromSource(new TileLevelRenderedEvent(
+					WmsTileLevelRenderer.this), WmsTileLevelRenderer.this);
 		}
 
 		public void onSuccess(String result) {
 			if (nrLoadingTiles > 0) { // A cancel may have reset the number of loading tiles.
 				nrLoadingTiles--;
 				if (nrLoadingTiles == 0) {
-					eventBus.fireEventFromSource(new TileLevelRenderedEvent(WmsTileLevelRenderer.this),
-							WmsTileLevelRenderer.this);
+					GeomajasImpl.getInstance().getEventBus().fireEventFromSource(new TileLevelRenderedEvent(
+							WmsTileLevelRenderer.this), WmsTileLevelRenderer.this);
 				}
 			}
 		}
