@@ -15,7 +15,6 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.client.event.LayerStyleChangedEvent;
 import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.View;
-import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.AbstractLayer;
 import org.geomajas.gwt2.client.map.layer.LegendConfig;
 import org.geomajas.gwt2.client.map.render.FixedScaleLayerRenderer;
@@ -38,10 +37,6 @@ import java.util.List;
  * @author An Buyle
  */
 public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
-
-	public static final String DEFAULT_LEGEND_FONT_FAMILY = "Arial";
-
-	public static final int DEFAULT_LEGEND_FONT_SIZE = 13;
 
 	protected final WmsLayerConfiguration wmsConfig;
 
@@ -88,20 +83,6 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 		return layerCapabilities;
 	}
 
-	/**
-	 * Returns the view port CRS. This layer should always have the same CRS as the map!
-	 *
-	 * @return The layer CRS (=map CRS).
-	 */
-	public String getCrs() {
-		return viewPort.getCrs();
-	}
-
-	@Override
-	public ViewPort getViewPort() {
-		return viewPort;
-	}
-
 	// ------------------------------------------------------------------------
 	// OpacitySupported implementation:
 	// ------------------------------------------------------------------------
@@ -109,11 +90,8 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 	@Override
 	public void setOpacity(double opacity) {
 		this.opacity = opacity;
-		// TODO fix this...
-		// if (null != renderer) {
-		// renderer.getHtmlContainer().setOpacity(opacity);
+		// TODO Changing opacity should not fire a style changed event!!!!
 		eventBus.fireEvent(new LayerStyleChangedEvent(this));
-		// }
 	}
 
 	@Override
@@ -156,16 +134,16 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 
 	@Override
 	public List<Tile> getTiles(double scale, Bbox worldBounds) {
-		List<TileCode> codes = WmsTileServiceImpl.getInstance().getTileCodesForBounds(getViewPort(), tileConfig,
+		List<TileCode> codes = WmsTileServiceImpl.getInstance().getTileCodesForBounds(viewPort, tileConfig,
 				worldBounds, scale);
 		List<Tile> tiles = new ArrayList<Tile>();
 		if (!codes.isEmpty()) {
 			double actualScale = viewPort.getFixedScale(codes.get(0).getTileLevel());
 			for (TileCode code : codes) {
-				Bbox bounds = WmsTileServiceImpl.getInstance().getWorldBoundsForTile(getViewPort(), tileConfig, code);
+				Bbox bounds = WmsTileServiceImpl.getInstance().getWorldBoundsForTile(viewPort, tileConfig, code);
 				Tile tile = new Tile(getScreenBounds(actualScale, bounds));
 				tile.setCode(code);
-				tile.setUrl(WmsClient.getInstance().getWmsService().getMapUrl(getConfig(), getCrs(), bounds,
+				tile.setUrl(WmsClient.getInstance().getWmsService().getMapUrl(getConfig(), viewPort.getCrs(), bounds,
 						tileConfig.getTileWidth(), tileConfig.getTileHeight()));
 				tiles.add(tile);
 			}
