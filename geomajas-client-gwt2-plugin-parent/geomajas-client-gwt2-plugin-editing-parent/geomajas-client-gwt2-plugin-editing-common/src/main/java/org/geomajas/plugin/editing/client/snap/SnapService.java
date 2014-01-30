@@ -19,6 +19,7 @@ import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.gwt.client.util.Log;
 import org.geomajas.plugin.editing.client.GeometryArrayFunction;
 import org.geomajas.plugin.editing.client.snap.event.CoordinateSnapEvent;
 import org.geomajas.plugin.editing.client.snap.event.CoordinateSnapHandler;
@@ -89,21 +90,27 @@ public class SnapService {
 		currentDistance = Double.MAX_VALUE;
 		hasSnapped = false;
 		LOGGER.fine("Start snapping for coordinate " + coordinate);
+		Log.logServer(Log.LEVEL_INFO, "Start snapping for coordinate " + coordinate);
 		for (SnappingRule rule : rules) {
 			if (rule.isHighPriority() || !hasSnapped) {
 				LOGGER.fine("Checking rule " + rule);
+				Log.logServer(Log.LEVEL_INFO, "Checking rule " + rule);
 				double distance = Math.min(currentDistance, rule.getDistance());
 				LOGGER.fine("Distance = " + distance);
+				Log.logServer(Log.LEVEL_INFO, "Distance = " + distance);
 				result = rule.getAlgorithm().snap(coordinate, distance);
 				if (rule.getAlgorithm().hasSnapped()) {
 					LOGGER.fine("Snapping succesfull : " + result);
+					Log.logServer(Log.LEVEL_INFO, "Snapping succesfull : " + result);
 					hasSnapped = true;
 				}
 			} else {
 				LOGGER.fine("Skipping rule " + rule);
+				Log.logServer(Log.LEVEL_INFO, "Skipping rule " + rule);
 			}
 		}
 		LOGGER.fine("Stopped snapping for coordinate " + coordinate);
+		Log.logServer(Log.LEVEL_INFO, "Stopped snapping for coordinate " + coordinate);
 		eventBus.fireEvent(new CoordinateSnapEvent(coordinate, result));
 		return result;
 	}
