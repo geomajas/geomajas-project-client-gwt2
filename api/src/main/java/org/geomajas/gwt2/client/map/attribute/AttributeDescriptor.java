@@ -13,6 +13,8 @@ package org.geomajas.gwt2.client.map.attribute;
 
 import org.geomajas.annotation.Api;
 
+import java.io.Serializable;
+
 /**
  * Descriptor for an attribute.
  *
@@ -20,7 +22,7 @@ import org.geomajas.annotation.Api;
  * @since 2.0.0
  */
 @Api(allMethods = true)
-public interface AttributeDescriptor {
+public interface AttributeDescriptor extends Serializable {
 
 	/**
 	 * Get the type of attribute this descriptor describes.

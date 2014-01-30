@@ -45,9 +45,18 @@ public class FeaturesSupportedWmsLayerImpl extends WmsLayerImpl implements Featu
 
 	private final List<AttributeDescriptor> descriptors = new ArrayList<AttributeDescriptor>();
 
+	private final Callback<List<AttributeDescriptor>, String> onInitialized;
+
 	public FeaturesSupportedWmsLayerImpl(String title, WmsLayerConfiguration wmsLayerConfig,
 			WmsTileConfiguration wmsTileConfig, WmsLayerInfo layerInfo) {
+		this(title, wmsLayerConfig, wmsTileConfig, layerInfo, null);
+	}
+
+	public FeaturesSupportedWmsLayerImpl(String title, WmsLayerConfiguration wmsLayerConfig,
+			WmsTileConfiguration wmsTileConfig, WmsLayerInfo layerInfo, Callback<List<AttributeDescriptor>,
+			String> onInitialized) {
 		super(title, wmsLayerConfig, wmsTileConfig, layerInfo);
+		this.onInitialized = onInitialized;
 		wfsDescribeLayer();
 	}
 
@@ -140,6 +149,7 @@ public class FeaturesSupportedWmsLayerImpl extends WmsLayerImpl implements Featu
 			@Override
 			public void execute(WfsDescribeLayerResponse response) {
 				descriptors.addAll(response.getAttributeDescriptors());
+				onInitialized.onSuccess(getAttributeDescriptors());
 			}
 		});
 	}

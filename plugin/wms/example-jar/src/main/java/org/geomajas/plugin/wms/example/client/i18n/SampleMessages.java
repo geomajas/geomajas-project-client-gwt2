@@ -38,6 +38,12 @@ public interface SampleMessages extends Messages {
 
 	String wmsGetFeatureInfoV111Description();
 
+	String isFeaturesSupportedV111Title();
+
+	String isFeaturesSupportedV111Short();
+
+	String isFeaturesSupportedV111Description();
+
 	String selectStyleV111Title();
 
 	String selectStyleV111Short();

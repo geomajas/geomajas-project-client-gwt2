@@ -18,6 +18,7 @@ import org.geomajas.gwt2.example.base.client.sample.SamplePanelRegistry;
 import org.geomajas.gwt2.example.base.client.sample.ShowcaseSampleDefinition;
 import org.geomajas.plugin.wms.example.client.i18n.SampleMessages;
 import org.geomajas.plugin.wms.example.client.sample.v1_1_1.CapabilitiesV111Panel;
+import org.geomajas.plugin.wms.example.client.sample.v1_1_1.IsFeaturesSupportedV111Panel;
 import org.geomajas.plugin.wms.example.client.sample.v1_1_1.SelectStyleV111Panel;
 import org.geomajas.plugin.wms.example.client.sample.v1_1_1.WmsFeatureInfoV111Panel;
 import org.geomajas.plugin.wms.example.client.sample.v1_1_1.WmsLayerLegendV111Panel;
@@ -45,7 +46,9 @@ public class ExampleJar implements EntryPoint {
 		registerV130Samples();
 	}
 
-	/** Register samples using WMS 1.1.1. */
+	/**
+	 * Register samples using WMS 1.1.1.
+	 */
 	private void registerV111Samples() {
 		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
 
@@ -116,6 +119,28 @@ public class ExampleJar implements EntryPoint {
 		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
 
 			public SamplePanel create() {
+				return new IsFeaturesSupportedV111Panel();
+			}
+
+			public String getTitle() {
+				return MESSAGES.isFeaturesSupportedV111Title();
+			}
+
+			public String getShortDescription() {
+				return MESSAGES.isFeaturesSupportedV111Short();
+			}
+
+			public String getDescription() {
+				return MESSAGES.isFeaturesSupportedV111Description();
+			}
+
+			public String getCategory() {
+				return CATEGORY_WMS;
+			}
+		});
+		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
+
+			public SamplePanel create() {
 				return new SelectStyleV111Panel();
 			}
 
@@ -159,7 +184,9 @@ public class ExampleJar implements EntryPoint {
 		});
 	}
 
-	/** Register samples using WMS 1.3.0. */
+	/**
+	 * Register samples using WMS 1.3.0.
+	 */
 	private void registerV130Samples() {
 		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
 

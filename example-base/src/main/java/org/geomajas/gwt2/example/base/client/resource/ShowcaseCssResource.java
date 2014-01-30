@@ -15,7 +15,7 @@ import com.google.gwt.resources.client.CssResource;
 
 /**
  * CSS resource bundle that contains all generic styles used within this web application.
- * 
+ *
  * @author Pieter De Graef
  */
 public interface ShowcaseCssResource extends CssResource {
@@ -53,6 +53,9 @@ public interface ShowcaseCssResource extends CssResource {
 
 	@ClassName("sampleContentLayout")
 	String sampleContentLayout();
+
+	@ClassName("sampleRightLayout")
+	String sampleRightLayout();
 
 	@ClassName("sampleRow")
 	String sampleRow();

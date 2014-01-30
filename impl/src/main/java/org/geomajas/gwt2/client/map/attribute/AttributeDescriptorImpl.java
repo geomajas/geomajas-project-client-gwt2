@@ -18,9 +18,12 @@ package org.geomajas.gwt2.client.map.attribute;
  */
 public class AttributeDescriptorImpl implements AttributeDescriptor {
 
-	private final AttributeType type;
+	private AttributeType type;
 
-	private final String name;
+	private String name;
+
+	public AttributeDescriptorImpl() {
+	}
 
 	public AttributeDescriptorImpl(AttributeType type, String name) {
 		this.type = type;
@@ -32,7 +35,16 @@ public class AttributeDescriptorImpl implements AttributeDescriptor {
 		return type;
 	}
 
+	public void setType(AttributeType type) {
+		this.type = type;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	@Override
+
 	public String getName() {
 		return name;
 	}

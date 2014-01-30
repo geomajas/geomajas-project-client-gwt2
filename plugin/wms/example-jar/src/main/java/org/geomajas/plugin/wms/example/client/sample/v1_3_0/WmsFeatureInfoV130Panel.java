@@ -99,7 +99,7 @@ public class WmsFeatureInfoV130Panel implements SamplePanel {
 		layerConfig.setMaximumScale(8192);
 		layerConfig.setMinimumScale(0);
 
-		FeaturesSupportedWmsLayer wmsLayer = WmsServerExtension.getInstance().createFeatureSupportedLayer("Countries",
+		FeaturesSupportedWmsLayer wmsLayer = WmsServerExtension.getInstance().createLayer("Countries",
 				tileConfig, layerConfig, null);
 		mapPresenter.getLayersModel().addLayer(wmsLayer);
 

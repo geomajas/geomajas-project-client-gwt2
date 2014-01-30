@@ -98,7 +98,7 @@ public class WmsFeatureInfoV111Panel implements SamplePanel {
 		layerConfig.setLayers("simplified_country_borders");
 		layerConfig.setMaximumScale(8192);
 		layerConfig.setMinimumScale(0);
-		FeaturesSupportedWmsLayer wmsLayer = WmsServerExtension.getInstance().createFeatureSupportedLayer("Countries",
+		FeaturesSupportedWmsLayer wmsLayer = WmsServerExtension.getInstance().createLayer("Countries",
 				tileConfig, layerConfig, null);
 		mapPresenter.getLayersModel().addLayer(wmsLayer);
 
