@@ -18,6 +18,7 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt.client.map.RenderSpace;
+import org.geomajas.gwt.client.util.Log;
 import org.geomajas.plugin.editing.client.i18n.EditingCommonMessages;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
@@ -82,6 +83,8 @@ public class GeometryIndexInsertController extends AbstractGeometryIndexControll
 				Coordinate result = snappingService.snap(location);
 				if (snappingService.hasSnapped()) {
 					service.setTentativeMoveLocation(result);
+					Log.logServer(Log.LEVEL_INFO, "Applied snap: change position " + location +
+						" to " + result);
 				} else {
 					service.setTentativeMoveLocation(location);
 					service.getIndexStateService().snappingEndAll();
