@@ -13,14 +13,14 @@ package org.geomajas.plugin.wms.server.command;
 
 import org.geomajas.command.Command;
 import org.geomajas.gwt2.client.map.attribute.AttributeDescriptorImpl;
-import org.geomajas.gwt2.client.map.attribute.AttributeType;
+import org.geomajas.gwt2.client.map.attribute.PrimitiveAttributeTypeImpl;
+import org.geomajas.gwt2.client.map.attribute.PrimitiveType;
 import org.geomajas.plugin.wms.server.command.dto.WfsDescribeLayerRequest;
 import org.geomajas.plugin.wms.server.command.dto.WfsDescribeLayerResponse;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.Name;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -85,25 +85,25 @@ public class WfsDescribeLayerCommand implements Command<WfsDescribeLayerRequest,
 		String name = attributeDescriptor.getLocalName();
 		AttributeDescriptorImpl attributeInfo;
 		if (Integer.class.equals(binding)) {
-			attributeInfo = new AttributeDescriptorImpl(AttributeType.INTEGER,
+			attributeInfo = new AttributeDescriptorImpl(new PrimitiveAttributeTypeImpl(PrimitiveType.INTEGER),
 					name);
 		} else if (Float.class.equals(binding)) {
-			attributeInfo = new AttributeDescriptorImpl(AttributeType.FLOAT,
+			attributeInfo = new AttributeDescriptorImpl(new PrimitiveAttributeTypeImpl(PrimitiveType.FLOAT),
 					name);
 		} else if (Double.class.equals(binding)) {
-			attributeInfo = new AttributeDescriptorImpl(AttributeType.DOUBLE,
+			attributeInfo = new AttributeDescriptorImpl(new PrimitiveAttributeTypeImpl(PrimitiveType.DOUBLE),
 					name);
 		} else if (BigDecimal.class.equals(binding)) {
-			attributeInfo = new AttributeDescriptorImpl(AttributeType.DOUBLE,
+			attributeInfo = new AttributeDescriptorImpl(new PrimitiveAttributeTypeImpl(PrimitiveType.DOUBLE),
 					name);
 		} else if (Boolean.class.equals(binding)) {
-			attributeInfo = new AttributeDescriptorImpl(AttributeType.BOOLEAN,
+			attributeInfo = new AttributeDescriptorImpl(new PrimitiveAttributeTypeImpl(PrimitiveType.BOOLEAN),
 					name);
 		} else if (Date.class.equals(binding)) {
-			attributeInfo = new AttributeDescriptorImpl(AttributeType.DATE,
+			attributeInfo = new AttributeDescriptorImpl(new PrimitiveAttributeTypeImpl(PrimitiveType.DATE),
 					name);
 		} else {
-			attributeInfo = new AttributeDescriptorImpl(AttributeType.STRING,
+			attributeInfo = new AttributeDescriptorImpl(new PrimitiveAttributeTypeImpl(PrimitiveType.STRING),
 					name);
 		}
 		return attributeInfo;

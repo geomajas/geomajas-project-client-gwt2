@@ -18,10 +18,7 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -29,7 +26,6 @@ import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.MapPresenter;
-import org.geomajas.gwt2.client.map.attribute.Attribute;
 import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
 import org.geomajas.gwt2.client.widget.MapLayoutPanel;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
@@ -38,7 +34,6 @@ import org.geomajas.plugin.wms.client.WmsServerExtension;
 import org.geomajas.plugin.wms.client.capabilities.WmsGetCapabilitiesInfo;
 import org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo;
 import org.geomajas.plugin.wms.client.layer.FeaturesSupportedWmsLayer;
-import org.geomajas.plugin.wms.client.layer.WmsLayer;
 import org.geomajas.plugin.wms.client.layer.WmsLayerConfiguration;
 import org.geomajas.plugin.wms.client.layer.WmsTileConfiguration;
 import org.geomajas.plugin.wms.client.service.WmsService.WmsRequest;
@@ -178,8 +173,7 @@ public class IsFeaturesSupportedV111Panel implements SamplePanel {
 					// When this layer is initialized, we can write out it's attribute descriptors:
 					for (AttributeDescriptor descriptor : descriptors) {
 						attributePanel.add(new HTML("Attribute: <b>" + descriptor.getName() + "</b> (" + descriptor
-								.getType()
-								+ ")"));
+								.getType().getName() + ")"));
 					}
 				}
 			});

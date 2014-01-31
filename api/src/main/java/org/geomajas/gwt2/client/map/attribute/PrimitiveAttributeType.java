@@ -13,8 +13,6 @@ package org.geomajas.gwt2.client.map.attribute;
 
 import org.geomajas.annotation.Api;
 
-import java.io.Serializable;
-
 /**
  * Definition of a type of attribute. This type is extended by more concrete forms of attribute types.
  *
@@ -22,19 +20,12 @@ import java.io.Serializable;
  * @since 2.0.0
  */
 @Api(allMethods = true)
-public interface AttributeType extends Serializable {
+public interface PrimitiveAttributeType extends AttributeType {
 
 	/**
-	 * Get the name of the attribute type.
+	 * Get the primitive type associated with this attribute type.
 	 *
-	 * @return The name.
+	 * @return The primitive type.
 	 */
-	String getName();
-
-	/**
-	 * Get the Java classname that is used to represent attribute values of this type.
-	 *
-	 * @return The Java classname.
-	 */
-	Class<?> getBinding();
+	PrimitiveType getPrimitiveType();
 }

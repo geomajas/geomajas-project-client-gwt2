@@ -31,6 +31,8 @@ import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
 import org.geomajas.gwt2.client.map.attribute.AttributeDescriptorImpl;
 import org.geomajas.gwt2.client.map.attribute.AttributeType;
+import org.geomajas.gwt2.client.map.attribute.PrimitiveAttributeTypeImpl;
+import org.geomajas.gwt2.client.map.attribute.PrimitiveType;
 import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.client.map.render.FixedScaleLayerRenderer;
 import org.geomajas.gwt2.client.map.render.FixedScaleRenderer;
@@ -229,37 +231,36 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 			AttributeType type;
 			switch (pai.getType()) {
 				case BOOLEAN:
-					type = AttributeType.BOOLEAN;
+					type = new PrimitiveAttributeTypeImpl(PrimitiveType.BOOLEAN);
 					break;
 				case DATE:
-					type = AttributeType.DATE;
+					type = new PrimitiveAttributeTypeImpl(PrimitiveType.DATE);
 					break;
 				case CURRENCY:
 				case DOUBLE:
-					type = AttributeType.DOUBLE;
+					type = new PrimitiveAttributeTypeImpl(PrimitiveType.DOUBLE);
 					break;
 				case FLOAT:
-					type = AttributeType.FLOAT;
+					type = new PrimitiveAttributeTypeImpl(PrimitiveType.FLOAT);
 					break;
 				case INTEGER:
-					type = AttributeType.INTEGER;
+					type = new PrimitiveAttributeTypeImpl(PrimitiveType.INTEGER);
 					break;
 				case LONG:
-					type = AttributeType.LONG;
+					type = new PrimitiveAttributeTypeImpl(PrimitiveType.LONG);
 					break;
 				case SHORT:
-					type = AttributeType.SHORT;
+					type = new PrimitiveAttributeTypeImpl(PrimitiveType.SHORT);
 					break;
 				case IMGURL:
 				case URL:
 				case STRING:
 				default:
-					type = AttributeType.STRING;
+					type = new PrimitiveAttributeTypeImpl(PrimitiveType.STRING);
 					break;
 			}
 			return new AttributeDescriptorImpl(type, pai.getName());
 		}
-		//throw new IllegalArgumentException("Only primitive attribute types are supported.");
 		return null;
 	}
 }
