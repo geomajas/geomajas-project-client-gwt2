@@ -11,8 +11,17 @@
 
 package org.geomajas.plugin.wms.server.command;
 
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.MultiLineString;
+import com.vividsolutions.jts.geom.MultiPoint;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 import org.geomajas.command.Command;
 import org.geomajas.gwt2.client.map.attribute.AttributeDescriptorImpl;
+import org.geomajas.gwt2.client.map.attribute.GeometryAttributeTypeImpl;
+import org.geomajas.gwt2.client.map.attribute.GeometryType;
 import org.geomajas.gwt2.client.map.attribute.PrimitiveAttributeTypeImpl;
 import org.geomajas.gwt2.client.map.attribute.PrimitiveType;
 import org.geomajas.plugin.wms.server.command.dto.WfsDescribeLayerRequest;
@@ -101,6 +110,27 @@ public class WfsDescribeLayerCommand implements Command<WfsDescribeLayerRequest,
 					name);
 		} else if (Date.class.equals(binding)) {
 			attributeInfo = new AttributeDescriptorImpl(new PrimitiveAttributeTypeImpl(PrimitiveType.DATE),
+					name);
+		} else if (Point.class.equals(binding)) {
+			attributeInfo = new AttributeDescriptorImpl(new GeometryAttributeTypeImpl(GeometryType.POINT),
+					name);
+		} else if (LineString.class.equals(binding)) {
+			attributeInfo = new AttributeDescriptorImpl(new GeometryAttributeTypeImpl(GeometryType.LINESTRING),
+					name);
+		} else if (LinearRing.class.equals(binding)) {
+			attributeInfo = new AttributeDescriptorImpl(new GeometryAttributeTypeImpl(GeometryType.LINEARRING),
+					name);
+		} else if (Polygon.class.equals(binding)) {
+			attributeInfo = new AttributeDescriptorImpl(new GeometryAttributeTypeImpl(GeometryType.POLYGON),
+					name);
+		} else if (MultiPoint.class.equals(binding)) {
+			attributeInfo = new AttributeDescriptorImpl(new GeometryAttributeTypeImpl(GeometryType.MULTIPOINT),
+					name);
+		} else if (MultiLineString.class.equals(binding)) {
+			attributeInfo = new AttributeDescriptorImpl(new GeometryAttributeTypeImpl(GeometryType.MULTILINESTRING),
+					name);
+		} else if (MultiPolygon.class.equals(binding)) {
+			attributeInfo = new AttributeDescriptorImpl(new GeometryAttributeTypeImpl(GeometryType.MULTIPOLYGON),
 					name);
 		} else {
 			attributeInfo = new AttributeDescriptorImpl(new PrimitiveAttributeTypeImpl(PrimitiveType.STRING),
