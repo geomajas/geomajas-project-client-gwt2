@@ -6,11 +6,24 @@
 	<g:DockLayoutPanel unit="PX" width="100%" height="100%">
 		<g:west size="300">
 			<g:HTMLPanel addStyleNames="{resource.css.sampleLeftLayout}">
-				<h2>WMS 1.1.1 GetCapabilities</h2>
+				<h2>WMS Layer legend</h2>
 				<p>This example uses the following base WMS url:</p>
 				<p>http://apps.geomajas.org/geoserver/demo_world/ows</p>
+                <p>
+                    <g:ListBox ui:field="wmsVersionBox">
+                        <g:item value='1'>
+                            WMS 1.1.1
+                        </g:item>
+                        <g:item value='2'>
+                            WMS 1.3.0
+                        </g:item>
+                    </g:ListBox>
+                </p>
+                <p style="text-align: right;">
+                    <g:Button ui:field="goBtn">Reload</g:Button>
+                </p>
 				<h3>Available layers:</h3>
-				<g:VerticalPanel ui:field="layerList" />
+				<g:VerticalPanel ui:field="layerList" width="100%" />
 			</g:HTMLPanel>
 		</g:west>
 		<g:center>

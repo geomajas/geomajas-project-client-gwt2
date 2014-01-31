@@ -11,9 +11,19 @@
 
 package org.geomajas.plugin.editing.example.client.sample;
 
-import java.util.List;
-import java.util.Map;
-
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.DecoratorPanel;
+import com.google.gwt.user.client.ui.ResizeLayoutPanel;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.geometry.service.BboxService;
@@ -26,6 +36,7 @@ import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.client.map.feature.FeatureMapFunction;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
+import org.geomajas.gwt2.client.map.layer.VectorServerLayer;
 import org.geomajas.gwt2.example.base.client.ExampleBase;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.plugin.editing.client.GeometryArrayFunction;
@@ -43,30 +54,19 @@ import org.geomajas.plugin.editing.client.snap.algorithm.NearestEdgeSnapAlgorith
 import org.geomajas.plugin.editing.gwt.client.Editing;
 import org.geomajas.plugin.editing.gwt.client.GeometryEditor;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.DecoratorPanel;
-import com.google.gwt.user.client.ui.ResizeLayoutPanel;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Sample that demonstrates LineString editing.
- * 
+ *
  * @author Pieter De Graef
  */
 public class SnapToCountriesPanel implements SamplePanel {
 
 	/**
 	 * UI binder for this widget.
-	 * 
+	 *
 	 * @author Pieter De Graef
 	 */
 	interface MyUiBinder extends UiBinder<Widget, SnapToCountriesPanel> {
@@ -217,7 +217,7 @@ public class SnapToCountriesPanel implements SamplePanel {
 
 	/**
 	 * Snapping source provider that provides the geometries from the countries in the Countries layer.
-	 * 
+	 *
 	 * @author Pieter De Graef
 	 */
 	private class CountriesLayerProvider implements SnapSourceProvider {
@@ -229,7 +229,7 @@ public class SnapToCountriesPanel implements SamplePanel {
 		@Override
 		public void getSnappingSources(final GeometryArrayFunction callback) {
 			if (fetch) {
-				final FeaturesSupported layer = (FeaturesSupported) mapPresenter.getLayersModel().getLayer(1);
+				final VectorServerLayer layer = (VectorServerLayer) mapPresenter.getLayersModel().getLayer(1);
 				GeomajasServerExtension
 						.getInstance()
 						.getServerFeatureService()

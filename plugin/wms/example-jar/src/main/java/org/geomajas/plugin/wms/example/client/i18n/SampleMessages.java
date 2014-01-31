@@ -20,63 +20,39 @@ import com.google.gwt.i18n.client.Messages;
  */
 public interface SampleMessages extends Messages {
 
-	String capabilitiesV111Title();
+	String capabilitiesTitle();
 
-	String capabilitiesV111Short();
+	String capabilitiesShort();
 
-	String capabilitiesV111Description();
+	String capabilitiesDescription();
 
-	String wmsLayerV111Title();
+	String wmsLayerTitle();
 
-	String wmsLayerV111Short();
+	String wmsLayerShort();
 
-	String wmsLayerV111Description();
+	String wmsLayerDescription();
 
-	String wmsGetFeatureInfoV111Title();
+	String wmsGetFeatureInfoTitle();
 
-	String wmsGetFeatureInfoV111Short();
+	String wmsGetFeatureInfoShort();
 
-	String wmsGetFeatureInfoV111Description();
+	String wmsGetFeatureInfoDescription();
 
-	String selectStyleV111Title();
+	String isFeaturesSupportedTitle();
 
-	String selectStyleV111Short();
+	String isFeaturesSupportedShort();
 
-	String selectStyleV111Description();
+	String isFeaturesSupportedDescription();
 
-	String wmsLayerLegendV111Title();
+	String selectStyleTitle();
 
-	String wmsLayerLegendV111Short();
+	String selectStyleShort();
 
-	String wmsLayerLegendV111Description();
+	String selectStyleDescription();
 
-	String capabilitiesV130Title();
+	String wmsLayerLegendTitle();
 
-	String capabilitiesV130Short();
+	String wmsLayerLegendShort();
 
-	String capabilitiesV130Description();
-
-	String wmsLayerV130Title();
-
-	String wmsLayerV130Short();
-
-	String wmsLayerV130Description();
-
-	String wmsGetFeatureInfoV130Title();
-
-	String wmsGetFeatureInfoV130Short();
-
-	String wmsGetFeatureInfoV130Description();
-
-	String selectStyleV130Title();
-
-	String selectStyleV130Short();
-
-	String selectStyleV130Description();
-
-	String wmsLayerLegendV130Title();
-
-	String wmsLayerLegendV130Short();
-
-	String wmsLayerLegendV130Description();
+	String wmsLayerLegendDescription();
 }

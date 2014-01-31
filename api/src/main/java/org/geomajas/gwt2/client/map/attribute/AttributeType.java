@@ -1,7 +1,7 @@
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
- * Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
+ * Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
  * The program is available in open source according to the GNU Affero
  * General Public License. All contributions in this program are covered
@@ -13,20 +13,28 @@ package org.geomajas.gwt2.client.map.attribute;
 
 import org.geomajas.annotation.Api;
 
+import java.io.Serializable;
+
 /**
- * Attribute definition. Holds an attribute value.
+ * Definition of a type of attribute. This type is extended by more concrete forms of attribute types.
  *
- * @param <VALUE_TYPE> type for the attribute value
  * @author Pieter De Graef
  * @since 2.0.0
  */
 @Api(allMethods = true)
-public interface Attribute<VALUE_TYPE> {
+public interface AttributeType extends Serializable {
 
 	/**
-	 * Get the value for this attribute.
+	 * Get the name of the attribute type.
 	 *
-	 * @return attribute value
+	 * @return The name.
 	 */
-	VALUE_TYPE getValue();
+	String getName();
+
+	/**
+	 * Get the Java classname that is used to represent attribute values of this type.
+	 *
+	 * @return The Java classname.
+	 */
+	Class<?> getBinding();
 }

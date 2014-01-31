@@ -13,10 +13,14 @@
 
 <module rename-to="example">
 	<inherits name='org.geomajas.gwt2.example.ExampleJar' />
+
+    <!-- Include plugins: -->
 	<inherits name='org.geomajas.plugin.wms.example.ExampleJar' />
 	<inherits name='org.geomajas.plugin.editing.example.ExampleJar' />
+    <!--<inherits name='org.geomajas.plugin.corewidget.example.ExampleJar' />-->
 	<!--<inherits name='org.geomajas.plugin.print.example.ExampleJar' />-->
 	<inherits name='org.geomajas.plugin.graphicsediting.gwt2.example.GraphicsEditingGwt2ExampleJar' />
+
     <entry-point class="org.geomajas.gwt2.example.client.Example" />
 	<!-- set target browser to compile for, use this to limit to the browser used for testing -->
 	<!-- where value = "ie6/opera/gecko1_8/safari/gecko" , "gecko1_8" is FireFox 3 -->

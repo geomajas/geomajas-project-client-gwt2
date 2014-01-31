@@ -18,8 +18,8 @@ import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt2.client.controller.AbstractMapController;
+import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.plugin.wms.client.layer.FeaturesSupportedWmsLayer;
-import org.geomajas.plugin.wms.client.service.FeatureCollection;
 import org.geomajas.plugin.wms.client.service.WmsService.GetFeatureInfoFormat;
 
 import com.google.gwt.core.client.Callback;
@@ -36,7 +36,7 @@ public class WmsGetFeatureInfoController extends AbstractMapController {
 
 	private final List<FeaturesSupportedWmsLayer> layers;
 
-	private Callback<FeatureCollection, String> gmlCallback;
+	private Callback<List<Feature>, String> gmlCallback;
 
 	private Callback<Object, String> htmlCallback;
 
@@ -140,10 +140,10 @@ public class WmsGetFeatureInfoController extends AbstractMapController {
 	/**
 	 * Set the callback to use in case the GetFeatureInfoFormat is {@link GetFeatureInfoFormat#GML2}.
 	 *
-	 * @param gmlCallback The callback to execute when the response returns. This response already contains a {@link
-	 *                    FeatureCollection}, and should not be parsed anymore.
+	 * @param gmlCallback The callback to execute when the response returns. This response already contains a list of
+	 *                    features, and should not be parsed anymore.
 	 */
-	public void setGmlCallback(Callback<FeatureCollection, String> gmlCallback) {
+	public void setGmlCallback(Callback<List<Feature>, String> gmlCallback) {
 		this.gmlCallback = gmlCallback;
 	}
 

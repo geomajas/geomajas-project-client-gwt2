@@ -37,4 +37,20 @@ public interface VectorServerLayer extends ServerLayer<ClientVectorLayerInfo>, L
 	 * @return the rules
 	 */
 	List<RuleInfo> getRules();
+
+	/**
+	 * Apply a filter on the layer. Such a filter specifies which features are to be shown on the map, and which aren't.
+	 * This filter is actually used on the back-end and therefore follows the CQL standards.
+	 *
+	 * @param filter
+	 *            The CQL filter, based upon the layer attribute definitions. Use null to disable filtering.
+	 */
+	void setFilter(String filter);
+
+	/**
+	 * Returns the filter that has been set onto this layer.
+	 *
+	 * @return Returns the CQL filter.
+	 */
+	String getFilter();
 }

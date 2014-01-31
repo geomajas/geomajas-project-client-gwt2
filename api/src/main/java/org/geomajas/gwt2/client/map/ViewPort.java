@@ -59,13 +59,6 @@ public interface ViewPort {
 	double getMaximumScale();
 
 	/**
-	 * Returns a list of preferred fixed scale for the map to be in. These are typically the scales at which tiled
-	 * layers will retrieve their tiles.
-	 * 
-	 * @return The list of preferred scales (zoom steps).
-	 */
-
-	/**
 	 * Get the total number of preferred fixed scales. These scales are used among others by the zooming controls on the
 	 * map.
 	 * 

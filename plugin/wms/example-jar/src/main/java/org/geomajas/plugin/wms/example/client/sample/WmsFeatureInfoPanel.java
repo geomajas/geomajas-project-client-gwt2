@@ -9,14 +9,17 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.wms.example.client.sample.v1_1_1;
+package org.geomajas.plugin.wms.example.client.sample;
 
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.ListBox;
@@ -40,24 +43,25 @@ import org.geomajas.plugin.wms.client.controller.WmsGetFeatureInfoController;
 import org.geomajas.plugin.wms.client.layer.FeaturesSupportedWmsLayer;
 import org.geomajas.plugin.wms.client.layer.WmsLayerConfiguration;
 import org.geomajas.plugin.wms.client.layer.WmsTileConfiguration;
-import org.geomajas.plugin.wms.client.service.FeatureCollection;
 import org.geomajas.plugin.wms.client.service.WmsService.GetFeatureInfoFormat;
 import org.geomajas.plugin.wms.client.service.WmsService.WmsVersion;
 import org.vaadin.gwtgraphics.client.VectorObject;
+
+import java.util.List;
 
 /**
  * ContentPanel that demonstrates rendering abilities in world space with a map that supports resizing.
  *
  * @author Pieter De Graef
  */
-public class WmsFeatureInfoV111Panel implements SamplePanel {
+public class WmsFeatureInfoPanel implements SamplePanel {
 
 	/**
 	 * UI binder for this widget.
 	 *
 	 * @author Pieter De Graef
 	 */
-	interface MyUiBinder extends UiBinder<Widget, WmsFeatureInfoV111Panel> {
+	interface MyUiBinder extends UiBinder<Widget, WmsFeatureInfoPanel> {
 	}
 
 	private static final MyUiBinder UI_BINDER = GWT.create(MyUiBinder.class);
@@ -65,6 +69,13 @@ public class WmsFeatureInfoV111Panel implements SamplePanel {
 	private static final String WMS_BASE_URL = "http://apps.geomajas.org/geoserver/demo_world/ows";
 
 	private static final String EPSG = "EPSG:4326";
+
+	private MapPresenter mapPresenter;
+
+	private HandlerRegistration reg;
+
+	@UiField
+	protected ListBox wmsVersionBox;
 
 	@UiField
 	protected ListBox formatBox;
@@ -86,18 +97,34 @@ public class WmsFeatureInfoV111Panel implements SamplePanel {
 		configuration.setMaxBounds(new Bbox(-180, -90, 360, 180));
 		configuration.setHintValue(MapConfiguration.INITIAL_BOUNDS, ExampleBase.BBOX_LATLON_USA);
 		configuration.setMaximumScale(8192);
-		MapPresenter mapPresenter = GeomajasImpl.getInstance().createMapPresenter(configuration, 480, 480);
+		mapPresenter = GeomajasImpl.getInstance().createMapPresenter(configuration, 480, 480);
+		featureContainer = mapPresenter.getContainerManager().addWorldContainer();
+
+		initialize();
+
+		return layout;
+	}
+
+	@UiHandler("goBtn")
+	protected void onReloadClicked(ClickEvent event) {
+		initialize();
+	}
+
+	private void initialize() {
+		mapPresenter.getLayersModel().clear();
+		featureContainer.clear();
+		featureInfoParent.clear();
 
 		// Now create a WMS layer and add it to the map:
 		WmsTileConfiguration tileConfig = new WmsTileConfiguration(256, 256, new Coordinate(-180, -90));
 		WmsLayerConfiguration layerConfig = new WmsLayerConfiguration();
 		layerConfig.setBaseUrl(WMS_BASE_URL);
 		layerConfig.setFormat("image/jpeg");
-		layerConfig.setVersion(WmsVersion.V1_1_1);
+		layerConfig.setVersion(getWmsVersion());
 		layerConfig.setLayers("simplified_country_borders");
 		layerConfig.setMaximumScale(8192);
 		layerConfig.setMinimumScale(0);
-		FeaturesSupportedWmsLayer wmsLayer = WmsServerExtension.getInstance().createFeatureSupportedLayer("Countries",
+		FeaturesSupportedWmsLayer wmsLayer = WmsServerExtension.getInstance().createLayer("Countries",
 				tileConfig, layerConfig, null);
 		mapPresenter.getLayersModel().addLayer(wmsLayer);
 
@@ -123,7 +150,7 @@ public class WmsFeatureInfoV111Panel implements SamplePanel {
 				Window.alert("Something went wrong executing the WMS GetFeatureInfo request: " + reason);
 			}
 		});
-		controller.setGmlCallback(new Callback<FeatureCollection, String>() {
+		controller.setGmlCallback(new Callback<List<Feature>, String>() {
 
 			@Override
 			public void onFailure(String reason) {
@@ -131,9 +158,9 @@ public class WmsFeatureInfoV111Panel implements SamplePanel {
 			}
 
 			@Override
-			public void onSuccess(FeatureCollection result) {
+			public void onSuccess(List<Feature> result) {
 				featureContainer.clear();
-				for (Feature feature : result.getFeatures()) {
+				for (Feature feature : result) {
 					VectorObject shape = GeomajasImpl.getInstance().getGfxUtil().toShape(feature.getGeometry());
 					if (shape != null) {
 						GeomajasImpl.getInstance().getGfxUtil().applyFill(shape, "#CC0000", 0.7);
@@ -146,16 +173,25 @@ public class WmsFeatureInfoV111Panel implements SamplePanel {
 		});
 		mapPresenter.addMapListener(controller);
 
-		featureContainer = mapPresenter.getContainerManager().addWorldContainer();
-		formatBox.addChangeHandler(new ChangeHandler() {
+		if (reg != null) {
+			reg.removeHandler();
+		}
+		reg = formatBox.addChangeHandler(new ChangeHandler() {
 
 			@Override
 			public void onChange(ChangeEvent event) {
 				controller.setFormat(getRequestFormat());
 			}
 		});
+	}
 
-		return layout;
+	private WmsVersion getWmsVersion() {
+		if (wmsVersionBox.getSelectedIndex() == 0) {
+			return WmsVersion.V1_1_1;
+		} else if (wmsVersionBox.getSelectedIndex() == 1) {
+			return WmsVersion.V1_3_0;
+		}
+		return WmsVersion.V1_3_0;
 	}
 
 	private GetFeatureInfoFormat getRequestFormat() {

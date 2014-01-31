@@ -9,12 +9,15 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.wms.example.client.sample.v1_3_0;
+package org.geomajas.plugin.wms.example.client.sample;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.DecoratorPanel;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.geometry.Bbox;
@@ -33,17 +36,17 @@ import org.geomajas.plugin.wms.client.service.WmsService.WmsVersion;
 
 /**
  * ContentPanel that demonstrates rendering abilities in world space with a map that supports resizing.
- * 
+ *
  * @author Pieter De Graef
  */
-public class WmsLayerV130Panel implements SamplePanel {
+public class WmsLayerPanel implements SamplePanel {
 
 	/**
 	 * UI binder for this widget.
-	 * 
+	 *
 	 * @author Pieter De Graef
 	 */
-	interface MyUiBinder extends UiBinder<Widget, WmsLayerV130Panel> {
+	interface MyUiBinder extends UiBinder<Widget, WmsLayerPanel> {
 	}
 
 	private static final MyUiBinder UI_BINDER = GWT.create(MyUiBinder.class);
@@ -52,8 +55,13 @@ public class WmsLayerV130Panel implements SamplePanel {
 
 	private static final String EPSG = "EPSG:4326";
 
+	private MapPresenter mapPresenter;
+
 	@UiField
 	protected ResizeLayoutPanel mapPanel;
+
+	@UiField
+	protected ListBox wmsVersionBox;
 
 	public Widget asWidget() {
 		Widget layout = UI_BINDER.createAndBindUi(this);
@@ -63,25 +71,48 @@ public class WmsLayerV130Panel implements SamplePanel {
 		configuration.setCrs(EPSG, CrsType.DEGREES);
 		configuration.setMaxBounds(new Bbox(-180, -90, 360, 180));
 		configuration.setMaximumScale(8192);
-		MapPresenter mapPresenter = GeomajasImpl.getInstance().createMapPresenter(configuration, 480, 480);
-
-		// Now create a WMS layer and add it to the map:
-		WmsTileConfiguration tileConfig = new WmsTileConfiguration(256, 256, new Coordinate(-180, -90));
-		WmsLayerConfiguration layerConfig = new WmsLayerConfiguration();
-		layerConfig.setBaseUrl(WMS_BASE_URL);
-		layerConfig.setFormat("image/jpeg");
-		layerConfig.setVersion(WmsVersion.V1_3_0);
-		layerConfig.setLayers("bluemarble");
-		layerConfig.setMaximumScale(8192);
-		layerConfig.setMinimumScale(0);
-		final WmsLayer wmsLayer = WmsClient.getInstance().createLayer("Blue Marble", tileConfig, layerConfig, null);
-		mapPresenter.getLayersModel().addLayer(wmsLayer);
+		mapPresenter = GeomajasImpl.getInstance().createMapPresenter(configuration, 480, 480);
 
 		// Define the whole layout:
 		DecoratorPanel mapDecorator = new DecoratorPanel();
 		mapDecorator.add(mapPresenter.asWidget());
 		mapPanel.add(mapDecorator);
 
+		initialize();
+
 		return layout;
+	}
+
+	@UiHandler("goBtn")
+	protected void onGetCapabilitiesClicked(ClickEvent event) {
+		initialize();
+	}
+
+	private void initialize() {
+		// First clear the panel and the map:
+		mapPresenter.getLayersModel().clear();
+
+		// Now create a WMS layer and add it to the map:
+		WmsTileConfiguration tileConfig = new WmsTileConfiguration(256, 256, new Coordinate(-180, -90));
+		WmsLayerConfiguration layerConfig = new WmsLayerConfiguration();
+		layerConfig.setBaseUrl(WMS_BASE_URL);
+		layerConfig.setFormat("image/jpeg");
+		layerConfig.setVersion(getWmsVersion());
+		layerConfig.setLayers("bluemarble");
+		layerConfig.setMaximumScale(8192);
+		layerConfig.setMinimumScale(0);
+
+		final WmsLayer wmsLayer = WmsClient.getInstance().createLayer("Blue Marble", tileConfig, layerConfig, null);
+		mapPresenter.getLayersModel().addLayer(wmsLayer);
+
+	}
+
+	private WmsVersion getWmsVersion() {
+		if (wmsVersionBox.getSelectedIndex() == 0) {
+			return WmsVersion.V1_1_1;
+		} else if (wmsVersionBox.getSelectedIndex() == 1) {
+			return WmsVersion.V1_3_0;
+		}
+		return WmsVersion.V1_3_0;
 	}
 }

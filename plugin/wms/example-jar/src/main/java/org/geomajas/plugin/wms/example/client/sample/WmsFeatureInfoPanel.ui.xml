@@ -6,7 +6,20 @@
     <g:DockLayoutPanel unit="PX" width="100%" height="100%">
         <g:west size="400">
             <g:HTMLPanel addStyleNames="{resource.css.sampleLeftLayout}">
-                <h2>WMS 1.1.1 GetFeatureInfo</h2>
+                <h2>WMS GetFeatureInfo</h2>
+                <p>
+                    <g:ListBox ui:field="wmsVersionBox">
+                        <g:item value='1'>
+                            WMS 1.1.1
+                        </g:item>
+                        <g:item value='2'>
+                            WMS 1.3.0
+                        </g:item>
+                    </g:ListBox>
+                </p>
+                <p style="text-align: right;">
+                    <g:Button ui:field="goBtn">Reload</g:Button>
+                </p>
                 <p>Choose GetFeatureInfo format, then click somewhere on the map:</p>
                 <g:ListBox ui:field="formatBox">
                     <g:item value='1'>

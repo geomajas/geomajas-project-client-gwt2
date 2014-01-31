@@ -14,9 +14,6 @@ package org.geomajas.plugin.wms.server.command;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
 import org.geomajas.command.Command;
-import org.geomajas.configuration.AbstractReadOnlyAttributeInfo;
-import org.geomajas.configuration.PrimitiveAttributeInfo;
-import org.geomajas.configuration.PrimitiveType;
 import org.geomajas.geometry.conversion.jts.GeometryConverterService;
 import org.geomajas.geometry.conversion.jts.JtsConversionException;
 import org.geomajas.layer.feature.Attribute;
@@ -37,7 +34,6 @@ import org.geotools.GML.Version;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.slf4j.Logger;
@@ -75,17 +71,14 @@ public class GetFeatureInfoCommand implements Command<GetFeatureInfoRequest, Get
 		GML gml;
 
 		GetFeatureInfoFormat format = getFormatFromUrl(request.getUrl());
-		List<AbstractReadOnlyAttributeInfo> attributeInfos = new ArrayList<AbstractReadOnlyAttributeInfo>();
 		switch (format) {
 			case GML2:
 				gml = new GML(Version.GML2);
-				response.setFeatures(getFeaturesFromUrl(url, gml, attributeInfos, request.getMaxCoordsPerFeature()));
-				response.setAttributeDescriptors(attributeInfos);
+				response.setFeatures(getFeaturesFromUrl(url, gml, request.getMaxCoordsPerFeature()));
 				break;
 			case GML3:
 				gml = new GML(Version.GML3);
-				response.setFeatures(getFeaturesFromUrl(url, gml, attributeInfos, request.getMaxCoordsPerFeature()));
-				response.setAttributeDescriptors(attributeInfos);
+				response.setFeatures(getFeaturesFromUrl(url, gml, request.getMaxCoordsPerFeature()));
 				break;
 			default:
 				String content = readUrl(url);
@@ -97,9 +90,8 @@ public class GetFeatureInfoCommand implements Command<GetFeatureInfoRequest, Get
 		return new GetFeatureInfoResponse();
 	}
 
-	private List<Feature> getFeaturesFromUrl(URL url, GML gml, List<AbstractReadOnlyAttributeInfo> attributeInfos,
-			int maxCoordsPerFeature) throws IOException, SAXException, ParserConfigurationException {
-		attributeInfos.clear();
+	private List<Feature> getFeaturesFromUrl(URL url, GML gml, int maxCoordsPerFeature) throws IOException,
+			SAXException, ParserConfigurationException {
 		List<Feature> dtoFeatures = new ArrayList<Feature>();
 		FeatureCollection<?, SimpleFeature> collection = gml.decodeFeatureCollection(url.openStream());
 		if (null == collection) {
@@ -108,9 +100,6 @@ public class GetFeatureInfoCommand implements Command<GetFeatureInfoRequest, Get
 		FeatureIterator<SimpleFeature> it = collection.features();
 		if (it.hasNext()) {
 			SimpleFeature feature = it.next();
-			for (AttributeDescriptor desc : feature.getType().getAttributeDescriptors()) {
-				attributeInfos.add(toAttributeInfo(desc));
-			}
 			try {
 				dtoFeatures.add(toDto(feature, maxCoordsPerFeature));
 			} catch (Exception e) {
@@ -126,35 +115,6 @@ public class GetFeatureInfoCommand implements Command<GetFeatureInfoRequest, Get
 			}
 		}
 		return dtoFeatures;
-	}
-
-	private AbstractReadOnlyAttributeInfo toAttributeInfo(AttributeDescriptor desc) throws IOException {
-		Class<?> binding = desc.getType().getBinding();
-		if (binding == null) {
-			throw new IOException("No attribute binding found...");
-		}
-		String name = desc.getLocalName();
-		AbstractReadOnlyAttributeInfo attributeInfo;
-		if (Integer.class.equals(binding)) {
-			attributeInfo = new PrimitiveAttributeInfo(name, name, PrimitiveType.INTEGER);
-		} else if (Short.class.equals(binding)) {
-			attributeInfo = new PrimitiveAttributeInfo(name, name, PrimitiveType.SHORT);
-		} else if (Long.class.equals(binding)) {
-			attributeInfo = new PrimitiveAttributeInfo(name, name, PrimitiveType.LONG);
-		} else if (Float.class.equals(binding)) {
-			attributeInfo = new PrimitiveAttributeInfo(name, name, PrimitiveType.FLOAT);
-		} else if (Double.class.equals(binding)) {
-			attributeInfo = new PrimitiveAttributeInfo(name, name, PrimitiveType.DOUBLE);
-		} else if (BigDecimal.class.equals(binding)) {
-			attributeInfo = new PrimitiveAttributeInfo(name, name, PrimitiveType.DOUBLE);
-		} else if (Boolean.class.equals(binding)) {
-			attributeInfo = new PrimitiveAttributeInfo(name, name, PrimitiveType.BOOLEAN);
-		} else if (Date.class.equals(binding)) {
-			attributeInfo = new PrimitiveAttributeInfo(name, name, PrimitiveType.DATE);
-		} else {
-			attributeInfo = new PrimitiveAttributeInfo(name, name, PrimitiveType.STRING);
-		}
-		return attributeInfo;
 	}
 
 	@SuppressWarnings("rawtypes")

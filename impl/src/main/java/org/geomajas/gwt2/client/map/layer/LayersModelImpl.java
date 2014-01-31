@@ -11,9 +11,6 @@
 
 package org.geomajas.gwt2.client.map.layer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.geomajas.gwt2.client.event.LayerAddedEvent;
 import org.geomajas.gwt2.client.event.LayerDeselectedEvent;
 import org.geomajas.gwt2.client.event.LayerOrderChangedEvent;
@@ -23,9 +20,12 @@ import org.geomajas.gwt2.client.event.LayerSelectionHandler;
 import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.ViewPort;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Default implementation of the {@link LayersModel} interface.
- * 
+ *
  * @author Pieter De Graef
  */
 public class LayersModelImpl implements LayersModel {
@@ -46,13 +46,9 @@ public class LayersModelImpl implements LayersModel {
 
 	/**
 	 * Create a new LayersModel.
-	 * 
-	 * @param viewPort
-	 *            The map ViewPort.
-	 * @param eventBus
-	 *            The same maps eventBus
-	 * @param configuration
-	 *            The maps configuration object.
+	 *
+	 * @param viewPort The map ViewPort.
+	 * @param eventBus The same maps eventBus
 	 */
 	public LayersModelImpl(ViewPort viewPort, MapEventBus eventBus) {
 		this.viewPort = viewPort;
@@ -193,5 +189,12 @@ public class LayersModelImpl implements LayersModel {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public void clear() {
+		while (layers.size() > 0) {
+			removeLayer(layers.get(0).getId());
+		}
 	}
 }

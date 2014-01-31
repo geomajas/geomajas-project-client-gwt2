@@ -103,6 +103,15 @@ h1,h2,h3,h4,h5,h6 {
 	padding-left: 10px;
 }
 
+.sampleRightLayout {
+    vertical-align: top;
+    border-left: 1px solid #C0C0C0;
+    vertical-align: top;
+    margin-left: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
 .sampleRow {
 	padding: 5px 8px;
 	background: #FFFFFF;
