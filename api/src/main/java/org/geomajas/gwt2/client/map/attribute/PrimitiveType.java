@@ -26,30 +26,37 @@ public enum PrimitiveType {
 	 * Boolean.
 	 */
 	BOOLEAN("boolean"),
+
 	/**
 	 * Short.
 	 */
 	SHORT("short"),
+
 	/**
 	 * Integer.
 	 */
 	INTEGER("integer"),
+
 	/**
 	 * Long.
 	 */
 	LONG("long"),
+
 	/**
 	 * Float.
 	 */
 	FLOAT("float"),
+
 	/**
 	 * Double.
 	 */
 	DOUBLE("double"),
+
 	/**
 	 * String.
 	 */
 	STRING("string"),
+
 	/**
 	 * Date.
 	 */

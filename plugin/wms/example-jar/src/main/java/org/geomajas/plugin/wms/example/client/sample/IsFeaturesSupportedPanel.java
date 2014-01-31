@@ -9,16 +9,19 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.wms.example.client.sample.v1_1_1;
+package org.geomajas.plugin.wms.example.client.sample;
 
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -47,14 +50,14 @@ import java.util.List;
  *
  * @author Pieter De Graef
  */
-public class IsFeaturesSupportedV111Panel implements SamplePanel {
+public class IsFeaturesSupportedPanel implements SamplePanel {
 
 	/**
 	 * UI binder for this widget.
 	 *
 	 * @author Pieter De Graef
 	 */
-	interface MyUiBinder extends UiBinder<Widget, IsFeaturesSupportedV111Panel> {
+	interface MyUiBinder extends UiBinder<Widget, IsFeaturesSupportedPanel> {
 	}
 
 	private static final MyUiBinder UI_BINDER = GWT.create(MyUiBinder.class);
@@ -71,6 +74,9 @@ public class IsFeaturesSupportedV111Panel implements SamplePanel {
 
 	@UiField
 	protected VerticalPanel attributePanel;
+
+	@UiField
+	protected ListBox wmsVersionBox;
 
 	public Widget asWidget() {
 		// We let the GetCapabilities and GetFeatureInfo run through a Proxy Servlet to avoid cross domain security:
@@ -100,8 +106,22 @@ public class IsFeaturesSupportedV111Panel implements SamplePanel {
 		// Initialize the map, and return the layout:
 		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "gwt-app", "mapEmpty");
 
+		return layout;
+	}
+
+	@UiHandler("goBtn")
+	protected void onGetCapabilitiesClicked(ClickEvent event) {
+		getCapabilities();
+	}
+
+	private void getCapabilities() {
+		// First clear the panel and the map:
+		mapPresenter.getLayersModel().clear();
+		layerList.clear();
+		attributePanel.clear();
+
 		WmsClient.getInstance().getWmsService()
-				.getCapabilities(WMS_BASE_URL, WmsVersion.V1_1_1, new Callback<WmsGetCapabilitiesInfo, String>() {
+				.getCapabilities(WMS_BASE_URL, getWmsVersion(), new Callback<WmsGetCapabilitiesInfo, String>() {
 
 					@Override
 					public void onSuccess(WmsGetCapabilitiesInfo result) {
@@ -117,8 +137,15 @@ public class IsFeaturesSupportedV111Panel implements SamplePanel {
 						Window.alert("We're very sorry, but something went wrong: " + reason);
 					}
 				});
+	}
 
-		return layout;
+	private WmsVersion getWmsVersion() {
+		if (wmsVersionBox.getSelectedIndex() == 0) {
+			return WmsVersion.V1_1_1;
+		} else if (wmsVersionBox.getSelectedIndex() == 1) {
+			return WmsVersion.V1_3_0;
+		}
+		return WmsVersion.V1_3_0;
 	}
 
 	private void buildLayerPanel(final WmsLayerInfo layerInfo) {
@@ -157,7 +184,7 @@ public class IsFeaturesSupportedV111Panel implements SamplePanel {
 		final WmsTileConfiguration tileConfig = WmsClient.getInstance().createTileConfig(layerInfo,
 				mapPresenter.getViewPort().getCrs(), 256, 256);
 		final WmsLayerConfiguration layerConfig = WmsClient.getInstance().createLayerConfig(
-				mapPresenter.getViewPort(), layerInfo, WMS_BASE_URL, WmsVersion.V1_1_1);
+				mapPresenter.getViewPort(), layerInfo, WMS_BASE_URL, getWmsVersion());
 
 		// Then add the new WMS layer to the map:
 		if (featuresSupported) {

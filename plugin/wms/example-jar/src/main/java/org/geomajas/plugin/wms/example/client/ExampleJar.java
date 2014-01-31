@@ -17,17 +17,12 @@ import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanelRegistry;
 import org.geomajas.gwt2.example.base.client.sample.ShowcaseSampleDefinition;
 import org.geomajas.plugin.wms.example.client.i18n.SampleMessages;
-import org.geomajas.plugin.wms.example.client.sample.v1_1_1.CapabilitiesV111Panel;
-import org.geomajas.plugin.wms.example.client.sample.v1_1_1.IsFeaturesSupportedV111Panel;
-import org.geomajas.plugin.wms.example.client.sample.v1_1_1.SelectStyleV111Panel;
-import org.geomajas.plugin.wms.example.client.sample.v1_1_1.WmsFeatureInfoV111Panel;
-import org.geomajas.plugin.wms.example.client.sample.v1_1_1.WmsLayerLegendV111Panel;
-import org.geomajas.plugin.wms.example.client.sample.v1_1_1.WmsLayerV111Panel;
-import org.geomajas.plugin.wms.example.client.sample.v1_3_0.CapabilitiesV130Panel;
-import org.geomajas.plugin.wms.example.client.sample.v1_3_0.SelectStyleV130Panel;
-import org.geomajas.plugin.wms.example.client.sample.v1_3_0.WmsFeatureInfoV130Panel;
-import org.geomajas.plugin.wms.example.client.sample.v1_3_0.WmsLayerLegendV130Panel;
-import org.geomajas.plugin.wms.example.client.sample.v1_3_0.WmsLayerV130Panel;
+import org.geomajas.plugin.wms.example.client.sample.CapabilitiesPanel;
+import org.geomajas.plugin.wms.example.client.sample.IsFeaturesSupportedPanel;
+import org.geomajas.plugin.wms.example.client.sample.SelectStylePanel;
+import org.geomajas.plugin.wms.example.client.sample.WmsFeatureInfoPanel;
+import org.geomajas.plugin.wms.example.client.sample.WmsLayerLegendPanel;
+import org.geomajas.plugin.wms.example.client.sample.WmsLayerPanel;
 
 /**
  * Entry point and main class for the GWT client example application.
@@ -42,30 +37,29 @@ public class ExampleJar implements EntryPoint {
 
 	public void onModuleLoad() {
 		// Register all samples:
-		registerV111Samples();
-		registerV130Samples();
+		registerSamples();
 	}
 
 	/**
-	 * Register samples using WMS 1.1.1.
+	 * Register samples.
 	 */
-	private void registerV111Samples() {
+	private void registerSamples() {
 		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
 
 			public SamplePanel create() {
-				return new CapabilitiesV111Panel();
+				return new CapabilitiesPanel();
 			}
 
 			public String getTitle() {
-				return MESSAGES.capabilitiesV111Title();
+				return MESSAGES.capabilitiesTitle();
 			}
 
 			public String getShortDescription() {
-				return MESSAGES.capabilitiesV111Short();
+				return MESSAGES.capabilitiesShort();
 			}
 
 			public String getDescription() {
-				return MESSAGES.capabilitiesV111Description();
+				return MESSAGES.capabilitiesDescription();
 			}
 
 			public String getCategory() {
@@ -75,19 +69,19 @@ public class ExampleJar implements EntryPoint {
 		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
 
 			public SamplePanel create() {
-				return new WmsLayerV111Panel();
+				return new WmsLayerPanel();
 			}
 
 			public String getTitle() {
-				return MESSAGES.wmsLayerV111Title();
+				return MESSAGES.wmsLayerTitle();
 			}
 
 			public String getShortDescription() {
-				return MESSAGES.wmsLayerV111Short();
+				return MESSAGES.wmsLayerShort();
 			}
 
 			public String getDescription() {
-				return MESSAGES.wmsLayerV111Description();
+				return MESSAGES.wmsLayerDescription();
 			}
 
 			public String getCategory() {
@@ -97,19 +91,19 @@ public class ExampleJar implements EntryPoint {
 		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
 
 			public SamplePanel create() {
-				return new WmsFeatureInfoV111Panel();
+				return new WmsFeatureInfoPanel();
 			}
 
 			public String getTitle() {
-				return MESSAGES.wmsGetFeatureInfoV111Title();
+				return MESSAGES.wmsGetFeatureInfoTitle();
 			}
 
 			public String getShortDescription() {
-				return MESSAGES.wmsGetFeatureInfoV111Short();
+				return MESSAGES.wmsGetFeatureInfoShort();
 			}
 
 			public String getDescription() {
-				return MESSAGES.wmsGetFeatureInfoV111Description();
+				return MESSAGES.wmsGetFeatureInfoDescription();
 			}
 
 			public String getCategory() {
@@ -119,19 +113,19 @@ public class ExampleJar implements EntryPoint {
 		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
 
 			public SamplePanel create() {
-				return new IsFeaturesSupportedV111Panel();
+				return new IsFeaturesSupportedPanel();
 			}
 
 			public String getTitle() {
-				return MESSAGES.isFeaturesSupportedV111Title();
+				return MESSAGES.isFeaturesSupportedTitle();
 			}
 
 			public String getShortDescription() {
-				return MESSAGES.isFeaturesSupportedV111Short();
+				return MESSAGES.isFeaturesSupportedShort();
 			}
 
 			public String getDescription() {
-				return MESSAGES.isFeaturesSupportedV111Description();
+				return MESSAGES.isFeaturesSupportedDescription();
 			}
 
 			public String getCategory() {
@@ -141,19 +135,19 @@ public class ExampleJar implements EntryPoint {
 		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
 
 			public SamplePanel create() {
-				return new SelectStyleV111Panel();
+				return new SelectStylePanel();
 			}
 
 			public String getTitle() {
-				return MESSAGES.selectStyleV111Title();
+				return MESSAGES.selectStyleTitle();
 			}
 
 			public String getShortDescription() {
-				return MESSAGES.selectStyleV111Short();
+				return MESSAGES.selectStyleShort();
 			}
 
 			public String getDescription() {
-				return MESSAGES.selectStyleV111Description();
+				return MESSAGES.selectStyleDescription();
 			}
 
 			public String getCategory() {
@@ -163,135 +157,19 @@ public class ExampleJar implements EntryPoint {
 		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
 
 			public SamplePanel create() {
-				return new WmsLayerLegendV111Panel();
+				return new WmsLayerLegendPanel();
 			}
 
 			public String getTitle() {
-				return MESSAGES.wmsLayerLegendV111Title();
+				return MESSAGES.wmsLayerLegendTitle();
 			}
 
 			public String getShortDescription() {
-				return MESSAGES.wmsLayerLegendV111Short();
+				return MESSAGES.wmsLayerLegendShort();
 			}
 
 			public String getDescription() {
-				return MESSAGES.wmsLayerLegendV111Description();
-			}
-
-			public String getCategory() {
-				return CATEGORY_WMS;
-			}
-		});
-	}
-
-	/**
-	 * Register samples using WMS 1.3.0.
-	 */
-	private void registerV130Samples() {
-		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
-
-			public SamplePanel create() {
-				return new CapabilitiesV130Panel();
-			}
-
-			public String getTitle() {
-				return MESSAGES.capabilitiesV130Title();
-			}
-
-			public String getShortDescription() {
-				return MESSAGES.capabilitiesV130Short();
-			}
-
-			public String getDescription() {
-				return MESSAGES.capabilitiesV130Description();
-			}
-
-			public String getCategory() {
-				return CATEGORY_WMS;
-			}
-		});
-		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
-
-			public SamplePanel create() {
-				return new WmsLayerV130Panel();
-			}
-
-			public String getTitle() {
-				return MESSAGES.wmsLayerV130Title();
-			}
-
-			public String getShortDescription() {
-				return MESSAGES.wmsLayerV130Short();
-			}
-
-			public String getDescription() {
-				return MESSAGES.wmsLayerV130Description();
-			}
-
-			public String getCategory() {
-				return CATEGORY_WMS;
-			}
-		});
-		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
-
-			public SamplePanel create() {
-				return new WmsFeatureInfoV130Panel();
-			}
-
-			public String getTitle() {
-				return MESSAGES.wmsGetFeatureInfoV130Title();
-			}
-
-			public String getShortDescription() {
-				return MESSAGES.wmsGetFeatureInfoV130Short();
-			}
-
-			public String getDescription() {
-				return MESSAGES.wmsGetFeatureInfoV130Description();
-			}
-
-			public String getCategory() {
-				return CATEGORY_WMS;
-			}
-		});
-		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
-
-			public SamplePanel create() {
-				return new SelectStyleV130Panel();
-			}
-
-			public String getTitle() {
-				return MESSAGES.selectStyleV130Title();
-			}
-
-			public String getShortDescription() {
-				return MESSAGES.selectStyleV130Short();
-			}
-
-			public String getDescription() {
-				return MESSAGES.selectStyleV130Description();
-			}
-
-			public String getCategory() {
-				return CATEGORY_WMS;
-			}
-		});
-		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
-
-			public SamplePanel create() {
-				return new WmsLayerLegendV130Panel();
-			}
-
-			public String getTitle() {
-				return MESSAGES.wmsLayerLegendV130Title();
-			}
-
-			public String getShortDescription() {
-				return MESSAGES.wmsLayerLegendV130Short();
-			}
-
-			public String getDescription() {
-				return MESSAGES.wmsLayerLegendV130Description();
+				return MESSAGES.wmsLayerLegendDescription();
 			}
 
 			public String getCategory() {

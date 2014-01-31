@@ -9,17 +9,20 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.wms.example.client.sample.v1_3_0;
+package org.geomajas.plugin.wms.example.client.sample;
 
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DecoratorPanel;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -39,17 +42,17 @@ import org.geomajas.plugin.wms.client.service.WmsService.WmsVersion;
 
 /**
  * ContentPanel that demonstrates rendering abilities in world space with a map that supports resizing.
- * 
+ *
  * @author Pieter De Graef
  */
-public class CapabilitiesV130Panel implements SamplePanel {
+public class CapabilitiesPanel implements SamplePanel {
 
 	/**
 	 * UI binder for this widget.
-	 * 
+	 *
 	 * @author Pieter De Graef
 	 */
-	interface MyUiBinder extends UiBinder<Widget, CapabilitiesV130Panel> {
+	interface MyUiBinder extends UiBinder<Widget, CapabilitiesPanel> {
 	}
 
 	private static final MyUiBinder UI_BINDER = GWT.create(MyUiBinder.class);
@@ -63,6 +66,9 @@ public class CapabilitiesV130Panel implements SamplePanel {
 
 	@UiField
 	protected VerticalPanel layerList;
+
+	@UiField
+	protected ListBox wmsVersionBox;
 
 	public Widget asWidget() {
 		WmsClient.getInstance().getWmsService().setWmsUrlTransformer(new WmsUrlTransformer() {
@@ -92,8 +98,21 @@ public class CapabilitiesV130Panel implements SamplePanel {
 		// Initialize the map, and return the layout:
 		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "gwt-app", "mapEmpty");
 
+		return layout;
+	}
+
+	@UiHandler("goBtn")
+	protected void onGetCapabilitiesClicked(ClickEvent event) {
+		getCapabilities();
+	}
+
+	private void getCapabilities() {
+		// First clear the panel and the map:
+		mapPresenter.getLayersModel().clear();
+		layerList.clear();
+
 		WmsClient.getInstance().getWmsService()
-				.getCapabilities(WMS_BASE_URL, WmsVersion.V1_3_0, new Callback<WmsGetCapabilitiesInfo, String>() {
+				.getCapabilities(WMS_BASE_URL, getWmsVersion(), new Callback<WmsGetCapabilitiesInfo, String>() {
 
 					@Override
 					public void onSuccess(WmsGetCapabilitiesInfo result) {
@@ -102,7 +121,7 @@ public class CapabilitiesV130Panel implements SamplePanel {
 								WmsTileConfiguration tileConfig = WmsClient.getInstance().createTileConfig(layerInfo,
 										mapPresenter.getViewPort().getCrs(), 256, 256);
 								WmsLayerConfiguration layerConfig = WmsClient.getInstance().createLayerConfig(
-										mapPresenter.getViewPort(), layerInfo, WMS_BASE_URL, WmsVersion.V1_3_0);
+										mapPresenter.getViewPort(), layerInfo, WMS_BASE_URL, getWmsVersion());
 								final WmsLayer layer = WmsClient.getInstance().createLayer(layerInfo.getTitle(),
 										tileConfig, layerConfig, layerInfo);
 
@@ -130,7 +149,14 @@ public class CapabilitiesV130Panel implements SamplePanel {
 						Window.alert("We're very sorry, but something went wrong: " + reason);
 					}
 				});
+	}
 
-		return layout;
+	private WmsVersion getWmsVersion() {
+		if (wmsVersionBox.getSelectedIndex() == 0) {
+			return WmsVersion.V1_1_1;
+		} else if (wmsVersionBox.getSelectedIndex() == 1) {
+			return WmsVersion.V1_3_0;
+		}
+		return WmsVersion.V1_3_0;
 	}
 }
