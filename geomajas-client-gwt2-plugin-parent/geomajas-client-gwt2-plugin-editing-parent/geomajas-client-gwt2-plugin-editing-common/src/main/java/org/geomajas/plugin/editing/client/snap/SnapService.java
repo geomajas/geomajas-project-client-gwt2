@@ -48,6 +48,10 @@ public class SnapService {
 
 	private static final Logger LOGGER = Logger.getLogger(SnapService.class.getName());
 
+	// this is necessary to let pass test and enable server side logging
+	// in case of test: set this value to false.
+	private boolean loggingActive = true;
+
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
@@ -89,28 +93,32 @@ public class SnapService {
 		Coordinate result = coordinate;
 		currentDistance = Double.MAX_VALUE;
 		hasSnapped = false;
-		LOGGER.fine("Start snapping for coordinate " + coordinate);
-		Log.logServer(Log.LEVEL_INFO, "Start snapping for coordinate " + coordinate);
+		logInfo("Start snapping for coordinate " + coordinate);
 		for (SnappingRule rule : rules) {
-			if (rule.isHighPriority() || !hasSnapped) {
-				LOGGER.fine("Checking rule " + rule);
-				Log.logServer(Log.LEVEL_INFO, "Checking rule " + rule);
+			if (!hasSnapped) {
+				logInfo("No snapping yet, checking next rule " + rule);
 				double distance = Math.min(currentDistance, rule.getDistance());
-				LOGGER.fine("Distance = " + distance);
-				Log.logServer(Log.LEVEL_INFO, "Distance = " + distance);
+				logInfo("Distance vale of snapping rule = " + distance);
 				result = rule.getAlgorithm().snap(coordinate, distance);
 				if (rule.getAlgorithm().hasSnapped()) {
-					LOGGER.fine("Snapping succesfull : " + result);
-					Log.logServer(Log.LEVEL_INFO, "Snapping succesfull : " + result);
+					logInfo("Snapping succesfull : " + result);
+					hasSnapped = true;
+				}
+			} else if (rule.isHighPriority()) {
+				// check if this snapping rule applies. If it does, overwrite existing result value
+				logInfo("Already snapping, but also checking priority rule " + rule);
+				Coordinate priorityResult = rule.getAlgorithm().snap(coordinate, rule.getDistance());
+				if (rule.getAlgorithm().hasSnapped()) {
+					result = priorityResult;
+					logInfo("Snapping succesfull, earlier result overwritten : " + result);
 					hasSnapped = true;
 				}
 			} else {
-				LOGGER.fine("Skipping rule " + rule);
-				Log.logServer(Log.LEVEL_INFO, "Skipping rule " + rule);
+				logInfo("Skipping rule " + rule);
 			}
 		}
-		LOGGER.fine("Stopped snapping for coordinate " + coordinate);
-		Log.logServer(Log.LEVEL_INFO, "Stopped snapping for coordinate " + coordinate);
+		logInfo("Stopped snapping for coordinate " + coordinate +
+				"; result  " + result + "; hasSnapped " + hasSnapped);
 		eventBus.fireEvent(new CoordinateSnapEvent(coordinate, result));
 		return result;
 	}
@@ -224,5 +232,17 @@ public class SnapService {
 					+ "]";
 		}
 		
+	}
+
+	// logging enabled
+
+	void setLoggingActive(boolean loggingActive) {
+		this.loggingActive = loggingActive;
+	}
+
+	private void logInfo(String text) {
+		if (loggingActive) {
+			Log.logServer(Log.LEVEL_INFO, text);
+		}
 	}
 }

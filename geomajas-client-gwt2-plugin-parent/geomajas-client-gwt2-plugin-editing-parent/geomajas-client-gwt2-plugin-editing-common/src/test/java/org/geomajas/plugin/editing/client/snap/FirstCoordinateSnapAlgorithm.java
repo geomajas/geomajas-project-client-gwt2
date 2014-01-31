@@ -39,6 +39,7 @@ public class FirstCoordinateSnapAlgorithm implements SnapAlgorithm {
 			if (d < calculatedDistance) {
 				calculatedDistance = d;
 				result = getFirstCoordinate(geometry);
+				hasSnapped = true;
 			}
 		}
 
