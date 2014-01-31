@@ -101,6 +101,8 @@ public class SelectStylePanel implements SamplePanel {
 		// Initialize the map, and return the layout:
 		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "gwt-app", "mapEmpty");
 
+		getCapabilities();
+
 		return layout;
 	}
 

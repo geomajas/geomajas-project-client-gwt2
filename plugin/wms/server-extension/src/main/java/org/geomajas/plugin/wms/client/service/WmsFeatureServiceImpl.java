@@ -53,8 +53,8 @@ public class WmsFeatureServiceImpl extends WmsServiceImpl implements WmsFeatureS
 	@Override
 	public void getFeatureInfo(ViewPort viewPort, final FeaturesSupportedWmsLayer layer, Coordinate location,
 			final Callback<List<Feature>, String> callback) {
-		final String url = getFeatureInfoUrl(layer, location, GetFeatureInfoFormat.GML2, DEFAULT_PIXEL_TOLERANCE,
-				DEFAULT_MAX_FEATURES);
+		final String url = getFeatureInfoUrl(viewPort, layer, location, GetFeatureInfoFormat.GML2,
+				DEFAULT_PIXEL_TOLERANCE, DEFAULT_MAX_FEATURES);
 
 		Integer max = WmsServerExtension.getInstance().getHintValue(WmsServerExtension.GET_FEATUREINFO_MAX_COORDS);
 
@@ -163,7 +163,8 @@ public class WmsFeatureServiceImpl extends WmsServiceImpl implements WmsFeatureS
 				url.append((int) Math.round((screenLocation.getY() - screenBounds.getY())
 						/ (double) toleranceCorrection));
 		}
-		url.append("&FEATURE_COUNT=" + maxFeatures);
+		url.append("&FEATURE_COUNT=");
+		url.append(maxFeatures);
 		url.append("&INFO_FORMAT=");
 		url.append(format.toString());
 

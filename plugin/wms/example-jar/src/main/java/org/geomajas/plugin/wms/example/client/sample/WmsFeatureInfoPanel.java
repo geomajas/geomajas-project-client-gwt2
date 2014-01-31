@@ -16,7 +16,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -72,7 +71,9 @@ public class WmsFeatureInfoPanel implements SamplePanel {
 
 	private MapPresenter mapPresenter;
 
-	private HandlerRegistration reg;
+	private WmsGetFeatureInfoController controller;
+
+	private VectorContainer featureContainer;
 
 	@UiField
 	protected ListBox wmsVersionBox;
@@ -86,8 +87,6 @@ public class WmsFeatureInfoPanel implements SamplePanel {
 	@UiField
 	protected SimplePanel featureInfoParent;
 
-	private VectorContainer featureContainer;
-
 	public Widget asWidget() {
 		Widget layout = UI_BINDER.createAndBindUi(this);
 
@@ -100,41 +99,7 @@ public class WmsFeatureInfoPanel implements SamplePanel {
 		mapPresenter = GeomajasImpl.getInstance().createMapPresenter(configuration, 480, 480);
 		featureContainer = mapPresenter.getContainerManager().addWorldContainer();
 
-		initialize();
-
-		return layout;
-	}
-
-	@UiHandler("goBtn")
-	protected void onReloadClicked(ClickEvent event) {
-		initialize();
-	}
-
-	private void initialize() {
-		mapPresenter.getLayersModel().clear();
-		featureContainer.clear();
-		featureInfoParent.clear();
-
-		// Now create a WMS layer and add it to the map:
-		WmsTileConfiguration tileConfig = new WmsTileConfiguration(256, 256, new Coordinate(-180, -90));
-		WmsLayerConfiguration layerConfig = new WmsLayerConfiguration();
-		layerConfig.setBaseUrl(WMS_BASE_URL);
-		layerConfig.setFormat("image/jpeg");
-		layerConfig.setVersion(getWmsVersion());
-		layerConfig.setLayers("simplified_country_borders");
-		layerConfig.setMaximumScale(8192);
-		layerConfig.setMinimumScale(0);
-		FeaturesSupportedWmsLayer wmsLayer = WmsServerExtension.getInstance().createLayer("Countries",
-				tileConfig, layerConfig, null);
-		mapPresenter.getLayersModel().addLayer(wmsLayer);
-
-		// Define the whole layout:
-		MapLayoutPanel mapLayoutPanel = new MapLayoutPanel();
-		mapLayoutPanel.setPresenter(mapPresenter);
-		mapPanel.setWidget(mapLayoutPanel);
-
-		final WmsGetFeatureInfoController controller = new WmsGetFeatureInfoController();
-		controller.addLayer(wmsLayer);
+		controller = new WmsGetFeatureInfoController();
 		controller.setFormat(getRequestFormat());
 		controller.setHtmlCallback(new Callback<Object, String>() {
 
@@ -172,17 +137,51 @@ public class WmsFeatureInfoPanel implements SamplePanel {
 			}
 		});
 		mapPresenter.addMapListener(controller);
-
-		if (reg != null) {
-			reg.removeHandler();
-		}
-		reg = formatBox.addChangeHandler(new ChangeHandler() {
+		formatBox.addChangeHandler(new ChangeHandler() {
 
 			@Override
 			public void onChange(ChangeEvent event) {
 				controller.setFormat(getRequestFormat());
 			}
 		});
+
+		// Define the whole layout:
+		MapLayoutPanel mapLayoutPanel = new MapLayoutPanel();
+		mapLayoutPanel.setPresenter(mapPresenter);
+		mapPanel.setWidget(mapLayoutPanel);
+
+		initialize();
+
+		return layout;
+	}
+
+	@UiHandler("goBtn")
+	protected void onReloadClicked(ClickEvent event) {
+		initialize();
+	}
+
+	private void initialize() {
+		// Cleanup:
+		if (mapPresenter.getLayersModel().getLayerCount() > 0) {
+			controller.removeLayer((FeaturesSupportedWmsLayer) mapPresenter.getLayersModel().getLayer(0));
+		}
+		mapPresenter.getLayersModel().clear();
+		featureContainer.clear();
+		featureInfoParent.clear();
+
+		// Now create a WMS layer and add it to the map:
+		WmsTileConfiguration tileConfig = new WmsTileConfiguration(256, 256, new Coordinate(-180, -90));
+		WmsLayerConfiguration layerConfig = new WmsLayerConfiguration();
+		layerConfig.setBaseUrl(WMS_BASE_URL);
+		layerConfig.setFormat("image/jpeg");
+		layerConfig.setVersion(getWmsVersion());
+		layerConfig.setLayers("simplified_country_borders");
+		layerConfig.setMaximumScale(8192);
+		layerConfig.setMinimumScale(0);
+		FeaturesSupportedWmsLayer wmsLayer = WmsServerExtension.getInstance().createLayer("Countries",
+				tileConfig, layerConfig, null);
+		mapPresenter.getLayersModel().addLayer(wmsLayer);
+		controller.addLayer(wmsLayer);
 	}
 
 	private WmsVersion getWmsVersion() {

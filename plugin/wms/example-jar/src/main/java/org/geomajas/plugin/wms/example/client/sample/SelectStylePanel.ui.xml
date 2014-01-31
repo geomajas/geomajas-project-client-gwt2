@@ -20,7 +20,7 @@
                     </g:ListBox>
                 </p>
                 <p style="text-align: right;">
-                    <g:Button ui:field="goBtn">Get Capabilities</g:Button>
+                    <g:Button ui:field="goBtn">Reload</g:Button>
                 </p>
 				<h3>Available layers:</h3>
 				<g:VerticalPanel ui:field="layerList" width="100%" />

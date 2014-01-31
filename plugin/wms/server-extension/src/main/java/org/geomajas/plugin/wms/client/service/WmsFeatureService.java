@@ -39,7 +39,8 @@ public interface WmsFeatureService extends WmsService {
 	 * @param cb       The callback that will return a list containing features that have been found at the location.
 	 *                 This can be an empty collection.
 	 */
-	void getFeatureInfo(ViewPort viewPort, FeaturesSupportedWmsLayer layer, Coordinate location, Callback<List<Feature>, String> cb);
+	void getFeatureInfo(ViewPort viewPort, FeaturesSupportedWmsLayer layer, Coordinate location, Callback<List<Feature>,
+			String> cb);
 
 	/**
 	 * Execute a WMS GetFeatureInfo request.

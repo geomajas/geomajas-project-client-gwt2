@@ -149,7 +149,9 @@ public class FeaturesSupportedWmsLayerImpl extends WmsLayerImpl implements Featu
 			@Override
 			public void execute(WfsDescribeLayerResponse response) {
 				descriptors.addAll(response.getAttributeDescriptors());
-				onInitialized.onSuccess(getAttributeDescriptors());
+				if (onInitialized != null) {
+					onInitialized.onSuccess(getAttributeDescriptors());
+				}
 			}
 		});
 	}
