@@ -10,38 +10,26 @@
  */
 package org.geomajas.plugin.print.client;
 
-import org.geomajas.plugin.print.client.service.PrintService;
-import org.geomajas.plugin.print.client.service.PrintServiceImpl;
 
 import com.google.gwt.core.client.EntryPoint;
 
 /**
  * Initializes the puregwt print plugin.
  * 
- * @author Jan De Moerloose
+ * @author An Buyle
  * 
  */
-public class PrintClient implements EntryPoint {
-
-	private static PrintClient instance;
+public class Print implements EntryPoint {
 
 	public static final String SHOW_DEFAULT_PRINT_KEY = "ShowDefaultPrint";
 
-	private PrintService printService;
-
-	private PrintClient() {
-		printService = new PrintServiceImpl();
-	}
-
 	public void onModuleLoad() {
-	}
-	
-	public static PrintClient getInstance() {
-		return instance; 
-	}
-	
-	public PrintService getPrintService() {
-		return printService;
+//		ToolbarRegistry.put(SHOW_DEFAULT_PRINT_KEY, new ToolCreator() {
+//
+//			public ToolbarBaseAction createTool(MapWidget mapWidget) {
+//				return new PrintAction(mapWidget);
+//			}
+//		});
 	}
 
 }

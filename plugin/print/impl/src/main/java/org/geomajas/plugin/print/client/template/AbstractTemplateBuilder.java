@@ -28,12 +28,9 @@ import org.geomajas.plugin.print.component.dto.ScaleBarComponentInfo;
  * 
  * @author Jan De Moerloose
  */
-public abstract class AbstractTemplateBuilder implements TemplateBuilder {
-	
-	protected PrintConfiguration printConfiguration;
+public abstract class AbstractTemplateBuilder {
 
-	public PrintTemplateInfo buildTemplate(PrintConfiguration printConfiguration) {
-		this.printConfiguration = printConfiguration;
+	protected PrintTemplateInfo buildTemplate() {
 		PrintTemplateInfo template = new PrintTemplateInfo();
 		template.setPage(buildPage());
 		return template;
