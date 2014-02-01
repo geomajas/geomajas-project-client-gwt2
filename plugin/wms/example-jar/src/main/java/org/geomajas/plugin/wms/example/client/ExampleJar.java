@@ -23,6 +23,7 @@ import org.geomajas.plugin.wms.example.client.sample.SelectStylePanel;
 import org.geomajas.plugin.wms.example.client.sample.WmsFeatureInfoPanel;
 import org.geomajas.plugin.wms.example.client.sample.WmsLayerLegendPanel;
 import org.geomajas.plugin.wms.example.client.sample.WmsLayerPanel;
+import org.geomajas.plugin.wms.example.client.sample.WmsSearchByLocationPanel;
 
 /**
  * Entry point and main class for the GWT client example application.
@@ -126,6 +127,28 @@ public class ExampleJar implements EntryPoint {
 
 			public String getDescription() {
 				return MESSAGES.isFeaturesSupportedDescription();
+			}
+
+			public String getCategory() {
+				return CATEGORY_WMS;
+			}
+		});
+		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
+
+			public SamplePanel create() {
+				return new WmsSearchByLocationPanel();
+			}
+
+			public String getTitle() {
+				return MESSAGES.wmsSearchByLocationTitle();
+			}
+
+			public String getShortDescription() {
+				return MESSAGES.wmsSearchByLocationShort();
+			}
+
+			public String getDescription() {
+				return MESSAGES.wmsSearchByLocationDescription();
 			}
 
 			public String getCategory() {

@@ -44,6 +44,12 @@ public interface SampleMessages extends Messages {
 
 	String isFeaturesSupportedDescription();
 
+	String wmsSearchByLocationTitle();
+
+	String wmsSearchByLocationShort();
+
+	String wmsSearchByLocationDescription();
+
 	String selectStyleTitle();
 
 	String selectStyleShort();

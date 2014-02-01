@@ -48,6 +48,11 @@ public final class WmsServerExtension {
 	 */
 	public static final Hint<Integer> GET_FEATUREINFO_MAX_COORDS = new Hint<Integer>("get_featureinfo_maxcoords");
 
+	/**
+	 * Hint that determines the maximum number of features a search on FeaturesSupported layer may contain.
+	 */
+	public static final Hint<Integer> GET_FEATUREINFO_MAX_FEATURES = new Hint<Integer>("get_featureinfo_maxfeatures");
+
 	private static WmsServerExtension instance;
 
 	private final WmsFeatureServiceImpl featureService;
@@ -59,7 +64,8 @@ public final class WmsServerExtension {
 		this.featureService = new WmsFeatureServiceImpl();
 
 		// Set the default maximum number of coordinates the features of a GetFeatureInfo should contain:
-		setHintValue(GET_FEATUREINFO_MAX_COORDS, -1);
+		setHintValue(GET_FEATUREINFO_MAX_COORDS, -1); // No maximum
+		setHintValue(GET_FEATUREINFO_MAX_FEATURES, -1); // No maximum
 	}
 
 	/**

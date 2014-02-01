@@ -17,6 +17,7 @@ import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.event.FeatureDeselectedEvent;
 import org.geomajas.gwt2.client.event.FeatureSelectedEvent;
 import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
@@ -26,6 +27,8 @@ import org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo;
 import org.geomajas.plugin.wms.client.service.WmsService.GetFeatureInfoFormat;
 import org.geomajas.plugin.wms.server.command.dto.WfsDescribeLayerRequest;
 import org.geomajas.plugin.wms.server.command.dto.WfsDescribeLayerResponse;
+import org.geomajas.plugin.wms.server.command.dto.WfsGetFeaturesRequest;
+import org.geomajas.plugin.wms.server.command.dto.WfsGetFeaturesResponse;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -133,8 +136,29 @@ public class FeaturesSupportedWmsLayerImpl extends WmsLayerImpl implements Featu
 	}
 
 	@Override
-	public void searchFeatures(Geometry geometry, Callback<List<Feature>, String> callback) {
+	public void searchFeatures(Geometry geometry, final Callback<List<Feature>, String> callback) {
+		Integer maxC = WmsServerExtension.getInstance().getHintValue(WmsServerExtension.GET_FEATUREINFO_MAX_COORDS);
+		Integer maxF = WmsServerExtension.getInstance().getHintValue(WmsServerExtension.GET_FEATUREINFO_MAX_FEATURES);
 
+		WfsGetFeaturesRequest request = new WfsGetFeaturesRequest(wmsConfig.getBaseUrl(), id, geometry);
+		request.setMaxCoordsPerFeature(maxC);
+		request.setMaxNumOfFeatures(maxF);
+
+		GwtCommand command = new GwtCommand(WfsGetFeaturesRequest.COMMAND_NAME);
+		command.setCommandRequest(request);
+		GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback<WfsGetFeaturesResponse>() {
+
+			@Override
+			public void execute(WfsGetFeaturesResponse response) {
+				List<Feature> features = new ArrayList<Feature>();
+				for (org.geomajas.layer.feature.Feature feature : response.getFeatures()) {
+					Feature newFeature = GeomajasServerExtension.getInstance().getServerFeatureService()
+							.create(feature, FeaturesSupportedWmsLayerImpl.this);
+					features.add(newFeature);
+				}
+				callback.onSuccess(features);
+			}
+		});
 	}
 
 	// ------------------------------------------------------------------------

@@ -11,21 +11,8 @@
 
 package org.geomajas.plugin.wms.server.command;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
 import org.geomajas.command.Command;
-import org.geomajas.geometry.conversion.jts.GeometryConverterService;
-import org.geomajas.geometry.conversion.jts.JtsConversionException;
-import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.Feature;
-import org.geomajas.layer.feature.attribute.BooleanAttribute;
-import org.geomajas.layer.feature.attribute.DateAttribute;
-import org.geomajas.layer.feature.attribute.DoubleAttribute;
-import org.geomajas.layer.feature.attribute.FloatAttribute;
-import org.geomajas.layer.feature.attribute.IntegerAttribute;
-import org.geomajas.layer.feature.attribute.LongAttribute;
-import org.geomajas.layer.feature.attribute.ShortAttribute;
-import org.geomajas.layer.feature.attribute.StringAttribute;
 import org.geomajas.plugin.wms.client.service.WmsService.GetFeatureInfoFormat;
 import org.geomajas.plugin.wms.server.command.dto.GetFeatureInfoRequest;
 import org.geomajas.plugin.wms.server.command.dto.GetFeatureInfoResponse;
@@ -34,8 +21,6 @@ import org.geotools.GML.Version;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.type.AttributeType;
-import org.opengis.feature.type.GeometryDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -45,12 +30,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.math.BigDecimal;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -97,11 +79,12 @@ public class GetFeatureInfoCommand implements Command<GetFeatureInfoRequest, Get
 		if (null == collection) {
 			return dtoFeatures; // empty list
 		}
+		FeatureConverter converter = new FeatureConverter();
 		FeatureIterator<SimpleFeature> it = collection.features();
 		if (it.hasNext()) {
 			SimpleFeature feature = it.next();
 			try {
-				dtoFeatures.add(toDto(feature, maxCoordsPerFeature));
+				dtoFeatures.add(converter.toDto(feature, maxCoordsPerFeature));
 			} catch (Exception e) {
 				log.error("Error parsing Feature information: " + e.getMessage());
 			}
@@ -109,117 +92,12 @@ public class GetFeatureInfoCommand implements Command<GetFeatureInfoRequest, Get
 		while (it.hasNext()) {
 			SimpleFeature feature = it.next();
 			try {
-				dtoFeatures.add(toDto(feature, maxCoordsPerFeature));
+				dtoFeatures.add(converter.toDto(feature, maxCoordsPerFeature));
 			} catch (Exception e) {
 				// Do nothing...
 			}
 		}
 		return dtoFeatures;
-	}
-
-	@SuppressWarnings("rawtypes")
-	private Feature toDto(SimpleFeature feature, int maxCoordsPerFeature) throws IllegalArgumentException {
-		if (feature == null) {
-			throw new IllegalArgumentException("No feature was passed.");
-		}
-		Feature dto = new Feature(feature.getID());
-		HashMap<String, Attribute> attributeMap = new HashMap<String, Attribute>();
-		GeometryDescriptor geometryDescr = feature.getFeatureType().getGeometryDescriptor();
-		for (org.opengis.feature.type.AttributeDescriptor desc : feature.getType().getAttributeDescriptors()) {
-			if (null == geometryDescr || !geometryDescr.getName().getLocalPart().equals(desc.getLocalName())) {
-				Object obj = feature.getAttribute(desc.getName());
-				Attribute<?> value = toPrimitive(obj, desc.getType());
-				attributeMap.put(desc.getLocalName(), value);
-			}
-		}
-
-		dto.setAttributes(attributeMap);
-		dto.setId(feature.getID());
-		dto.setUpdatable(false);
-		dto.setDeletable(false);
-
-		Object defaultGeometry = feature.getDefaultGeometry();
-		if (defaultGeometry instanceof Geometry) {
-			Geometry geometry = (Geometry) defaultGeometry;
-			if (maxCoordsPerFeature > 0) {
-				int distanceTolerance = 10;
-				while (geometry.getNumPoints() > maxCoordsPerFeature) {
-					geometry = DouglasPeuckerSimplifier.simplify(geometry, distanceTolerance);
-					distanceTolerance *= 2;
-				}
-			}
-			try {
-				dto.setGeometry(GeometryConverterService.fromJts(geometry));
-			} catch (JtsConversionException e) {
-				// OK then, no geometry for you...
-				log.error("Error while parsing geometry from GML: " + e.getMessage());
-			}
-		}
-
-		return dto;
-	}
-
-	private Attribute<?> toPrimitive(Object value, AttributeType type) {
-		// String attribute?
-		if (type.getBinding().equals(String.class)) {
-			return new StringAttribute(value == null ? null : value.toString());
-		}
-		// Number attributes:
-		try {
-			if ((Integer.class).equals(type.getBinding())) {
-				return new IntegerAttribute((Integer) convertToClass(value, Integer.class));
-			}
-			if ((Short.class).equals(type.getBinding())) {
-				return new ShortAttribute((Short) convertToClass(value, Short.class));
-			} else if (Long.class.equals(type.getBinding())) {
-				return new LongAttribute((Long) convertToClass(value, Long.class));
-			} else if (Float.class.equals(type.getBinding())) {
-				return new FloatAttribute((Float) convertToClass(value, Float.class));
-			} else if (Double.class.equals(type.getBinding())) {
-				return new DoubleAttribute((Double) convertToClass(value, Double.class));
-			} else if (BigDecimal.class.equals(type.getBinding())) {
-				return new DoubleAttribute((Double) convertToClass(Double.valueOf(value.toString()), Double.class));
-			}
-		} catch (NumberFormatException e) {
-			return new StringAttribute(value == null ? null : value.toString());
-		}
-
-		// Boolean and date attributes:
-		if (Boolean.class.equals(type.getBinding())) {
-			return new BooleanAttribute((Boolean) convertToClass(value, Boolean.class));
-		} else if (Date.class.equals(type.getBinding())) {
-			return new DateAttribute((Date) convertToClass(value, Date.class));
-		}
-
-		// Last resort...
-		return new StringAttribute(value == null ? null : value.toString());
-	}
-
-	private Object convertToClass(Object object, Class<?> c) {
-		if (object == null) {
-			return null;
-		} else if (c.isInstance(object)) {
-			return object;
-		} else {
-			return fromString(object.toString(), c);
-		}
-	}
-
-	private Object fromString(String str, Class<?> c) {
-		if (c.equals(Integer.class)) {
-			return Integer.parseInt(str);
-		} else if (c.equals(Short.class)) {
-			return Short.parseShort(str);
-		} else if (c.equals(Long.class)) {
-			return Long.parseLong(str);
-		} else if (c.equals(Float.class)) {
-			return Float.parseFloat(str);
-		} else if (c.equals(Double.class)) {
-			return Double.parseDouble(str);
-		} else if (c.equals(Boolean.class)) {
-			return Boolean.valueOf(str);
-		}
-		return null;
 	}
 
 	private GetFeatureInfoFormat getFormatFromUrl(String url) {
