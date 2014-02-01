@@ -126,7 +126,7 @@ public class SelectStylePanel implements SamplePanel {
 								WmsTileConfiguration tileConfig = WmsClient.getInstance().createTileConfig(layerInfo,
 										mapPresenter.getViewPort().getCrs(), 256, 256);
 								WmsLayerConfiguration layerConfig = WmsClient.getInstance().createLayerConfig(
-										mapPresenter.getViewPort(), layerInfo, WMS_BASE_URL, getWmsVersion());
+										layerInfo, WMS_BASE_URL, getWmsVersion());
 								final WmsLayer layer = WmsClient.getInstance().createLayer(layerInfo.getTitle(),
 										tileConfig, layerConfig, layerInfo);
 								mapPresenter.getLayersModel().addLayer(layer);

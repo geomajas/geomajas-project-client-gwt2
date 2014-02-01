@@ -186,7 +186,7 @@ public class IsFeaturesSupportedPanel implements SamplePanel {
 		final WmsTileConfiguration tileConfig = WmsClient.getInstance().createTileConfig(layerInfo,
 				mapPresenter.getViewPort().getCrs(), 256, 256);
 		final WmsLayerConfiguration layerConfig = WmsClient.getInstance().createLayerConfig(
-				mapPresenter.getViewPort(), layerInfo, WMS_BASE_URL, getWmsVersion());
+				layerInfo, WMS_BASE_URL, getWmsVersion());
 
 		// Then add the new WMS layer to the map:
 		if (featuresSupported) {

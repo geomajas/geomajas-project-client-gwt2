@@ -15,6 +15,7 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.client.event.LayerStyleChangedEvent;
 import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.View;
+import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.AbstractLayer;
 import org.geomajas.gwt2.client.map.layer.LegendConfig;
 import org.geomajas.gwt2.client.map.render.FixedScaleLayerRenderer;
@@ -62,6 +63,32 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 	protected void setEventBus(MapEventBus eventBus) {
 		super.setEventBus(eventBus);
 		this.wmsConfig.setParentLayer(eventBus, this);
+	}
+
+	@Override
+	protected void setViewPort(ViewPort viewPort) {
+		super.setViewPort(viewPort);
+
+		// Install minimum and maximum scale:
+		double minScale = -1.0, maxScale = -1.0;
+		if (layerCapabilities != null) {
+			int minSD = layerCapabilities.getMinScaleDenominator();
+			if (minSD > 0) {
+				minScale = viewPort.toScale(minSD);
+			}
+			int maxSD = layerCapabilities.getMaxScaleDenominator();
+			if (maxSD > 0) {
+				maxScale = viewPort.toScale(maxSD);
+			}
+		}
+		if (minScale < 0) {
+			minScale = viewPort.getMinimumScale();
+		}
+		if (maxScale < 0) {
+			maxScale = viewPort.getMaximumScale();
+		}
+		wmsConfig.setMinimumScale(minScale);
+		wmsConfig.setMaximumScale(maxScale);
 	}
 
 	// ------------------------------------------------------------------------

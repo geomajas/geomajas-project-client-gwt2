@@ -127,8 +127,8 @@ public class WmsLayerLegendPanel implements SamplePanel {
 							for (WmsLayerInfo layerInfo : result.getLayers()) {
 								WmsTileConfiguration tileConfig = WmsClient.getInstance().createTileConfig(layerInfo,
 										mapPresenter.getViewPort().getCrs(), 256, 256);
-								WmsLayerConfiguration layerConfig = WmsClient.getInstance().createLayerConfig(
-										mapPresenter.getViewPort(), layerInfo, WMS_BASE_URL, getWmsVersion());
+								WmsLayerConfiguration layerConfig = WmsClient.getInstance().createLayerConfig(layerInfo,
+										WMS_BASE_URL, getWmsVersion());
 								final WmsLayer layer = WmsClient.getInstance().createLayer(layerInfo.getTitle(),
 										tileConfig, layerConfig, layerInfo);
 								mapPresenter.getLayersModel().addLayer(layer);

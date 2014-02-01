@@ -15,10 +15,9 @@ import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.client.map.render.LayerRenderer;
 
 /**
- * TODO add minimum and maximum scale...
- * 
  * The basic definition of a layer within the GWT client.
- * 
+ * TODO add minimum and maximum scale...
+ *
  * @author Pieter De Graef
  * @since 1.0.0
  */
