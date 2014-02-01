@@ -15,6 +15,8 @@ import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.client.gfx.FontStyle;
 
+import java.io.Serializable;
+
 /**
  * Generic configuration object for legend creation, used in the {@link LegendUrlSupported} interface. It is important
  * to note that not all legend creation services may support all the fields within this configuration object. It is up
@@ -24,7 +26,9 @@ import org.geomajas.gwt2.client.gfx.FontStyle;
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public class LegendConfig {
+public class LegendConfig implements Serializable {
+
+	private static final long serialVersionUID = 200L;
 
 	/** Default icon size used the legend icons. */
 	public static final int DEFAULT_ICON_SIZE = 20;

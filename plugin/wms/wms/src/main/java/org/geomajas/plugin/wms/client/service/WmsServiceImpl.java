@@ -242,7 +242,7 @@ public class WmsServiceImpl implements WmsService {
 
 		// Parameter: bbox
 		url.append("&bbox=");
-		if (useInvertedAxis(config.getVersion(), crs)) {
+		if (config.isUseInvertedAxis()) {
 			// Replace
 			url.append(floatToStringWithDecimalPoint((worldBounds.getY())));
 			url.append(",");
@@ -318,13 +318,5 @@ public class WmsServiceImpl implements WmsService {
 		url.append("&request=GetCapabilities");
 
 		return finishUrl(WmsRequest.GETCAPABILITIES, url);
-	}
-
-	protected boolean useInvertedAxis(WmsVersion version, String crs) {
-		if (WmsVersion.V1_3_0.equals(version) && ("EPSG:4326".equalsIgnoreCase(crs) || 
-				"WGS:84".equalsIgnoreCase(crs))) {
-			return true;
-		}
-		return false;
 	}
 }

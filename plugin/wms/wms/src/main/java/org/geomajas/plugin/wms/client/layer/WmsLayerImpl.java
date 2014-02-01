@@ -63,6 +63,7 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 	protected void setEventBus(MapEventBus eventBus) {
 		super.setEventBus(eventBus);
 		this.wmsConfig.setParentLayer(eventBus, this);
+		this.wmsConfig.setCrs(viewPort.getCrs());
 	}
 
 	@Override

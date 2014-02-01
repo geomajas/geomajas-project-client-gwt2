@@ -55,8 +55,13 @@ public class WmsLayerConfiguration implements Serializable {
 
 	private double maximumScale; // maximum zoom in
 
+	private Boolean useInvertedAxis;
+
 	private MapEventBus eventBus;
+
 	private WmsLayer parentLayer;
+
+	private String crs;
 
 	// ------------------------------------------------------------------------
 	// Getters and setters:
@@ -269,6 +274,31 @@ public class WmsLayerConfiguration implements Serializable {
 		this.maximumScale = maximumScale;
 	}
 
+	/**
+	 * Should GetMap calls based upon this configuration object use inverted XY axis or not? If you're not sure, don't
+	 * use this method. If you leave this untouched, Geomajas will attempt to figure it out for you, which should
+	 * usually work just fine.
+	 *
+	 * @return True or false.
+	 */
+	public boolean isUseInvertedAxis() {
+		if (useInvertedAxis == null) {
+			useInvertedAxis = useInvertedAxis();
+		}
+		return useInvertedAxis;
+	}
+
+	/**
+	 * Determine whether or not GetMap calls based upon this configuration object should use inverted XY axis or not. If
+	 * you're not sure, don't use this method. If you leave this untouched, Geomajas will attempt to figure it out for
+	 * you, which should usually work just fine.
+	 *
+	 * @param useInvertedAxis Yay or nay.
+	 */
+	public void setUseInvertedAxis(boolean useInvertedAxis) {
+		this.useInvertedAxis = useInvertedAxis;
+	}
+
 	// ------------------------------------------------------------------------
 	// Protected methods:
 	// ------------------------------------------------------------------------
@@ -276,5 +306,17 @@ public class WmsLayerConfiguration implements Serializable {
 	protected void setParentLayer(MapEventBus eventBus, WmsLayer parentLayer) {
 		this.eventBus = eventBus;
 		this.parentLayer = parentLayer;
+	}
+
+	protected void setCrs(String crs) {
+		this.crs = crs;
+	}
+
+	protected boolean useInvertedAxis() {
+		if (crs != null && WmsVersion.V1_3_0.equals(version) && ("EPSG:4326".equalsIgnoreCase(crs) ||
+				"WGS:84".equalsIgnoreCase(crs))) {
+			return true;
+		}
+		return false;
 	}
 }
