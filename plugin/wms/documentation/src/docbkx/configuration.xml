@@ -357,6 +357,33 @@ FeaturesSupportedWmsLayer wmsLayer = WmsServerExtension.getInstance().createFeat
     </section>
 
     <section>
+        <title>Finding out if a WMS layer supports features or not</title>
+
+        <para>One does not always know beforehand if a WMS layer supports features or not. Basically,
+            this plugin uses WFS behind the screens to support some of the functionalities. Not all WMS layers
+            have a WFS counterpart.</para>
+
+        <para>However, it is possible to check in advance if a layer supports features or not. This is achieved
+            through the <code>WmsServerExtension</code>:</para>
+        <programlisting>// For every layer we check if it supports features or not:
+WmsServerExtension.getInstance().supportsFeatures(WMS_BASE_URL, layerInfo.getName(),
+        new Callback&lt;Boolean, String&gt;() {
+
+            @Override
+            public void onFailure(String s) {
+                // Failure? We do not accept failure!
+            }
+
+            @Override
+            public void onSuccess(final Boolean thisLayerSupportsFeatures) {
+                // Do something meaningful...
+            }
+        });</programlisting>
+
+        <para>You could check this before actually creating a WMS layer.</para>
+    </section>
+
+    <section>
       <title>WmsGetFeatureInfoController</title>
 
       <para>As a side dish, this plugin also provides a
