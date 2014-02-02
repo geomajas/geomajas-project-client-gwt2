@@ -48,28 +48,6 @@ public class ExampleJar implements EntryPoint {
 		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
 
 			public SamplePanel create() {
-				return new CapabilitiesPanel();
-			}
-
-			public String getTitle() {
-				return MESSAGES.capabilitiesTitle();
-			}
-
-			public String getShortDescription() {
-				return MESSAGES.capabilitiesShort();
-			}
-
-			public String getDescription() {
-				return MESSAGES.capabilitiesDescription();
-			}
-
-			public String getCategory() {
-				return CATEGORY_WMS;
-			}
-		});
-		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
-
-			public SamplePanel create() {
 				return new WmsLayerPanel();
 			}
 
@@ -83,6 +61,28 @@ public class ExampleJar implements EntryPoint {
 
 			public String getDescription() {
 				return MESSAGES.wmsLayerDescription();
+			}
+
+			public String getCategory() {
+				return CATEGORY_WMS;
+			}
+		});
+		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
+
+			public SamplePanel create() {
+				return new CapabilitiesPanel();
+			}
+
+			public String getTitle() {
+				return MESSAGES.capabilitiesTitle();
+			}
+
+			public String getShortDescription() {
+				return MESSAGES.capabilitiesShort();
+			}
+
+			public String getDescription() {
+				return MESSAGES.capabilitiesDescription();
 			}
 
 			public String getCategory() {

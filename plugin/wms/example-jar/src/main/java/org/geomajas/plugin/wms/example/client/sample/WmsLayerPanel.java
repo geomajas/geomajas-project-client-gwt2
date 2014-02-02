@@ -96,9 +96,9 @@ public class WmsLayerPanel implements SamplePanel {
 		WmsTileConfiguration tileConfig = new WmsTileConfiguration(256, 256, new Coordinate(-180, -90));
 		WmsLayerConfiguration layerConfig = new WmsLayerConfiguration();
 		layerConfig.setBaseUrl(WMS_BASE_URL);
-		layerConfig.setFormat("image/jpeg");
+		layerConfig.setFormat("image/png");
 		layerConfig.setVersion(getWmsVersion());
-		layerConfig.setLayers("bluemarble");
+		layerConfig.setLayers("demo_world:simplified_country_borders");
 		layerConfig.setMaximumScale(8192);
 		layerConfig.setMinimumScale(0);
 

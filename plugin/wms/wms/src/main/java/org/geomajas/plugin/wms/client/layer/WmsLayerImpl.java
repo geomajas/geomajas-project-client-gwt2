@@ -12,7 +12,6 @@
 package org.geomajas.plugin.wms.client.layer;
 
 import org.geomajas.geometry.Bbox;
-import org.geomajas.gwt2.client.event.LayerStyleChangedEvent;
 import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.ViewPort;
@@ -45,7 +44,7 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 
 	protected final WmsLayerInfo layerCapabilities;
 
-	protected LayerRenderer renderer;
+	protected FixedScaleLayerRenderer renderer;
 
 	private double opacity = 1.0;
 
@@ -118,8 +117,8 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 	@Override
 	public void setOpacity(double opacity) {
 		this.opacity = opacity;
-		// TODO Changing opacity should not fire a style changed event!!!!
-		eventBus.fireEvent(new LayerStyleChangedEvent(this));
+		getRenderer();
+		renderer.setOpacity(opacity);
 	}
 
 	@Override
