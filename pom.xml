@@ -39,7 +39,7 @@
 		<module>example-base</module>
 		<module>example-jar</module>
   		<module>plugin</module>
-		<module>example</module>
+<!--		<module>example</module>-->
 	</modules>
 
 	<properties>
