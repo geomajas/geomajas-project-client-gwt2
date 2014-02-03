@@ -93,7 +93,8 @@ public class SnapService {
 		Coordinate result = coordinate;
 		currentDistance = Double.MAX_VALUE;
 		hasSnapped = false;
-		logInfo("Start snapping for coordinate " + coordinate);
+		int numRules = rules != null ? rules.size() : 0;
+		logInfo("Start snapping for coordinate " + coordinate + ". There are " + numRules + "snapping rules");
 		for (SnappingRule rule : rules) {
 			if (!hasSnapped) {
 				logInfo("No snapping yet, checking next rule " + rule);
@@ -180,7 +181,9 @@ public class SnapService {
 	 */
 	public void addSnappingRule(SnapAlgorithm algorithm, SnapSourceProvider sourceProvider, double distance,
 			boolean highPriority) {
+		SnappingRule snappingRule = new SnappingRule(algorithm, sourceProvider, distance, highPriority);
 		rules.add(new SnappingRule(algorithm, sourceProvider, distance, highPriority));
+		logInfo("Added snapping rule: " + snappingRule);
 	}
 
 	// ------------------------------------------------------------------------
@@ -229,7 +232,7 @@ public class SnapService {
 		@Override
 		public String toString() {
 			return "SnappingRule [algorithm=" + algorithm + ", distance=" + distance + ", highPriority=" + highPriority
-					+ "]";
+					+ ", sourceProvider " + sourceProvider + "]";
 		}
 		
 	}
