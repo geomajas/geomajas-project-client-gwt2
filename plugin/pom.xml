@@ -33,7 +33,6 @@
 		<module>rasterizing</module>
 		<module>print</module>
 		<module>wms</module>
-		 <module>graphicsediting</module>
- 	</modules>
+	</modules>
 	
 </project>
