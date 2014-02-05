@@ -93,33 +93,25 @@ public class SnapService {
 		Coordinate result = coordinate;
 		currentDistance = Double.MAX_VALUE;
 		hasSnapped = false;
-		int numRules = rules != null ? rules.size() : 0;
-		logInfo("Start snapping for coordinate " + coordinate + ". There are " + numRules + "snapping rules");
 		for (SnappingRule rule : rules) {
 			if (!hasSnapped) {
-				logInfo("No snapping yet, checking next rule " + rule);
 				double distance = Math.min(currentDistance, rule.getDistance());
-				logInfo("Distance vale of snapping rule = " + distance);
 				result = rule.getAlgorithm().snap(coordinate, distance);
 				if (rule.getAlgorithm().hasSnapped()) {
-					logInfo("Snapping succesfull : " + result);
 					hasSnapped = true;
+					logDebug("Has snapped. Coordinate " + coordinate +
+							" snaps to result  " + result + " due to rule " + rule);
 				}
 			} else if (rule.isHighPriority()) {
-				// check if this snapping rule applies. If it does, overwrite existing result value
-				logInfo("Already snapping, but also checking priority rule " + rule);
 				Coordinate priorityResult = rule.getAlgorithm().snap(coordinate, rule.getDistance());
 				if (rule.getAlgorithm().hasSnapped()) {
 					result = priorityResult;
-					logInfo("Snapping succesfull, earlier result overwritten : " + result);
 					hasSnapped = true;
+					logDebug("Overwrite previous snap. Coordinate " + coordinate +
+							" snaps to result  " + result + " due to rule " + rule);
 				}
-			} else {
-				logInfo("Skipping rule " + rule);
 			}
 		}
-		logInfo("Stopped snapping for coordinate " + coordinate +
-				"; result  " + result + "; hasSnapped " + hasSnapped);
 		eventBus.fireEvent(new CoordinateSnapEvent(coordinate, result));
 		return result;
 	}
@@ -234,7 +226,6 @@ public class SnapService {
 			return "SnappingRule [algorithm=" + algorithm + ", distance=" + distance + ", highPriority=" + highPriority
 					+ ", sourceProvider " + sourceProvider + "]";
 		}
-		
 	}
 
 	// logging enabled
@@ -246,6 +237,12 @@ public class SnapService {
 	private void logInfo(String text) {
 		if (loggingActive) {
 			Log.logServer(Log.LEVEL_INFO, text);
+		}
+	}
+
+	private void logDebug(String text) {
+		if (loggingActive) {
+			Log.logServer(Log.LEVEL_DEBUG, text);
 		}
 	}
 }
