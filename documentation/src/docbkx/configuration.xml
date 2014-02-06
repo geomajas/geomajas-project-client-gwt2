@@ -14,34 +14,25 @@
 <chapter id="chapter-configuration">
   <title>Configuration</title>
 
-  <para>In order to use the GWT client in your web application, there are a
-  few steps you need to take. These include adding the correct libraries to
-  your project, configuring the web.xml to set up the Geomajas Communication
-  Service, and setting up the GWT module configuration.</para>
+  <para>In order to use the Geomajas client 2.x in your web application, there
+  are a few steps you need to take.</para>
 
   <sect1>
-    <title>Dependencies</title>
+    <title>Adding Geomajas Client 2.x to your project</title>
 
-    <para>First things first. Before you can boot up a web application using
-    Geomajas, you need to include the correct jar files. Using maven these
-    would be:</para>
+    <para>First of all, you will need to add the correct dependencies. Using
+    Maven, this would be:</para>
 
     <programlisting>&lt;dependency&gt;
     &lt;groupId&gt;org.geomajas&lt;/groupId&gt;
-    &lt;artifactId&gt;geomajas-gwt-client-impl&lt;/artifactId&gt;
+    &lt;artifactId&gt;geomajas-client-gwt2-impl&lt;/artifactId&gt;
     &lt;version&gt;<?eval ${project.version}?>&lt;/version&gt;
 &lt;/dependency&gt;</programlisting>
-  </sect1>
-
-  <sect1>
-    <title>GWT Modules</title>
 
     <para>After the libraries have been added to your application, it's time
     to configure the correct GWT module. When writing applications in GWT, you
     need to precisely mark which packages or classes make up your client, so
-    the compiler knows where to look. You may have noticed in the previous
-    section that we also added the sources jar as a dependency. This is also
-    necessary for the GWT compiler to compile the original Java classes to
+    the GWT compiler knows where to look when compiling Java classes to
     Javascript.</para>
 
     <para>How to set up a GWT application and declare an EntryPoint is beyond
@@ -49,19 +40,49 @@
     site for more information. What you do need to know is the definition of
     the Geomajas GWT module definition.</para>
 
-    <para>In your .gwt.xml file, add the following line to include the GWT
-    client:</para>
+    <para>In your .gwt.xml file, add the following line to include the
+    Geomajas client:</para>
 
-    <programlisting>&lt;!-- Geomajas Client --&gt;
-&lt;inherits name="org.geomajas.gwt.GeomajasClientImpl" /&gt;</programlisting>
+    <programlisting>&lt;!-- Geomajas Client 2.x --&gt;
+&lt;inherits name="org.geomajas.gwt2.GeomajasClientImpl" /&gt;</programlisting>
   </sect1>
 
   <sect1>
-    <title>web.xml</title>
+    <title>Using the Geomajas Client 2.x together with the Geomajas
+    Server</title>
 
-    <para>This client expects the Geomajas server-side libraries to be present
-    in the backend, along with a correctly configured map. Details on how to
-    set up the Geomajas backend can be found in the backend documentation
-    files.</para>
+    <para>By making use of the Geomajas server project, a lot more
+    functionalities become available, such as server-side layer definitions
+    with build-in security etc. Should you want to make use of that,
+    additional configuration is required.</para>
+
+    <para>First of all, you'll need the following dependency:</para>
+
+    <programlisting>&lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-client-gwt2-server-extension&lt;/artifactId&gt;
+    &lt;version&gt;<?eval ${project.version}?>&lt;/version&gt;
+&lt;/dependency&gt;</programlisting>
+
+    <para>This dependency will pull the Geomajas server project into your
+    project.</para>
+
+    <para>Next, you'll have to include the GWT module into your .gwt.xml
+    file:</para>
+
+    <programlisting>&lt;!-- Geomajas Client 2.x Server Extension --&gt;
+&lt;inherits name="org.geomajas.gwt2.GeomajasClientServerExtension" /&gt;</programlisting>
+
+    <para>Next, you will have to configure your web.xml file to set up the
+    Geomajas WebServices. Details on how to set up the Geomajas backend can be
+    found in the backend documentation files.</para>
+
+    <tip>
+      <para>At this moment the Geomajas server project takes on a lot of
+      responsibilities. It is therefore recommended you make use of it. For
+      example, most layer types (WFS, Database, Shape, ...) are provided in
+      the form of server-layers. Their client counterparts are on the roadmap,
+      but not available yet.</para>
+    </tip>
   </sect1>
 </chapter>

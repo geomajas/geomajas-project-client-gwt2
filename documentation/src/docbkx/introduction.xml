@@ -14,17 +14,16 @@
 <chapter id="chapter-introduction">
   <title>Introduction</title>
 
-  <para>The Geomajas GWT client is an AJAX client for the Geomajas Server,
-  based upon the Google Web Toolkit (GWT). The goal of this client is to
-  provide a lean and mean mapping API for the web. This library does not focus
-  on providing GIS oriented widgets, but instead focuses on a central map
-  concept.</para>
+  <para>The Geomajas Client 2.x is an Ajax client that provides a lean and
+  mean mapping API for the web. This is a stand-alone library for client-side
+  GIS, but it really excels when used in combination with the Geomajas Server
+  project.</para>
 
-  <para>The usage of the Google Web Toolkit as a base, let's the user develop
-  his Ajax application in Java, using his favourite Java IDE (Eclipse,
-  IntelliJ, Netbeans, ...) and all the Java tools he is used to having around.
-  Basically GWT is an efficient Java to Javascript compiler that only compiles
-  and obfuscates that part of the libraries that you're actually using in your
+  <para>The use of the Google Web Toolkit as a base, let's the user develop
+  his applications in Java, using his favourite Java IDE (Eclipse, IntelliJ,
+  Netbeans, ...) and all the Java tools he is used to having around. Basically
+  GWT is an efficient Java to Javascript compiler that only compiles and
+  obfuscates that part of the libraries that you're actually using in your
   application. This means that classes that are not used will not be a part of
   the final build. These and many other tricks are used to optimise the
   Javascript that comes out at the end, making the footprint for Geomajas

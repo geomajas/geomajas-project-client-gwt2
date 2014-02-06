@@ -69,4 +69,10 @@ mapPresenter.addMapListener(new AbstractMapController() {
     <code>getLocation</code> method to actually acquire the correct location
     in World space (map CRS).</para>
   </section>
+
+  <section>
+    <title>How to enabled/disable animation on a layer?</title>
+
+    <para></para>
+  </section>
 </chapter>
