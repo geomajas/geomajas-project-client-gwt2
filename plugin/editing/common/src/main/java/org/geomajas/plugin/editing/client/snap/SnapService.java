@@ -87,7 +87,7 @@ public class SnapService {
 		hasSnapped = false;
 
 		for (SnappingRule rule : rules) {
-			if (rule.isHighPriority() || !hasSnapped) {
+			if (!hasSnapped) {
 				double distance = Math.min(currentDistance, rule.getDistance());
 				result = rule.getAlgorithm().snap(coordinate, distance);
 				if (rule.getAlgorithm().hasSnapped()) {
@@ -155,52 +155,29 @@ public class SnapService {
 	 *            High priority means that this rule will always be executed. Low priority means that if a previous
 	 *            snapping algorithm has found a snapping candidate, this algorithm will not be executed anymore.
 	 */
+	@Deprecated
 	public void addSnappingRule(SnapAlgorithm algorithm, SnapSourceProvider sourceProvider, double distance,
 			boolean highPriority) {
-		rules.add(new SnappingRule(algorithm, sourceProvider, distance, highPriority));
+		addRule(new SnappingRule(algorithm, sourceProvider, distance));
 	}
 
-	// ------------------------------------------------------------------------
-	// Private classes:
-	// ------------------------------------------------------------------------
+	public List<SnappingRule> getRules() {
+		 return rules;
+	}
 
-	/**
-	 * Internal representation of a snapping rule.
-	 * 
-	 * @author Pieter De Graef
-	 */
-	private final class SnappingRule {
+	public SnappingRule getRule(int index) {
+		 return rules.get(index);
+	}
 
-		private final SnapAlgorithm algorithm;
+	public void addRule(SnappingRule rule) {
+		rules.add(rule);
+	}
 
-		private final SnapSourceProvider sourceProvider;
+	public void removeRule(SnappingRule rule) {
+		rules.remove(rule);
+	}
 
-		private final double distance;
-
-		private final boolean highPriority;
-
-		private SnappingRule(SnapAlgorithm algorithm, SnapSourceProvider sourceProvider, double distance,
-				boolean highPriority) {
-			this.algorithm = algorithm;
-			this.sourceProvider = sourceProvider;
-			this.distance = distance;
-			this.highPriority = highPriority;
-		}
-
-		public SnapAlgorithm getAlgorithm() {
-			return algorithm;
-		}
-
-		public SnapSourceProvider getSourceProvider() {
-			return sourceProvider;
-		}
-
-		public double getDistance() {
-			return distance;
-		}
-
-		public boolean isHighPriority() {
-			return highPriority;
-		}
+	public void insertRule(int index, SnappingRule rule) {
+		rules.add(index, rule);
 	}
 }
