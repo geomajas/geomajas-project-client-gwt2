@@ -15,27 +15,6 @@
   <title>How-to</title>
 
   <section>
-    <title>Adding a map to a classic GWT layout</title>
-
-    <para>The MapPresenter class not only acts as the Presenter in the MVP
-    (Model-View-Presenter) model but also gives access to the View by
-    implementing the IsWidget interface. As a widget, it can be added to any
-    of the GWT layout classes with some precautions, however:<itemizedlist>
-        <listitem>
-          <para>The parent widget should implement ProvidesResize</para>
-        </listitem>
-
-        <listitem>
-          <para>The size of the map has to be set explicitly</para>
-        </listitem>
-      </itemizedlist><programlisting>ResizeLayoutPanel panel = new ResizeLayoutPanel();
-mapPresenter.setSize(100,100);
-panel.setWidget(mapPresenter);</programlisting>If the panel is resizable, a
-    custom resize handler should be registered to set the size whenever a
-    resizing event occurs.</para>
-  </section>
-
-  <section>
     <title>Adding a map to a GWT 2.0 layout</title>
 
     <para>A special MapLayout class is provided for adding a map to a GWT 2.0
@@ -71,8 +50,16 @@ mapPresenter.addMapListener(new AbstractMapController() {
   </section>
 
   <section>
-    <title>How to enabled/disable animation on a layer?</title>
+    <title>How to enable/disable animation on a layer?</title>
 
-    <para></para>
+    <para>By default only one layer will be animated when navigating on the
+    map: the bottom layer. The other layers will dissappear while navigating
+    and reappear when navigation has finished. Sometimes one may wish to
+    animate more than one layer during navigation (or perhaps all layers).
+    This is actually pretty straightforward. Since it's the renderer thats
+    responsible, it is there we can change this setting:</para>
+
+    <programlisting>Layer layer = mapPresenter.getLayersModel().getLayer(1);
+mapPresenter.getLayersModelRenderer().setAnimated(layer, true);</programlisting>
   </section>
 </chapter>
