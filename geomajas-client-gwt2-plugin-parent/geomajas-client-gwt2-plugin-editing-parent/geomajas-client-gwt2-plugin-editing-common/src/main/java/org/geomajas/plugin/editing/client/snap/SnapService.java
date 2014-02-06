@@ -48,6 +48,10 @@ public class SnapService {
 
 	private static final Logger LOGGER = Logger.getLogger(SnapService.class.getName());
 
+	// this is necessary to let pass test and enable server side logging
+	// in case of test: set this value to false.
+	private boolean loggingActive = true;
+
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
@@ -89,28 +93,25 @@ public class SnapService {
 		Coordinate result = coordinate;
 		currentDistance = Double.MAX_VALUE;
 		hasSnapped = false;
-		LOGGER.fine("Start snapping for coordinate " + coordinate);
-		Log.logServer(Log.LEVEL_INFO, "Start snapping for coordinate " + coordinate);
 		for (SnappingRule rule : rules) {
-			if (rule.isHighPriority() || !hasSnapped) {
-				LOGGER.fine("Checking rule " + rule);
-				Log.logServer(Log.LEVEL_INFO, "Checking rule " + rule);
+			if (!hasSnapped) {
 				double distance = Math.min(currentDistance, rule.getDistance());
-				LOGGER.fine("Distance = " + distance);
-				Log.logServer(Log.LEVEL_INFO, "Distance = " + distance);
 				result = rule.getAlgorithm().snap(coordinate, distance);
 				if (rule.getAlgorithm().hasSnapped()) {
-					LOGGER.fine("Snapping succesfull : " + result);
-					Log.logServer(Log.LEVEL_INFO, "Snapping succesfull : " + result);
 					hasSnapped = true;
+					logDebug("Has snapped. Coordinate " + coordinate +
+							" snaps to result  " + result + " due to rule " + rule);
 				}
-			} else {
-				LOGGER.fine("Skipping rule " + rule);
-				Log.logServer(Log.LEVEL_INFO, "Skipping rule " + rule);
+			} else if (rule.isHighPriority()) {
+				Coordinate priorityResult = rule.getAlgorithm().snap(coordinate, rule.getDistance());
+				if (rule.getAlgorithm().hasSnapped()) {
+					result = priorityResult;
+					hasSnapped = true;
+					logDebug("Overwrite previous snap. Coordinate " + coordinate +
+							" snaps to result  " + result + " due to rule " + rule);
+				}
 			}
 		}
-		LOGGER.fine("Stopped snapping for coordinate " + coordinate);
-		Log.logServer(Log.LEVEL_INFO, "Stopped snapping for coordinate " + coordinate);
 		eventBus.fireEvent(new CoordinateSnapEvent(coordinate, result));
 		return result;
 	}
@@ -172,7 +173,9 @@ public class SnapService {
 	 */
 	public void addSnappingRule(SnapAlgorithm algorithm, SnapSourceProvider sourceProvider, double distance,
 			boolean highPriority) {
+		SnappingRule snappingRule = new SnappingRule(algorithm, sourceProvider, distance, highPriority);
 		rules.add(new SnappingRule(algorithm, sourceProvider, distance, highPriority));
+		logInfo("Added snapping rule: " + snappingRule);
 	}
 
 	// ------------------------------------------------------------------------
@@ -221,8 +224,25 @@ public class SnapService {
 		@Override
 		public String toString() {
 			return "SnappingRule [algorithm=" + algorithm + ", distance=" + distance + ", highPriority=" + highPriority
-					+ "]";
+					+ ", sourceProvider " + sourceProvider + "]";
 		}
-		
+	}
+
+	// logging enabled
+
+	void setLoggingActive(boolean loggingActive) {
+		this.loggingActive = loggingActive;
+	}
+
+	private void logInfo(String text) {
+		if (loggingActive) {
+			Log.logServer(Log.LEVEL_INFO, text);
+		}
+	}
+
+	private void logDebug(String text) {
+		if (loggingActive) {
+			Log.logServer(Log.LEVEL_DEBUG, text);
+		}
 	}
 }
