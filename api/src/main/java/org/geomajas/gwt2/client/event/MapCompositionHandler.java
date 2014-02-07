@@ -21,7 +21,7 @@ import com.google.web.bindery.event.shared.Event.Type;
  * Handler for the addition and removal of layers within a map.
  * 
  * @author Jan De Moerloose
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 @UserImplemented

@@ -19,7 +19,7 @@ import com.google.gwt.resources.client.CssResource;
  * CSS resource bundle that contains all generic styles used in pure gwt geomajas widgets.
  * 
  * @author Dosi Bingov
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public interface FeatureSelectBoxCssResource extends CssResource {

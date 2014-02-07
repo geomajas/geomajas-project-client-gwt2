@@ -17,7 +17,7 @@ import org.geomajas.gwt2.client.map.layer.Layer;
  * Event that reports a layer has been refreshed. This means it's rendering is completely cleared and redrawn.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class LayerRefreshedEvent extends BaseLayerEvent<LayerRefreshedHandler> {

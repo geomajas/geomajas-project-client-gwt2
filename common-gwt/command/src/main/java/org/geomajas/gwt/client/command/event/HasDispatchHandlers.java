@@ -20,7 +20,7 @@ import org.geomajas.annotation.UserImplemented;
  * registered to catch these events.
  *
  * @author Jan De Moerloose
- * @since 0.0.0
+ * @since 2.0.0
  */
 @Api
 @UserImplemented

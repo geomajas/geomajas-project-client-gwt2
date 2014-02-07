@@ -19,7 +19,7 @@ import com.google.gwt.resources.client.CssResource;
  * CSS resource bundle that contains styles used in pure Gwt Messagebox widget.
  * 
  * @author Kristof Heirwegh
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public interface MessageBoxCssResource extends CssResource {

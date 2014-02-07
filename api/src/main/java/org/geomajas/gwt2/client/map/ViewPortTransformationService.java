@@ -24,7 +24,7 @@ import org.geomajas.gwt.client.map.RenderSpace;
  * scale, width and height for it's calculations.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public interface ViewPortTransformationService {

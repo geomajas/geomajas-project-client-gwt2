@@ -19,7 +19,7 @@ import com.google.gwt.resources.client.CssResource;
  * CSS resource bundle for the {@link ZoomStepControl} widget.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public interface ZoomStepControlCssResource extends CssResource {

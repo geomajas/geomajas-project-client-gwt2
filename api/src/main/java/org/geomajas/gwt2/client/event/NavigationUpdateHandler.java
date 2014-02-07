@@ -22,7 +22,7 @@ import com.google.web.bindery.event.shared.Event.Type;
  * {@link org.geomajas.puregwt.client.map.ViewPort}.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 @UserImplemented

@@ -19,7 +19,7 @@ import org.geomajas.annotation.Api;
  * 
  * @author An Buyle
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public interface LegendUrlSupported {

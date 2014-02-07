@@ -23,7 +23,7 @@ import com.google.gwt.user.client.ui.IsWidget;
  * adding/removing shapes and transformations.
  * 
  * @author Jan De Moerloose
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public interface CanvasContainer extends Transformable, Transparent, IsWidget {

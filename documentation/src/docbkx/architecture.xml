@@ -613,7 +613,7 @@ selected = fs.isFeatureSelected(feature); // returns false</programlisting>
       handlers. Note that the term <code>Handler</code> is used, not listener,
       as we try to follow the GWT naming conventions. As of GWT 2.x, the use
       of a central eventbus has been promoted to work together with an MVP
-      approach. </para>
+      approach.</para>
 
       <para>Instead of randomly providing methods to register handlers for
       specific events, Geomajas follows the GWT reasoning in that it's much
@@ -1461,176 +1461,130 @@ commandService.execute(command, new AbstractCommandCallback&lt;CommandResponse&g
   <section>
     <title>Widgets/controls</title>
 
-    <para>Next to the map, Geomajas provides additional widgets to be placed
-    on top of the map.</para>
-
-    <section>
-      <title>Adding widgets on top of the map</title>
-
-      <para>By default Geomajas will add a few widgets on top of the map that
-      provide navigation buttons. Of course it is possible to replace any such
-      widget with your own implementation. Actually it is perfectly possible
-      to add any widget you want on top of the map.</para>
-
-      <para>The map has a specific panel wherein such widgets can be
-      added:</para>
-
-      <programlisting>HasWidgets panel = mapPresenter.getWidgetPane();</programlisting>
-
-      <para>The panel is by default implemented through an AbsolutePanel. This
-      is a GWT layout panel wherein all widgets are positioned absolutely
-      (actually using the CSS position:absolute construct). So when adding
-      widget to it, make sure you set their position to absolute, and give
-      them top, left, bottom or right values (CSS).</para>
-    </section>
-
     <section>
       <title>The default map control widgets</title>
 
-      <para>By default Geomajas will add a few control widgets to the map.
-      These provide general navigation functionalities to the user. If you are
-      not satisfied, you can always replace the defaults with others.</para>
-
-      <para>At map initialization, the following map control widgets are
-      automatically added:</para>
-
-      <itemizedlist>
-        <listitem>
-          <para><emphasis>org.geomajas.gwt2.client.widget.control.scalebar.Scalebar</emphasis>:
-          The scalebar shown in the bottom left of the map.</para>
-
-          <screenshot>
-            <screeninfo>Scalebar</screeninfo>
-
-            <mediaobject>
-              <imageobject>
-                <imagedata align="center"
-                           fileref="images/controls/Scalebar.png" />
-              </imageobject>
-            </mediaobject>
-          </screenshot>
-        </listitem>
-
-        <listitem>
-          <para><emphasis>org.geomajas.gwt2.client.widget.control.zoom.ZoomControl</emphasis>:
-          The default zoom control widget, showing a zoom in and a zoom out
-          button.</para>
-
-          <screenshot>
-            <screeninfo>ZoomControl</screeninfo>
-
-            <mediaobject>
-              <imageobject>
-                <imagedata align="center"
-                           fileref="images/controls/ZoomControl.png" />
-              </imageobject>
-            </mediaobject>
-          </screenshot>
-        </listitem>
-
-        <listitem>
-          <para><emphasis>org.geomajas.gwt2.client.widget.control.zoomtorect.ZoomToRectangleControl</emphasis>:
-          Button that allows the user to zoom in to a rectangle. The user
-          needs to drag the rectangle after clicking this button.</para>
-
-          <screenshot>
-            <screeninfo>ZoomToRectangleControl</screeninfo>
-
-            <mediaobject>
-              <imageobject>
-                <imagedata align="center"
-                           fileref="images/controls/ZoomToRectangleControl.png" />
-              </imageobject>
-            </mediaobject>
-          </screenshot>
-        </listitem>
-      </itemizedlist>
-
-      <para>Next to these defaults, Geomajas also provides a few other (more
-      advanced) map control widgets that are not added to the map by
-      default:</para>
-
-      <itemizedlist>
-        <listitem>
-          <para><emphasis>org.geomajas.gwt2.client.widget.control.pan.PanControl</emphasis>:
-          A widget that provides 4 buttons to pan the map in 4 directions
-          (north, east, south, west).</para>
-
-          <screenshot>
-            <screeninfo>PanControl</screeninfo>
-
-            <mediaobject>
-              <imageobject>
-                <imagedata align="center"
-                           fileref="images/controls/PanControl.png" />
-              </imageobject>
-            </mediaobject>
-          </screenshot>
-        </listitem>
-
-        <listitem>
-          <para><emphasis>org.geomajas.gwt2.client.widget.control.zoom.ZoomStepControl</emphasis>:
-          A widget that provides a zoom step for every resolution available in
-          the map configuration. This way a user can zoom directly to a
-          certain zoom level should he choose to.</para>
-
-          <screenshot>
-            <screeninfo>ZoomStepControl</screeninfo>
-
-            <mediaobject>
-              <imageobject>
-                <imagedata align="center"
-                           fileref="images/controls/ZoomStepControl.png" />
-              </imageobject>
-            </mediaobject>
-          </screenshot>
-        </listitem>
-      </itemizedlist>
-
       <section>
-        <title>Removing one of the default map controls</title>
+        <title>Overview of the default map controls</title>
 
-        <para>Let's say you don't want to the
-        <code>ZoomToRectangleControl</code> on your map. In this case we
-        simply removed it once the map has been initialized:</para>
+        <para>By default Geomajas will add a few control widgets to the map.
+        These provide general navigation functionalities to the user. If you
+        are not satisfied, you can always replace the defaults with
+        others.</para>
 
-        <programlisting>mapPresenter.getEventBus().addMapInitializationHandler(new MapInitializationHandler() {
+        <para>The following is a list of widgets that are available out of the
+        box:</para>
 
-    public void onMapInitialized(MapInitializationEvent event) {
-        // Search for the ZoomToRectangleControl widget and remove it:
-        for (int i = 0; i &lt; mapPresenter.getWidgetPane().getWidgetCount(); i++) {
-            Widget widget = mapPresenter.getWidgetPane().getWidget(i);
-            if (widget instanceof ZoomToRectangleControl) {
-                mapPresenter.getWidgetPane().remove(i);
-            }
-        }
-    }
-});</programlisting>
+        <itemizedlist>
+          <listitem>
+            <para><emphasis>org.geomajas.gwt2.client.widget.control.scalebar.Scalebar</emphasis>:
+            The scalebar shown in the bottom left of the map.</para>
+
+            <screenshot>
+              <screeninfo>Scalebar</screeninfo>
+
+              <mediaobject>
+                <imageobject>
+                  <imagedata align="center"
+                             fileref="images/controls/Scalebar.png" />
+                </imageobject>
+              </mediaobject>
+            </screenshot>
+          </listitem>
+
+          <listitem>
+            <para><emphasis>org.geomajas.gwt2.client.widget.control.zoom.ZoomControl</emphasis>:
+            The default zoom control widget, showing a zoom in and a zoom out
+            button.</para>
+
+            <screenshot>
+              <screeninfo>ZoomControl</screeninfo>
+
+              <mediaobject>
+                <imageobject>
+                  <imagedata align="center"
+                             fileref="images/controls/ZoomControl.png" />
+                </imageobject>
+              </mediaobject>
+            </screenshot>
+          </listitem>
+
+          <listitem>
+            <para><emphasis>org.geomajas.gwt2.client.widget.control.zoomtorect.ZoomToRectangleControl</emphasis>:
+            Button that allows the user to zoom in to a rectangle. The user
+            needs to drag the rectangle after clicking this button.</para>
+
+            <screenshot>
+              <screeninfo>ZoomToRectangleControl</screeninfo>
+
+              <mediaobject>
+                <imageobject>
+                  <imagedata align="center"
+                             fileref="images/controls/ZoomToRectangleControl.png" />
+                </imageobject>
+              </mediaobject>
+            </screenshot>
+          </listitem>
+
+          <listitem>
+            <para><emphasis>org.geomajas.gwt2.client.widget.control.pan.PanControl</emphasis>:
+            A widget that provides 4 buttons to pan the map in 4 directions
+            (north, east, south, west).</para>
+
+            <screenshot>
+              <screeninfo>PanControl</screeninfo>
+
+              <mediaobject>
+                <imageobject>
+                  <imagedata align="center"
+                             fileref="images/controls/PanControl.png" />
+                </imageobject>
+              </mediaobject>
+            </screenshot>
+          </listitem>
+
+          <listitem>
+            <para><emphasis>org.geomajas.gwt2.client.widget.control.zoom.ZoomStepControl</emphasis>:
+            A widget that provides a zoom step for every resolution available
+            in the map configuration. This way a user can zoom directly to a
+            certain zoom level should he choose to.</para>
+
+            <screenshot>
+              <screeninfo>ZoomStepControl</screeninfo>
+
+              <mediaobject>
+                <imageobject>
+                  <imagedata align="center"
+                             fileref="images/controls/ZoomStepControl.png" />
+                </imageobject>
+              </mediaobject>
+            </screenshot>
+          </listitem>
+        </itemizedlist>
+
+        <para>By default a Geomajas map will contain the following widgets:
+        <code>ScaleBar</code>, <code>ZoomControl</code>,
+        <code>ZoomToRectangleControl</code>.</para>
       </section>
 
       <section>
-        <title>Using more advanced map controls:</title>
+        <title>Using alternative map controls</title>
 
-        <para>In this section we will demonstrate how to replace the default
-        ZoomControl by the more advanced PanControl and
-        ZoomStepControl:</para>
+        <para>Let's say you want to create a new map, and make use of the
+        PanControl and ZoomStepControl instead of the default ZoomControl. For
+        this reason, Geomajas has defined the:</para>
 
-        <programlisting>mapPresenter.getEventBus().addMapInitializationHandler(new MapInitializationHandler() {
+        <programlisting>org.geomajas.gwt2.client.widget.DefaultMapWidget</programlisting>
 
-    public void onMapInitialized(MapInitializationEvent event) {
-        // Search for the ZoomToRectangleControl widget and remove it:
-        for (int i = 0; i &lt; mapPresenter.getWidgetPane().getWidgetCount(); i++) {
-            Widget widget = mapPresenter.getWidgetPane().getWidget(i);
-            if (widget instanceof ZoomToRectangleControl) {
-                mapPresenter.getWidgetPane().remove(i);
-            }
-        }
+        <para>It is an enumeration that lists the map widgets Geomajas
+        provides by default (the list in the previous section basically). It
+        is possible to use this enumeration to list the types of widget you
+        want on the map at startup. The following piece of code shows you how
+        to do just that:</para>
 
-        // Now add the alternative controls:
-        mapPresenter.getWidgetPane().add(new PanControl(mapPresenter), 5, 5);
-        mapPresenter.getWidgetPane().add(new ZoomStepControl(mapPresenter), 17, 60);
-    }
-});</programlisting>
+        <programlisting>GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "gwt-app", "mapOsm",
+        new DefaultMapWidget[] { DefaultMapWidget.ZOOM_TO_RECTANGLE_CONTROL, DefaultMapWidget.PAN_CONTROL,
+                DefaultMapWidget.ZOOM_STEP_CONTROL, DefaultMapWidget.SCALEBAR });</programlisting>
 
         <para>This piece of code would result in a map that looks like
         this:</para>
@@ -1646,6 +1600,49 @@ commandService.execute(command, new AbstractCommandCallback&lt;CommandResponse&g
           </mediaobject>
         </screenshot>
       </section>
+    </section>
+
+    <section>
+      <title>Adding widgets on top of the map</title>
+
+      <para>As you know, Geomajas will add a few widgets to the map by
+      default. Let's say you want to use your own widgets, or you want the
+      default widgets to appear at a different location. Know that any widget
+      that Geomajas adds to the map, is still available through the maps
+      widget pane. This is a panel onto which one can add any widget. This
+      panel can be retrieved as such:</para>
+
+      <programlisting>HasWidgets panel = mapPresenter.getWidgetPane();</programlisting>
+
+      <para>The panel is by default implemented through an AbsolutePanel. This
+      is a GWT layout panel wherein all widgets are positioned absolutely
+      (actually using the CSS position:absolute construct). So when adding
+      widget to it, make sure you set their position to absolute, and give
+      them top, left, bottom or right values (CSS).</para>
+
+      <para>So let us go through an example wherein we want to add the
+      PanControl separately, and add it to the upper right corner of the
+      map:</para>
+
+      <programlisting>mapPresenter.getEventBus().addMapInitializationHandler(new MapInitializationHandler() {
+
+    public void onMapInitialized(MapInitializationEvent event) {
+        // Create the PanControl:
+        PanControl panControl = new PanControl(mapPresenter);
+
+        // Make the PanControl stick to the upper-right corner, 5 pixels from the border:
+        panControl.getElement().getStyle().clearLeft(); // Just to be sure...
+        panControl.getElement().getStyle().setTop(5, Unit.PX);
+        panControl.getElement().getStyle().setRight(5, Unit.PX);
+
+        // Now add the PanControl to the map:
+        mapPresenter.getWidgetPane().add(panControl);
+    }
+});</programlisting>
+
+      <para>Note we have waited for the MapInitializationEvent to add widgets
+      to the map. This is not strictly necessary, but safer. Perhaps some of
+      the widgets you use may need the map to be fully initialized.</para>
     </section>
   </section>
 </chapter>

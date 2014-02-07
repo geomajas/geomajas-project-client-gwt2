@@ -20,7 +20,7 @@ import org.geomajas.annotation.UserImplemented;
  * Interface for event handlers that catch {@link org.geomajas.gwt.client.command.event.DispatchStartedEvent}s.
  *
  * @author Jan De Moerloose
- * @since 0.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 @UserImplemented
@@ -29,7 +29,7 @@ public interface DispatchStartedHandler extends EventHandler {
 	/**
 	 * Type for the events.
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 */
 	GwtEvent.Type<DispatchStartedHandler> TYPE = new GwtEvent.Type<DispatchStartedHandler>();
 

@@ -23,7 +23,7 @@ import com.google.web.bindery.event.shared.Event;
  * 
  * @author Pieter De Graef
  * @author Jan De Moerloose
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class LayerOrderChangedEvent extends Event<LayerOrderChangedHandler> {

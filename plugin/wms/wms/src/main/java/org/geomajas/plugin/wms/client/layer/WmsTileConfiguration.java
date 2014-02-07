@@ -20,7 +20,7 @@ import org.geomajas.geometry.Coordinate;
  * Basic configuration for a tile based layer.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class WmsTileConfiguration implements Serializable {

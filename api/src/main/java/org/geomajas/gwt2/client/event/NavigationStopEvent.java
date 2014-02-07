@@ -21,7 +21,7 @@ import com.google.web.bindery.event.shared.Event;
  * just ended.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class NavigationStopEvent extends Event<NavigationStopHandler> {

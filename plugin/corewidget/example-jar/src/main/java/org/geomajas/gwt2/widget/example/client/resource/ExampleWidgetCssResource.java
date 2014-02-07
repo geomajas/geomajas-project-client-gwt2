@@ -18,7 +18,7 @@ import org.geomajas.annotation.Api;
  * CSS resource bundle that contains all generic styles used in the widgets example jar.
  * 
  * @author Dosi Bingov
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public interface ExampleWidgetCssResource extends CssResource {

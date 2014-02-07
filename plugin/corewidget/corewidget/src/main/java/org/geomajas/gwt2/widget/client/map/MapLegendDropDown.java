@@ -30,7 +30,7 @@ import com.google.gwt.user.client.ui.Widget;
  * panel, it will automatically try to keep the {@link LegendPopupPanel} within the map bounds.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api
 public class MapLegendDropDown extends Button {

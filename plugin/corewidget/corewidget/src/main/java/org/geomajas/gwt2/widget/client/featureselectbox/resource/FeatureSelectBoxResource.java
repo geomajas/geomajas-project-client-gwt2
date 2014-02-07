@@ -20,7 +20,7 @@ import com.google.gwt.resources.client.ClientBundle;
  * 
  * @author Dosi Bingov
  * 
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public interface FeatureSelectBoxResource extends ClientBundle {

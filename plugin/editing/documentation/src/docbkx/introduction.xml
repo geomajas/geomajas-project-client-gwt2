@@ -42,13 +42,14 @@
 
       <listitem>
         <para>Splitting geometries: A separate service has been created where
-        the user can draw a line to split a geometry into multiple
-        parts.</para>
+        the user can draw a line to split a geometry into multiple parts.
+        (requires a dependency on the Geomajas server project)</para>
       </listitem>
 
       <listitem>
         <para>Merging geometries: Using this functionality it is possible to
-        create the union of several geometries.</para>
+        create the union of several geometries. (requires a dependency on the
+        Geomajas server project)</para>
       </listitem>
     </itemizedlist>
 
@@ -76,6 +77,19 @@
     <programlisting>&lt;dependency&gt;
     &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
     &lt;artifactId&gt;geomajas-client-gwt2-plugin-editing-impl&lt;/artifactId&gt;
+    &lt;version&gt;<?eval ${project.version}?>&lt;/version&gt;
 &lt;/dependency&gt;</programlisting>
+
+    <para>If you want splitting or merging support, you will have to use the
+    following dependency:</para>
+
+    <programlisting>&lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-client-gwt2-plugin-editing-server-extension&lt;/artifactId&gt;
+    &lt;version&gt;<?eval ${project.version}?>&lt;/version&gt;
+&lt;/dependency&gt;</programlisting>
+
+    <para>This in turn includes a dependency on the Geomajas server
+    project.</para>
   </sect1>
 </chapter>

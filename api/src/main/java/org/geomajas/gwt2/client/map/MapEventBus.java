@@ -35,7 +35,7 @@ import com.google.web.bindery.event.shared.HandlerRegistration;
  * Event bus with convenience methods for registering handlers to a specific map.
  * 
  * @author Jan De Moerloose
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public interface MapEventBus {

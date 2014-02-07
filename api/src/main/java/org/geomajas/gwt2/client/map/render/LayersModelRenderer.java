@@ -19,7 +19,7 @@ import org.geomajas.gwt2.client.map.layer.Layer;
  * added to the map, the map will automatically add it's renderer to this <code>LayersModelRenderer</code>.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public interface LayersModelRenderer extends BasicRenderer {

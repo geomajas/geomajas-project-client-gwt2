@@ -20,7 +20,7 @@ import com.google.web.bindery.event.shared.Event;
  * Event that is fired when the {@link org.geomajas.puregwt.client.map.ViewPort} starts an animated navigation sequence.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class NavigationStartEvent extends Event<NavigationStartHandler> {

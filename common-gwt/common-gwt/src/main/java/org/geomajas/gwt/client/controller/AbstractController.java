@@ -11,13 +11,6 @@
 
 package org.geomajas.gwt.client.controller;
 
-import org.geomajas.annotation.Api;
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt.client.handler.MapDownHandler;
-import org.geomajas.gwt.client.handler.MapDragHandler;
-import org.geomajas.gwt.client.handler.MapUpHandler;
-import org.geomajas.gwt.client.map.RenderSpace;
-
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
@@ -36,32 +29,28 @@ import com.google.gwt.event.dom.client.TouchCancelEvent;
 import com.google.gwt.event.dom.client.TouchEndEvent;
 import com.google.gwt.event.dom.client.TouchMoveEvent;
 import com.google.gwt.event.dom.client.TouchStartEvent;
+import org.geomajas.annotation.Api;
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.handler.MapDownHandler;
+import org.geomajas.gwt.client.handler.MapDragHandler;
+import org.geomajas.gwt.client.handler.MapUpHandler;
+import org.geomajas.gwt.client.map.RenderSpace;
 
 /**
- * <p>
- * Base implementation of the {@link Controller} interface that tries to align mouse and touch behavior. It does this by
- * providing extra methods through the {@link MapDownHandler}, {@link MapUpHandler} and {@link MapDragHandler}
+ * <p> Base implementation of the {@link Controller} interface that tries to align mouse and touch behavior. It does
+ * this by providing extra methods through the {@link MapDownHandler}, {@link MapUpHandler} and {@link MapDragHandler}
  * interfaces. When using this class a base (which is recommended), you can chose whether to support mouse events only,
- * touch events only or both simultaneously.
- * </p>
- * <p>
- * In short, here are your three options:
- * <ul>
- * <li>Supporting mouse events only: Override the mouse handler methods (onMouseDown, onMouseUp, ....)</li>
- * <li>Supporting touch events only: Override the touch handler methods (onTouchStart, onTouchMove, ...)</li>
- * <li>Supporting both (recommended): Override the onDown, onUp and onDrag methods. By default both the onMouseDown and
- * the onTouchStart will invoke the onDown method. The same goes for the onUp and onDrag. So by implementing those
- * methods you will have both mobile and desktop support.</li>
- * </ul>
- * </p>
- * <p>
- * One extra note to point out is that by default the touch event methods will stop any further propagation and prevent
- * the default behavior of the events. This is done because, by default, browsers on mobile devices tend to scroll all
- * over the place - creating unwanted behavior.
- * </p>
- * 
+ * touch events only or both simultaneously. </p> <p> In short, here are your three options: <ul> <li>Supporting mouse
+ * events only: Override the mouse handler methods (onMouseDown, onMouseUp, ....)</li> <li>Supporting touch events only:
+ * Override the touch handler methods (onTouchStart, onTouchMove, ...)</li> <li>Supporting both (recommended): Override
+ * the onDown, onUp and onDrag methods. By default both the onMouseDown and the onTouchStart will invoke the onDown
+ * method. The same goes for the onUp and onDrag. So by implementing those methods you will have both mobile and desktop
+ * support.</li> </ul> </p> <p> One extra note to point out is that by default the touch event methods will stop any
+ * further propagation and prevent the default behavior of the events. This is done because, by default, browsers on
+ * mobile devices tend to scroll all over the place - creating unwanted behavior. </p>
+ *
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public abstract class AbstractController implements Controller, MapDownHandler, MapUpHandler, MapDragHandler {
@@ -76,9 +65,8 @@ public abstract class AbstractController implements Controller, MapDownHandler, 
 
 	/**
 	 * Construct controller.
-	 * 
-	 * @param dragging
-	 *            are we dragging?
+	 *
+	 * @param dragging are we dragging?
 	 */
 	public AbstractController(boolean dragging) {
 		this.dragging = dragging;
@@ -86,11 +74,9 @@ public abstract class AbstractController implements Controller, MapDownHandler, 
 
 	/**
 	 * Construact controller.
-	 * 
-	 * @param eventParser
-	 *            event parser
-	 * @param dragging
-	 *            are we dragging
+	 *
+	 * @param eventParser event parser
+	 * @param dragging    are we dragging
 	 */
 	public AbstractController(MapEventParser eventParser, boolean dragging) {
 		this.dragging = dragging;
@@ -139,7 +125,9 @@ public abstract class AbstractController implements Controller, MapDownHandler, 
 	public void onDrag(HumanInputEvent<?> event) {
 	}
 
-	/** @todo javadoc unknown. */
+	/**
+	 * @todo javadoc unknown.
+	 */
 	public boolean isDragging() {
 		return dragging;
 	}
@@ -219,23 +207,14 @@ public abstract class AbstractController implements Controller, MapDownHandler, 
 	// Gesture Handler implementations:
 	// ------------------------------------------------------------------------
 
-	/**
-	 * @since 1.4.0
-	 */
 	@Override
 	public void onGestureStart(GestureStartEvent event) {
 	}
 
-	/**
-	 * @since 1.4.0
-	 */
 	@Override
 	public void onGestureChange(GestureChangeEvent event) {
 	}
 
-	/**
-	 * @since 1.4.0
-	 */
 	@Override
 	public void onGestureEnd(GestureEndEvent event) {
 	}

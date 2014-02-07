@@ -341,7 +341,7 @@ public class DomImpl {
 	 * Is the browser supporting transformations? Not all browsers support alternatives, so this check can be necessary.
 	 * 
 	 * @return true or false - yes or no.
-	 * @since 1.3.0
+	 * @since 2.0.0
 	 */
 	public boolean isTransformationSupported() {
 		return false;
@@ -352,7 +352,7 @@ public class DomImpl {
 	 * 
 	 * @param element
 	 * @param transform
-	 * @since 1.3.0
+	 * @since 2.0.0
 	 */
 	public void setTransform(Element element, String transform) {
 		throw new RuntimeException("Transformation unsupported");
@@ -363,7 +363,7 @@ public class DomImpl {
 	 * 
 	 * @param element
 	 * @param origin
-	 * @since 1.3.0
+	 * @since 2.0.0
 	 */
 	public void setTransformOrigin(Element element, String origin) {
 		throw new RuntimeException("Transformation origin unsupported");

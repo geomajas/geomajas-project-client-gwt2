@@ -18,7 +18,7 @@ import com.google.gwt.resources.client.ClientBundle;
  * Client resource bundle for the {@link ZoomControl}.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public interface ZoomControlResource extends ClientBundle {

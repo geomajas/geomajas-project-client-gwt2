@@ -36,7 +36,7 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
  * </p>
  * 
  * @author Emiel Ackermann
- * @since 1.0.0
+ * @since 2.0.0
  */
 @UserImplemented
 @Api(allMethods = true)

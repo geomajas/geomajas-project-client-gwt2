@@ -16,7 +16,7 @@ import org.geomajas.annotation.Api;
  * Service that provides management of a number of interesting end point URLs.
  * 
  * @author Jan De Moerloose
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public interface EndPointService {

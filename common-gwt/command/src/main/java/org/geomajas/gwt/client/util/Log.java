@@ -25,7 +25,7 @@ import java.util.logging.Logger;
  * 
  * @author Jan De Moerloose
  * @author Joachim Van der Auwera
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public final class Log {

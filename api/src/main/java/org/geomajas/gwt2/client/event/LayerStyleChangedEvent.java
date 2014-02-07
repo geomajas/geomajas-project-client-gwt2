@@ -17,7 +17,7 @@ import org.geomajas.gwt2.client.map.layer.Layer;
  * Event that reports changes in layer style.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class LayerStyleChangedEvent extends BaseLayerEvent<LayerStyleChangedHandler> {

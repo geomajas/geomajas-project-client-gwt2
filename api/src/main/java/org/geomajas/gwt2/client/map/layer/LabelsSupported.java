@@ -18,7 +18,7 @@ import org.geomajas.annotation.Api;
  * if the layer itself is visible; but one can change the labels-setting nonetheless.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public interface LabelsSupported {

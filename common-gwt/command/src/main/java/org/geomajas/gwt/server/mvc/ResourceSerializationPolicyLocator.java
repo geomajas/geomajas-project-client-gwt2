@@ -30,7 +30,7 @@ import com.google.gwt.user.server.rpc.SerializationPolicyLoader;
  * Implementation of {@link SerializationPolicyLocator} that searches for the policy file in a list of root resources.
  * 
  * @author Jan De Moerloose
- * @since 1.0.0
+ * @since 2.0.0
  * 
  */
 @Api(allMethods = true)

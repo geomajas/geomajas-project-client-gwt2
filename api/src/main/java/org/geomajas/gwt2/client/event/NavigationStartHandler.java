@@ -22,7 +22,7 @@ import com.google.web.bindery.event.shared.Event.Type;
  * that an animated navigation sequence is about to begin.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 @UserImplemented

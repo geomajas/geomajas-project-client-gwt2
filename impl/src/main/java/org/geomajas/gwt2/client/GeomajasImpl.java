@@ -11,21 +11,21 @@
 
 package org.geomajas.gwt2.client;
 
+import com.google.web.bindery.event.shared.EventBus;
+import com.google.web.bindery.event.shared.SimpleEventBus;
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.client.gfx.GfxUtil;
 import org.geomajas.gwt2.client.gfx.GfxUtilImpl;
+import org.geomajas.gwt2.client.widget.DefaultMapWidget;
 import org.geomajas.gwt2.client.map.MapConfiguration;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.MapPresenterImpl;
 
-import com.google.web.bindery.event.shared.EventBus;
-import com.google.web.bindery.event.shared.SimpleEventBus;
-
 /**
  * Geomajas starting point. This class allows you to request singleton services or create new instances.
- * 
+ *
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public final class GeomajasImpl implements Geomajas {
@@ -39,7 +39,7 @@ public final class GeomajasImpl implements Geomajas {
 
 	/**
 	 * Get a singleton instance.
-	 * 
+	 *
 	 * @return Return Geomajas!
 	 */
 	public static Geomajas getInstance() {
@@ -51,9 +51,8 @@ public final class GeomajasImpl implements Geomajas {
 
 	/**
 	 * Apply a new singleton instance. This method provides a way to overwrite the default Geomajas implementations.
-	 * 
-	 * @param geomajas
-	 *            The new Geomajas starting point.
+	 *
+	 * @param geomajas The new Geomajas starting point.
 	 */
 	public static void setInstance(Geomajas geomajas) {
 		instance = geomajas;
@@ -66,9 +65,17 @@ public final class GeomajasImpl implements Geomajas {
 
 	@Override
 	public MapPresenter createMapPresenter(MapConfiguration configuration, int mapWidth, int mapHeight) {
+		return createMapPresenter(configuration, mapWidth, mapHeight, new DefaultMapWidget[] {
+				DefaultMapWidget.ZOOM_CONTROL, DefaultMapWidget.ZOOM_TO_RECTANGLE_CONTROL,
+				DefaultMapWidget.SCALEBAR });
+	}
+
+	@Override
+	public MapPresenter createMapPresenter(MapConfiguration configuration, int mapWidth, int mapHeight,
+			DefaultMapWidget... mapWidgets) {
 		MapPresenterImpl mapPresenter = new MapPresenterImpl(getEventBus());
 		mapPresenter.setSize(mapWidth, mapHeight);
-		mapPresenter.initialize(configuration);
+		mapPresenter.initialize(configuration, mapWidgets);
 		return mapPresenter;
 	}
 

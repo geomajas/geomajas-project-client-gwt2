@@ -19,7 +19,7 @@ import com.google.gwt.resources.client.CssResource;
  * CSS resource bundle for the {@link ZoomToRectangleControl} widget.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public interface ZoomToRectangleCssResource extends CssResource {

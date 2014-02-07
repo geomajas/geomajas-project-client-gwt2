@@ -11,11 +11,15 @@
 
 package org.geomajas.gwt.client.command;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.i18n.client.LocaleInfo;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.Window.ClosingEvent;
+import com.google.gwt.user.client.Window.ClosingHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import org.geomajas.annotation.Api;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.global.ExceptionCode;
@@ -32,15 +36,10 @@ import org.geomajas.gwt.client.command.event.TokenChangedEvent;
 import org.geomajas.gwt.client.command.event.TokenChangedHandler;
 import org.geomajas.gwt.client.util.Log;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.i18n.client.LocaleInfo;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.Window.ClosingEvent;
-import com.google.gwt.user.client.Window.ClosingHandler;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.rpc.ServiceDefTarget;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The central client side dispatcher for all commands. Use the {@link #execute(GwtCommand, CommandCallback...)}
@@ -424,7 +423,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 	/**
 	 * Logout. Clear the user token.
 	 * 
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 */
 	public void logout() {
 		logout(false);
@@ -439,33 +438,6 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 	private void logout(boolean loginPending) {
 		setToken(null, null, loginPending);
 	}
-
-	//
-	// /**
-	// * Set the user token, so it can be included in every command.
-	// *
-	// * @param userToken
-	// * user token
-	// * @deprecated use {@link #login()} or {@link #logout()}
-	// */
-	// @Deprecated
-	// public void setUserToken(String userToken) {
-	// setToken(userToken, null, false);
-	// }
-	//
-	// /**
-	// * Set the user token, so it can be sent in every command.
-	// *
-	// * @param userToken
-	// * user token
-	// * @param userDetail
-	// * user details
-	// * @deprecated use {@link #login()} or {@link #logout()}
-	// */
-	// @Deprecated
-	// public void setUserToken(String userToken, UserDetail userDetail) {
-	// setToken(userToken, userDetail, false);
-	// }
 
 	/**
 	 * Set the user token, so it can be sent in every command. This is the internal version, used by the token changed

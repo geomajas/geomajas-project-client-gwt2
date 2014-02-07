@@ -17,7 +17,7 @@ import org.geomajas.gwt2.client.map.layer.Layer;
  * Event that is fired when the labels of a layer have become visible.
  *
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class LayerLabelShowEvent extends BaseLayerEvent<LayerLabeledHandler> {

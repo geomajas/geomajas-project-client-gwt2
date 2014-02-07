@@ -19,7 +19,7 @@ import org.geomajas.gwt2.client.map.render.LayerRenderer;
  * TODO add minimum and maximum scale...
  *
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public interface Layer {

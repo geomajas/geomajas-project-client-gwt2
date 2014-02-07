@@ -21,7 +21,7 @@ import com.google.web.bindery.event.shared.Event.Type;
  * Handler that catches changes in layer style.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 @UserImplemented

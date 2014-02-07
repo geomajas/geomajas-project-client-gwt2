@@ -18,7 +18,7 @@ import org.geomajas.gwt2.client.map.layer.Layer;
  * Event that is fired when a layer is removed from the map.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class LayerRemovedEvent extends BaseLayerEvent<MapCompositionHandler> {

@@ -20,7 +20,7 @@ import org.geomajas.command.CommandResponse;
  *
  * @param <RESPONSE> type of response object for the command
  * @author Oliver May
- * @since 0.0.0
+ * @since 2.0.0
  */
 @Api()
 public abstract class AbstractCommandCallback<RESPONSE extends CommandResponse>

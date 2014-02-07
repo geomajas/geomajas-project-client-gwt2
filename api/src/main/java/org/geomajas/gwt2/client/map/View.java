@@ -18,7 +18,7 @@ import org.geomajas.geometry.Coordinate;
  * Defines a view on the map. XYZ in the form of position and scale.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class View {

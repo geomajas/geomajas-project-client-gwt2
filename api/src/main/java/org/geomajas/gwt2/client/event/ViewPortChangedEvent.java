@@ -22,7 +22,7 @@ import com.google.web.bindery.event.shared.Event;
  * scaling and translation have occurred or the view has resized.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class ViewPortChangedEvent extends Event<ViewPortChangedHandler> {

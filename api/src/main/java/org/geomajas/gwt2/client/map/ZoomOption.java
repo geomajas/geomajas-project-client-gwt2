@@ -17,7 +17,7 @@ import org.geomajas.annotation.Api;
  * Zoom options. These express the different ways to zoom in and out on a map.
  * 
  * @author Jan De Moerloose
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public enum ZoomOption {

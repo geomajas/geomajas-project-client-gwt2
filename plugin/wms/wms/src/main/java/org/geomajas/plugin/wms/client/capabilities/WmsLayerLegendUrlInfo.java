@@ -19,7 +19,7 @@ import org.geomajas.annotation.Api;
  * Legend information for a layer in the WMS Capabilities.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public interface WmsLayerLegendUrlInfo extends Serializable {

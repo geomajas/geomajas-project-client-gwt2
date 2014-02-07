@@ -44,7 +44,7 @@ import com.google.gwt.user.client.ui.Widget;
  * </p>
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api
 public class LayerLegendPanel extends Composite {
