@@ -11,25 +11,18 @@
 
 package org.geomajas.gwt2.example.client.sample.general;
 
-import java.util.Iterator;
-
-import org.geomajas.gwt2.client.GeomajasImpl;
-import org.geomajas.gwt2.client.GeomajasServerExtension;
-import org.geomajas.gwt2.client.event.MapInitializationEvent;
-import org.geomajas.gwt2.client.event.MapInitializationHandler;
-import org.geomajas.gwt2.client.map.MapPresenter;
-import org.geomajas.gwt2.client.widget.MapLayoutPanel;
-import org.geomajas.gwt2.client.widget.control.pan.PanControl;
-import org.geomajas.gwt2.client.widget.control.zoom.ZoomControl;
-import org.geomajas.gwt2.client.widget.control.zoom.ZoomStepControl;
-import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
-
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
+import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
+import org.geomajas.gwt2.client.widget.DefaultMapWidget;
+import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.client.widget.MapLayoutPanel;
+import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 
 /**
  * ContentPanel that demonstrates alternative controls on the map.
- * 
+ *
  * @author Pieter De Graef
  */
 public class AlternativeControlsPanel implements SamplePanel {
@@ -48,35 +41,10 @@ public class AlternativeControlsPanel implements SamplePanel {
 		layout.setPresenter(mapPresenter);
 
 		// Initialize the map, and return the layout:
-		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "gwt-app", "mapOsm");
-
-		// Install alternative controls on the map - when the map has been initialized:
-		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
+		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "gwt-app", "mapOsm",
+				new DefaultMapWidget[] { DefaultMapWidget.ZOOM_TO_RECTANGLE_CONTROL, DefaultMapWidget.PAN_CONTROL,
+						DefaultMapWidget.ZOOM_STEP_CONTROL, DefaultMapWidget.SCALEBAR });
 
 		return resizeLayoutPanel;
-	}
-
-	/**
-	 * Initialization handler that deletes the default zoom control and adds 2 new controls.
-	 * 
-	 * @author Pieter De Graef
-	 */
-	private class MyMapInitializationHandler implements MapInitializationHandler {
-
-		@Override
-		public void onMapInitialized(MapInitializationEvent event) {
-			// Search for the ZoomControl widget and remove it:
-			Iterator<Widget> iterator = mapPresenter.getWidgetPane().iterator();
-			while (iterator.hasNext()) {
-				Widget widget = iterator.next();
-				if (widget instanceof ZoomControl) {
-					mapPresenter.getWidgetPane().remove(widget);
-				}
-			}
-
-			// Now add the alternative controls:
-			mapPresenter.getWidgetPane().add(new PanControl(mapPresenter));
-			mapPresenter.getWidgetPane().add(new ZoomStepControl(mapPresenter));
-		}
 	}
 }
