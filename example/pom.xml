@@ -105,6 +105,28 @@
 
 	<build>
 		<plugins>
+            <!-- Application specific cleanup -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>remove-build-files</id>
+                        <phase>clean</phase>
+                        <configuration>
+                            <tasks>
+                                <delete dir="src/main/gwt-unitCache" />
+                                <delete dir="src/main/webapp/example" />
+                                <delete dir="src/main/webapp/WEB-INF/lib" />
+                                <delete dir="src/main/webapp/WEB-INF/deploy" />
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
 			<!-- Run the application using "mvn jetty:run" -->
 			<plugin>
