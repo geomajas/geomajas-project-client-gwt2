@@ -65,7 +65,8 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * <p> Implementation of the MapWidget interface as described by the {@link org.geomajas.gwt2.client.map.MapPresenterImpl}.
+ * <p> Implementation of the MapWidget interface as described by the
+ * {@link org.geomajas.gwt2.client.map.MapPresenterImpl}.
  * It represents the MVP 'view' of the map's presenter (aka MapPresenter). </p> <p> This widget is able to render all
  * required objects that the MapPresenter supports, and does this in the following order: <ol> <li>Raster layers &
  * rasterized vector layers.</li> <li>Vector layers (SVG/VML)</li> <li>All vectorcontainers</li> <li>All map

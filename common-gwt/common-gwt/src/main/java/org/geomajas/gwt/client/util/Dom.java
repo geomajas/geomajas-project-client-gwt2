@@ -293,9 +293,9 @@ public class Dom extends com.google.gwt.user.client.DOM {
 	 * @return whether the browser is running on device with touch support (true or false)
 	 */
 	public static native boolean isTouchSupported() /*-{
-        if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
-            return true;
-        }
-        return false;
-    }-*/;
+		if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
+			return true;
+		}
+		return false;
+	}-*/;
 }
