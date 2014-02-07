@@ -50,6 +50,7 @@ import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 import org.geomajas.plugin.editing.client.snap.SnapSourceProvider;
+import org.geomajas.plugin.editing.client.snap.SnappingRule;
 import org.geomajas.plugin.editing.client.snap.algorithm.NearestEdgeSnapAlgorithm;
 import org.geomajas.plugin.editing.gwt.client.Editing;
 import org.geomajas.plugin.editing.gwt.client.GeometryEditor;
@@ -203,7 +204,7 @@ public class SnapToCountriesPanel implements SamplePanel {
 
 		// Read the distance value. If it is not an integer, we apply the default:
 		String distanceTxt = distanceBox.getValue();
-		int distance = 100000;
+		int distance;
 		try {
 			distance = Integer.parseInt(distanceTxt);
 		} catch (Exception e) {

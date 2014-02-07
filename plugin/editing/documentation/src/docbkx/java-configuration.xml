@@ -555,37 +555,12 @@ editor.setSnapOnInsert(true);</programlisting>
 
         <programlisting>SnapAlgorithm snapAlgorithm = new NearestVertexSnapAlgorithm();
 SnapSourceProvider sourceProvider = new CountriesLayerProvider();
-editor.getSnappingService().addSnappingRule(snapAlgorithm, sourceProvider, 1000.0, true);</programlisting>
+SnappingRule rule = new SnappingRule(snapAlgorithm, sourceProvider, 1000.0);
+editor.getSnappingService().addSnappingRule(rule);</programlisting>
 
         <para>If the editing process should start now, it would make use of
         this snapping rule while inserting points or dragging points (assuming
         we have activated both).</para>
-
-        <para>Note that the "<code>highPriority</code>" setting has been set
-        to <code>true</code>. If there is only one snapping rule this makes no
-        difference. But if we should add a second snapping algorithm, it is
-        important to understand this setting. Setting it to true means that it
-        is always used. When snapping, the <code>SnapService</code> will go
-        over all snapping rules. From the moment it finds a point to snap to
-        (because it can find a vertex/edge within the snapping distance for a
-        certain rule), it will not execute any other snapping rules anymore
-        where the "<code>highPriority</code>" setting is set to
-        <code>false</code>.</para>
-
-        <para>Let's present an example:</para>
-
-        <programlisting>SnapAlgorithm snapAlgorithm1 = new NearestVertexSnapAlgorithm();
-SnapAlgorithm snapAlgorithm2 = new NearestEdgeSnapAlgorithm();
-SnapSourceProvider sourceProvider = new CountriesLayerProvider();
-
-editor.getSnappingService().addSnappingRule(snapAlgorithm1, sourceProvider, 500.0, true);
-editor.getSnappingService().addSnappingRule(snapAlgorithm2, sourceProvider, 1000.0, false);</programlisting>
-
-        <para>In the example above 2 snapping rules have been added. The first
-        has a high priority while the second does not. So when the
-        <code>SnapService</code> checks if a certain point can snap, it starts
-        with the first rule. Only if it cannot snap to a vertex within 500 map
-        units, will it try to use the second rule.</para>
       </section>
     </section>
   </section>
