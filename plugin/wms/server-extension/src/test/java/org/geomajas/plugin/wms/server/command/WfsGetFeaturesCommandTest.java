@@ -37,22 +37,22 @@ public class WfsGetFeaturesCommandTest {
 	private static final String LAYER = "demo_world:simplified_country_borders";
 
 	@Autowired
-//	private WfsGetFeaturesCommand command;
+	private WfsGetFeaturesCommand command;
 
 	@Test
 	public void testGetCountries() throws Exception {
-//		WfsGetFeaturesResponse response = command.getEmptyCommandResponse();
-//		Assert.assertNotNull(response);
-//
-//		Bbox bounds = new Bbox(-180, -90, 360, 180);
-//		Geometry geometry = GeometryService.toPolygon(bounds);
-//
-//		WfsGetFeaturesRequest request = new WfsGetFeaturesRequest(WMS_BASE_URL, LAYER, geometry);
-//		request.setMaxCoordsPerFeature(100);
-//		request.setMaxNumOfFeatures(100);
-//
-//		command.execute(request, response);
-//		Assert.assertNotNull(response.getFeatures());
-//		Assert.assertTrue(response.getFeatures().size() > 0);
+		WfsGetFeaturesResponse response = command.getEmptyCommandResponse();
+		Assert.assertNotNull(response);
+
+		Bbox bounds = new Bbox(-180, -90, 360, 180);
+		Geometry geometry = GeometryService.toPolygon(bounds);
+
+		WfsGetFeaturesRequest request = new WfsGetFeaturesRequest(WMS_BASE_URL, LAYER, geometry);
+		request.setMaxCoordsPerFeature(100);
+		request.setMaxNumOfFeatures(100);
+
+		command.execute(request, response);
+		Assert.assertNotNull(response.getFeatures());
+		Assert.assertTrue(response.getFeatures().size() > 0);
 	}
 }

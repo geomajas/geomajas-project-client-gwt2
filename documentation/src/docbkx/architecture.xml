@@ -1127,6 +1127,12 @@ mapPresenter.addMapListener(new MyCustomController());</programlisting>
       this:</para>
 
       <programlisting>mapPresenter.setMapController(null);</programlisting>
+
+      <tip>
+        <para>When writing your own MapControllers it is recommended to always
+        start from the <code>AbstractMapController</code>, or even from the
+        <code>NavigationController</code>.</para>
+      </tip>
     </section>
 
     <section>
