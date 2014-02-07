@@ -21,7 +21,7 @@
       <holder>Geosparc nv</holder>
     </copyright>
 
-    <releaseinfo><?eval ${project.version}?></releaseinfo>
+    <releaseinfo>Version <?eval ${project.version}?></releaseinfo>
 
     <productname>Geomajas WMS Client plugin</productname>
 
