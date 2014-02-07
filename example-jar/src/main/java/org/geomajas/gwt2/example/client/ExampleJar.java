@@ -11,6 +11,8 @@
 
 package org.geomajas.gwt2.example.client;
 
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanelRegistry;
 import org.geomajas.gwt2.example.base.client.sample.ShowcaseSampleDefinition;
@@ -18,7 +20,6 @@ import org.geomajas.gwt2.example.client.i18n.SampleMessages;
 import org.geomajas.gwt2.example.client.sample.feature.FeatureSelectionPanel;
 import org.geomajas.gwt2.example.client.sample.general.AlternativeControlsPanel;
 import org.geomajas.gwt2.example.client.sample.general.MapFillPanel;
-import org.geomajas.gwt2.example.client.sample.general.MapTraceNavigationPanel;
 import org.geomajas.gwt2.example.client.sample.general.NavigationOptionPanel;
 import org.geomajas.gwt2.example.client.sample.general.ResizeMapPanel;
 import org.geomajas.gwt2.example.client.sample.general.ServerExceptionPanel;
@@ -36,12 +37,9 @@ import org.geomajas.gwt2.example.client.sample.rendering.HtmlMarkerPanel;
 import org.geomajas.gwt2.example.client.sample.rendering.ScreenSpaceRenderingPanel;
 import org.geomajas.gwt2.example.client.sample.rendering.WorldSpaceRenderingPanel;
 
-import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
-
 /**
  * Entry point and main class for the GWT client example application.
- * 
+ *
  * @author Pieter De Graef
  */
 public class ExampleJar implements EntryPoint {
@@ -203,28 +201,28 @@ public class ExampleJar implements EntryPoint {
 				return CATEGORY_GENERAL;
 			}
 		});
-		SamplePanelRegistry.registerFactory(CATEGORY_GENERAL, new ShowcaseSampleDefinition() {
-
-			public SamplePanel create() {
-				return new MapTraceNavigationPanel();
-			}
-
-			public String getTitle() {
-				return MESSAGES.generalTraceNavigationTitle();
-			}
-
-			public String getShortDescription() {
-				return MESSAGES.generalTraceNavigationShort();
-			}
-
-			public String getDescription() {
-				return MESSAGES.generalTraceNavigationDescription();
-			}
-
-			public String getCategory() {
-				return CATEGORY_GENERAL;
-			}
-		});
+//		SamplePanelRegistry.registerFactory(CATEGORY_GENERAL, new ShowcaseSampleDefinition() {
+//
+//			public SamplePanel create() {
+//				return new MapTraceNavigationPanel();
+//			}
+//
+//			public String getTitle() {
+//				return MESSAGES.generalTraceNavigationTitle();
+//			}
+//
+//			public String getShortDescription() {
+//				return MESSAGES.generalTraceNavigationShort();
+//			}
+//
+//			public String getDescription() {
+//				return MESSAGES.generalTraceNavigationDescription();
+//			}
+//
+//			public String getCategory() {
+//				return CATEGORY_GENERAL;
+//			}
+//		});
 	}
 
 	private void registerLayerSamples() {
