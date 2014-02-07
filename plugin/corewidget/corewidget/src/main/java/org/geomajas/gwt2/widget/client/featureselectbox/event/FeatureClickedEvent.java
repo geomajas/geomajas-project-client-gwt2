@@ -19,7 +19,7 @@ import com.google.web.bindery.event.shared.Event;
  * Event which is passed when a feature is clicked.
  * 
  * @author Dosi Bingov
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class FeatureClickedEvent extends Event<FeatureClickedHandler> {

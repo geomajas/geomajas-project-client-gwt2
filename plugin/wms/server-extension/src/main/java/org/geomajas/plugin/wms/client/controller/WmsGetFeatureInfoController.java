@@ -29,7 +29,7 @@ import com.google.gwt.event.dom.client.MouseUpEvent;
  * Default map controller that executes WMS GetFeatureInfo requests on the registered layers.
  *
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class WmsGetFeatureInfoController extends AbstractMapController {

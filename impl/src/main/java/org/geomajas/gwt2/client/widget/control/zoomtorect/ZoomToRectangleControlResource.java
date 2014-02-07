@@ -21,7 +21,7 @@ import com.google.gwt.resources.client.ImageResource.RepeatStyle;
  * Client resource bundle interface for pure GWT widgets.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public interface ZoomToRectangleControlResource extends ClientBundle {

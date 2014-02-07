@@ -19,7 +19,7 @@ import org.geomajas.annotation.Api;
  * 
  * @param <T>
  *            The hint type class
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class Hint<T> {

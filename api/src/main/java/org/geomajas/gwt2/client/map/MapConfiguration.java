@@ -21,7 +21,7 @@ import java.util.List;
  * parameters. One should define a {@link Hint} constant for each configuration parameter.
  *
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public interface MapConfiguration {

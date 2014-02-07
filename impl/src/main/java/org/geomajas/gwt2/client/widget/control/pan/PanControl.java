@@ -37,7 +37,7 @@ import com.google.gwt.user.client.ui.Widget;
  * map's widget pane (see {@link MapPresenter#getWidgetPane()}).
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class PanControl extends AbstractMapWidget {

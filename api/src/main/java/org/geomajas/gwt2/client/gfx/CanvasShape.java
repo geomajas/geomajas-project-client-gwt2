@@ -23,7 +23,7 @@ import com.google.gwt.canvas.client.Canvas;
  * Canvas shape that knows how to render itself.
  * 
  * @author Jan De Moerloose
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public interface CanvasShape {

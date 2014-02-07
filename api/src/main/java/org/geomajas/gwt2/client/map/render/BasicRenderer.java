@@ -18,7 +18,7 @@ import org.geomajas.annotation.Api;
  * render a layer or the entire LayersModel.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public interface BasicRenderer {

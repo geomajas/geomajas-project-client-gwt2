@@ -19,7 +19,7 @@ import org.geomajas.gwt2.client.map.layer.Layer;
  * Event which is passed when a feature is selected.
  * 
  * @author Joachim Van der Auwera
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class FeatureSelectedEvent extends BaseLayerEvent<FeatureSelectionHandler> {

@@ -19,7 +19,7 @@ import org.geomajas.command.CommandResponse;
  * includes errors.
  * 
  * @author Oliver May
- * @since 0.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public interface CommandExceptionCallback {

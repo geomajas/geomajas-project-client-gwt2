@@ -23,7 +23,7 @@ import com.google.gwt.resources.client.ImageResource.RepeatStyle;
  * 
  * @author Dosi Bingov
  * @author Jan De Moerloose
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public interface CloseableDialogBoxResource extends ClientBundle {

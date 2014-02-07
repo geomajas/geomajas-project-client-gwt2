@@ -35,7 +35,7 @@ import java.io.IOException;
  * @author Pieter De Graef
  * @author Joachim Van der Auwera
  * @author Jan De Moerloose
- * @since 0.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class GeomajasServiceImpl extends RemoteServiceServlet implements GeomajasService,

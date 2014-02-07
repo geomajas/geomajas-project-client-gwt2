@@ -22,7 +22,7 @@ import com.google.web.bindery.event.shared.Event;
  * animation.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class NavigationUpdateEvent extends Event<NavigationUpdateHandler> {

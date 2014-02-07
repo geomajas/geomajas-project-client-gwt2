@@ -18,7 +18,7 @@ import com.google.web.bindery.event.shared.Event;
  * Event that reports resizing of the map.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class MapResizedEvent extends Event<MapResizedHandler> {

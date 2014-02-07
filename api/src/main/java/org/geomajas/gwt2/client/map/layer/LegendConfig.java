@@ -23,7 +23,7 @@ import java.io.Serializable;
  * to the {@link LegendUrlSupported} implementation to specify what is supported and what is not.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class LegendConfig implements Serializable {

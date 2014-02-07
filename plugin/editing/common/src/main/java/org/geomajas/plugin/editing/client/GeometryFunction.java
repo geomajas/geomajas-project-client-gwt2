@@ -18,7 +18,7 @@ import org.geomajas.geometry.Geometry;
  * Function to be executed on a single geometry. Often used as call-back.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api
 public interface GeometryFunction {

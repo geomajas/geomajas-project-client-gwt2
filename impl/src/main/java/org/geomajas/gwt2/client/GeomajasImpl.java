@@ -25,7 +25,7 @@ import org.geomajas.gwt2.client.map.MapPresenterImpl;
  * Geomajas starting point. This class allows you to request singleton services or create new instances.
  *
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public final class GeomajasImpl implements Geomajas {

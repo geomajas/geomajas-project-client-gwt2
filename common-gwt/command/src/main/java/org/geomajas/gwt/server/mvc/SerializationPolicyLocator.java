@@ -20,7 +20,7 @@ import com.google.gwt.user.server.rpc.SerializationPolicy;
  * Interface implemented by custom GWT-RPC serialization policy locators for {@link GeomajasController}.
  * 
  * @author Jan De Moerloose
- * @since 1.0.0
+ * @since 2.0.0
  * 
  */
 @Api(allMethods = true)

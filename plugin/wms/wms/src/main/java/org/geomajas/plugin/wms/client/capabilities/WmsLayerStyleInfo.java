@@ -19,7 +19,7 @@ import org.geomajas.annotation.Api;
  * Style information for a layer in a WMS GetCapabilities file.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public interface WmsLayerStyleInfo extends Serializable {

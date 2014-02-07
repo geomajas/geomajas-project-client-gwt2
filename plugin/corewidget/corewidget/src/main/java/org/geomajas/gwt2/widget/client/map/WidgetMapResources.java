@@ -19,7 +19,7 @@ import com.google.gwt.resources.client.ClientBundle;
  * Client resource bundle interface for pure GWT widgets related to the map.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public interface WidgetMapResources extends ClientBundle {

@@ -21,7 +21,7 @@ import com.google.web.bindery.event.shared.Event.Type;
  * Handler for events that indicate that the layer order of a map has changed.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 @UserImplemented

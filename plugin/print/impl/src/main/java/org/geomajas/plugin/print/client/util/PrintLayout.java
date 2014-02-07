@@ -19,7 +19,7 @@ import org.geomajas.annotation.Api;
  * Implemented as static class to allow overwriting values at application start, thus allowing skinning.
  * 
  * @author Joachim Van der Auwera
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public final class PrintLayout {

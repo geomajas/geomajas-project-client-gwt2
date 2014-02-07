@@ -23,7 +23,7 @@ import com.google.gwt.user.client.ui.SimpleLayoutPanel;
  * resizes. Call {@link #setPresenter(MapPresenter)} before adding the panel to the general layout.
  * 
  * @author Jan De Moerloose
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class MapLayoutPanel extends SimpleLayoutPanel {

@@ -20,7 +20,7 @@ import org.geomajas.gwt2.client.map.layer.Layer;
  * 
  * @author Frank Wynants
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class LayerHideEvent extends BaseLayerEvent<LayerVisibilityHandler> {

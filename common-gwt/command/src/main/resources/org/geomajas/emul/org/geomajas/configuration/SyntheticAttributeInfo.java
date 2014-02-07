@@ -20,12 +20,12 @@ import org.geomajas.annotation.Api;
  * A synthetic attribute cannot be edited.
  *
  * @author Joachim Van der Auwera
- * @since 1.10.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class SyntheticAttributeInfo extends AbstractReadOnlyAttributeInfo {
 
-	private static final long serialVersionUID = 1100L;
+	private static final long serialVersionUID = 200L;
 
 	private String expression;
 

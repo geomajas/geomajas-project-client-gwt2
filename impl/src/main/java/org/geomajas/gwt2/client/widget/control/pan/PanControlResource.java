@@ -21,7 +21,7 @@ import com.google.gwt.resources.client.ImageResource.RepeatStyle;
  * Client resource bundle for the {@link PanControl} widget.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public interface PanControlResource extends ClientBundle {

@@ -21,7 +21,7 @@ import com.google.web.bindery.event.shared.Event.Type;
  * Interface for event handlers that catch {@link FeatureClickedEvent}s.
  *
  * @author Dosi Bingov
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 @UserImplemented

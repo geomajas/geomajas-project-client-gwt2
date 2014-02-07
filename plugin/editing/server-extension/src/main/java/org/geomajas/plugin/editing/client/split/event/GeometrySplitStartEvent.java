@@ -20,7 +20,7 @@ import com.google.gwt.event.shared.GwtEvent;
  * Event that reports the splitting process of a geometry has begun.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class GeometrySplitStartEvent extends GwtEvent<GeometrySplitStartHandler> {

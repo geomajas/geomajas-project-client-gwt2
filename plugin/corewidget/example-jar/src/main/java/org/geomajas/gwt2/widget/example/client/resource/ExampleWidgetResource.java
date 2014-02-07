@@ -18,7 +18,7 @@ import com.google.gwt.resources.client.ImageResource;
  * Client resource bundle interface for pure GWT widgets example project.
  *
  * @author Dosi Bingov
- * @since 1.0.0
+ * @since 2.0.0
  */
 public interface ExampleWidgetResource extends ClientBundle {
 

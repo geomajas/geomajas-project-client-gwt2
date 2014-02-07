@@ -20,7 +20,7 @@ import org.geomajas.annotation.Api;
  *
  * @author Pieter De Graef
  * @author Jan De Moerloose
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public interface LayersModel {

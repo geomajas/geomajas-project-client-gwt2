@@ -18,7 +18,7 @@ import org.geomajas.gwt2.client.map.layer.Layer;
  * Definition of a renderer responsible for rendering a single layer.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public interface LayerRenderer extends BasicRenderer {

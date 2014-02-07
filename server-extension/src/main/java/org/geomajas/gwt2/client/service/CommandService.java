@@ -25,7 +25,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * <p/>
  * 
  * @author Jan De Moerloose
- * @since 1.0.0
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public interface CommandService {
@@ -40,21 +40,21 @@ public interface CommandService {
 	 *            callbacks may implement CommunicationExceptionCallback or CommandExceptionCallback to allow error
 	 *            handling.
 	 * @return deferred object which can be used to add extra callbacks
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 */
 	Deferred execute(final GwtCommand command, final CommandCallback<?>... callback);
 
 	/**
 	 * Request a user login. Requests a new user token to be obtained.
 	 * 
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 */
 	void login();
 
 	/**
 	 * Invalidate the current user token. This may automatically force a requests for a new user token to be obtained.
 	 * 
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 */
 	void logout();
 
@@ -62,7 +62,7 @@ public interface CommandService {
 	 * Get the user token.
 	 * 
 	 * @return user token
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 */
 	String getUserToken();
 
@@ -72,7 +72,7 @@ public interface CommandService {
 	 * @param handler
 	 *            token changed handler
 	 * @return handler registration
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 */
 	HandlerRegistration addTokenChangedHandler(TokenChangedHandler handler);
 
@@ -81,7 +81,7 @@ public interface CommandService {
 	 * 
 	 * @param tokenRequestHandler
 	 *            login handler
-	 * @since 1.0.0
+	 * @since 2.0.0
 	 */
 	void setTokenRequestHandler(TokenRequestHandler tokenRequestHandler);
 }
