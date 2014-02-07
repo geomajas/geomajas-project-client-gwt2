@@ -36,7 +36,7 @@ import com.google.gwt.event.shared.SimpleEventBus;
 @Api(allMethods = true)
 public class SnapService {
 
-	private List<SnappingRule> rules;
+	private List<SnappingRule> snappingRules;
 
 	private EventBus eventBus;
 
@@ -53,7 +53,7 @@ public class SnapService {
 	 * functionality.
 	 */
 	public SnapService() {
-		rules = new ArrayList<SnappingRule>();
+		snappingRules = new ArrayList<SnappingRule>();
 		eventBus = new SimpleEventBus();
 	}
 
@@ -86,12 +86,12 @@ public class SnapService {
 		currentDistance = Double.MAX_VALUE;
 		hasSnapped = false;
 
-		for (SnappingRule rule : rules) {
+		for (SnappingRule snappingRule : snappingRules) {
 			if (!hasSnapped) {
-				double distance = Math.min(currentDistance, rule.getDistance());
-				result = rule.getAlgorithm().snap(coordinate, distance);
-				if (rule.getAlgorithm().hasSnapped()) {
-					currentDistance = rule.getAlgorithm().getCalculatedDistance();
+				double distance = Math.min(currentDistance, snappingRule.getDistance());
+				result = snappingRule.getAlgorithm().snap(coordinate, distance);
+				if (snappingRule.getAlgorithm().hasSnapped()) {
+					currentDistance = snappingRule.getAlgorithm().getCalculatedDistance();
 					hasSnapped = true;
 				}
 			}
@@ -126,7 +126,7 @@ public class SnapService {
 	 *            The bounding box wherein we expect snapping to occur. Is usually the current view on the map.
 	 */
 	public void update(Bbox mapBounds) {
-		for (final SnappingRule condition : rules) {
+		for (final SnappingRule condition : snappingRules) {
 			condition.getSourceProvider().update(mapBounds);
 			condition.getSourceProvider().getSnappingSources(new GeometryArrayFunction() {
 
@@ -139,7 +139,7 @@ public class SnapService {
 
 	/** Remove all snapping rules from this service. Without any snapping rules, snapping can not occur. */
 	public void clearSnappingRules() {
-		rules.clear();
+		snappingRules.clear();
 	}
 
 	/**
@@ -152,32 +152,44 @@ public class SnapService {
 	 * @param distance
 	 *            The maximum distance to bridge during snapping.
 	 * @param highPriority
-	 *            High priority means that this rule will always be executed. Low priority means that if a previous
-	 *            snapping algorithm has found a snapping candidate, this algorithm will not be executed anymore.
+	 *            bogus attribute
 	 */
 	@Deprecated
 	public void addSnappingRule(SnapAlgorithm algorithm, SnapSourceProvider sourceProvider, double distance,
 			boolean highPriority) {
-		addRule(new SnappingRule(algorithm, sourceProvider, distance));
+		addSnappingRule(new SnappingRule(algorithm, sourceProvider, distance));
 	}
 
-	public List<SnappingRule> getRules() {
-		 return rules;
+	/**
+	 * Returns all current registered snapping rules.
+	 * @return
+	 */
+	public List<SnappingRule> getSnappingRules() {
+		 return snappingRules;
 	}
 
-	public SnappingRule getRule(int index) {
-		 return rules.get(index);
+	/**
+	 * Adds a snapping rule at the back of the snapping rule list.
+	 * @param rule
+	 */
+	public void addSnappingRule(SnappingRule rule) {
+		snappingRules.add(rule);
 	}
 
-	public void addRule(SnappingRule rule) {
-		rules.add(rule);
+	/**
+	 * Remove a snapping rule from the list.
+	 * @param rule
+	 */
+	public void removeSnappingRule(SnappingRule rule) {
+		snappingRules.remove(rule);
 	}
 
-	public void removeRule(SnappingRule rule) {
-		rules.remove(rule);
-	}
-
-	public void insertRule(int index, SnappingRule rule) {
-		rules.add(index, rule);
+	/**
+	 * Insert the snapping rule at a certain index.
+	 * @param index
+	 * @param rule
+	 */
+	public void insertSnappingRule(int index, SnappingRule rule) {
+		snappingRules.add(index, rule);
 	}
 }

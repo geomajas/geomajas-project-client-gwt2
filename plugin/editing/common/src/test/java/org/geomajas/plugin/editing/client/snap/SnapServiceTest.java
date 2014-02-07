@@ -34,7 +34,7 @@ public class SnapServiceTest {
 
 	@Test
 	public void testSnapping() {
-		service.addSnappingRule(algorithm, sourceProvider, 10, true);
+		service.addSnappingRule(new SnappingRule(algorithm, sourceProvider, 10));
 		service.update(null);
 		Coordinate result = service.snap(new Coordinate(5, 5));
 		Assert.assertEquals(0.0, result.getX());

@@ -212,7 +212,8 @@ public class SnapToCountriesPanel implements SamplePanel {
 		}
 
 		// Add the snapping rule, using a Nearest Edge snapping algorithm:
-		editor.getSnappingService().addSnappingRule(snapAlgorithm, new CountriesLayerProvider(), distance, true);
+		editor.getSnappingService().addSnappingRule(
+				new SnappingRule(snapAlgorithm, new CountriesLayerProvider(), distance));
 	}
 
 	/**
