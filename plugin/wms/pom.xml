@@ -25,7 +25,7 @@
 
 	<modules>
 		<module>wms</module>
-		<module>print</module>
+		<!--<module>print</module>-->
 		<module>documentation</module>
 		<module>example-jar</module>
 		<module>server-extension</module>

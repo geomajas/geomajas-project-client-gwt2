@@ -50,18 +50,14 @@
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-client-gwt2-plugin-editing-example-jar</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-client-gwt2-plugin-graphicsediting-example-jar</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-client-gwt2-plugin-print-example-jar</artifactId>
-		</dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.geomajas.plugin</groupId>-->
-            <!--<artifactId>geomajas-client-gwt2-plugin-corewidget-example-jar</artifactId>-->
-        <!--</dependency>-->
+		<!--<dependency>-->
+			<!--<groupId>org.geomajas.plugin</groupId>-->
+			<!--<artifactId>geomajas-client-gwt2-plugin-graphicsediting-example-jar</artifactId>-->
+		<!--</dependency>-->
+		<!--<dependency>-->
+			<!--<groupId>org.geomajas.plugin</groupId>-->
+			<!--<artifactId>geomajas-client-gwt2-plugin-print-example-jar</artifactId>-->
+		<!--</dependency>-->
 
 		<!-- Google dependencies -->
 		<dependency>

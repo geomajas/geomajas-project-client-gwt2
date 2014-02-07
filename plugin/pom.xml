@@ -27,12 +27,12 @@
 	<description>Geomajas GWT2 client: Plugin - Parent</description>
 
 	<modules>
-		<module>corewidget</module>
+		<!--<module>corewidget</module>-->
 		<module>editing</module>
-		<module>geocoder</module>
-		<module>print</module>
-		<module>wms</module>
-		 <module>graphicsediting</module>
+        <module>wms</module>
+		<!--<module>geocoder</module>-->
+		<!--<module>print</module>-->
+	    <!--<module>graphicsediting</module>-->
  	</modules>
 	
 </project>
