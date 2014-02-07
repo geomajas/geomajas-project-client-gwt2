@@ -11,22 +11,7 @@
 
 package org.geomajas.gwt2.client.widget;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.geomajas.gwt2.client.gfx.CanvasContainer;
-import org.geomajas.gwt2.client.gfx.CanvasContainerImpl;
-import org.geomajas.gwt2.client.gfx.TransformableWidgetContainer;
-import org.geomajas.gwt2.client.gfx.TransformableWidgetContainerImpl;
-import org.geomajas.gwt2.client.gfx.VectorContainer;
-import org.geomajas.gwt2.client.gfx.VectorGroup;
-import org.geomajas.gwt2.client.map.MapPresenterImpl.MapWidget;
-import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
-import org.geomajas.gwt2.client.map.render.dom.container.HtmlGroup;
-import org.vaadin.gwtgraphics.client.DrawingArea;
-import org.vaadin.gwtgraphics.client.Group;
-import org.vaadin.gwtgraphics.client.Transformable;
-
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.GestureChangeEvent;
@@ -58,25 +43,34 @@ import com.google.gwt.event.dom.client.TouchStartHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.RequiresResize;
 import com.google.gwt.user.client.ui.Widget;
+import org.geomajas.gwt2.client.gfx.CanvasContainer;
+import org.geomajas.gwt2.client.gfx.CanvasContainerImpl;
+import org.geomajas.gwt2.client.gfx.TransformableWidgetContainer;
+import org.geomajas.gwt2.client.gfx.TransformableWidgetContainerImpl;
+import org.geomajas.gwt2.client.gfx.VectorContainer;
+import org.geomajas.gwt2.client.gfx.VectorGroup;
+import org.geomajas.gwt2.client.map.MapPresenterImpl.MapWidget;
+import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
+import org.geomajas.gwt2.client.map.render.dom.container.HtmlGroup;
+import org.geomajas.gwt2.client.widget.control.watermark.Watermark;
+import org.vaadin.gwtgraphics.client.DrawingArea;
+import org.vaadin.gwtgraphics.client.Group;
+import org.vaadin.gwtgraphics.client.Transformable;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
- * <p>
- * Implementation of the MapWidget interface as described by the {@link org.geomajas.gwt2.client.map.MapPresenterImpl}.
- * It represents the MVP 'view' of the map's presenter (aka MapPresenter).
- * </p>
- * <p>
- * This widget is able to render all required objects that the MapPresenter supports, and does this in the following
- * order:
- * <ol>
- * <li>Raster layers & rasterized vector layers.</li>
- * <li>Vector layers (SVG/VML)</li>
- * <li>All vectorcontainers</li>
- * <li>All map gadgets</li>
- * </ol>
- * </p>
- * 
+ * <p> Implementation of the MapWidget interface as described by the {@link org.geomajas.gwt2.client.map.MapPresenterImpl}.
+ * It represents the MVP 'view' of the map's presenter (aka MapPresenter). </p> <p> This widget is able to render all
+ * required objects that the MapPresenter supports, and does this in the following order: <ol> <li>Raster layers &
+ * rasterized vector layers.</li> <li>Vector layers (SVG/VML)</li> <li>All vectorcontainers</li> <li>All map
+ * gadgets</li> </ol> </p>
+ *
  * @author Pieter De Graef
  * @author Jan De Moerloose
  */
@@ -111,6 +105,8 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 
 	// List of all world transformables (canvas + vector):
 	private List<Transformable> worldTransformables = new ArrayList<Transformable>();
+
+	private final List<Widget> widgets = new ArrayList<Widget>();
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -172,16 +168,6 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	public HtmlContainer getMapHtmlContainer() {
 		return layerHtmlContainer;
 	}
-//
-//	@Override
-//	public VectorContainer getMapVectorContainer() {
-//		return layerVectorContainer;
-//	}
-//
-//	@Override
-//	public List<VectorContainer> getWorldVectorContainers() {
-//		return worldContainers;
-//	}
 
 	@Override
 	public List<Transformable> getWorldTransformables() {
@@ -266,8 +252,36 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	}
 
 	@Override
-	public AbsolutePanel getWidgetContainer() {
-		return this;
+	public HasWidgets getWidgetContainer() {
+		return new HasWidgets() {
+
+			@Override
+			public void add(Widget w) {
+				w.getElement().getStyle().setPosition(Style.Position.ABSOLUTE);
+				MapWidgetImpl.this.add(w);
+				if (!(w instanceof Watermark)) {
+					widgets.add(w);
+				}
+			}
+
+			@Override
+			public void clear() {
+				while (widgets.size() > 0) {
+					remove(widgets.get(0));
+				}
+			}
+
+			@Override
+			public Iterator<Widget> iterator() {
+				return widgets.iterator();
+			}
+
+			@Override
+			public boolean remove(Widget w) {
+				widgets.remove(w);
+				return MapWidgetImpl.this.remove(w);
+			}
+		};
 	}
 
 	@Override

@@ -1631,7 +1631,6 @@ commandService.execute(command, new AbstractCommandCallback&lt;CommandResponse&g
         PanControl panControl = new PanControl(mapPresenter);
 
         // Make the PanControl stick to the upper-right corner, 5 pixels from the border:
-        panControl.getElement().getStyle().setPosition(Position.ABSOLUTE);
         panControl.getElement().getStyle().clearLeft(); // Just to be sure...
         panControl.getElement().getStyle().setTop(5, Unit.PX);
         panControl.getElement().getStyle().setRight(5, Unit.PX);
