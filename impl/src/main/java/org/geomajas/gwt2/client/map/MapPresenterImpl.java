@@ -11,12 +11,26 @@
 
 package org.geomajas.gwt2.client.map;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.google.gwt.event.dom.client.HasAllGestureHandlers;
+import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
+import com.google.gwt.event.dom.client.HasMouseDownHandlers;
+import com.google.gwt.event.dom.client.HasMouseMoveHandlers;
+import com.google.gwt.event.dom.client.HasMouseOutHandlers;
+import com.google.gwt.event.dom.client.HasMouseOverHandlers;
+import com.google.gwt.event.dom.client.HasMouseUpHandlers;
+import com.google.gwt.event.dom.client.HasMouseWheelHandlers;
+import com.google.gwt.event.dom.client.HasTouchCancelHandlers;
+import com.google.gwt.event.dom.client.HasTouchEndHandlers;
+import com.google.gwt.event.dom.client.HasTouchMoveHandlers;
+import com.google.gwt.event.dom.client.HasTouchStartHandlers;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.RequiresResize;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.web.bindery.event.shared.EventBus;
 import org.geomajas.geometry.Matrix;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt.client.map.RenderSpace;
@@ -41,44 +55,32 @@ import org.geomajas.gwt2.client.map.render.LayersModelRenderer;
 import org.geomajas.gwt2.client.map.render.LayersModelRendererImpl;
 import org.geomajas.gwt2.client.map.render.RenderingInfo;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
+import org.geomajas.gwt2.client.widget.DefaultMapWidget;
 import org.geomajas.gwt2.client.widget.MapWidgetImpl;
+import org.geomajas.gwt2.client.widget.control.pan.PanControl;
 import org.geomajas.gwt2.client.widget.control.scalebar.Scalebar;
 import org.geomajas.gwt2.client.widget.control.watermark.Watermark;
 import org.geomajas.gwt2.client.widget.control.zoom.ZoomControl;
+import org.geomajas.gwt2.client.widget.control.zoom.ZoomStepControl;
 import org.geomajas.gwt2.client.widget.control.zoomtorect.ZoomToRectangleControl;
 import org.vaadin.gwtgraphics.client.Transformable;
 
-import com.google.gwt.event.dom.client.HasAllGestureHandlers;
-import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
-import com.google.gwt.event.dom.client.HasMouseDownHandlers;
-import com.google.gwt.event.dom.client.HasMouseMoveHandlers;
-import com.google.gwt.event.dom.client.HasMouseOutHandlers;
-import com.google.gwt.event.dom.client.HasMouseOverHandlers;
-import com.google.gwt.event.dom.client.HasMouseUpHandlers;
-import com.google.gwt.event.dom.client.HasMouseWheelHandlers;
-import com.google.gwt.event.dom.client.HasTouchCancelHandlers;
-import com.google.gwt.event.dom.client.HasTouchEndHandlers;
-import com.google.gwt.event.dom.client.HasTouchMoveHandlers;
-import com.google.gwt.event.dom.client.HasTouchStartHandlers;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.RequiresResize;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.web.bindery.event.shared.EventBus;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Default implementation of the map presenter interface. In other words this is the default GWT map object.
- * 
+ *
  * @author Pieter De Graef
  */
 public final class MapPresenterImpl implements MapPresenter {
 
 	/**
 	 * Map view definition.
-	 * 
+	 *
 	 * @author Pieter De Graef
 	 */
 	public interface MapWidget extends HasMouseDownHandlers, HasMouseUpHandlers, HasMouseOutHandlers,
@@ -89,108 +91,89 @@ public final class MapPresenterImpl implements MapPresenter {
 		/**
 		 * Returns the HTML container of the map. This is a normal HTML container that contains the images of rasterized
 		 * tiles (both vector and raster layers).
-		 * 
+		 *
 		 * @return the container
 		 */
 		HtmlContainer getMapHtmlContainer();
-//
-//		/**
-//		 * Returns the vector container that contains the vectorized tiles (SVG/VML) of vector layers.
-//		 *
-//		 * @return the container
-//		 */
-//		VectorContainer getMapVectorContainer();
-//
-//		/**
-//		 * Returns the list of user-defined vector containers for world-space objects.
-//		 *
-//		 * @return the container
-//		 */
-//		List<VectorContainer> getWorldVectorContainers();
 
 		/**
 		 * Returns the list of user-defined containers (vector + canvas) for world-space objects.
-		 * 
+		 *
 		 * @return the container
 		 */
 		List<Transformable> getWorldTransformables();
 
 		/**
 		 * Returns a new user-defined container for screen space objects.
-		 * 
+		 *
 		 * @return the container
 		 */
 		VectorContainer getNewScreenContainer();
 
 		/**
 		 * Returns a new user-defined container for world space objects.
-		 * 
+		 *
 		 * @return the container
 		 */
 		VectorContainer getNewWorldContainer();
 
 		/**
 		 * Returns a new user-defined container for world space widgets.
-		 * 
+		 *
 		 * @return the container
 		 */
 		TransformableWidgetContainer getNewWorldWidgetContainer();
 
 		/**
 		 * Removes a user-defined container.
-		 * 
-		 * @param container
-		 *            container
+		 *
+		 * @param container container
 		 * @return true if removed, false if unknown
 		 */
 		boolean removeVectorContainer(VectorContainer container);
 
 		/**
 		 * Removes a user-defined container.
-		 * 
-		 * @param container
-		 *            container
+		 *
+		 * @param container container
 		 * @return true if removed, false if unknown
 		 */
 		boolean removeWorldWidgetContainer(TransformableWidgetContainer container);
 
 		/**
 		 * Brings the user-defined container to the front (relative to its world-space or screen-space peers!).
-		 * 
-		 * @param container
-		 *            container
+		 *
+		 * @param container container
 		 * @return true if successful
 		 */
 		boolean bringToFront(VectorContainer container);
 
 		/**
 		 * Returns a new user-defined container of map gadgets.
-		 * 
+		 *
 		 * @return the container
 		 */
 		AbsolutePanel getWidgetContainer();
 
 		/**
 		 * Get the total width of the view.
-		 * 
+		 *
 		 * @return width in pixels
 		 */
 		int getWidth();
 
 		/**
 		 * Get the total height of the view.
-		 * 
+		 *
 		 * @return height in pixels
 		 */
 		int getHeight();
 
 		/**
 		 * Set the total size of the view.
-		 * 
-		 * @param width
-		 *            width
-		 * @param height
-		 *            height
+		 *
+		 * @param width  width
+		 * @param height height
 		 */
 		void setPixelSize(int width, int height);
 
@@ -222,6 +205,10 @@ public final class MapPresenterImpl implements MapPresenter {
 	private LayersModelRenderer renderer;
 
 	private boolean isTouchSupported;
+
+	// ------------------------------------------------------------------------
+	// Constructor:
+	// ------------------------------------------------------------------------
 
 	public MapPresenterImpl(final EventBus eventBus) {
 		this.handlers = new ArrayList<HandlerRegistration>();
@@ -272,7 +259,7 @@ public final class MapPresenterImpl implements MapPresenter {
 	// MapPresenter implementation:
 	// ------------------------------------------------------------------------
 
-	public void initialize(MapConfiguration configuration) {
+	public void initialize(MapConfiguration configuration, DefaultMapWidget... mapWidgets) {
 		this.configuration = configuration;
 
 		// Apply this configuration on the LayersModelRenderer:
@@ -290,11 +277,25 @@ public final class MapPresenterImpl implements MapPresenter {
 
 		// Adding the default map control widgets:
 		if (getWidgetPane() != null) {
-			getWidgetPane().add(new Watermark());
-			getWidgetPane().add(new Scalebar(MapPresenterImpl.this));
-			getWidgetPane().add(new ZoomControl(MapPresenterImpl.this));
-			if (!isTouchSupported) {
-				getWidgetPane().add(new ZoomToRectangleControl(MapPresenterImpl.this));
+			getWidgetPane().add(new Watermark()); // We always add the watermark...
+			for (DefaultMapWidget widget : mapWidgets) {
+				switch (widget) {
+					case SCALEBAR:
+						getWidgetPane().add(new Scalebar(MapPresenterImpl.this));
+						break;
+					case PAN_CONTROL:
+						getWidgetPane().add(new PanControl(MapPresenterImpl.this));
+						break;
+					case ZOOM_CONTROL:
+						getWidgetPane().add(new ZoomControl(MapPresenterImpl.this));
+						break;
+					case ZOOM_STEP_CONTROL:
+						getWidgetPane().add(new ZoomStepControl(MapPresenterImpl.this));
+						break;
+					case ZOOM_TO_RECTANGLE_CONTROL:
+						getWidgetPane().add(new ZoomToRectangleControl(MapPresenterImpl.this));
+						break;
+				}
 			}
 		}
 		// Fire initialization event
@@ -456,7 +457,7 @@ public final class MapPresenterImpl implements MapPresenter {
 
 	/**
 	 * Handler that redraws all world space objects whenever the view on the map changes.
-	 * 
+	 *
 	 * @author Pieter De Graef
 	 */
 	private class WorldTransformableRenderer implements ViewPortChangedHandler {

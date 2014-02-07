@@ -21,6 +21,7 @@ import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
+import org.geomajas.gwt2.client.widget.DefaultMapWidget;
 import org.geomajas.gwt2.client.map.Hint;
 import org.geomajas.gwt2.client.map.MapConfiguration;
 import org.geomajas.gwt2.client.map.MapConfigurationImpl;
@@ -134,13 +135,29 @@ public final class GeomajasServerExtension {
 	}
 
 	/**
-	 * Initialize the map by fetching a configuration on the server.
+	 * Initialize the map by fetching a configuration on the server. This method will create a map and add the default
+	 * map widgets (zoom in/out, zoom to rectangle and scale bar).
 	 *
 	 * @param mapPresenter  The map to initialize.
 	 * @param applicationId The application ID in the backend configuration.
 	 * @param id            The map ID in the backend configuration.
 	 */
 	public void initializeMap(final MapPresenter mapPresenter, String applicationId, String id) {
+		initializeMap(mapPresenter, applicationId, id, new DefaultMapWidget[] {
+				DefaultMapWidget.ZOOM_CONTROL, DefaultMapWidget.ZOOM_TO_RECTANGLE_CONTROL,
+				DefaultMapWidget.SCALEBAR });
+	}
+
+	/**
+	 * Initialize the map by fetching a configuration on the server.
+	 *
+	 * @param mapPresenter  The map to initialize.
+	 * @param applicationId The application ID in the backend configuration.
+	 * @param id            The map ID in the backend configuration.
+	 * @param mapWidgets    A set of widgets that should be added to the map by default.
+	 */
+	public void initializeMap(final MapPresenter mapPresenter, String applicationId, String id,
+			final DefaultMapWidget... mapWidgets) {
 		GwtCommand commandRequest = new GwtCommand(GetMapConfigurationRequest.COMMAND);
 		commandRequest.setCommandRequest(new GetMapConfigurationRequest(id, applicationId));
 		commandService.execute(commandRequest, new AbstractCommandCallback<GetMapConfigurationResponse>() {
@@ -157,7 +174,7 @@ public final class GeomajasServerExtension {
 
 				// Initialize the map:
 				MapConfiguration configuration = createMapConfiguration(mapInfo);
-				((MapPresenterImpl) mapPresenter).initialize(configuration);
+				((MapPresenterImpl) mapPresenter).initialize(configuration, mapWidgets);
 
 				// Also add a renderer for feature selection:
 				FeatureSelectionRenderer renderer = new FeatureSelectionRenderer(mapPresenter);
