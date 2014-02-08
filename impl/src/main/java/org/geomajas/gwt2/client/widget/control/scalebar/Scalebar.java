@@ -109,7 +109,17 @@ public class Scalebar extends AbstractMapWidget {
 	 * @param mapPresenter The map presenter.
 	 */
 	public Scalebar(MapPresenter mapPresenter) {
-		this(mapPresenter, (ScalebarResource) GWT.create(ScalebarResource.class));
+		super(mapPresenter);
+
+		mapPresenter.getEventBus().addViewPortChangedHandler(new ViewPortChangedHandler() {
+
+			public void onViewPortChanged(ViewPortChangedEvent event) {
+				redrawScale();
+			}
+		});
+
+		initWidget(UI_BINDER.createAndBindUi(this));
+		redrawScale();
 	}
 
 	/**

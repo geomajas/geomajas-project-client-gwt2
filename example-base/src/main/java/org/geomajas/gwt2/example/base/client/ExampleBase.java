@@ -12,6 +12,7 @@
 package org.geomajas.gwt2.example.base.client;
 
 import org.geomajas.geometry.Bbox;
+import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.example.base.client.page.sample.SamplePage;
 import org.geomajas.gwt2.example.base.client.resource.ShowcaseResource;
 import org.geomajas.gwt2.example.base.client.sample.ShowcaseSampleDefinition;
@@ -41,6 +42,7 @@ public class ExampleBase implements EntryPoint {
 	public void onModuleLoad() {
 		// Prepare styling:
 		RESOURCE.css().ensureInjected();
+		GeomajasImpl.getInstance().loadDefaultMapStyles();
 	}
 
 	public static ShowcaseLayout getLayout() {

@@ -75,7 +75,8 @@ public class PanControl extends AbstractMapWidget {
 	 *            The map presenter.
 	 */
 	public PanControl(MapPresenter mapPresenter) {
-		this(mapPresenter, (PanControlResource) GWT.create(PanControlResource.class));
+		super(mapPresenter);
+		buildGui();
 	}
 
 	/**

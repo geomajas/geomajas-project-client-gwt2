@@ -74,4 +74,9 @@ public interface Geomajas {
 	 * @return A general EventBus.
 	 */
 	EventBus getEventBus();
+
+	/**
+	 * Load the default map styles. This includes styles for the map and it's default controls.
+	 */
+	void loadDefaultMapStyles();
 }

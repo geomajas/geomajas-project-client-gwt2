@@ -43,7 +43,6 @@ public class Watermark extends SimplePanel {
 	 */
 	public Watermark(WatermarkResource resource) {
 		super();
-		resource.css().ensureInjected();
 		setStyleName(resource.css().watermark());
 	}
 }

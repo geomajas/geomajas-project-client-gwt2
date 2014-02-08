@@ -116,7 +116,6 @@ public class ZoomStepControl extends AbstractMapWidget {
 	public ZoomStepControl(MapPresenter mapPresenter, ZoomStepControlResource resource) {
 		super(mapPresenter);
 		this.resource = resource;
-		this.resource.css().ensureInjected();
 		viewPort = mapPresenter.getViewPort();
 
 		initWidget(UI_BINDER.createAndBindUi(this));

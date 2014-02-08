@@ -95,7 +95,6 @@ public class ZoomToRectangleControl extends AbstractMapWidget {
 	public ZoomToRectangleControl(MapPresenter mapPresenter, ZoomToRectangleControlResource resource) {
 		super(mapPresenter);
 		this.resource = resource;
-		this.resource.css().ensureInjected();
 		buildGui();
 		mapPresenter.getEventBus().addViewPortChangedHandler(new ViewPortChangedHandler() {
 

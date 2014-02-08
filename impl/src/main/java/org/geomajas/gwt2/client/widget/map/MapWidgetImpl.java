@@ -160,8 +160,8 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 			}
 		});
 
+		// Apply the correct style name:
 		MapWidgetResource resource = GWT.create(MapWidgetResource.class);
-		resource.css().ensureInjected();
 		this.setStyleName(resource.css().mapBackground());
 	}
 

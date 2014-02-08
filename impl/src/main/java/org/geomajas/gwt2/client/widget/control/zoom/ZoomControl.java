@@ -86,7 +86,6 @@ public class ZoomControl extends AbstractMapWidget {
 	public ZoomControl(MapPresenter mapPresenter, ZoomControlResource resource) {
 		super(mapPresenter);
 		this.resource = resource;
-		this.resource.css().ensureInjected();
 		buildGui();
 	}
 
