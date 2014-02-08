@@ -9,8 +9,9 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.client.widget;
+package org.geomajas.gwt2.client.widget.map;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
@@ -158,6 +159,10 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 				event.preventDefault();
 			}
 		});
+
+		MapWidgetResource resource = GWT.create(MapWidgetResource.class);
+		resource.css().ensureInjected();
+		this.setStyleName(resource.css().mapBackground());
 	}
 
 	@Override

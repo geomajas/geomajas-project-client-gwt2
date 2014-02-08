@@ -55,7 +55,7 @@ import org.geomajas.gwt2.client.map.render.LayersModelRendererImpl;
 import org.geomajas.gwt2.client.map.render.RenderingInfo;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
 import org.geomajas.gwt2.client.widget.DefaultMapWidget;
-import org.geomajas.gwt2.client.widget.MapWidgetImpl;
+import org.geomajas.gwt2.client.widget.map.MapWidgetImpl;
 import org.geomajas.gwt2.client.widget.control.pan.PanControl;
 import org.geomajas.gwt2.client.widget.control.scalebar.Scalebar;
 import org.geomajas.gwt2.client.widget.control.watermark.Watermark;
