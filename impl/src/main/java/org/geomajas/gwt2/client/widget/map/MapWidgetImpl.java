@@ -11,7 +11,6 @@
 
 package org.geomajas.gwt2.client.widget.map;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
@@ -47,6 +46,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.RequiresResize;
 import com.google.gwt.user.client.ui.Widget;
+import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.gfx.CanvasContainer;
 import org.geomajas.gwt2.client.gfx.CanvasContainerImpl;
 import org.geomajas.gwt2.client.gfx.TransformableWidgetContainer;
@@ -66,12 +66,10 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * <p> Implementation of the MapWidget interface as described by the
- * {@link org.geomajas.gwt2.client.map.MapPresenterImpl}.
- * It represents the MVP 'view' of the map's presenter (aka MapPresenter). </p> <p> This widget is able to render all
- * required objects that the MapPresenter supports, and does this in the following order: <ol> <li>Raster layers &
- * rasterized vector layers.</li> <li>Vector layers (SVG/VML)</li> <li>All vectorcontainers</li> <li>All map
- * gadgets</li> </ol> </p>
+ * <p> Implementation of the MapWidget interface. It represents the MVP 'view' of the map's presenter (aka
+ * MapPresenter). </p> <p> This widget is able to render all required objects that the MapPresenter supports, and does
+ * this in the following order: <ol> <li>Raster layers & rasterized vector layers.</li> <li>Vector layers (SVG/VML)</li>
+ * <li>All vectorcontainers</li> <li>All map gadgets</li> </ol> </p>
  *
  * @author Pieter De Graef
  * @author Jan De Moerloose
@@ -161,7 +159,8 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		});
 
 		// Apply the correct style name:
-		MapWidgetResource resource = GWT.create(MapWidgetResource.class);
+		MapWidgetResource resource = GeomajasImpl.getClientBundleFactory().createMapWidgetResource();
+		resource.css().ensureInjected();
 		this.setStyleName(resource.css().mapBackground());
 	}
 

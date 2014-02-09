@@ -11,6 +11,12 @@
 
 package org.geomajas.gwt2.client.widget.control.scalebar;
 
+import org.geomajas.annotation.Api;
+import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
+import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
+import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.client.widget.AbstractMapWidget;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Style;
@@ -109,17 +115,7 @@ public class Scalebar extends AbstractMapWidget {
 	 * @param mapPresenter The map presenter.
 	 */
 	public Scalebar(MapPresenter mapPresenter) {
-		super(mapPresenter);
-
-		mapPresenter.getEventBus().addViewPortChangedHandler(new ViewPortChangedHandler() {
-
-			public void onViewPortChanged(ViewPortChangedEvent event) {
-				redrawScale();
-			}
-		});
-
-		initWidget(UI_BINDER.createAndBindUi(this));
-		redrawScale();
+		this(mapPresenter, GeomajasImpl.getClientBundleFactory().createScalebarResource());
 	}
 
 	/**

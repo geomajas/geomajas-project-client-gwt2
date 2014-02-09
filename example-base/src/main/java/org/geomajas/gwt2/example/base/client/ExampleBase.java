@@ -11,20 +11,18 @@
 
 package org.geomajas.gwt2.example.base.client;
 
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.example.base.client.page.sample.SamplePage;
 import org.geomajas.gwt2.example.base.client.resource.ShowcaseResource;
 import org.geomajas.gwt2.example.base.client.sample.ShowcaseSampleDefinition;
 import org.geomajas.gwt2.example.base.client.widget.ShowcaseDialogBox;
 
-import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Window;
-
 /**
  * Entry point and main class for the GWT client example application.
- * 
+ *
  * @author Pieter De Graef
  */
 public class ExampleBase implements EntryPoint {
@@ -42,7 +40,6 @@ public class ExampleBase implements EntryPoint {
 	public void onModuleLoad() {
 		// Prepare styling:
 		RESOURCE.css().ensureInjected();
-		GeomajasImpl.getInstance().loadDefaultMapStyles();
 	}
 
 	public static ShowcaseLayout getLayout() {

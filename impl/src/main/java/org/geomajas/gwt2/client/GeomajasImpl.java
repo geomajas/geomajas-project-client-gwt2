@@ -21,13 +21,7 @@ import org.geomajas.gwt2.client.map.MapConfiguration;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.MapPresenterImpl;
 import org.geomajas.gwt2.client.widget.DefaultMapWidget;
-import org.geomajas.gwt2.client.widget.control.pan.PanControlResource;
-import org.geomajas.gwt2.client.widget.control.scalebar.ScalebarResource;
-import org.geomajas.gwt2.client.widget.control.watermark.WatermarkResource;
-import org.geomajas.gwt2.client.widget.control.zoom.ZoomControlResource;
-import org.geomajas.gwt2.client.widget.control.zoom.ZoomStepControlResource;
-import org.geomajas.gwt2.client.widget.control.zoomtorect.ZoomToRectangleControlResource;
-import org.geomajas.gwt2.client.widget.map.MapWidgetResource;
+import org.geomajas.gwt2.client.widget.GeomajasImplClientBundleFactory;
 
 /**
  * Geomajas starting point. This class allows you to request singleton services or create new instances.
@@ -37,6 +31,8 @@ import org.geomajas.gwt2.client.widget.map.MapWidgetResource;
  */
 @Api(allMethods = true)
 public final class GeomajasImpl implements Geomajas {
+
+	private static GeomajasImplClientBundleFactory bundleFactory;
 
 	private static Geomajas instance;
 
@@ -100,34 +96,16 @@ public final class GeomajasImpl implements Geomajas {
 		return eventBus;
 	}
 
-	@Override
-	public void loadDefaultMapStyles() {
-		// The MapWidgetImpl:
-		MapWidgetResource mapWidgetResource = GWT.create(MapWidgetResource.class);
-		mapWidgetResource.css().ensureInjected();
-
-		// The PanControl:
-		PanControlResource panControlResource = GWT.create(PanControlResource.class);
-		panControlResource.css().ensureInjected();
-
-		// The Scalebar:
-		ScalebarResource scaleBarResource = GWT.create(ScalebarResource.class);
-		scaleBarResource.css().ensureInjected();
-
-		// The Watermark:
-		WatermarkResource watermarkResource = GWT.create(WatermarkResource.class);
-		watermarkResource.css().ensureInjected();
-
-		// The ZoomControl:
-		ZoomControlResource zoomControlResource = GWT.create(ZoomControlResource.class);
-		zoomControlResource.css().ensureInjected();
-
-		// The ZoomStepControl:
-		ZoomStepControlResource zoomStepControlResource = GWT.create(ZoomStepControlResource.class);
-		zoomStepControlResource.css().ensureInjected();
-
-		// The ZoomToRectangleControl:
-		ZoomToRectangleControlResource zoomToRectControlResource = GWT.create(ZoomToRectangleControlResource.class);
-		zoomToRectControlResource.css().ensureInjected();
+	/**
+	 * Get a factory for creating resource bundles for this artifact. All widgets make use of this factory. If you want
+	 * to override the default styles, then override this factory through deferred binding.
+	 *
+	 * @return A factory for creating resource bundles for this artifact.
+	 */
+	public static GeomajasImplClientBundleFactory getClientBundleFactory() {
+		if (bundleFactory == null) {
+			bundleFactory = GWT.create(GeomajasImplClientBundleFactory.class);
+		}
+		return bundleFactory;
 	}
 }

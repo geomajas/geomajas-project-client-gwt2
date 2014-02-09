@@ -12,6 +12,7 @@
 package org.geomajas.gwt2.client.widget.control.zoom;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.animation.LinearTrajectory;
 import org.geomajas.gwt2.client.animation.NavigationAnimation;
 import org.geomajas.gwt2.client.animation.NavigationAnimationFactory;
@@ -102,7 +103,7 @@ public class ZoomStepControl extends AbstractMapWidget {
 	 *            The map presenter.
 	 */
 	public ZoomStepControl(MapPresenter mapPresenter) {
-		this(mapPresenter, (ZoomStepControlResource) GWT.create(ZoomStepControlResource.class));
+		this(mapPresenter, GeomajasImpl.getClientBundleFactory().createZoomStepControlResource());
 	}
 
 	/**
@@ -116,6 +117,7 @@ public class ZoomStepControl extends AbstractMapWidget {
 	public ZoomStepControl(MapPresenter mapPresenter, ZoomStepControlResource resource) {
 		super(mapPresenter);
 		this.resource = resource;
+		this.resource.css().ensureInjected();
 		viewPort = mapPresenter.getViewPort();
 
 		initWidget(UI_BINDER.createAndBindUi(this));

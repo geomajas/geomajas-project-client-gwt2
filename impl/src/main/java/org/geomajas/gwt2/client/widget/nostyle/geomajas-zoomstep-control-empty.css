@@ -1,0 +1,10 @@
+/*===========================================================================*/
+/*====                     ZoomStepControl Widget                        ====*/
+/*===========================================================================*/
+
+@external gm-ZoomStepControl, gm-ZoomStepControl-zoomIn, gm-ZoomStepControl-zoomOut, gm-ZoomStepControl-steps;
+@external gm-ZoomStepControl-step, gm-ZoomStepControl-handle;
+
+.gm-ZoomStepControl, .gm-ZoomStepControl-zoomIn, .gm-ZoomStepControl-zoomOut, .gm-ZoomStepControl-steps,
+    .gm-ZoomStepControl-step, .gm-ZoomStepControl-handle {
+}
