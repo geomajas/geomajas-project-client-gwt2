@@ -14,9 +14,8 @@ package org.geomajas.plugin.graphicsediting.gwt2.client;
 import org.geomajas.annotation.Api;
 
 /**
- * Starting point for the Graphics Editing plugin. From here on you can create
- * {@link org.geomajas.plugin.editing.gwt.client.GeometryEditor}s. A GeometryEditor controls
- * the editing process for a single geometry.
+ * Singleton class that contains the Stroke and Fill values of polygons and lines upon creation.
+ * Class contains getters and setters for each of these parameters.
  *
  * @author Jan Venstermans
  * @since 2.0.0
