@@ -25,7 +25,8 @@ import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
-import org.geomajas.plugin.graphicsediting.gwt2.client.GraphicsEditingUtil;
+import org.geomajas.plugin.graphicsediting.gwt2.client.GraphicsEditing;
+import org.geomajas.plugin.graphicsediting.gwt2.client.StrokeFillCreationValues;
 import org.geomajas.plugin.graphicsediting.gwt2.client.object.GGeometryPath;
 import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 
@@ -101,7 +102,7 @@ public class CreateLineController extends AbstractGraphicsController implements 
 			
 			Geometry line = new Geometry(Geometry.LINE_STRING, 0, -1);
 			if (editService == null) {
-				editService = GraphicsEditingUtil.createClickToStopEditService(mapPresenter);
+				editService = GraphicsEditing.getInstance().createClickToStopEditService(mapPresenter);
 				editService.addGeometryEditStopHandler(this);
 			}
 			editService.start(line);
@@ -127,9 +128,10 @@ public class CreateLineController extends AbstractGraphicsController implements 
 
 	protected GraphicsObject createObject(Geometry geometry) {
 		GGeometryPath path = new GGeometryPath(geometry, null);
-		path.getRole(Strokable.TYPE).setStrokeColor(GraphicsEditingUtil.getLineCreateStrokeColor());
-		path.getRole(Strokable.TYPE).setStrokeOpacity(GraphicsEditingUtil.getLineCreateStrokeOpacity());
-		path.getRole(Strokable.TYPE).setStrokeWidth(GraphicsEditingUtil.getLineCreateStrokeWidth());
+		StrokeFillCreationValues creationValues = GraphicsEditing.getInstance().getStrokeFillCreationValues();
+		path.getRole(Strokable.TYPE).setStrokeColor(creationValues.getLineCreateStrokeColor());
+		path.getRole(Strokable.TYPE).setStrokeOpacity(creationValues.getLineCreateStrokeOpacity());
+		path.getRole(Strokable.TYPE).setStrokeWidth(creationValues.getLineCreateStrokeWidth());
 		return path;
 	}
 }

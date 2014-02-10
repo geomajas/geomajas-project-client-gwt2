@@ -16,15 +16,15 @@ import org.geomajas.graphics.client.action.Action;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.service.GraphicsService;
 import org.geomajas.graphics.client.util.Interruptible;
-import org.geomajas.plugin.graphicsediting.gwt2.client.GraphicsEditingUtil;
-import org.geomajas.plugin.graphicsediting.gwt2.client.object.GeometryEditable;
-import org.geomajas.plugin.graphicsediting.gwt2.client.operation.GeometryEditOperation;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
+import org.geomajas.plugin.graphicsediting.gwt2.client.GraphicsEditing;
+import org.geomajas.plugin.graphicsediting.gwt2.client.object.GeometryEditable;
+import org.geomajas.plugin.graphicsediting.gwt2.client.operation.GeometryEditOperation;
 
 /**
  * Action to delete a {@link GraphicsObject}.
@@ -147,7 +147,7 @@ public class EditAction implements Action, GeometryEditChangeStateHandler,
 
 	private void checkOrCreateEditService() {
 		if (editService == null) {
-			editService = GraphicsEditingUtil.createClickToStopEditService(mapPresenter);
+			editService = GraphicsEditing.getInstance().createClickToStopEditService(mapPresenter);
 			editService.addGeometryEditChangeStateHandler(this);
 			editService.addGeometryEditStopHandler(this);
 		}
