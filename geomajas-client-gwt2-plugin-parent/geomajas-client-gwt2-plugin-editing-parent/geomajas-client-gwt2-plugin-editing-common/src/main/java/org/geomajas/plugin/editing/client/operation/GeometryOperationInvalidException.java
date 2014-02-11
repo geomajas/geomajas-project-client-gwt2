@@ -17,19 +17,19 @@ package org.geomajas.plugin.editing.client.operation;
  * 
  * @author Jan Venstermans
  */
-public class EdgesIntersectFailedException extends GeometryOperationFailedException {
+public class GeometryOperationInvalidException extends GeometryOperationFailedException {
 
 	private static final long serialVersionUID = 100L;
 
-	public EdgesIntersectFailedException() {
+	public GeometryOperationInvalidException() {
 		super();
 	}
 
-	public EdgesIntersectFailedException(String message) {
+	public GeometryOperationInvalidException(String message) {
 		super(message);
 	}
 
-	public EdgesIntersectFailedException(Throwable throwable) {
+	public GeometryOperationInvalidException(Throwable throwable) {
 		super(throwable);
 	}
 }

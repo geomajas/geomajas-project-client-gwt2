@@ -13,6 +13,8 @@ package org.geomajas.plugin.editing.client.operation;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.plugin.editing.client.service.GeometryEditService;
+import org.geomajas.plugin.editing.client.service.GeometryEditServiceImpl;
 import org.geomajas.plugin.editing.client.service.GeometryIndexService;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 import org.junit.Assert;
@@ -27,7 +29,9 @@ public class DeleteGeometryOperationTest {
 
 	private static final double DELTA = 0.0001;
 
-	private GeometryIndexService service = new GeometryIndexService();
+	private GeometryEditService editService;
+
+	private GeometryIndexService service;
 
 	private Geometry point = new Geometry(Geometry.POINT, 0, 0);
 
@@ -48,6 +52,8 @@ public class DeleteGeometryOperationTest {
 	// ------------------------------------------------------------------------
 
 	public DeleteGeometryOperationTest() {
+		editService = new GeometryEditServiceImpl();
+		service = editService.getIndexService();
 		point.setCoordinates(new Coordinate[] { new Coordinate(1, 1) });
 		lineString
 				.setCoordinates(new Coordinate[] { new Coordinate(1, 1), new Coordinate(2, 2), new Coordinate(3, 3) });
@@ -88,7 +94,7 @@ public class DeleteGeometryOperationTest {
 
 	@Test
 	public void testPoint() {
-		GeometryIndexOperation operation = new DeleteGeometryOperation(service);
+		GeometryIndexOperation operation = new DeleteGeometryOperation(editService);
 
 		try {
 			operation.execute(point, service.create(GeometryIndexType.TYPE_GEOMETRY, 0));
@@ -100,7 +106,7 @@ public class DeleteGeometryOperationTest {
 
 	@Test
 	public void testPointCornerCases() {
-		GeometryIndexOperation operation = new DeleteGeometryOperation(service);
+		GeometryIndexOperation operation = new DeleteGeometryOperation(editService);
 
 		try {
 			operation.execute(point, service.create(GeometryIndexType.TYPE_EDGE, 0));
@@ -124,7 +130,7 @@ public class DeleteGeometryOperationTest {
 
 	@Test
 	public void testLineString() {
-		GeometryIndexOperation operation = new DeleteGeometryOperation(service);
+		GeometryIndexOperation operation = new DeleteGeometryOperation(editService);
 
 		try {
 			operation.execute(lineString, service.create(GeometryIndexType.TYPE_GEOMETRY, 0));
@@ -136,7 +142,7 @@ public class DeleteGeometryOperationTest {
 
 	@Test
 	public void testLineStringCornerCases() {
-		GeometryIndexOperation operation = new DeleteGeometryOperation(service);
+		GeometryIndexOperation operation = new DeleteGeometryOperation(editService);
 
 		try {
 			operation.execute(lineString, service.create(GeometryIndexType.TYPE_EDGE, 0));
@@ -160,7 +166,7 @@ public class DeleteGeometryOperationTest {
 
 	@Test
 	public void testLinearRing() {
-		GeometryIndexOperation operation = new DeleteGeometryOperation(service);
+		GeometryIndexOperation operation = new DeleteGeometryOperation(editService);
 
 		try {
 			operation.execute(linearRing, service.create(GeometryIndexType.TYPE_GEOMETRY, 0));
@@ -172,7 +178,7 @@ public class DeleteGeometryOperationTest {
 
 	@Test
 	public void testLinearRingCornerCases() {
-		GeometryIndexOperation operation = new DeleteGeometryOperation(service);
+		GeometryIndexOperation operation = new DeleteGeometryOperation(editService);
 
 		try {
 			operation.execute(linearRing, service.create(GeometryIndexType.TYPE_EDGE, 0));
@@ -196,7 +202,7 @@ public class DeleteGeometryOperationTest {
 
 	@Test
 	public void testPolygonAtBegin() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteGeometryOperation(service);
+		GeometryIndexOperation operation = new DeleteGeometryOperation(editService);
 		int count = polygon.getGeometries().length;
 		double value = polygon.getGeometries()[1].getCoordinates()[0].getX();
 
@@ -213,7 +219,7 @@ public class DeleteGeometryOperationTest {
 
 	@Test
 	public void testPolygonAtEnd() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteGeometryOperation(service);
+		GeometryIndexOperation operation = new DeleteGeometryOperation(editService);
 		int count = polygon.getGeometries().length;
 		double value = polygon.getGeometries()[0].getCoordinates()[0].getX();
 
@@ -230,7 +236,7 @@ public class DeleteGeometryOperationTest {
 
 	@Test
 	public void testPolygonCornerCases() {
-		GeometryIndexOperation operation = new DeleteGeometryOperation(service);
+		GeometryIndexOperation operation = new DeleteGeometryOperation(editService);
 
 		try {
 			operation.execute(polygon, service.create(GeometryIndexType.TYPE_EDGE, 0));
@@ -254,7 +260,7 @@ public class DeleteGeometryOperationTest {
 
 	@Test
 	public void testMultiPointAtBegin() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteGeometryOperation(service);
+		GeometryIndexOperation operation = new DeleteGeometryOperation(editService);
 		int count = multiPoint.getGeometries().length;
 		double value = multiPoint.getGeometries()[1].getCoordinates()[0].getX();
 
@@ -271,7 +277,7 @@ public class DeleteGeometryOperationTest {
 
 	@Test
 	public void testMultiPointAtEnd() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteGeometryOperation(service);
+		GeometryIndexOperation operation = new DeleteGeometryOperation(editService);
 		int count = multiPoint.getGeometries().length;
 		double value = multiPoint.getGeometries()[0].getCoordinates()[0].getX();
 
@@ -288,7 +294,7 @@ public class DeleteGeometryOperationTest {
 
 	@Test
 	public void testMultiPointCornerCases() {
-		GeometryIndexOperation operation = new DeleteGeometryOperation(service);
+		GeometryIndexOperation operation = new DeleteGeometryOperation(editService);
 
 		try {
 			operation.execute(multiPoint, service.create(GeometryIndexType.TYPE_EDGE, 0));
@@ -312,7 +318,7 @@ public class DeleteGeometryOperationTest {
 
 	@Test
 	public void testMultiLineStringAtBegin() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteGeometryOperation(service);
+		GeometryIndexOperation operation = new DeleteGeometryOperation(editService);
 		int count = multiLineString.getGeometries().length;
 		double value = multiLineString.getGeometries()[1].getCoordinates()[0].getX();
 
@@ -329,7 +335,7 @@ public class DeleteGeometryOperationTest {
 
 	@Test
 	public void testMultiLineStringAtEnd() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteGeometryOperation(service);
+		GeometryIndexOperation operation = new DeleteGeometryOperation(editService);
 		int count = multiLineString.getGeometries().length;
 		double value = multiLineString.getGeometries()[0].getCoordinates()[0].getX();
 
@@ -346,7 +352,7 @@ public class DeleteGeometryOperationTest {
 
 	@Test
 	public void testMultiLineStringCornerCases() {
-		GeometryIndexOperation operation = new DeleteGeometryOperation(service);
+		GeometryIndexOperation operation = new DeleteGeometryOperation(editService);
 
 		try {
 			operation.execute(multiLineString, service.create(GeometryIndexType.TYPE_EDGE, 0));
@@ -370,7 +376,7 @@ public class DeleteGeometryOperationTest {
 
 	@Test
 	public void testMultiPolygonFirstPolygon() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteGeometryOperation(service);
+		GeometryIndexOperation operation = new DeleteGeometryOperation(editService);
 		int count = multiPolygon.getGeometries().length;
 		double value = multiPolygon.getGeometries()[1].getGeometries()[0].getCoordinates()[0].getX();
 
@@ -387,7 +393,7 @@ public class DeleteGeometryOperationTest {
 
 	@Test
 	public void testMultiPolygonLastPolygon() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteGeometryOperation(service);
+		GeometryIndexOperation operation = new DeleteGeometryOperation(editService);
 		int count = multiPolygon.getGeometries().length;
 		double value = multiPolygon.getGeometries()[0].getGeometries()[0].getCoordinates()[0].getX();
 
@@ -404,7 +410,7 @@ public class DeleteGeometryOperationTest {
 
 	@Test
 	public void testMultiPolygonFirstPolyFirstRing() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteGeometryOperation(service);
+		GeometryIndexOperation operation = new DeleteGeometryOperation(editService);
 		int count = multiPolygon.getGeometries()[0].getGeometries().length;
 		double value = multiPolygon.getGeometries()[0].getGeometries()[1].getCoordinates()[0].getX();
 
@@ -421,7 +427,7 @@ public class DeleteGeometryOperationTest {
 
 	@Test
 	public void testMultiPolygonFirstPolyLastRing() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new DeleteGeometryOperation(service);
+		GeometryIndexOperation operation = new DeleteGeometryOperation(editService);
 		int count = multiPolygon.getGeometries()[0].getGeometries().length;
 		double value = multiPolygon.getGeometries()[0].getGeometries()[0].getCoordinates()[0].getX();
 
@@ -438,7 +444,7 @@ public class DeleteGeometryOperationTest {
 
 	@Test
 	public void testMultiPolygonCornerCases() {
-		GeometryIndexOperation operation = new DeleteGeometryOperation(service);
+		GeometryIndexOperation operation = new DeleteGeometryOperation(editService);
 
 		try {
 			operation.execute(multiPolygon, service.create(GeometryIndexType.TYPE_EDGE, 0));

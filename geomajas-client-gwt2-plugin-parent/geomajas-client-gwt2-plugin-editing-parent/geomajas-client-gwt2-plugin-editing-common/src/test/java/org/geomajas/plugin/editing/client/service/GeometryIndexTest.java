@@ -11,8 +11,7 @@
 
 package org.geomajas.plugin.editing.client.service;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -38,6 +37,17 @@ public class GeometryIndexTest {
 		GeometryIndex index1 = service.create(GeometryIndexType.TYPE_VERTEX, 0, 1);
 		GeometryIndex index2 = service.create(GeometryIndexType.TYPE_VERTEX, 0, 1);
 		Assert.assertNotSame(index1.hashCode(), index2.hashCode());
+		Assert.assertArrayEquals(new int[] {0, 1}, index1.getAllValues());
+	}
+
+	@Test
+	public void testGetAllValues() {
+		GeometryIndex index1 = service.create(GeometryIndexType.TYPE_VERTEX, 0, 1);
+		Assert.assertArrayEquals(new int[] {0, 1}, index1.getAllValues());
+		GeometryIndex index2 = service.create(GeometryIndexType.TYPE_EDGE, 0, 1);
+		Assert.assertArrayEquals(new int[] {0, 1}, index2.getAllValues());
+		GeometryIndex index3 = service.create(GeometryIndexType.TYPE_GEOMETRY, 1, 2, 3);
+		Assert.assertArrayEquals(new int[] {1, 2, 3}, index3.getAllValues());
 	}
 
 	@Test

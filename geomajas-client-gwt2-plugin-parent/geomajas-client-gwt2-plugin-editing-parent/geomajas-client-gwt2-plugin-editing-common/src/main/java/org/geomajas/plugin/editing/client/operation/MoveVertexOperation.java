@@ -13,11 +13,9 @@ package org.geomajas.plugin.editing.client.operation;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
-import org.geomajas.plugin.editing.client.service.GeometryIndexService;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 
 /**
@@ -27,11 +25,7 @@ import org.geomajas.plugin.editing.client.service.GeometryIndexType;
  * @author Pieter De Graef
  * @author Jan Venstermans
  */
-public class MoveVertexOperation implements GeometryIndexOperation {
-
-	private final GeometryEditService editService;
-
-	private final GeometryIndexService service;
+public class MoveVertexOperation extends AbstractGeometryIndexOperation {
 
 	private final Coordinate newLocation;
 
@@ -46,20 +40,20 @@ public class MoveVertexOperation implements GeometryIndexOperation {
 	 *            geometry edit service.
 	 */
 	public MoveVertexOperation(GeometryEditService editService, Coordinate newLocation) {
-		this.editService = editService;
-		this.service = editService.getIndexService();
+		super(editService);
 		this.newLocation = newLocation;
 	}
 
 	@Override
 	public Geometry execute(Geometry geometry, GeometryIndex index) throws GeometryOperationFailedException {
 		this.index = index;
-		if (service.getType(index) != GeometryIndexType.TYPE_VERTEX) {
+		if (indexService.getType(index) != GeometryIndexType.TYPE_VERTEX) {
 			throw new GeometryOperationFailedException("Index of wrong type. Must be TYPE_VERTEX.");
 		}
 		try {
-			oldLocation = service.getVertex(geometry, index);
+			oldLocation = indexService.getVertex(geometry, index);
 			setVertex(geometry, index, newLocation);
+			revertInvalidAndThrow(geometry, index);
 			return geometry;
 		} catch (GeometryIndexNotFoundException e) {
 			throw new GeometryOperationFailedException(e);
@@ -81,7 +75,7 @@ public class MoveVertexOperation implements GeometryIndexOperation {
 	// ------------------------------------------------------------------------
 
 	private void setVertex(Geometry geom, GeometryIndex index, Coordinate coordinate)
-			throws GeometryIndexNotFoundException, EdgesIntersectFailedException {
+			throws GeometryIndexNotFoundException, GeometryOperationInvalidException {
 		if (index.hasChild() && geom.getGeometries() != null && geom.getGeometries().length > index.getValue()) {
 			setVertex(geom.getGeometries()[index.getValue()], index.getChild(), coordinate);
 		} else if (index.getType() == GeometryIndexType.TYPE_VERTEX && geom.getCoordinates() != null
@@ -89,10 +83,6 @@ public class MoveVertexOperation implements GeometryIndexOperation {
 			if (geom.getGeometryType().equals(Geometry.LINEAR_RING)) {
 				// In case of a closed ring, the last vertex is not allowed to be moved:
 				if ((geom.getCoordinates().length - 1) > index.getValue()) {
-					if (isMovedVertexIntersectsWithExistingLines(geom.getCoordinates(), index.getValue(), coordinate)) {
-						throw new EdgesIntersectFailedException(EditingCommonCustomMessages.
-								getInstance().getPolygonLinesCannotIntersectMessage());
-					}
 					geom.getCoordinates()[index.getValue()] = coordinate;
 					if (index.getValue() == 0) {
 						// In case of closed ring, keep last coordinate equal to the first:
@@ -108,43 +98,5 @@ public class MoveVertexOperation implements GeometryIndexOperation {
 		} else {
 			throw new GeometryIndexNotFoundException("Could not match index with given geometry");
 		}
-	}
-
-	private boolean isMovedVertexIntersectsWithExistingLines(Coordinate[] currentGeometryCoordinates,
-							int vertexValueCoordinateToBeMoved, Coordinate newCoordinate) {
-		if (!editService.isPolygonEdgesCanIntersect() && currentGeometryCoordinates.length >= 5) {
-			// coordinates of the (line) geometry without the selected point
-			Coordinate[] geometryCoordinates = new Coordinate[currentGeometryCoordinates.length - 2];
-			// fill the geometryCoordinates
-			int count = 0;
-			for (int i = vertexValueCoordinateToBeMoved + 1 ;  i < currentGeometryCoordinates.length - 1; i++) {
-				geometryCoordinates[count++] = currentGeometryCoordinates[i];
-			}
-			for (int j = 0 ; j < vertexValueCoordinateToBeMoved; j++) {
-				geometryCoordinates[count++] = currentGeometryCoordinates[j];
-			}
-			// check if there are enough points
-			if (count != geometryCoordinates.length) {
-				//something is wrong
-				return false;
-			}
-
-			// construct geometries
-			Geometry existingGeom = new Geometry();
-			existingGeom.setCoordinates(geometryCoordinates);
-			Coordinate[] lineCoordinates1 = {geometryCoordinates[0], newCoordinate};
-			Coordinate[] lineCoordinates2 = {geometryCoordinates[geometryCoordinates.length - 1], newCoordinate};
-			Geometry lineGeom1 = new Geometry();
-			lineGeom1.setCoordinates(lineCoordinates1);
-			Geometry lineGeom2 = new Geometry();
-			lineGeom2.setCoordinates(lineCoordinates2);
-
-			// compare geometries for intersection
-			if (GeometryService.intersects(existingGeom, lineGeom1)  ||
-					GeometryService.intersects(existingGeom, lineGeom2)) {
-				return true;
-			}
-		}
-		return false;
 	}
 }

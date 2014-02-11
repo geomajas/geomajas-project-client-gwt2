@@ -257,29 +257,17 @@ public interface GeometryEditService extends GeometryIndexOperationService {
 	GeometryIndexStateService getIndexStateService();
 
 	/**
-	 * To set the boolean value that indicates whether or not upon creating or editing of a polygon,
-	 * an inserted vertex can create an intersecting edge with the rest of existing geometry.
-	 * Default value is true: yes, it can intersect.
-	 *
-	 * @param  polygonEdgesCanIntersect boolean value.
+	 * To set whether the editing service is validating. If so, validation events will be thrown when an operation leads
+	 * to an invalid geometry.
+	 * 
+	 * @param validating boolean value.
 	 */
-	void setPolygonEdgesCanIntersect(boolean polygonEdgesCanIntersect);
+	void setValidating(boolean validating);
 
 	/**
-	 * To set the boolean value that indicates whether or not upon creating or editing of a polygon,
-	 * an inserted vertex can create an intersecting edge with the rest of existing geometry.
-	 * Default value is true: yes, it can intersect.
+	 * Is the editor service validating ?
 	 *
-	 * @param  polygonEdgesCanIntersect boolean value.
-	 * @param exceptionMessage customizable Exception Message. If null provided: default message is displayed.
+	 * @return boolean true if validating
 	 */
-	void setPolygonEdgesCanIntersect(boolean polygonEdgesCanIntersect, String exceptionMessage);
-
-	/**
-	 * To get the boolean value that indicates whether or not upon creating or editing of a polygon,
-	 * an inserted vertex can create an intersecting edge with the rest of existing geometry.
-	 *
-	 * @return boolean
-	 */
-	boolean isPolygonEdgesCanIntersect();
+	boolean isValidating();
 }

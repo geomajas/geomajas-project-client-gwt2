@@ -12,6 +12,7 @@
 package org.geomajas.plugin.editing.client.operation;
 
 import org.geomajas.geometry.Geometry;
+import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
 import org.geomajas.plugin.editing.client.service.GeometryIndexService;
@@ -23,9 +24,7 @@ import org.geomajas.plugin.editing.client.service.GeometryIndexType;
  * 
  * @author Pieter De Graef
  */
-public class InsertGeometryOperation implements GeometryIndexOperation {
-
-	private final GeometryIndexService service;
+public class InsertGeometryOperation extends AbstractGeometryIndexOperation {
 
 	private final Geometry child;
 
@@ -39,19 +38,20 @@ public class InsertGeometryOperation implements GeometryIndexOperation {
 	 * @param child
 	 *            The child geometry to insert.
 	 */
-	public InsertGeometryOperation(GeometryIndexService service, Geometry child) {
-		this.service = service;
+	public InsertGeometryOperation(GeometryEditService editService, Geometry child) {
+		super(editService);
 		this.child = child;
 	}
 
 	@Override
 	public Geometry execute(Geometry geometry, GeometryIndex index) throws GeometryOperationFailedException {
 		this.index = index;
-		if (service.getType(index) != GeometryIndexType.TYPE_GEOMETRY) {
+		if (indexService.getType(index) != GeometryIndexType.TYPE_GEOMETRY) {
 			throw new GeometryOperationFailedException("Index of wrong type. Must be TYPE_GEOMETRY.");
 		}
 		try {
 			insert(geometry, index, child);
+			revertInvalidAndThrow(geometry, index);
 			return geometry;
 		} catch (GeometryIndexNotFoundException e) {
 			throw new GeometryOperationFailedException(e);
@@ -60,7 +60,7 @@ public class InsertGeometryOperation implements GeometryIndexOperation {
 
 	@Override
 	public GeometryIndexOperation getInverseOperation() {
-		return new DeleteGeometryOperation(service);
+		return new DeleteGeometryOperation(editService);
 	}
 
 	@Override

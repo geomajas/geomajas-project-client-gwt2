@@ -13,6 +13,8 @@ package org.geomajas.plugin.editing.client.operation;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.geometry.service.WktException;
+import org.geomajas.geometry.service.WktService;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditServiceImpl;
 import org.geomajas.plugin.editing.client.service.GeometryIndexService;
@@ -424,5 +426,33 @@ public class MoveVertexOperationTest {
 		} catch (GeometryOperationFailedException e) {
 			// We expect an error...
 		}
+	}
+
+	@Test
+	public void testPolygonSelfIntersection() throws WktException {
+		editService.setValidating(true);
+		Geometry polygon = WktService.toGeometry("POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))");
+		GeometryIndexOperation operation = new MoveVertexOperation(editService, new Coordinate(2, 0));
+		try {
+			operation.execute(polygon, service.create(GeometryIndexType.TYPE_VERTEX, 0, 0));
+			Assert.fail();
+		} catch (GeometryOperationFailedException e) {
+			Assert.assertTrue("Expected EdgesIntersectFailedException",e instanceof GeometryOperationInvalidException);
+		}		
+		editService.setValidating(false);
+	}
+	
+	@Test
+	public void testPolygonHoleToEdgeSelfIntersection() throws WktException {
+		editService.setValidating(true);
+		Geometry polygon = WktService.toGeometry("POLYGON ((0 0, 100 0, 0 100, 0 0),(10 10, 90 10, 10 90, 10 10))");
+		GeometryIndexOperation operation = new MoveVertexOperation(editService, new Coordinate(20, 20));
+		try {
+			operation.execute(polygon, service.create(GeometryIndexType.TYPE_VERTEX, 0, 0));
+			Assert.fail();
+		} catch (GeometryOperationFailedException e) {
+			Assert.assertTrue("Expected EdgesIntersectFailedException",e instanceof GeometryOperationInvalidException);
+		}		
+		editService.setValidating(false);
 	}
 }

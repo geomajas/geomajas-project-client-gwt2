@@ -95,7 +95,7 @@ public class EditingPanel implements SamplePanel {
 		// Prepare editing:
 		GeometryEditorImpl editor = new GeometryEditorImpl(mapPresenter, GeomajasImpl.getInstance().getGfxUtil());
 		editService = editor.getEditService();
-		editService.setPolygonEdgesCanIntersect(false);
+		editService.setValidating(true);
 		geometryToShapeConverter = new GeometryToShapeConverter(editService, mapPresenter);
 		
 		addButtons();

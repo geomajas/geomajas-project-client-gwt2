@@ -17,7 +17,7 @@ import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexSelectedEvent;
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexSelectedHandler;
-import org.geomajas.plugin.editing.client.operation.EdgesIntersectFailedException;
+import org.geomajas.plugin.editing.client.operation.GeometryOperationInvalidException;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
@@ -124,11 +124,8 @@ public class GeometryIndexDragController extends AbstractGeometryIndexController
 		// Execute the move operation:
 		try {
 			service.move(service.getIndexStateService().getSelection(), coordinateList);
-		} catch (EdgesIntersectFailedException e) {
-			// don't show a message window, as this can lead to a lock
-//			EditingCommonMessages messages = (EditingCommonMessages) GWT.create(EditingCommonMessages.class);
-//			Window.alert(messages.exceptionDuringEditing() + " " + e.getMessage());
-			e.printStackTrace();
+		} catch (GeometryOperationInvalidException e) {
+			// invalid operations are by default
 		} catch (GeometryOperationFailedException e) {
 			throw new IllegalStateException(e);
 		}

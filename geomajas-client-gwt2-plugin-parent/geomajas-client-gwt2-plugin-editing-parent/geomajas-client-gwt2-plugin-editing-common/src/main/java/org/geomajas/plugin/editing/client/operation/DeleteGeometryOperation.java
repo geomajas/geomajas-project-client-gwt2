@@ -12,6 +12,7 @@
 package org.geomajas.plugin.editing.client.operation;
 
 import org.geomajas.geometry.Geometry;
+import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
 import org.geomajas.plugin.editing.client.service.GeometryIndexService;
@@ -23,32 +24,29 @@ import org.geomajas.plugin.editing.client.service.GeometryIndexType;
  * 
  * @author Pieter De Graef
  */
-public class DeleteGeometryOperation implements GeometryIndexOperation {
+public class DeleteGeometryOperation extends AbstractGeometryIndexOperation {
 
 	private GeometryIndex index;
-
-	private final GeometryIndexService service;
 
 	private Geometry deleted;
 
 	/**
-	 * Initialize this operation with an indexing service.
+	 * Initialize this operation with an editing service.
 	 * 
-	 * @param service
-	 *            geometry index service.
+	 * @param editService geometry edit service.
 	 */
-	public DeleteGeometryOperation(GeometryIndexService service) {
-		this.service = service;
+	public DeleteGeometryOperation(GeometryEditService editService) {
+		super(editService);
 	}
 
 	@Override
 	public Geometry execute(Geometry geometry, GeometryIndex index) throws GeometryOperationFailedException {
 		this.index = index;
-		if (service.getType(index) != GeometryIndexType.TYPE_GEOMETRY) {
+		if (indexService.getType(index) != GeometryIndexType.TYPE_GEOMETRY) {
 			throw new GeometryOperationFailedException("Index of wrong type. Must be TYPE_GEOMETRY.");
 		}
 		try {
-			deleted = service.getGeometry(geometry, index);
+			deleted = indexService.getGeometry(geometry, index);
 			delete(geometry, index);
 			return geometry;
 		} catch (GeometryIndexNotFoundException e) {
@@ -58,7 +56,7 @@ public class DeleteGeometryOperation implements GeometryIndexOperation {
 
 	@Override
 	public GeometryIndexOperation getInverseOperation() {
-		return new InsertGeometryOperation(service, deleted);
+		return new InsertGeometryOperation(editService, deleted);
 	}
 
 	@Override

@@ -13,12 +13,10 @@ package org.geomajas.plugin.editing.client.controller;
 
 import java.util.Collections;
 
-import com.google.gwt.core.client.GWT;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt.client.map.RenderSpace;
-import org.geomajas.plugin.editing.client.i18n.EditingCommonMessages;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
@@ -28,7 +26,6 @@ import org.geomajas.plugin.editing.client.snap.SnapService;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.user.client.Window;
 
 /**
  * Controller that inserts vertices by clicking/tapping on the map.
@@ -68,8 +65,7 @@ public class GeometryIndexInsertController extends AbstractGeometryIndexControll
 					service.setEditingState(GeometryEditState.IDLE);
 				}
 			} catch (GeometryOperationFailedException e) {
-				EditingCommonMessages messages = (EditingCommonMessages) GWT.create(EditingCommonMessages.class);
-				Window.alert(messages.exceptionDuringEditing() + " " + e.getMessage());
+				// something unexpected happened
 				e.printStackTrace();
 			}
 		}

@@ -12,6 +12,7 @@
 package org.geomajas.plugin.editing.client.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
@@ -25,10 +26,12 @@ import org.geomajas.plugin.editing.client.event.GeometryEditStartEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditValidationEvent;
 import org.geomajas.plugin.editing.client.operation.DeleteGeometryOperation;
 import org.geomajas.plugin.editing.client.operation.DeleteVertexOperation;
 import org.geomajas.plugin.editing.client.operation.GeometryIndexOperation;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
+import org.geomajas.plugin.editing.client.operation.GeometryOperationInvalidException;
 import org.geomajas.plugin.editing.client.operation.InsertGeometryOperation;
 import org.geomajas.plugin.editing.client.operation.InsertVertexOperation;
 import org.geomajas.plugin.editing.client.operation.MoveVertexOperation;
@@ -194,8 +197,7 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 		for (int i = 0; i < indices.size(); i++) {
 			if (indexService.getType(indices.get(i)) == GeometryIndexType.TYPE_VERTEX) {
 				GeometryIndexOperation op = new MoveVertexOperation(service, coordinates.get(i).get(0));
-				op.execute(geometry, indices.get(i));
-				seq.addOperation(op);
+				executeOperation(geometry, indices.get(i), seq, op);
 			} else {
 				throw new GeometryOperationFailedException("Can only move vertices. Other types not suported.");
 			}
@@ -234,9 +236,8 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 						} else {
 							child = new Geometry(Geometry.POLYGON, 0, 0);
 						}
-						GeometryIndexOperation op = new InsertGeometryOperation(indexService, child);
-						op.execute(geometry, indices.get(i));
-						seq.addOperation(op);
+						GeometryIndexOperation op = new InsertGeometryOperation(service, child);
+						executeOperation(geometry, indices.get(i), seq, op);
 					} else {
 						throw new GeometryOperationFailedException("Cannot insert new geometries (yet).");
 					}
@@ -246,8 +247,7 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 						throw new GeometryOperationFailedException("No coordinates passed to insert.");
 					}
 					GeometryIndexOperation op2 = new InsertVertexOperation(service, coordinates.get(i).get(0));
-					op2.execute(geometry, indices.get(i));
-					seq.addOperation(op2);
+					executeOperation(geometry, indices.get(i), seq, op2);
 			}
 		}
 		if (!isOperationSequenceActive()) {
@@ -277,13 +277,12 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 			GeometryIndexOperation op;
 			switch (indexService.getType(indices.get(i))) {
 				case TYPE_GEOMETRY:
-					op = new DeleteGeometryOperation(indexService);
+					op = new DeleteGeometryOperation(service);
 					break;
 				default:
 					op = new DeleteVertexOperation(service);
 			}
-			op.execute(geometry, indices.get(i));
-			seq.addOperation(op);
+			executeOperation(geometry, indices.get(i), seq, op);
 		}
 		if (!isOperationSequenceActive()) {
 			undoQueue.add(seq);
@@ -294,6 +293,17 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 		}
 	}
 
+	private void executeOperation(Geometry geometry, GeometryIndex index, OperationSequence sequence,
+			GeometryIndexOperation operation) throws GeometryOperationFailedException {
+		try {
+			operation.execute(geometry, index);
+			sequence.addOperation(operation);
+		} catch (GeometryOperationInvalidException e) {
+			eventBus.fireEvent(new GeometryEditValidationEvent(geometry, Collections.singletonList(index)));
+			throw e;
+		}
+	}
+	
 	@Override
 	public GeometryIndex addEmptyChild() throws GeometryOperationFailedException {
 		return addEmptyChild(null);
@@ -311,16 +321,16 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 
 		GeometryIndexOperation operation = null;
 		if (Geometry.POLYGON.equals(geometry.getGeometryType())) {
-			operation = new InsertGeometryOperation(indexService, new Geometry(Geometry.LINEAR_RING,
+			operation = new InsertGeometryOperation(service, new Geometry(Geometry.LINEAR_RING,
 					geometry.getSrid(), geometry.getPrecision()));
 		} else if (Geometry.MULTI_POINT.equals(geometry.getGeometryType())) {
-			operation = new InsertGeometryOperation(indexService, new Geometry(Geometry.POINT, geometry.getSrid(),
+			operation = new InsertGeometryOperation(service, new Geometry(Geometry.POINT, geometry.getSrid(),
 					geometry.getPrecision()));
 		} else if (Geometry.MULTI_LINE_STRING.equals(geometry.getGeometryType())) {
-			operation = new InsertGeometryOperation(indexService, new Geometry(Geometry.LINE_STRING,
+			operation = new InsertGeometryOperation(service, new Geometry(Geometry.LINE_STRING,
 					geometry.getSrid(), geometry.getPrecision()));
 		} else if (Geometry.MULTI_POLYGON.equals(geometry.getGeometryType())) {
-			operation = new InsertGeometryOperation(indexService, new Geometry(Geometry.POLYGON, geometry.getSrid(),
+			operation = new InsertGeometryOperation(service, new Geometry(Geometry.POLYGON, geometry.getSrid(),
 					geometry.getPrecision()));
 		}
 		if (operation != null) {

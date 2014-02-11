@@ -13,6 +13,8 @@ package org.geomajas.plugin.editing.client.operation;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.plugin.editing.client.service.GeometryEditService;
+import org.geomajas.plugin.editing.client.service.GeometryEditServiceImpl;
 import org.geomajas.plugin.editing.client.service.GeometryIndexService;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 import org.junit.Assert;
@@ -26,6 +28,8 @@ import org.junit.Test;
 public class InsertGeometryOperationTest {
 
 	private static final double DELTA = 0.0001;
+
+	private GeometryEditService editService = new GeometryEditServiceImpl();
 
 	private GeometryIndexService service = new GeometryIndexService();
 
@@ -88,7 +92,7 @@ public class InsertGeometryOperationTest {
 
 	@Test
 	public void testPointAndPoint() {
-		GeometryIndexOperation operation = new InsertGeometryOperation(service, new Geometry(Geometry.POINT, 0, 0));
+		GeometryIndexOperation operation = new InsertGeometryOperation(editService, new Geometry(Geometry.POINT, 0, 0));
 
 		// Cannot add geometries to a point:
 		try {
@@ -101,7 +105,7 @@ public class InsertGeometryOperationTest {
 
 	@Test
 	public void testLineStringAndPoint() {
-		GeometryIndexOperation operation = new InsertGeometryOperation(service, new Geometry(Geometry.POINT, 0, 0));
+		GeometryIndexOperation operation = new InsertGeometryOperation(editService, new Geometry(Geometry.POINT, 0, 0));
 
 		// Cannot add geometries to a point:
 		try {
@@ -114,7 +118,7 @@ public class InsertGeometryOperationTest {
 
 	@Test
 	public void testLinearRingAndPoint() {
-		GeometryIndexOperation operation = new InsertGeometryOperation(service, new Geometry(Geometry.POINT, 0, 0));
+		GeometryIndexOperation operation = new InsertGeometryOperation(editService, new Geometry(Geometry.POINT, 0, 0));
 
 		// Cannot add geometries to a point:
 		try {
@@ -127,7 +131,7 @@ public class InsertGeometryOperationTest {
 
 	@Test
 	public void testPolygonAndPoint() {
-		GeometryIndexOperation operation = new InsertGeometryOperation(service, new Geometry(Geometry.POINT, 0, 0));
+		GeometryIndexOperation operation = new InsertGeometryOperation(editService, new Geometry(Geometry.POINT, 0, 0));
 
 		// Cannot add geometries to a point:
 		try {
@@ -140,8 +144,8 @@ public class InsertGeometryOperationTest {
 
 	@Test
 	public void testPolygonAndLineString() {
-		GeometryIndexOperation operation = new InsertGeometryOperation(service,
-				new Geometry(Geometry.LINE_STRING, 0, 0));
+		GeometryIndexOperation operation = new InsertGeometryOperation(editService, new Geometry(Geometry.LINE_STRING,
+				0, 0));
 
 		// Cannot add geometries to a point:
 		try {
@@ -154,8 +158,8 @@ public class InsertGeometryOperationTest {
 
 	@Test
 	public void testPolygonAndLinearRingAtBegin() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertGeometryOperation(service,
-				new Geometry(Geometry.LINEAR_RING, 0, 0));
+		GeometryIndexOperation operation = new InsertGeometryOperation(editService, new Geometry(Geometry.LINEAR_RING,
+				0, 0));
 		int count = polygon.getGeometries().length;
 		double value = polygon.getGeometries()[0].getCoordinates()[0].getX();
 
@@ -173,8 +177,8 @@ public class InsertGeometryOperationTest {
 
 	@Test
 	public void testPolygonAndLinearRingAtMiddle() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertGeometryOperation(service,
-				new Geometry(Geometry.LINEAR_RING, 0, 0));
+		GeometryIndexOperation operation = new InsertGeometryOperation(editService, new Geometry(Geometry.LINEAR_RING,
+				0, 0));
 		int count = polygon.getGeometries().length;
 		double value = polygon.getGeometries()[1].getCoordinates()[0].getX();
 
@@ -191,8 +195,8 @@ public class InsertGeometryOperationTest {
 
 	@Test
 	public void testPolygonAndLinearRingAtEnd() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertGeometryOperation(service,
-				new Geometry(Geometry.LINEAR_RING, 0, 0));
+		GeometryIndexOperation operation = new InsertGeometryOperation(editService, new Geometry(Geometry.LINEAR_RING,
+				0, 0));
 		int count = polygon.getGeometries().length;
 		double value = polygon.getGeometries()[1].getCoordinates()[0].getX();
 
@@ -210,8 +214,8 @@ public class InsertGeometryOperationTest {
 
 	@Test
 	public void testPolygonWrongIndexTypes() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertGeometryOperation(service,
-				new Geometry(Geometry.LINEAR_RING, 0, 0));
+		GeometryIndexOperation operation = new InsertGeometryOperation(editService, new Geometry(Geometry.LINEAR_RING,
+				0, 0));
 
 		try {
 			operation.execute(polygon, service.create(GeometryIndexType.TYPE_EDGE, 0));
@@ -229,8 +233,8 @@ public class InsertGeometryOperationTest {
 
 	@Test
 	public void testPolygonWrongIndices() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertGeometryOperation(service,
-				new Geometry(Geometry.LINEAR_RING, 0, 0));
+		GeometryIndexOperation operation = new InsertGeometryOperation(editService, new Geometry(Geometry.LINEAR_RING,
+				0, 0));
 
 		try {
 			operation.execute(polygon, service.create(GeometryIndexType.TYPE_GEOMETRY, 0, 0));
@@ -248,7 +252,7 @@ public class InsertGeometryOperationTest {
 
 	@Test
 	public void testMultiPointAndPointAtBegin() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertGeometryOperation(service, new Geometry(Geometry.POINT, 0, 0));
+		GeometryIndexOperation operation = new InsertGeometryOperation(editService, new Geometry(Geometry.POINT, 0, 0));
 		int count = multiPoint.getGeometries().length;
 		double value = multiPoint.getGeometries()[0].getCoordinates()[0].getX();
 
@@ -266,7 +270,7 @@ public class InsertGeometryOperationTest {
 
 	@Test
 	public void testMultiPointAndPointAtMiddle() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertGeometryOperation(service, new Geometry(Geometry.POINT, 0, 0));
+		GeometryIndexOperation operation = new InsertGeometryOperation(editService, new Geometry(Geometry.POINT, 0, 0));
 		int count = multiPoint.getGeometries().length;
 		double value = multiPoint.getGeometries()[1].getCoordinates()[0].getX();
 
@@ -284,7 +288,7 @@ public class InsertGeometryOperationTest {
 
 	@Test
 	public void testMultiPointAndPointAtEnd() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertGeometryOperation(service, new Geometry(Geometry.POINT, 0, 0));
+		GeometryIndexOperation operation = new InsertGeometryOperation(editService, new Geometry(Geometry.POINT, 0, 0));
 		int count = multiPoint.getGeometries().length;
 		double value = multiPoint.getGeometries()[1].getCoordinates()[0].getX();
 
@@ -302,8 +306,8 @@ public class InsertGeometryOperationTest {
 
 	@Test
 	public void testMultiPointAndLinearRing() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertGeometryOperation(service,
-				new Geometry(Geometry.LINEAR_RING, 0, 0));
+		GeometryIndexOperation operation = new InsertGeometryOperation(editService, new Geometry(Geometry.LINEAR_RING,
+				0, 0));
 
 		try {
 			operation.execute(multiPoint, service.create(GeometryIndexType.TYPE_GEOMETRY, 0, 0));
@@ -315,7 +319,7 @@ public class InsertGeometryOperationTest {
 
 	@Test
 	public void testMultiPointCornerCases() {
-		GeometryIndexOperation operation = new InsertGeometryOperation(service, new Geometry(Geometry.POINT, 0, 0));
+		GeometryIndexOperation operation = new InsertGeometryOperation(editService, new Geometry(Geometry.POINT, 0, 0));
 
 		try {
 			operation.execute(multiPoint, service.create(GeometryIndexType.TYPE_GEOMETRY, 0, 0));
@@ -333,8 +337,8 @@ public class InsertGeometryOperationTest {
 
 	@Test
 	public void testMultiLineStringAndLineStringAtBegin() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertGeometryOperation(service,
-				new Geometry(Geometry.LINE_STRING, 0, 0));
+		GeometryIndexOperation operation = new InsertGeometryOperation(editService, new Geometry(Geometry.LINE_STRING,
+				0, 0));
 		int count = multiLineString.getGeometries().length;
 		double value = multiLineString.getGeometries()[0].getCoordinates()[0].getX();
 
@@ -352,8 +356,8 @@ public class InsertGeometryOperationTest {
 
 	@Test
 	public void testMultiLineStringAndLineStringAtMiddle() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertGeometryOperation(service,
-				new Geometry(Geometry.LINE_STRING, 0, 0));
+		GeometryIndexOperation operation = new InsertGeometryOperation(editService, new Geometry(Geometry.LINE_STRING,
+				0, 0));
 		int count = multiLineString.getGeometries().length;
 		double value = multiLineString.getGeometries()[1].getCoordinates()[0].getX();
 
@@ -371,8 +375,8 @@ public class InsertGeometryOperationTest {
 
 	@Test
 	public void testMultiLineStringAndLineStringAtEnd() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertGeometryOperation(service,
-				new Geometry(Geometry.LINE_STRING, 0, 0));
+		GeometryIndexOperation operation = new InsertGeometryOperation(editService, new Geometry(Geometry.LINE_STRING,
+				0, 0));
 		int count = multiLineString.getGeometries().length;
 		double value = multiLineString.getGeometries()[1].getCoordinates()[0].getX();
 
@@ -390,8 +394,8 @@ public class InsertGeometryOperationTest {
 
 	@Test
 	public void testMultiLineStringAndLinearRing() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertGeometryOperation(service,
-				new Geometry(Geometry.LINEAR_RING, 0, 0));
+		GeometryIndexOperation operation = new InsertGeometryOperation(editService, new Geometry(Geometry.LINEAR_RING,
+				0, 0));
 
 		try {
 			operation.execute(multiLineString, service.create(GeometryIndexType.TYPE_GEOMETRY, 0, 0));
@@ -403,7 +407,7 @@ public class InsertGeometryOperationTest {
 
 	@Test
 	public void testMultiLineStringCornerCases() {
-		GeometryIndexOperation operation = new InsertGeometryOperation(service, new Geometry(Geometry.POINT, 0, 0));
+		GeometryIndexOperation operation = new InsertGeometryOperation(editService, new Geometry(Geometry.POINT, 0, 0));
 
 		try {
 			operation.execute(multiLineString, service.create(GeometryIndexType.TYPE_GEOMETRY, 0, 0));
@@ -421,7 +425,8 @@ public class InsertGeometryOperationTest {
 
 	@Test
 	public void testMultiPolygonAndPolygonAtBegin() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertGeometryOperation(service, new Geometry(Geometry.POLYGON, 0, 0));
+		GeometryIndexOperation operation = new InsertGeometryOperation(editService,
+				new Geometry(Geometry.POLYGON, 0, 0));
 		int count = multiPolygon.getGeometries().length;
 		double value = multiPolygon.getGeometries()[0].getGeometries()[0].getCoordinates()[0].getX();
 
@@ -439,7 +444,8 @@ public class InsertGeometryOperationTest {
 
 	@Test
 	public void testMultiPolygonAndPolygonAtMiddle() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertGeometryOperation(service, new Geometry(Geometry.POLYGON, 0, 0));
+		GeometryIndexOperation operation = new InsertGeometryOperation(editService,
+				new Geometry(Geometry.POLYGON, 0, 0));
 		int count = multiPolygon.getGeometries().length;
 		double value = multiPolygon.getGeometries()[1].getGeometries()[0].getCoordinates()[0].getX();
 
@@ -457,7 +463,8 @@ public class InsertGeometryOperationTest {
 
 	@Test
 	public void testMultiPolygonAndPolygonAtEnd() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertGeometryOperation(service, new Geometry(Geometry.POLYGON, 0, 0));
+		GeometryIndexOperation operation = new InsertGeometryOperation(editService,
+				new Geometry(Geometry.POLYGON, 0, 0));
 		int count = multiPolygon.getGeometries().length;
 		double value = multiPolygon.getGeometries()[1].getGeometries()[0].getCoordinates()[0].getX();
 
@@ -475,7 +482,8 @@ public class InsertGeometryOperationTest {
 
 	@Test
 	public void testMultiPolygonRecursively() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertGeometryOperation(service, new Geometry(Geometry.POLYGON, 0, 0));
+		GeometryIndexOperation operation = new InsertGeometryOperation(editService,
+				new Geometry(Geometry.POLYGON, 0, 0));
 		int count1 = multiPolygon.getGeometries().length;
 		double value = multiPolygon.getGeometries()[1].getGeometries()[0].getCoordinates()[0].getX();
 
@@ -487,7 +495,7 @@ public class InsertGeometryOperationTest {
 		Assert.assertEquals(value, result.getGeometries()[1].getGeometries()[0].getCoordinates()[0].getX(), DELTA);
 
 		// Insert a ring at the first position in the last polygon:
-		GeometryIndexOperation op2 = new InsertGeometryOperation(service, new Geometry(Geometry.LINEAR_RING, 0, 0));
+		GeometryIndexOperation op2 = new InsertGeometryOperation(editService, new Geometry(Geometry.LINEAR_RING, 0, 0));
 		result = op2.execute(multiPolygon, service.create(GeometryIndexType.TYPE_GEOMETRY, 2, 0));
 		Assert.assertEquals(count1 + 1, result.getGeometries().length);
 		Assert.assertEquals(1, result.getGeometries()[2].getGeometries().length);
@@ -501,8 +509,8 @@ public class InsertGeometryOperationTest {
 
 	@Test
 	public void testMultiPolygonAndLinearRing() throws GeometryOperationFailedException {
-		GeometryIndexOperation operation = new InsertGeometryOperation(service,
-				new Geometry(Geometry.LINEAR_RING, 0, 0));
+		GeometryIndexOperation operation = new InsertGeometryOperation(editService, new Geometry(Geometry.LINEAR_RING,
+				0, 0));
 
 		try {
 			operation.execute(multiPolygon, service.create(GeometryIndexType.TYPE_GEOMETRY, 0));
@@ -514,8 +522,8 @@ public class InsertGeometryOperationTest {
 
 	@Test
 	public void testMultiPolygonCornerCases() {
-		GeometryIndexOperation operation = new InsertGeometryOperation(service,
-				new Geometry(Geometry.LINEAR_RING, 0, 0));
+		GeometryIndexOperation operation = new InsertGeometryOperation(editService, new Geometry(Geometry.LINEAR_RING,
+				0, 0));
 
 		try {
 			operation.execute(multiPolygon, service.create(GeometryIndexType.TYPE_GEOMETRY, 0, 0, 0));

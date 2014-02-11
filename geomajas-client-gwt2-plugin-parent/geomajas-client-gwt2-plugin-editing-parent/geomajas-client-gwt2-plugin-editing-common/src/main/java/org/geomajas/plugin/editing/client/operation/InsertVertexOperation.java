@@ -13,11 +13,9 @@ package org.geomajas.plugin.editing.client.operation;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
-import org.geomajas.plugin.editing.client.service.GeometryIndexService;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 
 /**
@@ -34,11 +32,7 @@ import org.geomajas.plugin.editing.client.service.GeometryIndexType;
  * @author Pieter De Graef
  * @author Jan Venstermanns
  */
-public class InsertVertexOperation implements GeometryIndexOperation {
-
-	private final GeometryEditService editService;
-
-	private final GeometryIndexService service;
+public class InsertVertexOperation extends AbstractGeometryIndexOperation{
 
 	private final Coordinate coordinate;
 
@@ -46,25 +40,24 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 
 	/**
 	 * Initialize this operation with an edit service.
-	 *
-	 * @param editService
-	 *            geometry edit service.
+	 * 
+	 * @param editService geometry edit service.
 	 */
 	public InsertVertexOperation(GeometryEditService editService, Coordinate coordinate) {
-		this.editService = editService;
-		this.service = editService.getIndexService();
+		super(editService);
 		this.coordinate = coordinate;
 	}
 
 	@Override
 	public Geometry execute(Geometry geometry, GeometryIndex index) throws GeometryOperationFailedException {
 		this.index = index;
-		if (service.getType(index) != GeometryIndexType.TYPE_VERTEX
-				&& service.getType(index) != GeometryIndexType.TYPE_EDGE) {
+		if (indexService.getType(index) != GeometryIndexType.TYPE_VERTEX
+				&& indexService.getType(index) != GeometryIndexType.TYPE_EDGE) {
 			throw new GeometryOperationFailedException("Index of wrong type. Must be TYPE_VERTEX or TYPE_EDGE.");
 		}
 		try {
 			insert(geometry, index, coordinate);
+			revertInvalidAndThrow(geometry, index);
 			return geometry;
 		} catch (GeometryIndexNotFoundException e) {
 			throw new GeometryOperationFailedException(e);
@@ -78,9 +71,9 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 
 	@Override
 	public GeometryIndex getGeometryIndex() {
-		switch (service.getType(index)) {
+		switch (indexService.getType(index)) {
 			case TYPE_EDGE:
-				return service.getNextVertex(index);
+				return indexService.getNextVertex(index);
 			default:
 				return index;
 		}
@@ -91,7 +84,7 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 	// ------------------------------------------------------------------------
 
 	private void insert(Geometry geom, GeometryIndex index, Coordinate coordinate)
-			throws GeometryIndexNotFoundException, EdgesIntersectFailedException {
+			throws GeometryIndexNotFoundException, GeometryOperationInvalidException {
 		if (index.hasChild() && geom.getGeometries() != null && geom.getGeometries().length > index.getValue()) {
 			insert(geom.getGeometries()[index.getValue()], index.getChild(), coordinate);
 		} else if (index.getType() == GeometryIndexType.TYPE_EDGE) {
@@ -137,7 +130,7 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 	}
 
 	private void insertAfterVertex(Geometry geom, GeometryIndex index, Coordinate coordinate)
-			throws GeometryIndexNotFoundException, EdgesIntersectFailedException {
+			throws GeometryIndexNotFoundException, GeometryOperationInvalidException {
 		// First we check the geometry type (allow only Point, LineString and LinearRing):
 		if (Geometry.POINT.equals(geom.getGeometryType())) {
 			if (index.getValue() != 0 || geom.getCoordinates() != null) {
@@ -170,10 +163,6 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 					|| index.getValue() > geom.getCoordinates().length - 1) {
 				throw new GeometryIndexNotFoundException("Vertex index out of bounds.");
 			} else {
-				if (isInsertedVertexIntersectsWithExistingLines(geom.getCoordinates(), coordinate)) {
-					throw new EdgesIntersectFailedException(EditingCommonCustomMessages.
-							getInstance().getPolygonLinesCannotIntersectMessage());
-				}
 				Coordinate[] result = new Coordinate[geom.getCoordinates().length + 1];
 				int count = 0;
 				for (int i = 0; i < result.length; i++) {
@@ -193,35 +182,4 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 		}
 	}
 
-	private boolean isInsertedVertexIntersectsWithExistingLines(Coordinate[] currentGeometryCoordinates,
-																Coordinate newCoordinate) {
-		if (!editService.isPolygonEdgesCanIntersect() && currentGeometryCoordinates != null
-				&& currentGeometryCoordinates.length >= 3) {
-			int relevantGeometryCoordinates = currentGeometryCoordinates.length;
-			if (currentGeometryCoordinates[0].equals(
-					currentGeometryCoordinates[currentGeometryCoordinates.length - 1])) {
-				relevantGeometryCoordinates = currentGeometryCoordinates.length - 1;
-			}
-			if (relevantGeometryCoordinates >= 3) {
-				Coordinate[] geometryCoordinates = new Coordinate[relevantGeometryCoordinates];
-				for (int i = 0 ; i < geometryCoordinates.length ; i++) {
-				   geometryCoordinates[i] = currentGeometryCoordinates[i];
-				}
-				Coordinate[] lineCoordinates1 = {currentGeometryCoordinates[relevantGeometryCoordinates - 1],
-						newCoordinate};
-				Coordinate[] lineCoordinates2 = {currentGeometryCoordinates[0], newCoordinate};
-				Geometry existingGeom = new Geometry();
-				existingGeom.setCoordinates(geometryCoordinates);
-				Geometry lineGeom1 = new Geometry();
-				Geometry lineGeom2 = new Geometry();
-				lineGeom1.setCoordinates(lineCoordinates1);
-				lineGeom2.setCoordinates(lineCoordinates2);
-				if (GeometryService.intersects(existingGeom, lineGeom1)  ||
-						GeometryService.intersects(existingGeom, lineGeom2)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
 }
