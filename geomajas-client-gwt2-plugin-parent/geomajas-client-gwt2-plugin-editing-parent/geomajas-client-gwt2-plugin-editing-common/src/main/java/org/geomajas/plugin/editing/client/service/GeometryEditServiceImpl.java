@@ -28,7 +28,6 @@ import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveHandler;
-import org.geomajas.plugin.editing.client.operation.EditingCommonCustomMessages;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 
 import java.util.List;

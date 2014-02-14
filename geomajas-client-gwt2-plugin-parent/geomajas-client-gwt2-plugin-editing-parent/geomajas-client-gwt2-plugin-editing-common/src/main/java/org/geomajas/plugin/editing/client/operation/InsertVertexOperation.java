@@ -32,7 +32,7 @@ import org.geomajas.plugin.editing.client.service.GeometryIndexType;
  * @author Pieter De Graef
  * @author Jan Venstermanns
  */
-public class InsertVertexOperation extends AbstractGeometryIndexOperation{
+public class InsertVertexOperation extends AbstractGeometryIndexOperation {
 
 	private final Coordinate coordinate;
 
