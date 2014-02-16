@@ -29,7 +29,7 @@
 	<modules>
 		<!--<module>corewidget</module>-->
 		<module>editing</module>
-        <module>wms</module>
+        <!--<module>wms</module>-->
 		<!--<module>geocoder</module>-->
 		<!--<module>print</module>-->
 	    <!--<module>graphicsediting</module>-->
