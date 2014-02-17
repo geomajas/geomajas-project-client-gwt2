@@ -11,7 +11,6 @@
 
 package org.geomajas.plugin.editing.client.service;
 
-import com.google.gwt.event.shared.HandlerRegistration;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateHandler;
@@ -22,6 +21,9 @@ import org.geomajas.plugin.editing.client.event.GeometryEditShapeChangedHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditValidationHandler;
+
+import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
  * <p>
@@ -131,6 +133,17 @@ public interface GeometryEditService extends GeometryIndexOperationService {
 	 * @return The registration of the handler.
 	 */
 	HandlerRegistration addGeometryEditTentativeMoveHandler(GeometryEditTentativeMoveHandler handler);
+	
+	/**
+	 * Register a {@link GeometryEditValidationHandler} to listen to validation events. Validation events are thrown
+	 * when the geometry would have become invalid after the operation. The default controller will roll back the
+	 * operation in such a case, but the event can be caught here to warn the user.
+	 * 
+	 * @param handler The {@link GeometryEditValidationHandler} to add as listener.
+	 * @return The registration of the handler.
+	 */
+	HandlerRegistration addGeometryEditValidationHandler(GeometryEditValidationHandler handler);
+	
 
 	// ------------------------------------------------------------------------
 	// Methods concerning Workflow:

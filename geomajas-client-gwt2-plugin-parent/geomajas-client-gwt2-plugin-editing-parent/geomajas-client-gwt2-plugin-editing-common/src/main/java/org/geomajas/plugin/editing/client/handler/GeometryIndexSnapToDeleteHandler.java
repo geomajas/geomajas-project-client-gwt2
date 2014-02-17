@@ -92,9 +92,7 @@ public class GeometryIndexSnapToDeleteHandler extends AbstractGeometryIndexMapHa
 				service.getIndexStateService().deselectAll();
 				service.remove(toDelete);
 			} catch (GeometryOperationInvalidException e) {
-				EditingCommonMessages messages = (EditingCommonMessages) GWT.create(EditingCommonMessages.class);
-				Window.alert(messages.exceptionDuringEditing() + " " + e.getMessage());
-				e.printStackTrace();
+				// invalid operations are reverted by default
 			} catch (GeometryOperationFailedException e) {
 				EditingCommonMessages messages = (EditingCommonMessages) GWT.create(EditingCommonMessages.class);
 				Window.alert(messages.exceptionDuringEditing() + " " + e.getMessage());

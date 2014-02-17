@@ -299,7 +299,7 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 			operation.execute(geometry, index);
 			sequence.addOperation(operation);
 		} catch (GeometryOperationInvalidException e) {
-			eventBus.fireEvent(new GeometryEditValidationEvent(geometry, Collections.singletonList(index)));
+			eventBus.fireEvent(new GeometryEditValidationEvent(geometry, index, e.getValidationState()));
 			throw e;
 		}
 	}

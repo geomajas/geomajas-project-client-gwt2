@@ -11,9 +11,8 @@
 
 package org.geomajas.plugin.editing.client.service;
 
-import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.event.shared.SimpleEventBus;
+import java.util.List;
+
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateEvent;
@@ -28,9 +27,12 @@ import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditValidationHandler;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 
-import java.util.List;
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.event.shared.SimpleEventBus;
 
 /**
  * <p>
@@ -135,6 +137,10 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 		return eventBus.addHandler(GeometryEditTentativeMoveHandler.TYPE, handler);
 	}
 
+	@Override
+	public HandlerRegistration addGeometryEditValidationHandler(GeometryEditValidationHandler handler) {
+		return eventBus.addHandler(GeometryEditValidationHandler.TYPE, handler);
+	}
 	// ------------------------------------------------------------------------
 	// Methods concerning Workflow:
 	// ------------------------------------------------------------------------

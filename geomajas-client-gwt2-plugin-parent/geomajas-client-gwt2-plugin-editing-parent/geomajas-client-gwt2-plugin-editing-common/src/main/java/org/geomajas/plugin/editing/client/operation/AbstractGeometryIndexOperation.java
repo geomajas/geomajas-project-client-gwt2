@@ -13,6 +13,7 @@ package org.geomajas.plugin.editing.client.operation;
 
 import org.geomajas.geometry.Geometry;
 import org.geomajas.geometry.service.GeometryService;
+import org.geomajas.geometry.service.GeometryValidationState;
 import org.geomajas.gwt.client.util.Log;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
@@ -44,21 +45,31 @@ public abstract class AbstractGeometryIndexOperation implements GeometryIndexOpe
 	 */
 	protected void revertInvalidAndThrow(Geometry geometry, GeometryIndex index)
 			throws GeometryOperationInvalidException {
-		if (!editService.isValidating() || isValid(geometry, index)) {
-			return;
-		} else {
-			try {
-				getInverseOperation().execute(geometry, index);
-			} catch (GeometryOperationFailedException e) {
-				// should not fail, log anyhow !!!
-				Log.logWarn("Could not invert operation on " + geometry);
+		if(editService.isValidating()) {
+			GeometryValidationState state = validate(geometry, index);
+			if(state.isValid()) {
+				return;
+			} else {
+				try {
+					getInverseOperation().execute(geometry, index);
+				} catch (GeometryOperationFailedException e) {
+					// should not fail, log anyhow !!!
+					Log.logWarn("Could not invert operation on " + geometry);
+				}
+				throw new GeometryOperationInvalidException(state);
 			}
-			throw new GeometryOperationInvalidException();
 		}
 	}
 
-	protected boolean isValid(Geometry geom, GeometryIndex index) {
-		return GeometryService.isValid(geom, index.getAllValues());
+	protected GeometryValidationState validate(Geometry geom, GeometryIndex index) {
+		
+		GeometryValidationState state = GeometryService.validate(geom, index.getAllValues());
+		if (state == GeometryValidationState.TOO_FEW_POINTS) {
+			// allow too few points or we can't create rings !!!
+			return GeometryValidationState.VALID;
+		} else {
+			return state;
+		}
 	}
 
 }

@@ -22,7 +22,7 @@ import com.google.gwt.event.shared.GwtEvent;
  * (vertices/edges/sub-geometries) where coordinates have been inserted.
  * 
  * @author Jan De Moerloose
- * @since 1.0.0
+ * @since 2.0.0
  */
 @FutureApi(allMethods = true)
 @UserImplemented

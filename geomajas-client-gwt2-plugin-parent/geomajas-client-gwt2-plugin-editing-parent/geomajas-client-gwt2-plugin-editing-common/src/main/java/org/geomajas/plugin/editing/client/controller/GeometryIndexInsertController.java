@@ -65,8 +65,7 @@ public class GeometryIndexInsertController extends AbstractGeometryIndexControll
 					service.setEditingState(GeometryEditState.IDLE);
 				}
 			} catch (GeometryOperationFailedException e) {
-				// something unexpected happened
-				e.printStackTrace();
+				//ignore, nothing we can do here (validation errors can be shown to the user)
 			}
 		}
 	}

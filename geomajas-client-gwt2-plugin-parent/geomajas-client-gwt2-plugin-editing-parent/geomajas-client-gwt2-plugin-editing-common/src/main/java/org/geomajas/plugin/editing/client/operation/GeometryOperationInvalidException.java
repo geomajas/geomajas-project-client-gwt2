@@ -11,6 +11,8 @@
 
 package org.geomajas.plugin.editing.client.operation;
 
+import org.geomajas.geometry.service.GeometryValidationState;
+
 /**
  * Exception that is thrown when an operation leads to intersecting edges and
  * the configuration does not allow this.
@@ -20,16 +22,16 @@ package org.geomajas.plugin.editing.client.operation;
 public class GeometryOperationInvalidException extends GeometryOperationFailedException {
 
 	private static final long serialVersionUID = 100L;
+	
+	private GeometryValidationState validationState;
 
-	public GeometryOperationInvalidException() {
-		super();
+	public GeometryOperationInvalidException(GeometryValidationState validationState) {
+		this.validationState = validationState;
 	}
-
-	public GeometryOperationInvalidException(String message) {
-		super(message);
+	
+	public GeometryValidationState getValidationState() {
+		return validationState;
 	}
-
-	public GeometryOperationInvalidException(Throwable throwable) {
-		super(throwable);
-	}
+	
+	
 }

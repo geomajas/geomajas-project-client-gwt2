@@ -11,10 +11,12 @@
 
 package org.geomajas.plugin.editing.client.event;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.geomajas.annotation.FutureApi;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.geometry.service.GeometryValidationState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 
 /**
@@ -22,19 +24,23 @@ import org.geomajas.plugin.editing.client.service.GeometryIndex;
  * case.
  * 
  * @author Jan De Moerloose
- * @since 1.0.0
+ * @since 2.0.0
  */
 @FutureApi(allMethods = true)
 public class GeometryEditValidationEvent extends AbstractGeometryEditEvent<GeometryEditValidationHandler> {
+
+	private GeometryValidationState validationState;
 
 	/**
 	 * Main constructor.
 	 * 
 	 * @param geometry geometry
+	 * @param validationState 
 	 * @param indices indices
 	 */
-	public GeometryEditValidationEvent(Geometry geometry, List<GeometryIndex> indices) {
-		super(geometry, indices);
+	public GeometryEditValidationEvent(Geometry geometry, GeometryIndex index, GeometryValidationState validationState) {
+		super(geometry, Collections.singletonList(index));
+		this.validationState = validationState;
 	}
 
 	/**
@@ -49,4 +55,13 @@ public class GeometryEditValidationEvent extends AbstractGeometryEditEvent<Geome
 	protected void dispatch(GeometryEditValidationHandler handler) {
 		handler.onGeometryEditValidation(this);
 	}
+
+	public GeometryIndex getIndex() {
+		return getIndices().get(0);
+	}
+	
+	public GeometryValidationState getValidationState() {
+		return validationState;
+	}
+	
 }

@@ -125,7 +125,7 @@ public class GeometryIndexDragController extends AbstractGeometryIndexController
 		try {
 			service.move(service.getIndexStateService().getSelection(), coordinateList);
 		} catch (GeometryOperationInvalidException e) {
-			// invalid operations are by default
+			// invalid operations are reverted by default
 		} catch (GeometryOperationFailedException e) {
 			throw new IllegalStateException(e);
 		}
