@@ -12,7 +12,6 @@
 package org.geomajas.plugin.editing.client.event;
 
 import java.util.Collections;
-import java.util.List;
 
 import org.geomajas.annotation.FutureApi;
 import org.geomajas.geometry.Geometry;
@@ -29,18 +28,18 @@ import org.geomajas.plugin.editing.client.service.GeometryIndex;
 @FutureApi(allMethods = true)
 public class GeometryEditValidationEvent extends AbstractGeometryEditEvent<GeometryEditValidationHandler> {
 
-	private GeometryValidationState validationState;
+	private GeometryValidationState state;
 
 	/**
 	 * Main constructor.
 	 * 
 	 * @param geometry geometry
-	 * @param validationState 
+	 * @param state 
 	 * @param indices indices
 	 */
-	public GeometryEditValidationEvent(Geometry geometry, GeometryIndex index, GeometryValidationState validationState) {
+	public GeometryEditValidationEvent(Geometry geometry, GeometryIndex index, GeometryValidationState state) {
 		super(geometry, Collections.singletonList(index));
-		this.validationState = validationState;
+		this.state = state;
 	}
 
 	/**
@@ -61,7 +60,7 @@ public class GeometryEditValidationEvent extends AbstractGeometryEditEvent<Geome
 	}
 	
 	public GeometryValidationState getValidationState() {
-		return validationState;
+		return state;
 	}
 	
 }

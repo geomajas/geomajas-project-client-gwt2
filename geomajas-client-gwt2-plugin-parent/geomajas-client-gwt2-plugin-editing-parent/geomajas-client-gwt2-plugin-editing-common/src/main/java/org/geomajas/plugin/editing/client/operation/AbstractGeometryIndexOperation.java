@@ -45,9 +45,9 @@ public abstract class AbstractGeometryIndexOperation implements GeometryIndexOpe
 	 */
 	protected void revertInvalidAndThrow(Geometry geometry, GeometryIndex index)
 			throws GeometryOperationInvalidException {
-		if(editService.isValidating()) {
+		if (editService.isValidating()) {
 			GeometryValidationState state = validate(geometry, index);
-			if(state.isValid()) {
+			if (state.isValid()) {
 				return;
 			} else {
 				try {
@@ -62,7 +62,7 @@ public abstract class AbstractGeometryIndexOperation implements GeometryIndexOpe
 	}
 
 	protected GeometryValidationState validate(Geometry geom, GeometryIndex index) {
-		
+
 		GeometryValidationState state = GeometryService.validate(geom, index.getAllValues());
 		if (state == GeometryValidationState.TOO_FEW_POINTS) {
 			// allow too few points or we can't create rings !!!
