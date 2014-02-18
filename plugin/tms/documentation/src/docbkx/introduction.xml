@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<chapter id="chapter-introduction">
+  <title>Introduction</title>
+
+  <para>This plugin provides client side TMS (TileMapService) support. It
+  provides a layer definition and it also defines services to interpret
+  TileMapService XML capabilities files.</para>
+
+  <section>
+    <title>Plugin structure</title>
+
+    <para>This plugin contains multiple artifacts. It provides a basic set of
+    functionalities that do not require the Geomajas server project, and an
+    extension that does require a dependency to the Geomajas server project.
+    In short, the server extension provides support for the WMS GetFeatureInfo
+    request.</para>
+
+    <itemizedlist>
+      <listitem>
+        <para><emphasis>tms</emphasis>: The basic TMS client functionality. It
+        contains a TmsLayer and support for parsing TileMapService XML
+        capabilities files.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>example-jar</emphasis>: Jar that contains showcase
+        examples.</para>
+      </listitem>
+
+      <listitem>
+        <para><emphasis>documentation</emphasis>: This documentation.</para>
+      </listitem>
+    </itemizedlist>
+  </section>
+
+  <section>
+    <title>Dependencies</title>
+
+    <para>This plugin contains multiple artifacts. It provides a basic set of
+    functionalities that do not require the Geomajas server project, and an
+    extension that does require a dependency to the Geomajas server project.
+    These are their respective Maven definitions:</para>
+
+    <para>Basic WMS client artifact:</para>
+
+    <programlisting>&lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-client-gwt2-plugin-tms&lt;/artifactId&gt;
+    &lt;version&gt;<?eval ${project.version}?>&lt;/version&gt;
+&lt;/dependency&gt;</programlisting>
+  </section>
+
+  <section>
+    <title>Versions</title>
+
+    <para>This plugin has support for TMS version 1.0.0.</para>
+  </section>
+</chapter>

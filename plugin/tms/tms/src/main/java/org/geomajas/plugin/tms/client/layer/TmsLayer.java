@@ -88,4 +88,17 @@ public class TmsLayer extends AbstractLayer implements TileBasedLayer {
 	public double getOpacity() {
 		return renderer.getOpacity();
 	}
+
+	// ------------------------------------------------------------------------
+	// Other public methods:
+	// ------------------------------------------------------------------------
+
+	/**
+	 * Get the configuration object that is used to build URLs to the tiles.
+	 *
+	 * @return The layer configuration object.
+	 */
+	public TmsLayerConfiguration getConfiguration() {
+		return layerConfiguration;
+	}
 }

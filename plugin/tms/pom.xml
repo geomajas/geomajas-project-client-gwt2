@@ -26,8 +26,8 @@
 
 	<modules>
 		<module>tms</module>
-		<!--<module>documentation</module>-->
 		<module>example-jar</module>
+        <module>documentation</module>
 	</modules>
 
 </project>
