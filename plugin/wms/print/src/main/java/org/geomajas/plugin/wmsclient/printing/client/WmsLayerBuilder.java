@@ -42,8 +42,8 @@ public class WmsLayerBuilder implements PrintableLayerBuilder {
 			tiles.add(toRasterTile(tile));
 		}
 		info.setTiles(tiles);
-		info.setTileHeight(wmsLayer.getTileConfig().getTileHeight());
-		info.setTileWidth(wmsLayer.getTileConfig().getTileWidth());
+		info.setTileHeight(wmsLayer.getTileConfiguration().getTileHeight());
+		info.setTileWidth(wmsLayer.getTileConfiguration().getTileWidth());
 		info.setScale(scale);
 
 		info.setId(wmsLayer.getId());

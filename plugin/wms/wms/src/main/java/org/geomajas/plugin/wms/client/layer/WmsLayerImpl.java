@@ -17,15 +17,18 @@ import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.AbstractLayer;
 import org.geomajas.gwt2.client.map.layer.LegendConfig;
-import org.geomajas.gwt2.client.map.render.FixedScaleLayerRenderer;
-import org.geomajas.gwt2.client.map.render.FixedScaleRenderer;
+import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
 import org.geomajas.gwt2.client.map.render.LayerRenderer;
 import org.geomajas.gwt2.client.map.render.Tile;
 import org.geomajas.gwt2.client.map.render.TileCode;
+import org.geomajas.gwt2.client.map.render.TileLevelRenderer;
+import org.geomajas.gwt2.client.map.render.TileRenderer;
+import org.geomajas.gwt2.client.map.render.TileServiceImpl;
+import org.geomajas.gwt2.client.map.render.dom.DomFixedScaleLayerRenderer;
+import org.geomajas.gwt2.client.map.render.dom.DomTileLevelRenderer;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
 import org.geomajas.plugin.wms.client.WmsClient;
 import org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo;
-import org.geomajas.plugin.wms.client.service.WmsTileServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,15 +43,17 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 
 	protected final WmsLayerConfiguration wmsConfig;
 
-	protected final WmsTileConfiguration tileConfig;
+	protected final TileConfiguration tileConfig;
 
 	protected final WmsLayerInfo layerCapabilities;
 
-	protected FixedScaleLayerRenderer renderer;
+	protected TileRenderer tileRenderer;
+
+	protected DomFixedScaleLayerRenderer renderer;
 
 	private double opacity = 1.0;
 
-	public WmsLayerImpl(String title, WmsLayerConfiguration wmsConfig, WmsTileConfiguration tileConfig,
+	public WmsLayerImpl(String title, WmsLayerConfiguration wmsConfig, TileConfiguration tileConfig,
 			WmsLayerInfo layerCapabilities) {
 		super(wmsConfig.getLayers());
 
@@ -68,6 +73,7 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 	@Override
 	protected void setViewPort(ViewPort viewPort) {
 		super.setViewPort(viewPort);
+		this.tileRenderer = new WmsTileRenderer(wmsConfig, tileConfig, viewPort);
 
 		// Install minimum and maximum scale:
 		double minScale = -1.0, maxScale = -1.0;
@@ -101,7 +107,7 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 	}
 
 	@Override
-	public WmsTileConfiguration getTileConfig() {
+	public TileConfiguration getTileConfiguration() {
 		return tileConfig;
 	}
 
@@ -144,11 +150,11 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 	@Override
 	public LayerRenderer getRenderer() {
 		if (renderer == null) {
-			renderer = new FixedScaleLayerRenderer(viewPort, this, eventBus) {
+			renderer = new DomFixedScaleLayerRenderer(viewPort, this, eventBus) {
 
 				@Override
-				public FixedScaleRenderer createNewScaleRenderer(int tileLevel, View view, HtmlContainer container) {
-					return new WmsTileLevelRenderer(WmsLayerImpl.this, tileLevel, viewPort, container);
+				public TileLevelRenderer createNewScaleRenderer(int tileLevel, View view, HtmlContainer container) {
+					return new DomTileLevelRenderer(WmsLayerImpl.this, tileLevel, viewPort, container, tileRenderer);
 				}
 			};
 		}
@@ -161,13 +167,13 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 
 	@Override
 	public List<Tile> getTiles(double scale, Bbox worldBounds) {
-		List<TileCode> codes = WmsTileServiceImpl.getInstance().getTileCodesForBounds(viewPort, tileConfig,
+		List<TileCode> codes = TileServiceImpl.getInstance().getTileCodesForBounds(viewPort, tileConfig,
 				worldBounds, scale);
 		List<Tile> tiles = new ArrayList<Tile>();
 		if (!codes.isEmpty()) {
 			double actualScale = viewPort.getFixedScale(codes.get(0).getTileLevel());
 			for (TileCode code : codes) {
-				Bbox bounds = WmsTileServiceImpl.getInstance().getWorldBoundsForTile(viewPort, tileConfig, code);
+				Bbox bounds = TileServiceImpl.getInstance().getWorldBoundsForTile(viewPort, tileConfig, code);
 				Tile tile = new Tile(getScreenBounds(actualScale, bounds));
 				tile.setCode(code);
 				tile.setUrl(WmsClient.getInstance().getWmsService().getMapUrl(getConfig(), viewPort.getCrs(), bounds,

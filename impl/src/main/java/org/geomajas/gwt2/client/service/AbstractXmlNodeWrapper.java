@@ -9,18 +9,23 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.wms.client.capabilities;
+package org.geomajas.gwt2.client.service;
 
+import com.google.gwt.xml.client.NamedNodeMap;
 import com.google.gwt.xml.client.Node;
+import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.Coordinate;
 
 /**
  * Abstract definition for configuration objects that are based around an XML node.
- * 
+ *
  * @author Pieter De Graef
  */
 public abstract class AbstractXmlNodeWrapper {
 
 	private final Node node;
+
+	private boolean parsed;
 
 	public AbstractXmlNodeWrapper(Node node) {
 		this.node = node;
@@ -30,11 +35,29 @@ public abstract class AbstractXmlNodeWrapper {
 
 	/**
 	 * Get the XML node.
-	 * 
+	 *
 	 * @return The XML node.
 	 */
 	public Node getNode() {
 		return node;
+	}
+
+	/**
+	 * Has this node been parsed or not? Implementation should set and request this value.
+	 *
+	 * @return Has this node been parsed or not? Implementation should set and request this value.
+	 */
+	protected boolean isParsed() {
+		return parsed;
+	}
+
+	/**
+	 * Indicate this node has been parsed.
+	 *
+	 * @param parsed The new value.
+	 */
+	protected void setParsed(boolean parsed) {
+		this.parsed = parsed;
 	}
 
 	protected String getValueRecursive(Node node) {
@@ -69,5 +92,26 @@ public abstract class AbstractXmlNodeWrapper {
 			}
 		}
 		return 0;
+	}
+
+	protected Bbox getBoundingBox(Node node) {
+		NamedNodeMap attributes = node.getAttributes();
+		Node minx = attributes.getNamedItem("minx");
+		Node miny = attributes.getNamedItem("miny");
+		Node maxx = attributes.getNamedItem("maxx");
+		Node maxy = attributes.getNamedItem("maxy");
+
+		double x = getValueRecursiveAsDouble(minx);
+		double y = getValueRecursiveAsDouble(miny);
+		double width = getValueRecursiveAsDouble(maxx) - x;
+		double height = getValueRecursiveAsDouble(maxy) - y;
+		return new Bbox(x, y, width, height);
+	}
+
+	protected Coordinate getCoordinate(Node node) {
+		NamedNodeMap attributes = node.getAttributes();
+		double x = getValueRecursiveAsDouble(attributes.getNamedItem("x"));
+		double y = getValueRecursiveAsDouble(attributes.getNamedItem("y"));
+		return new Coordinate(x, y);
 	}
 }

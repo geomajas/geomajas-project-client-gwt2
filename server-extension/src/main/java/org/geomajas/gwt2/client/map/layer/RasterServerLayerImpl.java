@@ -15,8 +15,8 @@ import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.ViewPort;
-import org.geomajas.gwt2.client.map.render.FixedScaleLayerRenderer;
-import org.geomajas.gwt2.client.map.render.FixedScaleRenderer;
+import org.geomajas.gwt2.client.map.render.dom.DomFixedScaleLayerRenderer;
+import org.geomajas.gwt2.client.map.render.TileLevelRenderer;
 import org.geomajas.gwt2.client.map.render.LayerRenderer;
 import org.geomajas.gwt2.client.map.render.dom.RasterServerLayerScaleRenderer;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
@@ -28,15 +28,15 @@ import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
  */
 public class RasterServerLayerImpl extends AbstractServerLayer<ClientRasterLayerInfo> implements RasterServerLayer {
 
-	private final FixedScaleLayerRenderer renderer;
+	private final DomFixedScaleLayerRenderer renderer;
 
 	/** The only constructor. */
 	public RasterServerLayerImpl(ClientRasterLayerInfo layerInfo, final ViewPort viewPort, MapEventBus eventBus) {
 		super(layerInfo, viewPort, eventBus);
-		renderer = new FixedScaleLayerRenderer(viewPort, this, eventBus) {
+		renderer = new DomFixedScaleLayerRenderer(viewPort, this, eventBus) {
 
 			@Override
-			public FixedScaleRenderer createNewScaleRenderer(int tileLevel, View view, HtmlContainer scaleContainer) {
+			public TileLevelRenderer createNewScaleRenderer(int tileLevel, View view, HtmlContainer scaleContainer) {
 				return new RasterServerLayerScaleRenderer(RasterServerLayerImpl.this, tileLevel,
 						viewPort.getFixedScale(tileLevel), viewPort, scaleContainer);
 			}

@@ -9,35 +9,34 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.wms.client.service;
-
-import java.util.ArrayList;
-import java.util.List;
+package org.geomajas.gwt2.client.map.render;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.map.ViewPort;
-import org.geomajas.gwt2.client.map.render.TileCode;
-import org.geomajas.plugin.wms.client.layer.WmsTileConfiguration;
+import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Default implementation of the {@link WmsTileService}.
- * 
+ * Default implementation of the {@link org.geomajas.gwt2.client.map.render.TileService}.
+ *
  * @author Pieter De Graef
  */
-public class WmsTileServiceImpl implements WmsTileService {
-	
-	private static WmsTileService instance;
-	
-	public static WmsTileService getInstance() {
+public class TileServiceImpl implements TileService {
+
+	private static TileService instance;
+
+	public static TileService getInstance() {
 		if (instance == null) {
-			instance = new WmsTileServiceImpl();
+			instance = new TileServiceImpl();
 		}
 		return instance;
 	}
 
 	@Override
-	public List<TileCode> getTileCodesForBounds(ViewPort viewPort, WmsTileConfiguration tileConfig, Bbox bounds,
+	public List<TileCode> getTileCodesForBounds(ViewPort viewPort, TileConfiguration tileConfig, Bbox bounds,
 			double scale) {
 		List<TileCode> codes = new ArrayList<TileCode>();
 		if (bounds.getHeight() == 0 || bounds.getWidth() == 0) {
@@ -76,7 +75,7 @@ public class WmsTileServiceImpl implements WmsTileService {
 	}
 
 	@Override
-	public Bbox getWorldBoundsForTile(ViewPort viewPort, WmsTileConfiguration tileConfig, TileCode tileCode) {
+	public Bbox getWorldBoundsForTile(ViewPort viewPort, TileConfiguration tileConfig, TileCode tileCode) {
 		double resolution = 1 / viewPort.getFixedScale(tileCode.getTileLevel());
 		double worldTileWidth = tileConfig.getTileWidth() * resolution;
 		double worldTileHeight = tileConfig.getTileHeight() * resolution;
@@ -87,7 +86,7 @@ public class WmsTileServiceImpl implements WmsTileService {
 	}
 
 	@Override
-	public TileCode getTileCodeForLocation(ViewPort viewPort, WmsTileConfiguration tileConfig, Coordinate location,
+	public TileCode getTileCodeForLocation(ViewPort viewPort, TileConfiguration tileConfig, Coordinate location,
 			double scale) {
 		int tileLevel = viewPort.getFixedScaleIndex(scale);
 		double actualScale = viewPort.getFixedScale(tileLevel);

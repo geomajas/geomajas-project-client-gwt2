@@ -51,7 +51,7 @@ import org.geomajas.gwt2.client.gfx.VectorContainer;
 import org.geomajas.gwt2.client.map.layer.LayersModel;
 import org.geomajas.gwt2.client.map.layer.LayersModelImpl;
 import org.geomajas.gwt2.client.map.render.LayersModelRenderer;
-import org.geomajas.gwt2.client.map.render.LayersModelRendererImpl;
+import org.geomajas.gwt2.client.map.render.dom.DomLayersModelRenderer;
 import org.geomajas.gwt2.client.map.render.RenderingInfo;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
 import org.geomajas.gwt2.client.widget.DefaultMapWidget;
@@ -217,7 +217,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		this.viewPort = new ViewPortImpl(this.eventBus);
 		this.layersModel = new LayersModelImpl(this.viewPort, this.eventBus);
 		this.mapEventParser = new MapEventParserImpl(this);
-		this.renderer = new LayersModelRendererImpl(layersModel, viewPort, this.eventBus);
+		this.renderer = new DomLayersModelRenderer(layersModel, viewPort, this.eventBus);
 		this.containerManager = new ContainerManagerImpl(display, viewPort);
 		this.isTouchSupported = Dom.isTouchSupported();
 
@@ -262,8 +262,8 @@ public final class MapPresenterImpl implements MapPresenter {
 		this.configuration = configuration;
 
 		// Apply this configuration on the LayersModelRenderer:
-		if (renderer instanceof LayersModelRendererImpl) {
-			((LayersModelRendererImpl) renderer).setMapConfiguration(configuration);
+		if (renderer instanceof DomLayersModelRenderer) {
+			((DomLayersModelRenderer) renderer).setMapConfiguration(configuration);
 		}
 
 		// Configure the ViewPort. This will immediately zoom to the initial bounds:

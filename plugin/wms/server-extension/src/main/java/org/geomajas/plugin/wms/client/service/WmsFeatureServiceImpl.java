@@ -24,6 +24,7 @@ import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.feature.Feature;
+import org.geomajas.gwt2.client.map.render.TileServiceImpl;
 import org.geomajas.gwt2.client.map.render.TileCode;
 import org.geomajas.plugin.wms.client.WmsServerExtension;
 import org.geomajas.plugin.wms.client.layer.FeaturesSupportedWmsLayer;
@@ -128,10 +129,10 @@ public class WmsFeatureServiceImpl extends WmsServiceImpl implements WmsFeatureS
 			toleranceCorrection = 2; // limit because it seems sometimes not to work if > 2
 		}
 
-		TileCode tileCode = WmsTileServiceImpl.getInstance().getTileCodeForLocation(viewPort,
-				layer.getTileConfig(), location, viewPort.getScale());
-		Bbox worldBounds = WmsTileServiceImpl.getInstance().getWorldBoundsForTile(viewPort,
-				layer.getTileConfig(), tileCode);
+		TileCode tileCode = TileServiceImpl.getInstance().getTileCodeForLocation(viewPort,
+				layer.getTileConfiguration(), location, viewPort.getScale());
+		Bbox worldBounds = TileServiceImpl.getInstance().getWorldBoundsForTile(viewPort,
+				layer.getTileConfiguration(), tileCode);
 
 		Bbox screenBounds = viewPort.getTransformationService()
 				.transform(worldBounds, RenderSpace.WORLD, RenderSpace.SCREEN);
@@ -139,8 +140,9 @@ public class WmsFeatureServiceImpl extends WmsServiceImpl implements WmsFeatureS
 				.transform(location, RenderSpace.WORLD, RenderSpace.SCREEN);
 
 		// Add the base parameters needed for getMap:
-		addBaseParameters(url, layer.getConfig(), viewPort.getCrs(), worldBounds, layer.getTileConfig().getTileWidth()
-				/ toleranceCorrection, layer.getTileConfig().getTileHeight() / toleranceCorrection);
+		addBaseParameters(url, layer.getConfig(), viewPort.getCrs(), worldBounds, layer.getTileConfiguration().
+				getTileWidth() / toleranceCorrection, layer.getTileConfiguration().getTileHeight() /
+				toleranceCorrection);
 
 		url.append("&QUERY_LAYERS=");
 		url.append(layer.getConfig().getLayers()); // No URL.encode here!

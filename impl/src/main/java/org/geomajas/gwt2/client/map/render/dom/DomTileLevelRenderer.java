@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.wms.client.layer;
+package org.geomajas.gwt2.client.map.render.dom;
 
 import com.google.gwt.core.client.Callback;
 import com.google.web.bindery.event.shared.HandlerRegistration;
@@ -18,15 +18,16 @@ import org.geomajas.geometry.service.BboxService;
 import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.ViewPort;
-import org.geomajas.gwt2.client.map.render.FixedScaleRenderer;
-import org.geomajas.gwt2.client.map.render.Tile;
-import org.geomajas.gwt2.client.map.render.TileCode;
+import org.geomajas.gwt2.client.map.layer.tile.TileBasedLayer;
 import org.geomajas.gwt2.client.map.render.TileLevelRenderedEvent;
 import org.geomajas.gwt2.client.map.render.TileLevelRenderedHandler;
+import org.geomajas.gwt2.client.map.render.TileLevelRenderer;
+import org.geomajas.gwt2.client.map.render.Tile;
+import org.geomajas.gwt2.client.map.render.TileCode;
+import org.geomajas.gwt2.client.map.render.TileRenderer;
+import org.geomajas.gwt2.client.map.render.TileServiceImpl;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlImageImpl;
-import org.geomajas.plugin.wms.client.WmsClient;
-import org.geomajas.plugin.wms.client.service.WmsTileServiceImpl;
 
 import java.util.HashMap;
 import java.util.List;
@@ -37,11 +38,11 @@ import java.util.Map;
  *
  * @author Pieter De Graef
  */
-public class WmsTileLevelRenderer implements FixedScaleRenderer {
+public class DomTileLevelRenderer implements TileLevelRenderer {
 
 	private final HtmlContainer container;
 
-	private final WmsLayer layer;
+	private final TileBasedLayer layer;
 
 	private final double scale;
 
@@ -51,19 +52,23 @@ public class WmsTileLevelRenderer implements FixedScaleRenderer {
 
 	private final ViewPort viewPort;
 
+	private final TileRenderer tileRenderer;
+
 	private int nrLoadingTiles;
 
-	public WmsTileLevelRenderer(WmsLayer layer, int tileLevel, ViewPort viewPort, HtmlContainer container) {
+	public DomTileLevelRenderer(TileBasedLayer layer, int tileLevel, ViewPort viewPort, HtmlContainer container,
+			TileRenderer tileRenderer) {
 		this.layer = layer;
 		this.tileLevel = tileLevel;
 		this.viewPort = viewPort;
 		this.container = container;
+		this.tileRenderer = tileRenderer;
 		this.tiles = new HashMap<TileCode, Tile>();
 		this.scale = viewPort.getFixedScale(tileLevel);
 	}
 
 	// ------------------------------------------------------------------------
-	// FixedScaleRenderer implementation:
+	// TileLevelRenderer implementation:
 	// ------------------------------------------------------------------------
 
 	@Override
@@ -75,8 +80,8 @@ public class WmsTileLevelRenderer implements FixedScaleRenderer {
 	public void render(View view) {
 		if (layer.isShowing()) {
 			Bbox bounds = asBounds(view);
-			List<TileCode> tilesForBounds = WmsTileServiceImpl.getInstance().getTileCodesForBounds(viewPort,
-					layer.getTileConfig(), bounds, view.getScale());
+			List<TileCode> tilesForBounds = TileServiceImpl.getInstance().getTileCodesForBounds(viewPort,
+					layer.getTileConfiguration(), bounds, view.getScale());
 			for (TileCode tileCode : tilesForBounds) {
 				if (!tiles.containsKey(tileCode)) {
 					Tile tile = createTile(tileCode);
@@ -120,15 +125,11 @@ public class WmsTileLevelRenderer implements FixedScaleRenderer {
 	}
 
 	private Tile createTile(TileCode tileCode) {
-		Bbox worldBounds = WmsTileServiceImpl.getInstance().getWorldBoundsForTile(viewPort,
-				layer.getTileConfig(), tileCode);
+		Bbox worldBounds = TileServiceImpl.getInstance().getWorldBoundsForTile(viewPort,
+				layer.getTileConfiguration(), tileCode);
 		Tile tile = new Tile(tileCode, getScreenBounds(worldBounds));
 		tile.setCode(tileCode);
-		tile.setUrl(WmsClient
-				.getInstance()
-				.getWmsService()
-				.getMapUrl(layer.getConfig(), viewPort.getCrs(), worldBounds, layer.getTileConfig().getTileWidth(),
-						layer.getTileConfig().getTileHeight()));
+		tile.setUrl(tileRenderer.getUrl(tileCode));
 		return tile;
 	}
 
@@ -149,7 +150,7 @@ public class WmsTileLevelRenderer implements FixedScaleRenderer {
 		// In case of failure, we can't just sit and wait. Instead we immediately consider the scale level rendered.
 		public void onFailure(String reason) {
 			GeomajasImpl.getInstance().getEventBus().fireEventFromSource(new TileLevelRenderedEvent(
-					WmsTileLevelRenderer.this), WmsTileLevelRenderer.this);
+					DomTileLevelRenderer.this), DomTileLevelRenderer.this);
 		}
 
 		public void onSuccess(String result) {
@@ -157,7 +158,7 @@ public class WmsTileLevelRenderer implements FixedScaleRenderer {
 				nrLoadingTiles--;
 				if (nrLoadingTiles == 0) {
 					GeomajasImpl.getInstance().getEventBus().fireEventFromSource(new TileLevelRenderedEvent(
-							WmsTileLevelRenderer.this), WmsTileLevelRenderer.this);
+							DomTileLevelRenderer.this), DomTileLevelRenderer.this);
 				}
 			}
 		}

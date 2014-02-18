@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.wmsclient.client.service;
+package org.geomajas.gwt2.client.map.layer.tile;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
@@ -19,9 +19,8 @@ import org.geomajas.gwt2.client.map.MapEventBusImpl;
 import org.geomajas.gwt2.client.map.TestConfigUtil;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.render.TileCode;
-import org.geomajas.plugin.wms.client.layer.WmsTileConfiguration;
-import org.geomajas.plugin.wms.client.service.WmsTileService;
-import org.geomajas.plugin.wms.client.service.WmsTileServiceImpl;
+import org.geomajas.gwt2.client.map.render.TileService;
+import org.geomajas.gwt2.client.map.render.TileServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,11 +28,11 @@ import org.junit.Test;
 import java.util.List;
 
 /**
- * Testcases for the {@link WmsTileService} interface.
+ * Testcases for the {@link org.geomajas.gwt2.client.map.render.TileService} interface.
  * 
  * @author Pieter De Graef
  */
-public class LayerTileServiceTest {
+public class TileServiceTest {
 
 	private static final double DELTA = 1e-10;
 
@@ -41,18 +40,18 @@ public class LayerTileServiceTest {
 
 	private ViewPort viewPort;
 
-	private WmsTileService tileService;
+	private TileService tileService;
 
-	private WmsTileConfiguration tileConfig;
+	private TileConfiguration tileConfig;
 
 	@Before
 	public void initialize2() {
 		eventBus = new MapEventBusImpl(this, GeomajasImpl.getInstance().getEventBus());
 		viewPort = TestConfigUtil.createViewPort(eventBus, TestConfigUtil.getMapConfig(), 1000, 1000);
-		tileService = new WmsTileServiceImpl();
+		tileService = TileServiceImpl.getInstance();
 
 		Bbox max = viewPort.getMaximumBounds();
-		tileConfig = new WmsTileConfiguration(200, 200, new Coordinate(max.getX(), max.getY()));
+		tileConfig = new TileConfiguration(200, 200, new Coordinate(max.getX(), max.getY()));
 	}
 
 	@Test
