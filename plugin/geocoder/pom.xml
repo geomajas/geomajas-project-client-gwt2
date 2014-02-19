@@ -27,7 +27,19 @@
 	<modules>
 		<module>geocoder</module>
 		<module>example-jar</module>
-		<!-- <module>example</module> -->
 	</modules>
 
- </project>
+    <profiles>
+        <profile>
+            <id>full-build</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>example</module>
+            </modules>
+        </profile>
+    </profiles>
+
+
+</project>
