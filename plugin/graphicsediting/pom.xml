@@ -33,7 +33,7 @@
 	</description>
 
 	<modules>
-		<module>graphicsediting</module>
+		<module>impl</module>
 		<module>example-jar</module>
 	</modules>
 
