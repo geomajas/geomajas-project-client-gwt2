@@ -26,9 +26,20 @@
 	<modules>
 		<module>wms</module>
 		<module>print</module>
-		<module>documentation</module>
 		<module>example-jar</module>
 		<module>server-extension</module>
 	</modules>
+
+    <profiles>
+        <profile>
+            <id>full-build</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>documentation</module>
+            </modules>
+        </profile>
+    </profiles>
 
 </project>
