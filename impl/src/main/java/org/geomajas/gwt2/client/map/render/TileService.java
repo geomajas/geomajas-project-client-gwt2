@@ -27,6 +27,12 @@ import java.util.List;
  */
 public interface TileService {
 
+//	int getTileLevel(List<Double> tileLevels, double scale);
+//
+//	List<TileCode> getTileCodes(ViewPort viewPort, TileConfiguration tileConfiguration, Bbox bounds, double scale);
+//
+//	Bbox getBoundingBox(TileCode tileCode);
+
 	// ------------------------------------------------------------------------
 	// Methods regarding tiles:
 	// ------------------------------------------------------------------------

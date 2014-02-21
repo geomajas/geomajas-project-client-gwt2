@@ -112,13 +112,18 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 	}
 
 	@Override
+	public List<Double> getTileLevels() {
+		List<Double> tileLevels = new ArrayList<Double>();
+		for (int i = 0; i < viewPort.getFixedScaleCount(); i++) {
+			tileLevels.add(viewPort.getFixedScale(i));
+		}
+		return tileLevels;
+	}
+
+	@Override
 	public WmsLayerInfo getCapabilities() {
 		return layerCapabilities;
 	}
-
-	// ------------------------------------------------------------------------
-	// OpacitySupported implementation:
-	// ------------------------------------------------------------------------
 
 	@Override
 	public void setOpacity(double opacity) {

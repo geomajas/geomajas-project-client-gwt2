@@ -11,10 +11,8 @@
 
 package org.geomajas.gwt2.client.map;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.service.BboxService;
@@ -25,12 +23,13 @@ import org.geomajas.gwt2.client.event.NavigationStopEvent;
 import org.geomajas.gwt2.client.event.NavigationStopHandler;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Implementation of the ViewPort interface.
- * 
+ *
  * @author Pieter De Graef
  */
 public final class ViewPortImpl implements ViewPort {
@@ -43,13 +42,19 @@ public final class ViewPortImpl implements ViewPort {
 
 	private MapConfiguration configuration;
 
-	/** The map's width in pixels. */
+	/**
+	 * The map's width in pixels.
+	 */
 	private int mapWidth;
 
-	/** The map's height in pixels. */
+	/**
+	 * The map's height in pixels.
+	 */
 	private int mapHeight;
 
-	/** The maximum bounding box available to this MapView. Never go outside it! */
+	/**
+	 * The maximum bounding box available to this MapView. Never go outside it!
+	 */
 	private Bbox maxBounds;
 
 	private final List<Double> fixedScales = new ArrayList<Double>();
@@ -96,7 +101,7 @@ public final class ViewPortImpl implements ViewPort {
 
 		if (configuration.getResolutions() != null && configuration.getResolutions().size() > 0) {
 			for (Double resolution : configuration.getResolutions()) {
-				fixedScales.add(resolution);
+				fixedScales.add(1.0 / resolution);
 			}
 		} else if (configuration.getMaximumScale() != 0) {
 			// If there are no fixed scale levels, we'll calculate them:
@@ -228,7 +233,7 @@ public final class ViewPortImpl implements ViewPort {
 	/**
 	 * Given the information in this ViewPort object, what is the currently visible area? This value is expressed in
 	 * world coordinates.
-	 * 
+	 *
 	 * @return Returns the bounding box that covers the currently visible area on the map.
 	 */
 	public Bbox getBounds() {

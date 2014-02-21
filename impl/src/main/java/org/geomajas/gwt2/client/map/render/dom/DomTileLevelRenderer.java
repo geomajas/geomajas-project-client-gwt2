@@ -14,21 +14,22 @@ package org.geomajas.gwt2.client.map.render.dom;
 import com.google.gwt.core.client.Callback;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.service.BboxService;
 import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.tile.TileBasedLayer;
+import org.geomajas.gwt2.client.map.render.Tile;
+import org.geomajas.gwt2.client.map.render.TileCode;
 import org.geomajas.gwt2.client.map.render.TileLevelRenderedEvent;
 import org.geomajas.gwt2.client.map.render.TileLevelRenderedHandler;
 import org.geomajas.gwt2.client.map.render.TileLevelRenderer;
-import org.geomajas.gwt2.client.map.render.Tile;
-import org.geomajas.gwt2.client.map.render.TileCode;
 import org.geomajas.gwt2.client.map.render.TileRenderer;
-import org.geomajas.gwt2.client.map.render.TileServiceImpl;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlImageImpl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +65,8 @@ public class DomTileLevelRenderer implements TileLevelRenderer {
 		this.container = container;
 		this.tileRenderer = tileRenderer;
 		this.tiles = new HashMap<TileCode, Tile>();
-		this.scale = viewPort.getFixedScale(tileLevel);
+		//this.scale = viewPort.getFixedScale(tileLevel);
+		this.scale = layer.getTileLevels().get(tileLevel);
 	}
 
 	// ------------------------------------------------------------------------
@@ -79,9 +81,7 @@ public class DomTileLevelRenderer implements TileLevelRenderer {
 	@Override
 	public void render(View view) {
 		if (layer.isShowing()) {
-			Bbox bounds = asBounds(view);
-			List<TileCode> tilesForBounds = TileServiceImpl.getInstance().getTileCodesForBounds(viewPort,
-					layer.getTileConfiguration(), bounds, view.getScale());
+			List<TileCode> tilesForBounds = getTileCodesForView(view);
 			for (TileCode tileCode : tilesForBounds) {
 				if (!tiles.containsKey(tileCode)) {
 					Tile tile = createTile(tileCode);
@@ -102,7 +102,7 @@ public class DomTileLevelRenderer implements TileLevelRenderer {
 
 	@Override
 	public boolean isRendered(View view) {
-		return nrLoadingTiles == 0;
+		return nrLoadingTiles == 0 && tiles.size() > 0;
 	}
 
 	@Override
@@ -125,8 +125,7 @@ public class DomTileLevelRenderer implements TileLevelRenderer {
 	}
 
 	private Tile createTile(TileCode tileCode) {
-		Bbox worldBounds = TileServiceImpl.getInstance().getWorldBoundsForTile(viewPort,
-				layer.getTileConfiguration(), tileCode);
+		Bbox worldBounds = getWorldBounds(tileCode);
 		Tile tile = new Tile(tileCode, getScreenBounds(worldBounds));
 		tile.setCode(tileCode);
 		tile.setUrl(tileRenderer.getUrl(tileCode));
@@ -138,6 +137,56 @@ public class DomTileLevelRenderer implements TileLevelRenderer {
 				* worldBox.getMaxX())
 				- Math.round(scale * worldBox.getX()), Math.round(scale * worldBox.getMaxY())
 				- Math.round(scale * worldBox.getY()));
+	}
+
+	private Bbox getWorldBounds(TileCode tileCode) {
+		double resolution = 1 / scale;
+		//double resolution = 1 / viewPort.getFixedScale(tileCode.getTileLevel());
+		double worldTileWidth = layer.getTileConfiguration().getTileWidth() * resolution;
+		double worldTileHeight = layer.getTileConfiguration().getTileHeight() * resolution;
+
+		double x = layer.getTileConfiguration().getTileOrigin().getX() + tileCode.getX() * worldTileWidth;
+		double y = layer.getTileConfiguration().getTileOrigin().getY() + tileCode.getY() * worldTileHeight;
+		return new Bbox(x, y, worldTileWidth, worldTileHeight);
+	}
+
+	private List<TileCode> getTileCodesForView(View view) {
+		Bbox bounds = asBounds(view);
+		List<TileCode> codes = new ArrayList<TileCode>();
+		if (bounds.getHeight() == 0 || bounds.getWidth() == 0) {
+			return codes;
+		}
+
+		//int tileLevel = viewPort.getFixedScaleIndex(view.getScale());
+		//double actualScale = viewPort.getFixedScale(tileLevel);
+
+		//double resolution = 1 / actualScale;
+		double resolution = 1 / scale;
+		double worldTileWidth = layer.getTileConfiguration().getTileWidth() * resolution;
+		double worldTileHeight = layer.getTileConfiguration().getTileHeight() * resolution;
+
+		Coordinate tileOrigin = layer.getTileConfiguration().getTileOrigin();
+		int ymin = (int) Math.floor((bounds.getY() - tileOrigin.getY()) / worldTileHeight);
+		int ymax = (int) Math.floor((bounds.getMaxY() - tileOrigin.getY()) / worldTileHeight);
+		int xmin = (int) Math.floor((bounds.getX() - tileOrigin.getX()) / worldTileWidth);
+		int xmax = (int) Math.floor((bounds.getMaxX() - tileOrigin.getX()) / worldTileWidth);
+
+		if (ymin < 0) {
+			ymin = 0;
+		}
+		if (xmin < 0) {
+			xmin = 0;
+		}
+		if (xmax < 0 || ymax < 0) {
+			return codes;
+		}
+
+		for (int x = xmin; x <= xmax; x++) {
+			for (int y = ymin; y <= ymax; y++) {
+				codes.add(new TileCode(tileLevel, x, y));
+			}
+		}
+		return codes;
 	}
 
 	/**

@@ -29,6 +29,7 @@ import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.Layer;
+import org.geomajas.gwt2.client.map.layer.tile.TileBasedLayer;
 import org.geomajas.gwt2.client.map.render.LayerRenderer;
 import org.geomajas.gwt2.client.map.render.RenderingInfo;
 import org.geomajas.gwt2.client.map.render.TileLevelRenderedEvent;
@@ -39,6 +40,7 @@ import org.geomajas.gwt2.client.map.render.dom.container.HtmlGroup;
 import org.geomajas.gwt2.client.service.DomService;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -197,7 +199,7 @@ public abstract class DomFixedScaleLayerRenderer implements LayerRenderer {
 	// ------------------------------------------------------------------------
 
 	protected TileLevelRenderer getRendererForView(View view) throws IllegalStateException {
-		int tileLevel = viewPort.getFixedScaleIndex(view.getScale());
+		int tileLevel = getTileLevel(view.getScale());
 
 		// Do we have a renderer at the tileLevel that is rendered?
 		TileLevelRenderer renderer = getOrCreateTileLevelRenderer(tileLevel, view);
@@ -207,9 +209,37 @@ public abstract class DomFixedScaleLayerRenderer implements LayerRenderer {
 		return currentRenderer;
 	}
 
+	protected int getTileLevel(double scale) {
+		if (layer instanceof TileBasedLayer) {
+			List<Double> fixedScales = ((TileBasedLayer) layer).getTileLevels();
+			double minimumScale = fixedScales.get(0);
+			if (scale <= minimumScale) {
+				return 0;
+			}
+			double maximumScale = fixedScales.get(fixedScales.size() - 1);
+			if (scale >= maximumScale) {
+				return fixedScales.size() - 1;
+			}
+
+			for (int i = 0; i < fixedScales.size(); i++) {
+				double lower = fixedScales.get(i);
+				double upper = fixedScales.get(i + 1);
+				if (scale <= upper && scale > lower) {
+					if (Math.abs(upper - scale) >= Math.abs(lower - scale)) {
+						return i;
+					} else {
+						return i + 1;
+					}
+				}
+			}
+		}
+		return viewPort.getFixedScaleIndex(scale);
+	}
+
 	protected void prepareView(IsWidget widget, View targetView) {
 		// Given a trajectory, try to fetch the target tiles before rendering.
-		int tileLevel = viewPort.getFixedScaleIndex(targetView.getScale());
+		//int tileLevel = viewPort.getFixedScaleIndex(targetView.getScale());
+		int tileLevel = getTileLevel(targetView.getScale());
 		if (tileLevel < viewPort.getFixedScaleCount()) {
 			targetRenderer = getOrCreateTileLevelRenderer(tileLevel, targetView);
 			targetRenderer.render(targetView);
@@ -241,7 +271,8 @@ public abstract class DomFixedScaleLayerRenderer implements LayerRenderer {
 				TileLevelRenderer renderer = event.getRenderer();
 
 				// See if we can replace the current renderer with the one that just rendered:
-				int viewPortTileLevel = viewPort.getFixedScaleIndex(viewPort.getScale());
+				//int viewPortTileLevel = viewPort.getFixedScaleIndex(viewPort.getScale());
+				int viewPortTileLevel = getTileLevel(viewPort.getScale());
 				if (renderer.getTileLevel() == viewPortTileLevel) {
 					if (!renderer.isRendered(viewPort.getView())) {
 						// TODO are we sure about this? Why else did we prepare this view?
@@ -259,12 +290,20 @@ public abstract class DomFixedScaleLayerRenderer implements LayerRenderer {
 		return renderer;
 	}
 
+	protected double getScale(int tileLevel) {
+		if (layer instanceof TileBasedLayer) {
+			return ((TileBasedLayer) layer).getTileLevels().get(tileLevel);
+		}
+		return viewPort.getFixedScale(tileLevel);
+	}
+
 	protected void renderTileLevel(TileLevelRenderer renderer, double currentScale) {
 		// Set the current renderer:
 		currentRenderer = renderer;
 
 		// Apply the correct transformation on the container:
-		double rendererScale = viewPort.getFixedScale(renderer.getTileLevel());
+		//double rendererScale = viewPort.getFixedScale(renderer.getTileLevel());
+		double rendererScale = getScale(renderer.getTileLevel());
 		Matrix transformation = viewPort.getTransformationService().getTranslationMatrix(currentScale);
 		HtmlContainer tileLevelContainer = tileLevelContainers.get(renderer.getTileLevel());
 		Coordinate origin = tileLevelContainer.getOrigin();

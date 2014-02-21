@@ -21,6 +21,12 @@ import org.geomajas.gwt2.client.map.render.TileLevelRenderer;
 import org.geomajas.gwt2.client.map.render.dom.DomFixedScaleLayerRenderer;
 import org.geomajas.gwt2.client.map.render.dom.DomTileLevelRenderer;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
+import org.geomajas.plugin.tms.client.configuration.TileMapInfo;
+import org.geomajas.plugin.tms.client.configuration.TileSetInfo;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Represents a layer based upon a TMS service. A TmsLayer is a {@link TileBasedLayer}. TMS layer have no other
@@ -37,6 +43,8 @@ public class TmsLayer extends AbstractLayer implements TileBasedLayer {
 	private final TmsLayerConfiguration layerConfiguration;
 
 	private final TmsTileRenderer tileRenderer;
+
+	private final List<Double> tileLevels = new ArrayList<Double>();
 
 	private DomFixedScaleLayerRenderer renderer;
 
@@ -56,6 +64,26 @@ public class TmsLayer extends AbstractLayer implements TileBasedLayer {
 		this.tileRenderer = new TmsTileRenderer(layerConfiguration);
 	}
 
+	/**
+	 * Create a new layer using a TileMapInfo object.
+	 *
+	 * @param tileMapInfo
+	 */
+	public TmsLayer(TileMapInfo tileMapInfo) {
+		super(tileMapInfo.getTitle());
+		this.tileConfiguration = new TileConfiguration(tileMapInfo.getTileFormat().getWidth(),
+				tileMapInfo.getTileFormat().getHeight(), tileMapInfo.getOrigin());
+		this.layerConfiguration = new TmsLayerConfiguration();
+		this.layerConfiguration.setBaseUrl(tileMapInfo.getHref());
+		this.layerConfiguration.setFileExtension(tileMapInfo.getTileFormat().getExtension());
+		this.tileRenderer = new TmsTileRenderer(layerConfiguration);
+
+		for (TileSetInfo tileSetInfo : tileMapInfo.getTileSets()) {
+			tileLevels.add(1.0 / tileSetInfo.getUnitsPerPixel());
+		}
+		Collections.sort(tileLevels);
+	}
+
 	// ------------------------------------------------------------------------
 	// TileBasedLayer implementation:
 	// ------------------------------------------------------------------------
@@ -63,6 +91,11 @@ public class TmsLayer extends AbstractLayer implements TileBasedLayer {
 	@Override
 	public TileConfiguration getTileConfiguration() {
 		return tileConfiguration;
+	}
+
+	@Override
+	public List<Double> getTileLevels() {
+		return tileLevels;
 	}
 
 	@Override

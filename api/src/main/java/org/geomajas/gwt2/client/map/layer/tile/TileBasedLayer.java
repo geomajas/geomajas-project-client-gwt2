@@ -14,6 +14,8 @@ package org.geomajas.gwt2.client.map.layer.tile;
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.client.map.layer.Layer;
 
+import java.util.List;
+
 /**
  * Base definition for a layer that uses tiles for it's rendering.
  *
@@ -29,11 +31,11 @@ public interface TileBasedLayer extends Layer {
 	 * @return The tile configuration object.
 	 */
 	TileConfiguration getTileConfiguration();
-//
-//	/**
-//	 * Get a renderer that is able to create URLs that point to the effective tile images.
-//	 *
-//	 * @return The tile renderer for this layer.
-//	 */
-//	TileRenderer getTileRenderer();
+
+	/**
+	 * Get the scales for the tile levels. This list if ordered top-down.
+	 *
+	 * @return The list of scale levels.
+	 */
+	List<Double> getTileLevels();
 }

@@ -78,12 +78,7 @@ public final class TmsClient {
 	 * @return A new TMS layer.
 	 */
 	public TmsLayer createLayer(TileMapInfo tileMapInfo) {
-		TileConfiguration tileConfiguration = new TileConfiguration(tileMapInfo.getTileFormat().getWidth(),
-				tileMapInfo.getTileFormat().getHeight(), tileMapInfo.getOrigin());
-		TmsLayerConfiguration layerConfiguration = new TmsLayerConfiguration();
-		layerConfiguration.setBaseUrl(tileMapInfo.getHref());
-		layerConfiguration.setFileExtension(tileMapInfo.getTileFormat().getExtension());
-		return new TmsLayer(tileMapInfo.getTitle(), tileConfiguration, layerConfiguration);
+		return new TmsLayer(tileMapInfo);
 	}
 
 	/**
