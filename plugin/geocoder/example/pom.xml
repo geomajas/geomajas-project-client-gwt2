@@ -173,7 +173,7 @@
 				<dependency>
 					<groupId>org.geomajas</groupId>
 					<artifactId>geomajas-jetty-runner</artifactId>
-					<version>1.0.0</version>
+					<version>${version-geomajas-build-tools}</version>
 				</dependency>
 				<dependency>
 					<groupId>com.google.gwt</groupId>
