@@ -11,9 +11,10 @@
 
 package org.geomajas.gwt2.client.widget.legend;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.google.gwt.http.client.URL;
+import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.annotation.Api;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
@@ -27,10 +28,8 @@ import org.geomajas.gwt2.client.map.layer.VectorServerLayer;
 import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.RuleInfo;
 
-import com.google.gwt.http.client.URL;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Widget;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Widget that represents the legend for a {@link VectorServerLayer}. This legend will only display the currently
@@ -136,17 +135,17 @@ public class DynamicVectorServerLayerLegend implements IsWidget {
 		if (rule == null) {
 			return true;
 		}
-		double minScale = Double.MAX_VALUE;
-		double maxScale = Double.MIN_VALUE;
+		double minResolution = Double.MAX_VALUE;
+		double maxResolution = Double.MIN_VALUE;
 
 		if (rule.getMinScaleDenominator() != null && rule.getMinScaleDenominator().getMinScaleDenominator() != 0) {
-			minScale = viewPort.toScale(rule.getMinScaleDenominator().getMinScaleDenominator());
+			maxResolution = viewPort.toResolution(rule.getMinScaleDenominator().getMinScaleDenominator());
 		}
 
 		if (rule.getMaxScaleDenominator() != null && rule.getMaxScaleDenominator().getMaxScaleDenominator() != 0) {
-			maxScale = viewPort.toScale(rule.getMaxScaleDenominator().getMaxScaleDenominator());
+			minResolution = viewPort.toResolution(rule.getMaxScaleDenominator().getMaxScaleDenominator());
 		}
 
-		return (maxScale <= viewPort.getScale() && viewPort.getScale() < minScale);
+		return (maxResolution <= viewPort.getResolution() && viewPort.getResolution() < minResolution);
 	}
 }

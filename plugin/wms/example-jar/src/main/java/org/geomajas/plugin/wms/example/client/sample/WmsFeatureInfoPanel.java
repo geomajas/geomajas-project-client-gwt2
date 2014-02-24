@@ -95,7 +95,7 @@ public class WmsFeatureInfoPanel implements SamplePanel {
 		configuration.setCrs(EPSG, CrsType.DEGREES);
 		configuration.setMaxBounds(new Bbox(-180, -90, 360, 180));
 		configuration.setHintValue(MapConfiguration.INITIAL_BOUNDS, ExampleBase.BBOX_LATLON_USA);
-		configuration.setMaximumScale(8192);
+		configuration.setMinimumResolution(2.1457672119140625E-5);
 		mapPresenter = GeomajasImpl.getInstance().createMapPresenter(configuration, 480, 480);
 		featureContainer = mapPresenter.getContainerManager().addWorldContainer();
 
@@ -176,8 +176,8 @@ public class WmsFeatureInfoPanel implements SamplePanel {
 		layerConfig.setFormat("image/png");
 		layerConfig.setVersion(getWmsVersion());
 		layerConfig.setLayers("demo_world:simplified_country_borders");
-		layerConfig.setMaximumScale(8192);
-		layerConfig.setMinimumScale(0);
+		layerConfig.setMaximumResolution(Double.MAX_VALUE);
+		layerConfig.setMinimumResolution(2.1457672119140625E-5);
 		FeaturesSupportedWmsLayer wmsLayer = WmsServerExtension.getInstance().createLayer("Countries",
 				tileConfig, layerConfig, null);
 		mapPresenter.getLayersModel().addLayer(wmsLayer);

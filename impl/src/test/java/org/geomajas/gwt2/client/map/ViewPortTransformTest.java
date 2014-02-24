@@ -27,7 +27,7 @@ import java.util.List;
 
 /**
  * Unit test that checks if the correct events are fired by the ViewPortImpl.
- * 
+ *
  * @author Pieter De Graef
  */
 public class ViewPortTransformTest {
@@ -80,23 +80,23 @@ public class ViewPortTransformTest {
 		Assert.assertEquals(Matrix.IDENTITY, matrix);
 
 		matrix = viewPort.getTransformationService().getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
-		Assert.assertEquals(viewPort.getScale(), matrix.getXx(), DELTA);
-		Assert.assertEquals(-viewPort.getScale(), matrix.getYy(), DELTA);
+		Assert.assertEquals(1 / viewPort.getResolution(), matrix.getXx(), DELTA);
+		Assert.assertEquals(-1 / viewPort.getResolution(), matrix.getYy(), DELTA);
 		Assert.assertEquals(0.0, matrix.getXy(), DELTA);
 		Assert.assertEquals(0.0, matrix.getYx(), DELTA);
 		Assert.assertEquals(MAP_WIDTH / 2, matrix.getDx(), DELTA);
 		Assert.assertEquals(MAP_HEIGHT / 2, matrix.getDy(), DELTA);
 
 		// Now move the map:
-		viewPort.applyScale(viewPort.getScale() * 4);
+		viewPort.applyResolution(viewPort.getResolution() / 4);
 		viewPort.applyPosition(new Coordinate(10, 10));
 		matrix = viewPort.getTransformationService().getTransformationMatrix(RenderSpace.WORLD, RenderSpace.SCREEN);
-		Assert.assertEquals(viewPort.getScale(), matrix.getXx(), DELTA);
-		Assert.assertEquals(-viewPort.getScale(), matrix.getYy(), DELTA);
+		Assert.assertEquals(1 / viewPort.getResolution(), matrix.getXx(), DELTA);
+		Assert.assertEquals(-1 / viewPort.getResolution(), matrix.getYy(), DELTA);
 		Assert.assertEquals(0.0, matrix.getXy(), DELTA);
 		Assert.assertEquals(0.0, matrix.getYx(), DELTA);
-		Assert.assertEquals((MAP_WIDTH / 2) - (viewPort.getScale() * 10), matrix.getDx(), DELTA);
-		Assert.assertEquals((MAP_HEIGHT / 2) + (viewPort.getScale() * 10), matrix.getDy(), DELTA);
+		Assert.assertEquals((MAP_WIDTH / 2) - (10 / viewPort.getResolution()), matrix.getDx(), DELTA);
+		Assert.assertEquals((MAP_HEIGHT / 2) + (10 / viewPort.getResolution()), matrix.getDy(), DELTA);
 	}
 
 	@Test
@@ -124,8 +124,8 @@ public class ViewPortTransformTest {
 		// None-origin coordinate:
 		transformed = viewPort.getTransformationService().transform(new Coordinate(10, 10), RenderSpace.WORLD,
 				RenderSpace.SCREEN);
-		Assert.assertEquals((MAP_WIDTH / 2) + (viewPort.getScale() * 10), transformed.getX(), DELTA);
-		Assert.assertEquals((MAP_HEIGHT / 2) - (viewPort.getScale() * 10), transformed.getY(), DELTA);
+		Assert.assertEquals((MAP_WIDTH / 2) + (10 / viewPort.getResolution()), transformed.getX(), DELTA);
+		Assert.assertEquals((MAP_HEIGHT / 2) - (10 / viewPort.getResolution()), transformed.getY(), DELTA);
 
 		transformed = viewPort.getTransformationService().transform(transformed, RenderSpace.SCREEN, RenderSpace.WORLD);
 		Assert.assertEquals(10, transformed.getX(), DELTA);
@@ -136,10 +136,10 @@ public class ViewPortTransformTest {
 	public void testTransformBbox() {
 		Bbox bbox = new Bbox(-10, -10, 20, 20);
 		Bbox transformed = viewPort.getTransformationService().transform(bbox, RenderSpace.WORLD, RenderSpace.SCREEN);
-		Assert.assertEquals((MAP_WIDTH / 2) - (viewPort.getScale() * 10), transformed.getX(), DELTA);
-		Assert.assertEquals((MAP_HEIGHT / 2) - (viewPort.getScale() * 10), transformed.getY(), DELTA);
-		Assert.assertEquals((MAP_WIDTH / 2) + (viewPort.getScale() * 10), transformed.getMaxX(), DELTA);
-		Assert.assertEquals((MAP_HEIGHT / 2) + (viewPort.getScale() * 10), transformed.getMaxY(), DELTA);
+		Assert.assertEquals((MAP_WIDTH / 2) - (10 / viewPort.getResolution()), transformed.getX(), DELTA);
+		Assert.assertEquals((MAP_HEIGHT / 2) - (10 / viewPort.getResolution()), transformed.getY(), DELTA);
+		Assert.assertEquals((MAP_WIDTH / 2) + (10 / viewPort.getResolution()), transformed.getMaxX(), DELTA);
+		Assert.assertEquals((MAP_HEIGHT / 2) + (10 / viewPort.getResolution()), transformed.getMaxY(), DELTA);
 
 		transformed = viewPort.getTransformationService().transform(transformed, RenderSpace.SCREEN, RenderSpace.WORLD);
 		Assert.assertEquals(-10.0, transformed.getX(), DELTA);
@@ -181,8 +181,10 @@ public class ViewPortTransformTest {
 		Geometry result = viewPort.getTransformationService().transform(line, RenderSpace.WORLD, RenderSpace.SCREEN);
 		Assert.assertEquals(MAP_WIDTH / 2, result.getCoordinates()[0].getX(), DELTA);
 		Assert.assertEquals(MAP_HEIGHT / 2, result.getCoordinates()[0].getY(), DELTA);
-		Assert.assertEquals((MAP_WIDTH / 2) + (viewPort.getScale() * 10), result.getCoordinates()[1].getX(), DELTA);
-		Assert.assertEquals((MAP_HEIGHT / 2) - (viewPort.getScale() * 10), result.getCoordinates()[1].getY(), DELTA);
+		Assert.assertEquals((MAP_WIDTH / 2) + (10 / viewPort.getResolution()), result.getCoordinates()[1].getX(),
+				DELTA);
+		Assert.assertEquals((MAP_HEIGHT / 2) - (10 / viewPort.getResolution()),
+				result.getCoordinates()[1].getY(), DELTA);
 	}
 
 	@Test
@@ -199,14 +201,14 @@ public class ViewPortTransformTest {
 		// World to screen:
 		Geometry result = viewPort.getTransformationService().transform(polygon, RenderSpace.WORLD, RenderSpace.SCREEN);
 		Coordinate c = result.getGeometries()[0].getCoordinates()[0];
-		Assert.assertEquals((MAP_WIDTH / 2) - (viewPort.getScale() * 10), c.getX(), DELTA);
-		Assert.assertEquals((MAP_HEIGHT / 2) + (viewPort.getScale() * 10), c.getY(), DELTA);
+		Assert.assertEquals((MAP_WIDTH / 2) - (10 / viewPort.getResolution()), c.getX(), DELTA);
+		Assert.assertEquals((MAP_HEIGHT / 2) + (10 / viewPort.getResolution()), c.getY(), DELTA);
 		c = result.getGeometries()[0].getCoordinates()[1];
-		Assert.assertEquals((MAP_WIDTH / 2) + (viewPort.getScale() * 10), c.getX(), DELTA);
+		Assert.assertEquals((MAP_WIDTH / 2) + (10 / viewPort.getResolution()), c.getX(), DELTA);
 		Assert.assertEquals((MAP_HEIGHT / 2), c.getY(), DELTA);
 		c = result.getGeometries()[1].getCoordinates()[2];
-		Assert.assertEquals((MAP_WIDTH / 2) - (viewPort.getScale() * 5), c.getX(), DELTA);
-		Assert.assertEquals((MAP_HEIGHT / 2) - (viewPort.getScale() * 5), c.getY(), DELTA);
+		Assert.assertEquals((MAP_WIDTH / 2) - (5 / viewPort.getResolution()), c.getX(), DELTA);
+		Assert.assertEquals((MAP_HEIGHT / 2) - (5 / viewPort.getResolution()), c.getY(), DELTA);
 
 		// Screen to world:
 		result = viewPort.getTransformationService().transform(result, RenderSpace.SCREEN, RenderSpace.WORLD);
@@ -236,8 +238,8 @@ public class ViewPortTransformTest {
 		Assert.assertEquals(MAP_WIDTH / 2, coordinate.getX(), DELTA);
 		Assert.assertEquals(MAP_HEIGHT / 2, coordinate.getY(), DELTA);
 		coordinate = result.getGeometries()[1].getCoordinates()[0];
-		Assert.assertEquals((MAP_WIDTH / 2) + (viewPort.getScale() * 5), coordinate.getX(), DELTA);
-		Assert.assertEquals((MAP_HEIGHT / 2) - (viewPort.getScale() * 10), coordinate.getY(), DELTA);
+		Assert.assertEquals((MAP_WIDTH / 2) + (5 / viewPort.getResolution()), coordinate.getX(), DELTA);
+		Assert.assertEquals((MAP_HEIGHT / 2) - (10 / viewPort.getResolution()), coordinate.getY(), DELTA);
 
 		result = viewPort.getTransformationService().transform(result, RenderSpace.SCREEN, RenderSpace.WORLD);
 		coordinate = result.getGeometries()[0].getCoordinates()[0];
@@ -259,11 +261,11 @@ public class ViewPortTransformTest {
 
 		Geometry result = viewPort.getTransformationService().transform(mls, RenderSpace.WORLD, RenderSpace.SCREEN);
 		Coordinate coordinate = result.getGeometries()[0].getCoordinates()[0];
-		Assert.assertEquals((MAP_WIDTH / 2) - (viewPort.getScale() * 5), coordinate.getX(), DELTA);
-		Assert.assertEquals((MAP_HEIGHT / 2) - (viewPort.getScale() * 10), coordinate.getY(), DELTA);
+		Assert.assertEquals((MAP_WIDTH / 2) - (5 / viewPort.getResolution()), coordinate.getX(), DELTA);
+		Assert.assertEquals((MAP_HEIGHT / 2) - (10 / viewPort.getResolution()), coordinate.getY(), DELTA);
 		coordinate = result.getGeometries()[1].getCoordinates()[1];
-		Assert.assertEquals((MAP_WIDTH / 2) - (viewPort.getScale() * 10), coordinate.getX(), DELTA);
-		Assert.assertEquals((MAP_HEIGHT / 2) + (viewPort.getScale() * 5), coordinate.getY(), DELTA);
+		Assert.assertEquals((MAP_WIDTH / 2) - (10 / viewPort.getResolution()), coordinate.getX(), DELTA);
+		Assert.assertEquals((MAP_HEIGHT / 2) + (5 / viewPort.getResolution()), coordinate.getY(), DELTA);
 
 		result = viewPort.getTransformationService().transform(result, RenderSpace.SCREEN, RenderSpace.WORLD);
 		coordinate = result.getGeometries()[0].getCoordinates()[0];
@@ -290,14 +292,14 @@ public class ViewPortTransformTest {
 		// World to screen:
 		Geometry result = viewPort.getTransformationService().transform(mp, RenderSpace.WORLD, RenderSpace.SCREEN);
 		Coordinate c = result.getGeometries()[0].getGeometries()[0].getCoordinates()[0];
-		Assert.assertEquals((MAP_WIDTH / 2) - (viewPort.getScale() * 10), c.getX(), DELTA);
-		Assert.assertEquals((MAP_HEIGHT / 2) + (viewPort.getScale() * 10), c.getY(), DELTA);
+		Assert.assertEquals((MAP_WIDTH / 2) - (10 / viewPort.getResolution()), c.getX(), DELTA);
+		Assert.assertEquals((MAP_HEIGHT / 2) + (10 / viewPort.getResolution()), c.getY(), DELTA);
 		c = result.getGeometries()[0].getGeometries()[0].getCoordinates()[1];
-		Assert.assertEquals((MAP_WIDTH / 2) + (viewPort.getScale() * 10), c.getX(), DELTA);
+		Assert.assertEquals((MAP_WIDTH / 2) + (10 / viewPort.getResolution()), c.getX(), DELTA);
 		Assert.assertEquals((MAP_HEIGHT / 2), c.getY(), DELTA);
 		c = result.getGeometries()[0].getGeometries()[1].getCoordinates()[2];
-		Assert.assertEquals((MAP_WIDTH / 2) - (viewPort.getScale() * 5), c.getX(), DELTA);
-		Assert.assertEquals((MAP_HEIGHT / 2) - (viewPort.getScale() * 5), c.getY(), DELTA);
+		Assert.assertEquals((MAP_WIDTH / 2) - (5 / viewPort.getResolution()), c.getX(), DELTA);
+		Assert.assertEquals((MAP_HEIGHT / 2) - (5 / viewPort.getResolution()), c.getY(), DELTA);
 
 		// Screen to world:
 		result = viewPort.getTransformationService().transform(result, RenderSpace.SCREEN, RenderSpace.WORLD);
@@ -318,9 +320,9 @@ public class ViewPortTransformTest {
 		config.setMaxBounds(new Bbox(-100, -100, 200, 200));
 		List<Double> resolutions = new ArrayList<Double>();
 		resolutions.add(1.0);
-		resolutions.add(2.0);
-		resolutions.add(4.0);
-		resolutions.add(8.0);
+		resolutions.add(0.5);
+		resolutions.add(0.25);
+		resolutions.add(0.125);
 		config.setResolutions(resolutions);
 		return config;
 	}

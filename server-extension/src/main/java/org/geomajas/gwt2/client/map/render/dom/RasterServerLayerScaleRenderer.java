@@ -11,10 +11,10 @@
 
 package org.geomajas.gwt2.client.map.render.dom;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.google.gwt.core.client.Callback;
+import com.google.web.bindery.event.shared.EventBus;
+import com.google.web.bindery.event.shared.HandlerRegistration;
+import com.google.web.bindery.event.shared.SimpleEventBus;
 import org.geomajas.command.dto.GetRasterTilesRequest;
 import org.geomajas.command.dto.GetRasterTilesResponse;
 import org.geomajas.geometry.Bbox;
@@ -35,13 +35,12 @@ import org.geomajas.gwt2.client.map.render.dom.container.HtmlImageImpl;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
 
-import com.google.gwt.core.client.Callback;
-import com.google.web.bindery.event.shared.EventBus;
-import com.google.web.bindery.event.shared.HandlerRegistration;
-import com.google.web.bindery.event.shared.SimpleEventBus;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * Fixed scale renderer implementation for {@link RasterServerLayer}.
+ * Fixed resolution renderer implementation for {@link RasterServerLayer}.
  * 
  * @author Pieter De Graef
  */
@@ -51,7 +50,7 @@ public class RasterServerLayerScaleRenderer implements FixedScaleRenderer {
 
 	private final int tileLevel;
 
-	private final double scale;
+	private final double resolution;
 
 	private final ViewPort viewPort;
 
@@ -78,7 +77,7 @@ public class RasterServerLayerScaleRenderer implements FixedScaleRenderer {
 			HtmlContainer container) {
 		this.layer = layer;
 		this.tileLevel = tileLevel;
-		this.scale = scale;
+		this.resolution = scale;
 		this.viewPort = viewPort;
 		this.container = container;
 		this.tiles = new HashMap<TileCode, RasterTile>();
@@ -115,7 +114,7 @@ public class RasterServerLayerScaleRenderer implements FixedScaleRenderer {
 					fetchingTileBounds.getWidth(), fetchingTileBounds.getHeight()));
 			request.setCrs(viewPort.getCrs());
 			request.setLayerId(layer.getServerLayerId());
-			request.setScale(scale);
+			request.setScale(1 / resolution);
 			GwtCommand command = new GwtCommand(GetRasterTilesRequest.COMMAND);
 			command.setCommandRequest(request);
 
@@ -180,7 +179,7 @@ public class RasterServerLayerScaleRenderer implements FixedScaleRenderer {
 	}
 
 	protected Bbox asBounds(View view) {
-		double deltaScale = view.getScale() / scale;
+		double deltaScale = view.getResolution() / resolution;
 		Bbox bounds = viewPort.asBounds(view);
 		return BboxService.scale(bounds, deltaScale);
 	}
@@ -193,7 +192,7 @@ public class RasterServerLayerScaleRenderer implements FixedScaleRenderer {
 	 */
 	private class ImageCounter implements Callback<String, String> {
 
-		// In case of failure, we can't just sit and wait. Instead we immediately consider the scale level rendered?!?
+		// TODO In case of failure, we can't just sit and wait. Instead we consider the resolution level rendered?!?
 		public void onFailure(String reason) {
 		}
 

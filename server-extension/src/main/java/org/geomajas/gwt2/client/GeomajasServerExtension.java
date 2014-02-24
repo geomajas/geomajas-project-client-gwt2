@@ -21,7 +21,6 @@ import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
-import org.geomajas.gwt2.client.widget.DefaultMapWidget;
 import org.geomajas.gwt2.client.map.Hint;
 import org.geomajas.gwt2.client.map.MapConfiguration;
 import org.geomajas.gwt2.client.map.MapConfigurationImpl;
@@ -39,6 +38,7 @@ import org.geomajas.gwt2.client.service.CommandService;
 import org.geomajas.gwt2.client.service.CommandServiceImpl;
 import org.geomajas.gwt2.client.service.EndPointService;
 import org.geomajas.gwt2.client.service.EndPointServiceImpl;
+import org.geomajas.gwt2.client.widget.DefaultMapWidget;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -215,10 +215,10 @@ public final class GeomajasServerExtension {
 		configuration.setCrs(mapInfo.getCrs(), mapInfo.getUnitLength());
 		configuration.setHintValue(MapConfiguration.INITIAL_BOUNDS, mapInfo.getInitialBounds());
 		configuration.setMaxBounds(mapInfo.getMaxBounds());
-		configuration.setMaximumScale(mapInfo.getScaleConfiguration().getMaximumScale().getPixelPerUnit());
+		configuration.setMinimumResolution(1 / mapInfo.getScaleConfiguration().getMaximumScale().getPixelPerUnit());
 		List<Double> resolutions = new ArrayList<Double>();
 		for (ScaleInfo scale : mapInfo.getScaleConfiguration().getZoomLevels()) {
-			resolutions.add(scale.getPixelPerUnit());
+			resolutions.add(1 / scale.getPixelPerUnit());
 		}
 		configuration.setResolutions(resolutions);
 		configuration.setHintValue(MAPINFO, mapInfo);

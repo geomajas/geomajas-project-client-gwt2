@@ -11,10 +11,8 @@
 
 package org.geomajas.gwt2.client.map;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.service.BboxService;
@@ -25,12 +23,14 @@ import org.geomajas.gwt2.client.event.NavigationStopEvent;
 import org.geomajas.gwt2.client.event.NavigationStopHandler;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Implementation of the ViewPort interface.
- * 
+ *
  * @author Pieter De Graef
  */
 public final class ViewPortImpl implements ViewPort {
@@ -43,22 +43,26 @@ public final class ViewPortImpl implements ViewPort {
 
 	private MapConfiguration configuration;
 
-	/** The map's width in pixels. */
+	/**
+	 * The map's width in pixels.
+	 */
 	private int mapWidth;
 
-	/** The map's height in pixels. */
+	/**
+	 * The map's height in pixels.
+	 */
 	private int mapHeight;
 
-	/** The maximum bounding box available to this MapView. Never go outside it! */
+	/**
+	 * The maximum bounding box available to this MapView. Never go outside it!
+	 */
 	private Bbox maxBounds;
 
-	private final List<Double> fixedScales = new ArrayList<Double>();
+	private final List<Double> resolutions = new ArrayList<Double>();
 
 	private String crs;
 
-	// Current viewing parameters:
-
-	private double scale;
+	private double resolution;
 
 	private Coordinate position;
 
@@ -88,32 +92,38 @@ public final class ViewPortImpl implements ViewPort {
 
 	protected void initialize(MapConfiguration configuration) {
 		this.configuration = configuration;
-		crs = configuration.getCrs();
+		this.crs = configuration.getCrs();
 
 		// Calculate maximum bounds:
-		maxBounds = new Bbox(configuration.getMaxBounds().getX(), configuration.getMaxBounds().getY(), configuration
-				.getMaxBounds().getWidth(), configuration.getMaxBounds().getHeight());
+		this.maxBounds = new Bbox(configuration.getMaxBounds().getX(), configuration.getMaxBounds().getY(),
+				configuration.getMaxBounds().getWidth(), configuration.getMaxBounds().getHeight());
 
 		if (configuration.getResolutions() != null && configuration.getResolutions().size() > 0) {
 			for (Double resolution : configuration.getResolutions()) {
-				fixedScales.add(resolution);
+				resolutions.add(resolution);
 			}
-		} else if (configuration.getMaximumScale() != 0) {
-			// If there are no fixed scale levels, we'll calculate them:
-			double tempScale = getMaxBoundsScale();
-			if (tempScale == 0.0) {
+		} else if (configuration.getMinimumResolution() != 0) {
+			// If there are no resolutions, we'll calculate them:
+			double tempResolution = getMaxBoundsResolution();
+			if (tempResolution == 0.0) {
 				throw new IllegalStateException("Could not initialize the map. Could it be it has no size?");
 			}
-			fixedScales.add(tempScale);
-			while (tempScale < configuration.getMaximumScale()) {
-				tempScale *= 2;
-				fixedScales.add(tempScale);
+			resolutions.add(tempResolution);
+			while (tempResolution > configuration.getMinimumResolution()) {
+				tempResolution /= 2;
+				resolutions.add(tempResolution);
 			}
 		} else {
 			throw new IllegalStateException(
-					"The map configuration must either contain fixed resolutions or a maximum scale");
+					"The map configuration must either contain a fixed list resolutions or a minimum resolution");
 		}
-		Collections.sort(fixedScales);
+		Collections.sort(resolutions, new Comparator<Double>() {
+
+			@Override
+			public int compare(Double o1, Double o2) {
+				return o2.compareTo(o1);
+			}
+		});
 	}
 
 	@Override
@@ -122,56 +132,56 @@ public final class ViewPortImpl implements ViewPort {
 	}
 
 	@Override
-	public double getMinimumScale() {
-		if (fixedScales.size() == 0) {
-			return 0;
-		}
-		return fixedScales.get(0);
-	}
-
-	@Override
-	public double getMaximumScale() {
-		if (fixedScales.size() == 0) {
+	public double getMaximumResolution() {
+		if (resolutions.size() == 0) {
 			return Double.MAX_VALUE;
 		}
-		return fixedScales.get(fixedScales.size() - 1);
+		return resolutions.get(0);
 	}
 
 	@Override
-	public int getFixedScaleCount() {
-		return fixedScales.size();
-	}
-
-	@Override
-	public double getFixedScale(int index) {
-		if (index < 0) {
-			throw new IllegalArgumentException("Scale index cannot be found.");
-		}
-		if (index >= fixedScales.size()) {
-			throw new IllegalArgumentException("Scale index cannot be found.");
-		}
-		return fixedScales.get(index);
-	}
-
-	@Override
-	public int getFixedScaleIndex(double scale) {
-		double minimumScale = getMinimumScale();
-		if (scale <= minimumScale) {
+	public double getMinimumResolution() {
+		if (resolutions.size() == 0) {
 			return 0;
 		}
-		double maximumScale = getMaximumScale();
-		if (scale >= maximumScale) {
-			return fixedScales.size() - 1;
+		return resolutions.get(resolutions.size() - 1);
+	}
+
+	@Override
+	public int getResolutionCount() {
+		return resolutions.size();
+	}
+
+	@Override
+	public double getResolution(int index) {
+		if (index < 0) {
+			throw new IllegalArgumentException("Resolution cannot be found.");
+		}
+		if (index >= resolutions.size()) {
+			throw new IllegalArgumentException("Resolution cannot be found.");
+		}
+		return resolutions.get(index);
+	}
+
+	@Override
+	public int getResolutionIndex(double resolution) {
+		double maximumResolution = getMaximumResolution();
+		if (resolution >= maximumResolution) {
+			return 0;
+		}
+		double minimumResolution = getMinimumResolution();
+		if (resolution <= minimumResolution) {
+			return resolutions.size() - 1;
 		}
 
-		for (int i = 0; i < fixedScales.size(); i++) {
-			double lower = fixedScales.get(i);
-			double upper = fixedScales.get(i + 1);
-			if (scale <= upper && scale > lower) {
-				if (Math.abs(upper - scale) >= Math.abs(lower - scale)) {
-					return i;
-				} else {
+		for (int i = 0; i < resolutions.size(); i++) {
+			double upper = resolutions.get(i);
+			double lower = resolutions.get(i + 1);
+			if (resolution < upper && resolution >= lower) {
+				if (Math.abs(upper - resolution) >= Math.abs(lower - resolution)) {
 					return i + 1;
+				} else {
+					return i;
 				}
 			}
 		}
@@ -216,24 +226,24 @@ public final class ViewPortImpl implements ViewPort {
 	}
 
 	@Override
-	public double getScale() {
-		return scale;
+	public double getResolution() {
+		return resolution;
 	}
 
 	@Override
 	public View getView() {
-		return new View(new Coordinate(position), scale);
+		return new View(new Coordinate(position), resolution);
 	}
 
 	/**
 	 * Given the information in this ViewPort object, what is the currently visible area? This value is expressed in
 	 * world coordinates.
-	 * 
+	 *
 	 * @return Returns the bounding box that covers the currently visible area on the map.
 	 */
 	public Bbox getBounds() {
-		double w = mapWidth / scale;
-		double h = mapHeight / scale;
+		double w = mapWidth * resolution;
+		double h = mapHeight * resolution;
 		double x = position.getX() - w / 2;
 		double y = position.getY() - h / 2;
 		return new Bbox(x, y, w, h);
@@ -274,7 +284,7 @@ public final class ViewPortImpl implements ViewPort {
 
 	@Override
 	public void applyPosition(Coordinate coordinate) {
-		Coordinate tempPosition = checkPosition(coordinate, scale);
+		Coordinate tempPosition = checkPosition(coordinate, resolution);
 		if (tempPosition != position) {
 			View oldView = getView();
 			position = tempPosition;
@@ -283,13 +293,13 @@ public final class ViewPortImpl implements ViewPort {
 	}
 
 	@Override
-	public void applyScale(double scale) {
-		applyScale(scale, position, ZoomOption.FREE);
+	public void applyResolution(double resolution) {
+		applyResolution(resolution, position, ZoomOption.FREE);
 	}
 
 	@Override
-	public void applyScale(double scale, ZoomOption zoomOption) {
-		applyScale(scale, position, zoomOption);
+	public void applyResolution(double resolution, ZoomOption zoomOption) {
+		applyResolution(resolution, position, zoomOption);
 	}
 
 	@Override
@@ -299,9 +309,9 @@ public final class ViewPortImpl implements ViewPort {
 
 	@Override
 	public void applyView(View view, ZoomOption zoomOption) {
-		double tempScale = checkScale(view.getScale(), ZoomOption.FREE);
-		Coordinate tempPosition = checkPosition(view.getPosition(), scale);
-		applyViewNoChecks(tempPosition, tempScale);
+		double tempResolution = checkResolution(view.getResolution(), ZoomOption.FREE);
+		Coordinate tempPosition = checkPosition(view.getPosition(), resolution);
+		applyViewNoChecks(tempPosition, tempResolution);
 	}
 
 	@Override
@@ -311,21 +321,21 @@ public final class ViewPortImpl implements ViewPort {
 
 	@Override
 	public void applyBounds(Bbox bounds, ZoomOption zoomOption) {
-		double tempScale = getScaleForBounds(bounds, zoomOption);
-		Coordinate tempPosition = checkPosition(BboxService.getCenterPoint(bounds), tempScale);
-		applyViewNoChecks(tempPosition, tempScale);
+		double tempResolution = getResolutionForBounds(bounds, zoomOption);
+		Coordinate tempPosition = checkPosition(BboxService.getCenterPoint(bounds), tempResolution);
+		applyViewNoChecks(tempPosition, tempResolution);
 	}
 
 	@Override
-	public double toScale(double scaleDenominator) {
+	public double toResolution(double scaleDenominator) {
 		double pixelsPerUnit = getPixelLength() / configuration.getUnitLength();
-		return 1 / (pixelsPerUnit * scaleDenominator);
+		return pixelsPerUnit * scaleDenominator;
 	}
 
 	@Override
 	public Bbox asBounds(View view) {
-		double w = mapWidth / view.getScale();
-		double h = mapHeight / view.getScale();
+		double w = mapWidth * view.getResolution();
+		double h = mapHeight * view.getResolution();
 		double x = view.getPosition().getX() - w / 2;
 		double y = view.getPosition().getY() - h / 2;
 		return new Bbox(x, y, w, h);
@@ -333,9 +343,9 @@ public final class ViewPortImpl implements ViewPort {
 
 	@Override
 	public View asView(Bbox bounds, ZoomOption zoomOption) {
-		double tempScale = getScaleForBounds(bounds, zoomOption);
-		Coordinate tempPosition = checkPosition(BboxService.getCenterPoint(bounds), tempScale);
-		return new View(tempPosition, tempScale);
+		double tempResolution = getResolutionForBounds(bounds, zoomOption);
+		Coordinate tempPosition = checkPosition(BboxService.getCenterPoint(bounds), tempResolution);
+		return new View(tempPosition, tempResolution);
 	}
 
 	@Override
@@ -351,14 +361,14 @@ public final class ViewPortImpl implements ViewPort {
 		return METER_PER_INCH / configuration.getHintValue(MapConfiguration.DPI);
 	}
 
-	private void applyScale(double newScale, Coordinate rescalePoint, ZoomOption zoomOption) {
-		double limitedScale = checkScale(newScale, zoomOption);
-		if (limitedScale != scale) {
+	private void applyResolution(double newResolution, Coordinate rescalePoint, ZoomOption zoomOption) {
+		double validResolution = checkResolution(newResolution, zoomOption);
+		if (validResolution != resolution) {
 			// Calculate theoretical new bounds. First create a BBOX of correct size:
-			Bbox newBbox = new Bbox(0, 0, getMapWidth() / limitedScale, getMapHeight() / limitedScale);
+			Bbox newBbox = new Bbox(0, 0, getMapWidth() * validResolution, getMapHeight() * validResolution);
 
 			// Calculate translate vector to assure rescalePoint is on the same position as before.
-			double factor = limitedScale / scale;
+			double factor = resolution / validResolution;
 			double dX = (rescalePoint.getX() - position.getX()) * (1 - 1 / factor);
 			double dY = (rescalePoint.getY() - position.getY()) * (1 - 1 / factor);
 
@@ -367,59 +377,59 @@ public final class ViewPortImpl implements ViewPort {
 			newBbox = BboxService.translate(newBbox, dX, dY);
 
 			// Now apply on this view port:
-			Coordinate tempPosition = checkPosition(BboxService.getCenterPoint(newBbox), limitedScale);
-			applyViewNoChecks(tempPosition, limitedScale);
+			Coordinate tempPosition = checkPosition(BboxService.getCenterPoint(newBbox), validResolution);
+			applyViewNoChecks(tempPosition, validResolution);
 		}
 	}
 
-	private double getScaleForBounds(Bbox bounds, ZoomOption zoomOption) {
+	private double getResolutionForBounds(Bbox bounds, ZoomOption zoomOption) {
 		double wRatio;
 		double boundsWidth = bounds.getWidth();
 		if (boundsWidth <= 0) {
-			wRatio = getMinimumScale();
+			wRatio = getMaximumResolution();
 		} else {
-			wRatio = mapWidth / boundsWidth;
+			wRatio = boundsWidth / mapWidth;
 		}
 		double hRatio;
 		double boundsHeight = bounds.getHeight();
 		if (boundsHeight <= 0) {
-			hRatio = getMinimumScale();
+			hRatio = getMaximumResolution();
 		} else {
-			hRatio = mapHeight / boundsHeight;
+			hRatio = boundsHeight / mapHeight;
 		}
-		// Return the checked scale for the minimum to fit inside:
-		return checkScale(wRatio < hRatio ? wRatio : hRatio, zoomOption);
+		// Return the checked resolution for the minimum to fit inside:
+		return checkResolution(wRatio < hRatio ? wRatio : hRatio, zoomOption);
 	}
 
-	private double getMaxBoundsScale() {
+	private double getMaxBoundsResolution() {
 		if (maxBounds == null) {
 			return 0;
 		}
 		double wRatio;
 		double boundsWidth = maxBounds.getWidth();
 		if (boundsWidth <= 0) {
-			wRatio = getMinimumScale();
+			wRatio = getMaximumResolution();
 		} else {
-			wRatio = mapWidth / boundsWidth;
+			wRatio = boundsWidth / mapWidth;
 		}
 		double hRatio;
 		double boundsHeight = maxBounds.getHeight();
 		if (boundsHeight <= 0) {
-			hRatio = getMinimumScale();
+			hRatio = getMaximumResolution();
 		} else {
-			hRatio = mapHeight / boundsHeight;
+			hRatio = boundsHeight / mapHeight;
 		}
-		// Return the checked scale for the minimum to fit inside:
+		// Return the checked resolution for the minimum to fit inside:
 		return wRatio < hRatio ? wRatio : hRatio;
 	}
 
 	// Returns a position that's within the maximum bounds:
-	private Coordinate checkPosition(final Coordinate newPosition, final double newScale) {
+	private Coordinate checkPosition(final Coordinate newPosition, final double newResolution) {
 		double xCenter = newPosition.getX();
 		double yCenter = newPosition.getY();
 		if (maxBounds != null) {
-			double w = mapWidth / (newScale * 2);
-			double h = mapHeight / (newScale * 2);
+			double w = mapWidth * newResolution / 2;
+			double h = mapHeight * newResolution / 2;
 			Coordinate minCoordinate = BboxService.getOrigin(maxBounds);
 			Coordinate maxCoordinate = BboxService.getEndPoint(maxBounds);
 
@@ -447,51 +457,51 @@ public final class ViewPortImpl implements ViewPort {
 		return new Coordinate(xCenter, yCenter);
 	}
 
-	// Returns a scale as requested by the zoom option:
-	private double checkScale(double scale, ZoomOption zoomOption) {
-		double allowedScale = scale;
-		double minimumScale = getMinimumScale();
-		if (allowedScale < minimumScale) {
-			allowedScale = minimumScale;
-		} else if (allowedScale > getMaximumScale()) {
-			allowedScale = getMaximumScale();
+	// Returns a resolution as requested by the zoom option:
+	private double checkResolution(double resolution, ZoomOption zoomOption) {
+		double allowedResolution = resolution;
+		double maximumResolution = getMaximumResolution();
+		double minimumResolution = getMinimumResolution();
+		if (allowedResolution > maximumResolution) {
+			allowedResolution = maximumResolution;
+		} else if (allowedResolution < minimumResolution) {
+			allowedResolution = minimumResolution;
 		}
 
 		if (zoomOption == ZoomOption.FREE) {
-			return allowedScale;
+			return allowedResolution;
 		}
 
-		for (int i = 0; i < fixedScales.size() - 1; i++) {
-			double lower = fixedScales.get(i);
-			double upper = fixedScales.get(i + 1);
+		for (int i = 0; i < resolutions.size() - 1; i++) {
+			double upper = resolutions.get(i);
+			double lower = resolutions.get(i + 1);
 
-			if (allowedScale == upper) {
+			if (allowedResolution == upper) {
 				return upper;
-			} else if (allowedScale == lower) {
+			} else if (allowedResolution == lower) {
 				return lower;
-			} else if (allowedScale < upper && allowedScale > lower) {
+			} else if (allowedResolution < upper && allowedResolution > lower) {
 				switch (zoomOption) {
 					case LEVEL_FIT:
-						return lower;
+						return upper;
 					case LEVEL_CLOSEST:
-						if (Math.abs(upper - allowedScale) < Math.abs(allowedScale - lower)) {
+						if (Math.abs(upper - allowedResolution) < Math.abs(allowedResolution - lower)) {
 							return upper;
 						} else {
 							return lower;
 						}
 					default:
-						return allowedScale;
+						return allowedResolution;
 				}
 			}
 		}
-
-		return allowedScale;
+		return allowedResolution;
 	}
 
-	private void applyViewNoChecks(Coordinate tempPosition, double tempScale) {
-		if (tempScale != scale || !position.equals(tempPosition)) {
+	private void applyViewNoChecks(Coordinate tempPosition, double tempResolution) {
+		if (tempResolution != resolution || !position.equals(tempPosition)) {
 			View oldView = getView();
-			scale = tempScale;
+			resolution = tempResolution;
 			position = tempPosition;
 			eventBus.fireEvent(new ViewPortChangedEvent(oldView, getView(), currentAnimation));
 		}

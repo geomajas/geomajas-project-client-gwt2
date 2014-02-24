@@ -127,8 +127,8 @@ public class ZoomControl extends AbstractMapWidget {
 
 			public void onClick(ClickEvent event) {
 				logger.log(Level.INFO, "ZoomControl -> zoomInElement onClick()");
-				int index = viewPort.getFixedScaleIndex(viewPort.getScale());
-				if (index < viewPort.getFixedScaleCount() - 1) {
+				int index = viewPort.getResolutionIndex(viewPort.getResolution());
+				if (index < viewPort.getResolutionCount() - 1) {
 					viewPort.registerAnimation(NavigationAnimationFactory.createZoomIn(mapPresenter));
 				}
 				event.stopPropagation();
@@ -140,7 +140,7 @@ public class ZoomControl extends AbstractMapWidget {
 
 			public void onClick(ClickEvent event) {
 				logger.log(Level.INFO, "ZoomControl -> zoomOutElement onClick()");
-				int index = viewPort.getFixedScaleIndex(viewPort.getScale());
+				int index = viewPort.getResolutionIndex(viewPort.getResolution());
 				if (index > 0) {
 					viewPort.registerAnimation(NavigationAnimationFactory.createZoomOut(mapPresenter));
 				}
@@ -164,10 +164,10 @@ public class ZoomControl extends AbstractMapWidget {
 
 				logger.log(Level.INFO, "ZoomControl -> zoomInElement onTouchStart()");
 				ViewPort viewPort = mapPresenter.getViewPort();
-				int index = viewPort.getFixedScaleIndex(viewPort.getScale());
+				int index = viewPort.getResolutionIndex(viewPort.getResolution());
 
-				if (index < viewPort.getFixedScaleCount() - 1) {
-					viewPort.applyScale(viewPort.getFixedScale(index + 1));
+				if (index < viewPort.getResolutionCount() - 1) {
+					viewPort.applyResolution(viewPort.getResolution(index + 1));
 					viewPort.getPosition();
 				}
 			}
@@ -183,10 +183,10 @@ public class ZoomControl extends AbstractMapWidget {
 				event.preventDefault();
 
 				ViewPort viewPort = mapPresenter.getViewPort();
-				int index = viewPort.getFixedScaleIndex(viewPort.getScale());
+				int index = viewPort.getResolutionIndex(viewPort.getResolution());
 
 				if (index > 0) {
-					viewPort.applyScale(viewPort.getFixedScale(index - 1));
+					viewPort.applyResolution(viewPort.getResolution(index - 1));
 				}
 			}
 		}, TouchStartEvent.getType());

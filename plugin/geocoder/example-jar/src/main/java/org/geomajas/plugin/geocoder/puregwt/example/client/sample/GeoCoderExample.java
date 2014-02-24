@@ -89,8 +89,8 @@ public class GeoCoderExample implements SamplePanel {
 	private class MyMapInitializationHandler implements MapInitializationHandler {
 
 		public void onMapInitialized(MapInitializationEvent event) {
-			double scale = mapPresenter.getViewPort().getScale() * 6;
-			mapPresenter.getViewPort().applyScale(scale);
+			double resolution = mapPresenter.getViewPort().getResolution() / 6;
+			mapPresenter.getViewPort().applyResolution(resolution);
 		}
 	}
 }

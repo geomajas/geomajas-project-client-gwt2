@@ -130,20 +130,20 @@ configuration.setMaximumScale(8192);</programlisting>
 
         <para>This is your most basic map configuration object. Although it is
         recommended to provide a list of resolutions, it is not strictly
-        required if you make sure to provide a maximum scale.</para>
+        required if you make sure to provide a maximum resolution.</para>
 
         <tip>
           <para>You must provide a zooming range with the map configuration.
           The recommended option is to provided a list of resolutions. The
-          alternative is to provided a maximum scale (=maximum zoom in). If
-          you provide the maximum scale, the map will automatically assume the
-          zooming range to be between the scale set out by the maximum bounds
-          and the maximum scale.</para>
+          alternative is to provided a maximum resolution (=maximum zoom in). If
+          you provide the maximum resolution, the map will automatically assume the
+          zooming range to be between the resolution set out by the maximum bounds
+          and the maximum resolution.</para>
         </tip>
 
         <para>Another important factor to note is that we do not simply
         provide a coordinate reference system (crs), we also say how large
-        it's units are. This is needed for accurate scale calculations.
+        it's units are. This is needed for accurate resolution calculations.
         Currently there are 2 types of CRS supported automatically:</para>
 
         <itemizedlist>
@@ -276,7 +276,7 @@ GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "gwt-app", "ma
 
         <listitem>
           <para><emphasis>MapConfiguration.FADE_IN_TIME</emphasis>: Hint used
-          to determine how long fading in of scale or tiles should take while
+          to determine how long fading in of resolution or tiles should take while
           rendering the map.</para>
         </listitem>
 
@@ -330,7 +330,7 @@ GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "gwt-app", "ma
         <programlisting>org.geomajas.gwt2.client.map.View view = viewPort.getView();
 org.geomajas.geometry.Coordinate position = viewPort.getPosition();
 org.geomajas.geometry.Bbox bounds = viewPort.getBounds();
-double scale = viewPort.getScale();</programlisting>
+double resolution = viewPort.getScale();</programlisting>
 
         <para>Next to acquiring current location, you can also force the map
         to navigate to a certain location instantly:</para>
@@ -838,7 +838,7 @@ selected = fs.isFeatureSelected(feature); // returns false</programlisting>
 
                 <entry>Event that is fired when a layer disappears from view.
                 This can be caused because some layer are only visible between
-                certain scale levels, or because the user turned a layer off.
+                certain resolution levels, or because the user turned a layer off.
                 This event is often triggered by a
                 <code>LayerVisibilityMarkedEvent</code>.</entry>
               </row>
@@ -850,7 +850,7 @@ selected = fs.isFeatureSelected(feature); // returns false</programlisting>
 
                 <entry>Event that is fired when a layer becomes visible. This
                 can be caused because some layer are only visible between
-                certain scale levels, or because the user turned a layer on.
+                certain resolution levels, or because the user turned a layer on.
                 This event is often triggered by a
                 <code>LayerVisibilityMarkedEvent</code>.</entry>
               </row>
@@ -931,7 +931,7 @@ selected = fs.isFeatureSelected(feature); // returns false</programlisting>
                 <code>LayerHideEvent</code> very soon. But, when a layer has
                 been marked as visible, that does not necessarily mean it will
                 become visible. There are more requirements that have to be
-                met in order for a layer to become visible: the map's scale
+                met in order for a layer to become visible: the map's resolution
                 must be between the minimum and maximum allowed scales for the
                 layer. If that requirement has been met as well, expect a
                 <code>LayerShowEvent</code> shortly.</entry>
@@ -996,8 +996,8 @@ selected = fs.isFeatureSelected(feature); // returns false</programlisting>
 
                 <entry>ScaleLevelRenderedHandler</entry>
 
-                <entry>Event that is fired when a scale level has been
-                rendered. This is used by scale-based layer renderers, and it
+                <entry>Event that is fired when a resolution level has been
+                rendered. This is used by resolution-based layer renderers, and it
                 is up to them to determine when that is.</entry>
               </row>
             </tbody>
@@ -1338,7 +1338,7 @@ VectorContainer screenContainer = mapPresenter.getContainerManager().addScreenCo
         restored at the end. This ensures that we don't propagate context
         changes between successive shapes. The body of the code is simply
         drawing a rectangle in the required fill and stroke style. We have to
-        divide the original line width in pixels by the scale factor (assuming
+        divide the original line width in pixels by the resolution factor (assuming
         uniform scaling) because it will be multiplied afterwards by the
         container as part of the world-to-screen transformation.</para>
 
