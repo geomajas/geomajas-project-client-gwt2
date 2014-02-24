@@ -11,6 +11,7 @@
 
 package org.geomajas.gwt2.client.map.render.dom;
 
+import com.google.gwt.core.client.Callback;
 import org.geomajas.command.dto.GetVectorTileRequest;
 import org.geomajas.command.dto.GetVectorTileResponse;
 import org.geomajas.geometry.Coordinate;
@@ -27,18 +28,16 @@ import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.VectorTile;
 import org.geomajas.layer.tile.VectorTile.VectorTileContentType;
 
-import com.google.gwt.core.client.Callback;
-
 /**
  * Presenter for a single tile within a vector layer.
- * 
+ *
  * @author Pieter De Graef
  */
 public class VectorTilePresenter {
 
 	/**
 	 * Enumeration the determines tile loading status.
-	 * 
+	 *
 	 * @author Pieter De Graef
 	 */
 	static enum STATUS {
@@ -52,7 +51,7 @@ public class VectorTilePresenter {
 
 	private final TileCode tileCode;
 
-	private final double scale;
+	private final double resolution;
 
 	private final String crs;
 
@@ -66,12 +65,12 @@ public class VectorTilePresenter {
 	// Constructor:
 	// -------------------------------------------------------------------------
 
-	public VectorTilePresenter(VectorServerLayer layer, HtmlContainer container, TileCode tileCode, double scale,
+	public VectorTilePresenter(VectorServerLayer layer, HtmlContainer container, TileCode tileCode, double resolution,
 			String crs, Callback<String, String> onRendered) {
 		this.layer = layer;
 		this.container = container;
 		this.tileCode = tileCode;
-		this.scale = scale;
+		this.resolution = resolution;
 		this.crs = crs;
 		this.onRendered = onRendered;
 	}
@@ -80,7 +79,9 @@ public class VectorTilePresenter {
 	// Public methods:
 	// -------------------------------------------------------------------------
 
-	/** Render this tile. */
+	/**
+	 * Render this tile.
+	 */
 	public void render() {
 		GwtCommand command = createCommand();
 		deferred = GeomajasServerExtension.getInstance().getCommandService().execute(command,
@@ -106,7 +107,9 @@ public class VectorTilePresenter {
 				});
 	}
 
-	/** Cancel the fetching of this tile. No call-back will be executed anymore. */
+	/**
+	 * Cancel the fetching of this tile. No call-back will be executed anymore.
+	 */
 	public void cancel() {
 		if (deferred != null) {
 			deferred.cancel();
@@ -119,7 +122,7 @@ public class VectorTilePresenter {
 
 	/**
 	 * Get tile code.
-	 * 
+	 *
 	 * @return tile code
 	 */
 	public TileCode getTileCode() {
@@ -127,13 +130,9 @@ public class VectorTilePresenter {
 	}
 
 	/**
-	 * Return the current status of this VectorTile. Can be one of the following:
-	 * <ul>
-	 * <li>STATUS.EMPTY</li>
-	 * <li>STATUS.LOADING</li>
-	 * <li>STATUS.LOADED</li>
-	 * </ul>
-	 * 
+	 * Return the current status of this VectorTile. Can be one of the following: <ul> <li>STATUS.EMPTY</li>
+	 * <li>STATUS.LOADING</li> <li>STATUS.LOADED</li> </ul>
+	 *
 	 * @return tile status
 	 */
 	public STATUS getStatus() {
@@ -163,7 +162,7 @@ public class VectorTilePresenter {
 		// request.setPaintLabels(renderer.getLayer().isLabeled());
 		request.setPanOrigin(new Coordinate());
 		request.setRenderer(Dom.isSvg() ? "SVG" : "VML");
-		request.setScale(scale);
+		request.setScale(1 / resolution);
 		request.setStyleInfo(layer.getLayerInfo().getNamedStyleInfo());
 		GwtCommand command = new GwtCommand(GetVectorTileRequest.COMMAND);
 		command.setCommandRequest(request);
@@ -175,17 +174,18 @@ public class VectorTilePresenter {
 
 		// Calculate tile width and height for tileLevel=tileCode.getTileLevel(); This is in world space.
 		double div = Math.pow(2, tileCode.getTileLevel());
-		double tileWidth = Math.ceil((scale * layerBounds.getWidth()) / div) / scale;
-		double tileHeight = Math.ceil((scale * layerBounds.getHeight()) / div) / scale;
+		double tileWidth = Math.ceil(layerBounds.getWidth() / (div * resolution)) * resolution;
+		double tileHeight = Math.ceil(layerBounds.getHeight() / (div * resolution)) * resolution;
 
 		// Now get the top-left corner for the tile in world space:
 		double x = layerBounds.getX() + tileCode.getX() * tileWidth;
 		double y = layerBounds.getY() + tileCode.getY() * tileHeight;
 
 		// Convert to screen space. Note that the Y-axis is inverted, and so the top corner from the tile BBOX (world)
-		// becomes the bottom corner (screen). That is why the tileHeight is added before compensating with the scale.
-		x *= scale;
-		y = -Math.round(scale * (y + tileHeight));
+		// becomes the bottom corner (screen). That is why the tileHeight is added before compensating with the
+		// resolution.
+		x /= resolution;
+		y = -Math.round((y + tileHeight) / resolution);
 		return new Coordinate(x, y);
 	}
 }

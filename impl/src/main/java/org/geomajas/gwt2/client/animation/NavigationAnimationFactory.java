@@ -19,7 +19,7 @@ import org.geomajas.gwt2.client.map.View;
 
 /**
  * Factory for creating the most basic navigation animations, such as zooming animations etc.
- * 
+ *
  * @author Pieter De Graef
  * @since 2.0.0
  */
@@ -31,12 +31,10 @@ public final class NavigationAnimationFactory {
 
 	/**
 	 * Create a new {@link NavigationAnimation} with a provided trajectory.
-	 * 
-	 * @param mapPresenter
-	 *            The map onto which you want the animation to run.
-	 * @param trajectory
-	 *            The trajectory to follow while navigating.
-	 * @param millis The amount of milliseconds the animation should take.
+	 *
+	 * @param mapPresenter The map onto which you want the animation to run.
+	 * @param trajectory   The trajectory to follow while navigating.
+	 * @param millis       The amount of milliseconds the animation should take.
 	 * @return The animation. Just call "run" to have it animate the map.
 	 */
 	public static NavigationAnimation create(MapPresenter mapPresenter, Trajectory trajectory, int millis) {
@@ -44,18 +42,17 @@ public final class NavigationAnimationFactory {
 	}
 
 	/**
-	 * Create a new zoom in {@link NavigationAnimation}. It will have the map zoom in to the next fixed scale.
-	 * 
-	 * @param mapPresenter
-	 *            The map onto which we need a zoom in animation.
+	 * Create a new zoom in {@link NavigationAnimation}. It will have the map zoom in to the next resolution.
+	 *
+	 * @param mapPresenter The map onto which we need a zoom in animation.
 	 * @return The animation. Just call "run" to have it animate the map.
 	 */
 	public static NavigationAnimation createZoomIn(MapPresenter mapPresenter) {
 		View beginView = mapPresenter.getViewPort().getView();
 		View endView = mapPresenter.getViewPort().getView();
-		int index = mapPresenter.getViewPort().getFixedScaleIndex(mapPresenter.getViewPort().getScale());
-		if (index < mapPresenter.getViewPort().getFixedScaleCount() - 1) {
-			endView = new View(mapPresenter.getViewPort().getPosition(), mapPresenter.getViewPort().getFixedScale(
+		int index = mapPresenter.getViewPort().getResolutionIndex(mapPresenter.getViewPort().getResolution());
+		if (index < mapPresenter.getViewPort().getResolutionCount() - 1) {
+			endView = new View(mapPresenter.getViewPort().getPosition(), mapPresenter.getViewPort().getResolution(
 					index + 1));
 		}
 		return new NavigationAnimationImpl(mapPresenter.getViewPort(), mapPresenter.getEventBus(),
@@ -64,11 +61,9 @@ public final class NavigationAnimationFactory {
 
 	/**
 	 * Create a new zoom in {@link NavigationAnimation} that zooms in to the provided end view.
-	 * 
-	 * @param mapPresenter
-	 *            The map onto which you want the zoom in animation to run.
-	 * @param endView
-	 *            The final view to arrive at when the animation finishes.
+	 *
+	 * @param mapPresenter The map onto which you want the zoom in animation to run.
+	 * @param endView      The final view to arrive at when the animation finishes.
 	 * @return The animation. Just call "run" to have it animate the map.
 	 */
 	public static NavigationAnimation createZoomIn(MapPresenter mapPresenter, View endView) {
@@ -77,39 +72,36 @@ public final class NavigationAnimationFactory {
 	}
 
 	/**
-	 * Create a new zoom in {@link NavigationAnimation} that zooms in one fixed scale level, to the requested position.
-	 * 
-	 * @param mapPresenter
-	 *            The map onto which you want the zoom in animation to run.
-	 * @param position
-	 *            The position to arrive at.
+	 * Create a new zoom in {@link NavigationAnimation} that zooms in one resolution, to the requested position.
+	 *
+	 * @param mapPresenter The map onto which you want the zoom in animation to run.
+	 * @param position     The position to arrive at.
 	 * @return The animation. Just call "run" to have it animate the map.
 	 */
 	public static NavigationAnimation createZoomIn(MapPresenter mapPresenter, Coordinate position) {
 		View endView = null;
-		int index = mapPresenter.getViewPort().getFixedScaleIndex(mapPresenter.getViewPort().getScale());
-		if (index < mapPresenter.getViewPort().getFixedScaleCount() - 1) {
-			endView = new View(position, mapPresenter.getViewPort().getFixedScale(index + 1));
+		int index = mapPresenter.getViewPort().getResolutionIndex(mapPresenter.getViewPort().getResolution());
+		if (index < mapPresenter.getViewPort().getResolutionCount() - 1) {
+			endView = new View(position, mapPresenter.getViewPort().getResolution(index + 1));
 		} else {
-			endView = new View(position, mapPresenter.getViewPort().getScale());
+			endView = new View(position, mapPresenter.getViewPort().getResolution());
 		}
 		return new NavigationAnimationImpl(mapPresenter.getViewPort(), mapPresenter.getEventBus(),
 				new LinearTrajectory(mapPresenter.getViewPort().getView(), endView), getMillis(mapPresenter));
 	}
 
 	/**
-	 * Create a new zoom out {@link NavigationAnimation}. It will have the map zoom out to the next fixed scale.
-	 * 
-	 * @param mapPresenter
-	 *            The map onto which you want the zoom out animation to run.
+	 * Create a new zoom out {@link NavigationAnimation}. It will have the map zoom out to the next resolution.
+	 *
+	 * @param mapPresenter The map onto which you want the zoom out animation to run.
 	 * @return The animation. Just call "run" to have it animate the map.
 	 */
 	public static NavigationAnimation createZoomOut(MapPresenter mapPresenter) {
 		View beginView = mapPresenter.getViewPort().getView();
 		View endView = mapPresenter.getViewPort().getView();
-		int index = mapPresenter.getViewPort().getFixedScaleIndex(mapPresenter.getViewPort().getScale());
+		int index = mapPresenter.getViewPort().getResolutionIndex(mapPresenter.getViewPort().getResolution());
 		if (index > 0) {
-			endView = new View(mapPresenter.getViewPort().getPosition(), mapPresenter.getViewPort().getFixedScale(
+			endView = new View(mapPresenter.getViewPort().getPosition(), mapPresenter.getViewPort().getResolution(
 					index - 1));
 		}
 		return new NavigationAnimationImpl(mapPresenter.getViewPort(), mapPresenter.getEventBus(),
@@ -117,22 +109,20 @@ public final class NavigationAnimationFactory {
 	}
 
 	/**
-	 * Create a new zoom out {@link NavigationAnimation}. It will have the map zoom out to the next fixed scale.
-	 * 
-	 * @param mapPresenter
-	 *            The map onto which you want the zoom out animation to run.
-	 * @param position
-	 *            The target position to zoom out to.
+	 * Create a new zoom out {@link NavigationAnimation}. It will have the map zoom out to the next resolution.
+	 *
+	 * @param mapPresenter The map onto which you want the zoom out animation to run.
+	 * @param position     The target position to zoom out to.
 	 * @return The animation. Just call "run" to have it animate the map.
 	 */
 	public static NavigationAnimation createZoomOut(MapPresenter mapPresenter, Coordinate position) {
 		View beginView = mapPresenter.getViewPort().getView();
 		View endView = null;
-		int index = mapPresenter.getViewPort().getFixedScaleIndex(mapPresenter.getViewPort().getScale());
+		int index = mapPresenter.getViewPort().getResolutionIndex(mapPresenter.getViewPort().getResolution());
 		if (index > 0) {
-			endView = new View(position, mapPresenter.getViewPort().getFixedScale(index - 1));
+			endView = new View(position, mapPresenter.getViewPort().getResolution(index - 1));
 		} else {
-			endView = new View(position, mapPresenter.getViewPort().getScale());
+			endView = new View(position, mapPresenter.getViewPort().getResolution());
 		}
 		return new NavigationAnimationImpl(mapPresenter.getViewPort(), mapPresenter.getEventBus(),
 				new LinearTrajectory(beginView, endView), getMillis(mapPresenter));
@@ -140,17 +130,15 @@ public final class NavigationAnimationFactory {
 
 	/**
 	 * Create a new panning {@link NavigationAnimation}. It will have the map translate to the requested coordinate,
-	 * keeping the same scale level.
-	 * 
-	 * @param mapPresenter
-	 *            The map onto which you want the panning animation to run.
-	 * @param target
-	 *            The target coordinate to arrive at when the animation finishes.
+	 * keeping the same resolution.
+	 *
+	 * @param mapPresenter The map onto which you want the panning animation to run.
+	 * @param target       The target coordinate to arrive at when the animation finishes.
 	 * @return The animation. Just call "run" to have it animate the map.
 	 */
 	public static NavigationAnimation createPanning(MapPresenter mapPresenter, Coordinate target) {
 		View beginView = mapPresenter.getViewPort().getView();
-		View endView = new View(target, beginView.getScale());
+		View endView = new View(target, beginView.getResolution());
 		return new NavigationAnimationImpl(mapPresenter.getViewPort(), mapPresenter.getEventBus(),
 				new LinearTrajectory(beginView, endView), getMillis(mapPresenter));
 	}

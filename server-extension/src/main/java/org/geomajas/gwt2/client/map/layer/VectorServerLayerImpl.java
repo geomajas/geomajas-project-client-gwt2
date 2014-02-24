@@ -78,7 +78,7 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 			@Override
 			public FixedScaleRenderer createNewScaleRenderer(int tileLevel, View view, HtmlContainer scaleContainer) {
 				return new VectorServerLayerScaleRenderer(VectorServerLayerImpl.this, tileLevel,
-						viewPort.getFixedScale(tileLevel), viewPort, scaleContainer);
+						viewPort.getResolution(tileLevel), viewPort, scaleContainer);
 			}
 		};
 

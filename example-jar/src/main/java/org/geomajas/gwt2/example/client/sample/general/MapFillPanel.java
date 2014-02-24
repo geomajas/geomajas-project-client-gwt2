@@ -56,8 +56,8 @@ public class MapFillPanel implements SamplePanel {
 	private class MyMapInitializationHandler implements MapInitializationHandler {
 
 		public void onMapInitialized(MapInitializationEvent event) {
-			double scale = mapPresenter.getViewPort().getScale() * 8;
-			mapPresenter.getViewPort().applyScale(scale);
+			double resolution = mapPresenter.getViewPort().getResolution() / 8;
+			mapPresenter.getViewPort().applyResolution(resolution);
 		}
 	}
 }

@@ -129,7 +129,7 @@ public class WmsFeatureServiceImpl extends WmsServiceImpl implements WmsFeatureS
 		}
 
 		TileCode tileCode = WmsTileServiceImpl.getInstance().getTileCodeForLocation(viewPort,
-				layer.getTileConfig(), location, viewPort.getScale());
+				layer.getTileConfig(), location, viewPort.getResolution());
 		Bbox worldBounds = WmsTileServiceImpl.getInstance().getWorldBoundsForTile(viewPort,
 				layer.getTileConfig(), tileCode);
 
