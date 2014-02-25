@@ -262,7 +262,7 @@
 			<!--</dependency>-->
 
 			<!-- WMS plugin -->
-			<dependency>
+			<!--<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-client-gwt2-plugin-wms</artifactId>
 				<version>${project.version}</version>
@@ -281,7 +281,8 @@
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-client-gwt2-plugin-wms-example-jar</artifactId>
 				<version>${project.version}</version>
-			</dependency>
+			</dependency>-->
+
 			<dependency>
 				<groupId>org.apache.httpcomponents</groupId>
 				<artifactId>httpclient</artifactId>

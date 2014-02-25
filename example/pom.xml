@@ -42,10 +42,10 @@
 		</dependency>
 		
 		<!-- Geomajas plugin examples -->
-		<dependency>
+		<!--<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-client-gwt2-plugin-wms-example-jar</artifactId>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-client-gwt2-plugin-editing-example-jar</artifactId>
