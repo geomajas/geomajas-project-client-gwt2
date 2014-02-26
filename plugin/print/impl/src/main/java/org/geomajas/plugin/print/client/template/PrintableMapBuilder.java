@@ -11,9 +11,6 @@
 
 package org.geomajas.plugin.print.client.template;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
@@ -24,6 +21,9 @@ import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.plugin.rasterizing.command.dto.LegendRasterizingInfo;
 import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Builds a printable version of a live map.
@@ -48,7 +48,7 @@ public class PrintableMapBuilder {
 		MapRasterizingInfo mapRasterizingInfo = new MapRasterizingInfo();
 		ViewPort viewPort = mapPresenter.getViewPort();
 		mapRasterizingInfo.setBounds(viewPort.getBounds());
-		mapRasterizingInfo.setScale(viewPort.getScale());
+		mapRasterizingInfo.setScale(1 / viewPort.getResolution());
 		mapRasterizingInfo.setTransparent(true);
 		LegendRasterizingInfo legendRasterizingInfo = new LegendRasterizingInfo();
 		legendRasterizingInfo.setTitle("Legend");

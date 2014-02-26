@@ -153,7 +153,7 @@ public class ZoomStepControl extends AbstractMapWidget {
 
 		// Calculate height:
 		int y = 0;
-		for (int i = 0; i < viewPort.getFixedScaleCount(); i++) {
+		for (int i = 0; i < viewPort.getResolutionCount(); i++) {
 			final int count = i;
 
 			SimplePanel zoomStep = new SimplePanel();
@@ -162,8 +162,8 @@ public class ZoomStepControl extends AbstractMapWidget {
 			zoomStep.addDomHandler(new ClickHandler() {
 
 				public void onClick(ClickEvent event) {
-					double scale = viewPort.getFixedScale(viewPort.getFixedScaleCount() - count - 1);
-					viewPort.applyScale(scale);
+					double scale = viewPort.getResolution(viewPort.getResolutionCount() - count - 1);
+					viewPort.applyResolution(scale);
 					event.stopPropagation();
 				}
 			}, ClickEvent.getType());
@@ -181,8 +181,8 @@ public class ZoomStepControl extends AbstractMapWidget {
 		zoomInElement.addDomHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				int index = viewPort.getFixedScaleIndex(viewPort.getScale());
-				if (index < viewPort.getFixedScaleCount() - 1) {
+				int index = viewPort.getResolutionIndex(viewPort.getResolution());
+				if (index < viewPort.getResolutionCount() - 1) {
 					viewPort.registerAnimation(NavigationAnimationFactory.createZoomIn(mapPresenter));
 				}
 				event.stopPropagation();
@@ -197,7 +197,7 @@ public class ZoomStepControl extends AbstractMapWidget {
 		zoomOutElement.addDomHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				int index = viewPort.getFixedScaleIndex(viewPort.getScale());
+				int index = viewPort.getResolutionIndex(viewPort.getResolution());
 				if (index > 0) {
 					viewPort.registerAnimation(NavigationAnimationFactory.createZoomOut(mapPresenter));
 				}
@@ -212,7 +212,7 @@ public class ZoomStepControl extends AbstractMapWidget {
 		// Add the zoom handle:
 		ZoomStephandler zoomStepHandler = new ZoomStephandler();
 		zoomStepHandler.setMinY(top + ZOOMBUTTON_SIZE);
-		zoomStepHandler.setMaxY(top + ZOOMBUTTON_SIZE + (viewPort.getFixedScaleCount() - 1) * ZOOMSTEP_HEIGHT);
+		zoomStepHandler.setMaxY(top + ZOOMBUTTON_SIZE + (viewPort.getResolutionCount() - 1) * ZOOMSTEP_HEIGHT);
 		zoomHandle.addDomHandler(zoomStepHandler, MouseDownEvent.getType());
 		addDomHandler(zoomStepHandler, MouseUpEvent.getType());
 		addDomHandler(zoomStepHandler, MouseMoveEvent.getType());
@@ -234,13 +234,13 @@ public class ZoomStepControl extends AbstractMapWidget {
 		stretched = false;
 		getElement().getStyle().setTop(top, Unit.PX);
 		getElement().getStyle().setLeft(left, Unit.PX);
-		int y = viewPort.getFixedScaleCount() * ZOOMSTEP_HEIGHT;
+		int y = viewPort.getResolutionCount() * ZOOMSTEP_HEIGHT;
 		setSize(ZOOMBUTTON_SIZE + "px", (y + 1 + (ZOOMBUTTON_SIZE * 2)) + "px");
 		applyPositions();
 	}
 
 	private void positionZoomHandle() {
-		int index = viewPort.getFixedScaleCount() - viewPort.getFixedScaleIndex(viewPort.getScale()) - 1;
+		int index = viewPort.getResolutionCount() - viewPort.getResolutionIndex(viewPort.getResolution()) - 1;
 		int handleY = getBaseTop() + ZOOMBUTTON_SIZE + 1 + (index * ZOOMSTEP_HEIGHT);
 		int handleX = getBaseLeft();
 		zoomHandle.getElement().getStyle().setLeft(handleX, Unit.PX);
@@ -256,7 +256,7 @@ public class ZoomStepControl extends AbstractMapWidget {
 		zoomStepsPanel.getElement().getStyle().setTop(top + ZOOMBUTTON_SIZE, Unit.PX);
 		zoomStepsPanel.getElement().getStyle().setLeft(left, Unit.PX);
 
-		int y = viewPort.getFixedScaleCount() * ZOOMSTEP_HEIGHT;
+		int y = viewPort.getResolutionCount() * ZOOMSTEP_HEIGHT;
 		zoomOutElement.getElement().getStyle().setTop(top + ZOOMBUTTON_SIZE + y + 1, Unit.PX);
 		zoomOutElement.getElement().getStyle().setLeft(left, Unit.PX);
 		positionZoomHandle();
@@ -282,26 +282,26 @@ public class ZoomStepControl extends AbstractMapWidget {
 	private void zoomToY(int y) {
 		int stepsY = y - top - ZOOMBUTTON_SIZE;
 		int zoomStepMin = (int) Math.floor(ZOOMSTEP_HEIGHT / 2);
-		int zoomStepMax = viewPort.getFixedScaleCount() * ZOOMSTEP_HEIGHT - zoomStepMin;
+		int zoomStepMax = viewPort.getResolutionCount() * ZOOMSTEP_HEIGHT - zoomStepMin;
 		if (stepsY < zoomStepMin) {
-			viewPort.applyScale(viewPort.getMaximumScale());
+			viewPort.applyResolution(viewPort.getMinimumResolution());
 			return;
 		} else if (stepsY > zoomStepMax) {
-			viewPort.applyScale(viewPort.getMinimumScale());
+			viewPort.applyResolution(viewPort.getMaximumResolution());
 			return;
 		}
 
 		int step = (int) Math.round((stepsY - zoomStepMin) / ZOOMSTEP_HEIGHT);
 		int zoomStepY = (stepsY - zoomStepMin) % ZOOMSTEP_HEIGHT;
-		int tileLevelBelow = Math.max(0, viewPort.getFixedScaleCount() - step - 2);
+		int tileLevelBelow = Math.max(0, viewPort.getResolutionCount() - step - 2);
 
 		if (tileLevelBelow == 0) {
 			return;
-		} else if (tileLevelBelow > viewPort.getFixedScaleCount()) {
+		} else if (tileLevelBelow > viewPort.getResolutionCount()) {
 			return;
 		} else {
-			double scaleBelow = viewPort.getFixedScale(tileLevelBelow);
-			double scaleAbove = viewPort.getFixedScale(tileLevelBelow - 1);
+			double scaleBelow = viewPort.getResolution(tileLevelBelow);
+			double scaleAbove = viewPort.getResolution(tileLevelBelow - 1);
 			double scale = scaleBelow + (scaleAbove - scaleBelow) * ((double) zoomStepY / (double) ZOOMSTEP_HEIGHT);
 			Trajectory trajectory = new LinearTrajectory(viewPort.getView(), new View(viewPort.getPosition(), scale));
 			NavigationAnimation animation = NavigationAnimationFactory.create(mapPresenter, trajectory, 0);
@@ -332,8 +332,8 @@ public class ZoomStepControl extends AbstractMapWidget {
 			if (dragging) {
 				dragging = false;
 				shrinkLayout();
-				int index = viewPort.getFixedScaleIndex(viewPort.getScale());
-				double scale = viewPort.getFixedScale(index);
+				int index = viewPort.getResolutionIndex(viewPort.getResolution());
+				double scale = viewPort.getResolution(index);
 				Trajectory trajectory = new LinearTrajectory(viewPort.getView(),
 						new View(viewPort.getPosition(), scale));
 				NavigationAnimation animation = NavigationAnimationFactory.create(mapPresenter, trajectory, 400);
@@ -371,7 +371,7 @@ public class ZoomStepControl extends AbstractMapWidget {
 			if (dragging) {
 				dragging = false;
 				shrinkLayout();
-				int index = viewPort.getFixedScaleCount() - viewPort.getFixedScaleIndex(viewPort.getScale()) - 1;
+				int index = viewPort.getResolutionCount() - viewPort.getResolutionIndex(viewPort.getResolution()) - 1;
 				int handleY = getBaseTop() + ZOOMBUTTON_SIZE + 1 + (index * ZOOMSTEP_HEIGHT);
 				zoomHandle.getElement().getStyle().setTop(handleY, Unit.PX);
 			}

@@ -8,6 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.gwt2.client.controller;
 
 import com.google.gwt.event.dom.client.GestureChangeEvent;
@@ -44,7 +45,7 @@ public class TouchNavigationController extends AbstractMapController {
 
 	protected Coordinate centerPoint;
 
-	private double beginScale;
+	private double beginResolution;
 
 	public TouchNavigationController() {
 		super(false);
@@ -92,10 +93,10 @@ public class TouchNavigationController extends AbstractMapController {
 	public void onGestureStart(GestureStartEvent event) {
 		event.preventDefault();
 		event.stopPropagation();
-		beginScale = mapPresenter.getViewPort().getScale();
+		beginResolution = mapPresenter.getViewPort().getResolution();
 		zooming = true;
-		logger.log(Level.INFO, "TouchNavigationController -> onGestureStart() viewport scale=" + beginScale);
-		//zoomTo(event.getScale(), false);
+		logger.log(Level.INFO, "TouchNavigationController -> onGestureStart() viewport resolution=" + beginResolution);
+		//zoomTo(event.getResolution(), false);
 	}
 
 	@Override
@@ -129,13 +130,12 @@ public class TouchNavigationController extends AbstractMapController {
 	}
 
 	protected void zoomTo(double scale) {
-		logger.log(Level.INFO,
-		  "TouchNavigationController -> zoomTo(scale=" + scale + " )");
-		logger.log(Level.INFO, "begin viewport scale =" + beginScale);
-		double zoomScale = beginScale * scale;
-		logger.log(Level.INFO, "zoomScale=" + zoomScale);
+		logger.log(Level.INFO, "TouchNavigationController -> zoomTo(resolution=" + scale + " )");
+		logger.log(Level.INFO, "begin viewport resolution =" + beginResolution);
+		double zoomResolution = beginResolution * scale;
+		logger.log(Level.INFO, "zoomResolution=" + zoomResolution);
 		mapPresenter.getViewPort().registerAnimation(null); // without animation for touch devices
-		mapPresenter.getViewPort().applyScale(zoomScale);
+		mapPresenter.getViewPort().applyResolution(zoomResolution);
 		zooming = true;
 	}
 
@@ -190,9 +190,9 @@ public class TouchNavigationController extends AbstractMapController {
 	 */
 	protected Coordinate transformToMapCoords(Coordinate pixelCoords) {
 		Coordinate beginWorld = mapPresenter.getViewPort().getTransformationService()
-		  .transform(touchedOrigin, RenderSpace.SCREEN, RenderSpace.WORLD);
+				.transform(touchedOrigin, RenderSpace.SCREEN, RenderSpace.WORLD);
 		Coordinate endWorld = mapPresenter.getViewPort().getTransformationService()
-		  .transform(pixelCoords, RenderSpace.SCREEN, RenderSpace.WORLD);
+				.transform(pixelCoords, RenderSpace.SCREEN, RenderSpace.WORLD);
 		double x = mapPresenter.getViewPort().getPosition().getX() + beginWorld.getX() - endWorld.getX();
 		double y = mapPresenter.getViewPort().getPosition().getY() + beginWorld.getY() - endWorld.getY();
 

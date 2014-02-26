@@ -11,10 +11,7 @@
 
 package org.geomajas.gwt2.client.map.render;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
+import com.google.gwt.user.client.ui.IsWidget;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Matrix;
 import org.geomajas.gwt2.client.event.LayerAddedEvent;
@@ -36,11 +33,13 @@ import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlGroup;
 import org.geomajas.gwt2.client.service.DomService;
 
-import com.google.gwt.user.client.ui.IsWidget;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Layer renderer implementation for layers that use renderers at fixed scales.
- * 
+ *
  * @author Pieter De Graef
  */
 public abstract class FixedScaleLayerRenderer implements LayerRenderer {
@@ -151,12 +150,15 @@ public abstract class FixedScaleLayerRenderer implements LayerRenderer {
 		if (renderingInfo.getTrajectory() != null) {
 			targetView = renderingInfo.getTrajectory().getView(1.0);
 		}
-		prepareView(container, targetView);
+		try {
+			prepareView(container, targetView);
+		} catch (Exception e) {
+		}
 
 		// Now render the current view:
 		try {
 			FixedScaleRenderer renderer = getRendererForView(renderingInfo.getView());
-			renderTileLevel(renderer, renderingInfo.getView().getScale());
+			renderTileLevel(renderer, renderingInfo.getView().getResolution());
 			cleanupCache();
 		} catch (Exception e) {
 		}
@@ -180,13 +182,10 @@ public abstract class FixedScaleLayerRenderer implements LayerRenderer {
 
 	/**
 	 * Create a renderer for a certain fixed tile level.
-	 * 
-	 * @param tileLevel
-	 *            The tile level to create a new renderer for.
-	 * @param view
-	 *            The view that will be initially visible on the tile level.
-	 * @param container
-	 *            The container that has been created for the tile renderer to render in.
+	 *
+	 * @param tileLevel The tile level to create a new renderer for.
+	 * @param view      The view that will be initially visible on the tile level.
+	 * @param container The container that has been created for the tile renderer to render in.
 	 * @return Return the new tile renderer.
 	 */
 	public abstract FixedScaleRenderer createNewScaleRenderer(int tileLevel, View view, HtmlContainer container);
@@ -196,7 +195,7 @@ public abstract class FixedScaleLayerRenderer implements LayerRenderer {
 	// ------------------------------------------------------------------------
 
 	protected FixedScaleRenderer getRendererForView(View view) throws IllegalStateException {
-		int tileLevel = viewPort.getFixedScaleIndex(view.getScale());
+		int tileLevel = viewPort.getResolutionIndex(view.getResolution());
 
 		// Do we have a renderer at the tileLevel that is rendered?
 		FixedScaleRenderer renderer = getOrCreateTileLevelRenderer(tileLevel, view);
@@ -208,8 +207,8 @@ public abstract class FixedScaleLayerRenderer implements LayerRenderer {
 
 	protected void prepareView(IsWidget widget, View targetView) {
 		// Given a trajectory, try to fetch the target tiles before rendering.
-		int tileLevel = viewPort.getFixedScaleIndex(targetView.getScale());
-		if (tileLevel < viewPort.getFixedScaleCount()) {
+		int tileLevel = viewPort.getResolutionIndex(targetView.getResolution());
+		if (tileLevel < viewPort.getResolutionCount()) {
 			targetRenderer = getOrCreateTileLevelRenderer(tileLevel, targetView);
 			targetRenderer.render(targetView);
 		}
@@ -240,7 +239,7 @@ public abstract class FixedScaleLayerRenderer implements LayerRenderer {
 				FixedScaleRenderer renderer = event.getRenderer();
 
 				// See if we can replace the current renderer with the one that just rendered:
-				int viewPortTileLevel = viewPort.getFixedScaleIndex(viewPort.getScale());
+				int viewPortTileLevel = viewPort.getResolutionIndex(viewPort.getResolution());
 				if (renderer.getTileLevel() == viewPortTileLevel) {
 					if (!renderer.isRendered(viewPort.getView())) {
 						// TODO are we sure about this? Why else did we prepare this view?
@@ -248,7 +247,7 @@ public abstract class FixedScaleLayerRenderer implements LayerRenderer {
 					}
 
 					// Render this tile level:
-					renderTileLevel(renderer, viewPort.getScale());
+					renderTileLevel(renderer, viewPort.getResolution());
 				}
 			}
 		});
@@ -258,16 +257,16 @@ public abstract class FixedScaleLayerRenderer implements LayerRenderer {
 		return renderer;
 	}
 
-	protected void renderTileLevel(FixedScaleRenderer renderer, double currentScale) {
+	protected void renderTileLevel(FixedScaleRenderer renderer, double currentResolution) {
 		// Set the current renderer:
 		currentRenderer = renderer;
 
 		// Apply the correct transformation on the container:
-		double rendererScale = viewPort.getFixedScale(renderer.getTileLevel());
-		Matrix transformation = viewPort.getTransformationService().getTranslationMatrix(currentScale);
+		double rendererResolution = viewPort.getResolution(renderer.getTileLevel());
+		Matrix transformation = viewPort.getTransformationService().getTranslationMatrix(currentResolution);
 		HtmlContainer tileLevelContainer = tileLevelContainers.get(renderer.getTileLevel());
 		Coordinate origin = tileLevelContainer.getOrigin();
-		tileLevelContainer.applyScale(currentScale / rendererScale, 0, 0);
+		tileLevelContainer.applyScale(rendererResolution / currentResolution, 0, 0);
 		double left = transformation.getDx() - origin.getX() * tileLevelContainer.getScale();
 		double top = transformation.getDy() - origin.getY() * tileLevelContainer.getScale();
 		tileLevelContainer.setLeft((int) Math.round(left));
