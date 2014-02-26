@@ -33,6 +33,7 @@ public interface MapConfiguration {
 	 * @author Pieter De Graef
 	 */
 	public enum CrsType {
+
 		/**
 		 * Defines a coordinate system of which the units are expressed in meters, such as Mercator.
 		 */
