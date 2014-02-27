@@ -11,24 +11,23 @@
 
 package org.geomajas.gwt2.client.widget.control.scalebar;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.DivElement;
+import com.google.gwt.dom.client.Style;
+import com.google.gwt.i18n.client.NumberFormat;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.widget.AbstractMapWidget;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.DivElement;
-import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.i18n.client.NumberFormat;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Widget;
-
 /**
- * Map widget that shows a scale bar on the map. This widget is meant to be added to the map's widget pane (see
- * {@link MapPresenter#getWidgetPane()}).
- * 
+ * Map widget that shows a scale bar on the map. This widget is meant to be added to the map's widget pane (see {@link
+ * MapPresenter#getWidgetPane()}).
+ *
  * @author Pieter De Graef
  * @since 2.0.0
  */
@@ -37,7 +36,7 @@ public class Scalebar extends AbstractMapWidget {
 
 	/**
 	 * Unit type to use on the scale bar.
-	 * 
+	 *
 	 * @author Pieter De Graef
 	 */
 	public enum UnitType {
@@ -64,7 +63,7 @@ public class Scalebar extends AbstractMapWidget {
 
 	/**
 	 * UI binder definition for the {@link Scalebar} widget.
-	 * 
+	 *
 	 * @author Pieter De Graef
 	 */
 	interface ScalebarUiBinder extends UiBinder<Widget, Scalebar> {
@@ -106,9 +105,8 @@ public class Scalebar extends AbstractMapWidget {
 
 	/**
 	 * Create a new instance for the given map.
-	 * 
-	 * @param mapPresenter
-	 *            The map presenter.
+	 *
+	 * @param mapPresenter The map presenter.
 	 */
 	public Scalebar(MapPresenter mapPresenter) {
 		this(mapPresenter, (ScalebarResource) GWT.create(ScalebarResource.class));
@@ -116,11 +114,9 @@ public class Scalebar extends AbstractMapWidget {
 
 	/**
 	 * Create a new instance for the given map.
-	 * 
-	 * @param mapPresenter
-	 *            The map presenter.
-	 * @param resource
-	 *            Custom resource bundle in case you want to provide your own style for this widget.
+	 *
+	 * @param mapPresenter The map presenter.
+	 * @param resource     Custom resource bundle in case you want to provide your own style for this widget.
 	 */
 	public Scalebar(MapPresenter mapPresenter, ScalebarResource resource) {
 		super(mapPresenter);
@@ -143,7 +139,7 @@ public class Scalebar extends AbstractMapWidget {
 
 	/**
 	 * Get the unit type used in this widget.
-	 * 
+	 *
 	 * @return The unit type in which scales are displayed.
 	 */
 	public UnitType getUnitType() {
@@ -152,9 +148,8 @@ public class Scalebar extends AbstractMapWidget {
 
 	/**
 	 * Set the unit type in which scales are displayed.
-	 * 
-	 * @param unitType
-	 *            The new unit type.
+	 *
+	 * @param unitType The new unit type.
 	 */
 	public void setUnitType(UnitType unitType) {
 		this.unitType = unitType;
@@ -165,16 +160,16 @@ public class Scalebar extends AbstractMapWidget {
 	// ------------------------------------------------------------------------
 
 	private void redrawScale() {
-		calculateBestFit(mapPresenter.getViewPort().getScale());
+		calculateBestFit(1 / mapPresenter.getViewPort().getResolution());
 		scaleBarElement.setInnerText(formatUnits(widthInUnits));
-		scaleBarElement.getStyle().setWidth(widthInPixels, Unit.PX);
-		getElement().getStyle().setWidth(widthInPixels + 10, Unit.PX);
+		scaleBarElement.getStyle().setWidth(widthInPixels, Style.Unit.PX);
+		getElement().getStyle().setWidth(widthInPixels + 10, Style.Unit.PX);
 	}
 
 	/**
 	 * Find the rounded value (from the lengths array) which fits the closest into the maxSizeInPixels for the given
 	 * scale.
-	 * 
+	 *
 	 * @param scale
 	 * @return closest fit in units (will be miles or yards for English, m for metric, unit for CRS)
 	 */
@@ -242,7 +237,7 @@ public class Scalebar extends AbstractMapWidget {
 
 	/**
 	 * format to human readable string converting to unit type.
-	 * 
+	 *
 	 * @param units
 	 * @return
 	 */

@@ -34,7 +34,7 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
  * This class serves as a base for other map controllers that have a need for a circle to be drawn (dragged) on the
  * map, so that behaviour is always the same.
  * </p>
- * 
+ *
  * @author Emiel Ackermann
  * @since 2.0.0
  */
@@ -118,7 +118,7 @@ public abstract class AbstractCircleController extends AbstractMapController {
 
 			ViewPort viewPort = mapPresenter.getViewPort();
 			execute(viewPort.getTransformationService().transform(geometry, RenderSpace.SCREEN, RenderSpace.WORLD), 
-					circle.getRadius() / viewPort.getScale());
+					circle.getRadius() * viewPort.getResolution());
 
 			stopDragging();
 			dragging = false;

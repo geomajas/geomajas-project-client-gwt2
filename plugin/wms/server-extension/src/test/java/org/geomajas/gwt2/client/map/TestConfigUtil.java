@@ -11,12 +11,12 @@
 
 package org.geomajas.gwt2.client.map;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.gwt2.client.map.MapConfiguration.CrsType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Test utility.
@@ -30,7 +30,7 @@ public class TestConfigUtil {
 		mapConfig.setCrs(mapInfo.getCrs(), CrsType.DEGREES);
 		mapConfig.setHintValue(MapConfiguration.INITIAL_BOUNDS, mapInfo.getInitialBounds());
 		mapConfig.setMaxBounds(mapInfo.getMaxBounds());
-		mapConfig.setMaximumScale(mapInfo.getScaleConfiguration().getMaximumScale().getPixelPerUnit());
+		mapConfig.setMinimumResolution(1 / mapInfo.getScaleConfiguration().getMaximumScale().getPixelPerUnit());
 		List<Double> resolutions = new ArrayList<Double>();
 		for (ScaleInfo scale : mapInfo.getScaleConfiguration().getZoomLevels()) {
 			resolutions.add(scale.getPixelPerUnit());

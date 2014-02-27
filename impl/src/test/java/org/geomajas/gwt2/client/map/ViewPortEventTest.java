@@ -57,27 +57,27 @@ public class ViewPortEventTest {
 		viewPort.applyBounds(viewPort.getMaximumBounds(), ZoomOption.LEVEL_CLOSEST);
 		event = null;
 
-		Assert.assertEquals(4.0, viewPort.getScale());
+		Assert.assertEquals(0.25, viewPort.getResolution());
 		Assert.assertNull(event);
 
 		HandlerRegistration reg = eventBus.addViewPortChangedHandler(new AllowChangedHandler());
 
 		viewPort.applyPosition(new Coordinate(342, 342));
-		Assert.assertEquals(4.0, viewPort.getScale());
+		Assert.assertEquals(0.25, viewPort.getResolution());
 		Assert.assertNotNull(event);
 
 		reg.removeHandler();
 	}
 
 	@Test
-	public void testApplyScale() {
-		Assert.assertEquals(4.0, viewPort.getScale());
+	public void testApplyResolution() {
+		Assert.assertEquals(0.25, viewPort.getResolution());
 		Assert.assertNull(event);
 
 		HandlerRegistration reg = eventBus.addViewPortChangedHandler(new AllowChangedHandler());
 
-		viewPort.applyScale(2.0);
-		Assert.assertEquals(2.0, viewPort.getScale());
+		viewPort.applyResolution(0.5);
+		Assert.assertEquals(0.5, viewPort.getResolution());
 		Assert.assertNotNull(event);
 
 		reg.removeHandler();
@@ -85,14 +85,14 @@ public class ViewPortEventTest {
 
 	@Test
 	public void testApplyBounds() {
-		Assert.assertEquals(4.0, viewPort.getScale());
+		Assert.assertEquals(0.25, viewPort.getResolution());
 		Assert.assertNull(event);
 
 		HandlerRegistration reg = eventBus.addViewPortChangedHandler(new AllowChangedHandler());
 
 		// Now a changed event should occur:
 		viewPort.applyBounds(new Bbox(0, 0, 100, 100));
-		Assert.assertEquals(8.0, viewPort.getScale());
+		Assert.assertEquals(0.125, viewPort.getResolution());
 		Assert.assertNotNull(event);
 		Assert.assertTrue(event instanceof ViewPortChangedEvent);
 
@@ -101,7 +101,7 @@ public class ViewPortEventTest {
 
 		// Expect to end up at the same scale, so no changed event, but translation only:
 		viewPort.applyBounds(new Bbox(-50, -50, 100, 100));
-		Assert.assertEquals(8.0, viewPort.getScale());
+		Assert.assertEquals(0.125, viewPort.getResolution());
 		Assert.assertNotNull(event);
 
 		reg.removeHandler();
@@ -109,7 +109,7 @@ public class ViewPortEventTest {
 
 	@Test
 	public void testApplySameBounds() {
-		Assert.assertEquals(4.0, viewPort.getScale());
+		Assert.assertEquals(0.25, viewPort.getResolution());
 		Assert.assertNull(event);
 
 		HandlerRegistration reg = eventBus.addViewPortChangedHandler(new AllowNoEventsHandler());
@@ -122,13 +122,13 @@ public class ViewPortEventTest {
 
 	@Test
 	public void testResize() {
-		Assert.assertEquals(4.0, viewPort.getScale());
+		Assert.assertEquals(0.25, viewPort.getResolution());
 		Assert.assertNull(event);
 
 		HandlerRegistration reg = eventBus.addViewPortChangedHandler(new AllowChangedHandler());
 		viewPort.setMapSize(500, 500);
 
-		Assert.assertEquals(4.0, viewPort.getScale());
+		Assert.assertEquals(0.25, viewPort.getResolution());
 		Assert.assertTrue(viewPort.getPosition().equalsDelta(new Coordinate(-62.5, 62.5), 0.00001));
 		Assert.assertNotNull(event);
 		Assert.assertTrue(event instanceof ViewPortChangedEvent);
@@ -138,7 +138,7 @@ public class ViewPortEventTest {
 
 	@Test
 	public void testResizeSameSize() {
-		Assert.assertEquals(4.0, viewPort.getScale());
+		Assert.assertEquals(0.25, viewPort.getResolution());
 		Assert.assertNull(event);
 
 		HandlerRegistration reg = eventBus.addViewPortChangedHandler(new AllowNoEventsHandler());
@@ -183,9 +183,9 @@ public class ViewPortEventTest {
 		config.setMaxBounds(new Bbox(-100, -100, 200, 200));
 		List<Double> resolutions = new ArrayList<Double>();
 		resolutions.add(1.0);
-		resolutions.add(2.0);
-		resolutions.add(4.0);
-		resolutions.add(8.0);
+		resolutions.add(0.5);
+		resolutions.add(0.25);
+		resolutions.add(0.125);
 		config.setResolutions(resolutions);
 		return config;
 	}

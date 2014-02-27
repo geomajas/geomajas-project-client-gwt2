@@ -219,9 +219,9 @@ public class NavigationController extends AbstractMapController {
 
 	protected void scrollZoomTo(boolean isNorth, Coordinate location) {
 		ViewPort viewPort = mapPresenter.getViewPort();
-		int index = viewPort.getFixedScaleIndex(viewPort.getScale());
+		int index = viewPort.getResolutionIndex(viewPort.getResolution());
 		if (isNorth) {
-			if (index < viewPort.getFixedScaleCount() - 1) {
+			if (index < viewPort.getResolutionCount() - 1) {
 				if (scrollZoomType == ScrollZoomType.ZOOM_POSITION) {
 					Coordinate position = calculatePosition(true, location);
 					viewPort.registerAnimation(NavigationAnimationFactory.createZoomIn(mapPresenter, position));
@@ -248,15 +248,15 @@ public class NavigationController extends AbstractMapController {
 	protected Coordinate calculatePosition(boolean zoomIn, Coordinate rescalePoint) {
 		ViewPort viewPort = mapPresenter.getViewPort();
 		Coordinate position = viewPort.getPosition();
-		int index = viewPort.getFixedScaleIndex(viewPort.getScale());
-		double scale = viewPort.getScale();
-		if (zoomIn && index < viewPort.getFixedScaleCount() - 1) {
-			scale = viewPort.getFixedScale(index + 1);
+		int index = viewPort.getResolutionIndex(viewPort.getResolution());
+		double resolution = viewPort.getResolution();
+		if (zoomIn && index < viewPort.getResolutionCount() - 1) {
+			resolution = viewPort.getResolution(index + 1);
 
 		} else if (!zoomIn && index > 0) {
-			scale = viewPort.getFixedScale(index - 1);
+			resolution = viewPort.getResolution(index - 1);
 		}
-		double factor = scale / viewPort.getScale();
+		double factor = viewPort.getResolution() / resolution;
 		double dX = (rescalePoint.getX() - position.getX()) * (1 - 1 / factor);
 		double dY = (rescalePoint.getY() - position.getY()) * (1 - 1 / factor);
 

@@ -68,8 +68,9 @@ public abstract class AbstractServerLayer<T extends ClientLayerInfo> extends Abs
 	@Override
 	public boolean isShowing() {
 		if (markedAsVisible) {
-			if (viewPort.getScale() >= layerInfo.getMinimumScale().getPixelPerUnit()
-					&& viewPort.getScale() <= layerInfo.getMaximumScale().getPixelPerUnit()) {
+			double maxResolution = 1 / layerInfo.getMinimumScale().getPixelPerUnit();
+			double minResolution = 1 / layerInfo.getMaximumScale().getPixelPerUnit();
+			if (viewPort.getResolution() >= minResolution && viewPort.getResolution() <= maxResolution) {
 				return true;
 			}
 		}
