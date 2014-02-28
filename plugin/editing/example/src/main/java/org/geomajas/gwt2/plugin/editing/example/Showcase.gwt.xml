@@ -11,19 +11,19 @@
   ~ details, see LICENSE.txt in the project root.
   -->
 
-<module rename-to="example">
-	<inherits name='org.geomajas.gwt2.example.ExampleJar' />
+<module rename-to="showcase">
+	<inherits name='com.google.gwt.user.User'/>
+	<inherits name="com.google.gwt.user.theme.standard.Standard" />
 
-    <!-- Include plugins: -->
-	<inherits name='org.geomajas.plugin.wms.example.ExampleJar' />
-	<inherits name='org.geomajas.gwt2.plugin.editing.example.ExampleJar' />
-    <!--<inherits name='org.geomajas.plugin.corewidget.example.ExampleJar' />-->
-	<!--<inherits name='org.geomajas.plugin.print.example.ExampleJar' />-->
-	<inherits name='org.geomajas.plugin.graphicsediting.gwt2.example.GraphicsEditingGwt2ExampleJar' />
+    <inherits name="org.geomajas.gwt2.GeomajasClientImpl" />
+    <inherits name="org.geomajas.gwt2.plugin.editing.EditingGwt2" />
+  	
+    <entry-point class="org.geomajas.gwt2.plugin.editing.example.client.Showcase"/>
 
-    <entry-point class="org.geomajas.gwt2.example.client.Example" />
+
 	<!-- set target browser to compile for, use this to limit to the browser used for testing -->
 	<!-- where value = "ie6/opera/gecko1_8/safari/gecko" , "gecko1_8" is FireFox 3 -->
 	<set-property name="user.agent" value="gecko1_8" />
-	<source path='client' />
+
+	<source path='client'/>
 </module>

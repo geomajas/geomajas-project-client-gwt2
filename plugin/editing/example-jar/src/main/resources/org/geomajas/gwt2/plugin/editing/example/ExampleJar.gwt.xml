@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
 <!--
   ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
   ~
@@ -8,8 +10,10 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
-<module>
-	<inherits name='org.geomajas.graphics.Graphics'/>
-	<inherits name="org.geomajas.gwt2.plugin.editing.EditingGwt2" />
+
+<module rename-to="examplejar">
+	<inherits name='org.geomajas.gwt2.example.base.ExampleBase' />
+	<inherits name='org.geomajas.gwt2.plugin.editing.EditingGwt2' />
+    <entry-point class="org.geomajas.gwt2.plugin.editing.example.client.ExampleJar"/>
+	<source path='client'/>
 </module>
-	
