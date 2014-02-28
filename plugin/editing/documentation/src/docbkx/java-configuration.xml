@@ -21,7 +21,7 @@
     that provides access to all the services and functionalities within the
     plugin:</para>
 
-    <programlisting>org.geomajas.plugin.editing.gwt.client.Editing</programlisting>
+    <programlisting>org.geomajas.gwt2.plugin.editing.client.Editing</programlisting>
 
     <para>From here on, it's a simple matter of getting the required services
     and using them. This class provides the following services:</para>
