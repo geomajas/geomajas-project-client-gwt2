@@ -61,6 +61,7 @@
     <programlisting>&lt;dependency&gt;
     &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
     &lt;artifactId&gt;geomajas-client-gwt2-plugin-graphicsediting-impl&lt;/artifactId&gt;
+	&lt;version&gt;<?eval ${project.version}?>&lt;/version&gt;
 &lt;/dependency&gt;</programlisting>
   </sect1>
 </chapter>
