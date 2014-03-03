@@ -9,7 +9,7 @@
   ~ details, see LICENSE.txt in the project root.
   -->
 <module>
-    <inherits name="org.geomajas.plugin.wmsclient.GeomajasWmsClient"/>
+    <inherits name="org.geomajas.plugin.wms.GeomajasClientPluginWms"/>
     
     <!-- Source for this plug-in -->
     <source path="client" />

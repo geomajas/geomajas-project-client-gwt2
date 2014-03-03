@@ -29,7 +29,8 @@ import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
-import org.geomajas.plugin.graphicsediting.gwt2.client.GraphicsEditingUtil;
+import org.geomajas.plugin.graphicsediting.gwt2.client.GraphicsEditing;
+import org.geomajas.plugin.graphicsediting.gwt2.client.StrokeFillCreationValues;
 import org.geomajas.plugin.graphicsediting.gwt2.client.object.GGeometryPath;
 import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 
@@ -107,7 +108,7 @@ public class CreatePolygonController extends AbstractGraphicsController implemen
 		if (path == null) {
 			Geometry polygon = new Geometry(Geometry.POLYGON, 0, -1);
 			if (editService == null) {
-				editService = GraphicsEditingUtil.createClickToStopEditService(mapPresenter);
+				editService = GraphicsEditing.getInstance().createClickToStopEditService(mapPresenter);
 				editService.addGeometryEditStopHandler(this);
 			}
 			editService.start(polygon);
@@ -143,11 +144,12 @@ public class CreatePolygonController extends AbstractGraphicsController implemen
 
 	protected GraphicsObject createObject(Geometry geometry) {
 		GGeometryPath path = new GGeometryPath(geometry, null);
-		path.getRole(Fillable.TYPE).setFillColor(GraphicsEditingUtil.getPolygonCreateFillColor());
-		path.getRole(Fillable.TYPE).setFillOpacity(GraphicsEditingUtil.getPolygonCreateFillOpacity());
-		path.getRole(Strokable.TYPE).setStrokeColor(GraphicsEditingUtil.getPolygonCreateStrokeColor());
-		path.getRole(Strokable.TYPE).setStrokeOpacity(GraphicsEditingUtil.getPolygonCreateStrokeOpacity());
-		path.getRole(Strokable.TYPE).setStrokeWidth(GraphicsEditingUtil.getPolygonCreateStrokeWidth());
+		StrokeFillCreationValues creationValues = GraphicsEditing.getInstance().getStrokeFillCreationValues();
+		path.getRole(Fillable.TYPE).setFillColor(creationValues.getPolygonCreateFillColor());
+		path.getRole(Fillable.TYPE).setFillOpacity(creationValues.getPolygonCreateFillOpacity());
+		path.getRole(Strokable.TYPE).setStrokeColor(creationValues.getPolygonCreateStrokeColor());
+		path.getRole(Strokable.TYPE).setStrokeOpacity(creationValues.getPolygonCreateStrokeOpacity());
+		path.getRole(Strokable.TYPE).setStrokeWidth(creationValues.getPolygonCreateStrokeWidth());
 		return path;
 	}
 }
