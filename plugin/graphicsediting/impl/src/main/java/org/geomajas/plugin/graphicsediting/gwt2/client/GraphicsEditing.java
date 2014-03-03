@@ -13,9 +13,9 @@ package org.geomajas.plugin.graphicsediting.gwt2.client;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.plugin.editing.client.Editing;
+import org.geomajas.gwt2.plugin.editing.client.GeometryEditor;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
-import org.geomajas.plugin.editing.gwt.client.Editing;
-import org.geomajas.plugin.editing.gwt.client.GeometryEditor;
 
 /**
  * Starting point for the graphics editing plugin.
