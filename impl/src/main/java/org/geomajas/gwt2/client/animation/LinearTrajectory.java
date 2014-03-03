@@ -20,7 +20,7 @@ import org.geomajas.gwt2.client.map.View;
  * trajectory. Notice that this amounts to linear interpolation of the inverted scale as the width/height of the map
  * bounds are inversely proportional to the scale (for constant pixel size of the map).
  * </p>
- * 
+ *
  * @author Pieter De Graef
  * @author Jan De Moerloose
  */
@@ -48,13 +48,13 @@ public class LinearTrajectory implements Trajectory {
 		double y = startPos.getY() + progress * (endPos.getY() - startPos.getY());
 
 		// Now calculate the NavigationView values to return:
-		double startScale = beginView.getScale();
-		double endScale = endView.getScale();
+		double startResolution = beginView.getResolution();
+		double endResolution = endView.getResolution();
 
-		// width/height vary linearly like x and y, but scale is inversely proportional !!!
-		double scale = 1 / (1 / startScale + progress * (1 / endScale - 1 / startScale));
+		// width/height vary linearly like x and y, but resolution is inversely proportional !!!
+		double resolution = startResolution + progress * (endResolution - startResolution);
 
-		return new View(new Coordinate(x, y), scale);
+		return new View(new Coordinate(x, y), resolution);
 	}
 
 	public View getBeginView() {

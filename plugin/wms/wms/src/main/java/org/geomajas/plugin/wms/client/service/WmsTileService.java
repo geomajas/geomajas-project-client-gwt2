@@ -11,13 +11,13 @@
 
 package org.geomajas.plugin.wms.client.service;
 
-import java.util.List;
-
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.render.TileCode;
 import org.geomajas.plugin.wms.client.layer.WmsTileConfiguration;
+
+import java.util.List;
 
 /**
  * Service definition with helper methods for tile calculations. These may help when rendering a tile based layer. This
@@ -35,18 +35,18 @@ public interface WmsTileService {
 	 * Get a list of tile codes for a certain location (bounding box).
 	 * 
 	 * @param viewPort
-	 *            The ViewPort on the map we are calculating tile codes for. We need the ViewPort for scale to
+	 *            The ViewPort on the map we are calculating tile codes for. We need the ViewPort for resolution to
 	 *            tile-level translations.
 	 * @param tileConfiguration
 	 *            The basic tile configuration.
 	 * @param bounds
 	 *            The bounds in world space (map CRS).
-	 * @param scale
-	 *            The scale at which to search for tiles.
+	 * @param resolution
+	 *            The resolution at which to search for tiles.
 	 * @return A list of all tiles that lie within the location.
 	 */
 	List<TileCode> getTileCodesForBounds(ViewPort viewPort, WmsTileConfiguration tileConfiguration, Bbox bounds,
-			double scale);
+			double resolution);
 
 	/**
 	 * Given a tile for a layer, what are the tiles bounds in world space.

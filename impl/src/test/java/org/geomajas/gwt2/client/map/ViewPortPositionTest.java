@@ -60,7 +60,7 @@ public class ViewPortPositionTest {
 		Assert.assertEquals(0.0, viewPort.getPosition().getX());
 		Assert.assertEquals(0.0, viewPort.getPosition().getY());
 
-		viewPort.applyScale(2.0); // Width now becomes 100, so max center = (50,50).
+		viewPort.applyResolution(0.5); // Width now becomes 100, so max center = (50,50).
 		Assert.assertEquals(0.0, viewPort.getPosition().getX());
 		Assert.assertEquals(0.0, viewPort.getPosition().getY());
 
@@ -79,9 +79,9 @@ public class ViewPortPositionTest {
 		config.setMaxBounds(new Bbox(-100, -100, 200, 200));
 		List<Double> resolutions = new ArrayList<Double>();
 		resolutions.add(1.0);
-		resolutions.add(2.0);
-		resolutions.add(4.0);
-		resolutions.add(8.0);
+		resolutions.add(0.5);
+		resolutions.add(0.25);
+		resolutions.add(0.125);
 		config.setResolutions(resolutions);
 		return config;
 	}

@@ -33,14 +33,10 @@ import org.vaadin.gwtgraphics.client.VectorObject;
 public class GGeometryPath extends ResizableGraphicsObject implements GeometryEditable {
 
 	public GGeometryPath(Geometry geometry, String text) {
-		this(new ResizableGeometryPath(geometry), text);
+		this(new ResizableGeometryPath(geometry));
 	}
 
 	public GGeometryPath(ResizableGeometryPath path) {
-		this(path, null);
-	}
-
-	public GGeometryPath(ResizableGeometryPath path, String text) {
 		super(path);
 		addRole(GeometryEditable.TYPE, this);
 		addRole(Strokable.TYPE, path);

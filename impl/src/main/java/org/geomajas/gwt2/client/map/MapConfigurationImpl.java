@@ -11,12 +11,12 @@
 
 package org.geomajas.gwt2.client.map;
 
+import org.geomajas.geometry.Bbox;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.geomajas.geometry.Bbox;
 
 /**
  * Default map configuration implementation.
@@ -40,7 +40,7 @@ public class MapConfigurationImpl implements MapConfiguration {
 
 	public static final Double DEFAULT_UNIT_LENGTH = 111319.4907932264;
 
-	public static final Double DEFAULT_MAXIMUM_SCALE = 1024.0;
+	public static final Double DEFAULT_MINIMUM_RESOLUTION = Double.MAX_VALUE;
 
 	private Map<Hint<?>, Object> hintValues;
 
@@ -60,7 +60,7 @@ public class MapConfigurationImpl implements MapConfiguration {
 		setHintValue(MapConfiguration.INITIAL_BOUNDS, DEFAULT_BOUNDS);
 		setHintValue(MapConfiguration.CRS, DEFAULT_CRS);
 		setHintValue(MapConfiguration.UNIT_LENGTH, DEFAULT_UNIT_LENGTH);
-		setHintValue(MapConfiguration.MAXIMUM_SCALE, DEFAULT_MAXIMUM_SCALE);
+		setHintValue(MapConfiguration.MINIMUM_RESOLUTION, DEFAULT_MINIMUM_RESOLUTION);
 		setHintValue(MapConfiguration.RESOLUTIONS, new ArrayList<Double>());
 	}
 
@@ -136,13 +136,13 @@ public class MapConfigurationImpl implements MapConfiguration {
 	}
 
 	@Override
-	public double getMaximumScale() {
-		return getHintValue(MapConfiguration.MAXIMUM_SCALE);
+	public double getMinimumResolution() {
+		return getHintValue(MapConfiguration.MINIMUM_RESOLUTION);
 	}
 
 	@Override
-	public void setMaximumScale(double maximumScale) {
-		setHintValue(MapConfiguration.MAXIMUM_SCALE, maximumScale);
+	public void setMinimumResolution(double maximumScale) {
+		setHintValue(MapConfiguration.MINIMUM_RESOLUTION, maximumScale);
 	}
 
 	@Override

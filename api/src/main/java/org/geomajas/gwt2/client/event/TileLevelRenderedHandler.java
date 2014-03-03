@@ -18,7 +18,7 @@ import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent.Type;
 
 /**
- * Handler for events that indicate a certain scale level has been rendered. For a tile based system, this could mean
+ * Handler for events that indicate a certain tile level has been rendered. For a tile based system, this could mean
  * that all tiles are rendered.
  * 
  * @author Pieter De Graef
@@ -26,18 +26,18 @@ import com.google.gwt.event.shared.GwtEvent.Type;
  */
 @Api(allMethods = true)
 @UserImplemented
-public interface ScaleLevelRenderedHandler extends EventHandler {
+public interface TileLevelRenderedHandler extends EventHandler {
 
 	/**
 	 * The type of the handler.
 	 */
-	Type<ScaleLevelRenderedHandler> TYPE = new Type<ScaleLevelRenderedHandler>();
+	Type<TileLevelRenderedHandler> TYPE = new Type<TileLevelRenderedHandler>();
 
 	/**
-	 * Called when a scale level has been fully rendered.
+	 * Called when a tile level has been fully rendered.
 	 * 
 	 * @param event
-	 *            The scale level rendered event.
+	 *            The tile level rendered event.
 	 */
-	void onScaleLevelRendered(ScaleLevelRenderedEvent event);
+	void onScaleLevelRendered(TileLevelRenderedEvent event);
 }

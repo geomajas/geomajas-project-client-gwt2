@@ -33,7 +33,7 @@ import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
-import org.geomajas.plugin.graphicsediting.gwt2.client.GraphicsEditingUtil;
+import org.geomajas.plugin.graphicsediting.gwt2.client.GraphicsEditing;
 import org.geomajas.plugin.graphicsediting.gwt2.client.object.GeometryEditable;
 import org.geomajas.plugin.graphicsediting.gwt2.client.operation.GeometryEditOperation;
 import org.vaadin.gwtgraphics.client.VectorObjectContainer;
@@ -141,7 +141,7 @@ public class GeometryEditController extends AbstractGraphicsController implement
 
 	private void startEditing() {
 		if (service == null) {
-			service = GraphicsEditingUtil.createClickToStopEditService(mapPresenter);
+			service = GraphicsEditing.getInstance().createClickToStopEditService(mapPresenter);
 			service.addGeometryEditChangeStateHandler(this);
 			service.addGeometryEditStopHandler(this);
 		}

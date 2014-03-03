@@ -97,30 +97,30 @@ public class VectorLayerTest {
 		VectorServerLayerImpl layer = new VectorServerLayerImpl(layerInfo, viewPort, eventBus);
 
 		// Scale between 6 and 20 is OK:
-		viewPort.applyScale(viewPort.getFixedScale(5)); // 32 -> NOK
+		viewPort.applyResolution(viewPort.getResolution(5)); // 32 -> NOK
 		Assert.assertFalse(layer.isShowing());
 
-		viewPort.applyScale(viewPort.getFixedScale(4)); // 16 -> OK
+		viewPort.applyResolution(viewPort.getResolution(4)); // 16 -> OK
 		Assert.assertTrue(layer.isShowing());
 
-		viewPort.applyScale(viewPort.getFixedScale(3)); // 8 -> OK
+		viewPort.applyResolution(viewPort.getResolution(3)); // 8 -> OK
 		Assert.assertTrue(layer.isShowing());
 
-		viewPort.applyScale(viewPort.getFixedScale(2)); // 4 -> NOK
+		viewPort.applyResolution(viewPort.getResolution(2)); // 4 -> NOK
 		Assert.assertFalse(layer.isShowing());
 
-		viewPort.applyScale(viewPort.getFixedScale(1)); // 2 -> NOK
+		viewPort.applyResolution(viewPort.getResolution(1)); // 2 -> NOK
 		Assert.assertFalse(layer.isShowing());
 
-		viewPort.applyScale(viewPort.getFixedScale(0)); // 1 -> NOK
+		viewPort.applyResolution(viewPort.getResolution(0)); // 1 -> NOK
 		Assert.assertFalse(layer.isShowing());
 
 		// Mark as invisible:
 		layer.setMarkedAsVisible(false);
-		viewPort.applyScale(viewPort.getFixedScale(5)); // 32 -> NOK
+		viewPort.applyResolution(viewPort.getResolution(5)); // 32 -> NOK
 		Assert.assertFalse(layer.isShowing());
 
-		viewPort.applyScale(viewPort.getFixedScale(4)); // 16 -> NOK
+		viewPort.applyResolution(viewPort.getResolution(4)); // 16 -> NOK
 		Assert.assertFalse(layer.isShowing());
 	}
 }

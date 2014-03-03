@@ -38,7 +38,7 @@ public class RasterServerLayerImpl extends AbstractServerLayer<ClientRasterLayer
 			@Override
 			public FixedScaleRenderer createNewScaleRenderer(int tileLevel, View view, HtmlContainer scaleContainer) {
 				return new RasterServerLayerScaleRenderer(RasterServerLayerImpl.this, tileLevel,
-						viewPort.getFixedScale(tileLevel), viewPort, scaleContainer);
+						viewPort.getResolution(tileLevel), viewPort, scaleContainer);
 			}
 
 		};

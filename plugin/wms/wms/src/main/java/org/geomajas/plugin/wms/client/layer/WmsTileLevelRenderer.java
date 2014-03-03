@@ -43,7 +43,7 @@ public class WmsTileLevelRenderer implements FixedScaleRenderer {
 
 	private final WmsLayer layer;
 
-	private final double scale;
+	private final double resolution;
 
 	private final Map<TileCode, Tile> tiles;
 
@@ -59,7 +59,7 @@ public class WmsTileLevelRenderer implements FixedScaleRenderer {
 		this.viewPort = viewPort;
 		this.container = container;
 		this.tiles = new HashMap<TileCode, Tile>();
-		this.scale = viewPort.getFixedScale(tileLevel);
+		this.resolution = viewPort.getResolution(tileLevel);
 	}
 
 	// ------------------------------------------------------------------------
@@ -76,7 +76,7 @@ public class WmsTileLevelRenderer implements FixedScaleRenderer {
 		if (layer.isShowing()) {
 			Bbox bounds = asBounds(view);
 			List<TileCode> tilesForBounds = WmsTileServiceImpl.getInstance().getTileCodesForBounds(viewPort,
-					layer.getTileConfig(), bounds, view.getScale());
+					layer.getTileConfig(), bounds, view.getResolution());
 			for (TileCode tileCode : tilesForBounds) {
 				if (!tiles.containsKey(tileCode)) {
 					Tile tile = createTile(tileCode);
@@ -110,7 +110,7 @@ public class WmsTileLevelRenderer implements FixedScaleRenderer {
 	// ------------------------------------------------------------------------
 
 	protected Bbox asBounds(View view) {
-		double deltaScale = view.getScale() / scale;
+		double deltaScale = view.getResolution() / resolution;
 		Bbox bounds = viewPort.asBounds(view);
 		return BboxService.scale(bounds, deltaScale);
 	}
@@ -133,10 +133,9 @@ public class WmsTileLevelRenderer implements FixedScaleRenderer {
 	}
 
 	private Bbox getScreenBounds(Bbox worldBox) {
-		return new Bbox(Math.round(scale * worldBox.getX()), -Math.round(scale * worldBox.getMaxY()), Math.round(scale
-				* worldBox.getMaxX())
-				- Math.round(scale * worldBox.getX()), Math.round(scale * worldBox.getMaxY())
-				- Math.round(scale * worldBox.getY()));
+		return new Bbox(Math.round(worldBox.getX() / resolution), -Math.round(worldBox.getMaxY() / resolution),
+				Math.round(worldBox.getMaxX() / resolution) - Math.round(worldBox.getX() / resolution),
+				Math.round(worldBox.getMaxY() / resolution) - Math.round(worldBox.getY() / resolution));
 	}
 
 	/**
@@ -146,7 +145,7 @@ public class WmsTileLevelRenderer implements FixedScaleRenderer {
 	 */
 	private class ImageCounter implements Callback<String, String> {
 
-		// In case of failure, we can't just sit and wait. Instead we immediately consider the scale level rendered.
+		// In case of failure, we can't just sit and wait. Instead we consider the resolution level rendered.
 		public void onFailure(String reason) {
 			GeomajasImpl.getInstance().getEventBus().fireEventFromSource(new TileLevelRenderedEvent(
 					WmsTileLevelRenderer.this), WmsTileLevelRenderer.this);

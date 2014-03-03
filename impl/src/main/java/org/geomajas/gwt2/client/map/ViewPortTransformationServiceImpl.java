@@ -21,7 +21,7 @@ import org.geomajas.gwt.client.map.RenderSpace;
 
 /**
  * Default implementation of the {@link ViewPortTransformationService}.
- * 
+ *
  * @author Pieter De Graef
  */
 public class ViewPortTransformationServiceImpl implements ViewPortTransformationService {
@@ -30,15 +30,16 @@ public class ViewPortTransformationServiceImpl implements ViewPortTransformation
 
 	/**
 	 * Initialize this service with the {@link ViewPort} it's supposed to provide transformations for.
-	 * 
-	 * @param viewPort
-	 *            The {@link ViewPort} object.
+	 *
+	 * @param viewPort The {@link ViewPort} object.
 	 */
 	public ViewPortTransformationServiceImpl(ViewPort viewPort) {
 		this.viewPort = viewPort;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * {@inheritDoc}
+	 */
 	public Coordinate transform(Coordinate coordinate, RenderSpace from, RenderSpace to) {
 		switch (from) {
 			case SCREEN:
@@ -59,7 +60,9 @@ public class ViewPortTransformationServiceImpl implements ViewPortTransformation
 		return coordinate;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * {@inheritDoc}
+	 */
 	public Geometry transform(Geometry geometry, RenderSpace from, RenderSpace to) {
 		switch (from) {
 			case SCREEN:
@@ -80,7 +83,9 @@ public class ViewPortTransformationServiceImpl implements ViewPortTransformation
 		return geometry;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * {@inheritDoc}
+	 */
 	public Bbox transform(Bbox bbox, RenderSpace from, RenderSpace to) {
 		switch (from) {
 			case SCREEN:
@@ -101,7 +106,9 @@ public class ViewPortTransformationServiceImpl implements ViewPortTransformation
 		return bbox;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * {@inheritDoc}
+	 */
 	public Matrix getTransformationMatrix(RenderSpace from, RenderSpace to) {
 		switch (from) {
 			case SCREEN:
@@ -114,15 +121,7 @@ public class ViewPortTransformationServiceImpl implements ViewPortTransformation
 			case WORLD:
 				switch (to) {
 					case SCREEN:
-						double scale = viewPort.getScale();
-						if (scale > 0.0) {
-							double deltaX = -(viewPort.getPosition().getX() * scale) + (double) viewPort.getMapWidth()
-									/ 2.0;
-							double deltaY = viewPort.getPosition().getY() * scale + (double) viewPort.getMapHeight()
-									/ 2.0;
-							return new Matrix(scale, 0.0, 0.0, -scale, deltaX, deltaY);
-						}
-						return new Matrix(1.0, 0.0, 0.0, 1.0, 0.0, 0.0);
+						return getScreentoWorldMatrix(viewPort.getResolution(), viewPort.getPosition(), true);
 					case WORLD:
 						return Matrix.IDENTITY;
 				}
@@ -130,7 +129,9 @@ public class ViewPortTransformationServiceImpl implements ViewPortTransformation
 		return null;
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * {@inheritDoc}
+	 */
 	public Matrix getTranslationMatrix(RenderSpace from, RenderSpace to) {
 		switch (from) {
 			case SCREEN:
@@ -143,15 +144,7 @@ public class ViewPortTransformationServiceImpl implements ViewPortTransformation
 			case WORLD:
 				switch (to) {
 					case SCREEN:
-						double scale = viewPort.getScale();
-						if (scale > 0.0) {
-							double deltaX = -(viewPort.getPosition().getX() * scale) + (double) viewPort.getMapWidth()
-									/ 2.0;
-							double deltaY = viewPort.getPosition().getY() * scale + (double) viewPort.getMapHeight()
-									/ 2.0;
-							return new Matrix(1.0, 0.0, 0.0, 1.0, deltaX, deltaY);
-						}
-						return Matrix.IDENTITY;
+						return getScreentoWorldMatrix(viewPort.getResolution(), viewPort.getPosition(), false);
 					case WORLD:
 						return Matrix.IDENTITY;
 				}
@@ -160,36 +153,44 @@ public class ViewPortTransformationServiceImpl implements ViewPortTransformation
 	}
 
 	@Override
-	public Matrix getTranslationMatrix(double scale) {
-		Coordinate targetDelta = getTranslationForView(new View(viewPort.getPosition(), scale));
-		return new Matrix(scale, 0.0, 0.0, -scale, targetDelta.getX(), targetDelta.getY());
+	public Matrix getTranslationMatrix(double resolution) {
+		return getScreentoWorldMatrix(resolution, viewPort.getPosition(), false);
 	}
 
 	@Override
 	public Matrix getTranslationMatrix(View view) {
-		Coordinate targetDelta = getTranslationForView(view);
-		return new Matrix(view.getScale(), 0.0, 0.0, -view.getScale(), targetDelta.getX(), targetDelta.getY());
+		return getScreentoWorldMatrix(view.getResolution(), view.getPosition(), false);
 	}
 
 	// -------------------------------------------------------------------------
 	// Private Transformation methods:
 	// -------------------------------------------------------------------------
 
-	private Coordinate getTranslationForView(View view) {
-		double deltaX = -(view.getPosition().getX() * view.getScale()) + (double) viewPort.getMapWidth() / 2.0;
-		double deltaY = view.getPosition().getY() * view.getScale() + (double) viewPort.getMapHeight() / 2.0;
-		return new Coordinate(deltaX, deltaY);
+	private double[] getWorldToScreenTranslation(double resolution, Coordinate position) {
+		double translateX = -(position.getX() / resolution) + ((double) viewPort.getMapWidth() / 2.0);
+		double translateY = (position.getY() / resolution) + ((double) viewPort.getMapHeight() / 2.0);
+		return new double[] { translateX, translateY };
+	}
+
+	private Matrix getScreentoWorldMatrix(double resolution, Coordinate position, boolean rescale) {
+		if (resolution <= 0 || position == null) {
+			return Matrix.IDENTITY;
+		}
+		double[] translation = getWorldToScreenTranslation(resolution, position);
+		if (rescale) {
+			return new Matrix(1 / resolution, 0.0, 0.0, -1 / resolution, translation[0], translation[1]);
+		}
+		return new Matrix(1.0, 0.0, 0.0, 1.0, translation[0], translation[1]);
 	}
 
 	private Coordinate worldToScreen(Coordinate coordinate) {
 		if (coordinate != null) {
-			double scale = viewPort.getScale();
-			double x = coordinate.getX() * scale;
-			double y = -coordinate.getY() * scale;
-			double translateX = -(viewPort.getPosition().getX() * scale) + (viewPort.getMapWidth() / 2);
-			double translateY = (viewPort.getPosition().getY() * scale) + (viewPort.getMapHeight() / 2);
-			x += translateX;
-			y += translateY;
+			double resolution = viewPort.getResolution();
+			double x = coordinate.getX() / resolution;
+			double y = -coordinate.getY() / resolution;
+			double[] translation = getWorldToScreenTranslation(resolution, viewPort.getPosition());
+			x += translation[0];
+			y += translation[1];
 			return new Coordinate(x, y);
 		}
 		return null;
@@ -230,13 +231,12 @@ public class ViewPortTransformationServiceImpl implements ViewPortTransformation
 
 	private Coordinate screenToWorld(Coordinate coordinate) {
 		if (coordinate != null) {
-			double scale = viewPort.getScale();
-			double inverseScale = 1.0 / scale;
-			double x = coordinate.getX() * inverseScale;
-			double y = -coordinate.getY() * inverseScale;
+			double resolution = viewPort.getResolution();
+			double x = coordinate.getX() * resolution;
+			double y = -coordinate.getY() * resolution;
 
-			double w = (double) viewPort.getMapWidth() / scale;
-			double h = (double) viewPort.getMapHeight() / scale;
+			double w = (double) viewPort.getMapWidth() * resolution;
+			double h = (double) viewPort.getMapHeight() * resolution;
 			// -cam: center X axis around cam. +bbox.w/2: to place the origin in the center of the screen
 			double translateX = -viewPort.getPosition().getX() + (w / 2);
 			double translateY = -viewPort.getPosition().getY() - (h / 2); // Inverted Y-axis here...
