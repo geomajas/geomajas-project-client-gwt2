@@ -35,8 +35,19 @@
 	<modules>
 		<module>impl</module>
 		<module>example-jar</module>
-		<!-- <module>example</module> -->
-		<module>documentation</module>
 	</modules>
+
+    <profiles>
+        <profile>
+            <id>full-build</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>example</module>
+            </modules>
+        </profile>
+    </profiles>
+
 
 </project>

@@ -28,7 +28,20 @@
 		<module>impl</module>
         <module>server-extension</module>
 		<module>example-jar</module>
-		<module>documentation</module>
 	</modules>
+
+    <profiles>
+        <profile>
+            <id>full-build</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>documentation</module>
+                <module>example</module>
+            </modules>
+        </profile>
+    </profiles>
+
 
 </project>

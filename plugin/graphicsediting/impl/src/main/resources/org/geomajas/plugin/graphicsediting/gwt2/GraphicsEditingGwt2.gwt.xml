@@ -10,6 +10,6 @@
   -->
 <module>
 	<inherits name='org.geomajas.graphics.Graphics'/>
-	<inherits name="org.geomajas.plugin.editing.gwt.EditingGwt2" />
+	<inherits name="org.geomajas.gwt2.plugin.editing.EditingGwt2" />
 </module>
 	
