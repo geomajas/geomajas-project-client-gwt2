@@ -11,11 +11,11 @@
 
 package org.geomajas.gwt2.client.map;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.client.map.MapConfiguration.CrsType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Test utility.
@@ -30,9 +30,9 @@ public class TestConfigUtil {
 		configuration.setMaxBounds(new Bbox(-100, -100, 200, 200));
 		List<Double> resolutions = new ArrayList<Double>();
 		resolutions.add(1.0);
-		resolutions.add(2.0);
-		resolutions.add(4.0);
-		resolutions.add(8.0);
+		resolutions.add(0.5);
+		resolutions.add(0.25);
+		resolutions.add(0.125);
 		configuration.setResolutions(resolutions);
 		return configuration;
 	}
