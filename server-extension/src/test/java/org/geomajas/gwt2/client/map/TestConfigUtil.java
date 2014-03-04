@@ -20,7 +20,7 @@ import java.util.List;
 
 /**
  * Test utility.
- * 
+ *
  * @author Pieter De Graef
  */
 public class TestConfigUtil {
@@ -33,7 +33,7 @@ public class TestConfigUtil {
 		mapConfig.setMinimumResolution(1 / mapInfo.getScaleConfiguration().getMaximumScale().getPixelPerUnit());
 		List<Double> resolutions = new ArrayList<Double>();
 		for (ScaleInfo scale : mapInfo.getScaleConfiguration().getZoomLevels()) {
-			resolutions.add(scale.getPixelPerUnit());
+			resolutions.add(1 / scale.getPixelPerUnit());
 		}
 		mapConfig.setResolutions(resolutions);
 		return mapConfig;
