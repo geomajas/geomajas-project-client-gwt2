@@ -38,7 +38,7 @@
             </activation>
             <modules>
                 <module>documentation</module>
-                <module>example</module>
+                <!--<module>example</module>-->
             </modules>
         </profile>
     </profiles>
