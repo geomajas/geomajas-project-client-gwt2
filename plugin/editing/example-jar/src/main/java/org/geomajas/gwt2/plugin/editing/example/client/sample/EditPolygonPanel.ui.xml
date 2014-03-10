@@ -54,6 +54,9 @@
 					<g:Button ui:field="stopBtn">
 						<ui:text from="{messages.generalStopEditing}" />
 					</g:Button>
+					<g:Button ui:field="suspendBtn">
+						<ui:text from="{messages.generalSuspend}" />
+					</g:Button>
 				</div>
 			</g:HTMLPanel>
 		</g:west>
