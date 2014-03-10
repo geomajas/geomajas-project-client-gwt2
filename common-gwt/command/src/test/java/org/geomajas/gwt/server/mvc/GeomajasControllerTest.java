@@ -21,14 +21,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockServletConfig;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
@@ -76,9 +73,10 @@ public class GeomajasControllerTest {
 		defaultController.setServletConfig(config);
 		defaultController.doPost(request, response);
 		// expect the message of the out-dated 1.3 policy of GWT
+		System.out.println(response.getContentAsString());
 		Assert.assertTrue(response.getContentAsString().contains(
-				"Type 'org.geomajas.gwt.client.command.GwtCommand' was not assignable"
-						+ " to 'com.google.gwt.user.client.rpc.IsSerializable'"));
+				"Type \\x27org.geomajas.gwt.client.command.GwtCommand\\x27 was not assignable to"
+						+ " \\x27com.google.gwt.user.client.rpc.IsSerializable\\x27"));
 	}
 
 	@Test
@@ -100,7 +98,7 @@ public class GeomajasControllerTest {
 		customController.doPost(request, response);
 		// expect the message that the type is missing from our policy file
 		Assert.assertTrue(response.getContentAsString().contains(
-				"Type 'org.geomajas.gwt.client.command.GwtCommand' was not included in the set of types"));
+				"Type \\x27org.geomajas.gwt.client.command.GwtCommand\\x27 was not included in the set of types"));
 	}
 
 }

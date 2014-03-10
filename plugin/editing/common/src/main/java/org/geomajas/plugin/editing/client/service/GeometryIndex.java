@@ -98,6 +98,28 @@ public class GeometryIndex {
 	public int getValue() {
 		return value;
 	}
+	
+	/**
+	 * Get the index values of all levels.
+	 * 
+	 * @return array of indexes, one per level
+	 */
+	public int[] getAllValues() {
+		int depth = 0;
+		GeometryIndex child = this;
+		while (child != null) {
+			depth++;
+			child = child.getChild();
+		}
+		int[] values = new int[depth];
+		child = this;
+		int i = 0;
+		while (child != null) {
+			values[i++] = child.getValue();
+			child = child.getChild();
+		}
+		return values;
+	}
 
 	@Override
 	public boolean equals(Object other) {

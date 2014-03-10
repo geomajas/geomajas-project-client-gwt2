@@ -27,6 +27,7 @@ import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditValidationHandler;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 
 import com.google.gwt.event.shared.EventBus;
@@ -77,6 +78,8 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	private Coordinate tentativeMoveLocation;
 
 	private boolean started;
+
+	private boolean validating;
 
 	// ------------------------------------------------------------------------
 	// Public constructors:
@@ -134,6 +137,10 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 		return eventBus.addHandler(GeometryEditTentativeMoveHandler.TYPE, handler);
 	}
 
+	@Override
+	public HandlerRegistration addGeometryEditValidationHandler(GeometryEditValidationHandler handler) {
+		return eventBus.addHandler(GeometryEditValidationHandler.TYPE, handler);
+	}
 	// ------------------------------------------------------------------------
 	// Methods concerning Workflow:
 	// ------------------------------------------------------------------------
@@ -150,7 +157,7 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 		started = true;
 		eventBus.fireEvent(new GeometryEditStartEvent(geometry));
 	}
-	
+
 	@Override
 	public boolean isStarted() {
 		return started;
@@ -182,9 +189,6 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	@Override
 	public void setEditingState(GeometryEditState state) {
 		this.state = state;
-		if (state != GeometryEditState.INSERTING) {
-			setInsertIndex(null);
-		}
 		eventBus.fireEvent(new GeometryEditChangeStateEvent(state));
 	}
 
@@ -244,7 +248,7 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 
 	/**
 	 * Get access to the event bus.
-	 *
+	 * 
 	 * @return event bus
 	 */
 	protected EventBus getEventBus() {
@@ -316,4 +320,15 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	public GeometryIndex addEmptyChild(GeometryIndex index) throws GeometryOperationFailedException {
 		return operationService.addEmptyChild(index);
 	}
+
+	@Override
+	public void setValidating(boolean validating) {
+		this.validating = validating;
+	}
+
+	@Override
+	public boolean isValidating() {
+		return validating;
+	}
+
 }

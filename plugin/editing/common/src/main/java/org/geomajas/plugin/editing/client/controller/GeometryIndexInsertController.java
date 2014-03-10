@@ -26,7 +26,6 @@ import org.geomajas.plugin.editing.client.snap.SnapService;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.user.client.Window;
 
 /**
  * Controller that inserts vertices by clicking/tapping on the map.
@@ -66,7 +65,7 @@ public class GeometryIndexInsertController extends AbstractGeometryIndexControll
 					service.setEditingState(GeometryEditState.IDLE);
 				}
 			} catch (GeometryOperationFailedException e) {
-				Window.alert("Exception during editing: " + e.getMessage());
+				//ignore, nothing we can do here (validation errors can be shown to the user)
 			}
 		}
 	}
