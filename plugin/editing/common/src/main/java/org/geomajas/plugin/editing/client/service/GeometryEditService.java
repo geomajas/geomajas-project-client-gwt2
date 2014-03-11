@@ -77,19 +77,19 @@ public interface GeometryEditService extends GeometryIndexOperationService {
 	HandlerRegistration addGeometryEditStopHandler(GeometryEditStopHandler handler);
 
 	/**
-	 * Register a {@link GeometryEditSuspendHandler} to listen to events that signal the editing process has been suspended.
+	 * Register a {@link GeometryEditSuspendHandler} to listen to events that signal the editing process has been
+	 * suspended.
 	 * 
-	 * @param handler
-	 *            The {@link GeometryEditSuspendHandler} to add as listener.
+	 * @param handler The {@link GeometryEditSuspendHandler} to add as listener.
 	 * @return The registration of the handler.
 	 */
 	HandlerRegistration addGeometryEditSuspendHandler(GeometryEditSuspendHandler handler);
 
 	/**
-	 * Register a {@link GeometryEditResumeHandler} to listen to events that signal the editing process has been resumed.
+	 * Register a {@link GeometryEditResumeHandler} to listen to events that signal the editing process has been
+	 * resumed.
 	 * 
-	 * @param handler
-	 *            The {@link GeometryEditResumeHandler} to add as listener.
+	 * @param handler The {@link GeometryEditResumeHandler} to add as listener.
 	 * @return The registration of the handler.
 	 */
 	HandlerRegistration addGeometryEditResumeHandler(GeometryEditResumeHandler handler);

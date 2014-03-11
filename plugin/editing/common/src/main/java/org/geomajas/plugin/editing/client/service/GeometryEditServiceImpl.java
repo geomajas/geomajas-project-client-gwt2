@@ -174,13 +174,13 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 
 	@Override
 	public void suspend() {
-		if(started) {
-			if(suspended) {
+		if (started) {
+			if (suspended) {
 				throw new IllegalStateException("The editing session is already suspended");
 			} else {
 				suspended = true;
 				eventBus.fireEvent(new GeometryEditSuspendEvent(geometry));
-			}		
+			}
 		} else {
 			throw new IllegalStateException("The editing session is not started yet. Call start() before suspend()");
 		}
@@ -192,7 +192,7 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 
 	@Override
 	public void resume() {
-		if(suspended) {
+		if (suspended) {
 			suspended = false;
 			eventBus.fireEvent(new GeometryEditResumeEvent(geometry));
 		} else {
