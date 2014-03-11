@@ -101,6 +101,7 @@ public final class GeomajasImpl implements Geomajas {
 	 * to override the default styles, then override this factory through deferred binding.
 	 *
 	 * @return A factory for creating resource bundles for this artifact.
+	 * @since 2.1.0
 	 */
 	public static GeomajasImplClientBundleFactory getClientBundleFactory() {
 		if (bundleFactory == null) {
