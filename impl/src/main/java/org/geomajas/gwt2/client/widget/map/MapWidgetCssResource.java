@@ -18,7 +18,7 @@ import org.geomajas.annotation.Api;
  * CSS resource bundle for the {@link org.geomajas.gwt2.client.widget.control.pan.PanControl} widget.
  * 
  * @author Pieter De Graef
- * @since 2.0.0
+ * @since 2.1.0
  */
 @Api(allMethods = true)
 public interface MapWidgetCssResource extends CssResource {
