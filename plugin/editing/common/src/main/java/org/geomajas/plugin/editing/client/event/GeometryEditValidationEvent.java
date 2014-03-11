@@ -13,7 +13,7 @@ package org.geomajas.plugin.editing.client.event;
 
 import java.util.Collections;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.geometry.service.GeometryValidationState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
@@ -23,9 +23,9 @@ import org.geomajas.plugin.editing.client.service.GeometryIndex;
  * case.
  * 
  * @author Jan De Moerloose
- * @since 2.0.0
+ * @since 2.1.0
  */
-@FutureApi(allMethods = true)
+@Api(allMethods = true)
 public class GeometryEditValidationEvent extends AbstractGeometryEditEvent<GeometryEditValidationHandler> {
 
 	private GeometryValidationState state;

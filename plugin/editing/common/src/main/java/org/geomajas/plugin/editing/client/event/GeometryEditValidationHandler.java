@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.editing.client.event;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 import org.geomajas.annotation.UserImplemented;
 
 import com.google.gwt.event.shared.EventHandler;
@@ -22,9 +22,9 @@ import com.google.gwt.event.shared.GwtEvent;
  * (vertices/edges/sub-geometries) where coordinates have been inserted.
  * 
  * @author Jan De Moerloose
- * @since 2.0.0
+ * @since 2.1.0
  */
-@FutureApi(allMethods = true)
+@Api(allMethods = true)
 @UserImplemented
 public interface GeometryEditValidationHandler extends EventHandler {
 
