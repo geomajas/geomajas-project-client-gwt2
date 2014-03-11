@@ -11,12 +11,6 @@
 
 package org.geomajas.gwt2.client.widget.control.scalebar;
 
-import org.geomajas.annotation.Api;
-import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
-import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
-import org.geomajas.gwt2.client.map.MapPresenter;
-import org.geomajas.gwt2.client.widget.AbstractMapWidget;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Style;
@@ -25,6 +19,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.annotation.Api;
+import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
 import org.geomajas.gwt2.client.map.MapPresenter;
