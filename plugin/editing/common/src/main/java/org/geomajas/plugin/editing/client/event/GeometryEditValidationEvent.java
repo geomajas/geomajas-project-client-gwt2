@@ -33,9 +33,9 @@ public class GeometryEditValidationEvent extends AbstractGeometryEditEvent<Geome
 	/**
 	 * Main constructor.
 	 * 
-	 * @param geometry geometry
-	 * @param state 
-	 * @param indices indices
+	 * @param geometry geometry that is edited
+	 * @param index index that is edited
+	 * @param state state of editing
 	 */
 	public GeometryEditValidationEvent(Geometry geometry, GeometryIndex index, GeometryValidationState state) {
 		super(geometry, Collections.singletonList(index));
@@ -51,14 +51,28 @@ public class GeometryEditValidationEvent extends AbstractGeometryEditEvent<Geome
 		return GeometryEditValidationHandler.TYPE;
 	}
 
+	/**
+	 * the handler.
+	 * @param handler
+	 */
 	protected void dispatch(GeometryEditValidationHandler handler) {
 		handler.onGeometryEditValidation(this);
 	}
 
+	/**
+	 * Get the {@link GeometryIndex} that is changed in this event.
+	 *
+	 * @return index
+	 */
 	public GeometryIndex getIndex() {
 		return getIndices().get(0);
 	}
-	
+
+	/**
+	 * Get the {@link GeometryValidationState} of current event.
+	 *
+	 * @return state
+	 */
 	public GeometryValidationState getValidationState() {
 		return state;
 	}

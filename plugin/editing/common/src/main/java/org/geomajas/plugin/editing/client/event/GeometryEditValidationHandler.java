@@ -28,6 +28,9 @@ import com.google.gwt.event.shared.GwtEvent;
 @UserImplemented
 public interface GeometryEditValidationHandler extends EventHandler {
 
+	/**
+	 * The TYPE related to this handler.
+	 */
 	GwtEvent.Type<GeometryEditValidationHandler> TYPE = new GwtEvent.Type<GeometryEditValidationHandler>();
 
 	/**

@@ -21,5 +21,4 @@ public interface EditingCommonMessages extends Messages {
 
 	String exceptionDuringEditing();
 
-	String intersectionException();
 }
