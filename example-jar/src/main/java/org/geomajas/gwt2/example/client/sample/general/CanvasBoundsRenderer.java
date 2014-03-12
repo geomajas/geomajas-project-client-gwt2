@@ -10,9 +10,6 @@
  */
 package org.geomajas.gwt2.example.client.sample.general;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.gfx.CanvasContainer;
@@ -22,6 +19,9 @@ import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.client.map.render.LayerRenderer;
 import org.geomajas.gwt2.client.map.render.RenderingInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Renders bounds on HTML5 canvas.
@@ -52,7 +52,7 @@ public class CanvasBoundsRenderer implements LayerRenderer {
 	@Override
 	public void render(RenderingInfo renderingInfo) {
 		if (isEnabled()) {
-			double scale = renderingInfo.getView().getScale();
+			double scale = renderingInfo.getView().getResolution();
 			CanvasShape shape = getBounds(renderingInfo);
 			canvasContainer.addShape(shape);
 			shapes.add(shape);
@@ -75,9 +75,9 @@ public class CanvasBoundsRenderer implements LayerRenderer {
 
 	private CanvasShape getBounds(RenderingInfo renderingInfo) {
 		Coordinate center = renderingInfo.getView().getPosition();
-		double scale = renderingInfo.getView().getScale();
-		double width = viewPort.getMapWidth() / scale;
-		double height = viewPort.getMapHeight() / scale;
+		double resolution = renderingInfo.getView().getResolution();
+		double width = viewPort.getMapWidth() * resolution;
+		double height = viewPort.getMapHeight() * resolution;
 		Bbox bounds = new Bbox(center.getX() - 0.5 * width, center.getY() - 0.5 * height, width, height);
 		CanvasRect rect = new CanvasRect(bounds);
 		rect.setFillStyle("rgba(255,255,255,0)");

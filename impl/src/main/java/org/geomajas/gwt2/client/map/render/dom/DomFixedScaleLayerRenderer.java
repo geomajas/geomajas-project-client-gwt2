@@ -40,7 +40,6 @@ import org.geomajas.gwt2.client.map.render.dom.container.HtmlGroup;
 import org.geomajas.gwt2.client.service.DomService;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -157,12 +156,15 @@ public abstract class DomFixedScaleLayerRenderer implements LayerRenderer {
 		if (renderingInfo.getTrajectory() != null) {
 			targetView = renderingInfo.getTrajectory().getView(1.0);
 		}
-		prepareView(container, targetView);
+		try {
+			prepareView(container, targetView);
+		} catch (Exception e) {
+		}
 
 		// Now render the current view:
 		try {
 			TileLevelRenderer renderer = getRendererForView(renderingInfo.getView());
-			renderTileLevel(renderer, renderingInfo.getView().getScale());
+			renderTileLevel(renderer, renderingInfo.getView().getResolution());
 			cleanupCache();
 		} catch (Exception e) {
 		}
@@ -199,7 +201,7 @@ public abstract class DomFixedScaleLayerRenderer implements LayerRenderer {
 	// ------------------------------------------------------------------------
 
 	protected TileLevelRenderer getRendererForView(View view) throws IllegalStateException {
-		int tileLevel = getTileLevel(view.getScale());
+		int tileLevel = getTileLevel(view.getResolution());
 
 		// Do we have a renderer at the tileLevel that is rendered?
 		TileLevelRenderer renderer = getOrCreateTileLevelRenderer(tileLevel, view);
@@ -280,7 +282,7 @@ public abstract class DomFixedScaleLayerRenderer implements LayerRenderer {
 					}
 
 					// Render this tile level:
-					renderTileLevel(renderer, viewPort.getScale());
+					renderTileLevel(renderer, viewPort.getResolution());
 				}
 			}
 		});
@@ -288,13 +290,6 @@ public abstract class DomFixedScaleLayerRenderer implements LayerRenderer {
 		tileLevelRenderers.put(tileLevel, renderer);
 		tileLevelContainers.put(tileLevel, tileLevelContainer);
 		return renderer;
-	}
-
-	protected double getScale(int tileLevel) {
-		if (layer instanceof TileBasedLayer) {
-			return ((TileBasedLayer) layer).getTileLevels().get(tileLevel);
-		}
-		return viewPort.getFixedScale(tileLevel);
 	}
 
 	protected void renderTileLevel(TileLevelRenderer renderer, double currentScale) {
@@ -307,7 +302,7 @@ public abstract class DomFixedScaleLayerRenderer implements LayerRenderer {
 		Matrix transformation = viewPort.getTransformationService().getTranslationMatrix(currentScale);
 		HtmlContainer tileLevelContainer = tileLevelContainers.get(renderer.getTileLevel());
 		Coordinate origin = tileLevelContainer.getOrigin();
-		tileLevelContainer.applyScale(currentScale / rendererScale, 0, 0);
+		tileLevelContainer.applyScale(rendererResolution / currentResolution, 0, 0);
 		double left = transformation.getDx() - origin.getX() * tileLevelContainer.getScale();
 		double top = transformation.getDy() - origin.getY() * tileLevelContainer.getScale();
 		tileLevelContainer.setLeft((int) Math.round(left));

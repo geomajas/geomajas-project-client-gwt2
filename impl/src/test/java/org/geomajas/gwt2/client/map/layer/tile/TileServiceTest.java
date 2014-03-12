@@ -57,32 +57,32 @@ public class TileServiceTest {
 	@Test
 	public void testTileCodeForLocation() {
 		// Test scale 8: tileWidth=25 (200/8), origin=[-100,-100]:
-		TileCode tileCode = tileService.getTileCodeForLocation(viewPort, tileConfig, new Coordinate(0, 0), 9);
+		TileCode tileCode = tileService.getTileCodeForLocation(viewPort, tileConfig, new Coordinate(0, 0), 0.1);
 		Assert.assertNotNull(tileCode);
 		Assert.assertEquals(3, tileCode.getTileLevel());
 		Assert.assertEquals(4, tileCode.getX());
 		Assert.assertEquals(4, tileCode.getY());
-		tileCode = tileService.getTileCodeForLocation(viewPort, tileConfig, new Coordinate(-1, -1), 8);
+		tileCode = tileService.getTileCodeForLocation(viewPort, tileConfig, new Coordinate(-1, -1), 0.125);
 		Assert.assertEquals(3, tileCode.getTileLevel());
 		Assert.assertEquals(3, tileCode.getX());
 		Assert.assertEquals(3, tileCode.getY());
 
 		// Test scale 4: tileWidth=50 (200/4), origin=[-100,-100]:
-		tileCode = tileService.getTileCodeForLocation(viewPort, tileConfig, new Coordinate(0, 0), 4);
+		tileCode = tileService.getTileCodeForLocation(viewPort, tileConfig, new Coordinate(0, 0), 0.25);
 		Assert.assertEquals(2, tileCode.getTileLevel());
 		Assert.assertEquals(2, tileCode.getX());
 		Assert.assertEquals(2, tileCode.getY());
-		tileCode = tileService.getTileCodeForLocation(viewPort, tileConfig, new Coordinate(-1, -1), 4);
+		tileCode = tileService.getTileCodeForLocation(viewPort, tileConfig, new Coordinate(-1, -1), 0.25);
 		Assert.assertEquals(2, tileCode.getTileLevel());
 		Assert.assertEquals(1, tileCode.getX());
 		Assert.assertEquals(1, tileCode.getY());
 
 		// Test scale 2: tileWidth=100 (200/2), origin=[-100,-100]:
-		tileCode = tileService.getTileCodeForLocation(viewPort, tileConfig, new Coordinate(0, 0), 2);
+		tileCode = tileService.getTileCodeForLocation(viewPort, tileConfig, new Coordinate(0, 0), 0.5);
 		Assert.assertEquals(1, tileCode.getTileLevel());
 		Assert.assertEquals(1, tileCode.getX());
 		Assert.assertEquals(1, tileCode.getY());
-		tileCode = tileService.getTileCodeForLocation(viewPort, tileConfig, new Coordinate(-1, -1), 2);
+		tileCode = tileService.getTileCodeForLocation(viewPort, tileConfig, new Coordinate(-1, -1), 0.5);
 		Assert.assertEquals(1, tileCode.getTileLevel());
 		Assert.assertEquals(0, tileCode.getX());
 		Assert.assertEquals(0, tileCode.getY());
@@ -160,10 +160,10 @@ public class TileServiceTest {
 	@Test
 	public void testTileCodesForBounds() {
 		// Scale 8: TileLevel=0 => tileWidth=200/8=25
-		List<TileCode> tiles = tileService.getTileCodesForBounds(viewPort, tileConfig, new Bbox(0, 0, 50, 50), 8);
+		List<TileCode> tiles = tileService.getTileCodesForBounds(viewPort, tileConfig, new Bbox(0, 0, 50, 50), 0.125);
 		Assert.assertEquals(9, tiles.size());
 
-		tiles = tileService.getTileCodesForBounds(viewPort, tileConfig, new Bbox(0, 0, 49.9, 49.9), 8);
+		tiles = tileService.getTileCodesForBounds(viewPort, tileConfig, new Bbox(0, 0, 49.9, 49.9), 0.125);
 		Assert.assertEquals(4, tiles.size());
 		Assert.assertEquals(3, tiles.get(0).getTileLevel());
 		Assert.assertEquals(4, tiles.get(0).getX());
@@ -173,7 +173,7 @@ public class TileServiceTest {
 		Assert.assertEquals(5, tiles.get(3).getY());
 
 		// Scale 4: TileLevel=1 => tileWidth=200/4=50
-		tiles = tileService.getTileCodesForBounds(viewPort, tileConfig, new Bbox(0, 0, 99.9, 99.9), 4);
+		tiles = tileService.getTileCodesForBounds(viewPort, tileConfig, new Bbox(0, 0, 99.9, 99.9), 0.25);
 		Assert.assertEquals(4, tiles.size());
 		Assert.assertEquals(2, tiles.get(0).getTileLevel());
 		Assert.assertEquals(2, tiles.get(0).getX());
@@ -183,7 +183,7 @@ public class TileServiceTest {
 		Assert.assertEquals(3, tiles.get(3).getY());
 
 		// Scale 2: TileLevel=2 => tileWidth=200/2=100
-		tiles = tileService.getTileCodesForBounds(viewPort, tileConfig, new Bbox(-100, -100, 199.9, 199.9), 2);
+		tiles = tileService.getTileCodesForBounds(viewPort, tileConfig, new Bbox(-100, -100, 199.9, 199.9), 0.5);
 		Assert.assertEquals(4, tiles.size());
 		Assert.assertEquals(1, tiles.get(0).getTileLevel());
 		Assert.assertEquals(0, tiles.get(0).getX());

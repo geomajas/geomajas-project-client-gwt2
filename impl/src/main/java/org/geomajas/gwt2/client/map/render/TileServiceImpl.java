@@ -43,12 +43,11 @@ public class TileServiceImpl implements TileService {
 			return codes;
 		}
 
-		int tileLevel = viewPort.getFixedScaleIndex(scale);
-		double actualScale = viewPort.getFixedScale(tileLevel);
+		int tileLevel = viewPort.getResolutionIndex(resolution);
+		double actualResolution = viewPort.getResolution(tileLevel);
 
-		double resolution = 1 / actualScale;
-		double worldTileWidth = tileConfig.getTileWidth() * resolution;
-		double worldTileHeight = tileConfig.getTileHeight() * resolution;
+		double worldTileWidth = tileConfig.getTileWidth() * actualResolution;
+		double worldTileHeight = tileConfig.getTileHeight() * actualResolution;
 
 		Coordinate tileOrigin = tileConfig.getTileOrigin();
 		int ymin = (int) Math.floor((bounds.getY() - tileOrigin.getY()) / worldTileHeight);
@@ -75,8 +74,8 @@ public class TileServiceImpl implements TileService {
 	}
 
 	@Override
-	public Bbox getWorldBoundsForTile(ViewPort viewPort, TileConfiguration tileConfig, TileCode tileCode) {
-		double resolution = 1 / viewPort.getFixedScale(tileCode.getTileLevel());
+	public Bbox getWorldBoundsForTile(ViewPort viewPort, WmsTileConfiguration tileConfig, TileCode tileCode) {
+		double resolution = viewPort.getResolution(tileCode.getTileLevel());
 		double worldTileWidth = tileConfig.getTileWidth() * resolution;
 		double worldTileHeight = tileConfig.getTileHeight() * resolution;
 
@@ -86,13 +85,12 @@ public class TileServiceImpl implements TileService {
 	}
 
 	@Override
-	public TileCode getTileCodeForLocation(ViewPort viewPort, TileConfiguration tileConfig, Coordinate location,
-			double scale) {
-		int tileLevel = viewPort.getFixedScaleIndex(scale);
-		double actualScale = viewPort.getFixedScale(tileLevel);
-		double resolution = 1 / actualScale;
-		double worldTileWidth = tileConfig.getTileWidth() * resolution;
-		double worldTileHeight = tileConfig.getTileHeight() * resolution;
+	public TileCode getTileCodeForLocation(ViewPort viewPort, WmsTileConfiguration tileConfig, Coordinate location,
+			double resolution) {
+		int tileLevel = viewPort.getResolutionIndex(resolution);
+		double actualResolution = viewPort.getResolution(tileLevel);
+		double worldTileWidth = tileConfig.getTileWidth() * actualResolution;
+		double worldTileHeight = tileConfig.getTileHeight() * actualResolution;
 
 		Coordinate tileOrigin = tileConfig.getTileOrigin();
 		int x = (int) Math.floor((location.getX() - tileOrigin.getX()) / worldTileWidth);

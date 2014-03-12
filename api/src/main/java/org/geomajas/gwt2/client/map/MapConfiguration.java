@@ -33,6 +33,7 @@ public interface MapConfiguration {
 	 * @author Pieter De Graef
 	 */
 	public enum CrsType {
+
 		/**
 		 * Defines a coordinate system of which the units are expressed in meters, such as Mercator.
 		 */
@@ -115,12 +116,12 @@ public interface MapConfiguration {
 	Hint<Double> UNIT_LENGTH = new Hint<Double>("unit_length");
 
 	/**
-	 * {@link Hint} that determines the maximum scale (maximum zoom in). This value is not required if a list of
-	 * resolutions is passed.  Do not change this value once the map has been initialized.
+	 * {@link Hint} that determines the minimum resolution (maximum zoom in). This value is not required if a list of
+	 * resolutions is passed. Do not change this value once the map has been initialized.
 	 *
 	 * @@since 2.0.0
 	 */
-	Hint<Double> MAXIMUM_SCALE = new Hint<Double>("maximum_scale");
+	Hint<Double> MINIMUM_RESOLUTION = new Hint<Double>("minimum_resolution");
 
 	/**
 	 * {@link Hint} that determines the set of resolutions used as fixed scales in the {@link ViewPort}. This list is
@@ -215,25 +216,25 @@ public interface MapConfiguration {
 	 * to arbitrary scale levels but will instead snap to one of the scale levels defined in this list when zooming. Do
 	 * not change this value once the map has been initialized.
 	 *
-	 * @param resolutions a list of resolutions (unit/pixel or pure number if relative)
+	 * @param resolutions a list of resolutions (unit/pixel)
 	 */
 	void setResolutions(List<Double> resolutions);
 
 	/**
-	 * Convenience method that returns the maximum scale (maximum zoom in) of this map. This value is only required if
-	 * no resolutions are specified.
+	 * Convenience method that returns the minimum resolution (maximum zoom in) of this map. This value is only required
+	 * if no list of resolutions is specified.
 	 *
-	 * @return the maximum scale (pixels/unit)
+	 * @return the minimum resolution (unit/pixel)
 	 */
-	double getMaximumScale();
+	double getMinimumResolution();
 
 	/**
-	 * Convenience method that sets the maximum scale (maximum zoom in) of this map. This value is only required if no
-	 * resolutions are specified. Do not change this value once the map has been initialized.
+	 * Convenience method that sets the  minimum resolution (maximum zoom in) of this map. This value is only required
+	 * if no resolutions are specified. Do not change this value once the map has been initialized.
 	 *
-	 * @param maximumScale The maximum scale.
+	 * @param minimumResolution The minimum resolution (unit/pixel).
 	 */
-	void setMaximumScale(double maximumScale);
+	void setMinimumResolution(double minimumResolution);
 
 	/**
 	 * Convenience method that gets the unit length of this map in actual meters. This is an approximate value in the

@@ -11,11 +11,10 @@
 
 package org.geomajas.gwt2.client.map.render.dom;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.google.gwt.core.client.Callback;
+import com.google.web.bindery.event.shared.EventBus;
+import com.google.web.bindery.event.shared.HandlerRegistration;
+import com.google.web.bindery.event.shared.SimpleEventBus;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.service.BboxService;
@@ -29,14 +28,14 @@ import org.geomajas.gwt2.client.map.render.TileLevelRenderedEvent;
 import org.geomajas.gwt2.client.map.render.TileLevelRenderedHandler;
 import org.geomajas.layer.tile.TileCode;
 
-import com.google.gwt.core.client.Callback;
-import com.google.web.bindery.event.shared.EventBus;
-import com.google.web.bindery.event.shared.HandlerRegistration;
-import com.google.web.bindery.event.shared.SimpleEventBus;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * Tiled scale presenter for a vector layer. It displays a single tile level for a single ector layer.
- * 
+ * Tiled resolution presenter for a vector layer. It displays a single tile level for a single vector layer.
+ *
  * @author Pieter De Graef
  */
 public class VectorServerLayerScaleRenderer implements TileLevelRenderer {
@@ -51,7 +50,7 @@ public class VectorServerLayerScaleRenderer implements TileLevelRenderer {
 
 	private final int tileLevel;
 
-	private final double scale;
+	private final double resolution;
 
 	private final Map<String, VectorTilePresenter> tiles;
 
@@ -68,11 +67,11 @@ public class VectorServerLayerScaleRenderer implements TileLevelRenderer {
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	public VectorServerLayerScaleRenderer(VectorServerLayer layer, int tileLevel, double scale, ViewPort viewPort,
+	public VectorServerLayerScaleRenderer(VectorServerLayer layer, int tileLevel, double resolution, ViewPort viewPort,
 			HtmlContainer container) {
 		this.layer = layer;
 		this.tileLevel = tileLevel;
-		this.scale = scale;
+		this.resolution = resolution;
 		this.viewPort = viewPort;
 		this.container = container;
 		this.layerBounds = layer.getLayerInfo().getMaxExtent();
@@ -139,7 +138,7 @@ public class VectorServerLayerScaleRenderer implements TileLevelRenderer {
 	private VectorTilePresenter addTile(TileCode tileCode) {
 		VectorTilePresenter tilePresenter = tiles.get(tileCode.toString());
 		if (tilePresenter == null) {
-			tilePresenter = new VectorTilePresenter(layer, container, tileCode.clone(), scale, viewPort.getCrs(),
+			tilePresenter = new VectorTilePresenter(layer, container, tileCode.clone(), resolution, viewPort.getCrs(),
 					new TileLoadCallback());
 			nrLoadingTiles++;
 			tiles.put(tileCode.toString(), tilePresenter);
@@ -168,7 +167,7 @@ public class VectorServerLayerScaleRenderer implements TileLevelRenderer {
 
 	// TODO Move to abstract?
 	protected Bbox asBounds(View view) {
-		double deltaScale = view.getScale() / scale;
+		double deltaScale = view.getResolution() / resolution;
 		Bbox bounds = viewPort.asBounds(view);
 		return scale(bounds, deltaScale);
 	}
@@ -181,10 +180,9 @@ public class VectorServerLayerScaleRenderer implements TileLevelRenderer {
 	}
 
 	/**
-	 * Saves the complete array of TileCode objects for the given bounds (and the current scale).
-	 * 
-	 * @param bounds
-	 *            view bounds
+	 * Saves the complete array of TileCode objects for the given bounds (and the current resolution).
+	 *
+	 * @param bounds view bounds
 	 * @return list of tiles in these bounds
 	 */
 	private List<TileCode> calcCodesForBounds(Bbox bounds) {
@@ -192,8 +190,8 @@ public class VectorServerLayerScaleRenderer implements TileLevelRenderer {
 
 		// Calculate tile width and height for tileLevel=currentTileLevel
 		double div = Math.pow(2, currentTileLevel); // tile level must be correct!
-		double tileWidth = Math.ceil((scale * layerBounds.getWidth()) / div) / scale;
-		double tileHeight = Math.ceil((scale * layerBounds.getHeight()) / div) / scale;
+		double tileWidth = Math.ceil(layerBounds.getWidth() / (div * resolution)) * resolution;
+		double tileHeight = Math.ceil(layerBounds.getHeight() / (div * resolution)) * resolution;
 
 		// For safety (to prevent division by 0):
 		List<TileCode> codes = new ArrayList<TileCode>();
@@ -225,9 +223,8 @@ public class VectorServerLayerScaleRenderer implements TileLevelRenderer {
 
 	/**
 	 * Calculate the best tile level to use for a certain view-bounds.
-	 * 
-	 * @param bounds
-	 *            view bounds
+	 *
+	 * @param bounds view bounds
 	 * @return best tile level for view bounds
 	 */
 	private int calculateTileLevel(Bbox bounds) {
@@ -235,7 +232,7 @@ public class VectorServerLayerScaleRenderer implements TileLevelRenderer {
 		double baseY = layerBounds.getHeight();
 		// choose the tile level so the area is between 256*256 and 512*512 pixels
 		double baseArea = baseX * baseY;
-		double osmArea = 256 * 256 / (scale * scale);
+		double osmArea = 256 * 256 * (resolution * resolution);
 		int tileLevel = (int) Math.floor(Math.log(baseArea / osmArea) / Math.log(4.0));
 		if (tileLevel < 0) {
 			tileLevel = 0;
@@ -249,7 +246,7 @@ public class VectorServerLayerScaleRenderer implements TileLevelRenderer {
 
 	/**
 	 * Callback that keeps track of the number of tiles still underway.
-	 * 
+	 *
 	 * @author Pieter De Graef
 	 */
 	private class TileLoadCallback implements Callback<String, String> {

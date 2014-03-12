@@ -11,13 +11,13 @@
 
 package org.geomajas.plugin.wms.client.layer;
 
-import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.client.event.LayerStyleChangedEvent;
 import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.layer.LegendConfig;
 import org.geomajas.plugin.wms.client.service.WmsService.WmsVersion;
+
+import java.io.Serializable;
 
 /**
  * General WMS configuration object. The values herein will be translated into parameters for the WMS service. Note that
@@ -51,9 +51,9 @@ public class WmsLayerConfiguration implements Serializable {
 
 	private WmsServiceVendor wmsServiceVendor = WmsServiceVendor.UNSPECIFIED;
 
-	private double minimumScale; // maximum zoom out
+	private double minimumResolution;
 
-	private double maximumScale; // maximum zoom in
+	private double maximumResolution;
 
 	private Boolean useInvertedAxis;
 
@@ -239,39 +239,39 @@ public class WmsLayerConfiguration implements Serializable {
 	}
 
 	/**
-	 * Get the minimum scale for which this layer should be visible (maximum zoom out).
+	 * Get the minimum resolution for which this layer should be visible (maximum zoom in).
 	 *
-	 * @return the minimum scale (unit type is defined in )
+	 * @return the minimum resolution
 	 */
-	public double getMinimumScale() {
-		return minimumScale;
+	public double getMinimumResolution() {
+		return minimumResolution;
 	}
 
 	/**
-	 * Set the minimum scale for which this layer should be visible (maximum zoom out).
+	 * Set the minimum resolution for which this layer should be visible (maximum zoom in).
 	 *
-	 * @param minimumScale the minimum scale
+	 * @param minimumResolution the minimum resolution
 	 */
-	public void setMinimumScale(double minimumScale) {
-		this.minimumScale = minimumScale;
+	public void setMinimumResolution(double minimumResolution) {
+		this.minimumResolution = minimumResolution;
 	}
 
 	/**
-	 * Get the maximum scale for which this layer should be visible (maximum zoom in).
+	 * Get the maximum resolution for which this layer should be visible (maximum zoom out).
 	 *
-	 * @return the maximum scale
+	 * @return the maximum resolution
 	 */
-	public double getMaximumScale() {
-		return maximumScale;
+	public double getMaximumResolution() {
+		return maximumResolution;
 	}
 
 	/**
-	 * Set the maximum scale for which this layer should be visible (maximum zoom in).
+	 * Set the maximum resolution for which this layer should be visible (maximum zoom out).
 	 *
-	 * @param maximumScale the maximum scale
+	 * @param maximumResolution the maximum resolution
 	 */
-	public void setMaximumScale(double maximumScale) {
-		this.maximumScale = maximumScale;
+	public void setMaximumResolution(double maximumResolution) {
+		this.maximumResolution = maximumResolution;
 	}
 
 	/**

@@ -45,7 +45,7 @@ public class DomTileLevelRenderer implements TileLevelRenderer {
 
 	private final TileBasedLayer layer;
 
-	private final double scale;
+	private final double resolution;
 
 	private final Map<TileCode, Tile> tiles;
 
@@ -65,8 +65,7 @@ public class DomTileLevelRenderer implements TileLevelRenderer {
 		this.container = container;
 		this.tileRenderer = tileRenderer;
 		this.tiles = new HashMap<TileCode, Tile>();
-		//this.scale = viewPort.getFixedScale(tileLevel);
-		this.scale = layer.getTileLevels().get(tileLevel);
+		this.resolution = viewPort.getResolution(tileLevel);
 	}
 
 	// ------------------------------------------------------------------------
@@ -115,7 +114,7 @@ public class DomTileLevelRenderer implements TileLevelRenderer {
 	// ------------------------------------------------------------------------
 
 	protected Bbox asBounds(View view) {
-		double deltaScale = view.getScale() / scale;
+		double deltaScale = view.getResolution() / resolution;
 		Bbox bounds = viewPort.asBounds(view);
 		return BboxService.scale(bounds, deltaScale);
 	}
@@ -133,10 +132,9 @@ public class DomTileLevelRenderer implements TileLevelRenderer {
 	}
 
 	private Bbox getScreenBounds(Bbox worldBox) {
-		return new Bbox(Math.round(scale * worldBox.getX()), -Math.round(scale * worldBox.getMaxY()), Math.round(scale
-				* worldBox.getMaxX())
-				- Math.round(scale * worldBox.getX()), Math.round(scale * worldBox.getMaxY())
-				- Math.round(scale * worldBox.getY()));
+		return new Bbox(Math.round(worldBox.getX() / resolution), -Math.round(worldBox.getMaxY() / resolution),
+				Math.round(worldBox.getMaxX() / resolution) - Math.round(worldBox.getX() / resolution),
+				Math.round(worldBox.getMaxY() / resolution) - Math.round(worldBox.getY() / resolution));
 	}
 
 	private Bbox getWorldBounds(TileCode tileCode) {
@@ -196,7 +194,7 @@ public class DomTileLevelRenderer implements TileLevelRenderer {
 	 */
 	private class ImageCounter implements Callback<String, String> {
 
-		// In case of failure, we can't just sit and wait. Instead we immediately consider the scale level rendered.
+		// In case of failure, we can't just sit and wait. Instead we consider the resolution level rendered.
 		public void onFailure(String reason) {
 			GeomajasImpl.getInstance().getEventBus().fireEventFromSource(new TileLevelRenderedEvent(
 					DomTileLevelRenderer.this), DomTileLevelRenderer.this);

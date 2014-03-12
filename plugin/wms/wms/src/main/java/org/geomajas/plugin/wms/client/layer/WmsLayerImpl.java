@@ -75,26 +75,26 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 		super.setViewPort(viewPort);
 		this.tileRenderer = new WmsTileRenderer(wmsConfig, tileConfig, viewPort);
 
-		// Install minimum and maximum scale:
-		double minScale = -1.0, maxScale = -1.0;
+		// Install minimum and maximum resolution:
+		double minResolution = -1.0, maxResolution = -1.0;
 		if (layerCapabilities != null) {
 			int minSD = layerCapabilities.getMinScaleDenominator();
 			if (minSD > 0) {
-				minScale = viewPort.toScale(minSD);
+				maxResolution = viewPort.toResolution(minSD);
 			}
 			int maxSD = layerCapabilities.getMaxScaleDenominator();
 			if (maxSD > 0) {
-				maxScale = viewPort.toScale(maxSD);
+				minResolution = viewPort.toResolution(maxSD);
 			}
 		}
-		if (minScale < 0) {
-			minScale = viewPort.getMinimumScale();
+		if (minResolution < 0) {
+			minResolution = Double.MIN_VALUE;
 		}
-		if (maxScale < 0) {
-			maxScale = viewPort.getMaximumScale();
+		if (maxResolution < 0) {
+			maxResolution = Double.MAX_VALUE;
 		}
-		wmsConfig.setMinimumScale(minScale);
-		wmsConfig.setMaximumScale(maxScale);
+		wmsConfig.setMinimumResolution(minResolution);
+		wmsConfig.setMaximumResolution(maxResolution);
 	}
 
 	// ------------------------------------------------------------------------
@@ -144,8 +144,8 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 	@Override
 	public boolean isShowing() {
 		if (markedAsVisible) {
-			if (viewPort.getScale() >= wmsConfig.getMinimumScale() && viewPort.getScale() <
-					wmsConfig.getMaximumScale()) {
+			if (viewPort.getResolution() >= wmsConfig.getMinimumResolution() && viewPort.getResolution() <
+					wmsConfig.getMaximumResolution()) {
 				return true;
 			}
 		}
@@ -176,7 +176,7 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 				worldBounds, scale);
 		List<Tile> tiles = new ArrayList<Tile>();
 		if (!codes.isEmpty()) {
-			double actualScale = viewPort.getFixedScale(codes.get(0).getTileLevel());
+			double actualResolution = viewPort.getResolution(codes.get(0).getTileLevel());
 			for (TileCode code : codes) {
 				Bbox bounds = TileServiceImpl.getInstance().getWorldBoundsForTile(viewPort, tileConfig, code);
 				Tile tile = new Tile(getScreenBounds(actualScale, bounds));
@@ -207,10 +207,9 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 	// Private methods:
 	// ------------------------------------------------------------------------
 
-	private Bbox getScreenBounds(double scale, Bbox worldBounds) {
-		return new Bbox(Math.round(scale * worldBounds.getX()), -Math.round(scale * worldBounds.getMaxY()),
-				Math.round(scale * worldBounds.getMaxX()) - Math.round(scale * worldBounds.getX()), Math.round(scale
-				* worldBounds.getMaxY())
-				- Math.round(scale * worldBounds.getY()));
+	private Bbox getScreenBounds(double resolution, Bbox worldBounds) {
+		return new Bbox(Math.round(worldBounds.getX() / resolution), -Math.round(worldBounds.getMaxY() / resolution),
+				Math.round(worldBounds.getMaxX() / resolution) - Math.round(worldBounds.getX() / resolution),
+				Math.round(worldBounds.getMaxY() / resolution) - Math.round(worldBounds.getY() / resolution));
 	}
 }
