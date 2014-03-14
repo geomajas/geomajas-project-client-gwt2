@@ -57,7 +57,7 @@ public class DeleteVertexOperation extends AbstractGeometryIndexOperation {
 	}
 
 	@Override
-	public GeometryIndexOperation getInverseOperation() {
+	public AbstractGeometryIndexOperation getInverseOperation() {
 		return new InsertVertexOperation(editService, coordinate);
 	}
 

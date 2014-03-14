@@ -43,7 +43,7 @@
 	</modules>
 
 	<properties>
-		<version-geomajas-backend>1.14.0</version-geomajas-backend>
+		<version-geomajas-backend>1.15.0-SNAPSHOT</version-geomajas-backend>
 		<version-geomajas-graphics>1.0.0-M3</version-geomajas-graphics>
 		<version-vaadin-graphics>1.0.0.TX11</version-vaadin-graphics>
 		<version-gwt>2.5.1</version-gwt>

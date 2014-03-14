@@ -61,7 +61,7 @@ public class MoveVertexOperation extends AbstractGeometryIndexOperation {
 	}
 
 	@Override
-	public GeometryIndexOperation getInverseOperation() {
+	public AbstractGeometryIndexOperation getInverseOperation() {
 		return new MoveVertexOperation(editService, oldLocation);
 	}
 

@@ -54,7 +54,7 @@ public class DeleteGeometryOperation extends AbstractGeometryIndexOperation {
 	}
 
 	@Override
-	public GeometryIndexOperation getInverseOperation() {
+	public AbstractGeometryIndexOperation getInverseOperation() {
 		return new InsertGeometryOperation(editService, deleted);
 	}
 
