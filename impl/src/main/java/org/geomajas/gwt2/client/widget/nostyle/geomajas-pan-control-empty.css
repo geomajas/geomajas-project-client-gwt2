@@ -1,0 +1,7 @@
+/*===========================================================================*/
+/*====                        PanControl Widget                          ====*/
+/*===========================================================================*/
+@external gm-PanControl, gm-PanControl-top, gm-PanControl-right, gm-PanControl-bottom, gm-PanControl-left;
+
+.gm-PanControl, .gm-PanControl-top, .gm-PanControl-right, .gm-PanControl-bottom, .gm-PanControl-left {
+}

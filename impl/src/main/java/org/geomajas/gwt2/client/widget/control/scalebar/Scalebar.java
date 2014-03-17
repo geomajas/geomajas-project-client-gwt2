@@ -19,6 +19,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.annotation.Api;
+import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
 import org.geomajas.gwt2.client.map.MapPresenter;
@@ -109,7 +110,7 @@ public class Scalebar extends AbstractMapWidget {
 	 * @param mapPresenter The map presenter.
 	 */
 	public Scalebar(MapPresenter mapPresenter) {
-		this(mapPresenter, (ScalebarResource) GWT.create(ScalebarResource.class));
+		this(mapPresenter, GeomajasImpl.getClientBundleFactory().createScalebarResource());
 	}
 
 	/**

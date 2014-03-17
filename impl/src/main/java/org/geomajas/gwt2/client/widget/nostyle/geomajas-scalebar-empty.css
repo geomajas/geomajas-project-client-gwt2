@@ -1,0 +1,8 @@
+/*===========================================================================*/
+/*====                            Scalebar                               ====*/
+/*===========================================================================*/
+
+@external gm-ScalebarControl, gm-ScalebarControl-bar;
+
+.gm-ScalebarControl, .gm-ScalebarControl-bar {
+}

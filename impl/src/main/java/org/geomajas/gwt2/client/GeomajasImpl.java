@@ -11,15 +11,17 @@
 
 package org.geomajas.gwt2.client;
 
+import com.google.gwt.core.client.GWT;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.client.gfx.GfxUtil;
 import org.geomajas.gwt2.client.gfx.GfxUtilImpl;
-import org.geomajas.gwt2.client.widget.DefaultMapWidget;
 import org.geomajas.gwt2.client.map.MapConfiguration;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.MapPresenterImpl;
+import org.geomajas.gwt2.client.widget.DefaultMapWidget;
+import org.geomajas.gwt2.client.widget.GeomajasImplClientBundleFactory;
 
 /**
  * Geomajas starting point. This class allows you to request singleton services or create new instances.
@@ -29,6 +31,8 @@ import org.geomajas.gwt2.client.map.MapPresenterImpl;
  */
 @Api(allMethods = true)
 public final class GeomajasImpl implements Geomajas {
+
+	private static GeomajasImplClientBundleFactory bundleFactory;
 
 	private static Geomajas instance;
 
@@ -90,5 +94,19 @@ public final class GeomajasImpl implements Geomajas {
 			eventBus = new SimpleEventBus();
 		}
 		return eventBus;
+	}
+
+	/**
+	 * Get a factory for creating resource bundles for this artifact. All widgets make use of this factory. If you want
+	 * to override the default styles, then override this factory through deferred binding.
+	 *
+	 * @return A factory for creating resource bundles for this artifact.
+	 * @since 2.1.0
+	 */
+	public static GeomajasImplClientBundleFactory getClientBundleFactory() {
+		if (bundleFactory == null) {
+			bundleFactory = GWT.create(GeomajasImplClientBundleFactory.class);
+		}
+		return bundleFactory;
 	}
 }

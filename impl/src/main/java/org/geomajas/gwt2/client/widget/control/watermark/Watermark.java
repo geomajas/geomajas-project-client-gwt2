@@ -19,7 +19,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 /**
  * Geomajas logo that's automatically displayed in the bottom right corner of each map. This widget is meant to be added
  * to the map's widget pane (see {@link org.geomajas.gwt2.client.map.MapPresenter#getWidgetPane()}).
- * 
+ *
  * @author Pieter De Graef
  * @since 2.0.0
  */
@@ -30,16 +30,17 @@ public class Watermark extends SimplePanel {
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	/** Create a new instance using the default {@link WatermarkResource}. */
+	/**
+	 * Create a new instance using the default {@link WatermarkResource}.
+	 */
 	public Watermark() {
 		this((WatermarkResource) GWT.create(WatermarkResource.class));
 	}
 
 	/**
 	 * Create a new instance for the given map.
-	 * 
-	 * @param resource
-	 *            The {@link WatermarkResource} to use.
+	 *
+	 * @param resource The {@link WatermarkResource} to use.
 	 */
 	public Watermark(WatermarkResource resource) {
 		super();
