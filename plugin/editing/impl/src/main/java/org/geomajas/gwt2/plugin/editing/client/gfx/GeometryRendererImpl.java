@@ -392,24 +392,27 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 	 */
 	public void onTentativeMove(GeometryEditTentativeMoveEvent event) {
 		try {
-			Coordinate[] vertices = editService.getIndexService().getSiblingVertices(editService.getGeometry(),
-					editService.getInsertIndex());
-			String geometryType = editService.getIndexService().getGeometryType(editService.getGeometry(),
-					editService.getInsertIndex());
+			// this may be the first point, so check for null !!!
+			if (editService.getInsertIndex() != null) {
+				Coordinate[] vertices = editService.getIndexService().getSiblingVertices(editService.getGeometry(),
+						editService.getInsertIndex());
+				String geometryType = editService.getIndexService().getGeometryType(editService.getGeometry(),
+						editService.getInsertIndex());
 
-			if (vertices != null
-					&& (Geometry.LINE_STRING.equals(geometryType) || Geometry.LINEAR_RING.equals(geometryType))) {
-				Coordinate temp1 = event.getOrigin();
-				Coordinate temp2 = event.getCurrentPosition();
-				Coordinate c1 = mapPresenter.getViewPort().getTransformationService()
-						.transform(temp1, RenderSpace.WORLD, RenderSpace.SCREEN);
-				Coordinate c2 = mapPresenter.getViewPort().getTransformationService()
-						.transform(temp2, RenderSpace.WORLD, RenderSpace.SCREEN);
+				if (vertices != null
+						&& (Geometry.LINE_STRING.equals(geometryType) || Geometry.LINEAR_RING.equals(geometryType))) {
+					Coordinate temp1 = event.getOrigin();
+					Coordinate temp2 = event.getCurrentPosition();
+					Coordinate c1 = mapPresenter.getViewPort().getTransformationService()
+							.transform(temp1, RenderSpace.WORLD, RenderSpace.SCREEN);
+					Coordinate c2 = mapPresenter.getViewPort().getTransformationService()
+							.transform(temp2, RenderSpace.WORLD, RenderSpace.SCREEN);
 
-				tentativeMoveLine.setStep(0, new MoveTo(false, c1.getX(), c1.getY()));
-				tentativeMoveLine.setStep(1, new LineTo(false, c2.getX(), c2.getY()));
-			} else if (vertices != null && Geometry.LINEAR_RING.equals(geometryType)) {
-				// Draw the second line (as an option...)
+					tentativeMoveLine.setStep(0, new MoveTo(false, c1.getX(), c1.getY()));
+					tentativeMoveLine.setStep(1, new LineTo(false, c2.getX(), c2.getY()));
+				} else if (vertices != null && Geometry.LINEAR_RING.equals(geometryType)) {
+					// Draw the second line (as an option...)
+				}
 			}
 		} catch (GeometryIndexNotFoundException e) {
 			throw new IllegalStateException(e);
@@ -486,6 +489,19 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 			drawLineString(null);
 		} else if (Geometry.POLYGON.equals(editService.getGeometry().getGeometryType())) {
 			drawPolygon(null);
+		}else if (Geometry.MULTI_POLYGON.equals(editService.getGeometry().getGeometryType())) {
+			drawMultiPolygon();
+		}
+	}
+	
+	private void drawMultiPolygon() throws GeometryIndexNotFoundException {
+		Geometry geometry = editService.getGeometry();
+		if (geometry.getGeometries() != null) {
+			// We draw all polygons one by one:
+			for (int i = 0; i < geometry.getGeometries().length; i++) {
+				GeometryIndex index = editService.getIndexService().create(GeometryIndexType.TYPE_GEOMETRY, i);
+				drawPolygon(index);
+			}
 		}
 	}
 

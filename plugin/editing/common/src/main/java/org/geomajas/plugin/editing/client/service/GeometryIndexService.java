@@ -58,7 +58,7 @@ public class GeometryIndexService {
 	}
 
 	/**
-	 * Given a certain geometry index, add more levels to it.
+	 * Given a certain geometry index, add more levels to it (This method will not change the underlying geometry !).
 	 * 
 	 * @param index
 	 *            The index to start out from.
@@ -335,6 +335,27 @@ public class GeometryIndexService {
 		}
 		return index.getValue();
 	}
+	
+	/**
+	 * Returns a new index that is one level higher than this index. Useful to get the index of a ring for a vertex.
+	 * 
+	 * @param index
+	 * @return the parent index
+	 */
+	public GeometryIndex getParent(GeometryIndex index) {
+		GeometryIndex parent = new GeometryIndex(index);
+		GeometryIndex deepestParent = null;
+		GeometryIndex p = parent;
+		while(p.hasChild()) {
+			deepestParent = p;
+			p = p.getChild();
+		}
+		if(deepestParent != null) {
+			deepestParent.setChild(null);
+		}
+		return parent;
+	}
+
 
 	// ------------------------------------------------------------------------
 	// Methods concerning adjacency (finding ones neighbors):

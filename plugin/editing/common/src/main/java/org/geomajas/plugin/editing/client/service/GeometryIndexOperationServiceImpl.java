@@ -329,16 +329,31 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 			operation = new InsertGeometryOperation(service, new Geometry(Geometry.LINE_STRING,
 					geometry.getSrid(), geometry.getPrecision()));
 		} else if (Geometry.MULTI_POLYGON.equals(geometry.getGeometryType())) {
-			operation = new InsertGeometryOperation(service, new Geometry(Geometry.POLYGON, geometry.getSrid(),
-					geometry.getPrecision()));
+			// could be a polygon or a hole
+			if(index == null) {
+				operation = new InsertGeometryOperation(service, new Geometry(Geometry.POLYGON, geometry.getSrid(),
+						geometry.getPrecision()));
+			} else {
+				operation = new InsertGeometryOperation(service, new Geometry(Geometry.LINEAR_RING, geometry.getSrid(),
+						geometry.getPrecision()));
+			}
 		}
 		if (operation != null) {
 			// Execute the operation:
-			if (index == null) {
+			if(index == null) {
+				// add a polygon at the end
 				if (geometry.getGeometries() == null) {
 					index = indexService.create(GeometryIndexType.TYPE_GEOMETRY, 0);
 				} else {
 					index = indexService.create(GeometryIndexType.TYPE_GEOMETRY, geometry.getGeometries().length);
+				}
+			} else {
+				Geometry polygon = geometry.getGeometries()[index.getValue()];
+				// add a hole at the end
+				if (polygon.getGeometries() == null) {
+					index = indexService.create(GeometryIndexType.TYPE_GEOMETRY, index.getValue(), 0);
+				} else {
+					index = indexService.create(GeometryIndexType.TYPE_GEOMETRY, index.getValue(), polygon.getGeometries().length);
 				}
 			}
 			operation.execute(geometry, index);

@@ -95,7 +95,7 @@ public abstract class AbstractGeometryIndexOperation implements GeometryIndexOpe
 					}
 				} else {
 					// inserting 1st or 2nd point of new ring or geometry, evaluate the geometry
-					return GeometryService.validate(geom, toArray(index.getChild()));
+					return GeometryService.validate(geom, toArray(indexService.getParent(index)));
 				}
 			} else {
 				// inserting ring or new geometry, evaluate normally

@@ -189,6 +189,9 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	@Override
 	public void setEditingState(GeometryEditState state) {
 		this.state = state;
+		if (state != GeometryEditState.INSERTING) {
+			setInsertIndex(null);
+		}
 		eventBus.fireEvent(new GeometryEditChangeStateEvent(state));
 	}
 
