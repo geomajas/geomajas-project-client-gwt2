@@ -375,6 +375,36 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 	// Private classes:
 	// ------------------------------------------------------------------------
 
+	@Override
+	public void addEmptyChildren(GeometryIndex index) throws GeometryOperationFailedException {
+		Geometry geometry = service.getGeometry();
+		GeometryIndex empty = null;
+		while(geometry.getGeometries() != null && geometry.getGeometries().length > index.getValue()){
+			geometry = geometry.getGeometries()[index.getValue()];
+			if(empty == null) {
+				empty = indexService.create(index.getType(), index.getValue());
+			} else {
+				empty = indexService.addChildren(empty, index.getType(), index.getValue());
+			}
+			index = index.getChild();
+		}
+		if(empty == null) {
+			// first level = top level !!!
+			empty = addEmptyChild();
+		} else {
+			// first level = sub level !!!
+			empty = addEmptyChild(empty);
+		}
+		// create further sublevels
+		while(index.getChild() != null) {
+			// addEmptyChild expects the parent !!!!
+			empty = addEmptyChild(empty);
+			index = index.getChild();
+		}		
+	}
+
+
+
 	/**
 	 * Private definition of a sequence of operations. All operations added to this sequence are regarded as a single
 	 * entity.

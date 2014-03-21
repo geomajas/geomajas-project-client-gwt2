@@ -88,18 +88,18 @@ public abstract class AbstractGeometryIndexOperation implements GeometryIndexOpe
 				if(indexService.getSiblingCount(geom, index) > 2) {
 					try {
 						List<GeometryIndex> edges = indexService.getAdjacentEdges(geom, index);
-						return GeometryService.validate(geom, toArray(edges.get(0)));
+						return doValidate(geom, edges.get(0));
 					} catch (GeometryIndexNotFoundException e) {
 						// should never happen, must return something here
 						return GeometryValidationState.VALID;
 					}
 				} else {
 					// inserting 1st or 2nd point of new ring or geometry, evaluate the geometry
-					return GeometryService.validate(geom, toArray(indexService.getParent(index)));
+					return doValidate(geom, indexService.getParent(index));
 				}
 			} else {
 				// inserting ring or new geometry, evaluate normally
-				return GeometryService.validate(geom, toArray(index));
+				return doValidate(geom, index);
 			}
 		} else {
 			if (indexService.isVertex(index)) {
@@ -107,7 +107,7 @@ public abstract class AbstractGeometryIndexOperation implements GeometryIndexOpe
 					List<GeometryIndex> edges = indexService.getAdjacentEdges(geom, index);
 					List<ValidationViolation> violations = new ArrayList<ValidationViolation>();
 					for (GeometryIndex edge : edges) {
-						GeometryService.validate(geom, toArray(edge));
+						doValidate(geom, edge);
 						violations.addAll(GeometryService.getValidationContext().getViolations());
 					}
 					return violations.size() == 0 ? GeometryValidationState.VALID : violations.get(0).getState();
@@ -116,9 +116,13 @@ public abstract class AbstractGeometryIndexOperation implements GeometryIndexOpe
 					return GeometryValidationState.VALID;
 				}
 			} else {
-				return GeometryService.validate(geom, toArray(index));
+				return doValidate(geom, index);
 			}
 		}
+	}
+	
+	GeometryValidationState doValidate(Geometry geometry, GeometryIndex index) {
+		return GeometryService.validate(geometry, indexService.toDelegate(index));
 	}
 
 	/**

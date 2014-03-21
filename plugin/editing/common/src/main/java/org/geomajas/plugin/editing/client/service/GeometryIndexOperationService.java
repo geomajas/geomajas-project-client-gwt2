@@ -161,4 +161,13 @@ public interface GeometryIndexOperationService {
 	 * @throws GeometryOperationFailedException
 	 */
 	GeometryIndex addEmptyChild(GeometryIndex index) throws GeometryOperationFailedException;
+	
+	/**
+	 * Add a series of empty children up to the specified index
+	 * @param index the index of the deepest empty child to be created
+	 * @return
+	 * @throws GeometryOperationFailedException
+	 */
+	void addEmptyChildren(GeometryIndex index) throws GeometryOperationFailedException;
+
 }

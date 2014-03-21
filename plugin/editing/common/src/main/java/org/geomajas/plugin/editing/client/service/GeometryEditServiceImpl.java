@@ -323,6 +323,11 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	public GeometryIndex addEmptyChild(GeometryIndex index) throws GeometryOperationFailedException {
 		return operationService.addEmptyChild(index);
 	}
+	
+	@Override
+	public void addEmptyChildren(GeometryIndex index) throws GeometryOperationFailedException {
+		operationService.addEmptyChildren(index);
+	}
 
 	@Override
 	public void setValidating(boolean validating) {

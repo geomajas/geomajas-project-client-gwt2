@@ -136,27 +136,8 @@ public class EditMultiPolygonPanel implements SamplePanel {
 		// Create an empty geometry. It has no coordinate yet. That is up to the user...
 		Geometry multiPoly = new Geometry(Geometry.MULTI_POLYGON, 0, -1);
 		editService.start(multiPoly);
-
-		// Set the editing service in "INSERTING" mode. Make sure it starts inserting in the correct index.
-		try {
-			// Add an empty Polygon to the Multipolygon.
-			GeometryIndex index = editService.addEmptyChild();
-			
-			// Add an empty ring
-			index = editService.addEmptyChild(index);
-
-			// Make sure we can start adding coordinates into the empty LinearRing:
-			index = editService.getIndexService().addChildren(index, GeometryIndexType.TYPE_VERTEX, 0);
-
-			// Set state to "inserting". The user must start clicking on the map to insert additional points:
-			editService.setEditingState(GeometryEditState.INSERTING);
-
-			// Make sure the service knows where to insert (in the empty LinearRing):
-			editService.setInsertIndex(index);
-		} catch (GeometryOperationFailedException e) {
-			e.printStackTrace();
-		}
-
+		// Set state to "inserting". The user must start clicking on the map to insert additional points:
+		editService.setEditingState(GeometryEditState.INSERTING);
 		// Et voila, the use may now click on the map...
 	}
 
@@ -194,25 +175,10 @@ public class EditMultiPolygonPanel implements SamplePanel {
 
 	@UiHandler("addRingBtn")
 	protected void onAddRingButtonClicked(ClickEvent event) {
-		// Set the editing service in "INSERTING" mode. Make sure it starts inserting in the correct index.
-//		try {
-			// Add an empty LinearRing to the Polygon.
-//			Geometry polygon = editService.getGeometry();
-//			GeometryIndex index = editService.getIndexService().create(GeometryIndexType.TYPE_GEOMETRY,
-//					polygon.getGeometries().length);
-//			index = editService.addEmptyChild(index);
-//
-//			// Make sure we can start adding coordinates into the empty LinearRing:
-//			index = editService.getIndexService().addChildren(index, GeometryIndexType.TYPE_VERTEX, 0);
-
-			// Set state to "inserting". The user must start clicking on the map to insert additional points:
-			editService.setEditingState(GeometryEditState.INSERTING);
-
-			// Make sure the service knows where to insert (in the empty LinearRing):
-//			editService.setInsertIndex(index);
-//		} catch (GeometryOperationFailedException e) {
-//			e.printStackTrace();
-//		}
+		// Set state to "inserting". The user must start clicking on the map to insert additional points:
+		// when clicking in a polygon, a hole will be started
+		// when clicking outside a polygon, a new polygon shell will be started
+		editService.setEditingState(GeometryEditState.INSERTING);
 	}
 
 	@UiHandler("stopBtn")

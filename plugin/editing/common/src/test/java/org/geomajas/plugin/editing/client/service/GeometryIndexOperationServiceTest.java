@@ -412,4 +412,37 @@ public class GeometryIndexOperationServiceTest {
 		int afterNumber = polygon.getGeometries().length;
 		Assert.assertTrue(originalNumber + 1 == afterNumber);
 	}
+	
+	@Test
+	public void testAddEmptyChildren() throws GeometryOperationFailedException {
+		Geometry multi = new Geometry(Geometry.MULTI_POLYGON, 0, 0);
+		service.start(multi);
+		// add polygon 1 (with shell)
+		GeometryIndex index = new GeometryIndex(GeometryIndexType.TYPE_GEOMETRY, 0, new GeometryIndex(
+				GeometryIndexType.TYPE_GEOMETRY, 0, null));
+		service.addEmptyChildren(index);
+		Assert.assertEquals(1, multi.getGeometries().length);
+		Assert.assertEquals(1, multi.getGeometries()[0].getGeometries().length);
+		// add polygon 2 (with shell)
+		index = new GeometryIndex(GeometryIndexType.TYPE_GEOMETRY, 1, new GeometryIndex(
+				GeometryIndexType.TYPE_GEOMETRY, 0, null));
+		service.addEmptyChildren(index);
+		Assert.assertEquals(2, multi.getGeometries().length);
+		Assert.assertEquals(1, multi.getGeometries()[0].getGeometries().length);
+		Assert.assertEquals(1, multi.getGeometries()[1].getGeometries().length);
+		// add hole in polygon 1
+		index = new GeometryIndex(GeometryIndexType.TYPE_GEOMETRY, 0, new GeometryIndex(
+				GeometryIndexType.TYPE_GEOMETRY, 1, null));
+		service.addEmptyChildren(index);
+		Assert.assertEquals(2, multi.getGeometries().length);
+		Assert.assertEquals(2, multi.getGeometries()[0].getGeometries().length);
+		Assert.assertEquals(1, multi.getGeometries()[1].getGeometries().length);
+		// add hole in polygon 2
+		index = new GeometryIndex(GeometryIndexType.TYPE_GEOMETRY, 1, new GeometryIndex(
+				GeometryIndexType.TYPE_GEOMETRY, 1, null));
+		service.addEmptyChildren(index);
+		Assert.assertEquals(2, multi.getGeometries().length);
+		Assert.assertEquals(2, multi.getGeometries()[0].getGeometries().length);
+		Assert.assertEquals(2, multi.getGeometries()[1].getGeometries().length);
+	}
 }
