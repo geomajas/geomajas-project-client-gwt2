@@ -18,6 +18,7 @@ import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.geometry.service.GeometryService;
+import org.geomajas.geometry.service.GeometryValidationState;
 
 /**
  * Service for managing sub-parts of geometries through special geometry indices.
@@ -373,11 +374,21 @@ public class GeometryIndexService {
 	}
 
 	/**
+	 * Validates a geometry, focusing on changes at a specific sub-level of the geometry. The sublevel is indicated by
+	 * passing an index. The only checks are on intersection (for coordinates) and containment (for subgeometries), we
+	 * don't check on too few coordinates as we want to support incremental creation of polygons.
 	 * 
-	 * @param index
-	 * @return
+	 * @param geometry The geometry to check.
+	 * @param index index that points to a sub-geometry, edge, vertex, etc...
+	 * @return validation state.
+	 * @since 2.1.0
 	 */
-	public org.geomajas.geometry.service.GeometryIndex toDelegate(GeometryIndex index) {
+	public GeometryValidationState validate(Geometry geometry, GeometryIndex index) {
+		return GeometryService.validate(geometry, toDelegate(index));
+	}
+
+	// Conversion methods from/to the indexService of the geometry project
+	private org.geomajas.geometry.service.GeometryIndex toDelegate(GeometryIndex index) {
 		if (index == null) {
 			return null;
 		}
@@ -390,11 +401,6 @@ public class GeometryIndexService {
 		return result;
 	}
 
-	/**
-	 * 
-	 * @param index
-	 * @return
-	 */
 	private GeometryIndex fromDelegate(org.geomajas.geometry.service.GeometryIndex index) {
 		if (index == null) {
 			return null;
@@ -404,20 +410,10 @@ public class GeometryIndexService {
 		return result;
 	}
 
-	/**
-	 * 
-	 * @param type
-	 * @return
-	 */
 	private org.geomajas.geometry.service.GeometryIndexType toDelegate(GeometryIndexType type) {
 		return org.geomajas.geometry.service.GeometryIndexType.valueOf(type.name());
 	}
 
-	/**
-	 * 
-	 * @param type
-	 * @return
-	 */
 	private GeometryIndexType fromDelegate(org.geomajas.geometry.service.GeometryIndexType type) {
 		return GeometryIndexType.valueOf(type.name());
 	}

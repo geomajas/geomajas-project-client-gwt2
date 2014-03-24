@@ -122,7 +122,7 @@ public abstract class AbstractGeometryIndexOperation implements GeometryIndexOpe
 	}
 	
 	GeometryValidationState doValidate(Geometry geometry, GeometryIndex index) {
-		return GeometryService.validate(geometry, indexService.toDelegate(index));
+		return indexService.validate(geometry, index);
 	}
 
 	/**
