@@ -378,29 +378,19 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 	@Override
 	public void addEmptyChildren(GeometryIndex index) throws GeometryOperationFailedException {
 		Geometry geometry = service.getGeometry();
-		GeometryIndex empty = null;
-		while(geometry.getGeometries() != null && geometry.getGeometries().length > index.getValue()){
-			geometry = geometry.getGeometries()[index.getValue()];
-			if(empty == null) {
-				empty = indexService.create(index.getType(), index.getValue());
-			} else {
-				empty = indexService.addChildren(empty, index.getType(), index.getValue());
+		if(geometry.getGeometries() != null && geometry.getGeometries().length > index.getValue()) {
+			if(index.getChild() != null) {
+				addEmptyChild(indexService.getParent(index));
+			}  else {
+				// nothing to create
+				return;
 			}
-			index = index.getChild();
+		} else if (index.getValue() == 0 || index.getValue() == geometry.getGeometries().length) {
+			GeometryIndex parent = addEmptyChild();
+			if (index.getChild() != null) {
+				addEmptyChild(parent);
+			}
 		}
-		if(empty == null) {
-			// first level = top level !!!
-			empty = addEmptyChild();
-		} else {
-			// first level = sub level !!!
-			empty = addEmptyChild(empty);
-		}
-		// create further sublevels
-		while(index.getChild() != null) {
-			// addEmptyChild expects the parent !!!!
-			empty = addEmptyChild(empty);
-			index = index.getChild();
-		}		
 	}
 
 

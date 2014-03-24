@@ -138,7 +138,7 @@ public class GeometryIndexInsertController extends AbstractGeometryIndexControll
 				GeometryIndex polyIndex = indexService.getParent(index);
 				// find the polygon
 				Geometry polygon = indexService.getGeometry(geometry, polyIndex);
-				if (index.getValue() == 0) {
+				if (indexService.getValue(index) == 0) {
 					// in shell, return hole index
 					return indexService.create(GeometryIndexType.TYPE_GEOMETRY, polyIndex.getValue(),
 							getNextChildindex(polygon));

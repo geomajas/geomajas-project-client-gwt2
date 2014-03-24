@@ -156,7 +156,7 @@ public interface GeometryIndexOperationService {
 	/**
 	 * Add an empty child at the lowest sub-geometry level.
 	 * 
-	 * @param index TODO
+	 * @param index index of the parent geometry
 	 * @return The index that points to the empty child within the geometry.
 	 * @throws GeometryOperationFailedException
 	 */
