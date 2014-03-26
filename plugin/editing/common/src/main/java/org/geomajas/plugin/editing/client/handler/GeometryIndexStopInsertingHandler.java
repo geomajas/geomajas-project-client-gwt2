@@ -88,7 +88,7 @@ public class GeometryIndexStopInsertingHandler extends AbstractGeometryIndexMapH
 	private boolean isCorrectVertex() {
 		try {
 			String geomType = service.getIndexService().getGeometryType(service.getGeometry(), index);
-			if (Geometry.LINE_STRING.equals(geomType)) {
+			if (Geometry.LINE_STRING.equals(geomType) && service.getInsertIndex() != null) {
 				GeometryIndex temp = service.getIndexService().getPreviousVertex(service.getInsertIndex());
 				return temp.equals(index);
 			} else if (Geometry.LINEAR_RING.equals(geomType)) {
@@ -102,7 +102,7 @@ public class GeometryIndexStopInsertingHandler extends AbstractGeometryIndexMapH
 
 	private Coordinate getSnapLocation() throws GeometryIndexNotFoundException {
 		String geomType = service.getIndexService().getGeometryType(service.getGeometry(), index);
-		if (Geometry.LINE_STRING.equals(geomType)) {
+		if (Geometry.LINE_STRING.equals(geomType) && service.getInsertIndex() != null) {
 			GeometryIndex temp = service.getIndexService().getPreviousVertex(service.getInsertIndex());
 			return service.getIndexService().getVertex(service.getGeometry(), temp);
 		} else if (Geometry.LINEAR_RING.equals(geomType)) {
