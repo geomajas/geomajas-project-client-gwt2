@@ -12,6 +12,8 @@
 package org.geomajas.plugin.editing.client.controller;
 
 import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
@@ -21,19 +23,24 @@ import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedExcep
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
+import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
+import org.geomajas.plugin.editing.client.service.GeometryIndexService;
+import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 import org.geomajas.plugin.editing.client.snap.SnapService;
 
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.user.client.Window;
 
 /**
  * Controller that inserts vertices by clicking/tapping on the map.
  * 
  * @author Pieter De Graef
+ * @author Jan De Moerloose
  */
 public class GeometryIndexInsertController extends AbstractGeometryIndexController {
+	
+	private static final Logger LOGGER = Logger.getLogger(GeometryIndexInsertController.class.getName());
 
 	public GeometryIndexInsertController(GeometryEditService service, SnapService snappingService,
 			MapEventParser mapEventParser) {
@@ -53,6 +60,20 @@ public class GeometryIndexInsertController extends AbstractGeometryIndexControll
 				// Insert the location at the given index:
 				GeometryIndex insertIndex = service.getInsertIndex();
 				Coordinate location = getSnappedLocationWithinMaxBounds(event);
+				if (insertIndex == null) {
+					// we are starting a new subgeometry but no index passed !!!
+					// construct the right index (linestring, point, shell or hole)
+					GeometryIndex index = getSubGeometryIndex(location);
+					if(index != null) {
+						service.addEmptyChildren(index);
+						// Make sure we can start adding coordinates into the empty geometry:
+						insertIndex = service.getIndexService().addChildren(index, GeometryIndexType.TYPE_VERTEX, 0);
+					} else {
+						// geometry without subgeometries, just prepare the first vertex
+						insertIndex = service.getIndexService().create(GeometryIndexType.TYPE_VERTEX, 0);
+					}
+					service.setInsertIndex(insertIndex);
+				}
 				service.insert(Collections.singletonList(insertIndex),
 						Collections.singletonList(Collections.singletonList(location)));
 				service.setTentativeMoveOrigin(location);
@@ -66,7 +87,11 @@ public class GeometryIndexInsertController extends AbstractGeometryIndexControll
 					service.setEditingState(GeometryEditState.IDLE);
 				}
 			} catch (GeometryOperationFailedException e) {
-				Window.alert("Exception during editing: " + e.getMessage());
+				// ignore, nothing we can do here (validation errors can be shown to the user)
+				LOGGER.log(Level.SEVERE, "Can't insert coordinate ", e);
+			} catch (GeometryIndexNotFoundException e) {
+				// ignore, nothing we can do here (validation errors can be shown to the user)
+				LOGGER.log(Level.SEVERE, "Can't insert coordinate ", e);
 			}
 		}
 	}
@@ -94,4 +119,43 @@ public class GeometryIndexInsertController extends AbstractGeometryIndexControll
 			service.setEditingState(GeometryEditState.IDLE);
 		}
 	}
+
+	private GeometryIndex getSubGeometryIndex(Coordinate location) throws GeometryIndexNotFoundException {
+		GeometryIndexService indexService = service.getIndexService();
+		Geometry geometry = service.getGeometry();
+		if (geometry.getGeometryType().equals(Geometry.MULTI_POINT)
+				|| geometry.getGeometryType().equals(Geometry.MULTI_LINE_STRING)
+				|| geometry.getGeometryType().equals(Geometry.POLYGON)) {
+			return indexService.create(GeometryIndexType.TYPE_GEOMETRY, getNextChildindex(geometry));
+		} else if (geometry.getGeometryType().equals(Geometry.MULTI_POLYGON)) {
+			GeometryIndex index = service.getIndexService().getLinearRingIndex(geometry, location);
+			if (index == null) {
+				// outside all polygons, return new polygon and shell index
+				GeometryIndex geoIndex = indexService.create(GeometryIndexType.TYPE_GEOMETRY,
+						getNextChildindex(geometry));
+				return indexService.addChildren(geoIndex, GeometryIndexType.TYPE_GEOMETRY, 0);
+			} else {
+				GeometryIndex polyIndex = indexService.getParent(index);
+				// find the polygon
+				Geometry polygon = indexService.getGeometry(geometry, polyIndex);
+				if (indexService.getValue(index) == 0) {
+					// in shell, return hole index
+					return indexService.create(GeometryIndexType.TYPE_GEOMETRY, polyIndex.getValue(),
+							getNextChildindex(polygon));
+				} else {
+					// in hole, return new polygon and shell index
+					GeometryIndex geoIndex = indexService.create(GeometryIndexType.TYPE_GEOMETRY,
+							getNextChildindex(geometry));
+					return indexService.addChildren(geoIndex, GeometryIndexType.TYPE_GEOMETRY, 0);
+				}
+			}
+		} else {
+			return null;
+		}
+	}
+
+	private int getNextChildindex(Geometry geom) {
+		return geom.getGeometries() == null ? 0 : geom.getGeometries().length;
+	}
+
 }

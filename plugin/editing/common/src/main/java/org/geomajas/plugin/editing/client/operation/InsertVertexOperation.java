@@ -13,9 +13,9 @@ package org.geomajas.plugin.editing.client.operation;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
-import org.geomajas.plugin.editing.client.service.GeometryIndexService;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 
 /**
@@ -30,35 +30,34 @@ import org.geomajas.plugin.editing.client.service.GeometryIndexType;
  * </p>
  * 
  * @author Pieter De Graef
+ * @author Jan Venstermanns
  */
-public class InsertVertexOperation implements GeometryIndexOperation {
-
-	private final GeometryIndexService service;
+public class InsertVertexOperation extends AbstractGeometryIndexOperation {
 
 	private final Coordinate coordinate;
 
 	private GeometryIndex index;
 
 	/**
-	 * Initialize this operation with an indexing service.
+	 * Initialize this operation with an edit service.
 	 * 
-	 * @param service
-	 *            geometry index service.
+	 * @param editService geometry edit service.
 	 */
-	public InsertVertexOperation(GeometryIndexService service, Coordinate coordinate) {
-		this.service = service;
+	public InsertVertexOperation(GeometryEditService editService, Coordinate coordinate) {
+		super(editService);
 		this.coordinate = coordinate;
 	}
 
 	@Override
 	public Geometry execute(Geometry geometry, GeometryIndex index) throws GeometryOperationFailedException {
 		this.index = index;
-		if (service.getType(index) != GeometryIndexType.TYPE_VERTEX
-				&& service.getType(index) != GeometryIndexType.TYPE_EDGE) {
+		if (indexService.getType(index) != GeometryIndexType.TYPE_VERTEX
+				&& indexService.getType(index) != GeometryIndexType.TYPE_EDGE) {
 			throw new GeometryOperationFailedException("Index of wrong type. Must be TYPE_VERTEX or TYPE_EDGE.");
 		}
 		try {
 			insert(geometry, index, coordinate);
+			revertInvalidAndThrow(geometry, index);
 			return geometry;
 		} catch (GeometryIndexNotFoundException e) {
 			throw new GeometryOperationFailedException(e);
@@ -66,15 +65,15 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 	}
 
 	@Override
-	public GeometryIndexOperation getInverseOperation() {
-		return new DeleteVertexOperation(service);
+	public AbstractGeometryIndexOperation getInverseOperation() {
+		return new DeleteVertexOperation(editService);
 	}
 
 	@Override
 	public GeometryIndex getGeometryIndex() {
-		switch (service.getType(index)) {
+		switch (indexService.getType(index)) {
 			case TYPE_EDGE:
-				return service.getNextVertex(index);
+				return indexService.getNextVertex(index);
 			default:
 				return index;
 		}
@@ -85,7 +84,7 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 	// ------------------------------------------------------------------------
 
 	private void insert(Geometry geom, GeometryIndex index, Coordinate coordinate)
-			throws GeometryIndexNotFoundException {
+			throws GeometryIndexNotFoundException, GeometryOperationInvalidException {
 		if (index.hasChild() && geom.getGeometries() != null && geom.getGeometries().length > index.getValue()) {
 			insert(geom.getGeometries()[index.getValue()], index.getChild(), coordinate);
 		} else if (index.getType() == GeometryIndexType.TYPE_EDGE) {
@@ -131,7 +130,7 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 	}
 
 	private void insertAfterVertex(Geometry geom, GeometryIndex index, Coordinate coordinate)
-			throws GeometryIndexNotFoundException {
+			throws GeometryIndexNotFoundException, GeometryOperationInvalidException {
 		// First we check the geometry type (allow only Point, LineString and LinearRing):
 		if (Geometry.POINT.equals(geom.getGeometryType())) {
 			if (index.getValue() != 0 || geom.getCoordinates() != null) {
@@ -182,4 +181,5 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 			throw new GeometryIndexNotFoundException("Could not match index with given geometry.");
 		}
 	}
+
 }

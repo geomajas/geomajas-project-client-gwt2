@@ -145,7 +145,7 @@ public interface GeometryIndexOperationService {
 	void remove(List<GeometryIndex> indices) throws GeometryOperationFailedException;
 
 	/**
-	 * Add an empty child at the lowest sub-geometry level.
+	 * Add an empty child at the lowest sub-geometry level. Use this method to create an empty polygon or ring and get the index.
 	 * 
 	 * @return The index that points to the empty child within the geometry.
 	 * @throws GeometryOperationFailedException
@@ -156,9 +156,18 @@ public interface GeometryIndexOperationService {
 	/**
 	 * Add an empty child at the lowest sub-geometry level.
 	 * 
-	 * @param index TODO
+	 * @param index index of the parent geometry
 	 * @return The index that points to the empty child within the geometry.
 	 * @throws GeometryOperationFailedException
 	 */
 	GeometryIndex addEmptyChild(GeometryIndex index) throws GeometryOperationFailedException;
+	
+	/**
+	 * Add a series of empty children up to the specified index
+	 * @param index the index of the deepest empty child to be created
+	 * @return
+	 * @throws GeometryOperationFailedException
+	 */
+	void addEmptyChildren(GeometryIndex index) throws GeometryOperationFailedException;
+
 }

@@ -98,7 +98,7 @@ public class GeometryIndex {
 	public int getValue() {
 		return value;
 	}
-
+	
 	@Override
 	public boolean equals(Object other) {
 		if (other == null || !(other instanceof GeometryIndex)) {

@@ -11,8 +11,7 @@
 
 package org.geomajas.plugin.editing.client.service;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -39,6 +38,7 @@ public class GeometryIndexTest {
 		GeometryIndex index2 = service.create(GeometryIndexType.TYPE_VERTEX, 0, 1);
 		Assert.assertNotSame(index1.hashCode(), index2.hashCode());
 	}
+
 
 	@Test
 	public void testToString() {

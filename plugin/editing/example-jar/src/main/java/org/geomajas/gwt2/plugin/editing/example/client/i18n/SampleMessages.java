@@ -86,6 +86,22 @@ public interface SampleMessages extends Messages {
 
 	String editPolygonAddRing();
 
+	// EditMultiPolygonPanel:
+
+	String editMultiPolygonTitle();
+
+	String editMultiPolygonShort();
+
+	String editMultiPolygonDescription();
+	
+	String editMultiPolygonSubTitle();
+
+	String editMultiPolygonCreate();
+
+	String editMultiPolygonEdit();
+
+	String editMultiPolygonAddRing();
+
 	// UndoRedoPanel:
 
 	String undoRedoTitle();
@@ -139,4 +155,18 @@ public interface SampleMessages extends Messages {
 	String mergeCountriesSelect();
 
 	String mergeCountriesMerge();
+
+	// GeometryValidationPanel:
+
+	String geometryValidationTitle();
+
+	String geometryValidationShort();
+
+	String geometryValidationDescription();
+
+	String geometryValidationSubTitle();
+
+	String geometryValidationSubTitleEvents();
+
+	String geometryValidationClearEventList();
 }

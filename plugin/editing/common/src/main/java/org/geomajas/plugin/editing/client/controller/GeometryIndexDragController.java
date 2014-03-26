@@ -11,17 +11,13 @@
 
 package org.geomajas.plugin.editing.client.controller;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.google.gwt.event.dom.client.HumanInputEvent;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexSelectedEvent;
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexSelectedHandler;
+import org.geomajas.plugin.editing.client.operation.GeometryOperationInvalidException;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
@@ -29,7 +25,11 @@ import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
 import org.geomajas.plugin.editing.client.snap.SnapService;
 
-import com.google.gwt.event.dom.client.HumanInputEvent;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -124,6 +124,8 @@ public class GeometryIndexDragController extends AbstractGeometryIndexController
 		// Execute the move operation:
 		try {
 			service.move(service.getIndexStateService().getSelection(), coordinateList);
+		} catch (GeometryOperationInvalidException e) {
+			// invalid operations are reverted by default
 		} catch (GeometryOperationFailedException e) {
 			throw new IllegalStateException(e);
 		}

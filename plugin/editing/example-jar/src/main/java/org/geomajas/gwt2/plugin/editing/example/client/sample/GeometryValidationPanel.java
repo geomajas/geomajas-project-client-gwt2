@@ -11,27 +11,6 @@
 
 package org.geomajas.gwt2.plugin.editing.example.client.sample;
 
-import org.geomajas.geometry.Bbox;
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.geometry.Geometry;
-import org.geomajas.gwt2.client.GeomajasImpl;
-import org.geomajas.gwt2.client.GeomajasServerExtension;
-import org.geomajas.gwt2.client.map.MapPresenter;
-import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
-import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateEvent;
-import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateHandler;
-import org.geomajas.plugin.editing.client.event.GeometryEditStartEvent;
-import org.geomajas.plugin.editing.client.event.GeometryEditStartHandler;
-import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
-import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
-import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
-import org.geomajas.plugin.editing.client.service.GeometryEditService;
-import org.geomajas.plugin.editing.client.service.GeometryEditState;
-import org.geomajas.plugin.editing.client.service.GeometryIndex;
-import org.geomajas.plugin.editing.client.service.GeometryIndexType;
-import org.geomajas.gwt2.plugin.editing.client.Editing;
-import org.geomajas.gwt2.plugin.editing.client.GeometryEditor;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -39,22 +18,47 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DecoratorPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.geometry.Geometry;
+import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
+import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
+import org.geomajas.gwt2.plugin.editing.client.Editing;
+import org.geomajas.gwt2.plugin.editing.client.GeometryEditor;
+import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateEvent;
+import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditStartEvent;
+import org.geomajas.plugin.editing.client.event.GeometryEditStartHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
+import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditValidationEvent;
+import org.geomajas.plugin.editing.client.event.GeometryEditValidationHandler;
+import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
+import org.geomajas.plugin.editing.client.service.GeometryEditService;
+import org.geomajas.plugin.editing.client.service.GeometryEditState;
+import org.geomajas.plugin.editing.client.service.GeometryIndex;
+import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 
 /**
- * Sample that demonstrates LineString editing.
+ * Sample that demonstrates validation of geometries when adding/editing.
  * 
  * @author Pieter De Graef
+ * @author Jan Venstermans
  */
-public class EditPolygonPanel implements SamplePanel {
+public class GeometryValidationPanel implements SamplePanel {
 
 	/**
 	 * UI binder for this widget.
 	 * 
 	 * @author Pieter De Graef
 	 */
-	interface MyUiBinder extends UiBinder<Widget, EditPolygonPanel> {
+	interface MyUiBinder extends UiBinder<Widget, GeometryValidationPanel> {
 	}
 
 	private static final MyUiBinder UI_BINDER = GWT.create(MyUiBinder.class);
@@ -71,10 +75,16 @@ public class EditPolygonPanel implements SamplePanel {
 	protected Button stopBtn;
 
 	@UiField
+	protected Button clearEventBtn;
+
+	@UiField
 	protected Button addRingBtn;
 
 	@UiField
 	protected ResizeLayoutPanel mapPanel;
+
+	@UiField
+	protected VerticalPanel validationEventLayout;
 
 	private GeometryEditService editService;
 
@@ -127,22 +137,42 @@ public class EditPolygonPanel implements SamplePanel {
 				addRingBtn.setEnabled(editService.getEditingState() == GeometryEditState.IDLE);
 			}
 		});
+		editService.addGeometryEditValidationHandler(new MyGeometryValidationHandler());
+		editService.setValidating(true);
 
 		return layout;
 	}
 
 	@UiHandler("createBtn")
 	protected void onCreateButtonClicked(ClickEvent event) {
+		validationEventLayout.clear();
 		// Create an empty point geometry. It has no coordinate yet. That is up to the user...
-		Geometry polygon = new Geometry(Geometry.POLYGON, 0, -1);
-		editService.start(polygon);
-		// Set state to "inserting". The user must start clicking on the map to insert additional points:
-		editService.setEditingState(GeometryEditState.INSERTING);
+		Geometry point = new Geometry(Geometry.POLYGON, 0, -1);
+		editService.start(point);
+
+		// Set the editing service in "INSERTING" mode. Make sure it starts inserting in the correct index.
+		try {
+			// Add an empty LinearRing to the Polygon.
+			GeometryIndex index = editService.addEmptyChild();
+
+			// Make sure we can start adding coordinates into the empty LinearRing:
+			index = editService.getIndexService().addChildren(index, GeometryIndexType.TYPE_VERTEX, 0);
+
+			// Set state to "inserting". The user must start clicking on the map to insert additional points:
+			editService.setEditingState(GeometryEditState.INSERTING);
+
+			// Make sure the service knows where to insert (in the empty LinearRing):
+			editService.setInsertIndex(index);
+		} catch (GeometryOperationFailedException e) {
+			e.printStackTrace();
+		}
+
 		// Et voila, the use may now click on the map...
 	}
 
 	@UiHandler("editBtn")
 	protected void onEditButtonClicked(ClickEvent event) {
+		validationEventLayout.clear();
 		// Create a point geometry in the center of the map:
 		Geometry ring = new Geometry(Geometry.LINEAR_RING, 0, -1);
 		Bbox bounds = mapPresenter.getViewPort().getBounds();
@@ -162,12 +192,49 @@ public class EditPolygonPanel implements SamplePanel {
 
 	@UiHandler("addRingBtn")
 	protected void onAddRingButtonClicked(ClickEvent event) {
-		// Set state to "inserting". The user must start clicking on the map to insert additional points:
-		editService.setEditingState(GeometryEditState.INSERTING);
+		// Set the editing service in "INSERTING" mode. Make sure it starts inserting in the correct index.
+		try {
+			// Add an empty LinearRing to the Polygon.
+			Geometry polygon = editService.getGeometry();
+			GeometryIndex index = editService.getIndexService().create(GeometryIndexType.TYPE_GEOMETRY,
+					polygon.getGeometries().length);
+			index = editService.addEmptyChild(index);
+
+			// Make sure we can start adding coordinates into the empty LinearRing:
+			index = editService.getIndexService().addChildren(index, GeometryIndexType.TYPE_VERTEX, 0);
+
+			// Set state to "inserting". The user must start clicking on the map to insert additional points:
+			editService.setEditingState(GeometryEditState.INSERTING);
+
+			// Make sure the service knows where to insert (in the empty LinearRing):
+			editService.setInsertIndex(index);
+		} catch (GeometryOperationFailedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@UiHandler("stopBtn")
 	protected void onStopButtonClicked(ClickEvent event) {
 		editService.stop();
+	}
+
+	@UiHandler("clearEventBtn")
+	protected void onClearEventsButtonClicked(ClickEvent event) {
+		validationEventLayout.clear();
+	}
+
+	/**
+	 * Handler that catches events of geometry validation.
+	 *
+	 * @author Jan Venstermans
+	 */
+	private class MyGeometryValidationHandler implements GeometryEditValidationHandler {
+
+		@Override
+		public void onGeometryEditValidation(GeometryEditValidationEvent event) {
+			if (!event.getValidationState().isValid()) {
+				validationEventLayout.add(new Label("Geometry invalid: " + event.getValidationState().toString()));
+			}
+		}
 	}
 }

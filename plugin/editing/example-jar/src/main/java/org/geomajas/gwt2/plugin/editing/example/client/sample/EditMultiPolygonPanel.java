@@ -18,6 +18,8 @@ import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
+import org.geomajas.gwt2.plugin.editing.client.Editing;
+import org.geomajas.gwt2.plugin.editing.client.GeometryEditor;
 import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartEvent;
@@ -29,8 +31,6 @@ import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
-import org.geomajas.gwt2.plugin.editing.client.Editing;
-import org.geomajas.gwt2.plugin.editing.client.GeometryEditor;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -43,18 +43,18 @@ import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Sample that demonstrates LineString editing.
+ * Sample that demonstrates MultiPolygon editing.
  * 
- * @author Pieter De Graef
+ * @author Jan De Moerloose
  */
-public class EditPolygonPanel implements SamplePanel {
+public class EditMultiPolygonPanel implements SamplePanel {
 
 	/**
 	 * UI binder for this widget.
 	 * 
-	 * @author Pieter De Graef
+	 * @author Jan De Moerloose
 	 */
-	interface MyUiBinder extends UiBinder<Widget, EditPolygonPanel> {
+	interface MyUiBinder extends UiBinder<Widget, EditMultiPolygonPanel> {
 	}
 
 	private static final MyUiBinder UI_BINDER = GWT.create(MyUiBinder.class);
@@ -133,9 +133,9 @@ public class EditPolygonPanel implements SamplePanel {
 
 	@UiHandler("createBtn")
 	protected void onCreateButtonClicked(ClickEvent event) {
-		// Create an empty point geometry. It has no coordinate yet. That is up to the user...
-		Geometry polygon = new Geometry(Geometry.POLYGON, 0, -1);
-		editService.start(polygon);
+		// Create an empty geometry. It has no coordinate yet. That is up to the user...
+		Geometry multiPoly = new Geometry(Geometry.MULTI_POLYGON, 0, -1);
+		editService.start(multiPoly);
 		// Set state to "inserting". The user must start clicking on the map to insert additional points:
 		editService.setEditingState(GeometryEditState.INSERTING);
 		// Et voila, the use may now click on the map...
@@ -147,22 +147,37 @@ public class EditPolygonPanel implements SamplePanel {
 		Geometry ring = new Geometry(Geometry.LINEAR_RING, 0, -1);
 		Bbox bounds = mapPresenter.getViewPort().getBounds();
 		double x1 = bounds.getX() + bounds.getWidth() / 4;
-		double x2 = bounds.getMaxX() - bounds.getWidth() / 4;
+		double x2 = bounds.getX() + bounds.getWidth() / 2;
 		double y1 = bounds.getY() + bounds.getHeight() / 4;
-		double y2 = bounds.getMaxY() - bounds.getHeight() / 4;
+		double y2 = bounds.getY() + bounds.getHeight() / 2;
 
 		ring.setCoordinates(new Coordinate[] { new Coordinate(x1, y1), new Coordinate(x2, y1), new Coordinate(x2, y2),
 				new Coordinate(x1, y2), new Coordinate(x1, y1) });
-		Geometry polygon = new Geometry(Geometry.POLYGON, 0, 5);
-		polygon.setGeometries(new Geometry[] { ring });
+		Geometry p1 = new Geometry(Geometry.POLYGON, 0, 5);
+		p1.setGeometries(new Geometry[] { ring });
+		
+		ring = new Geometry(Geometry.LINEAR_RING, 0, -1);
+		x1 = bounds.getX() + bounds.getWidth() / 2;
+		x2 = bounds.getX() + bounds.getWidth() * 0.75;
+		y1 = bounds.getY() + bounds.getHeight() / 2;
+		y2 = bounds.getY() + bounds.getHeight() * 0.75;
+		ring.setCoordinates(new Coordinate[] { new Coordinate(x1, y1), new Coordinate(x2, y1), new Coordinate(x2, y2),
+				new Coordinate(x1, y2), new Coordinate(x1, y1) });
+		Geometry p2 = new Geometry(Geometry.POLYGON, 0, 5);
+		p2.setGeometries(new Geometry[] { ring });
 
+		Geometry multi = new Geometry(Geometry.MULTI_POLYGON, 0, 5);
+		multi.setGeometries(new Geometry[] { p1, p2 });
+		
 		// Now start editing it:
-		editService.start(polygon);
+		editService.start(multi);
 	}
 
 	@UiHandler("addRingBtn")
 	protected void onAddRingButtonClicked(ClickEvent event) {
 		// Set state to "inserting". The user must start clicking on the map to insert additional points:
+		// when clicking in a polygon, a hole will be started
+		// when clicking outside a polygon, a new polygon shell will be started
 		editService.setEditingState(GeometryEditState.INSERTING);
 	}
 
