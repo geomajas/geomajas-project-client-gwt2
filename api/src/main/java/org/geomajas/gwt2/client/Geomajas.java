@@ -42,8 +42,6 @@ public interface Geomajas {
 	 * Create a new empty map and immediately provide the necessary initialization configuration. This method will
 	 * create a map and add the default map widgets (zoom in/out, zoom to rectangle and scale bar).
 	 *
-	 * @since 2.1.0
-	 *
 	 * @param configuration The map configuration.
 	 * @param mapWidth      This initial map width in pixels.
 	 * @param mapHeight     This initial map height in pixels.
@@ -55,6 +53,8 @@ public interface Geomajas {
 	/**
 	 * Create a new empty map and immediately provide the necessary initialization configuration. This method will
 	 * create a map and add the default map widgets (zoom in/out, zoom to rectangle and scale bar).
+	 *
+	 * @since 2.1.0
 	 *
 	 * @param configuration The map configuration.
 	 * @param mapWidth      This initial map width in pixels.
