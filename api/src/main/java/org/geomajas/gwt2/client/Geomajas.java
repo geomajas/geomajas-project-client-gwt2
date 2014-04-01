@@ -42,6 +42,8 @@ public interface Geomajas {
 	 * Create a new empty map and immediately provide the necessary initialization configuration. This method will
 	 * create a map and add the default map widgets (zoom in/out, zoom to rectangle and scale bar).
 	 *
+	 * @since 2.1.0
+	 *
 	 * @param configuration The map configuration.
 	 * @param mapWidth      This initial map width in pixels.
 	 * @param mapHeight     This initial map height in pixels.
@@ -51,21 +53,15 @@ public interface Geomajas {
 
 
 	/**
-	 * Create a new empty map and immediately provide the necessary initialization configuration.
-	 *
-	 * <br />
-	 * <b>NOTE!</b> that the map will be null while
-	 * {@link MapInitializationHandler#onMapInitialized(org.geomajas.gwt2.client.event.MapInitializationEvent)} method
-	 * is being executed. Use {@link org.geomajas.gwt2.client.event.MapInitializationEvent#getMapPresenter()} instead.
-	 *
-	 * @since 2.1.0
+	 * Create a new empty map and immediately provide the necessary initialization configuration. This method will
+	 * create a map and add the default map widgets (zoom in/out, zoom to rectangle and scale bar).
 	 *
 	 * @param configuration The map configuration.
 	 * @param mapWidth      This initial map width in pixels.
 	 * @param mapHeight     This initial map height in pixels.
 	 * @param handler       A map initialization handler.
 	 * @param mapWidgets    A set of widgets that should be added to the map by default.
-	 * @return An initialized map.
+	 * @return An initialized map. Time to add some layers!
 	 */
 	MapPresenter createMapPresenter(MapConfiguration configuration, int mapWidth, int mapHeight,
 			MapInitializationHandler handler, DefaultMapWidget... mapWidgets);
