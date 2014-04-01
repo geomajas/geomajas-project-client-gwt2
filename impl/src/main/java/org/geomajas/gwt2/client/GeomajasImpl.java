@@ -78,8 +78,11 @@ public final class GeomajasImpl implements Geomajas {
 	@Override
 	public MapPresenter createMapPresenter(MapConfiguration configuration, int mapWidth, int mapHeight,
 			MapInitializationHandler handler, DefaultMapWidget... mapWidgets) {
-		MapPresenter mapPresenter = createMapPresenter(configuration, mapWidth, mapHeight, mapWidgets);
+
+		MapPresenterImpl mapPresenter = new MapPresenterImpl(getEventBus());
 		mapPresenter.getEventBus().addMapInitializationHandler(handler);
+		mapPresenter.setSize(mapWidth, mapHeight);
+		mapPresenter.initialize(configuration, mapWidgets);
 
 		return mapPresenter;
 	}
