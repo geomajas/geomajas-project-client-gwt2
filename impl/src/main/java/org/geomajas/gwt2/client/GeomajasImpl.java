@@ -15,6 +15,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 import org.geomajas.annotation.Api;
+import org.geomajas.gwt2.client.event.MapInitializationHandler;
 import org.geomajas.gwt2.client.gfx.GfxUtil;
 import org.geomajas.gwt2.client.gfx.GfxUtilImpl;
 import org.geomajas.gwt2.client.map.MapConfiguration;
@@ -72,6 +73,15 @@ public final class GeomajasImpl implements Geomajas {
 		return createMapPresenter(configuration, mapWidth, mapHeight, new DefaultMapWidget[] {
 				DefaultMapWidget.ZOOM_CONTROL, DefaultMapWidget.ZOOM_TO_RECTANGLE_CONTROL,
 				DefaultMapWidget.SCALEBAR });
+	}
+
+	@Override
+	public MapPresenter createMapPresenter(MapConfiguration configuration, int mapWidth, int mapHeight,
+			MapInitializationHandler handler, DefaultMapWidget... mapWidgets) {
+		MapPresenter mapPresenter = createMapPresenter(configuration, mapWidth, mapHeight, mapWidgets);
+		mapPresenter.getEventBus().addMapInitializationHandler(handler);
+
+		return mapPresenter;
 	}
 
 	@Override
