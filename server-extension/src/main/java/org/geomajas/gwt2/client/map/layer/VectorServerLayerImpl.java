@@ -35,7 +35,7 @@ import org.geomajas.gwt2.client.map.attribute.PrimitiveAttributeTypeImpl;
 import org.geomajas.gwt2.client.map.attribute.PrimitiveType;
 import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.client.map.render.TileLevelRenderer;
-import org.geomajas.gwt2.client.map.render.dom.DomFixedScaleLayerRenderer;
+import org.geomajas.gwt2.client.map.render.dom.DomTileLevelLayerRenderer;
 import org.geomajas.gwt2.client.map.render.LayerRenderer;
 import org.geomajas.gwt2.client.map.render.dom.VectorServerLayerScaleRenderer;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
@@ -55,7 +55,7 @@ import java.util.Map;
  */
 public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayerInfo> implements VectorServerLayer {
 
-	private final DomFixedScaleLayerRenderer renderer;
+	private final DomTileLevelLayerRenderer renderer;
 
 	private final Map<String, Feature> selection;
 
@@ -73,7 +73,7 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 	public VectorServerLayerImpl(ClientVectorLayerInfo layerInfo, final ViewPort viewPort, MapEventBus eventBus) {
 		super(layerInfo, viewPort, eventBus);
 		this.selection = new HashMap<String, Feature>();
-		this.renderer = new DomFixedScaleLayerRenderer(viewPort, this, eventBus) {
+		this.renderer = new DomTileLevelLayerRenderer(viewPort, this, eventBus) {
 
 			@Override
 			public TileLevelRenderer createNewScaleRenderer(int tileLevel, View view, HtmlContainer scaleContainer) {

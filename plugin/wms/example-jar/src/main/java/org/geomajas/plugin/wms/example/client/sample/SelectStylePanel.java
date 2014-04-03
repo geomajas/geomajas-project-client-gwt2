@@ -173,7 +173,7 @@ public class SelectStylePanel implements SamplePanel {
 						@Override
 						public void onValueChange(ValueChangeEvent<Boolean> event) {
 							if (event.getValue()) {
-								layer.getConfig().setStyles(styleInfo.getName());
+								layer.getConfiguration().setStyles(styleInfo.getName());
 								layer.refresh();
 							}
 						}

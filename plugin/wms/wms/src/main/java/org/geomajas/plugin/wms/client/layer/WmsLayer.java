@@ -37,7 +37,7 @@ public interface WmsLayer extends TileBasedLayer, LegendUrlSupported {
 	 *
 	 * @return Get the main WMS options object.
 	 */
-	WmsLayerConfiguration getConfig();
+	WmsLayerConfiguration getConfiguration();
 
 	/**
 	 * Get the capabilities object that describes this layer. This object is part from the WMS GetCapabilities request
@@ -51,9 +51,9 @@ public interface WmsLayer extends TileBasedLayer, LegendUrlSupported {
 	 * Get the tiles for the specified scale and world bounds.<p/> TODO remove this method before making this class API
 	 * ...
 	 *
-	 * @param scale       The scale at which to ask for tiles.
+	 * @param resolution       The scale at which to ask for tiles.
 	 * @param worldBounds The bounds in WorldSpace at which to ask for tiles.
 	 * @return The list of tiles fitting the given parameters.
 	 */
-	List<Tile> getTiles(double scale, Bbox worldBounds);
+	List<Tile> getTiles(double resolution, Bbox worldBounds);
 }

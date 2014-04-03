@@ -12,9 +12,8 @@
 package org.geomajas.gwt2.client.map.layer.tile;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.gwt2.client.map.HasResolutions;
 import org.geomajas.gwt2.client.map.layer.Layer;
-
-import java.util.List;
 
 /**
  * Base definition for a layer that uses tiles for it's rendering.
@@ -23,7 +22,7 @@ import java.util.List;
  * @since 2.1.0
  */
 @Api(allMethods = true)
-public interface TileBasedLayer extends Layer {
+public interface TileBasedLayer extends Layer, HasResolutions {
 
 	/**
 	 * Get the tile configuration object associated with this layer.
@@ -31,11 +30,4 @@ public interface TileBasedLayer extends Layer {
 	 * @return The tile configuration object.
 	 */
 	TileConfiguration getTileConfiguration();
-
-	/**
-	 * Get the scales for the tile levels. This list if ordered top-down.
-	 *
-	 * @return The list of scale levels.
-	 */
-	List<Double> getTileLevels();
 }

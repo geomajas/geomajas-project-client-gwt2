@@ -67,18 +67,17 @@ public class TmsLayerPanel implements SamplePanel {
 		MapConfiguration configuration = new MapConfigurationImpl();
 		configuration.setCrs(EPSG, CrsType.DEGREES);
 		configuration.setMaxBounds(new Bbox(-180, -90, 360, 180));
-		configuration.setMaximumScale(8192);
 		List<Double> resolutions = new ArrayList<Double>();
 //		resolutions.add(0.703125);
 //		resolutions.add(0.3515625);
 //		resolutions.add(0.17578125);
 //		resolutions.add(0.087890625);
 //		resolutions.add(0.0439453125);
-		resolutions.add(0.703125 * 0.75);
+//		resolutions.add(0.703125 * 0.75);
 		resolutions.add(0.3515625 * 0.75);
-		resolutions.add(0.17578125 * 0.75);
+//		resolutions.add(0.17578125 * 0.75);
 		resolutions.add(0.087890625 * 0.75);
-		resolutions.add(0.0439453125 * 0.75);
+//		resolutions.add(0.0439453125 * 0.75);
 		configuration.setResolutions(resolutions);
 		mapPresenter = GeomajasImpl.getInstance().createMapPresenter(configuration, 480, 480);
 

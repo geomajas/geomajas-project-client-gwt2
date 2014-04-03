@@ -22,16 +22,17 @@ import org.geomajas.gwt2.client.map.View;
 public interface TileLevelRenderer {
 
 	/**
-	 * Get the fixed scale index for this scale renderer.
+	 * Get the tile level for this renderer. Tile levels have a fixed resolution for each layer. This means that a
+	 * certain tile level may lie at different resolutions for different layers.
 	 *
-	 * @return The fixed scale index.
+	 * @return The tile level.
 	 */
 	int getTileLevel();
 
 	/**
-	 * Render the required tiles for the given view. If the scale in this view is not the scale represented by this
-	 * renderer, it will calculate the bounding box of the view on it's own scale level. It other words, the renderer
-	 * will make sure the requested view will be rendered (but in it's own scale level).
+	 * Render the required tiles for the given view. If the resolution in this view is not the resolution represented by
+	 * this renderer, it will calculate the bounding box of the view on it's own resolution. It other words, the
+	 * renderer will make sure the requested view will be rendered (but in it's own resolution).
 	 *
 	 * @param view The view to visualize.
 	 */
@@ -45,8 +46,8 @@ public interface TileLevelRenderer {
 	/**
 	 * Is the requested view rendered or not?
 	 *
-	 * @param view The view to check. It may be that the view has a different scale level than what is rendered in this
-	 *             renderer. In that case, this renderer will calculate how that view applies on it's own scale level.
+	 * @param view The view to check. It may be that the view has a different resolution than what is rendered in this
+	 *             renderer. In that case, this renderer will calculate how that view applies on it's own resolution.
 	 * @return true or false.
 	 */
 	boolean isRendered(View view);

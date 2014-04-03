@@ -12,11 +12,11 @@
 package org.geomajas.plugin.wms.client.layer;
 
 import org.geomajas.geometry.Bbox;
-import org.geomajas.gwt2.client.map.ViewPort;
+import org.geomajas.gwt2.client.map.HasResolutions;
 import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
-import org.geomajas.gwt2.client.map.render.TileServiceImpl;
 import org.geomajas.gwt2.client.map.render.TileCode;
 import org.geomajas.gwt2.client.map.render.TileRenderer;
+import org.geomajas.gwt2.client.service.TileService;
 import org.geomajas.plugin.wms.client.WmsClient;
 
 /**
@@ -31,19 +31,22 @@ public class WmsTileRenderer implements TileRenderer {
 
 	private final TileConfiguration tileConfiguration;
 
-	private final ViewPort viewPort;
+	private final HasResolutions hasResolutions; // The WMS layer.
+
+	private final String crs;
 
 	protected WmsTileRenderer(WmsLayerConfiguration layerConfiguration, TileConfiguration tileConfiguration,
-			ViewPort viewPort) {
+			HasResolutions hasResolutions, String crs) {
 		this.layerConfiguration = layerConfiguration;
 		this.tileConfiguration = tileConfiguration;
-		this.viewPort = viewPort;
+		this.hasResolutions = hasResolutions;
+		this.crs = crs;
 	}
 
 	@Override
 	public String getUrl(TileCode tileCode) {
-		Bbox bounds = TileServiceImpl.getInstance().getWorldBoundsForTile(viewPort, tileConfiguration, tileCode);
-		return WmsClient.getInstance().getWmsService().getMapUrl(layerConfiguration, viewPort.getCrs(), bounds,
+		Bbox bounds = TileService.getWorldBoundsForTile(hasResolutions, tileConfiguration, tileCode);
+		return WmsClient.getInstance().getWmsService().getMapUrl(layerConfiguration, crs, bounds,
 				tileConfiguration.getTileWidth(), tileConfiguration.getTileHeight());
 	}
 }

@@ -24,8 +24,6 @@ import org.geomajas.gwt2.client.event.NavigationStopHandler;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -58,7 +56,8 @@ public final class ViewPortImpl implements ViewPort {
 	 */
 	private Bbox maxBounds;
 
-	private final List<Double> resolutions = new ArrayList<Double>();
+	//private final List<Double> resolutions = new ArrayList<Double>();
+	private final HasResolutionsImpl hasResolutions;
 
 	private String crs;
 
@@ -74,6 +73,7 @@ public final class ViewPortImpl implements ViewPort {
 
 	public ViewPortImpl(MapEventBus eventBus) {
 		this.eventBus = eventBus;
+		this.hasResolutions = new HasResolutionsImpl();
 		this.transformationService = new ViewPortTransformationServiceImpl(this);
 		this.position = new Coordinate();
 
@@ -98,6 +98,7 @@ public final class ViewPortImpl implements ViewPort {
 		this.maxBounds = new Bbox(configuration.getMaxBounds().getX(), configuration.getMaxBounds().getY(),
 				configuration.getMaxBounds().getWidth(), configuration.getMaxBounds().getHeight());
 
+		List<Double> resolutions = new ArrayList<Double>();
 		if (configuration.getResolutions() != null && configuration.getResolutions().size() > 0) {
 			for (Double resolution : configuration.getResolutions()) {
 				resolutions.add(resolution);
@@ -117,13 +118,7 @@ public final class ViewPortImpl implements ViewPort {
 			throw new IllegalStateException(
 					"The map configuration must either contain a fixed list resolutions or a minimum resolution");
 		}
-		Collections.sort(resolutions, new Comparator<Double>() {
-
-			@Override
-			public int compare(Double o1, Double o2) {
-				return o2.compareTo(o1);
-			}
-		});
+		hasResolutions.setResolutions(resolutions);
 	}
 
 	@Override
@@ -133,59 +128,27 @@ public final class ViewPortImpl implements ViewPort {
 
 	@Override
 	public double getMaximumResolution() {
-		if (resolutions.size() == 0) {
-			return Double.MAX_VALUE;
-		}
-		return resolutions.get(0);
+		return hasResolutions.getMaximumResolution();
 	}
 
 	@Override
 	public double getMinimumResolution() {
-		if (resolutions.size() == 0) {
-			return 0;
-		}
-		return resolutions.get(resolutions.size() - 1);
+		return hasResolutions.getMinimumResolution();
 	}
 
 	@Override
 	public int getResolutionCount() {
-		return resolutions.size();
+		return hasResolutions.getResolutionCount();
 	}
 
 	@Override
 	public double getResolution(int index) {
-		if (index < 0) {
-			throw new IllegalArgumentException("Resolution cannot be found.");
-		}
-		if (index >= resolutions.size()) {
-			throw new IllegalArgumentException("Resolution cannot be found.");
-		}
-		return resolutions.get(index);
+		return hasResolutions.getResolution(index);
 	}
 
 	@Override
 	public int getResolutionIndex(double resolution) {
-		double maximumResolution = getMaximumResolution();
-		if (resolution >= maximumResolution) {
-			return 0;
-		}
-		double minimumResolution = getMinimumResolution();
-		if (resolution <= minimumResolution) {
-			return resolutions.size() - 1;
-		}
-
-		for (int i = 0; i < resolutions.size(); i++) {
-			double upper = resolutions.get(i);
-			double lower = resolutions.get(i + 1);
-			if (resolution < upper && resolution >= lower) {
-				if (Math.abs(upper - resolution) >= Math.abs(lower - resolution)) {
-					return i + 1;
-				} else {
-					return i;
-				}
-			}
-		}
-		return 0;
+		return hasResolutions.getResolutionIndex(resolution);
 	}
 
 	protected void setMapSize(int width, int height) {
@@ -472,9 +435,9 @@ public final class ViewPortImpl implements ViewPort {
 			return allowedResolution;
 		}
 
-		for (int i = 0; i < resolutions.size() - 1; i++) {
-			double upper = resolutions.get(i);
-			double lower = resolutions.get(i + 1);
+		for (int i = 0; i < hasResolutions.getResolutionCount() - 1; i++) {
+			double upper = hasResolutions.getResolution(i);
+			double lower = hasResolutions.getResolution(i + 1);
 
 			if (allowedResolution == upper) {
 				return upper;

@@ -65,7 +65,7 @@ public class DomTileLevelRenderer implements TileLevelRenderer {
 		this.container = container;
 		this.tileRenderer = tileRenderer;
 		this.tiles = new HashMap<TileCode, Tile>();
-		this.resolution = viewPort.getResolution(tileLevel);
+		this.resolution = layer.getResolution(tileLevel);
 	}
 
 	// ------------------------------------------------------------------------
@@ -138,8 +138,6 @@ public class DomTileLevelRenderer implements TileLevelRenderer {
 	}
 
 	private Bbox getWorldBounds(TileCode tileCode) {
-		double resolution = 1 / scale;
-		//double resolution = 1 / viewPort.getFixedScale(tileCode.getTileLevel());
 		double worldTileWidth = layer.getTileConfiguration().getTileWidth() * resolution;
 		double worldTileHeight = layer.getTileConfiguration().getTileHeight() * resolution;
 
@@ -155,11 +153,6 @@ public class DomTileLevelRenderer implements TileLevelRenderer {
 			return codes;
 		}
 
-		//int tileLevel = viewPort.getFixedScaleIndex(view.getScale());
-		//double actualScale = viewPort.getFixedScale(tileLevel);
-
-		//double resolution = 1 / actualScale;
-		double resolution = 1 / scale;
 		double worldTileWidth = layer.getTileConfiguration().getTileWidth() * resolution;
 		double worldTileHeight = layer.getTileConfiguration().getTileHeight() * resolution;
 

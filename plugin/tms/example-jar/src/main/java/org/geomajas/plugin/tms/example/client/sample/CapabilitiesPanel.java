@@ -27,7 +27,11 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
+import org.geomajas.gwt2.client.animation.LinearTrajectory;
+import org.geomajas.gwt2.client.animation.NavigationAnimationFactory;
 import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.client.map.View;
+import org.geomajas.gwt2.client.map.ZoomOption;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.plugin.tms.client.TmsClient;
 import org.geomajas.plugin.tms.client.configuration.ListTileMapInfo;
@@ -134,7 +138,12 @@ public class CapabilitiesPanel implements SamplePanel {
 			public void onSuccess(TileMapInfo result) {
 				TmsLayer layer = TmsClient.getInstance().createLayer(result);
 				mapPresenter.getLayersModel().addLayer(layer);
-				//mapPresenter.getLayersModelRenderer().setAnimated(layer, true);
+
+				// Now animate-zoom to the layer bounding box:
+				View beginView = mapPresenter.getViewPort().getView();
+				View endView = mapPresenter.getViewPort().asView(result.getBoundingBox(), ZoomOption.FREE);
+				mapPresenter.getViewPort().registerAnimation(NavigationAnimationFactory.create(mapPresenter,
+						new LinearTrajectory(beginView, endView), 500));
 			}
 
 			@Override
