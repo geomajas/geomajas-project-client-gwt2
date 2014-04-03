@@ -338,7 +338,7 @@ public final class MapPresenterImpl implements MapPresenter {
 			}
 		});
 		// Fire initialization event
-		eventBus.fireEvent(new MapInitializationEvent());
+		eventBus.fireEvent(new MapInitializationEvent(this));
 	}
 
 	@Override
