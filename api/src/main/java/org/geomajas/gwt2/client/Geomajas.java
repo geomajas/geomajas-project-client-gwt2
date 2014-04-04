@@ -13,6 +13,7 @@ package org.geomajas.gwt2.client;
 
 import com.google.web.bindery.event.shared.EventBus;
 import org.geomajas.annotation.Api;
+import org.geomajas.gwt2.client.event.MapInitializationHandler;
 import org.geomajas.gwt2.client.gfx.GfxUtil;
 import org.geomajas.gwt2.client.widget.DefaultMapWidget;
 import org.geomajas.gwt2.client.map.MapConfiguration;
@@ -47,6 +48,27 @@ public interface Geomajas {
 	 * @return An initialized map. Time to add some layers!
 	 */
 	MapPresenter createMapPresenter(MapConfiguration configuration, int mapWidth, int mapHeight);
+
+
+	/**
+	 * Create a new empty map and immediately provide the necessary initialization configuration.
+	 *
+	 * <br />
+	 * <b>NOTE!</b> that the map will be null while
+	 * {@link MapInitializationHandler#onMapInitialized(org.geomajas.gwt2.client.event.MapInitializationEvent)} method
+	 * is being executed. Use {@link org.geomajas.gwt2.client.event.MapInitializationEvent#getMapPresenter()} instead.
+	 *
+	 * @since 2.1.0
+	 *
+	 * @param configuration The map configuration.
+	 * @param mapWidth      This initial map width in pixels.
+	 * @param mapHeight     This initial map height in pixels.
+	 * @param handler       A map initialization handler.
+	 * @param mapWidgets    A set of widgets that should be added to the map by default.
+	 * @return An initialized map.
+	 */
+	MapPresenter createMapPresenter(MapConfiguration configuration, int mapWidth, int mapHeight,
+			MapInitializationHandler handler, DefaultMapWidget... mapWidgets);
 
 	/**
 	 * Create a new empty map and immediately provide the necessary initialization configuration.
