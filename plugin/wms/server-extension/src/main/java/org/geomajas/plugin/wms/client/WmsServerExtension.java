@@ -17,6 +17,7 @@ import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt2.client.map.Hint;
+import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
 import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
 import org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo;
@@ -37,7 +38,7 @@ import java.util.Map;
  * Starting point for the WMS server extension. It provides additional functionality on top of the normal WMS client.
  *
  * @author Pieter De Graef
- * @since 2.0.0
+ * @since 2.1.0
  */
 @Api(allMethods = true)
 public final class WmsServerExtension {
@@ -110,14 +111,15 @@ public final class WmsServerExtension {
 	 * @param baseUrl    The WMS base URL. This is the same URL you fed the GetCapabilities call.
 	 * @param version    The WMS version.
 	 * @param layerInfo  The layer info object. Acquired from a WMS GetCapabilities.
-	 * @param crs        The coordinate reference system to describe the configuration in.
+	 * @param viewPort   The ViewPort to take the CRS and fixed resolutions from.
 	 * @param tileWidth  The tile width in pixels.
 	 * @param tileHeight The tile height in pixels.
 	 * @return A new WMS layer.
 	 */
 	public FeaturesSupportedWmsLayer createLayer(String baseUrl, WmsService.WmsVersion version,
-			WmsLayerInfo layerInfo, String crs, int tileWidth, int tileHeight) {
-		TileConfiguration tileConf = WmsClient.getInstance().createTileConfig(layerInfo, crs, tileWidth, tileHeight);
+			WmsLayerInfo layerInfo, ViewPort viewPort, int tileWidth, int tileHeight) {
+		TileConfiguration tileConf = WmsClient.getInstance().createTileConfig(layerInfo, viewPort, tileWidth,
+				tileHeight);
 		WmsLayerConfiguration layerConf = WmsClient.getInstance().createLayerConfig(layerInfo, baseUrl, version);
 		return createLayer(layerInfo.getTitle(), tileConf, layerConf, layerInfo);
 	}

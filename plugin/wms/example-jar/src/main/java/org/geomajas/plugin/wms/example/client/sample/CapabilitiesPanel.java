@@ -119,7 +119,7 @@ public class CapabilitiesPanel implements SamplePanel {
 						if (result.getLayers() != null) {
 							for (WmsLayerInfo layerInfo : result.getLayers()) {
 								TileConfiguration tileConfig = WmsClient.getInstance().createTileConfig(layerInfo,
-										mapPresenter.getViewPort().getCrs(), 256, 256);
+										mapPresenter.getViewPort(), 256, 256);
 								WmsLayerConfiguration layerConfig = WmsClient.getInstance().createLayerConfig(
 										layerInfo, WMS_BASE_URL, getWmsVersion());
 								final WmsLayer layer = WmsClient.getInstance().createLayer(layerInfo.getTitle(),

@@ -12,7 +12,6 @@
 package org.geomajas.plugin.tms.client.layer;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.gwt2.client.map.HasResolutionsImpl;
 import org.geomajas.gwt2.client.map.layer.AbstractTileBasedLayer;
 import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
 import org.geomajas.gwt2.client.map.render.TileRenderer;
@@ -46,7 +45,7 @@ public class TmsLayer extends AbstractTileBasedLayer {
 	 * @param id The unique ID for this layer.
 	 */
 	public TmsLayer(String id, TileConfiguration tileConfiguration, TmsLayerConfiguration layerConfiguration) {
-		super(id, tileConfiguration, new HasResolutionsImpl());
+		super(id, tileConfiguration);
 		this.layerConfiguration = layerConfiguration;
 		this.tileRenderer = new TmsTileRenderer(layerConfiguration);
 	}
@@ -58,7 +57,7 @@ public class TmsLayer extends AbstractTileBasedLayer {
 	 */
 	public TmsLayer(TileMapInfo tileMapInfo) {
 		super(tileMapInfo.getTitle(), new TileConfiguration(tileMapInfo.getTileFormat().getWidth(),
-				tileMapInfo.getTileFormat().getHeight(), tileMapInfo.getOrigin()), new HasResolutionsImpl());
+				tileMapInfo.getTileFormat().getHeight(), tileMapInfo.getOrigin(), new ArrayList<Double>()));
 		this.layerConfiguration = new TmsLayerConfiguration();
 		this.layerConfiguration.setBaseUrl(tileMapInfo.getHref());
 		this.layerConfiguration.setFileExtension(tileMapInfo.getTileFormat().getExtension());
@@ -68,7 +67,7 @@ public class TmsLayer extends AbstractTileBasedLayer {
 		for (TileSetInfo tileSetInfo : tileMapInfo.getTileSets()) {
 			resolutions.add(tileSetInfo.getUnitsPerPixel());
 		}
-		((HasResolutionsImpl) hasResolutions).setResolutions(resolutions);
+		getTileConfiguration().setResolutions(resolutions);
 	}
 
 	// ------------------------------------------------------------------------

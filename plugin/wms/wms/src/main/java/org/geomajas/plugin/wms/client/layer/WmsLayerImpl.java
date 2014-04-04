@@ -73,7 +73,7 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 	@Override
 	protected void setViewPort(ViewPort viewPort) {
 		super.setViewPort(viewPort);
-		this.tileRenderer = new WmsTileRenderer(wmsConfig, tileConfig, this, viewPort.getCrs());
+		this.tileRenderer = new WmsTileRenderer(wmsConfig, tileConfig, viewPort.getCrs());
 
 		// Install minimum and maximum resolution:
 		double minResolution = -1.0, maxResolution = -1.0;
@@ -158,61 +158,17 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 	}
 
 	// ------------------------------------------------------------------------
-	// HasResolutions implementation:
-	// ------------------------------------------------------------------------
-
-	@Override
-	public int getResolutionCount() {
-		if (viewPort != null) {
-			return viewPort.getResolutionCount();
-		}
-		return 0;
-	}
-
-	@Override
-	public double getResolution(int index) {
-		if (viewPort != null) {
-			return viewPort.getResolution(index);
-		}
-		return 0;
-	}
-
-	@Override
-	public int getResolutionIndex(double resolution) {
-		if (viewPort != null) {
-			return viewPort.getResolutionIndex(resolution);
-		}
-		return 0;
-	}
-
-	@Override
-	public double getMaximumResolution() {
-		if (viewPort != null) {
-			return viewPort.getMaximumResolution();
-		}
-		return 0;
-	}
-
-	@Override
-	public double getMinimumResolution() {
-		if (viewPort != null) {
-			return viewPort.getMinimumResolution();
-		}
-		return 0;
-	}
-
-	// ------------------------------------------------------------------------
 	// HasMapScalesRenderer implementation:
 	// ------------------------------------------------------------------------
 
 	@Override
 	public List<Tile> getTiles(double resolution, Bbox worldBounds) {
-		List<TileCode> codes = TileService.getTileCodesForBounds(this, tileConfig, worldBounds, resolution);
+		List<TileCode> codes = TileService.getTileCodesForBounds(tileConfig, worldBounds, resolution);
 		List<Tile> tiles = new ArrayList<Tile>();
 		if (!codes.isEmpty()) {
-			double actualResolution = getResolution(codes.get(0).getTileLevel());
+			double actualResolution = tileConfig.getResolution(codes.get(0).getTileLevel());
 			for (TileCode code : codes) {
-				Bbox bounds = TileService.getWorldBoundsForTile(this, tileConfig, code);
+				Bbox bounds = TileService.getWorldBoundsForTile(tileConfig, code);
 				Tile tile = new Tile(getScreenBounds(actualResolution, bounds));
 				tile.setCode(code);
 				tile.setUrl(WmsClient.getInstance().getWmsService().getMapUrl(getConfiguration(), viewPort.getCrs(),

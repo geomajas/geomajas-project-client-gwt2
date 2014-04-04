@@ -93,7 +93,8 @@ public class WmsLayerPanel implements SamplePanel {
 		mapPresenter.getLayersModel().clear();
 
 		// Now create a WMS layer and add it to the map:
-		TileConfiguration tileConfig = new TileConfiguration(256, 256, new Coordinate(-180, -90));
+		TileConfiguration tileConfig = new TileConfiguration(256, 256, new Coordinate(-180, -90),
+				mapPresenter.getViewPort());
 		WmsLayerConfiguration layerConfig = new WmsLayerConfiguration();
 		layerConfig.setBaseUrl(WMS_BASE_URL);
 		layerConfig.setFormat("image/png");

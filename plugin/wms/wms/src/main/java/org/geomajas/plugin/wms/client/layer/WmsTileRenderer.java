@@ -12,7 +12,6 @@
 package org.geomajas.plugin.wms.client.layer;
 
 import org.geomajas.geometry.Bbox;
-import org.geomajas.gwt2.client.map.HasResolutions;
 import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
 import org.geomajas.gwt2.client.map.render.TileCode;
 import org.geomajas.gwt2.client.map.render.TileRenderer;
@@ -31,21 +30,18 @@ public class WmsTileRenderer implements TileRenderer {
 
 	private final TileConfiguration tileConfiguration;
 
-	private final HasResolutions hasResolutions; // The WMS layer.
-
 	private final String crs;
 
 	protected WmsTileRenderer(WmsLayerConfiguration layerConfiguration, TileConfiguration tileConfiguration,
-			HasResolutions hasResolutions, String crs) {
+			String crs) {
 		this.layerConfiguration = layerConfiguration;
 		this.tileConfiguration = tileConfiguration;
-		this.hasResolutions = hasResolutions;
 		this.crs = crs;
 	}
 
 	@Override
 	public String getUrl(TileCode tileCode) {
-		Bbox bounds = TileService.getWorldBoundsForTile(hasResolutions, tileConfiguration, tileCode);
+		Bbox bounds = TileService.getWorldBoundsForTile(tileConfiguration, tileCode);
 		return WmsClient.getInstance().getWmsService().getMapUrl(layerConfiguration, crs, bounds,
 				tileConfiguration.getTileWidth(), tileConfiguration.getTileHeight());
 	}

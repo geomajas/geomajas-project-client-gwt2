@@ -11,8 +11,6 @@
 
 package org.geomajas.gwt2.client.map.layer;
 
-import org.geomajas.gwt2.client.map.HasResolutions;
-import org.geomajas.gwt2.client.map.HasResolutionsImpl;
 import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.layer.tile.TileBasedLayer;
 import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
@@ -22,8 +20,6 @@ import org.geomajas.gwt2.client.map.render.TileRenderer;
 import org.geomajas.gwt2.client.map.render.dom.DomTileLevelLayerRenderer;
 import org.geomajas.gwt2.client.map.render.dom.DomTileLevelRenderer;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
-
-import java.util.List;
 
 /**
  * This is an abstract class representing a basic layer that depends on tile for it's rendering. Examples are TMS layers
@@ -37,8 +33,6 @@ public abstract class AbstractTileBasedLayer extends AbstractLayer implements Ti
 
 	protected final TileConfiguration tileConfiguration;
 
-	protected final HasResolutions hasResolutions;
-
 	protected DomTileLevelLayerRenderer renderer;
 
 	/**
@@ -49,18 +43,6 @@ public abstract class AbstractTileBasedLayer extends AbstractLayer implements Ti
 	public AbstractTileBasedLayer(String id, TileConfiguration tileConfiguration) {
 		super(id);
 		this.tileConfiguration = tileConfiguration;
-		this.hasResolutions = new HasResolutionsImpl();
-	}
-
-	/**
-	 * Create a new layer that belongs to the given map model, using the given meta-data.
-	 *
-	 * @param id The unique ID for this layer.
-	 */
-	public AbstractTileBasedLayer(String id, TileConfiguration tileConfiguration, HasResolutions delegate) {
-		super(id);
-		this.tileConfiguration = tileConfiguration;
-		this.hasResolutions = delegate;
 	}
 
 	// ------------------------------------------------------------------------
@@ -74,17 +56,6 @@ public abstract class AbstractTileBasedLayer extends AbstractLayer implements Ti
 	 */
 	public abstract TileRenderer getTileRenderer();
 
-	/**
-	 * Apply a set of resolutions. This only works if the HasResolutions is of type HasResolutionsImpl (the default).
-	 *
-	 * @param resolutions The final list of resolutions.
-	 */
-	protected void setResolutions(List<Double> resolutions) {
-		if (hasResolutions instanceof HasResolutionsImpl) {
-			((HasResolutionsImpl) hasResolutions).setResolutions(resolutions);
-		}
-	}
-
 	// ------------------------------------------------------------------------
 	// TileBasedLayer implementation:
 	// ------------------------------------------------------------------------
@@ -92,36 +63,6 @@ public abstract class AbstractTileBasedLayer extends AbstractLayer implements Ti
 	@Override
 	public TileConfiguration getTileConfiguration() {
 		return tileConfiguration;
-	}
-
-	// ------------------------------------------------------------------------
-	// HasResolutions implementation:
-	// ------------------------------------------------------------------------
-
-
-	@Override
-	public int getResolutionCount() {
-		return hasResolutions.getResolutionCount();
-	}
-
-	@Override
-	public double getResolution(int index) {
-		return hasResolutions.getResolution(index);
-	}
-
-	@Override
-	public int getResolutionIndex(double resolution) {
-		return hasResolutions.getResolutionIndex(resolution);
-	}
-
-	@Override
-	public double getMaximumResolution() {
-		return hasResolutions.getMaximumResolution();
-	}
-
-	@Override
-	public double getMinimumResolution() {
-		return hasResolutions.getMinimumResolution();
 	}
 
 	// ------------------------------------------------------------------------

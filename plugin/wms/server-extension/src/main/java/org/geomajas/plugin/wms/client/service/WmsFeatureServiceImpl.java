@@ -129,9 +129,9 @@ public class WmsFeatureServiceImpl extends WmsServiceImpl implements WmsFeatureS
 			toleranceCorrection = 2; // limit because it seems sometimes not to work if > 2
 		}
 
-		TileCode tileCode = TileService.getTileCodeForLocation(layer, layer.getTileConfiguration(), location,
+		TileCode tileCode = TileService.getTileCodeForLocation(layer.getTileConfiguration(), location,
 				viewPort.getResolution());
-		Bbox worldBounds = TileService.getWorldBoundsForTile(layer, layer.getTileConfiguration(), tileCode);
+		Bbox worldBounds = TileService.getWorldBoundsForTile(layer.getTileConfiguration(), tileCode);
 
 		Bbox screenBounds = viewPort.getTransformationService()
 				.transform(worldBounds, RenderSpace.WORLD, RenderSpace.SCREEN);

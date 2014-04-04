@@ -65,7 +65,7 @@ public class DomTileLevelRenderer implements TileLevelRenderer {
 		this.container = container;
 		this.tileRenderer = tileRenderer;
 		this.tiles = new HashMap<TileCode, Tile>();
-		this.resolution = layer.getResolution(tileLevel);
+		this.resolution = layer.getTileConfiguration().getResolution(tileLevel);
 	}
 
 	// ------------------------------------------------------------------------

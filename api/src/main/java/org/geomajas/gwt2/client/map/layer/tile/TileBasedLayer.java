@@ -12,7 +12,6 @@
 package org.geomajas.gwt2.client.map.layer.tile;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.gwt2.client.map.HasResolutions;
 import org.geomajas.gwt2.client.map.layer.Layer;
 
 /**
@@ -22,7 +21,7 @@ import org.geomajas.gwt2.client.map.layer.Layer;
  * @since 2.1.0
  */
 @Api(allMethods = true)
-public interface TileBasedLayer extends Layer, HasResolutions {
+public interface TileBasedLayer extends Layer {
 
 	/**
 	 * Get the tile configuration object associated with this layer.

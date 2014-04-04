@@ -202,7 +202,7 @@ public abstract class DomTileLevelLayerRenderer implements LayerRenderer {
 
 	protected int getResolutionIndex(double resolution) {
 		if (layer instanceof TileBasedLayer) {
-			return ((TileBasedLayer) layer).getResolutionIndex(resolution);
+			return ((TileBasedLayer) layer).getTileConfiguration().getResolutionIndex(resolution);
 		}
 		return viewPort.getResolutionIndex(resolution);
 	}
@@ -210,7 +210,7 @@ public abstract class DomTileLevelLayerRenderer implements LayerRenderer {
 	protected double getResolution(int tileLevel) {
 		try {
 			if (layer instanceof TileBasedLayer) {
-				return ((TileBasedLayer) layer).getResolution(tileLevel);
+				return ((TileBasedLayer) layer).getTileConfiguration().getResolution(tileLevel);
 			}
 			return viewPort.getResolution(tileLevel);
 		} catch (IllegalArgumentException iae) {
@@ -220,7 +220,7 @@ public abstract class DomTileLevelLayerRenderer implements LayerRenderer {
 
 	protected int getResolutionCount() {
 		if (layer instanceof TileBasedLayer) {
-			return ((TileBasedLayer) layer).getResolutionCount();
+			return ((TileBasedLayer) layer).getTileConfiguration().getResolutionCount();
 		}
 		return viewPort.getResolutionCount();
 	}
