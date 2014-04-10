@@ -11,12 +11,12 @@
 
 package org.geomajas.gwt2.client.map;
 
-import org.geomajas.geometry.Bbox;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.geomajas.geometry.Bbox;
 
 /**
  * Default map configuration implementation.
@@ -62,6 +62,7 @@ public class MapConfigurationImpl implements MapConfiguration {
 		setHintValue(MapConfiguration.UNIT_LENGTH, DEFAULT_UNIT_LENGTH);
 		setHintValue(MapConfiguration.MINIMUM_RESOLUTION, DEFAULT_MINIMUM_RESOLUTION);
 		setHintValue(MapConfiguration.RESOLUTIONS, new ArrayList<Double>());
+		setHintValue(MapConfiguration.RENDERER_TYPE, RendererType.HTML);
 	}
 
 	// ------------------------------------------------------------------------

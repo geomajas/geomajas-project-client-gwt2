@@ -11,6 +11,9 @@
 
 package org.geomajas.gwt2.client;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.annotation.Api;
 import org.geomajas.command.dto.GetMapConfigurationRequest;
 import org.geomajas.command.dto.GetMapConfigurationResponse;
@@ -23,7 +26,6 @@ import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt2.client.map.Hint;
 import org.geomajas.gwt2.client.map.MapConfiguration;
-import org.geomajas.gwt2.client.map.MapConfigurationImpl;
 import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.MapPresenterImpl;
@@ -39,9 +41,6 @@ import org.geomajas.gwt2.client.service.CommandServiceImpl;
 import org.geomajas.gwt2.client.service.EndPointService;
 import org.geomajas.gwt2.client.service.EndPointServiceImpl;
 import org.geomajas.gwt2.client.widget.DefaultMapWidget;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Singleton service that provides access to other services within this artifact.
@@ -166,15 +165,15 @@ public final class GeomajasServerExtension {
 				// Initialize the MapModel and ViewPort:
 				ClientMapInfo mapInfo = response.getMapInfo();
 
+				// Initialize the map:
+				MapConfiguration configuration = createMapConfiguration(mapInfo, mapPresenter);
+				((MapPresenterImpl) mapPresenter).initialize(configuration, mapWidgets);
+				
 				// Now add all layers:
 				for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
-					mapPresenter.getLayersModel().addLayer(
-							createLayer(layerInfo, mapPresenter.getViewPort(), mapPresenter.getEventBus()));
+					ServerLayer<?> layer = createLayer(layerInfo, mapPresenter.getViewPort(), mapPresenter.getEventBus(), configuration);
+					mapPresenter.getLayersModel().addLayer(layer);
 				}
-
-				// Initialize the map:
-				MapConfiguration configuration = createMapConfiguration(mapInfo);
-				((MapPresenterImpl) mapPresenter).initialize(configuration, mapWidgets);
 
 				// Also add a renderer for feature selection:
 				FeatureSelectionRenderer renderer = new FeatureSelectionRenderer(mapPresenter);
@@ -193,11 +192,11 @@ public final class GeomajasServerExtension {
 	 * @param eventBus  The map eventBus.
 	 * @return The new layer object. It has NOT been added to the map just yet.
 	 */
-	public ServerLayer<?> createLayer(ClientLayerInfo layerInfo, ViewPort viewPort, MapEventBus eventBus) {
+	public ServerLayer<?> createLayer(ClientLayerInfo layerInfo, ViewPort viewPort, MapEventBus eventBus, MapConfiguration configuration) {
 		ServerLayer<?> layer = null;
 		switch (layerInfo.getLayerType()) {
 			case RASTER:
-				layer = new RasterServerLayerImpl((ClientRasterLayerInfo) layerInfo, viewPort, eventBus);
+				layer = new RasterServerLayerImpl((ClientRasterLayerInfo) layerInfo, viewPort, eventBus, configuration);
 				break;
 			default:
 				layer = new VectorServerLayerImpl((ClientVectorLayerInfo) layerInfo, viewPort, eventBus);
@@ -210,8 +209,8 @@ public final class GeomajasServerExtension {
 	// Private methods:
 	// ------------------------------------------------------------------------
 
-	private MapConfiguration createMapConfiguration(ClientMapInfo mapInfo) {
-		MapConfiguration configuration = new MapConfigurationImpl();
+	private MapConfiguration createMapConfiguration(ClientMapInfo mapInfo, MapPresenter mapPresenter) {
+		MapConfiguration configuration = mapPresenter.getConfiguration();
 		configuration.setCrs(mapInfo.getCrs(), mapInfo.getUnitLength());
 		configuration.setHintValue(MapConfiguration.INITIAL_BOUNDS, mapInfo.getInitialBounds());
 		configuration.setMaxBounds(mapInfo.getMaxBounds());

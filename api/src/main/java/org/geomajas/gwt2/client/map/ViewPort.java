@@ -72,10 +72,10 @@ public interface ViewPort {
 	/**
 	 * Get the index for the fixed resolution that is closest to the provided resolution.
 	 *
-	 * @param scale The resolution to request the closest fixed resolution level for.
+	 * @param resolution The resolution to request the closest fixed resolution level for.
 	 * @return Returns the fixed resolution level index.
 	 */
-	int getResolutionIndex(double scale);
+	int getResolutionIndex(double resolution);
 
 	/**
 	 * Get the current map width in pixels.

@@ -11,6 +11,7 @@
 
 package org.geomajas.gwt2.client.widget;
 
+import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
@@ -46,6 +47,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.RequiresResize;
 import com.google.gwt.user.client.ui.Widget;
+
 import org.geomajas.gwt2.client.gfx.CanvasContainer;
 import org.geomajas.gwt2.client.gfx.CanvasContainerImpl;
 import org.geomajas.gwt2.client.gfx.TransformableWidgetContainer;
@@ -79,6 +81,9 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 
 	// Container for raster layers or rasterized layers:
 	private HtmlGroup layerHtmlContainer;
+	
+	// canvas for all layers
+	private Canvas mapCanvas;
 
 	// Container for vector layers (SVG/VML):
 	private VectorGroup layerVectorContainer;
@@ -168,6 +173,18 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	@Override
 	public HtmlContainer getMapHtmlContainer() {
 		return layerHtmlContainer;
+	}
+	
+	@Override
+	public Canvas getMapCanvas() {
+		if(mapCanvas == null && Canvas.isSupported()) {
+			mapCanvas = Canvas.createIfSupported();
+			mapCanvas.setPixelSize(getWidth(), getHeight());
+			mapCanvas.setCoordinateSpaceHeight(getHeight());
+			mapCanvas.setCoordinateSpaceWidth(getWidth());
+			canvasPanel.insert(mapCanvas, 0);
+		}
+		return mapCanvas;
 	}
 
 	@Override
@@ -298,11 +315,18 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	// Overriding resize methods:
 	// ------------------------------------------------------------------------
 
+	// TODO: check on how to simplify all these ???
+	
 	public void setPixelSize(int width, int height) {
 		layerHtmlContainer.setPixelSize(width, height);
 		drawingArea.setWidth(width);
 		drawingArea.setHeight(height);
 		canvasPanel.setPixelSize(width, height);
+		if(mapCanvas != null) {
+			mapCanvas.setPixelSize(width, height);
+			mapCanvas.setCoordinateSpaceHeight(height);
+			mapCanvas.setCoordinateSpaceWidth(width);
+		}
 		for (CanvasContainer container : worldCanvases) {
 			container.setPixelSize(width, height);
 		}
@@ -315,6 +339,11 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		drawingArea.setHeight(height);
 		canvasPanel.setWidth(width);
 		canvasPanel.setHeight(height);
+		if(mapCanvas != null) {
+			mapCanvas.setPixelSize(drawingArea.getWidth(), drawingArea.getHeight());
+			mapCanvas.setCoordinateSpaceHeight(drawingArea.getHeight());
+			mapCanvas.setCoordinateSpaceWidth(drawingArea.getWidth());
+		}
 		for (CanvasContainer container : worldCanvases) {
 			container.setPixelSize(drawingArea.getWidth(), drawingArea.getHeight());
 		}
@@ -333,6 +362,11 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		layerHtmlContainer.setWidth(width);
 		drawingArea.setWidth(width);
 		canvasPanel.setWidth(width);
+		if(mapCanvas != null) {
+			mapCanvas.setPixelSize(drawingArea.getWidth(), drawingArea.getHeight());
+			mapCanvas.setCoordinateSpaceHeight(drawingArea.getHeight());
+			mapCanvas.setCoordinateSpaceWidth(drawingArea.getWidth());
+		}
 		for (CanvasContainer container : worldCanvases) {
 			container.setPixelSize(drawingArea.getWidth(), drawingArea.getHeight());
 		}
@@ -351,6 +385,11 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		layerHtmlContainer.setHeight(height);
 		drawingArea.setHeight(height);
 		canvasPanel.setHeight(height);
+		if(mapCanvas != null) {
+			mapCanvas.setPixelSize(drawingArea.getWidth(), drawingArea.getHeight());
+			mapCanvas.setCoordinateSpaceHeight(drawingArea.getHeight());
+			mapCanvas.setCoordinateSpaceWidth(drawingArea.getWidth());
+		}
 		for (CanvasContainer container : worldCanvases) {
 			container.setPixelSize(drawingArea.getWidth(), drawingArea.getHeight());
 		}

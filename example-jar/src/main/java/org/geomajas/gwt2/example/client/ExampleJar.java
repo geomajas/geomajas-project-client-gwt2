@@ -13,12 +13,14 @@ package org.geomajas.gwt2.example.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanelRegistry;
 import org.geomajas.gwt2.example.base.client.sample.ShowcaseSampleDefinition;
 import org.geomajas.gwt2.example.client.i18n.SampleMessages;
 import org.geomajas.gwt2.example.client.sample.feature.FeatureSelectionPanel;
 import org.geomajas.gwt2.example.client.sample.general.AlternativeControlsPanel;
+import org.geomajas.gwt2.example.client.sample.general.CanvasRendererPanel;
 import org.geomajas.gwt2.example.client.sample.general.MapFillPanel;
 import org.geomajas.gwt2.example.client.sample.general.NavigationOptionPanel;
 import org.geomajas.gwt2.example.client.sample.general.ResizeMapPanel;
@@ -85,6 +87,28 @@ public class ExampleJar implements EntryPoint {
 
 			public String getDescription() {
 				return MESSAGES.generalNavOptionDescription();
+			}
+
+			public String getCategory() {
+				return CATEGORY_GENERAL;
+			}
+		});
+		SamplePanelRegistry.registerFactory(CATEGORY_GENERAL, new ShowcaseSampleDefinition() {
+
+			public SamplePanel create() {
+				return new CanvasRendererPanel();
+			}
+
+			public String getTitle() {
+				return MESSAGES.generalCanvasRendererTitle();
+			}
+
+			public String getShortDescription() {
+				return MESSAGES.generalCanvasRendererShort();
+			}
+
+			public String getDescription() {
+				return MESSAGES.generalCanvasRendererDescription();
 			}
 
 			public String getCategory() {

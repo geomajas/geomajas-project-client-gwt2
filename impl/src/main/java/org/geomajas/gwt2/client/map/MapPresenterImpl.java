@@ -11,25 +11,12 @@
 
 package org.geomajas.gwt2.client.map;
 
-import com.google.gwt.event.dom.client.HasAllGestureHandlers;
-import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
-import com.google.gwt.event.dom.client.HasMouseDownHandlers;
-import com.google.gwt.event.dom.client.HasMouseMoveHandlers;
-import com.google.gwt.event.dom.client.HasMouseOutHandlers;
-import com.google.gwt.event.dom.client.HasMouseOverHandlers;
-import com.google.gwt.event.dom.client.HasMouseUpHandlers;
-import com.google.gwt.event.dom.client.HasMouseWheelHandlers;
-import com.google.gwt.event.dom.client.HasTouchCancelHandlers;
-import com.google.gwt.event.dom.client.HasTouchEndHandlers;
-import com.google.gwt.event.dom.client.HasTouchMoveHandlers;
-import com.google.gwt.event.dom.client.HasTouchStartHandlers;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.RequiresResize;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.web.bindery.event.shared.EventBus;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.geomajas.geometry.Matrix;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt.client.map.RenderSpace;
@@ -53,6 +40,7 @@ import org.geomajas.gwt2.client.map.layer.LayersModelImpl;
 import org.geomajas.gwt2.client.map.render.LayersModelRenderer;
 import org.geomajas.gwt2.client.map.render.LayersModelRendererImpl;
 import org.geomajas.gwt2.client.map.render.RenderingInfo;
+import org.geomajas.gwt2.client.map.render.canvas.CanvasLayersModelRenderer;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
 import org.geomajas.gwt2.client.widget.DefaultMapWidget;
 import org.geomajas.gwt2.client.widget.MapWidgetImpl;
@@ -64,11 +52,26 @@ import org.geomajas.gwt2.client.widget.control.zoom.ZoomStepControl;
 import org.geomajas.gwt2.client.widget.control.zoomtorect.ZoomToRectangleControl;
 import org.vaadin.gwtgraphics.client.Transformable;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.google.gwt.canvas.client.Canvas;
+import com.google.gwt.event.dom.client.HasAllGestureHandlers;
+import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
+import com.google.gwt.event.dom.client.HasMouseDownHandlers;
+import com.google.gwt.event.dom.client.HasMouseMoveHandlers;
+import com.google.gwt.event.dom.client.HasMouseOutHandlers;
+import com.google.gwt.event.dom.client.HasMouseOverHandlers;
+import com.google.gwt.event.dom.client.HasMouseUpHandlers;
+import com.google.gwt.event.dom.client.HasMouseWheelHandlers;
+import com.google.gwt.event.dom.client.HasTouchCancelHandlers;
+import com.google.gwt.event.dom.client.HasTouchEndHandlers;
+import com.google.gwt.event.dom.client.HasTouchMoveHandlers;
+import com.google.gwt.event.dom.client.HasTouchStartHandlers;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.RequiresResize;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.web.bindery.event.shared.EventBus;
 
 /**
  * Default implementation of the map presenter interface. In other words this is the default GWT map object.
@@ -94,7 +97,12 @@ public final class MapPresenterImpl implements MapPresenter {
 		 * @return the container
 		 */
 		HtmlContainer getMapHtmlContainer();
-
+		
+		/**
+		 * Returns the canvas of the map. This is an HTML5 canvas for rendering all layers.
+		 */
+		Canvas getMapCanvas();
+		
 		/**
 		 * Returns the list of user-defined containers (vector + canvas) for world-space objects.
 		 *
@@ -202,6 +210,8 @@ public final class MapPresenterImpl implements MapPresenter {
 	private MapController fallbackController;
 
 	private LayersModelRenderer renderer;
+	
+	private IsWidget rendererWidget;
 
 	private boolean isTouchSupported;
 
@@ -217,15 +227,53 @@ public final class MapPresenterImpl implements MapPresenter {
 		this.viewPort = new ViewPortImpl(this.eventBus);
 		this.layersModel = new LayersModelImpl(this.viewPort, this.eventBus);
 		this.mapEventParser = new MapEventParserImpl(this);
-		this.renderer = new LayersModelRendererImpl(layersModel, viewPort, this.eventBus);
 		this.containerManager = new ContainerManagerImpl(display, viewPort);
 		this.isTouchSupported = Dom.isTouchSupported();
 
+		if (isTouchSupported) {
+			fallbackController = new TouchNavigationController();
+		} else {
+			fallbackController = new NavigationController();
+		}
+
+		setMapController(fallbackController);
+		setSize(100, 100);
+	}
+
+	// ------------------------------------------------------------------------
+	// MapPresenter implementation:
+	// ------------------------------------------------------------------------
+
+	public void initialize(MapConfiguration configuration, DefaultMapWidget... mapWidgets) {
+		this.configuration = configuration;		
+		
+		switch (configuration.getHintValue(MapConfiguration.RENDERER_TYPE)) {
+			case CANVAS:
+				rendererWidget = display.getMapCanvas();
+				renderer = new CanvasLayersModelRenderer(this);
+				break;
+			case HTML:
+			default:
+				rendererWidget = display.getMapHtmlContainer();
+				renderer = new LayersModelRendererImpl(layersModel, viewPort, eventBus);
+				((LayersModelRendererImpl) renderer).setMapConfiguration(configuration);
+		}
+
+		// Configure the ViewPort. This will immediately zoom to the initial bounds:
+		// viewPort.setMapSize(display.getWidth(), display.getHeight());
+		viewPort.initialize(configuration);
+
+		// Immediately zoom to the initial bounds as configured:
+		viewPort.applyBounds(configuration.getHintValue(MapConfiguration.INITIAL_BOUNDS), ZoomOption.LEVEL_CLOSEST);
+		
+		renderer.render(new RenderingInfo(rendererWidget, viewPort.getView(), null));
 		this.eventBus.addViewPortChangedHandler(new ViewPortChangedHandler() {
 
 			@Override
 			public void onViewPortChanged(ViewPortChangedEvent event) {
-				renderer.render(new RenderingInfo(display.getMapHtmlContainer(), event.getTo(), event.getTrajectory()));
+				if(rendererWidget != null) {
+					renderer.render(new RenderingInfo(rendererWidget, event.getTo(), event.getTrajectory()));
+				}
 			}
 		});
 		this.eventBus.addMapCompositionHandler(new MapCompositionHandler() {
@@ -243,37 +291,6 @@ public final class MapPresenterImpl implements MapPresenter {
 		});
 
 		this.eventBus.addViewPortChangedHandler(new WorldTransformableRenderer());
-
-		if (isTouchSupported) {
-			fallbackController = new TouchNavigationController();
-		} else {
-			fallbackController = new NavigationController();
-		}
-
-		setMapController(fallbackController);
-		setSize(100, 100);
-	}
-
-	// ------------------------------------------------------------------------
-	// MapPresenter implementation:
-	// ------------------------------------------------------------------------
-
-	public void initialize(MapConfiguration configuration, DefaultMapWidget... mapWidgets) {
-		this.configuration = configuration;
-
-		// Apply this configuration on the LayersModelRenderer:
-		if (renderer instanceof LayersModelRendererImpl) {
-			((LayersModelRendererImpl) renderer).setMapConfiguration(configuration);
-		}
-
-		// Configure the ViewPort. This will immediately zoom to the initial bounds:
-		// viewPort.setMapSize(display.getWidth(), display.getHeight());
-		viewPort.initialize(configuration);
-
-		// Immediately zoom to the initial bounds as configured:
-		viewPort.applyBounds(configuration.getHintValue(MapConfiguration.INITIAL_BOUNDS), ZoomOption.LEVEL_CLOSEST);
-		renderer.render(new RenderingInfo(display.getMapHtmlContainer(), viewPort.getView(), null));
-
 		// Adding the default map control widgets:
 		if (getWidgetPane() != null) {
 			getWidgetPane().add(new Watermark()); // We always add the watermark...
@@ -316,6 +333,9 @@ public final class MapPresenterImpl implements MapPresenter {
 
 	@Override
 	public MapConfiguration getConfiguration() {
+		if (configuration == null) {
+			configuration = new MapConfigurationImpl();
+		}
 		return configuration;
 	}
 
