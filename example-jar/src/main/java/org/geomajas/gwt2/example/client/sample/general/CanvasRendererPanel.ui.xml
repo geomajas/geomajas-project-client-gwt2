@@ -9,6 +9,7 @@
 				<h2>Resize the map:</h2>
 				<g:Button ui:field="enlargeButton">Enlarge map</g:Button>
 				<g:Button ui:field="shrinkButton">Shrink map</g:Button>
+				<g:Button ui:field="pinchButton">Toggle pinch</g:Button>
 			</g:HTMLPanel>
 		</g:west>
 		<g:center>
