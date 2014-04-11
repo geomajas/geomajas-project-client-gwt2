@@ -27,11 +27,11 @@ import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.RasterServerLayer;
-import org.geomajas.gwt2.client.map.render.FixedScaleRenderer;
-import org.geomajas.gwt2.client.map.render.TileLevelRenderedEvent;
-import org.geomajas.gwt2.client.map.render.TileLevelRenderedHandler;
+import org.geomajas.gwt2.client.map.render.TileLevelRenderer;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlImageImpl;
+import org.geomajas.gwt2.client.map.render.TileLevelRenderedEvent;
+import org.geomajas.gwt2.client.map.render.TileLevelRenderedHandler;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
 
@@ -44,7 +44,7 @@ import java.util.Map;
  * 
  * @author Pieter De Graef
  */
-public class RasterServerLayerScaleRenderer implements FixedScaleRenderer {
+public class RasterServerLayerScaleRenderer implements TileLevelRenderer {
 
 	private final RasterServerLayer layer;
 
@@ -186,7 +186,7 @@ public class RasterServerLayerScaleRenderer implements FixedScaleRenderer {
 
 	/**
 	 * Counts the number of images that are still inbound. If all images are effectively rendered, we fire a
-	 * {@link TileLevelRenderedEvent}.
+	 * {@link org.geomajas.gwt2.client.map.render.TileLevelRenderedEvent}.
 	 * 
 	 * @author Pieter De Graef
 	 */

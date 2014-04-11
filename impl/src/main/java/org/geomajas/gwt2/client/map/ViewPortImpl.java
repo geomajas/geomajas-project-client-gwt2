@@ -117,7 +117,7 @@ public final class ViewPortImpl implements ViewPort {
 			throw new IllegalStateException(
 					"The map configuration must either contain a fixed list resolutions or a minimum resolution");
 		}
-		Collections.sort(resolutions, new Comparator<Double>() {
+		Collections.sort(this.resolutions, new Comparator<Double>() {
 
 			@Override
 			public int compare(Double o1, Double o2) {
@@ -129,22 +129,6 @@ public final class ViewPortImpl implements ViewPort {
 	@Override
 	public Bbox getMaximumBounds() {
 		return maxBounds;
-	}
-
-	@Override
-	public double getMaximumResolution() {
-		if (resolutions.size() == 0) {
-			return Double.MAX_VALUE;
-		}
-		return resolutions.get(0);
-	}
-
-	@Override
-	public double getMinimumResolution() {
-		if (resolutions.size() == 0) {
-			return 0;
-		}
-		return resolutions.get(resolutions.size() - 1);
 	}
 
 	@Override
@@ -186,6 +170,22 @@ public final class ViewPortImpl implements ViewPort {
 			}
 		}
 		return 0;
+	}
+
+	@Override
+	public double getMaximumResolution() {
+		if (resolutions.size() == 0) {
+			return Double.MAX_VALUE;
+		}
+		return resolutions.get(0);
+	}
+
+	@Override
+	public double getMinimumResolution() {
+		if (resolutions.size() == 0) {
+			return 0;
+		}
+		return resolutions.get(resolutions.size() - 1);
 	}
 
 	protected void setMapSize(int width, int height) {
@@ -472,9 +472,9 @@ public final class ViewPortImpl implements ViewPort {
 			return allowedResolution;
 		}
 
-		for (int i = 0; i < resolutions.size() - 1; i++) {
-			double upper = resolutions.get(i);
-			double lower = resolutions.get(i + 1);
+		for (int i = 0; i < getResolutionCount() - 1; i++) {
+			double upper = getResolution(i);
+			double lower = getResolution(i + 1);
 
 			if (allowedResolution == upper) {
 				return upper;

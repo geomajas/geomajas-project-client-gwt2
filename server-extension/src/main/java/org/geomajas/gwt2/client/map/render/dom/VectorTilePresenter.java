@@ -172,7 +172,7 @@ public class VectorTilePresenter {
 	private Coordinate getTilePosition() {
 		org.geomajas.geometry.Bbox layerBounds = layer.getLayerInfo().getMaxExtent();
 
-		// Calculate tile width and height for tileLevel=tileCode.getTileLevel(); This is in world space.
+		// Calculate tile width and height for tileLevel=tileCode.getResolutionIndex(); This is in world space.
 		double div = Math.pow(2, tileCode.getTileLevel());
 		double tileWidth = Math.ceil(layerBounds.getWidth() / (div * resolution)) * resolution;
 		double tileHeight = Math.ceil(layerBounds.getHeight() / (div * resolution)) * resolution;

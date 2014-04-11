@@ -11,15 +11,13 @@
 
 package org.geomajas.plugin.wms.client.capabilities.v1_3_0;
 
+import com.google.gwt.xml.client.Node;
 import org.geomajas.plugin.wms.client.capabilities.WmsOnlineResourceInfo;
 import org.geomajas.plugin.wms.client.capabilities.v1_1_1.WmsLayerMetadataUrlInfo111;
 
-import com.google.gwt.xml.client.Node;
-
 /**
- * Default {@link org.geomajas.plugin.wms.client.capabilities.WmsLayerMetadataUrlInfo} implementation for WMS
- * 1.3.0.
- * 
+ * Default {@link org.geomajas.plugin.wms.client.capabilities.WmsLayerMetadataUrlInfo} implementation for WMS 1.3.0.
+ *
  * @author Pieter De Graef
  */
 public class WmsLayerMetadataUrlInfo130 extends WmsLayerMetadataUrlInfo111 {

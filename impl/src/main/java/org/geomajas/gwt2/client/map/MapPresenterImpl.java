@@ -38,7 +38,7 @@ import org.geomajas.gwt2.client.gfx.VectorContainer;
 import org.geomajas.gwt2.client.map.layer.LayersModel;
 import org.geomajas.gwt2.client.map.layer.LayersModelImpl;
 import org.geomajas.gwt2.client.map.render.LayersModelRenderer;
-import org.geomajas.gwt2.client.map.render.LayersModelRendererImpl;
+import org.geomajas.gwt2.client.map.render.dom.DomLayersModelRenderer;
 import org.geomajas.gwt2.client.map.render.RenderingInfo;
 import org.geomajas.gwt2.client.map.render.canvas.CanvasLayersModelRenderer;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
@@ -255,8 +255,8 @@ public final class MapPresenterImpl implements MapPresenter {
 			case HTML:
 			default:
 				rendererWidget = display.getMapHtmlContainer();
-				renderer = new LayersModelRendererImpl(layersModel, viewPort, eventBus);
-				((LayersModelRendererImpl) renderer).setMapConfiguration(configuration);
+				renderer = new DomLayersModelRenderer(layersModel, viewPort, eventBus);
+				((DomLayersModelRenderer) renderer).setMapConfiguration(configuration);
 		}
 
 		// Configure the ViewPort. This will immediately zoom to the initial bounds:

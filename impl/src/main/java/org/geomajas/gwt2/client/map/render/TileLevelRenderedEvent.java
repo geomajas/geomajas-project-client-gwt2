@@ -21,7 +21,7 @@ import com.google.web.bindery.event.shared.Event;
  */
 public class TileLevelRenderedEvent extends Event<TileLevelRenderedHandler> {
 
-	private final FixedScaleRenderer renderer;
+	private final TileLevelRenderer renderer;
 
 	// -------------------------------------------------------------------------
 	// Constructor:
@@ -32,7 +32,7 @@ public class TileLevelRenderedEvent extends Event<TileLevelRenderedHandler> {
 	 * @param viewPort
 	 *            the view port
 	 */
-	public TileLevelRenderedEvent(FixedScaleRenderer renderer) {
+	public TileLevelRenderedEvent(TileLevelRenderer renderer) {
 		this.renderer = renderer;
 	}
 
@@ -58,7 +58,7 @@ public class TileLevelRenderedEvent extends Event<TileLevelRenderedHandler> {
 	 * 
 	 * @return The renderer.
 	 */
-	public FixedScaleRenderer getRenderer() {
+	public TileLevelRenderer getRenderer() {
 		return renderer;
 	}
 }
