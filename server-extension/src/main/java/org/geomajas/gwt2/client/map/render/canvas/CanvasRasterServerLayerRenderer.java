@@ -39,7 +39,7 @@ import com.google.gwt.core.client.Callback;
  * Canvas renderer for {@link RasterServerLayer}.
  * 
  * @author Jan De Moerloose
- *
+ * 
  */
 public class CanvasRasterServerLayerRenderer implements LayerRenderer {
 
@@ -111,7 +111,7 @@ public class CanvasRasterServerLayerRenderer implements LayerRenderer {
 	private void renderCanvas() {
 		for (ImageLoader image : images) {
 			// canvas can only render loaded images !
-			if(image.isLoaded()) {
+			if (image.isLoaded()) {
 				renderImage(image);
 			}
 		}
@@ -150,6 +150,12 @@ public class CanvasRasterServerLayerRenderer implements LayerRenderer {
 		return bounds;
 	}
 
+	/**
+	 * Callback for rendering tile.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
 	public class RenderTileOnCallback implements Callback<String, String> {
 
 		private ImageLoader image;

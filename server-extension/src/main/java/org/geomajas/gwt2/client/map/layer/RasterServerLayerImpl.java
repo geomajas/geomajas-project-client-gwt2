@@ -36,7 +36,7 @@ public class RasterServerLayerImpl extends AbstractServerLayer<ClientRasterLayer
 	public RasterServerLayerImpl(ClientRasterLayerInfo layerInfo, final ViewPort viewPort, MapEventBus eventBus,
 			MapConfiguration configuration) {
 		super(layerInfo, viewPort, eventBus);
-		switch(configuration.getHintValue(MapConfiguration.RENDERER_TYPE))  {
+		switch (configuration.getHintValue(MapConfiguration.RENDERER_TYPE)) {
 			case CANVAS:
 				renderer = new CanvasRasterServerLayerRenderer(this, viewPort);
 				break;
@@ -45,14 +45,15 @@ public class RasterServerLayerImpl extends AbstractServerLayer<ClientRasterLayer
 				renderer = new DomTileLevelLayerRenderer(viewPort, this, eventBus) {
 
 					@Override
-					public TileLevelRenderer createNewScaleRenderer(int tileLevel, View view, HtmlContainer scaleContainer) {
+					public TileLevelRenderer createNewScaleRenderer(int tileLevel, View view,
+							HtmlContainer scaleContainer) {
 						return new RasterServerLayerScaleRenderer(RasterServerLayerImpl.this, tileLevel,
 								viewPort.getResolution(tileLevel), viewPort, scaleContainer);
 					}
 
 				};
 				break;
-			
+
 		}
 	}
 
@@ -74,8 +75,8 @@ public class RasterServerLayerImpl extends AbstractServerLayer<ClientRasterLayer
 	 */
 	public void setOpacity(double opacity) {
 		getLayerInfo().setStyle(Double.toString(opacity));
-		if(renderer instanceof DomTileLevelLayerRenderer) {
-			((DomTileLevelLayerRenderer)renderer).setOpacity(opacity);
+		if (renderer instanceof DomTileLevelLayerRenderer) {
+			((DomTileLevelLayerRenderer) renderer).setOpacity(opacity);
 		}
 	}
 

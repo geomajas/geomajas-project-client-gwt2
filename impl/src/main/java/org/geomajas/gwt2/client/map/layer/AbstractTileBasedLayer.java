@@ -15,11 +15,17 @@ import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.layer.tile.TileBasedLayer;
 import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
 import org.geomajas.gwt2.client.map.render.LayerRenderer;
+import org.geomajas.gwt2.client.map.render.TileLevelLayerRenderer;
 import org.geomajas.gwt2.client.map.render.TileLevelRenderer;
 import org.geomajas.gwt2.client.map.render.TileRenderer;
+import org.geomajas.gwt2.client.map.render.canvas.CanvasTileLevelLayerRenderer;
+import org.geomajas.gwt2.client.map.render.canvas.CanvasTileLevelRenderer;
+import org.geomajas.gwt2.client.map.render.canvas.container.CanvasTileGrid;
 import org.geomajas.gwt2.client.map.render.dom.DomTileLevelLayerRenderer;
 import org.geomajas.gwt2.client.map.render.dom.DomTileLevelRenderer;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
+
+import com.google.gwt.canvas.client.Canvas;
 
 /**
  * This is an abstract class representing a basic layer that depends on tile for it's rendering. Examples are TMS layers
@@ -33,7 +39,7 @@ public abstract class AbstractTileBasedLayer extends AbstractLayer implements Ti
 
 	protected final TileConfiguration tileConfiguration;
 
-	protected DomTileLevelLayerRenderer renderer;
+	protected TileLevelLayerRenderer renderer;
 
 	/**
 	 * Create a new layer that belongs to the given map model, using the given meta-data.
@@ -72,14 +78,26 @@ public abstract class AbstractTileBasedLayer extends AbstractLayer implements Ti
 	@Override
 	public LayerRenderer getRenderer() {
 		if (renderer == null) {
-			renderer = new DomTileLevelLayerRenderer(viewPort, this, eventBus) {
+			if (Canvas.isSupported()) {
+				renderer = new CanvasTileLevelLayerRenderer(viewPort, this, eventBus) {
 
-				@Override
-				public TileLevelRenderer createNewScaleRenderer(int tileLevel, View view, HtmlContainer container) {
-					return new DomTileLevelRenderer(AbstractTileBasedLayer.this, tileLevel, viewPort, container,
-							getTileRenderer());
-				}
-			};
+					@Override
+					public CanvasTileLevelRenderer createNewScaleRenderer(int tileLevel, View view,
+							CanvasTileGrid container) {
+						return new CanvasTileLevelRenderer(AbstractTileBasedLayer.this, tileLevel, viewPort, container,
+								getTileRenderer());
+					}
+				};
+			} else {
+				renderer = new DomTileLevelLayerRenderer(viewPort, this, eventBus) {
+
+					@Override
+					public TileLevelRenderer createNewScaleRenderer(int tileLevel, View view, HtmlContainer container) {
+						return new DomTileLevelRenderer(AbstractTileBasedLayer.this, tileLevel, viewPort, container,
+								getTileRenderer());
+					}
+				};
+			}
 		}
 		return renderer;
 	}

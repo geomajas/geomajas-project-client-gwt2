@@ -177,11 +177,12 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	
 	@Override
 	public Canvas getMapCanvas() {
-		if(mapCanvas == null && Canvas.isSupported()) {
+		if (mapCanvas == null && Canvas.isSupported()) {
 			mapCanvas = Canvas.createIfSupported();
-			mapCanvas.setPixelSize(getWidth(), getHeight());
-			mapCanvas.setCoordinateSpaceHeight(getHeight());
-			mapCanvas.setCoordinateSpaceWidth(getWidth());
+			// using the pixel size as we may not be laid out yet !
+			mapCanvas.setPixelSize(drawingArea.getWidth(), drawingArea.getHeight());
+			mapCanvas.setCoordinateSpaceHeight(drawingArea.getHeight());
+			mapCanvas.setCoordinateSpaceWidth(drawingArea.getWidth());
 			canvasPanel.insert(mapCanvas, 0);
 		}
 		return mapCanvas;
@@ -322,7 +323,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		drawingArea.setWidth(width);
 		drawingArea.setHeight(height);
 		canvasPanel.setPixelSize(width, height);
-		if(mapCanvas != null) {
+		if (mapCanvas != null) {
 			mapCanvas.setPixelSize(width, height);
 			mapCanvas.setCoordinateSpaceHeight(height);
 			mapCanvas.setCoordinateSpaceWidth(width);
@@ -339,7 +340,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		drawingArea.setHeight(height);
 		canvasPanel.setWidth(width);
 		canvasPanel.setHeight(height);
-		if(mapCanvas != null) {
+		if (mapCanvas != null) {
 			mapCanvas.setPixelSize(drawingArea.getWidth(), drawingArea.getHeight());
 			mapCanvas.setCoordinateSpaceHeight(drawingArea.getHeight());
 			mapCanvas.setCoordinateSpaceWidth(drawingArea.getWidth());
@@ -362,7 +363,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		layerHtmlContainer.setWidth(width);
 		drawingArea.setWidth(width);
 		canvasPanel.setWidth(width);
-		if(mapCanvas != null) {
+		if (mapCanvas != null) {
 			mapCanvas.setPixelSize(drawingArea.getWidth(), drawingArea.getHeight());
 			mapCanvas.setCoordinateSpaceHeight(drawingArea.getHeight());
 			mapCanvas.setCoordinateSpaceWidth(drawingArea.getWidth());
@@ -385,7 +386,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 		layerHtmlContainer.setHeight(height);
 		drawingArea.setHeight(height);
 		canvasPanel.setHeight(height);
-		if(mapCanvas != null) {
+		if (mapCanvas != null) {
 			mapCanvas.setPixelSize(drawingArea.getWidth(), drawingArea.getHeight());
 			mapCanvas.setCoordinateSpaceHeight(drawingArea.getHeight());
 			mapCanvas.setCoordinateSpaceWidth(drawingArea.getWidth());

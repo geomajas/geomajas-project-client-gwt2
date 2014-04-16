@@ -45,15 +45,21 @@ public interface MapConfiguration {
 		DEGREES
 	}
 	
+	/**
+	 * Prescribes the rendering technology for rendering the map.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
 	public enum RendererType {
-		
+
 		/**
-		 * Render on HTML
+		 * Render on HTML.
 		 */
 		HTML,
-		
+
 		/**
-		 * Render on canvas
+		 * Render on canvas.
 		 */
 		CANVAS
 	}

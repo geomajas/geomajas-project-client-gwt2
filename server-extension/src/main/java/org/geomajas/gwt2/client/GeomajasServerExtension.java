@@ -171,7 +171,8 @@ public final class GeomajasServerExtension {
 				
 				// Now add all layers:
 				for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
-					ServerLayer<?> layer = createLayer(layerInfo, mapPresenter.getViewPort(), mapPresenter.getEventBus(), configuration);
+					ServerLayer<?> layer = createLayer(layerInfo, mapPresenter.getViewPort(),
+							mapPresenter.getEventBus(), configuration);
 					mapPresenter.getLayersModel().addLayer(layer);
 				}
 
@@ -192,7 +193,8 @@ public final class GeomajasServerExtension {
 	 * @param eventBus  The map eventBus.
 	 * @return The new layer object. It has NOT been added to the map just yet.
 	 */
-	public ServerLayer<?> createLayer(ClientLayerInfo layerInfo, ViewPort viewPort, MapEventBus eventBus, MapConfiguration configuration) {
+	public ServerLayer<?> createLayer(ClientLayerInfo layerInfo, ViewPort viewPort, MapEventBus eventBus,
+			MapConfiguration configuration) {
 		ServerLayer<?> layer = null;
 		switch (layerInfo.getLayerType()) {
 			case RASTER:

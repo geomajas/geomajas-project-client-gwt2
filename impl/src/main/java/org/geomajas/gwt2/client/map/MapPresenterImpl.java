@@ -38,9 +38,11 @@ import org.geomajas.gwt2.client.gfx.VectorContainer;
 import org.geomajas.gwt2.client.map.layer.LayersModel;
 import org.geomajas.gwt2.client.map.layer.LayersModelImpl;
 import org.geomajas.gwt2.client.map.render.LayersModelRenderer;
-import org.geomajas.gwt2.client.map.render.dom.DomLayersModelRenderer;
+import org.geomajas.gwt2.client.map.render.RenderMapEvent;
+import org.geomajas.gwt2.client.map.render.RenderMapHandler;
 import org.geomajas.gwt2.client.map.render.RenderingInfo;
 import org.geomajas.gwt2.client.map.render.canvas.CanvasLayersModelRenderer;
+import org.geomajas.gwt2.client.map.render.dom.DomLayersModelRenderer;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
 import org.geomajas.gwt2.client.widget.DefaultMapWidget;
 import org.geomajas.gwt2.client.widget.MapWidgetImpl;
@@ -52,6 +54,9 @@ import org.geomajas.gwt2.client.widget.control.zoom.ZoomStepControl;
 import org.geomajas.gwt2.client.widget.control.zoomtorect.ZoomToRectangleControl;
 import org.vaadin.gwtgraphics.client.Transformable;
 
+import com.google.gwt.animation.client.AnimationScheduler;
+import com.google.gwt.animation.client.AnimationScheduler.AnimationCallback;
+import com.google.gwt.animation.client.AnimationScheduler.AnimationHandle;
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.event.dom.client.HasAllGestureHandlers;
 import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
@@ -215,6 +220,8 @@ public final class MapPresenterImpl implements MapPresenter {
 
 	private boolean isTouchSupported;
 
+	protected AnimationHandle handle;
+
 	// ------------------------------------------------------------------------
 	// Constructor:
 	// ------------------------------------------------------------------------
@@ -271,7 +278,7 @@ public final class MapPresenterImpl implements MapPresenter {
 
 			@Override
 			public void onViewPortChanged(ViewPortChangedEvent event) {
-				if(rendererWidget != null) {
+				if (rendererWidget != null) {
 					renderer.render(new RenderingInfo(rendererWidget, event.getTo(), event.getTrajectory()));
 				}
 			}
@@ -314,6 +321,22 @@ public final class MapPresenterImpl implements MapPresenter {
 				}
 			}
 		}
+		this.eventBus.addHandler(RenderMapHandler.TYPE, new RenderMapHandler() {
+			
+			@Override
+			public void onRender(RenderMapEvent event) {
+				if (handle == null) {
+					handle = AnimationScheduler.get().requestAnimationFrame(new AnimationCallback() {
+
+						@Override
+						public void execute(double timestamp) {
+							renderer.render(new RenderingInfo(rendererWidget, viewPort.getView(), null));
+							handle = null;
+						}
+					});
+				}
+			}
+		});
 		// Fire initialization event
 		eventBus.fireEvent(new MapInitializationEvent());
 	}

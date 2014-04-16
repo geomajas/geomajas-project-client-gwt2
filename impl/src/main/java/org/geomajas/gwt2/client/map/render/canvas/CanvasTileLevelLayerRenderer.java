@@ -9,14 +9,12 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.client.map.render.dom;
+package org.geomajas.gwt2.client.map.render.canvas;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.geometry.Matrix;
 import org.geomajas.gwt2.client.event.LayerAddedEvent;
 import org.geomajas.gwt2.client.event.LayerHideEvent;
 import org.geomajas.gwt2.client.event.LayerRefreshedEvent;
@@ -31,25 +29,30 @@ import org.geomajas.gwt2.client.event.MapCompositionHandler;
 import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.ViewPort;
+import org.geomajas.gwt2.client.map.layer.AbstractTileBasedLayer;
 import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.client.map.layer.tile.TileBasedLayer;
+import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
+import org.geomajas.gwt2.client.map.render.RenderMapEvent;
 import org.geomajas.gwt2.client.map.render.RenderingInfo;
 import org.geomajas.gwt2.client.map.render.TileLevelLayerRenderer;
 import org.geomajas.gwt2.client.map.render.TileLevelRenderedEvent;
 import org.geomajas.gwt2.client.map.render.TileLevelRenderedHandler;
 import org.geomajas.gwt2.client.map.render.TileLevelRenderer;
-import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
-import org.geomajas.gwt2.client.map.render.dom.container.HtmlGroup;
-import org.geomajas.gwt2.client.service.DomService;
+import org.geomajas.gwt2.client.map.render.TileRenderer;
+import org.geomajas.gwt2.client.map.render.canvas.container.CanvasGroup;
+import org.geomajas.gwt2.client.map.render.canvas.container.CanvasTileGrid;
 
+import com.google.gwt.canvas.client.Canvas;
+import com.google.gwt.core.client.Callback;
 import com.google.gwt.user.client.ui.IsWidget;
 
 /**
- * Layer renderer implementation for layers that use renderers at fixed scales.
- *
- * @author Pieter De Graef
+ * Canvas-based layer renderer implementation for layers that use renderers at fixed scales.
+ * 
+ * @author Jan De Moerloose
  */
-public abstract class DomTileLevelLayerRenderer implements TileLevelLayerRenderer {
+public abstract class CanvasTileLevelLayerRenderer implements TileLevelLayerRenderer {
 
 	private final ViewPort viewPort;
 
@@ -57,9 +60,9 @@ public abstract class DomTileLevelLayerRenderer implements TileLevelLayerRendere
 
 	private final Map<Integer, TileLevelRenderer> tileLevelRenderers;
 
-	private final Map<Integer, HtmlContainer> tileLevelContainers;
+	private final Map<Integer, CanvasTileGrid> tileLevelContainers;
 
-	private HtmlContainer container;
+	private CanvasGroup container;
 
 	private TileLevelRenderer currentRenderer;
 
@@ -67,15 +70,18 @@ public abstract class DomTileLevelLayerRenderer implements TileLevelLayerRendere
 
 	private int cacheSize = 3;
 
+	private MapEventBus eventBus;
+
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
 
-	public DomTileLevelLayerRenderer(final ViewPort viewPort, final Layer layer, final MapEventBus eventBus) {
+	public CanvasTileLevelLayerRenderer(final ViewPort viewPort, final Layer layer, final MapEventBus eventBus) {
 		this.viewPort = viewPort;
 		this.layer = layer;
+		this.eventBus = eventBus;
 		this.tileLevelRenderers = new HashMap<Integer, TileLevelRenderer>();
-		this.tileLevelContainers = new HashMap<Integer, HtmlContainer>();
+		this.tileLevelContainers = new HashMap<Integer, CanvasTileGrid>();
 
 		// Refresh the contents of this renderer when the layer is refreshed:
 		eventBus.addLayerRefreshedHandler(new LayerRefreshedHandler() {
@@ -144,13 +150,15 @@ public abstract class DomTileLevelLayerRenderer implements TileLevelLayerRendere
 
 	@Override
 	public void render(RenderingInfo renderingInfo) {
-		if (!(renderingInfo.getWidget() instanceof HtmlContainer)) {
-			throw new IllegalArgumentException("This implementation requires HtmlContainers to render.");
+		if (container == null) {
+			if (!(renderingInfo.getWidget() instanceof Canvas)) {
+				throw new IllegalArgumentException("This implementation requires Canvas to render.");
+			}
+			if (renderingInfo.getView() == null) {
+				throw new IllegalArgumentException("No view is specified.");
+			}
+			setContainer(new CanvasGroup((Canvas) renderingInfo.getWidget()));
 		}
-		if (renderingInfo.getView() == null) {
-			throw new IllegalArgumentException("No view is specified.");
-		}
-		setContainer((HtmlContainer) renderingInfo.getWidget());
 
 		// Prepare the target view. Try to make sure it's rendered when the animation arrives there:
 		View targetView = renderingInfo.getView();
@@ -165,7 +173,8 @@ public abstract class DomTileLevelLayerRenderer implements TileLevelLayerRendere
 		// Now render the current view:
 		try {
 			TileLevelRenderer renderer = getRendererForView(renderingInfo.getView());
-			renderTileLevel(renderer, renderingInfo.getView().getResolution());
+			renderTileLevel(renderer, renderingInfo.getView());
+			container.render(viewPort);
 			cleanupCache();
 		} catch (Exception e) {
 		}
@@ -177,6 +186,7 @@ public abstract class DomTileLevelLayerRenderer implements TileLevelLayerRendere
 
 	public void setOpacity(double opacity) {
 		container.setOpacity(opacity);
+		container.render(viewPort);
 	}
 
 	public double getOpacity() {
@@ -189,13 +199,13 @@ public abstract class DomTileLevelLayerRenderer implements TileLevelLayerRendere
 
 	/**
 	 * Create a renderer for a certain fixed tile level.
-	 *
+	 * 
 	 * @param tileLevel The tile level to create a new renderer for.
-	 * @param view      The view that will be initially visible on the tile level.
+	 * @param view The view that will be initially visible on the tile level.
 	 * @param container The container that has been created for the tile renderer to render in.
 	 * @return Return the new tile renderer.
 	 */
-	public abstract TileLevelRenderer createNewScaleRenderer(int tileLevel, View view, HtmlContainer container);
+	public abstract TileLevelRenderer createNewScaleRenderer(int tileLevel, View view, CanvasTileGrid container);
 
 	// ------------------------------------------------------------------------
 	// Protected & private methods:
@@ -216,6 +226,14 @@ public abstract class DomTileLevelLayerRenderer implements TileLevelLayerRendere
 			return viewPort.getResolution(tileLevel);
 		} catch (IllegalArgumentException iae) {
 			return 0;
+		}
+	}
+
+	protected TileConfiguration getTileConfiguration() {
+		if (layer instanceof TileBasedLayer) {
+			return ((TileBasedLayer) layer).getTileConfiguration();
+		} else {
+			return null;
 		}
 	}
 
@@ -253,13 +271,18 @@ public abstract class DomTileLevelLayerRenderer implements TileLevelLayerRendere
 		}
 
 		// If we can't find it, we create it:
-		HtmlContainer tileLevelContainer = new HtmlGroup();
-		tileLevelContainer.asWidget().getElement().setId("TileLevel-" + tileLevel);
+		CanvasTileGrid tileLevelContainer = new CanvasTileGrid(getTileConfiguration(), getTileRenderer(), tileLevel);
+		tileLevelContainer.setCallback(new Callback<String, String>() {
 
-		// Set origin:
-		Matrix translation = viewPort.getTransformationService().getTranslationMatrix(view);
-		tileLevelContainer.setOrigin(new Coordinate(translation.getDx(), translation.getDy()));
+			@Override
+			public void onFailure(String reason) {
+			}
 
+			@Override
+			public void onSuccess(String result) {
+				eventBus.fireEvent(new RenderMapEvent());				
+			}
+		});
 		TileLevelRenderer renderer = createNewScaleRenderer(tileLevel, view, tileLevelContainer);
 		if (renderer == null) {
 			throw new IllegalStateException("Cannot create a TileLevelRenderer for layer " + layer.getTitle());
@@ -279,41 +302,33 @@ public abstract class DomTileLevelLayerRenderer implements TileLevelLayerRendere
 					}
 
 					// Render this tile level:
-					renderTileLevel(renderer, viewPort.getResolution());
+					renderTileLevel(renderer, viewPort.getView());
 				}
 			}
 		});
-		container.insert(tileLevelContainer, 0);
+		// container.insert(tileLevelContainer, 0);
 		tileLevelRenderers.put(tileLevel, renderer);
 		tileLevelContainers.put(tileLevel, tileLevelContainer);
+		container.add(tileLevelContainer);
 		return renderer;
 	}
 
-	protected void renderTileLevel(TileLevelRenderer renderer, double currentResolution) {
-		// Set the current renderer:
-		currentRenderer = renderer;
-
-		// Apply the correct transformation on the container:
-		double rendererResolution = getResolution(renderer.getTileLevel());
-		Matrix transformation = viewPort.getTransformationService().getTranslationMatrix(currentResolution);
-		HtmlContainer tileLevelContainer = tileLevelContainers.get(renderer.getTileLevel());
-		Coordinate origin = tileLevelContainer.getOrigin();
-		tileLevelContainer.applyScale(rendererResolution / currentResolution, 0, 0);
-		double left = transformation.getDx() - origin.getX() * tileLevelContainer.getScale();
-		double top = transformation.getDy() - origin.getY() * tileLevelContainer.getScale();
-		tileLevelContainer.setLeft((int) Math.round(left));
-		tileLevelContainer.setTop((int) Math.round(top));
-
-		// Now make sure it's visible:
-		container.bringToFront(tileLevelContainer);
-		setVisible(renderer.getTileLevel());
+	private TileRenderer getTileRenderer() {
+		return ((AbstractTileBasedLayer) layer).getTileRenderer();
 	}
 
-	protected void setContainer(HtmlContainer container) {
+	protected void renderTileLevel(TileLevelRenderer renderer, View view) {
+		// Set the current renderer:
+		currentRenderer = renderer;
+		setVisible(renderer.getTileLevel());
+		renderer.render(view);
+	}
+
+	protected void setContainer(CanvasGroup container) {
 		if (this.container == null || this.container != container) {
 			this.container = container;
-			DomService.applyTransition(this.container.asWidget().getElement(), new String[] { "opacity" },
-					new Integer[] { 300 });
+			// DomService.applyTransition(this.container.asWidget().getElement(), new String[] { "opacity" },
+			// new Integer[] { 300 });
 		}
 	}
 
@@ -322,7 +337,7 @@ public abstract class DomTileLevelLayerRenderer implements TileLevelLayerRendere
 		tileLevelContainers.get(tileLevel).setVisible(true);
 
 		// Now go over all containers (we could leave out the correct one here...):
-		for (Entry<Integer, HtmlContainer> containerEntry : tileLevelContainers.entrySet()) {
+		for (Entry<Integer, CanvasTileGrid> containerEntry : tileLevelContainers.entrySet()) {
 			containerEntry.getValue().setVisible(tileLevel == containerEntry.getKey());
 		}
 	}
@@ -368,7 +383,7 @@ public abstract class DomTileLevelLayerRenderer implements TileLevelLayerRendere
 
 	private void removeTileLevel(int tileLevel) {
 		if (container != null) {
-			HtmlContainer toRemove = tileLevelContainers.get(tileLevel);
+			CanvasTileGrid toRemove = tileLevelContainers.get(tileLevel);
 			container.remove(toRemove);
 		}
 		tileLevelRenderers.remove(tileLevel);

@@ -8,24 +8,21 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+package org.geomajas.gwt2.client.map.render.canvas.container;
 
-package org.geomajas.gwt2.client.map.render.canvas;
-
-import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt.client.util.Dom;
+import org.geomajas.gwt2.client.map.render.TileCode;
 
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.dom.client.ImageElement;
 
 /**
- * Preloads an image. The image is not added to the DOM (this does not work with regular GWT Image class !!!).
+ * Image tile for a single {@link TileCode}. Needed because images must be pre-loaded for canvas !
  * 
  * @author Jan De Moerloose
  * 
  */
-public class ImageLoader {
-
-	private Bbox bbox;
+public class CanvasTile {
 
 	private Callback<String, String> onLoadingDone;
 
@@ -33,9 +30,9 @@ public class ImageLoader {
 
 	private boolean loaded;
 
-	private double resolution;
-	
 	private boolean rendered;
+
+	private TileCode tileCode;
 
 	/**
 	 * Preload image with the specified src, bounding box and callback.
@@ -45,31 +42,18 @@ public class ImageLoader {
 	 * @param onLoadingDone
 	 * @param resolution
 	 */
-	public ImageLoader(String src, Bbox bbox, Callback<String, String> onLoadingDone) {
-		this.bbox = bbox;
+	public CanvasTile(String src, TileCode tileCode, Callback<String, String> onLoadingDone) {
+		this.tileCode = tileCode;
 		this.onLoadingDone = onLoadingDone;
 		img = loadImage(Dom.makeUrlAbsolute(src));
 	}
 
-	public ImageLoader(String url, Bbox bounds, Callback<String, String> callback, double resolution) {
-		this(url, bounds, callback);
-		this.resolution = resolution;
-	}
-
-	public double getResolution() {
-		return resolution;
-	}
-
-	public Bbox getBbox() {
-		return bbox;
-	}
-	
-	public void setBbox(Bbox bbox) {
-		this.bbox = bbox;
-	}
-
 	public ImageElement getImageElement() {
 		return img;
+	}
+
+	public TileCode getTileCode() {
+		return tileCode;
 	}
 
 	public void onLoadingDone() {
@@ -80,7 +64,7 @@ public class ImageLoader {
 	public boolean isLoaded() {
 		return loaded;
 	}
-	
+
 	public boolean isRendered() {
 		return rendered;
 	}
@@ -97,26 +81,26 @@ public class ImageLoader {
 	 * Returns a handle to an img object. Ties back to the ImageLoader instance (see Google incubator)
 	 */
 	private native ImageElement loadImage(String url)/*-{	     
-			var img = new Image();
-			var __this = this;
-			
-			img.onload = function() {
-			if(!img.__isLoaded) {
-			
-			// __isLoaded should be set for the first time here.
-			// if for some reason img fires a second onload event
-			// we do not want to execute the following again (hence the guard)
-			img.__isLoaded = true;       
-			img.onload = null;
-			
-			// we call this function when onload fires
-			__this.@org.geomajas.gwt2.client.map.render.canvas.ImageLoader::onLoadingDone()();   
-			} 
-			}
-			
-			img.src = url;
-			
-			return img;
-			}-*/;
+		var img = new Image();
+		var __this = this;
+		
+		img.onload = function() {
+		if(!img.__isLoaded) {
+		
+		// __isLoaded should be set for the first time here.
+		// if for some reason img fires a second onload event
+		// we do not want to execute the following again (hence the guard)
+		img.__isLoaded = true;       
+		img.onload = null;
+		
+		// we call this function when onload fires
+		__this.@org.geomajas.gwt2.client.map.render.canvas.container.CanvasTile::onLoadingDone()();   
+		} 
+		}
+		
+		img.src = url;
+		
+		return img;
+		}-*/;
 
 }

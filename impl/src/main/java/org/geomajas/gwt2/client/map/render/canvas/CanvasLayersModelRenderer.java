@@ -81,11 +81,12 @@ public class CanvasLayersModelRenderer implements LayersModelRenderer {
 				renderAll(getCurrentRenderingInfo());
 			}
 		});
+		
 		eventBus.addNavigationStopHandler(new NavigationStopHandler() {
 
 			@Override
 			public void onNavigationStopped(NavigationStopEvent event) {
-				// render without the trajectory to notify that new tiles should be shown
+				// render without the trajectory to notify that new tiles should be shown (TODO)
 				renderAll(getCurrentRenderingInfo());
 			}
 		});
@@ -132,8 +133,7 @@ public class CanvasLayersModelRenderer implements LayersModelRenderer {
 
 	private void renderAll(RenderingInfo renderingInfo) {
 		if (canvas != null) {
-			// Clear the canvas, to be tested as performance killer (ol3 is very careful with this call) ???)
-			canvas.getContext2d().setTransform(1, 0, 0, 1, 0, 0);
+			// Clear the canvas 
 			canvas.getContext2d().clearRect(0, 0, canvas.getCoordinateSpaceWidth(), canvas.getCoordinateSpaceHeight());
 
 			// Delegate to the layers in layer order:
