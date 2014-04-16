@@ -79,8 +79,9 @@ public class TmsLayerPanel implements SamplePanel {
 		resolutions.add(0.087890625 * 0.75);
 //		resolutions.add(0.0439453125 * 0.75);
 		configuration.setResolutions(resolutions);
+		configuration.setHintValue(MapConfiguration.RENDERER_TYPE,
+				MapConfiguration.RendererType.CANVAS);
 		mapPresenter = GeomajasImpl.getInstance().createMapPresenter(configuration, 480, 480);
-
 		mapPresenter.getConfiguration().setHintValue(MapConfiguration.ANIMATION_TIME, 4000);
 
 		// Define the whole layout:

@@ -32,7 +32,7 @@ public class CanvasGroup implements IsWidget {
 
 	private boolean visible = true;
 
-	private double opacity;
+	private double opacity = 1.0;
 
 	private List<CanvasTileGrid> imageContainers = new ArrayList<CanvasTileGrid>();
 
