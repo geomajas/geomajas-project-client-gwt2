@@ -44,7 +44,7 @@ public class CanvasGroup implements IsWidget {
 	public void render(ViewPort viewPort) {
 		if (isVisible()) {
 			for (CanvasTileGrid ic : imageContainers) {
-				if (ic.isVisible()) {
+				if (ic.isVisible() && !ic.isEmpty()) {
 					Coordinate origin = viewPort.getTransformationService().transform(ic.getUpperLeftCorner(),
 							RenderSpace.WORLD, RenderSpace.SCREEN);
 					double scale = ic.getResolution() / viewPort.getResolution();

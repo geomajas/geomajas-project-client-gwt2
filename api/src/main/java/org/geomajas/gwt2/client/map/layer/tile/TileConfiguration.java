@@ -39,6 +39,8 @@ public class TileConfiguration implements Serializable {
 	private int tileHeight;
 
 	private Coordinate tileOrigin;
+	
+	private boolean limitXYByTileLevel;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -247,4 +249,13 @@ public class TileConfiguration implements Serializable {
 		}
 		return resolutions.get(resolutions.size() - 1);
 	}
+	
+	public boolean isLimitXYByTileLevel() {
+		return limitXYByTileLevel;
+	}
+	
+	public void setLimitXYByTileLevel(boolean limitXYByTileLevel) {
+		this.limitXYByTileLevel = limitXYByTileLevel;
+	}
+	
 }

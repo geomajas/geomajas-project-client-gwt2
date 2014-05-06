@@ -11,18 +11,26 @@
 
 package org.geomajas.plugin.wms.client.layer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.AbstractLayer;
+import org.geomajas.gwt2.client.map.layer.AbstractTileBasedLayer;
 import org.geomajas.gwt2.client.map.layer.LegendConfig;
 import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
 import org.geomajas.gwt2.client.map.render.LayerRenderer;
 import org.geomajas.gwt2.client.map.render.Tile;
 import org.geomajas.gwt2.client.map.render.TileCode;
+import org.geomajas.gwt2.client.map.render.TileLevelLayerRenderer;
 import org.geomajas.gwt2.client.map.render.TileLevelRenderer;
 import org.geomajas.gwt2.client.map.render.TileRenderer;
+import org.geomajas.gwt2.client.map.render.canvas.CanvasTileLevelLayerRenderer;
+import org.geomajas.gwt2.client.map.render.canvas.CanvasTileLevelRenderer;
+import org.geomajas.gwt2.client.map.render.canvas.container.CanvasTileGrid;
 import org.geomajas.gwt2.client.map.render.dom.DomTileLevelLayerRenderer;
 import org.geomajas.gwt2.client.map.render.dom.DomTileLevelRenderer;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
@@ -30,8 +38,7 @@ import org.geomajas.gwt2.client.service.TileService;
 import org.geomajas.plugin.wms.client.WmsClient;
 import org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.gwt.canvas.client.Canvas;
 
 /**
  * Default implementation of a {@link WmsLayer}.
@@ -39,7 +46,7 @@ import java.util.List;
  * @author Pieter De Graef
  * @author An Buyle
  */
-public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
+public class WmsLayerImpl extends AbstractTileBasedLayer implements WmsLayer {
 
 	protected final WmsLayerConfiguration wmsConfig;
 
@@ -49,13 +56,13 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 
 	protected TileRenderer tileRenderer;
 
-	protected DomTileLevelLayerRenderer renderer;
+	protected TileLevelLayerRenderer renderer;
 
 	private double opacity = 1.0;
 
 	public WmsLayerImpl(String title, WmsLayerConfiguration wmsConfig, TileConfiguration tileConfig,
 			WmsLayerInfo layerCapabilities) {
-		super(wmsConfig.getLayers());
+		super(wmsConfig.getLayers(), tileConfig);
 
 		this.title = title;
 		this.wmsConfig = wmsConfig;
@@ -142,21 +149,18 @@ public class WmsLayerImpl extends AbstractLayer implements WmsLayer {
 		}
 		return false;
 	}
+	
+	
+
+	// ------------------------------------------------------------------------
+	// AbstractTileBasedLayer implementation:
+	// ------------------------------------------------------------------------
 
 	@Override
-	public LayerRenderer getRenderer() {
-		if (renderer == null) {
-			renderer = new DomTileLevelLayerRenderer(viewPort, this, eventBus) {
-
-				@Override
-				public TileLevelRenderer createNewScaleRenderer(int tileLevel, View view, HtmlContainer container) {
-					return new DomTileLevelRenderer(WmsLayerImpl.this, tileLevel, viewPort, container, tileRenderer);
-				}
-			};
-		}
-		return renderer;
+	public TileRenderer getTileRenderer() {
+		return tileRenderer;
 	}
-
+	
 	// ------------------------------------------------------------------------
 	// HasMapScalesRenderer implementation:
 	// ------------------------------------------------------------------------

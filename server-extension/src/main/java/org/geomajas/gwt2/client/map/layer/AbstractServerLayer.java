@@ -15,6 +15,7 @@ import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.ViewPort;
+import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
 import org.geomajas.gwt2.client.map.render.TileRenderer;
 
 /**
@@ -25,7 +26,13 @@ import org.geomajas.gwt2.client.map.render.TileRenderer;
  */
 public abstract class AbstractServerLayer<T extends ClientLayerInfo> extends AbstractTileBasedLayer {
 
+	protected ClientMapInfo mapInfo;
+
 	protected T layerInfo;
+	
+	protected TileRenderer tileRenderer;
+	
+	protected ServerLayerConfiguration layerConfiguration;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -39,21 +46,25 @@ public abstract class AbstractServerLayer<T extends ClientLayerInfo> extends Abs
 	 * @param eventBus The map centric event bus.
 	 */
 	public AbstractServerLayer(ClientMapInfo mapInfo, T layerInfo, ViewPort viewPort, MapEventBus eventBus) {
-		super(layerInfo.getId(), new ServerTileConfiguration(mapInfo, layerInfo));
-
+		super(layerInfo.getId(), new TileConfiguration());
+		this.mapInfo = mapInfo;
 		this.layerInfo = layerInfo;
 		this.markedAsVisible = layerInfo.isVisible();
 		this.title = layerInfo.getLabel();
-
 		setViewPort(viewPort);
 		setEventBus(eventBus);
-
+		initLayerConfiguration();
 		eventBus.addViewPortChangedHandler(new LayerScaleVisibilityHandler());
 	}
 
+	protected abstract void initLayerConfiguration();
+
 	@Override
 	public TileRenderer getTileRenderer() {
-		return (ServerTileConfiguration) getTileConfiguration();
+		if(tileRenderer == null) {
+			tileRenderer = new ServerTileRenderer(layerConfiguration);
+		}
+		return tileRenderer;
 	}
 
 	// ------------------------------------------------------------------------
@@ -62,6 +73,10 @@ public abstract class AbstractServerLayer<T extends ClientLayerInfo> extends Abs
 
 	public String getServerLayerId() {
 		return layerInfo.getServerLayerId();
+	}
+	
+	public ClientMapInfo getMapInfo() {
+		return mapInfo;
 	}
 
 	public T getLayerInfo() {
@@ -79,4 +94,5 @@ public abstract class AbstractServerLayer<T extends ClientLayerInfo> extends Abs
 		}
 		return false;
 	}
+	
 }

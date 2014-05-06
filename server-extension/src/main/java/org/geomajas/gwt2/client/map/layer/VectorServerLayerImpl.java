@@ -24,6 +24,7 @@ import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
+import org.geomajas.geometry.service.BboxService;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
@@ -43,12 +44,17 @@ import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.RuleInfo;
 
+import com.google.gwt.core.client.GWT;
+
 /**
  * Vector layer representation.
  *
  * @author Pieter De Graef
+ * @author Jan De Moerloose
  */
 public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayerInfo> implements VectorServerLayer {
+
+	private static final String RASTERIZING_PREFIX = "rasterizing/layer/";
 
 	private final Map<String, Feature> selection;
 
@@ -75,6 +81,24 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 				}
 			}
 		}
+	}
+
+
+	@Override
+	protected void initLayerConfiguration() {
+		String layerId = layerInfo.getServerLayerId();
+		ArrayList<Double> resolutions = new ArrayList<Double>();
+		String baseUrl = GWT.getModuleBaseURL() + RASTERIZING_PREFIX + layerId + "@" + mapInfo.getCrs() + "/"
+				+ layerInfo.getNamedStyleInfo().getName() + "/";
+		getTileConfiguration().setTileWidth(512);
+		getTileConfiguration().setTileHeight(512);
+		for (int i = 0; i < 50; i++) {
+			resolutions.add(layerInfo.getMaxExtent().getWidth() / (512 * Math.pow(2, i)));
+		}
+		getTileConfiguration().setResolutions(resolutions);
+		getTileConfiguration().setTileOrigin(BboxService.getOrigin(layerInfo.getMaxExtent()));
+		getTileConfiguration().setLimitXYByTileLevel(true);
+		layerConfiguration = new ServerLayerConfiguration(baseUrl, ".png");
 	}
 
 	// ------------------------------------------------------------------------
