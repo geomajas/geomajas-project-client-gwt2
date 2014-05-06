@@ -22,6 +22,7 @@ import org.geomajas.command.dto.RegisterNamedStyleInfoResponse;
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
@@ -62,8 +63,8 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 	// ------------------------------------------------------------------------
 
 	@SuppressWarnings("deprecation")
-	public VectorServerLayerImpl(ClientVectorLayerInfo layerInfo, final ViewPort viewPort, MapEventBus eventBus) {
-		super(layerInfo, viewPort, eventBus);
+	public VectorServerLayerImpl(ClientMapInfo mapInfo, ClientVectorLayerInfo layerInfo, final ViewPort viewPort, MapEventBus eventBus) {
+		super(mapInfo, layerInfo, viewPort, eventBus);
 		this.selection = new HashMap<String, Feature>();
 		this.descriptors = new ArrayList<AttributeDescriptor>();
 		if (layerInfo.getFeatureInfo() != null && layerInfo.getFeatureInfo().getAttributes() != null) {

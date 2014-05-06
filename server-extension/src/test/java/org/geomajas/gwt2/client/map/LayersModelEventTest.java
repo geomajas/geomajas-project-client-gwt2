@@ -95,7 +95,7 @@ public class LayersModelEventTest {
 		for (int i = 1; i < 4; i++) {
 			for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
 				if (("beans" + i + "Layer").equals(layerInfo.getId())) {
-					Layer layer = new VectorServerLayerImpl((ClientVectorLayerInfo) layerInfo, viewPort, eventBus);
+					Layer layer = new VectorServerLayerImpl(mapInfo, (ClientVectorLayerInfo) layerInfo, viewPort, eventBus);
 					layersModel.addLayer(layer);
 				}
 			}

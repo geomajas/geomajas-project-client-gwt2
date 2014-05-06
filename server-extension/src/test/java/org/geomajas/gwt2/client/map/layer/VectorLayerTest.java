@@ -56,25 +56,25 @@ public class VectorLayerTest {
 
 	@Test
 	public void testServerLayerId() {
-		VectorServerLayerImpl layer = new VectorServerLayerImpl(layerInfo, viewPort, eventBus);
+		VectorServerLayerImpl layer = new VectorServerLayerImpl(mapInfo, layerInfo, viewPort, eventBus);
 		Assert.assertEquals(layerInfo.getServerLayerId(), layer.getServerLayerId());
 	}
 
 	@Test
 	public void testTitle() {
-		VectorServerLayerImpl layer = new VectorServerLayerImpl(layerInfo, viewPort, eventBus);
+		VectorServerLayerImpl layer = new VectorServerLayerImpl(mapInfo, layerInfo, viewPort, eventBus);
 		Assert.assertEquals(layerInfo.getLabel(), layer.getTitle());
 	}
 
 	@Test
 	public void testLayerInfo() {
-		VectorServerLayerImpl layer = new VectorServerLayerImpl(layerInfo, viewPort, eventBus);
+		VectorServerLayerImpl layer = new VectorServerLayerImpl(mapInfo, layerInfo, viewPort, eventBus);
 		Assert.assertEquals(layerInfo, layer.getLayerInfo());
 	}
 
 	@Test
 	public void testSelection() {
-		VectorServerLayerImpl layer = new VectorServerLayerImpl(layerInfo, viewPort, eventBus);
+		VectorServerLayerImpl layer = new VectorServerLayerImpl(mapInfo, layerInfo, viewPort, eventBus);
 		Assert.assertFalse(layer.isSelected());
 		layer.setSelected(true);
 		Assert.assertTrue(layer.isSelected());
@@ -84,7 +84,7 @@ public class VectorLayerTest {
 
 	@Test
 	public void testMarkedAsVisible() {
-		VectorServerLayerImpl layer = new VectorServerLayerImpl(layerInfo, viewPort, eventBus);
+		VectorServerLayerImpl layer = new VectorServerLayerImpl(mapInfo, layerInfo, viewPort, eventBus);
 		Assert.assertTrue(layer.isMarkedAsVisible());
 		layer.setMarkedAsVisible(false);
 		Assert.assertFalse(layer.isMarkedAsVisible());
@@ -94,7 +94,7 @@ public class VectorLayerTest {
 
 	@Test
 	public void testShowing() {
-		VectorServerLayerImpl layer = new VectorServerLayerImpl(layerInfo, viewPort, eventBus);
+		VectorServerLayerImpl layer = new VectorServerLayerImpl(mapInfo, layerInfo, viewPort, eventBus);
 
 		// Scale between 6 and 20 is OK:
 		viewPort.applyResolution(viewPort.getResolution(5)); // 32 -> NOK

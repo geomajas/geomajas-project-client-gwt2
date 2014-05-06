@@ -52,7 +52,14 @@ public class CanvasLayersModelRenderer implements LayersModelRenderer {
 		layersModel = mapPresenter.getLayersModel();
 		viewPort = mapPresenter.getViewPort();
 		this.layerRenderers = new HashMap<Layer, LayerRenderer>();
-		MapEventBus eventBus = mapPresenter.getEventBus();
+		MapEventBus eventBus = mapPresenter.getEventBus();		
+		// render all layers
+		for (int i = 0; i < layersModel.getLayerCount(); i++) {
+			LayerRenderer layerRenderer = layersModel.getLayer(i).getRenderer();
+			if (layerRenderer != null) {
+				registerLayerRenderer(layersModel.getLayer(i), layerRenderer);
+			}
+		}
 
 		// Keep the list of LayerRenderers synchronized with the list of layers:
 		eventBus.addMapCompositionHandler(new MapCompositionHandler() {

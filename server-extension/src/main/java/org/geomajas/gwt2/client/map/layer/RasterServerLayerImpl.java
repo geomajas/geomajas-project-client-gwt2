@@ -11,6 +11,7 @@
 
 package org.geomajas.gwt2.client.map.layer;
 
+import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.gwt2.client.map.MapConfiguration;
 import org.geomajas.gwt2.client.map.MapEventBus;
@@ -25,9 +26,8 @@ import org.geomajas.gwt2.client.map.render.dom.DomTileLevelLayerRenderer;
 public class RasterServerLayerImpl extends AbstractServerLayer<ClientRasterLayerInfo> implements RasterServerLayer {
 
 	/** The only constructor. */
-	public RasterServerLayerImpl(ClientRasterLayerInfo layerInfo, final ViewPort viewPort, MapEventBus eventBus,
-			MapConfiguration configuration) {
-		super(layerInfo, viewPort, eventBus);
+	public RasterServerLayerImpl(ClientMapInfo mapInfo, ClientRasterLayerInfo layerInfo, final ViewPort viewPort, MapEventBus eventBus) {
+		super(mapInfo, layerInfo, viewPort, eventBus);
 	}
 
 	// ------------------------------------------------------------------------

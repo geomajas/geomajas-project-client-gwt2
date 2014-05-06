@@ -12,6 +12,7 @@
 package org.geomajas.gwt2.client.map.layer;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.render.TileRenderer;
@@ -37,8 +38,8 @@ public abstract class AbstractServerLayer<T extends ClientLayerInfo> extends Abs
 	 * @param viewPort The view port of the map.
 	 * @param eventBus The map centric event bus.
 	 */
-	public AbstractServerLayer(T layerInfo, ViewPort viewPort, MapEventBus eventBus) {
-		super(layerInfo.getId(), new ServerTileConfiguration(viewPort, layerInfo));
+	public AbstractServerLayer(ClientMapInfo mapInfo, T layerInfo, ViewPort viewPort, MapEventBus eventBus) {
+		super(layerInfo.getId(), new ServerTileConfiguration(mapInfo, layerInfo));
 
 		this.layerInfo = layerInfo;
 		this.markedAsVisible = layerInfo.isVisible();

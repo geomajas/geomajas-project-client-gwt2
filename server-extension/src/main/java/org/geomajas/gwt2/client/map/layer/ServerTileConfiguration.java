@@ -4,11 +4,10 @@ import java.util.ArrayList;
 
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
-import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.geometry.service.BboxService;
-import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
 import org.geomajas.gwt2.client.map.render.TileCode;
 import org.geomajas.gwt2.client.map.render.TileRenderer;
@@ -16,23 +15,26 @@ import org.geomajas.gwt2.client.map.render.TileRenderer;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.URL;
 
+/**
+ * {@link TileConfiguration} for server layers.
+ * 
+ * @author Jan De Moerloose
+ * 
+ */
 public class ServerTileConfiguration extends TileConfiguration implements TileRenderer {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	private static final String RASTERIZING_PREFIX = "rasterizing/layer/";
 
 	private String baseUrl;
 
-	public ServerTileConfiguration(ViewPort viewPort, ClientLayerInfo layerInfo) {
+	public ServerTileConfiguration(ClientMapInfo mapInfo, ClientLayerInfo layerInfo) {
 		String layerId = layerInfo.getServerLayerId();
 		ArrayList<Double> resolutions = new ArrayList<Double>();
 		if (layerInfo instanceof ClientVectorLayerInfo) {
 			ClientVectorLayerInfo vectorLayerInfo = (ClientVectorLayerInfo) layerInfo;
-			baseUrl = GWT.getModuleBaseURL() + RASTERIZING_PREFIX + layerId + "@" + viewPort.getCrs() + "/"
+			baseUrl = GWT.getModuleBaseURL() + RASTERIZING_PREFIX + layerId + "@" + mapInfo.getCrs() + "/"
 					+ vectorLayerInfo.getNamedStyleInfo().getName() + "/";
 			setTileWidth(512);
 			setTileHeight(512);
@@ -41,7 +43,7 @@ public class ServerTileConfiguration extends TileConfiguration implements TileRe
 			}
 		} else if (layerInfo instanceof ClientRasterLayerInfo) {
 			ClientRasterLayerInfo rasterLayerInfo = (ClientRasterLayerInfo) layerInfo;
-			baseUrl = GWT.getModuleBaseURL() + RASTERIZING_PREFIX + layerId + "@" + viewPort.getCrs() + "/";
+			baseUrl = GWT.getModuleBaseURL() + RASTERIZING_PREFIX + layerId + "@" + mapInfo.getCrs() + "/";
 			setTileWidth(((RasterLayerInfo) rasterLayerInfo.getLayerInfo()).getTileWidth());
 			setTileHeight(((RasterLayerInfo) rasterLayerInfo.getLayerInfo()).getTileHeight());
 			for (int i = 0; i < 50; i++) {
