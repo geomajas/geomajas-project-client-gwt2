@@ -14,14 +14,8 @@ package org.geomajas.gwt2.client.map.layer;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.gwt2.client.map.MapConfiguration;
 import org.geomajas.gwt2.client.map.MapEventBus;
-import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.render.dom.DomTileLevelLayerRenderer;
-import org.geomajas.gwt2.client.map.render.TileLevelRenderer;
-import org.geomajas.gwt2.client.map.render.LayerRenderer;
-import org.geomajas.gwt2.client.map.render.canvas.CanvasRasterServerLayerRenderer;
-import org.geomajas.gwt2.client.map.render.dom.RasterServerLayerScaleRenderer;
-import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
 
 /**
  * The client side representation of a raster layer defined on the backend.
@@ -30,41 +24,15 @@ import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
  */
 public class RasterServerLayerImpl extends AbstractServerLayer<ClientRasterLayerInfo> implements RasterServerLayer {
 
-	private final LayerRenderer renderer;
-
 	/** The only constructor. */
 	public RasterServerLayerImpl(ClientRasterLayerInfo layerInfo, final ViewPort viewPort, MapEventBus eventBus,
 			MapConfiguration configuration) {
 		super(layerInfo, viewPort, eventBus);
-		switch (configuration.getHintValue(MapConfiguration.RENDERER_TYPE)) {
-			case CANVAS:
-				renderer = new CanvasRasterServerLayerRenderer(this, viewPort);
-				break;
-			case HTML:
-			default:
-				renderer = new DomTileLevelLayerRenderer(viewPort, this, eventBus) {
-
-					@Override
-					public TileLevelRenderer createNewScaleRenderer(int tileLevel, View view,
-							HtmlContainer scaleContainer) {
-						return new RasterServerLayerScaleRenderer(RasterServerLayerImpl.this, tileLevel,
-								viewPort.getResolution(tileLevel), viewPort, scaleContainer);
-					}
-
-				};
-				break;
-
-		}
 	}
 
 	// ------------------------------------------------------------------------
 	// Layer implementation:
 	// ------------------------------------------------------------------------
-
-	@Override
-	public LayerRenderer getRenderer() {
-		return renderer;
-	}
 
 	/**
 	 * Apply a new opacity on the entire raster layer. Changing the opacity on a layer does NOT fire a layer style

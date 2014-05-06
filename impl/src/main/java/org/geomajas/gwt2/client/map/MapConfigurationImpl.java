@@ -62,7 +62,7 @@ public class MapConfigurationImpl implements MapConfiguration {
 		setHintValue(MapConfiguration.UNIT_LENGTH, DEFAULT_UNIT_LENGTH);
 		setHintValue(MapConfiguration.MINIMUM_RESOLUTION, DEFAULT_MINIMUM_RESOLUTION);
 		setHintValue(MapConfiguration.RESOLUTIONS, new ArrayList<Double>());
-		setHintValue(MapConfiguration.RENDERER_TYPE, RendererType.HTML);
+		setHintValue(MapConfiguration.RENDERER_TYPE, RendererType.AUTO);
 	}
 
 	// ------------------------------------------------------------------------

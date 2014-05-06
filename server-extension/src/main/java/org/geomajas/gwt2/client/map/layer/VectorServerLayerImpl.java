@@ -11,6 +11,12 @@
 
 package org.geomajas.gwt2.client.map.layer;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.geomajas.command.dto.RegisterNamedStyleInfoRequest;
 import org.geomajas.command.dto.RegisterNamedStyleInfoResponse;
 import org.geomajas.configuration.AttributeInfo;
@@ -26,7 +32,6 @@ import org.geomajas.gwt2.client.event.LayerLabelHideEvent;
 import org.geomajas.gwt2.client.event.LayerLabelShowEvent;
 import org.geomajas.gwt2.client.event.LayerStyleChangedEvent;
 import org.geomajas.gwt2.client.map.MapEventBus;
-import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
 import org.geomajas.gwt2.client.map.attribute.AttributeDescriptorImpl;
@@ -34,19 +39,8 @@ import org.geomajas.gwt2.client.map.attribute.AttributeType;
 import org.geomajas.gwt2.client.map.attribute.PrimitiveAttributeTypeImpl;
 import org.geomajas.gwt2.client.map.attribute.PrimitiveType;
 import org.geomajas.gwt2.client.map.feature.Feature;
-import org.geomajas.gwt2.client.map.render.TileLevelRenderer;
-import org.geomajas.gwt2.client.map.render.dom.DomTileLevelLayerRenderer;
-import org.geomajas.gwt2.client.map.render.LayerRenderer;
-import org.geomajas.gwt2.client.map.render.dom.VectorServerLayerScaleRenderer;
-import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
 import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.RuleInfo;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Vector layer representation.
@@ -54,8 +48,6 @@ import java.util.Map;
  * @author Pieter De Graef
  */
 public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayerInfo> implements VectorServerLayer {
-
-	private final DomTileLevelLayerRenderer renderer;
 
 	private final Map<String, Feature> selection;
 
@@ -73,15 +65,6 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 	public VectorServerLayerImpl(ClientVectorLayerInfo layerInfo, final ViewPort viewPort, MapEventBus eventBus) {
 		super(layerInfo, viewPort, eventBus);
 		this.selection = new HashMap<String, Feature>();
-		this.renderer = new DomTileLevelLayerRenderer(viewPort, this, eventBus) {
-
-			@Override
-			public TileLevelRenderer createNewScaleRenderer(int tileLevel, View view, HtmlContainer scaleContainer) {
-				return new VectorServerLayerScaleRenderer(VectorServerLayerImpl.this, tileLevel,
-						viewPort.getResolution(tileLevel), viewPort, scaleContainer);
-			}
-		};
-
 		this.descriptors = new ArrayList<AttributeDescriptor>();
 		if (layerInfo.getFeatureInfo() != null && layerInfo.getFeatureInfo().getAttributes() != null) {
 			for (AttributeInfo attributeInfo : layerInfo.getFeatureInfo().getAttributes()) {
@@ -91,15 +74,6 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 				}
 			}
 		}
-	}
-
-	// ------------------------------------------------------------------------
-	// Layer implementation:
-	// ------------------------------------------------------------------------
-
-	@Override
-	public LayerRenderer getRenderer() {
-		return renderer;
 	}
 
 	// ------------------------------------------------------------------------
@@ -263,4 +237,6 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 		}
 		return null;
 	}
+
+
 }

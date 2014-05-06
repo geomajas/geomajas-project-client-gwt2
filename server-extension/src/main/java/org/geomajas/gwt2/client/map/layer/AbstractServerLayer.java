@@ -14,15 +14,15 @@ package org.geomajas.gwt2.client.map.layer;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.ViewPort;
+import org.geomajas.gwt2.client.map.render.TileRenderer;
 
 /**
  * Abstraction of the basic layer interface. Specific layer implementations should use this as a base.
  * 
- * @param <T>
- *            The layer meta-data. Some extension of {@link ClientLayerInfo}.
+ * @param <T> The layer meta-data. Some extension of {@link ClientLayerInfo}.
  * @author Pieter De Graef
  */
-public abstract class AbstractServerLayer<T extends ClientLayerInfo> extends AbstractLayer {
+public abstract class AbstractServerLayer<T extends ClientLayerInfo> extends AbstractTileBasedLayer {
 
 	protected T layerInfo;
 
@@ -33,15 +33,12 @@ public abstract class AbstractServerLayer<T extends ClientLayerInfo> extends Abs
 	/**
 	 * Create a new layer that belongs to the given map model, using the given meta-data.
 	 * 
-	 * @param layerInfo
-	 *            The layer configuration from which to create the layer.
-	 * @param viewPort
-	 *            The view port of the map.
-	 * @param eventBus
-	 *            The map centric event bus.
+	 * @param layerInfo The layer configuration from which to create the layer.
+	 * @param viewPort The view port of the map.
+	 * @param eventBus The map centric event bus.
 	 */
 	public AbstractServerLayer(T layerInfo, ViewPort viewPort, MapEventBus eventBus) {
-		super(layerInfo.getId());
+		super(layerInfo.getId(), new ServerTileConfiguration(viewPort, layerInfo));
 
 		this.layerInfo = layerInfo;
 		this.markedAsVisible = layerInfo.isVisible();
@@ -51,6 +48,11 @@ public abstract class AbstractServerLayer<T extends ClientLayerInfo> extends Abs
 		setEventBus(eventBus);
 
 		eventBus.addViewPortChangedHandler(new LayerScaleVisibilityHandler());
+	}
+
+	@Override
+	public TileRenderer getTileRenderer() {
+		return (ServerTileConfiguration) getTileConfiguration();
 	}
 
 	// ------------------------------------------------------------------------

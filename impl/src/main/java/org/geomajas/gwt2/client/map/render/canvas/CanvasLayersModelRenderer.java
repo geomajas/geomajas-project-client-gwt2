@@ -81,7 +81,7 @@ public class CanvasLayersModelRenderer implements LayersModelRenderer {
 				renderAll(getCurrentRenderingInfo());
 			}
 		});
-		
+
 		eventBus.addNavigationStopHandler(new NavigationStopHandler() {
 
 			@Override
@@ -133,7 +133,7 @@ public class CanvasLayersModelRenderer implements LayersModelRenderer {
 
 	private void renderAll(RenderingInfo renderingInfo) {
 		if (canvas != null) {
-			// Clear the canvas 
+			// Clear the canvas
 			canvas.getContext2d().clearRect(0, 0, canvas.getCoordinateSpaceWidth(), canvas.getCoordinateSpaceHeight());
 
 			// Delegate to the layers in layer order:
@@ -143,7 +143,9 @@ public class CanvasLayersModelRenderer implements LayersModelRenderer {
 				RenderingInfo layerInfo = new RenderingInfo(canvas, renderingInfo.getView(),
 						renderingInfo.getTrajectory());
 				LayerRenderer layerRenderer = layerRenderers.get(layer);
-				layerRenderer.render(layerInfo);
+				if (layerRenderer != null) {
+					layerRenderer.render(layerInfo);
+				}
 			}
 		}
 	}

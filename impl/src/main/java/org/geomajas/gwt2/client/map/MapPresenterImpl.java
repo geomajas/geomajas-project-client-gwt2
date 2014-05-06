@@ -260,10 +260,18 @@ public final class MapPresenterImpl implements MapPresenter {
 				renderer = new CanvasLayersModelRenderer(this);
 				break;
 			case HTML:
-			default:
 				rendererWidget = display.getMapHtmlContainer();
 				renderer = new DomLayersModelRenderer(layersModel, viewPort, eventBus);
 				((DomLayersModelRenderer) renderer).setMapConfiguration(configuration);
+			default:
+				if(Canvas.isSupported()) {
+					rendererWidget = display.getMapCanvas();
+					renderer = new CanvasLayersModelRenderer(this);
+				} else {
+					rendererWidget = display.getMapHtmlContainer();
+					renderer = new DomLayersModelRenderer(layersModel, viewPort, eventBus);
+					((DomLayersModelRenderer) renderer).setMapConfiguration(configuration);
+				}
 		}
 
 		// Configure the ViewPort. This will immediately zoom to the initial bounds:

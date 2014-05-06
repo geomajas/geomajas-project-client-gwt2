@@ -68,21 +68,20 @@ public class TmsLayerPanel implements SamplePanel {
 		configuration.setCrs(EPSG, CrsType.DEGREES);
 		configuration.setMaxBounds(new Bbox(-180, -90, 360, 180));
 		List<Double> resolutions = new ArrayList<Double>();
-//		resolutions.add(0.703125);
-//		resolutions.add(0.3515625);
-//		resolutions.add(0.17578125);
-//		resolutions.add(0.087890625);
-//		resolutions.add(0.0439453125);
-//		resolutions.add(0.703125 * 0.75);
+		resolutions.add(0.703125);
+		resolutions.add(0.3515625);
+		resolutions.add(0.17578125);
+		resolutions.add(0.087890625);
+		resolutions.add(0.0439453125);
+		resolutions.add(0.703125 * 0.75);
 		resolutions.add(0.3515625 * 0.75);
-//		resolutions.add(0.17578125 * 0.75);
+		resolutions.add(0.17578125 * 0.75);
 		resolutions.add(0.087890625 * 0.75);
-//		resolutions.add(0.0439453125 * 0.75);
+		resolutions.add(0.0439453125 * 0.75);
 		configuration.setResolutions(resolutions);
 		configuration.setHintValue(MapConfiguration.RENDERER_TYPE,
 				MapConfiguration.RendererType.CANVAS);
 		mapPresenter = GeomajasImpl.getInstance().createMapPresenter(configuration, 480, 480);
-		mapPresenter.getConfiguration().setHintValue(MapConfiguration.ANIMATION_TIME, 4000);
 
 		// Define the whole layout:
 		DecoratorPanel mapDecorator = new DecoratorPanel();

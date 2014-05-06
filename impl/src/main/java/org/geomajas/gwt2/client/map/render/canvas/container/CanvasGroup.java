@@ -22,9 +22,10 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
+ * Group of {@link CanvasTileGrid}s for a layer.
  * 
  * @author Jan De Moerloose
- *
+ * 
  */
 public class CanvasGroup implements IsWidget {
 
