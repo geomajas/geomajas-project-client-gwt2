@@ -52,6 +52,7 @@ public class CanvasTileGrid implements IsWidget {
 
 	public CanvasTileGrid(TileConfiguration tileConfiguration, TileRenderer tileRenderer, int tileLevel) {
 		this.canvas = Canvas.createIfSupported();
+		this.canvas.setVisible(false);
 		this.tileConfiguration = tileConfiguration;
 		this.tileLevel = tileLevel;
 		this.tileRenderer = tileRenderer;
@@ -87,6 +88,7 @@ public class CanvasTileGrid implements IsWidget {
 			// set the new width and height
 			canvas.setCoordinateSpaceWidth(union.getNx() * tileConfiguration.getTileWidth());
 			canvas.setCoordinateSpaceHeight(union.getNy() * tileConfiguration.getTileHeight());
+
 			// resizing the canvas clears it, so we have to redraw everything
 			for (CanvasTile loader : tiles.values()) {
 				loader.setRendered(false);
