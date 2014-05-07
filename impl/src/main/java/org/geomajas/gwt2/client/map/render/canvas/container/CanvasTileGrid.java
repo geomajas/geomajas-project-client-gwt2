@@ -125,6 +125,10 @@ public class CanvasTileGrid implements IsWidget {
 		return new Bbox(0, 0, range.getNx() * tileConfiguration.getTileWidth(), range.getNy()
 				* tileConfiguration.getTileHeight());
 	}
+	
+	public boolean isEmpty() {
+		return range.isEmpty();
+	}
 
 	public void render() {
 		for (CanvasTile tile : tiles.values()) {
@@ -181,18 +185,28 @@ public class CanvasTileGrid implements IsWidget {
 		int ymax = (int) Math.floor((bounds.getMaxY() - tileOrigin.getY()) / worldTileHeight);
 		int xmin = (int) Math.floor((bounds.getX() - tileOrigin.getX()) / worldTileWidth);
 		int xmax = (int) Math.floor((bounds.getMaxX() - tileOrigin.getX()) / worldTileWidth);
+		
+		if(tileConfiguration.isLimitXYByTileLevel()) {
+			int maxIndex = (int) Math.pow(2, tileLevel) - 1;
 
-		if (ymin < 0) {
-			ymin = 0;
-		}
-		if (xmin < 0) {
-			xmin = 0;
-		}
-		if (xmax < 0) {
-			xmax = -1;
-		}
-		if (ymax < 0) {
-			ymax = -1;
+			if (ymin < 0) {
+				ymin = 0;
+			}
+			if (xmin < 0) {
+				xmin = 0;
+			}
+			if (xmax < 0) {
+				xmax = -1;
+			}
+			if (ymax < 0) {
+				ymax = -1;
+			}
+			if (xmax > maxIndex) {
+				xmax = maxIndex;
+			}
+			if (ymax > maxIndex) {
+				ymax = maxIndex;
+			}
 		}
 		return new Range(xmin, xmax, ymin, ymax);
 	}

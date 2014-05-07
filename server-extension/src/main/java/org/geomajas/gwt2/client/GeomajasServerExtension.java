@@ -164,17 +164,19 @@ public final class GeomajasServerExtension {
 			public void execute(GetMapConfigurationResponse response) {
 				// Initialize the MapModel and ViewPort:
 				ClientMapInfo mapInfo = response.getMapInfo();
-
-				// Initialize the map:
-				MapConfiguration configuration = createMapConfiguration(mapInfo, mapPresenter);
-				((MapPresenterImpl) mapPresenter).initialize(configuration, mapWidgets);
 				
-				// Now add all layers:
+				// Add all layers:
 				for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
-					ServerLayer<?> layer = createLayer(layerInfo, mapPresenter.getViewPort(),
-							mapPresenter.getEventBus(), configuration);
+					ServerLayer<?> layer = createLayer(mapInfo, layerInfo, mapPresenter.getViewPort(),
+							mapPresenter.getEventBus());
 					mapPresenter.getLayersModel().addLayer(layer);
 				}
+				
+				// Create the map configuration
+				MapConfiguration configuration = createMapConfiguration(mapInfo, mapPresenter);
+				
+				// Initialize the map:
+				((MapPresenterImpl) mapPresenter).initialize(configuration, mapWidgets);
 
 				// Also add a renderer for feature selection:
 				FeatureSelectionRenderer renderer = new FeatureSelectionRenderer(mapPresenter);
@@ -193,15 +195,14 @@ public final class GeomajasServerExtension {
 	 * @param eventBus  The map eventBus.
 	 * @return The new layer object. It has NOT been added to the map just yet.
 	 */
-	public ServerLayer<?> createLayer(ClientLayerInfo layerInfo, ViewPort viewPort, MapEventBus eventBus,
-			MapConfiguration configuration) {
+	public ServerLayer<?> createLayer(ClientMapInfo mapInfo, ClientLayerInfo layerInfo, ViewPort viewPort, MapEventBus eventBus) {
 		ServerLayer<?> layer = null;
 		switch (layerInfo.getLayerType()) {
 			case RASTER:
-				layer = new RasterServerLayerImpl((ClientRasterLayerInfo) layerInfo, viewPort, eventBus, configuration);
+				layer = new RasterServerLayerImpl(mapInfo, (ClientRasterLayerInfo) layerInfo, viewPort, eventBus);
 				break;
 			default:
-				layer = new VectorServerLayerImpl((ClientVectorLayerInfo) layerInfo, viewPort, eventBus);
+				layer = new VectorServerLayerImpl(mapInfo, (ClientVectorLayerInfo) layerInfo, viewPort, eventBus);
 				break;
 		}
 		return layer;

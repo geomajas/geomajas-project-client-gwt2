@@ -11,12 +11,20 @@
 
 package org.geomajas.gwt2.client.map.layer;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.geomajas.command.dto.RegisterNamedStyleInfoRequest;
 import org.geomajas.command.dto.RegisterNamedStyleInfoResponse;
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
+import org.geomajas.geometry.service.BboxService;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
@@ -26,7 +34,6 @@ import org.geomajas.gwt2.client.event.LayerLabelHideEvent;
 import org.geomajas.gwt2.client.event.LayerLabelShowEvent;
 import org.geomajas.gwt2.client.event.LayerStyleChangedEvent;
 import org.geomajas.gwt2.client.map.MapEventBus;
-import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
 import org.geomajas.gwt2.client.map.attribute.AttributeDescriptorImpl;
@@ -34,28 +41,20 @@ import org.geomajas.gwt2.client.map.attribute.AttributeType;
 import org.geomajas.gwt2.client.map.attribute.PrimitiveAttributeTypeImpl;
 import org.geomajas.gwt2.client.map.attribute.PrimitiveType;
 import org.geomajas.gwt2.client.map.feature.Feature;
-import org.geomajas.gwt2.client.map.render.TileLevelRenderer;
-import org.geomajas.gwt2.client.map.render.dom.DomTileLevelLayerRenderer;
-import org.geomajas.gwt2.client.map.render.LayerRenderer;
-import org.geomajas.gwt2.client.map.render.dom.VectorServerLayerScaleRenderer;
-import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
 import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.RuleInfo;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.google.gwt.core.client.GWT;
 
 /**
  * Vector layer representation.
  *
  * @author Pieter De Graef
+ * @author Jan De Moerloose
  */
 public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayerInfo> implements VectorServerLayer {
 
-	private final DomTileLevelLayerRenderer renderer;
+	private static final String RASTERIZING_PREFIX = "rasterizing/layer/";
 
 	private final Map<String, Feature> selection;
 
@@ -70,18 +69,9 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 	// ------------------------------------------------------------------------
 
 	@SuppressWarnings("deprecation")
-	public VectorServerLayerImpl(ClientVectorLayerInfo layerInfo, final ViewPort viewPort, MapEventBus eventBus) {
-		super(layerInfo, viewPort, eventBus);
+	public VectorServerLayerImpl(ClientMapInfo mapInfo, ClientVectorLayerInfo layerInfo, final ViewPort viewPort, MapEventBus eventBus) {
+		super(mapInfo, layerInfo, viewPort, eventBus);
 		this.selection = new HashMap<String, Feature>();
-		this.renderer = new DomTileLevelLayerRenderer(viewPort, this, eventBus) {
-
-			@Override
-			public TileLevelRenderer createNewScaleRenderer(int tileLevel, View view, HtmlContainer scaleContainer) {
-				return new VectorServerLayerScaleRenderer(VectorServerLayerImpl.this, tileLevel,
-						viewPort.getResolution(tileLevel), viewPort, scaleContainer);
-			}
-		};
-
 		this.descriptors = new ArrayList<AttributeDescriptor>();
 		if (layerInfo.getFeatureInfo() != null && layerInfo.getFeatureInfo().getAttributes() != null) {
 			for (AttributeInfo attributeInfo : layerInfo.getFeatureInfo().getAttributes()) {
@@ -93,13 +83,22 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 		}
 	}
 
-	// ------------------------------------------------------------------------
-	// Layer implementation:
-	// ------------------------------------------------------------------------
 
 	@Override
-	public LayerRenderer getRenderer() {
-		return renderer;
+	protected void initLayerConfiguration() {
+		String layerId = layerInfo.getServerLayerId();
+		ArrayList<Double> resolutions = new ArrayList<Double>();
+		String baseUrl = GWT.getModuleBaseURL() + RASTERIZING_PREFIX + layerId + "@" + mapInfo.getCrs() + "/"
+				+ layerInfo.getNamedStyleInfo().getName() + "/";
+		getTileConfiguration().setTileWidth(512);
+		getTileConfiguration().setTileHeight(512);
+		for (int i = 0; i < 50; i++) {
+			resolutions.add(layerInfo.getMaxExtent().getWidth() / (512 * Math.pow(2, i)));
+		}
+		getTileConfiguration().setResolutions(resolutions);
+		getTileConfiguration().setTileOrigin(BboxService.getOrigin(layerInfo.getMaxExtent()));
+		getTileConfiguration().setLimitXYByTileLevel(true);
+		layerConfiguration = new ServerLayerConfiguration(baseUrl, ".png");
 	}
 
 	// ------------------------------------------------------------------------
@@ -263,4 +262,6 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 		}
 		return null;
 	}
+
+
 }

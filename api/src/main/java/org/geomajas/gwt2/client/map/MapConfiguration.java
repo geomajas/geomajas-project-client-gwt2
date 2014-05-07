@@ -61,7 +61,12 @@ public interface MapConfiguration {
 		/**
 		 * Render on canvas.
 		 */
-		CANVAS
+		CANVAS,
+		
+		/**
+		 * Render automatically.
+		 */
+		AUTO
 	}
 
 	// ------------------------------------------------------------------------

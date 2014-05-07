@@ -117,7 +117,7 @@ public abstract class CanvasTileLevelLayerRenderer implements TileLevelLayerRend
 			public void onShow(LayerShowEvent event) {
 				if (container != null) {
 					container.setVisible(true);
-					render(new RenderingInfo(container, viewPort.getView(), null));
+					eventBus.fireEvent(new RenderMapEvent());
 				}
 			}
 
@@ -125,6 +125,7 @@ public abstract class CanvasTileLevelLayerRenderer implements TileLevelLayerRend
 			public void onHide(LayerHideEvent event) {
 				if (container != null) {
 					container.setVisible(false);
+					eventBus.fireEvent(new RenderMapEvent());
 				}
 			}
 		}, layer);
@@ -168,6 +169,7 @@ public abstract class CanvasTileLevelLayerRenderer implements TileLevelLayerRend
 		try {
 			prepareView(container, targetView);
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		// Now render the current view:
@@ -177,6 +179,7 @@ public abstract class CanvasTileLevelLayerRenderer implements TileLevelLayerRend
 			container.render(viewPort);
 			cleanupCache();
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -186,7 +189,7 @@ public abstract class CanvasTileLevelLayerRenderer implements TileLevelLayerRend
 
 	public void setOpacity(double opacity) {
 		container.setOpacity(opacity);
-		container.render(viewPort);
+		eventBus.fireEvent(new RenderMapEvent());
 	}
 
 	public double getOpacity() {
@@ -344,7 +347,7 @@ public abstract class CanvasTileLevelLayerRenderer implements TileLevelLayerRend
 
 	protected void refresh() {
 		clear();
-		render(new RenderingInfo(container, viewPort.getView(), null));
+		eventBus.fireEvent(new RenderMapEvent());
 	}
 
 	private void clear() {

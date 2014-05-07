@@ -64,7 +64,7 @@ public class VectorLayerEventTest {
 
 	@Test
 	public void testMarkedAsVisibleEvents() {
-		VectorServerLayerImpl layer = new VectorServerLayerImpl(layerInfo, viewPort, eventBus);
+		VectorServerLayerImpl layer = new VectorServerLayerImpl(mapInfo, layerInfo, viewPort, eventBus);
 		count = 0;
 
 		eventBus.addLayerVisibilityHandler(new LayerVisibilityHandler() {
@@ -93,7 +93,7 @@ public class VectorLayerEventTest {
 
 	@Test
 	public void testShowHideEvents() {
-		VectorServerLayerImpl layer = new VectorServerLayerImpl(layerInfo, viewPort, eventBus);
+		VectorServerLayerImpl layer = new VectorServerLayerImpl(mapInfo, layerInfo, viewPort, eventBus);
 
 		eventBus.addLayerVisibilityHandler(new LayerVisibilityHandler() {
 

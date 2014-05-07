@@ -11,60 +11,36 @@
 
 package org.geomajas.gwt2.client.map.layer;
 
+import java.util.ArrayList;
+
+import org.geomajas.configuration.RasterLayerInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
-import org.geomajas.gwt2.client.map.MapConfiguration;
+import org.geomajas.geometry.service.BboxService;
 import org.geomajas.gwt2.client.map.MapEventBus;
-import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.ViewPort;
-import org.geomajas.gwt2.client.map.render.dom.DomTileLevelLayerRenderer;
-import org.geomajas.gwt2.client.map.render.TileLevelRenderer;
-import org.geomajas.gwt2.client.map.render.LayerRenderer;
-import org.geomajas.gwt2.client.map.render.canvas.CanvasRasterServerLayerRenderer;
-import org.geomajas.gwt2.client.map.render.dom.RasterServerLayerScaleRenderer;
-import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
+
+import com.google.gwt.core.client.GWT;
 
 /**
  * The client side representation of a raster layer defined on the backend.
  * 
  * @author Pieter De Graef
+ * @author Jan De Moerloose
+ * 
  */
 public class RasterServerLayerImpl extends AbstractServerLayer<ClientRasterLayerInfo> implements RasterServerLayer {
 
-	private final LayerRenderer renderer;
+	private static final String RASTERIZING_PREFIX = "rasterizing/layer/";
 
 	/** The only constructor. */
-	public RasterServerLayerImpl(ClientRasterLayerInfo layerInfo, final ViewPort viewPort, MapEventBus eventBus,
-			MapConfiguration configuration) {
-		super(layerInfo, viewPort, eventBus);
-		switch (configuration.getHintValue(MapConfiguration.RENDERER_TYPE)) {
-			case CANVAS:
-				renderer = new CanvasRasterServerLayerRenderer(this, viewPort);
-				break;
-			case HTML:
-			default:
-				renderer = new DomTileLevelLayerRenderer(viewPort, this, eventBus) {
-
-					@Override
-					public TileLevelRenderer createNewScaleRenderer(int tileLevel, View view,
-							HtmlContainer scaleContainer) {
-						return new RasterServerLayerScaleRenderer(RasterServerLayerImpl.this, tileLevel,
-								viewPort.getResolution(tileLevel), viewPort, scaleContainer);
-					}
-
-				};
-				break;
-
-		}
+	public RasterServerLayerImpl(ClientMapInfo mapInfo, ClientRasterLayerInfo layerInfo, final ViewPort viewPort, MapEventBus eventBus) {
+		super(mapInfo, layerInfo, viewPort, eventBus);
 	}
 
 	// ------------------------------------------------------------------------
 	// Layer implementation:
 	// ------------------------------------------------------------------------
-
-	@Override
-	public LayerRenderer getRenderer() {
-		return renderer;
-	}
 
 	/**
 	 * Apply a new opacity on the entire raster layer. Changing the opacity on a layer does NOT fire a layer style
@@ -75,12 +51,28 @@ public class RasterServerLayerImpl extends AbstractServerLayer<ClientRasterLayer
 	 */
 	public void setOpacity(double opacity) {
 		getLayerInfo().setStyle(Double.toString(opacity));
-		if (renderer instanceof DomTileLevelLayerRenderer) {
-			((DomTileLevelLayerRenderer) renderer).setOpacity(opacity);
-		}
+		renderer.setOpacity(opacity);
 	}
 
 	public double getOpacity() {
 		return Double.parseDouble(getLayerInfo().getStyle());
 	}
+
+	@Override
+	protected void initLayerConfiguration() {
+		String layerId = layerInfo.getServerLayerId();
+		ArrayList<Double> resolutions = new ArrayList<Double>();
+		RasterLayerInfo serverLayerInfo = (RasterLayerInfo) layerInfo.getLayerInfo();
+		String baseUrl = GWT.getModuleBaseURL() + RASTERIZING_PREFIX + layerId + "@" + getMapInfo().getCrs() + "/";
+		getTileConfiguration().setTileWidth(serverLayerInfo.getTileWidth());
+		getTileConfiguration().setTileHeight(serverLayerInfo.getTileHeight());
+		for (int i = 0; i < 50; i++) {
+			resolutions.add(layerInfo.getMaxExtent().getWidth() / (serverLayerInfo.getTileWidth() * Math.pow(2, i)));
+		}
+		getTileConfiguration().setResolutions(resolutions);
+		getTileConfiguration().setTileOrigin(BboxService.getOrigin(layerInfo.getMaxExtent()));
+		getTileConfiguration().setLimitXYByTileLevel(true);
+		layerConfiguration = new ServerLayerConfiguration(baseUrl, ".png");
+	}
+
 }
