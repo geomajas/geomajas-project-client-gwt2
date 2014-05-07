@@ -87,6 +87,8 @@ public class CanvasTileGrid implements IsWidget {
 			// set the new width and height
 			canvas.setCoordinateSpaceWidth(union.getNx() * tileConfiguration.getTileWidth());
 			canvas.setCoordinateSpaceHeight(union.getNy() * tileConfiguration.getTileHeight());
+			// some canvases don't clear after resize !
+			canvas.getContext2d().clearRect(0, 0, canvas.getCoordinateSpaceWidth(), canvas.getCoordinateSpaceHeight());
 			// resizing the canvas clears it, so we have to redraw everything
 			for (CanvasTile loader : tiles.values()) {
 				loader.setRendered(false);
