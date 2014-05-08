@@ -61,13 +61,6 @@ public class CanvasGroup implements IsWidget {
 					remoteLogger.log(Level.SEVERE, "IN memory canvas id="+ ic.getCanvas().getCanvasElement().getId() + " height:" +  ic.getCanvas().getCoordinateSpaceHeight() + " width "+ ic.getCanvas().getCoordinateSpaceWidth());
 
 
-					canvas.getContext2d().clearRect(0, 0, canvas.getCoordinateSpaceWidth(), canvas.getCoordinateSpaceHeight());
-
-					//TODO: get rid of this code because it is time consuming (native android browser issue canvas is not cleared)
-					int w = canvas.getElement().getPropertyInt("width");
-					canvas.getElement().setPropertyInt("width", 1);
-					canvas.getElement().setPropertyInt("width", w);
-
 					canvas.getContext2d().drawImage(ic.getCanvasElement(), 0, 0, ic.getGridBounds().getWidth(),
 							ic.getGridBounds().getHeight(), origin.getX(), origin.getY(),
 							scale * ic.getGridBounds().getWidth(), scale * ic.getGridBounds().getHeight());
