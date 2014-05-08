@@ -10,7 +10,8 @@
   -->
 <module>
     <inherits name="org.geomajas.plugin.wms.GeomajasClientPluginWms"/>
-    
+    <inherits name="org.geomajas.plugin.rasterizing.RasterizingDto"/>
+
     <!-- Source for this plug-in -->
     <source path="client" />
     <source path="server/dto" />
