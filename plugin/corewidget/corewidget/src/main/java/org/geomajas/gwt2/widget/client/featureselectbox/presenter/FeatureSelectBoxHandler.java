@@ -8,11 +8,19 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.client.featureselectbox;
+package org.geomajas.gwt2.widget.client.featureselectbox.presenter;
 
-/**
- * @author Oliver May
- */
-public class FeatureSelectPresenter {
+import org.geomajas.geometry.Coordinate;
+
+
+public interface FeatureSelectBoxHandler {
+
+	void onFeatureSelected(String label);
+	
+	void onActive();
+	
+	void onDeactivate();
+	
+	void onClick(Coordinate worldCoordinate);
 
 }
