@@ -250,10 +250,19 @@ public class TileConfiguration implements Serializable {
 		return resolutions.get(resolutions.size() - 1);
 	}
 	
+	/**
+	 * see {@link #setLimitXYByTileLevel(boolean)}
+	 * @return
+	 */
 	public boolean isLimitXYByTileLevel() {
 		return limitXYByTileLevel;
 	}
 	
+	/**
+	 * If set to true, the indexes in x and y direction are limited to 2^n-1, where n is the tile level.
+	 * 
+	 * @param limitXYByTileLevel
+	 */
 	public void setLimitXYByTileLevel(boolean limitXYByTileLevel) {
 		this.limitXYByTileLevel = limitXYByTileLevel;
 	}
