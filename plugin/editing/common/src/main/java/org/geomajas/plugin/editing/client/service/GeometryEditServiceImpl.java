@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.geometry.service.GeometryValidationState;
 import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditInsertHandler;
@@ -27,6 +28,8 @@ import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditValidationEvent;
+import org.geomajas.plugin.editing.client.event.GeometryEditValidationHandler;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 
 import com.google.gwt.event.shared.EventBus;
@@ -77,6 +80,8 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	private Coordinate tentativeMoveLocation;
 
 	private boolean started;
+	
+	private GeometryValidationInterceptor validationInterceptor;
 
 	// ------------------------------------------------------------------------
 	// Public constructors:
@@ -88,6 +93,8 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 		indexService = new GeometryIndexService();
 		indexStateService = new GeometryIndexStateServiceImpl(this);
 		operationService = new GeometryIndexOperationServiceImpl(this, eventBus);
+		validationInterceptor = new GeometryValidationInterceptor(this);
+		operationService.addInterceptor(validationInterceptor);
 	}
 
 	// ------------------------------------------------------------------------
@@ -132,6 +139,11 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	@Override
 	public HandlerRegistration addGeometryEditTentativeMoveHandler(GeometryEditTentativeMoveHandler handler) {
 		return eventBus.addHandler(GeometryEditTentativeMoveHandler.TYPE, handler);
+	}
+
+	@Override
+	public HandlerRegistration addGeometryEditValidationHandler(GeometryEditValidationHandler handler) {
+		return eventBus.addHandler(GeometryEditValidationHandler.TYPE, handler);
 	}
 
 	// ------------------------------------------------------------------------
@@ -316,4 +328,40 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	public GeometryIndex addEmptyChild(GeometryIndex index) throws GeometryOperationFailedException {
 		return operationService.addEmptyChild(index);
 	}
+
+	@Override
+	public void addInterceptor(GeometryIndexOperationInterceptor interceptor) {
+		operationService.addInterceptor(interceptor);
+	}
+
+	@Override
+	public void setValidating(boolean validating) {
+		validationInterceptor.setEnabled(validating);
+	}
+
+	@Override
+	public boolean isValidating() {
+		return validationInterceptor.isEnabled();
+	}
+	
+	
+
+	@Override
+	public void setInvalidAllowed(boolean invalidAllowed) {
+		validationInterceptor.setBlocking(!invalidAllowed);
+	}
+
+	@Override
+	public boolean isInvalidAllowed() {
+		return !validationInterceptor.isBlocking();
+	}
+
+	@Override
+	public GeometryValidationState validate(Geometry geometry, GeometryIndex index) {
+		GeometryValidationState state = indexService.validate(geometry, index);
+		eventBus.fireEvent(new GeometryEditValidationEvent(geometry, index, state));
+		return state;
+	}
+	
+	
 }

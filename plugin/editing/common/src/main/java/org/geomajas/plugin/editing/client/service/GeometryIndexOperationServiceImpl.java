@@ -67,6 +67,8 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 	private final EventBus eventBus;
 
 	private OperationSequence current;
+	
+	private List<GeometryIndexOperationInterceptor> interceptors;
 
 	// ------------------------------------------------------------------------
 	// Protected constructor:
@@ -86,6 +88,7 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 		indexService = service.getIndexService();
 		undoQueue = new Stack<OperationSequence>();
 		redoQueue = new Stack<OperationSequence>();
+		interceptors = new ArrayList<GeometryIndexOperationInterceptor>();
 
 		service.addGeometryEditStartHandler(this);
 		service.addGeometryEditStopHandler(this);
@@ -194,7 +197,7 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 		for (int i = 0; i < indices.size(); i++) {
 			if (indexService.getType(indices.get(i)) == GeometryIndexType.TYPE_VERTEX) {
 				GeometryIndexOperation op = new MoveVertexOperation(indexService, coordinates.get(i).get(0));
-				op.execute(geometry, indices.get(i));
+				executeOperation(op, indices.get(i));
 				seq.addOperation(op);
 			} else {
 				throw new GeometryOperationFailedException("Can only move vertices. Other types not suported.");
@@ -235,7 +238,7 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 							child = new Geometry(Geometry.POLYGON, 0, 0);
 						}
 						GeometryIndexOperation op = new InsertGeometryOperation(indexService, child);
-						op.execute(geometry, indices.get(i));
+						executeOperation(op, indices.get(i));
 						seq.addOperation(op);
 					} else {
 						throw new GeometryOperationFailedException("Cannot insert new geometries (yet).");
@@ -246,7 +249,7 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 						throw new GeometryOperationFailedException("No coordinates passed to insert.");
 					}
 					GeometryIndexOperation op2 = new InsertVertexOperation(indexService, coordinates.get(i).get(0));
-					op2.execute(geometry, indices.get(i));
+					executeOperation(op2, indices.get(i));
 					seq.addOperation(op2);
 			}
 		}
@@ -282,7 +285,7 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 				default:
 					op = new DeleteVertexOperation(indexService);
 			}
-			op.execute(geometry, indices.get(i));
+			executeOperation(op, indices.get(i));
 			seq.addOperation(op);
 		}
 		if (!isOperationSequenceActive()) {
@@ -332,7 +335,7 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 					index = indexService.create(GeometryIndexType.TYPE_GEOMETRY, geometry.getGeometries().length);
 				}
 			}
-			operation.execute(geometry, index);
+			executeOperation(operation, index);
 
 			// Add the operation to the queue (if not part of a sequence):
 			seq.addOperation(operation);
@@ -345,6 +348,30 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 			return index;
 		}
 		throw new GeometryOperationFailedException("Can't add a new geometry to the given geometry.");
+	}
+	
+	@Override
+	public void addInterceptor(GeometryIndexOperationInterceptor interceptor) {
+		interceptors.add(interceptor);
+	}
+
+	private void executeOperation(GeometryIndexOperation operation, GeometryIndex index)
+			throws GeometryOperationFailedException {
+		Geometry geometry = service.getGeometry();
+		for (GeometryIndexOperationInterceptor interceptor : interceptors) {
+			interceptor.beforeExecute(operation, index);
+		}
+		operation.execute(geometry, index);
+		for (GeometryIndexOperationInterceptor interceptor : interceptors) {
+			// invert the operation here if the after-execute fails !!! 
+			try {
+				interceptor.afterExecute(operation, index);
+			} catch (GeometryOperationFailedException e) {
+				operation.getInverseOperation().execute(geometry, index);
+				// and rethrow
+				throw e;
+			}
+		}
 	}
 
 	// ------------------------------------------------------------------------

@@ -27,6 +27,7 @@ import org.geomajas.plugin.editing.client.event.GeometryEditRemoveEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditRemoveHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditShapeChangedEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditShapeChangedHandler;
+import org.geomajas.plugin.editing.client.operation.GeometryIndexOperation;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 import org.junit.Test;
 
@@ -54,6 +55,10 @@ public class GeometryIndexOperationServiceTest {
 	private int deleteCount;
 
 	private int shapeChangedCount;
+
+	private int beforeCount;
+
+	private int afterCount;
 
 	// ------------------------------------------------------------------------
 	// Constructor
@@ -411,5 +416,34 @@ public class GeometryIndexOperationServiceTest {
 		service.addEmptyChild(new GeometryIndex(GeometryIndexType.TYPE_GEOMETRY, 0, null));
 		int afterNumber = polygon.getGeometries().length;
 		Assert.assertTrue(originalNumber + 1 == afterNumber);
+	}
+	
+	@Test
+	public void testInterceptor() throws GeometryOperationFailedException {
+		afterCount = 0;
+		beforeCount = 0;
+		service.addInterceptor(new GeometryIndexOperationInterceptor() {
+			
+			
+			@Override
+			public void beforeExecute(GeometryIndexOperation operation, GeometryIndex index)
+					throws GeometryOperationFailedException {
+				beforeCount++;
+			}
+			
+			@Override
+			public void afterExecute(GeometryIndexOperation operation, GeometryIndex index)
+					throws GeometryOperationFailedException {
+				afterCount++;
+			}
+		});
+		service.start(polygon);
+		service.move(Collections.singletonList(index), Collections.singletonList(Collections.singletonList(coord)));
+		Assert.assertEquals(1, beforeCount);
+		Assert.assertEquals(1, afterCount);
+		service.move(Collections.singletonList(index), Collections.singletonList(Collections.singletonList(coord)));
+		Assert.assertEquals(2, beforeCount);
+		Assert.assertEquals(2, afterCount);
+		service.stop();
 	}
 }

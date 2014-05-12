@@ -139,4 +139,19 @@ public interface SampleMessages extends Messages {
 	String mergeCountriesSelect();
 
 	String mergeCountriesMerge();
+
+	// GeometryValidationPanel:
+
+	String geometryValidationTitle();
+
+	String geometryValidationShort();
+
+	String geometryValidationDescription();
+
+	String geometryValidationSubTitle();
+
+	String geometryValidationSubTitleEvents();
+
+	String geometryValidationClearEventList();
+
 }

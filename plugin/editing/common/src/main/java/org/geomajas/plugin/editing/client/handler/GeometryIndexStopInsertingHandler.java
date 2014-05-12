@@ -15,6 +15,7 @@ import java.util.Collections;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.geometry.service.GeometryValidationState;
 import org.geomajas.gwt.client.handler.MapDownHandler;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
@@ -28,6 +29,7 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
+import com.google.gwt.user.client.Window;
 
 /**
  * <p>
@@ -47,7 +49,14 @@ public class GeometryIndexStopInsertingHandler extends AbstractGeometryIndexMapH
 
 	public void onDown(HumanInputEvent<?> event) {
 		if (service.getEditingState() == GeometryEditState.INSERTING && isCorrectVertex()) {
-			service.setEditingState(GeometryEditState.IDLE);
+			if (service.isValidating()) {
+				GeometryValidationState state = service.validate(service.getGeometry(), index);
+				if (state.isValid()) {
+					service.setEditingState(GeometryEditState.IDLE);
+				} else if (service.isInvalidAllowed()) {
+					Window.alert("Exception during editing: " + state);
+				}
+			}
 			service.getIndexStateService().highlightEnd(Collections.singletonList(index));
 		}
 	}

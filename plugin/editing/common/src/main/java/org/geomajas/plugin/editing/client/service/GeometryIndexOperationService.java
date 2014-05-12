@@ -161,4 +161,11 @@ public interface GeometryIndexOperationService {
 	 * @throws GeometryOperationFailedException
 	 */
 	GeometryIndex addEmptyChild(GeometryIndex index) throws GeometryOperationFailedException;
+	
+	/**
+	 * Add an interceptor to the list of operation interceptors of the service.
+	 * 
+	 * @param interceptor the interceptor
+	 */
+	void addInterceptor(GeometryIndexOperationInterceptor interceptor);
 }

@@ -14,6 +14,7 @@ package org.geomajas.plugin.editing.client.service;
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.geometry.service.GeometryValidationState;
 import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditInsertHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditMoveHandler;
@@ -22,6 +23,7 @@ import org.geomajas.plugin.editing.client.event.GeometryEditShapeChangedHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditValidationHandler;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 
@@ -135,6 +137,16 @@ public interface GeometryEditService extends GeometryIndexOperationService {
 	 * @return The registration of the handler.
 	 */
 	HandlerRegistration addGeometryEditTentativeMoveHandler(GeometryEditTentativeMoveHandler handler);
+	
+	/**
+	 * Register a {@link GeometryEditValidationHandler} to listen to validation events. Validation events are thrown
+	 * when the geometry would have become invalid after the operation. The default controller will roll back the
+	 * operation in such a case, but the event can be caught here to warn the user.
+	 * 
+	 * @param handler The {@link GeometryEditValidationHandler} to add as listener.
+	 * @return The registration of the handler.
+	 */
+	HandlerRegistration addGeometryEditValidationHandler(GeometryEditValidationHandler handler);
 
 	// ------------------------------------------------------------------------
 	// Methods concerning Workflow:
@@ -259,4 +271,48 @@ public interface GeometryEditService extends GeometryIndexOperationService {
 	 * @return The geometry-index-state-change service.
 	 */
 	GeometryIndexStateService getIndexStateService();
+	
+	/**
+	 * To set whether the editing service is validating. If so, validation events will be thrown when an operation leads
+	 * to an invalid geometry.
+	 * 
+	 * @param validating boolean value.
+	 */
+	void setValidating(boolean validating);
+
+	/**
+	 * Is the editor service validating ?
+	 *
+	 * @return boolean true if validating
+	 */
+	boolean isValidating();
+	
+	/**
+	 * Set whether operations that lead to invalid geometries should be allowed. This option only has effect when
+	 * {@link #isValidating()} is true. Default is true, allowing invalid geometries (events are still fired in case of
+	 * invalid geometries, so applications can inform the end user).
+	 * 
+	 * @param invalidAllowed true if allowed.
+	 */
+	void setInvalidAllowed(boolean invalidAllowed);
+
+	/**
+	 * Should operations that lead to invalid geometries be allowed ?
+	 * 
+	 * @see #setInvalidAllowed(boolean)
+	 * @return boolean true if we allow invalid geometries, false otherwise
+	 */
+	boolean isInvalidAllowed();
+
+	/**
+	 * Validates a geometry, focusing on changes at a specific sub-level of the geometry. The sublevel is indicated by
+	 * passing an index. The only checks are on intersection (for coordinates) and containment (for subgeometries), we
+	 * don't check on too few coordinates as we want to support incremental creation of polygons.
+	 * 
+	 * @param geometry The geometry to check.
+	 * @param index index that points to a sub-geometry, edge, vertex, etc...
+	 * @return validation state.
+	 * @since 2.1.0
+	 */
+	GeometryValidationState validate(Geometry geometry, GeometryIndex index);
 }
