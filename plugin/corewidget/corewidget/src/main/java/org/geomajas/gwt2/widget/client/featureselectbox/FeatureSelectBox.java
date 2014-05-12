@@ -13,7 +13,7 @@ package org.geomajas.gwt2.widget.client.featureselectbox;
 import java.util.List;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.gwt2.widget.client.featureselectbox.presenter.FeatureSelectBoxPresenter.Handler;
+import org.geomajas.gwt2.widget.client.featureselectbox.presenter.FeatureSelectBoxHandler;
 import org.geomajas.gwt2.widget.client.featureselectbox.resource.FeatureSelectBoxResource;
 
 import com.google.gwt.core.client.GWT;
@@ -34,10 +34,9 @@ import com.google.gwt.user.client.ui.Widget;
  * @since 2.0.0
  */
 @Api(allMethods = true)
-public class FeatureSelectBox implements
-		org.geomajas.gwt2.widget.client.featureselectbox.presenter.FeatureSelectBoxPresenter.View {
+public class FeatureSelectBox implements FeatureSelectBoxView {
 
-	private Handler handler;
+	private FeatureSelectBoxHandler handler;
 
 	private PopupPanel thepanel;
 
@@ -97,7 +96,7 @@ public class FeatureSelectBox implements
 	}
 
 	@Override
-	public void setHandler(Handler handler) {
+	public void setHandler(FeatureSelectBoxHandler handler) {
 		this.handler = handler;
 	}
 
