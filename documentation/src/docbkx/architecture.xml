@@ -542,7 +542,7 @@ featureService.search(fs, mapBounds, 0, new FeatureMapFunction() {
       <title>EventBus</title>
 
       <para>Instead of randomly providing methods to register handlers (a
-      handler is the GWT version of a Listener) for specific events, Geomajas
+      presenter is the GWT version of a Listener) for specific events, Geomajas
       follows the GWT reasoning in that it's much easier to work with a
       central event service: The EventBus. The idea is that all events are
       passed through this bus, so that the developer never needs to figure out
@@ -591,7 +591,7 @@ featureService.search(fs, mapBounds, 0, new FeatureMapFunction() {
 
       <para>Time to go over all supported events and explain their purpose.
       Note that every event in this list is part of the GWT client API within
-      Geomajas. All event and handler classes can be found in the following
+      Geomajas. All event and presenter classes can be found in the following
       package: <code>org.geomajas.gwt.client.map.event</code>.</para>
 
       <para><emphasis role="bold">Map events:</emphasis></para>

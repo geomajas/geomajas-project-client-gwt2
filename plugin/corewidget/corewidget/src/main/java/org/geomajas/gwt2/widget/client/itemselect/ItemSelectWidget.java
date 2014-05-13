@@ -115,7 +115,7 @@ public class ItemSelectWidget<T> implements ItemSelectView<T>, IsWidget {
 	 * @param yPos the y position
 	 * @param animate true if animation is wanted
 	 */
-	private void popup(int xPos, int yPos, boolean animate) {
+	public void popup(int xPos, int yPos, boolean animate) {
 		asWidget();
 		layout.setPopupPosition(xPos, yPos);
 		layout.setAnimationEnabled(animate);

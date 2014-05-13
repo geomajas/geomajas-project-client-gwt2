@@ -1,20 +1,14 @@
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
- * Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+ * Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
  * The program is available in open source according to the GNU Affero
  * General Public License. All contributions in this program are covered
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.client.featureselectbox;
-
-import java.util.List;
-
-import org.geomajas.annotation.Api;
-import org.geomajas.gwt2.widget.client.featureselectbox.presenter.FeatureSelectBoxHandler;
-import org.geomajas.gwt2.widget.client.featureselectbox.resource.FeatureSelectBoxResource;
+package org.geomajas.gwt2.widget.client.featureselectbox.view;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -25,20 +19,27 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import org.geomajas.gwt2.widget.client.featureselectbox.presenter.FeatureSelectBoxPresenter;
+import org.geomajas.gwt2.widget.client.featureselectbox.presenter.FeatureSelectBoxPresenterImpl;
+import org.geomajas.gwt2.widget.client.featureselectbox.resource.FeatureSelectBoxResource;
+
+import java.util.List;
+import java.util.logging.Logger;
 
 /**
- * Tool tip box that displays a list of features from where one can be selected.
- * 
- * @author Dosi Bingov
- * @author Oliver May
- * @since 2.0.0
+ * Class.
+ *
+ * @author David Debuck.
  */
-@Api(allMethods = true)
-public class FeatureSelectBox implements FeatureSelectBoxView {
+public class FeatureSelectBoxViewImpl implements FeatureSelectBoxView {
 
-	private FeatureSelectBoxHandler handler;
+	private Logger log = Logger.getLogger(FeatureSelectBoxViewImpl.class.getName());
 
-	private PopupPanel thepanel;
+	private FeatureClickHandler featureClickHandler = new FeatureClickHandler();
+
+	private FeatureSelectBoxPresenter presenter;
+
+	private PopupPanel widget;
 
 	private int xPos;
 
@@ -51,53 +52,18 @@ public class FeatureSelectBox implements FeatureSelectBoxView {
 
 	/**
 	 * UI binder interface.
-	 * 
+	 *
 	 * @author Dosi Bingov
-	 * 
+	 *
 	 */
-	interface FeatureSelectBoxUiBinder extends UiBinder<Widget, FeatureSelectBox> {
+	interface FeatureSelectBoxUiBinder extends UiBinder<Widget, FeatureSelectBoxViewImpl> {
 	}
 
-	/**
-	 * FeatureClickHandler that handles click on feature label.
-	 * 
-	 * @author Dosi Bingov
-	 * 
-	 */
-	private class FeatureClickHandler implements ClickHandler {
-
-		@Override
-		public void onClick(ClickEvent event) {
-			Label label = (Label) event.getSource();
-			handler.onFeatureSelected(label.getText());
-		}
-	}
-
-	private FeatureClickHandler featureClickHandler = new FeatureClickHandler();
-
-	public FeatureSelectBox() {
-		thepanel = (PopupPanel) UIBINDER.createAndBindUi(this);
-		thepanel.addStyleName(FeatureSelectBoxResource.INSTANCE.css().featureSelectBox());
+	public FeatureSelectBoxViewImpl() {
+		widget = (PopupPanel) UIBINDER.createAndBindUi(this);
+		widget.addStyleName(FeatureSelectBoxResource.INSTANCE.css().featureSelectBox());
 		FeatureSelectBoxResource.INSTANCE.css().ensureInjected();
-
-	}
-
-	public void hide() {
-		thepanel.hide();
-	}
-
-	@Override
-	public Widget asWidget() {
-		return thepanel;
-	}
-
-	public void clear() {
-		contentPanel.clear();
-	}
-
-	@Override
-	public void setHandler(FeatureSelectBoxHandler handler) {
-		this.handler = handler;
+		presenter = new FeatureSelectBoxPresenterImpl();
 	}
 
 	@Override
@@ -117,9 +83,9 @@ public class FeatureSelectBox implements FeatureSelectBoxView {
 	public void show(boolean animated) {
 		// show widget only if there is content to show
 		if (contentPanel.getWidgetCount() > 0) {
-			thepanel.setPopupPosition(xPos, yPos);
-			thepanel.setAnimationEnabled(animated);
-			thepanel.show();
+			widget.setPopupPosition(xPos, yPos);
+			widget.setAnimationEnabled(animated);
+			widget.show();
 		}
 	}
 
@@ -139,7 +105,42 @@ public class FeatureSelectBox implements FeatureSelectBoxView {
 	}
 
 	@Override
+	public void hide() {
+		widget.hide();
+	}
+
+	@Override
+	public void clearLabels() {
+		contentPanel.clear();
+	}
+
+	@Override
 	public boolean isVisible() {
-		return thepanel.isVisible();
+		return widget.isVisible();
+	}
+
+	@Override
+	public void setPresenter(FeatureSelectBoxPresenter presenter) {
+		this.presenter = presenter;
+	}
+
+	@Override
+	public Widget asWidget() {
+		return widget;
+	}
+
+	/**
+	 * FeatureClickHandler that handles click on feature label.
+	 *
+	 * @author Dosi Bingov
+	 *
+	 */
+	private class FeatureClickHandler implements ClickHandler {
+
+		@Override
+		public void onClick(ClickEvent event) {
+			Label label = (Label) event.getSource();
+			presenter.onFeatureSelected(label.getText());
+		}
 	}
 }

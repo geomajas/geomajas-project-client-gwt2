@@ -10,16 +10,6 @@
  */
 package org.geomajas.gwt2.widget.example.client.sample.featureselectbox;
 
-import org.geomajas.gwt2.client.GeomajasImpl;
-import org.geomajas.gwt2.client.GeomajasServerExtension;
-import org.geomajas.gwt2.client.map.MapPresenter;
-import org.geomajas.gwt2.client.map.feature.Feature;
-import org.geomajas.gwt2.client.widget.MapLayoutPanel;
-import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
-import org.geomajas.gwt2.widget.client.controller.event.FeatureClickedEvent;
-import org.geomajas.gwt2.widget.client.controller.event.FeatureClickedHandler;
-import org.geomajas.gwt2.widget.client.featureselectbox.presenter.FeatureClickedListener;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -28,6 +18,15 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
+import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.client.map.feature.Feature;
+import org.geomajas.gwt2.client.widget.MapLayoutPanel;
+import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
+import org.geomajas.gwt2.widget.client.controller.event.FeatureClickedEvent;
+import org.geomajas.gwt2.widget.client.controller.event.FeatureClickedHandler;
+import org.geomajas.gwt2.widget.client.featureselectbox.FeatureSelectListener;
 
 /**
  * Class description.
@@ -86,7 +85,7 @@ public class FeatureSelectedExample implements SamplePanel {
 		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "gwt2-widget-app", "mapGhent");
 
 		// add featured clicked listener.
-		mapPresenter.addMapListener(new FeatureClickedListener(7));
+		mapPresenter.addMapListener(new FeatureSelectListener());
 	}
 
 	/**

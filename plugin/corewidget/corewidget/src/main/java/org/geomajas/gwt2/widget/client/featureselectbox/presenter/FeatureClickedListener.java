@@ -11,34 +11,11 @@
 
 package org.geomajas.gwt2.widget.client.featureselectbox.presenter;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.geometry.Geometry;
-import org.geomajas.gwt.client.controller.AbstractController;
-import org.geomajas.gwt.client.map.RenderSpace;
-import org.geomajas.gwt2.client.GeomajasServerExtension;
-import org.geomajas.gwt2.client.controller.MapController;
-import org.geomajas.gwt2.client.map.MapPresenter;
-import org.geomajas.gwt2.client.map.feature.Feature;
-import org.geomajas.gwt2.client.map.feature.FeatureMapFunction;
-import org.geomajas.gwt2.client.map.feature.ServerFeatureService.QueryType;
-import org.geomajas.gwt2.client.map.feature.ServerFeatureService.SearchLayerType;
-import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
-import org.geomajas.gwt2.widget.client.featureselectbox.FeatureSelectBox;
-import org.geomajas.gwt2.widget.client.controller.event.FeatureClickedEvent;
-
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-
 /**
  * Listener and presenter of FeatureSelectWidget.
- * 
+ *
  * @author Dosi Bingov
- * 
+ *
  */
 public class FeatureClickedListener {
 //extends AbstractController implements MapController{
@@ -65,15 +42,15 @@ public class FeatureClickedListener {
 //	}
 //
 //	/**
-//	 * 
+//	 *
 //	 * @param pixelBuffer
 //	 *            minimum distance between features to show context menu with features labels.
 //	 */
 //	public FeatureClickedListener(int pixelBuffer) {
 //		super(false);
 //		clickedFeatures = new HashMap<String, org.geomajas.gwt2.client.map.feature.Feature>();
-//		featureSelectBoxView = new FeatureSelectBox();
-//		featureSelectBoxView.setHandler(this);
+//		featureSelectBoxView = new FeatureSelectListener();
+//		featureSelectBoxView.setPresenter(this);
 //		setView(featureSelectBoxView);
 //		this.pixelBuffer = pixelBuffer;
 //	}
@@ -128,7 +105,7 @@ public class FeatureClickedListener {
 //	}
 //
 //	private void getData(Map<FeaturesSupported, List<Feature>> featureMap) {
-//		clickedFeatures.clear(); // clear all stored features
+//		clickedFeatures.clearLabels(); // clearLabels all stored features
 //
 //		for (FeaturesSupported layer : featureMap.keySet()) {
 //			List<org.geomajas.gwt2.client.map.feature.Feature> features = featureMap.get(layer);
@@ -154,7 +131,7 @@ public class FeatureClickedListener {
 //	private void showFeatureData() {
 //		// when there is more than one feature in the buffered area
 //		if (clickedFeatures.size() >= 2) {
-//			featureSelectBoxView.clear();
+//			featureSelectBoxView.clearLabels();
 //
 //			for (org.geomajas.gwt2.client.map.feature.Feature f : clickedFeatures.values()) {
 //				featureSelectBoxView.addLabel(f.getLabel());

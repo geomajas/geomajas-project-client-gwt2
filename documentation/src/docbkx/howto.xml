@@ -31,7 +31,7 @@
       </itemizedlist><programlisting>ResizeLayoutPanel panel = new ResizeLayoutPanel();
 mapPresenter.setSize(100,100);
 panel.setWidget(mapPresenter);</programlisting>If the panel is resizable, a
-    custom resize handler should be registered to set the size whenever a
+    custom resize presenter should be registered to set the size whenever a
     resizing event occurs.</para>
   </section>
 

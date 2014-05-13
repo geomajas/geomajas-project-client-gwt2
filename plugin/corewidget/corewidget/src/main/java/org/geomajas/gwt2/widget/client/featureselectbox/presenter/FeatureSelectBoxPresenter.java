@@ -1,7 +1,7 @@
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
- * Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+ * Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
  * The program is available in open source according to the GNU Affero
  * General Public License. All contributions in this program are covered
@@ -11,36 +11,19 @@
 package org.geomajas.gwt2.widget.client.featureselectbox.presenter;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt2.client.map.MapPresenter;
 
-/**
- * Feature select box interface.
- * 
- * @author Jan De Moerloose
- * 
- */
-public class FeatureSelectBoxPresenter implements FeatureSelectBoxHandler {
 
-	@Override
-	public void onFeatureSelected(String label) {
-		// TODO Auto-generated method stub
+public interface FeatureSelectBoxPresenter {
 
-	}
+	void onFeatureSelected(String label);
 
-	@Override
-	public void onActive() {
-		// TODO Auto-generated method stub
+	void onActivate(MapPresenter mapPresenter);
 
-	}
+	void onDeactivate();
 
-	@Override
-	public void onDeactivate() {
-		// TODO Auto-generated method stub
+	void onClick(Coordinate worldCoordinate);
 
-	}
+	void setPixelBuffer(int pixelBuffer);
 
-	@Override
-	public void onClick(Coordinate worldCoordinate) {
-		// TODO Auto-generated method stub
-
-	}
 }
