@@ -1,0 +1,15 @@
+@external .gm-itemSelectWidget*;
+
+.gm-itemSelectWidget {
+
+}
+
+.gm-itemSelectWidgetCell {
+    text-align: left;
+    cursor: pointer;
+    line-height: 1em;
+}
+
+.gm-itemSelectWidgetCell:hover {
+    color: #f56c22;
+}

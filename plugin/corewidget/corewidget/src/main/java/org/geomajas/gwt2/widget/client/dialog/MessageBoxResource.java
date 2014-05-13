@@ -20,7 +20,7 @@ import com.google.gwt.resources.client.ImageResource.RepeatStyle;
 
 /**
  * Client resource bundle interface for pure GWT Messagebox widgets.
- * 
+ *
  * @author Kristof Heirwegh
  * @since 2.0.0
  */

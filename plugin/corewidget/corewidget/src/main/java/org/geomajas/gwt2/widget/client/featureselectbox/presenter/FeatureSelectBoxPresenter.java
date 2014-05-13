@@ -10,60 +10,20 @@
  */
 package org.geomajas.gwt2.widget.client.featureselectbox.presenter;
 
-import java.util.List;
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt2.client.map.MapPresenter;
 
-import com.google.gwt.user.client.ui.IsWidget;
 
-/**
- * Feature select box interface.
- * 
- * @author Dosi Bingov
- * 
- */
 public interface FeatureSelectBoxPresenter {
 
-	/**
-	 * View of FeatureSelectBox.
-	 * 
-	 * @author Dosi Bingov
-	 * 
-	 */
-	interface View extends IsWidget {
+	void onFeatureSelected(String label);
 
-		void setHandler(Handler handler);
+	void onActivate(MapPresenter mapPresenter);
 
-		/**
-		 * clears old labels and set new labels to the content panel of the widget.
-		 * 
-		 * @param labels
-		 */
-		void setLabels(List<String> labels);
+	void onDeactivate();
 
-		void addLabel(String label);
+	void onClick(Coordinate worldCoordinate);
 
-		void show(boolean animated);
+	void setPixelBuffer(int pixelBuffer);
 
-		void setShowPosition(int xPos, int yPos);
-
-		void hide();
-
-		void clear();
-
-		boolean isVisible();
-	}
-
-	/**
-	 * Handler for FeatureSelectBox.
-	 * 
-	 * @author Dosi Bingov
-	 * 
-	 */
-	interface Handler {
-
-		void onFeatureSelected(String label);
-	}
-
-	void setView(View view);
-
-	View getView();
 }

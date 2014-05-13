@@ -10,11 +10,6 @@
  */
 package org.geomajas.gwt2.widget.client.featureselectbox.view;
 
-import java.util.List;
-
-import org.geomajas.gwt2.widget.client.featureselectbox.presenter.FeatureSelectBoxPresenter.Handler;
-import org.geomajas.gwt2.widget.client.featureselectbox.resource.FeatureSelectBoxResource;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -24,19 +19,26 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import org.geomajas.gwt2.widget.client.featureselectbox.presenter.FeatureSelectBoxPresenter;
+import org.geomajas.gwt2.widget.client.featureselectbox.resource.FeatureSelectBoxResource;
+
+import java.util.List;
+import java.util.logging.Logger;
 
 /**
- * Tool tip box that is shown when the MouseOverListener is added to the map.
- * 
- * @author Dosi Bingov
- * 
+ * Class.
+ *
+ * @author David Debuck.
  */
-public class FeatureSelectBox implements
-		org.geomajas.gwt2.widget.client.featureselectbox.presenter.FeatureSelectBoxPresenter.View {
+public class FeatureSelectBoxViewImpl implements FeatureSelectBoxView {
 
-	private Handler handler;
+	private Logger log = Logger.getLogger(FeatureSelectBoxViewImpl.class.getName());
 
-	private PopupPanel thepanel;
+	private FeatureClickHandler featureClickHandler = new FeatureClickHandler();
+
+	private FeatureSelectBoxPresenter presenter;
+
+	private PopupPanel widget;
 
 	private int xPos;
 
@@ -49,53 +51,17 @@ public class FeatureSelectBox implements
 
 	/**
 	 * UI binder interface.
-	 * 
+	 *
 	 * @author Dosi Bingov
-	 * 
+	 *
 	 */
-	interface FeatureSelectBoxUiBinder extends UiBinder<Widget, FeatureSelectBox> {
+	interface FeatureSelectBoxUiBinder extends UiBinder<Widget, FeatureSelectBoxViewImpl> {
 	}
 
-	/**
-	 * FeatureClickHandler that handles click on feature label.
-	 * 
-	 * @author Dosi Bingov
-	 * 
-	 */
-	private class FeatureClickHandler implements ClickHandler {
-
-		@Override
-		public void onClick(ClickEvent event) {
-			Label label = (Label) event.getSource();
-			handler.onFeatureSelected(label.getText());
-		}
-	}
-
-	private FeatureClickHandler featureClickHandler = new FeatureClickHandler();
-
-	public FeatureSelectBox() {
-		thepanel = (PopupPanel) UIBINDER.createAndBindUi(this);
-		thepanel.addStyleName(FeatureSelectBoxResource.INSTANCE.css().featureSelectBox());
+	public FeatureSelectBoxViewImpl() {
+		widget = (PopupPanel) UIBINDER.createAndBindUi(this);
+		widget.addStyleName(FeatureSelectBoxResource.INSTANCE.css().featureSelectBox());
 		FeatureSelectBoxResource.INSTANCE.css().ensureInjected();
-
-	}
-
-	public void hide() {
-		thepanel.hide();
-	}
-
-	@Override
-	public Widget asWidget() {
-		return thepanel;
-	}
-
-	public void clear() {
-		contentPanel.clear();
-	}
-
-	@Override
-	public void setHandler(Handler handler) {
-		this.handler = handler;
 	}
 
 	@Override
@@ -115,9 +81,9 @@ public class FeatureSelectBox implements
 	public void show(boolean animated) {
 		// show widget only if there is content to show
 		if (contentPanel.getWidgetCount() > 0) {
-			thepanel.setPopupPosition(xPos, yPos);
-			thepanel.setAnimationEnabled(animated);
-			thepanel.show();
+			widget.setPopupPosition(xPos, yPos);
+			widget.setAnimationEnabled(animated);
+			widget.show();
 		}
 	}
 
@@ -137,7 +103,42 @@ public class FeatureSelectBox implements
 	}
 
 	@Override
+	public void hide() {
+		widget.hide();
+	}
+
+	@Override
+	public void clearLabels() {
+		contentPanel.clear();
+	}
+
+	@Override
 	public boolean isVisible() {
-		return thepanel.isVisible();
+		return widget.isVisible();
+	}
+
+	@Override
+	public void setPresenter(FeatureSelectBoxPresenter presenter) {
+		this.presenter = presenter;
+	}
+
+	@Override
+	public Widget asWidget() {
+		return widget;
+	}
+
+	/**
+	 * FeatureClickHandler that handles click on feature label.
+	 *
+	 * @author Dosi Bingov
+	 *
+	 */
+	private class FeatureClickHandler implements ClickHandler {
+
+		@Override
+		public void onClick(ClickEvent event) {
+			Label label = (Label) event.getSource();
+			presenter.onFeatureSelected(label.getText());
+		}
 	}
 }

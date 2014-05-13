@@ -17,7 +17,7 @@ import com.google.gwt.resources.client.CssResource;
 
 /**
  * CSS resource bundle that contains all generic styles used in pure gwt geomajas widgets.
- * 
+ *
  * @author Dosi Bingov
  * @author Jan De Moerloose
  * @since 2.0.0
@@ -30,7 +30,7 @@ public interface CloseableDialogBoxCssResource extends CssResource {
 	 * @return
 	 */
 	String closeableDialogCloseIcon();
-	
+
 	/**
 	 * Get a CSS style class.
 	 * @return
@@ -48,5 +48,5 @@ public interface CloseableDialogBoxCssResource extends CssResource {
 	 * @return
 	 */
 	String captionBar();
-	
+
 }

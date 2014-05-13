@@ -28,7 +28,7 @@ import com.google.gwt.user.client.ui.Widget;
 /**
  * Drop down button that displays the {@link LegendPopupPanel}. When this widget is added to a MapPresenter's widget
  * panel, it will automatically try to keep the {@link LegendPopupPanel} within the map bounds.
- * 
+ *
  * @author Pieter De Graef
  * @since 2.0.0
  */
@@ -44,7 +44,7 @@ public class MapLegendDropDown extends Button {
 
 	/**
 	 * Create a drop down button that displays a {@link MapLegendPanel} in a popup.
-	 * 
+	 *
 	 * @param mapPresenter
 	 *            The map to display a legend widget for.
 	 */

@@ -26,7 +26,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Class description.
- * 
+ *
  * @author Dosi Bingov
  */
 public class FeatureMouseOverExample implements SamplePanel {
@@ -46,7 +46,7 @@ public class FeatureMouseOverExample implements SamplePanel {
 
 	/**
 	 * UI binder interface.
-	 * 
+	 *
 	 * @author Dosi Bingov
 	 */
 	interface FeatureSelectedExampleUiBinder extends UiBinder<DockLayoutPanel, FeatureMouseOverExample> {

@@ -17,7 +17,7 @@ import com.google.gwt.resources.client.CssResource;
 
 /**
  * CSS resource bundle that contains styles for map related widgets.
- * 
+ *
  * @author Pieter De Graef
  * @since 2.0.0
  */

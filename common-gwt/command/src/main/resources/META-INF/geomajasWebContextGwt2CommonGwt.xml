@@ -23,7 +23,7 @@
         http://www.springframework.org/schema/context/spring-context-3.0.xsd
         http://www.springframework.org/schema/util
 		http://www.springframework.org/schema/util/spring-util-2.0.xsd">
- 
+
 	<!-- fallback mapping to handle GWT resources from the classpath-->
 
 	<bean id="gwtResourceHandlerMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
@@ -35,10 +35,10 @@
 		</property>
 		<property name="defaultHandler" value="gwtResourceController"/>
 	</bean>
-	
+
 	<bean id="gwtResourceController" class="org.geomajas.gwt.server.mvc.GwtResourceController"></bean>
-	
+
 	<!--  scan for controllers and views -->
 	<context:component-scan base-package="org.geomajas.gwt.server.mvc" />
-	
+
 </beans>

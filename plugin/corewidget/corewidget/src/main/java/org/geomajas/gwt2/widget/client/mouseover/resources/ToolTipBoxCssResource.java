@@ -17,7 +17,7 @@ import com.google.gwt.resources.client.CssResource;
 
 /**
  * CSS resource bundle that contains all generic styles used in pure gwt geomajas widgets.
- * 
+ *
  * @author Dosi Bingov
  * @since 2.0.0
  */
@@ -26,23 +26,23 @@ public interface ToolTipBoxCssResource extends CssResource {
 
 	/**
 	 * Get a CSS style class.
-	 * 
+	 *
 	 * @return
 	 */
 	String toolTipBox();
-	
-	
+
+
 	/**
 	 * Get a CSS style class.
-	 * 
+	 *
 	 * @return
 	 */
 	String toolTipBoxCell();
-	
-	
+
+
 	/**
 	 * Get a CSS style class.
-	 * 
+	 *
 	 * @return
 	 */
 	String toolTipBoxCellTitle();

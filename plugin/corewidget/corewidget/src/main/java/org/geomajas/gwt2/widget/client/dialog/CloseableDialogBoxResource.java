@@ -20,7 +20,7 @@ import com.google.gwt.resources.client.ImageResource.RepeatStyle;
 
 /**
  * Client resource bundle interface for pure GWT widgets.
- * 
+ *
  * @author Dosi Bingov
  * @author Jan De Moerloose
  * @since 2.0.0
