@@ -14,14 +14,11 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
-import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.MapPresenter;
-import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.client.map.feature.FeatureMapFunction;
 import org.geomajas.gwt2.client.map.feature.ServerFeatureService;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
-import org.geomajas.gwt2.widget.client.CoreWidget;
 import org.geomajas.gwt2.widget.client.controller.event.FeatureClickedEvent;
 import org.geomajas.gwt2.widget.client.featureselectbox.view.FeatureSelectBoxView;
 
@@ -50,8 +47,8 @@ public class FeatureSelectBoxPresenterImpl implements FeatureSelectBoxPresenter 
 
 	private int pixelBuffer = 10;
 
-	public FeatureSelectBoxPresenterImpl() {
-		view = CoreWidget.getInstance().getViewFactory().createFeatureSelectBox();
+	public FeatureSelectBoxPresenterImpl(FeatureSelectBoxView view) {
+		this.view = view;
 		clickedFeatures = new HashMap<String, Feature>();
 	}
 

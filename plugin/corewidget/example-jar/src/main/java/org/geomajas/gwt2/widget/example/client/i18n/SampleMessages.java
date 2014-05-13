@@ -1,7 +1,7 @@
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
- * Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+ * Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
  * The program is available in open source according to the GNU Affero
  * General Public License. All contributions in this program are covered
@@ -16,7 +16,7 @@ import com.google.gwt.safehtml.shared.SafeHtml;
 
 /**
  * Specific messages for the many samples.
- * 
+ *
  * @author Pieter De Graef
  */
 public interface SampleMessages extends Messages {
@@ -44,7 +44,7 @@ public interface SampleMessages extends Messages {
 	String messageBoxResponseNo();
 	String messageBoxResponseCancel();
 	SafeHtml messageBoxMessageLong();
-	
+
 	String featureSelectedTitle();
 	String featureSelectedDescrShort();
 	String featureSelectedDescription();

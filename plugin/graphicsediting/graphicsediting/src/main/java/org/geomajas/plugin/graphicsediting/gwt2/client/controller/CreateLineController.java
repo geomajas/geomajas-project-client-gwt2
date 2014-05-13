@@ -10,15 +10,12 @@
  */
 package org.geomajas.plugin.graphicsediting.gwt2.client.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.google.web.bindery.event.shared.HandlerRegistration;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.operation.AddOperation;
 import org.geomajas.graphics.client.service.AbstractGraphicsController;
 import org.geomajas.graphics.client.service.GraphicsService;
-import org.geomajas.plugin.graphicsediting.gwt2.client.object.GGeometryPath;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
@@ -28,15 +25,17 @@ import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 import org.geomajas.plugin.editing.gwt.client.GeometryEditor;
 import org.geomajas.plugin.editing.gwt.client.GeometryEditorFactory;
+import org.geomajas.plugin.graphicsediting.gwt2.client.object.GGeometryPath;
 import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 
-import com.google.web.bindery.event.shared.HandlerRegistration;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Controller for Polygon objects.
- * 
+ *
  * @author Jan De Moerloose
- * 
+ *
  */
 public class CreateLineController extends AbstractGraphicsController implements GeometryEditStopHandler {
 
@@ -99,14 +98,14 @@ public class CreateLineController extends AbstractGraphicsController implements 
 
 	public void startEditing() {
 		if (path == null) {
-			
+
 			Geometry line = new Geometry(Geometry.LINE_STRING, 0, -1);
 			if (editService == null) {
 				editService = createEditService();
 				editService.addGeometryEditStopHandler(this);
 			}
 			editService.start(line);
-			
+
 			GeometryIndex index = editService.getIndexService().create(GeometryIndexType.TYPE_VERTEX, 0);
 			editService.setEditingState(GeometryEditState.INSERTING);
 			editService.setInsertIndex(index);
@@ -137,9 +136,4 @@ public class CreateLineController extends AbstractGraphicsController implements 
 		return editor.getEditService();
 	}
 
-	@Override
-	public void setVisible(boolean visible) {
-		// TODO Auto-generated method stub
-		
-	}
 }

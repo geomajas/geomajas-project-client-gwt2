@@ -26,7 +26,7 @@
 
 	<!-- fallback mapping to handle GWT resources from the classpath-->
 
-	<bean id="gwtResourceHandlerMapping" class="org.springframework.web.servlet.presenter.SimpleUrlHandlerMapping">
+	<bean id="gwtResourceHandlerMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<!-- need security  -->
 		<property name="interceptors">
 			<list>

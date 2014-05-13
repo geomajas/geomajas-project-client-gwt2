@@ -1,7 +1,7 @@
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
- * Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+ * Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
  * The program is available in open source according to the GNU Affero
  * General Public License. All contributions in this program are covered
@@ -26,7 +26,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Dialogbox with a close-button in the upper-right corner.
- * 
+ *
  * @author Pieter De Graef
  */
 public class CloseableDialogBox extends DialogBox {
@@ -69,14 +69,14 @@ public class CloseableDialogBox extends DialogBox {
 
 	/**
 	 * Overriding the default caption to include a close button.
-	 * 
+	 *
 	 * @author Pieter De Graef
 	 */
 	protected static class CaptionImpl extends FocusPanel implements Caption {
 
 		/**
 		 * UI binder interface for the ShowcaseDialogBox caption.
-		 * 
+		 *
 		 * @author Pieter De Graef
 		 */
 		interface MyUiBinder extends UiBinder<Widget, CaptionImpl> {

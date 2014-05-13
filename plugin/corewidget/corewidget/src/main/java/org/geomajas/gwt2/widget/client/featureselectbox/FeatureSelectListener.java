@@ -16,11 +16,13 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt.client.controller.AbstractController;
 import org.geomajas.gwt.client.map.RenderSpace;
+import org.geomajas.gwt2.client.controller.AbstractMapController;
 import org.geomajas.gwt2.client.controller.MapController;
 import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.widget.client.CoreWidget;
 import org.geomajas.gwt2.widget.client.featureselectbox.presenter.FeatureSelectBoxPresenter;
+import org.geomajas.gwt2.widget.client.featureselectbox.presenter.FeatureSelectBoxPresenterImpl;
 import org.geomajas.gwt2.widget.client.featureselectbox.view.FeatureSelectBoxView;
 
 import java.util.logging.Logger;
@@ -33,7 +35,7 @@ import java.util.logging.Logger;
  * @since 2.0.0
  */
 @Api(allMethods = true)
-public class FeatureSelectListener extends AbstractController implements MapController, IsWidget {
+public class FeatureSelectListener extends AbstractMapController implements MapController, IsWidget {
 
 	private Logger log = Logger.getLogger(FeatureSelectListener.class.getName());
 
@@ -47,15 +49,20 @@ public class FeatureSelectListener extends AbstractController implements MapCont
 
 	public FeatureSelectListener() {
 		super(false);
+		view = CoreWidget.getInstance().getViewFactory().createFeatureSelectBox();
+		presenter = new FeatureSelectBoxPresenterImpl(view);
+		view.setPresenter(presenter);
 	}
 
 	@Override
 	public void onActivate(MapPresenter mapPresenter) {
+		super.onActivate(mapPresenter);
 		presenter.onActivate(mapPresenter);
 	}
 
 	@Override
 	public void onDeactivate(MapPresenter mapPresenter) {
+		super.onDeactivate(mapPresenter);
 		presenter.onDeactivate();
 	}
 
