@@ -1,0 +1,124 @@
+org.geomajas.gwt.client.GeomajasService::2.0.0
+org.geomajas.gwt.client.GeomajasService:CommandResponse execute(GwtCommand, ):2.0.0
+org.geomajas.gwt.client.GeomajasServiceAsync::2.0.0
+org.geomajas.gwt.client.GeomajasServiceAsync:void execute(GwtCommand, AsyncCallback<CommandResponse>, ):2.0.0
+org.geomajas.gwt.client.command.AbstractCommandCallback::2.0.0
+org.geomajas.gwt.client.command.CommandCallback::2.0.0
+org.geomajas.gwt.client.command.CommandCallback:void execute(RESPONSE, ):2.0.0
+org.geomajas.gwt.client.command.CommandExceptionCallback::2.0.0
+org.geomajas.gwt.client.command.CommandExceptionCallback:void onCommandException(CommandResponse, ):2.0.0
+org.geomajas.gwt.client.command.CommunicationExceptionCallback::2.0.0
+org.geomajas.gwt.client.command.CommunicationExceptionCallback:void onCommunicationException(Throwable, ):2.0.0
+org.geomajas.gwt.client.command.Deferred::2.0.0
+org.geomajas.gwt.client.command.Deferred:Deferred():2.0.0
+org.geomajas.gwt.client.command.Deferred:List<CommandCallback> getCallbacks():2.0.0
+org.geomajas.gwt.client.command.Deferred:boolean isCancelled():2.0.0
+org.geomajas.gwt.client.command.Deferred:boolean isLogCommunicationExceptions():2.0.0
+org.geomajas.gwt.client.command.Deferred:void addCallback(CommandCallback, ):2.0.0
+org.geomajas.gwt.client.command.Deferred:void cancel():2.0.0
+org.geomajas.gwt.client.command.Deferred:void setLogCommunicationExceptions(boolean, ):2.0.0
+org.geomajas.gwt.client.command.GwtCommand::2.0.0
+org.geomajas.gwt.client.command.GwtCommand:CommandRequest getCommandRequest():2.0.0
+org.geomajas.gwt.client.command.GwtCommand:GwtCommand():2.0.0
+org.geomajas.gwt.client.command.GwtCommand:GwtCommand(String, ):2.0.0
+org.geomajas.gwt.client.command.GwtCommand:String getCommandName():2.0.0
+org.geomajas.gwt.client.command.GwtCommand:String getLocale():2.0.0
+org.geomajas.gwt.client.command.GwtCommand:String getUserToken():2.0.0
+org.geomajas.gwt.client.command.GwtCommand:void setCommandName(String, ):2.0.0
+org.geomajas.gwt.client.command.GwtCommand:void setCommandRequest(CommandRequest, ):2.0.0
+org.geomajas.gwt.client.command.GwtCommand:void setLocale(String, ):2.0.0
+org.geomajas.gwt.client.command.GwtCommand:void setUserToken(String, ):2.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher::2.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:Deferred execute(GwtCommand, CommandCallback, ):2.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:Deferred execute(GwtCommand, Deferred, ):2.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:HandlerRegistration addDispatchStartedHandler(DispatchStartedHandler, ):2.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:HandlerRegistration addDispatchStoppedHandler(DispatchStoppedHandler, ):2.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:HandlerRegistration addTokenChangedHandler(TokenChangedHandler, ):2.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:String getUserToken():2.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:TokenRequestHandler getTokenRequestHandler():2.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:UserDetail getUserDetail():2.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:boolean isBusy():2.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:boolean isShowError():2.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:boolean isUseLazyLoading():2.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:int getLazyFeatureIncludesAll():2.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:int getLazyFeatureIncludesDefault():2.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:int getLazyFeatureIncludesSelect():2.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:static GwtCommandDispatcher getInstance():2.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:void login():2.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:void logout():2.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:void onCommandException(CommandResponse, ):2.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:void onCommunicationException(Throwable, ):2.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:void setCommandExceptionCallback(CommandExceptionCallback, ):2.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:void setCommunicationExceptionCallback(CommunicationExceptionCallback, ):2.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:void setLazyFeatureIncludesAll(int, ):2.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:void setLazyFeatureIncludesDefault(int, ):2.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:void setLazyFeatureIncludesSelect(int, ):2.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:void setServiceEndPointUrl(String, ):2.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:void setShowError(boolean, ):2.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:void setTokenRequestHandler(TokenRequestHandler, ):2.0.0
+org.geomajas.gwt.client.command.GwtCommandDispatcher:void setUseLazyLoading(boolean, ):2.0.0
+org.geomajas.gwt.client.command.TokenRequestHandler::2.0.0
+org.geomajas.gwt.client.command.TokenRequestHandler:void login(TokenChangedHandler, ):2.0.0
+org.geomajas.gwt.client.command.UserDetail::2.0.0
+org.geomajas.gwt.client.command.UserDetail:String getUserDivision():2.0.0
+org.geomajas.gwt.client.command.UserDetail:String getUserId():2.0.0
+org.geomajas.gwt.client.command.UserDetail:String getUserLocale():2.0.0
+org.geomajas.gwt.client.command.UserDetail:String getUserName():2.0.0
+org.geomajas.gwt.client.command.UserDetail:String getUserOrganization():2.0.0
+org.geomajas.gwt.client.command.UserDetail:UserDetail():2.0.0
+org.geomajas.gwt.client.command.UserDetail:void setUserDivision(String, ):2.0.0
+org.geomajas.gwt.client.command.UserDetail:void setUserId(String, ):2.0.0
+org.geomajas.gwt.client.command.UserDetail:void setUserLocale(String, ):2.0.0
+org.geomajas.gwt.client.command.UserDetail:void setUserName(String, ):2.0.0
+org.geomajas.gwt.client.command.UserDetail:void setUserOrganization(String, ):2.0.0
+org.geomajas.gwt.client.command.event.DispatchStartedEvent::2.0.0
+org.geomajas.gwt.client.command.event.DispatchStartedEvent:DispatchStartedEvent():2.0.0
+org.geomajas.gwt.client.command.event.DispatchStartedEvent:final Type<DispatchStartedHandler> getAssociatedType():2.0.0
+org.geomajas.gwt.client.command.event.DispatchStartedEvent:static Type<DispatchStartedHandler> getType():2.0.0
+org.geomajas.gwt.client.command.event.DispatchStartedHandler:. TYPE:2.0.0
+org.geomajas.gwt.client.command.event.DispatchStartedHandler::2.0.0
+org.geomajas.gwt.client.command.event.DispatchStartedHandler:void onDispatchStarted(DispatchStartedEvent, ):2.0.0
+org.geomajas.gwt.client.command.event.DispatchStoppedEvent::2.0.0
+org.geomajas.gwt.client.command.event.DispatchStoppedEvent:DispatchStoppedEvent():2.0.0
+org.geomajas.gwt.client.command.event.DispatchStoppedEvent:final Type<DispatchStoppedHandler> getAssociatedType():2.0.0
+org.geomajas.gwt.client.command.event.DispatchStoppedEvent:static Type<DispatchStoppedHandler> getType():2.0.0
+org.geomajas.gwt.client.command.event.DispatchStoppedHandler:. TYPE:2.0.0
+org.geomajas.gwt.client.command.event.DispatchStoppedHandler::2.0.0
+org.geomajas.gwt.client.command.event.DispatchStoppedHandler:void onDispatchStopped(DispatchStoppedEvent, ):2.0.0
+org.geomajas.gwt.client.command.event.HasDispatchHandlers::2.0.0
+org.geomajas.gwt.client.command.event.TokenChangedEvent::2.0.0
+org.geomajas.gwt.client.command.event.TokenChangedEvent:String getToken():2.0.0
+org.geomajas.gwt.client.command.event.TokenChangedEvent:boolean isLoginPending():2.0.0
+org.geomajas.gwt.client.command.event.TokenChangedHandler:. TYPE:2.0.0
+org.geomajas.gwt.client.command.event.TokenChangedHandler::2.0.0
+org.geomajas.gwt.client.command.event.TokenChangedHandler:void onTokenChanged(TokenChangedEvent, ):2.0.0
+org.geomajas.gwt.client.util.Log::2.0.0
+org.geomajas.gwt.client.util.Log:static final int LEVEL_DEBUG:2.0.0
+org.geomajas.gwt.client.util.Log:static final int LEVEL_ERROR:2.0.0
+org.geomajas.gwt.client.util.Log:static final int LEVEL_INFO:2.0.0
+org.geomajas.gwt.client.util.Log:static final int LEVEL_WARN:2.0.0
+org.geomajas.gwt.client.util.Log:static void logDebug(String, ):2.0.0
+org.geomajas.gwt.client.util.Log:static void logDebug(String, Throwable, ):2.0.0
+org.geomajas.gwt.client.util.Log:static void logError(String, ):2.0.0
+org.geomajas.gwt.client.util.Log:static void logError(String, Throwable, ):2.0.0
+org.geomajas.gwt.client.util.Log:static void logInfo(String, ):2.0.0
+org.geomajas.gwt.client.util.Log:static void logInfo(String, Throwable, ):2.0.0
+org.geomajas.gwt.client.util.Log:static void logServer(int, String, ):2.0.0
+org.geomajas.gwt.client.util.Log:static void logServer(int, String, Throwable, ):2.0.0
+org.geomajas.gwt.client.util.Log:static void logWarn(String, ):2.0.0
+org.geomajas.gwt.client.util.Log:static void logWarn(String, Throwable, ):2.0.0
+org.geomajas.gwt.server.GeomajasServiceImpl::2.0.0
+org.geomajas.gwt.server.GeomajasServiceImpl:CommandResponse execute(GwtCommand, ):2.0.0
+org.geomajas.gwt.server.GeomajasServiceImpl:GeomajasServiceImpl():2.0.0
+org.geomajas.gwt.server.GeomajasServiceImpl:void init(ServletConfig, ):2.0.0
+org.geomajas.gwt.server.GeomajasServiceImpl:void onApplicationEvent(ContextRefreshedEvent, ):2.0.0
+org.geomajas.gwt.server.mvc.GeomajasController::2.0.0
+org.geomajas.gwt.server.mvc.GeomajasController:SerializationPolicyLocator getSerializationPolicyLocator():2.0.0
+org.geomajas.gwt.server.mvc.GeomajasController:void setSerializationPolicyLocator(SerializationPolicyLocator, ):2.0.0
+org.geomajas.gwt.server.mvc.ResourceSerializationPolicyLocator::2.0.0
+org.geomajas.gwt.server.mvc.ResourceSerializationPolicyLocator:List<Resource> getPolicyRoots():2.0.0
+org.geomajas.gwt.server.mvc.ResourceSerializationPolicyLocator:ResourceSerializationPolicyLocator():2.0.0
+org.geomajas.gwt.server.mvc.ResourceSerializationPolicyLocator:SerializationPolicy loadPolicy(HttpServletRequest, String, String, ):2.0.0
+org.geomajas.gwt.server.mvc.ResourceSerializationPolicyLocator:void setPolicyRoots(List<Resource>, ):2.0.0
+org.geomajas.gwt.server.mvc.SerializationPolicyLocator::2.0.0
+org.geomajas.gwt.server.mvc.SerializationPolicyLocator:SerializationPolicy loadPolicy(HttpServletRequest, String, String, ):2.0.0

@@ -1,0 +1,306 @@
+org.geomajas.plugin.editing.client.BaseGeometryEditor::2.0.0
+org.geomajas.plugin.editing.client.BaseGeometryEditor:GeometryEditService getEditService():2.0.0
+org.geomajas.plugin.editing.client.BaseGeometryEditor:GeometryRenderer getRenderer():2.0.0
+org.geomajas.plugin.editing.client.BaseGeometryEditor:SnapService getSnappingService():2.0.0
+org.geomajas.plugin.editing.client.BaseGeometryEditor:boolean isBusyEditing():2.0.0
+org.geomajas.plugin.editing.client.BaseGeometryEditor:boolean isSnapOnDrag():2.0.0
+org.geomajas.plugin.editing.client.BaseGeometryEditor:void setSnapOnDrag(boolean, ):2.0.0
+org.geomajas.plugin.editing.client.BaseGeometryEditor:void setSnapOnInsert(boolean, ):2.0.0
+org.geomajas.plugin.editing.client.GeometryArrayFunction::2.0.0
+org.geomajas.plugin.editing.client.GeometryFunction::2.0.0
+org.geomajas.plugin.editing.client.event.AbstractGeometryEditEvent::2.0.0
+org.geomajas.plugin.editing.client.event.AbstractGeometryEditEvent:AbstractGeometryEditEvent(Geometry, List<GeometryIndex>, ):2.0.0
+org.geomajas.plugin.editing.client.event.AbstractGeometryEditEvent:Geometry getGeometry():2.0.0
+org.geomajas.plugin.editing.client.event.AbstractGeometryEditEvent:List<GeometryIndex> getIndices():2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditChangeStateEvent::2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditChangeStateEvent:GeometryEditChangeStateEvent(GeometryEditState, ):2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditChangeStateEvent:GeometryEditState getEditingState():2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditChangeStateEvent:Type<GeometryEditChangeStateHandler> getAssociatedType():2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditChangeStateHandler:. TYPE:2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditChangeStateHandler::2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditChangeStateHandler:void onChangeEditingState(GeometryEditChangeStateEvent, ):2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditInsertEvent::2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditInsertEvent:GeometryEditInsertEvent(Geometry, List<GeometryIndex>, ):2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditInsertEvent:Type<GeometryEditInsertHandler> getAssociatedType():2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditInsertHandler:. TYPE:2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditInsertHandler::2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditInsertHandler:void onGeometryEditInsert(GeometryEditInsertEvent, ):2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditMoveEvent::2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditMoveEvent:GeometryEditMoveEvent(Geometry, List<GeometryIndex>, ):2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditMoveEvent:Type<GeometryEditMoveHandler> getAssociatedType():2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditMoveHandler:. TYPE:2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditMoveHandler::2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditMoveHandler:void onGeometryEditMove(GeometryEditMoveEvent, ):2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditRemoveEvent::2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditRemoveEvent:GeometryEditRemoveEvent(Geometry, List<GeometryIndex>, ):2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditRemoveEvent:Type<GeometryEditRemoveHandler> getAssociatedType():2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditRemoveHandler:. TYPE:2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditRemoveHandler::2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditRemoveHandler:void onGeometryEditRemove(GeometryEditRemoveEvent, ):2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditShapeChangedEvent::2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditShapeChangedEvent:Geometry getGeometry():2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditShapeChangedEvent:GeometryEditShapeChangedEvent(Geometry, ):2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditShapeChangedEvent:Type<GeometryEditShapeChangedHandler> getAssociatedType():2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditShapeChangedHandler:. TYPE:2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditShapeChangedHandler::2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditShapeChangedHandler:void onGeometryShapeChanged(GeometryEditShapeChangedEvent, ):2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditStartEvent::2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditStartEvent:Geometry getGeometry():2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditStartEvent:GeometryEditStartEvent(Geometry, ):2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditStartEvent:Type<GeometryEditStartHandler> getAssociatedType():2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditStartHandler:. TYPE:2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditStartHandler::2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditStartHandler:void onGeometryEditStart(GeometryEditStartEvent, ):2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditStopEvent::2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditStopEvent:Geometry getGeometry():2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditStopEvent:GeometryEditStopEvent(Geometry, ):2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditStopEvent:Type<GeometryEditStopHandler> getAssociatedType():2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditStopHandler:. TYPE:2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditStopHandler::2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditStopHandler:void onGeometryEditStop(GeometryEditStopEvent, ):2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveEvent::2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveEvent:Coordinate getCurrentPosition():2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveEvent:Coordinate getOrigin():2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveEvent:GeometryEditTentativeMoveEvent(Coordinate, Coordinate, ):2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveEvent:Type<GeometryEditTentativeMoveHandler> getAssociatedType():2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveHandler:. TYPE:2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveHandler::2.0.0
+org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveHandler:void onTentativeMove(GeometryEditTentativeMoveEvent, ):2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexDeselectedEvent::2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexDeselectedEvent:GeometryIndexDeselectedEvent(Geometry, List<GeometryIndex>, ):2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexDeselectedEvent:Type<GeometryIndexDeselectedHandler> getAssociatedType():2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexDeselectedHandler:. TYPE:2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexDeselectedHandler::2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexDeselectedHandler:void onGeometryIndexDeselected(GeometryIndexDeselectedEvent, ):2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexDisabledEvent::2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexDisabledEvent:GeometryIndexDisabledEvent(Geometry, List<GeometryIndex>, ):2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexDisabledEvent:Type<GeometryIndexDisabledHandler> getAssociatedType():2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexDisabledHandler:. TYPE:2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexDisabledHandler::2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexDisabledHandler:void onGeometryIndexDisabled(GeometryIndexDisabledEvent, ):2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexEnabledEvent::2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexEnabledEvent:GeometryIndexEnabledEvent(Geometry, List<GeometryIndex>, ):2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexEnabledEvent:Type<GeometryIndexEnabledHandler> getAssociatedType():2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexEnabledHandler:. TYPE:2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexEnabledHandler::2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexEnabledHandler:void onGeometryIndexEnabled(GeometryIndexEnabledEvent, ):2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexHighlightBeginEvent::2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexHighlightBeginEvent:GeometryIndexHighlightBeginEvent(Geometry, List<GeometryIndex>, ):2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexHighlightBeginEvent:Type<GeometryIndexHighlightBeginHandler> getAssociatedType():2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexHighlightBeginHandler:. TYPE:2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexHighlightBeginHandler::2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexHighlightBeginHandler:void onGeometryIndexHighlightBegin(GeometryIndexHighlightBeginEvent, ):2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexHighlightEndEvent::2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexHighlightEndEvent:GeometryIndexHighlightEndEvent(Geometry, List<GeometryIndex>, ):2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexHighlightEndEvent:Type<GeometryIndexHighlightEndHandler> getAssociatedType():2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexHighlightEndHandler:. TYPE:2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexHighlightEndHandler::2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexHighlightEndHandler:void onGeometryIndexHighlightEnd(GeometryIndexHighlightEndEvent, ):2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexMarkForDeletionBeginEvent::2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexMarkForDeletionBeginEvent:GeometryIndexMarkForDeletionBeginEvent(Geometry, List<GeometryIndex>, ):2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexMarkForDeletionBeginEvent:Type<GeometryIndexMarkForDeletionBeginHandler> getAssociatedType():2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexMarkForDeletionBeginHandler:. TYPE:2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexMarkForDeletionBeginHandler::2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexMarkForDeletionBeginHandler:void onGeometryIndexMarkForDeletionBegin(GeometryIndexMarkForDeletionBeginEvent, ):2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexMarkForDeletionEndEvent::2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexMarkForDeletionEndEvent:GeometryIndexMarkForDeletionEndEvent(Geometry, List<GeometryIndex>, ):2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexMarkForDeletionEndEvent:Type<GeometryIndexMarkForDeletionEndHandler> getAssociatedType():2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexMarkForDeletionEndHandler:. TYPE:2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexMarkForDeletionEndHandler::2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexMarkForDeletionEndHandler:void onGeometryIndexMarkForDeletionEnd(GeometryIndexMarkForDeletionEndEvent, ):2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexSelectedEvent::2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexSelectedEvent:GeometryIndexSelectedEvent(Geometry, List<GeometryIndex>, ):2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexSelectedEvent:Type<GeometryIndexSelectedHandler> getAssociatedType():2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexSelectedHandler:. TYPE:2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexSelectedHandler::2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexSelectedHandler:void onGeometryIndexSelected(GeometryIndexSelectedEvent, ):2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexSnappingBeginEvent::2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexSnappingBeginEvent:GeometryIndexSnappingBeginEvent(Geometry, List<GeometryIndex>, ):2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexSnappingBeginEvent:Type<GeometryIndexSnappingBeginHandler> getAssociatedType():2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexSnappingBeginHandler:. TYPE:2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexSnappingBeginHandler::2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexSnappingBeginHandler:void onGeometryIndexSnappingBegin(GeometryIndexSnappingBeginEvent, ):2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexSnappingEndEvent::2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexSnappingEndEvent:GeometryIndexSnappingEndEvent(Geometry, List<GeometryIndex>, ):2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexSnappingEndEvent:Type<GeometryIndexSnappingEndHandler> getAssociatedType():2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexSnappingEndHandler:. TYPE:2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexSnappingEndHandler::2.0.0
+org.geomajas.plugin.editing.client.event.state.GeometryIndexSnappingEndHandler:void onGeometryIndexSnappingEnd(GeometryIndexSnappingEndEvent, ):2.0.0
+org.geomajas.plugin.editing.client.gfx.GeometryRenderer::2.0.0
+org.geomajas.plugin.editing.client.gfx.GeometryRenderer:void addEdgeHandlerFactory(EdgeMapHandlerFactory, ):2.0.0
+org.geomajas.plugin.editing.client.gfx.GeometryRenderer:void addVertexHandlerFactory(VertexMapHandlerFactory, ):2.0.0
+org.geomajas.plugin.editing.client.gfx.GeometryRenderer:void redraw():2.0.0
+org.geomajas.plugin.editing.client.gfx.GeometryRenderer:void setVisible(boolean, ):2.0.0
+org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException::2.0.0
+org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException:GeometryOperationFailedException():2.0.0
+org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException:GeometryOperationFailedException(String, ):2.0.0
+org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException:GeometryOperationFailedException(Throwable, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryEditService::2.0.0
+org.geomajas.plugin.editing.client.service.GeometryEditService:Coordinate getTentativeMoveLocation():2.0.0
+org.geomajas.plugin.editing.client.service.GeometryEditService:Coordinate getTentativeMoveOrigin():2.0.0
+org.geomajas.plugin.editing.client.service.GeometryEditService:Geometry getGeometry():2.0.0
+org.geomajas.plugin.editing.client.service.GeometryEditService:Geometry stop():2.0.0
+org.geomajas.plugin.editing.client.service.GeometryEditService:GeometryEditState getEditingState():2.0.0
+org.geomajas.plugin.editing.client.service.GeometryEditService:GeometryIndex getInsertIndex():2.0.0
+org.geomajas.plugin.editing.client.service.GeometryEditService:GeometryIndexService getIndexService():2.0.0
+org.geomajas.plugin.editing.client.service.GeometryEditService:GeometryIndexStateService getIndexStateService():2.0.0
+org.geomajas.plugin.editing.client.service.GeometryEditService:HandlerRegistration addGeometryEditChangeStateHandler(GeometryEditChangeStateHandler, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryEditService:HandlerRegistration addGeometryEditInsertHandler(GeometryEditInsertHandler, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryEditService:HandlerRegistration addGeometryEditMoveHandler(GeometryEditMoveHandler, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryEditService:HandlerRegistration addGeometryEditRemoveHandler(GeometryEditRemoveHandler, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryEditService:HandlerRegistration addGeometryEditShapeChangedHandler(GeometryEditShapeChangedHandler, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryEditService:HandlerRegistration addGeometryEditStartHandler(GeometryEditStartHandler, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryEditService:HandlerRegistration addGeometryEditStopHandler(GeometryEditStopHandler, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryEditService:HandlerRegistration addGeometryEditTentativeMoveHandler(GeometryEditTentativeMoveHandler, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryEditService:boolean isStarted():2.0.0
+org.geomajas.plugin.editing.client.service.GeometryEditService:void setEditingState(GeometryEditState, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryEditService:void setInsertIndex(GeometryIndex, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryEditService:void setTentativeMoveLocation(Coordinate, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryEditService:void setTentativeMoveOrigin(Coordinate, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryEditService:void start(Geometry, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryEditState::2.0.0
+org.geomajas.plugin.editing.client.service.GeometryEditState:DRAGGING:2.0.0
+org.geomajas.plugin.editing.client.service.GeometryEditState:IDLE:2.0.0
+org.geomajas.plugin.editing.client.service.GeometryEditState:INSERTING:2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndex::2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndex:GeometryIndex getChild():2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndex:GeometryIndex():2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndex:GeometryIndexType getType():2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndex:boolean equals(Object, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndex:boolean hasChild():2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndex:int getValue():2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndex:int hashCode():2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException::2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException:GeometryIndexNotFoundException():2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException:GeometryIndexNotFoundException(String, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException:GeometryIndexNotFoundException(String, Throwable, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexOperationService::2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexOperationService:GeometryIndex addEmptyChild():2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexOperationService:GeometryIndex addEmptyChild(GeometryIndex, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexOperationService:boolean canRedo():2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexOperationService:boolean canUndo():2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexOperationService:boolean isOperationSequenceActive():2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexOperationService:void insert(List<GeometryIndex>, List<List<Coordinate>>, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexOperationService:void move(List<GeometryIndex>, List<List<Coordinate>>, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexOperationService:void redo():2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexOperationService:void remove(List<GeometryIndex>, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexOperationService:void startOperationSequence():2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexOperationService:void stopOperationSequence():2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexOperationService:void undo():2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexService::2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexService:Coordinate getVertex(Geometry, GeometryIndex, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexService:Coordinate[] getEdge(Geometry, GeometryIndex, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexService:Coordinate[] getSiblingVertices(Geometry, GeometryIndex, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexService:Geometry getGeometry(Geometry, GeometryIndex, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexService:GeometryIndex addChildren(GeometryIndex, GeometryIndexType, int, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexService:GeometryIndex create(GeometryIndexType, int, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexService:GeometryIndex getNextVertex(GeometryIndex, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexService:GeometryIndex getPreviousVertex(GeometryIndex, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexService:GeometryIndex parse(String, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexService:GeometryIndexService():2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexService:GeometryIndexType getType(GeometryIndex, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexService:List<GeometryIndex> getAdjacentEdges(Geometry, GeometryIndex, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexService:List<GeometryIndex> getAdjacentVertices(Geometry, GeometryIndex, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexService:String format(GeometryIndex, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexService:String getGeometryType(Geometry, GeometryIndex, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexService:boolean isAdjacent(Geometry, GeometryIndex, GeometryIndex, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexService:boolean isChildOf(GeometryIndex, GeometryIndex, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexService:boolean isEdge(GeometryIndex, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexService:boolean isGeometry(GeometryIndex, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexService:boolean isVertex(GeometryIndex, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexService:int getSiblingCount(Geometry, GeometryIndex, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexService:int getValue(GeometryIndex, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexStateService::2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexStateService:HandlerRegistration addGeometryIndexDeselectedHandler(GeometryIndexDeselectedHandler, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexStateService:HandlerRegistration addGeometryIndexDisabledHandler(GeometryIndexDisabledHandler, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexStateService:HandlerRegistration addGeometryIndexEnabledHandler(GeometryIndexEnabledHandler, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexStateService:HandlerRegistration addGeometryIndexHighlightBeginHandler(GeometryIndexHighlightBeginHandler, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexStateService:HandlerRegistration addGeometryIndexHighlightEndHandler(GeometryIndexHighlightEndHandler, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexStateService:HandlerRegistration addGeometryIndexMarkForDeletionBeginHandler(GeometryIndexMarkForDeletionBeginHandler, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexStateService:HandlerRegistration addGeometryIndexMarkForDeletionEndHandler(GeometryIndexMarkForDeletionEndHandler, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexStateService:HandlerRegistration addGeometryIndexSelectedHandler(GeometryIndexSelectedHandler, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexStateService:HandlerRegistration addGeometryIndexSnappingBeginHandler(GeometryIndexSnappingBeginHandler, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexStateService:HandlerRegistration addGeometryIndexSnappingEndHandler(GeometryIndexSnappingEndHandler, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexStateService:List<GeometryIndex> getSelection():2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexStateService:boolean isEnabled(GeometryIndex, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexStateService:boolean isHightlighted(GeometryIndex, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexStateService:boolean isMarkedForDeletion(GeometryIndex, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexStateService:boolean isSelected(GeometryIndex, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexStateService:boolean isSnapped(GeometryIndex, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexStateService:void deselect(List<GeometryIndex>, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexStateService:void deselectAll():2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexStateService:void disable(List<GeometryIndex>, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexStateService:void enable(List<GeometryIndex>, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexStateService:void enableAll():2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexStateService:void highlightBegin(List<GeometryIndex>, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexStateService:void highlightEnd(List<GeometryIndex>, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexStateService:void highlightEndAll():2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexStateService:void markForDeletionBegin(List<GeometryIndex>, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexStateService:void markForDeletionEnd(List<GeometryIndex>, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexStateService:void markForDeletionEndAll():2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexStateService:void select(List<GeometryIndex>, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexStateService:void snappingBegin(List<GeometryIndex>, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexStateService:void snappingEnd(List<GeometryIndex>, ):2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexStateService:void snappingEndAll():2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexType::2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexType:TYPE_EDGE:2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexType:TYPE_GEOMETRY:2.0.0
+org.geomajas.plugin.editing.client.service.GeometryIndexType:TYPE_VERTEX:2.0.0
+org.geomajas.plugin.editing.client.snap.SnapAlgorithm::2.0.0
+org.geomajas.plugin.editing.client.snap.SnapAlgorithm:Coordinate snap(Coordinate, double, ):2.0.0
+org.geomajas.plugin.editing.client.snap.SnapAlgorithm:boolean hasSnapped():2.0.0
+org.geomajas.plugin.editing.client.snap.SnapAlgorithm:double getCalculatedDistance():2.0.0
+org.geomajas.plugin.editing.client.snap.SnapAlgorithm:void setGeometries(Geometry[], ):2.0.0
+org.geomajas.plugin.editing.client.snap.SnapService::2.0.0
+org.geomajas.plugin.editing.client.snap.SnapService:Coordinate snap(Coordinate, ):2.0.0
+org.geomajas.plugin.editing.client.snap.SnapService:HandlerRegistration addCoordinateSnapHandler(CoordinateSnapHandler, ):2.0.0
+org.geomajas.plugin.editing.client.snap.SnapService:List<SnappingRule> getSnappingRules():2.0.0
+org.geomajas.plugin.editing.client.snap.SnapService:SnapService():2.0.0
+org.geomajas.plugin.editing.client.snap.SnapService:boolean hasSnapped():2.0.0
+org.geomajas.plugin.editing.client.snap.SnapService:boolean removeSnappingRule(SnappingRule, ):2.0.0
+org.geomajas.plugin.editing.client.snap.SnapService:double getCalculatedDistance():2.0.0
+org.geomajas.plugin.editing.client.snap.SnapService:void addSnappingRule(SnappingRule, ):2.0.0
+org.geomajas.plugin.editing.client.snap.SnapService:void clearSnappingRules():2.0.0
+org.geomajas.plugin.editing.client.snap.SnapService:void insertSnappingRule(int, SnappingRule, ):2.0.0
+org.geomajas.plugin.editing.client.snap.SnapService:void update(Bbox, ):2.0.0
+org.geomajas.plugin.editing.client.snap.SnapSourceProvider::2.0.0
+org.geomajas.plugin.editing.client.snap.SnapSourceProvider:void getSnappingSources(GeometryArrayFunction, ):2.0.0
+org.geomajas.plugin.editing.client.snap.SnapSourceProvider:void update(Bbox, ):2.0.0
+org.geomajas.plugin.editing.client.snap.SnappingRule::2.0.0
+org.geomajas.plugin.editing.client.snap.SnappingRule:SnapAlgorithm getAlgorithm():2.0.0
+org.geomajas.plugin.editing.client.snap.SnappingRule:SnapSourceProvider getSourceProvider():2.0.0
+org.geomajas.plugin.editing.client.snap.SnappingRule:SnappingRule(SnapAlgorithm, SnapSourceProvider, double, ):2.0.0
+org.geomajas.plugin.editing.client.snap.SnappingRule:double getDistance():2.0.0
+org.geomajas.plugin.editing.client.snap.algorithm.NearestEdgeOfIntersection::2.0.0
+org.geomajas.plugin.editing.client.snap.algorithm.NearestEdgeOfIntersection:Coordinate snap(Coordinate, double, ):2.0.0
+org.geomajas.plugin.editing.client.snap.algorithm.NearestEdgeOfIntersection:NearestEdgeOfIntersection():2.0.0
+org.geomajas.plugin.editing.client.snap.algorithm.NearestEdgeOfIntersection:boolean hasSnapped():2.0.0
+org.geomajas.plugin.editing.client.snap.algorithm.NearestEdgeOfIntersection:double getCalculatedDistance():2.0.0
+org.geomajas.plugin.editing.client.snap.algorithm.NearestEdgeOfIntersection:void setGeometries(Geometry[], ):2.0.0
+org.geomajas.plugin.editing.client.snap.algorithm.NearestEdgeSnapAlgorithm::2.0.0
+org.geomajas.plugin.editing.client.snap.algorithm.NearestEdgeSnapAlgorithm:Coordinate snap(Coordinate, double, ):2.0.0
+org.geomajas.plugin.editing.client.snap.algorithm.NearestEdgeSnapAlgorithm:NearestEdgeSnapAlgorithm():2.0.0
+org.geomajas.plugin.editing.client.snap.algorithm.NearestEdgeSnapAlgorithm:boolean hasSnapped():2.0.0
+org.geomajas.plugin.editing.client.snap.algorithm.NearestEdgeSnapAlgorithm:double getCalculatedDistance():2.0.0
+org.geomajas.plugin.editing.client.snap.algorithm.NearestEdgeSnapAlgorithm:void setGeometries(Geometry[], ):2.0.0
+org.geomajas.plugin.editing.client.snap.algorithm.NearestVertexOfIntersection::2.0.0
+org.geomajas.plugin.editing.client.snap.algorithm.NearestVertexOfIntersection:Coordinate snap(Coordinate, double, ):2.0.0
+org.geomajas.plugin.editing.client.snap.algorithm.NearestVertexOfIntersection:NearestVertexOfIntersection():2.0.0
+org.geomajas.plugin.editing.client.snap.algorithm.NearestVertexOfIntersection:boolean hasSnapped():2.0.0
+org.geomajas.plugin.editing.client.snap.algorithm.NearestVertexOfIntersection:double getCalculatedDistance():2.0.0
+org.geomajas.plugin.editing.client.snap.algorithm.NearestVertexOfIntersection:void setGeometries(Geometry[], ):2.0.0
+org.geomajas.plugin.editing.client.snap.algorithm.NearestVertexSnapAlgorithm::2.0.0
+org.geomajas.plugin.editing.client.snap.algorithm.NearestVertexSnapAlgorithm:Coordinate snap(Coordinate, double, ):2.0.0
+org.geomajas.plugin.editing.client.snap.algorithm.NearestVertexSnapAlgorithm:NearestVertexSnapAlgorithm():2.0.0
+org.geomajas.plugin.editing.client.snap.algorithm.NearestVertexSnapAlgorithm:boolean hasSnapped():2.0.0
+org.geomajas.plugin.editing.client.snap.algorithm.NearestVertexSnapAlgorithm:double getCalculatedDistance():2.0.0
+org.geomajas.plugin.editing.client.snap.algorithm.NearestVertexSnapAlgorithm:void setGeometries(Geometry[], ):2.0.0
+org.geomajas.plugin.editing.client.snap.event.CoordinateSnapEvent::2.0.0
+org.geomajas.plugin.editing.client.snap.event.CoordinateSnapEvent:Coordinate getFrom():2.0.0
+org.geomajas.plugin.editing.client.snap.event.CoordinateSnapEvent:Coordinate getTo():2.0.0
+org.geomajas.plugin.editing.client.snap.event.CoordinateSnapEvent:CoordinateSnapEvent(Coordinate, Coordinate, ):2.0.0
+org.geomajas.plugin.editing.client.snap.event.CoordinateSnapEvent:Type<CoordinateSnapHandler> getAssociatedType():2.0.0
+org.geomajas.plugin.editing.client.snap.event.CoordinateSnapEvent:boolean hasSnapped():2.0.0
+org.geomajas.plugin.editing.client.snap.event.CoordinateSnapHandler:. TYPE:2.0.0
+org.geomajas.plugin.editing.client.snap.event.CoordinateSnapHandler::2.0.0
+org.geomajas.plugin.editing.client.snap.event.CoordinateSnapHandler:void onCoordinateSnapAttempt(CoordinateSnapEvent, ):2.0.0

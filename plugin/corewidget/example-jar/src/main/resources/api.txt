@@ -1,0 +1,1 @@
+org.geomajas.gwt2.widget.example.client.resource.ExampleWidgetCssResource::2.0.0
