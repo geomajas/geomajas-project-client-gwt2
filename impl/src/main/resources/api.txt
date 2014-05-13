@@ -1,0 +1,172 @@
+org.geomajas.gwt2.client.GeomajasImpl::2.0.0
+org.geomajas.gwt2.client.GeomajasImpl:EventBus getEventBus():2.0.0
+org.geomajas.gwt2.client.GeomajasImpl:GfxUtil getGfxUtil():2.0.0
+org.geomajas.gwt2.client.GeomajasImpl:MapPresenter createMapPresenter():2.0.0
+org.geomajas.gwt2.client.GeomajasImpl:MapPresenter createMapPresenter(MapConfiguration, int, int, ):2.0.0
+org.geomajas.gwt2.client.GeomajasImpl:MapPresenter createMapPresenter(MapConfiguration, int, int, DefaultMapWidget, ):2.0.0
+org.geomajas.gwt2.client.GeomajasImpl:MapPresenter createMapPresenter(MapConfiguration, int, int, MapInitializationHandler, DefaultMapWidget, ):2.0.0
+org.geomajas.gwt2.client.GeomajasImpl:static Geomajas getInstance():2.0.0
+org.geomajas.gwt2.client.GeomajasImpl:static GeomajasImplClientBundleFactory getClientBundleFactory():2.1.0
+org.geomajas.gwt2.client.GeomajasImpl:static void setInstance(Geomajas, ):2.0.0
+org.geomajas.gwt2.client.animation.NavigationAnimationFactory::2.0.0
+org.geomajas.gwt2.client.animation.NavigationAnimationFactory:static NavigationAnimation create(MapPresenter, Trajectory, int, ):2.0.0
+org.geomajas.gwt2.client.animation.NavigationAnimationFactory:static NavigationAnimation createPanning(MapPresenter, Coordinate, ):2.0.0
+org.geomajas.gwt2.client.animation.NavigationAnimationFactory:static NavigationAnimation createZoomIn(MapPresenter, ):2.0.0
+org.geomajas.gwt2.client.animation.NavigationAnimationFactory:static NavigationAnimation createZoomIn(MapPresenter, Coordinate, ):2.0.0
+org.geomajas.gwt2.client.animation.NavigationAnimationFactory:static NavigationAnimation createZoomIn(MapPresenter, View, ):2.0.0
+org.geomajas.gwt2.client.animation.NavigationAnimationFactory:static NavigationAnimation createZoomOut(MapPresenter, ):2.0.0
+org.geomajas.gwt2.client.animation.NavigationAnimationFactory:static NavigationAnimation createZoomOut(MapPresenter, Coordinate, ):2.0.0
+org.geomajas.gwt2.client.controller.AbstractCircleController::2.0.0
+org.geomajas.gwt2.client.controller.AbstractCircleController:String getCircleFillColor():2.0.0
+org.geomajas.gwt2.client.controller.AbstractCircleController:String getCircleStrokeColor():2.0.0
+org.geomajas.gwt2.client.controller.AbstractCircleController:float getCircleFillOpacity():2.0.0
+org.geomajas.gwt2.client.controller.AbstractCircleController:float getCircleStrokeOpacity():2.0.0
+org.geomajas.gwt2.client.controller.AbstractCircleController:int getCircleStrokeWidth():2.0.0
+org.geomajas.gwt2.client.controller.AbstractCircleController:void execute(Geometry, double, ):2.0.0
+org.geomajas.gwt2.client.controller.AbstractCircleController:void onActivate(MapPresenter, ):2.0.0
+org.geomajas.gwt2.client.controller.AbstractCircleController:void onDown(HumanInputEvent<?>, ):2.0.0
+org.geomajas.gwt2.client.controller.AbstractCircleController:void onDrag(HumanInputEvent<?>, ):2.0.0
+org.geomajas.gwt2.client.controller.AbstractCircleController:void onMouseOut(MouseOutEvent, ):2.0.0
+org.geomajas.gwt2.client.controller.AbstractCircleController:void onUp(HumanInputEvent<?>, ):2.0.0
+org.geomajas.gwt2.client.controller.AbstractCircleController:void setCircleFillColor(String, ):2.0.0
+org.geomajas.gwt2.client.controller.AbstractCircleController:void setCircleFillOpacity(float, ):2.0.0
+org.geomajas.gwt2.client.controller.AbstractCircleController:void setCircleStrokeColor(String, ):2.0.0
+org.geomajas.gwt2.client.controller.AbstractCircleController:void setCircleStrokeOpacity(float, ):2.0.0
+org.geomajas.gwt2.client.controller.AbstractCircleController:void setCircleStrokeWidth(int, ):2.0.0
+org.geomajas.gwt2.client.controller.AbstractRectangleController::2.0.0
+org.geomajas.gwt2.client.controller.AbstractRectangleController:String getRectangleFillColor():2.0.0
+org.geomajas.gwt2.client.controller.AbstractRectangleController:String getRectangleStrokeColor():2.0.0
+org.geomajas.gwt2.client.controller.AbstractRectangleController:float getRectangleFillOpacity():2.0.0
+org.geomajas.gwt2.client.controller.AbstractRectangleController:float getRectangleStrokeOpacity():2.0.0
+org.geomajas.gwt2.client.controller.AbstractRectangleController:int getRectangleStrokeWidth():2.0.0
+org.geomajas.gwt2.client.controller.AbstractRectangleController:void execute(Bbox, ):2.0.0
+org.geomajas.gwt2.client.controller.AbstractRectangleController:void onActivate(MapPresenter, ):2.0.0
+org.geomajas.gwt2.client.controller.AbstractRectangleController:void onDown(HumanInputEvent<?>, ):2.0.0
+org.geomajas.gwt2.client.controller.AbstractRectangleController:void onDrag(HumanInputEvent<?>, ):2.0.0
+org.geomajas.gwt2.client.controller.AbstractRectangleController:void onMouseOut(MouseOutEvent, ):2.0.0
+org.geomajas.gwt2.client.controller.AbstractRectangleController:void onUp(HumanInputEvent<?>, ):2.0.0
+org.geomajas.gwt2.client.controller.AbstractRectangleController:void setRectangleFillColor(String, ):2.0.0
+org.geomajas.gwt2.client.controller.AbstractRectangleController:void setRectangleFillOpacity(float, ):2.0.0
+org.geomajas.gwt2.client.controller.AbstractRectangleController:void setRectangleStrokeColor(String, ):2.0.0
+org.geomajas.gwt2.client.controller.AbstractRectangleController:void setRectangleStrokeOpacity(float, ):2.0.0
+org.geomajas.gwt2.client.controller.AbstractRectangleController:void setRectangleStrokeWidth(int, ):2.0.0
+org.geomajas.gwt2.client.controller.NavigationController::2.0.0
+org.geomajas.gwt2.client.controller.NavigationController:NavigationController():2.0.0
+org.geomajas.gwt2.client.controller.NavigationController:ScrollZoomType getScrollZoomType():2.0.0
+org.geomajas.gwt2.client.controller.NavigationController:void onActivate(MapPresenter, ):2.0.0
+org.geomajas.gwt2.client.controller.NavigationController:void onDoubleClick(DoubleClickEvent, ):2.0.0
+org.geomajas.gwt2.client.controller.NavigationController:void onDown(HumanInputEvent<?>, ):2.0.0
+org.geomajas.gwt2.client.controller.NavigationController:void onDrag(HumanInputEvent<?>, ):2.0.0
+org.geomajas.gwt2.client.controller.NavigationController:void onMouseDown(MouseDownEvent, ):2.0.0
+org.geomajas.gwt2.client.controller.NavigationController:void onMouseMove(MouseMoveEvent, ):2.0.0
+org.geomajas.gwt2.client.controller.NavigationController:void onMouseOut(MouseOutEvent, ):2.0.0
+org.geomajas.gwt2.client.controller.NavigationController:void onMouseWheel(MouseWheelEvent, ):2.0.0
+org.geomajas.gwt2.client.controller.NavigationController:void onUp(HumanInputEvent<?>, ):2.0.0
+org.geomajas.gwt2.client.controller.NavigationController:void setScrollZoomType(ScrollZoomType, ):2.0.0
+org.geomajas.gwt2.client.widget.GeomajasImplClientBundleFactory::2.1.0
+org.geomajas.gwt2.client.widget.GeomajasImplClientBundleFactory:GeomajasImplClientBundleFactory():2.1.0
+org.geomajas.gwt2.client.widget.GeomajasImplClientBundleFactory:MapWidgetResource createMapWidgetResource():2.1.0
+org.geomajas.gwt2.client.widget.GeomajasImplClientBundleFactory:PanControlResource createPanControlResource():2.1.0
+org.geomajas.gwt2.client.widget.GeomajasImplClientBundleFactory:ScalebarResource createScalebarResource():2.1.0
+org.geomajas.gwt2.client.widget.GeomajasImplClientBundleFactory:ZoomControlResource createZoomControlResource():2.1.0
+org.geomajas.gwt2.client.widget.GeomajasImplClientBundleFactory:ZoomStepControlResource createZoomStepControlResource():2.1.0
+org.geomajas.gwt2.client.widget.GeomajasImplClientBundleFactory:ZoomToRectangleControlResource createZoomToRectangleControlResource():2.1.0
+org.geomajas.gwt2.client.widget.MapLayoutPanel::2.0.0
+org.geomajas.gwt2.client.widget.MapLayoutPanel:MapLayoutPanel():2.0.0
+org.geomajas.gwt2.client.widget.MapLayoutPanel:MapLayoutPanel(MapPresenter, ):2.0.0
+org.geomajas.gwt2.client.widget.MapLayoutPanel:MapPresenter getMapPresenter():2.0.0
+org.geomajas.gwt2.client.widget.MapLayoutPanel:void onResize():2.0.0
+org.geomajas.gwt2.client.widget.MapLayoutPanel:void setPresenter(MapPresenter, ):2.0.0
+org.geomajas.gwt2.client.widget.control.pan.PanControl::2.0.0
+org.geomajas.gwt2.client.widget.control.pan.PanControl:PanControl(MapPresenter, ):2.0.0
+org.geomajas.gwt2.client.widget.control.pan.PanControl:PanControl(MapPresenter, PanControlResource, ):2.0.0
+org.geomajas.gwt2.client.widget.control.pan.PanControlCssResource::2.0.0
+org.geomajas.gwt2.client.widget.control.pan.PanControlCssResource:String panControl():2.0.0
+org.geomajas.gwt2.client.widget.control.pan.PanControlCssResource:String panControlBottom():2.0.0
+org.geomajas.gwt2.client.widget.control.pan.PanControlCssResource:String panControlLeft():2.0.0
+org.geomajas.gwt2.client.widget.control.pan.PanControlCssResource:String panControlRight():2.0.0
+org.geomajas.gwt2.client.widget.control.pan.PanControlCssResource:String panControlTop():2.0.0
+org.geomajas.gwt2.client.widget.control.pan.PanControlResource::2.0.0
+org.geomajas.gwt2.client.widget.control.pan.PanControlResource:ImageResource panControlBackground():2.0.0
+org.geomajas.gwt2.client.widget.control.pan.PanControlResource:ImageResource panControlBottom():2.0.0
+org.geomajas.gwt2.client.widget.control.pan.PanControlResource:ImageResource panControlLeft():2.0.0
+org.geomajas.gwt2.client.widget.control.pan.PanControlResource:ImageResource panControlLeftHover():2.0.0
+org.geomajas.gwt2.client.widget.control.pan.PanControlResource:ImageResource panControlRight():2.0.0
+org.geomajas.gwt2.client.widget.control.pan.PanControlResource:ImageResource panControlRightHover():2.0.0
+org.geomajas.gwt2.client.widget.control.pan.PanControlResource:ImageResource panControlTop():2.0.0
+org.geomajas.gwt2.client.widget.control.pan.PanControlResource:ImageResource panControlTopHover():2.0.0
+org.geomajas.gwt2.client.widget.control.pan.PanControlResource:ImageResource panningBottomHover():2.0.0
+org.geomajas.gwt2.client.widget.control.pan.PanControlResource:PanControlCssResource css():2.0.0
+org.geomajas.gwt2.client.widget.control.scalebar.Scalebar::2.0.0
+org.geomajas.gwt2.client.widget.control.scalebar.Scalebar:Scalebar(MapPresenter, ):2.0.0
+org.geomajas.gwt2.client.widget.control.scalebar.Scalebar:Scalebar(MapPresenter, ScalebarResource, ):2.0.0
+org.geomajas.gwt2.client.widget.control.scalebar.Scalebar:UnitType getUnitType():2.0.0
+org.geomajas.gwt2.client.widget.control.scalebar.Scalebar:void setUnitType(UnitType, ):2.0.0
+org.geomajas.gwt2.client.widget.control.scalebar.ScalebarCssResource::2.0.0
+org.geomajas.gwt2.client.widget.control.scalebar.ScalebarCssResource:String scalebarControl():2.0.0
+org.geomajas.gwt2.client.widget.control.scalebar.ScalebarCssResource:String scalebarControlBar():2.0.0
+org.geomajas.gwt2.client.widget.control.scalebar.ScalebarResource::2.0.0
+org.geomajas.gwt2.client.widget.control.scalebar.ScalebarResource:ScalebarCssResource css():2.0.0
+org.geomajas.gwt2.client.widget.control.watermark.Watermark::2.0.0
+org.geomajas.gwt2.client.widget.control.watermark.Watermark:Watermark():2.0.0
+org.geomajas.gwt2.client.widget.control.watermark.Watermark:Watermark(WatermarkResource, ):2.0.0
+org.geomajas.gwt2.client.widget.control.watermark.WatermarkCssResource::2.0.0
+org.geomajas.gwt2.client.widget.control.watermark.WatermarkCssResource:String watermark():2.0.0
+org.geomajas.gwt2.client.widget.control.watermark.WatermarkResource::2.0.0
+org.geomajas.gwt2.client.widget.control.watermark.WatermarkResource:ImageResource poweredByGeomajas():2.0.0
+org.geomajas.gwt2.client.widget.control.watermark.WatermarkResource:WatermarkCssResource css():2.0.0
+org.geomajas.gwt2.client.widget.control.zoom.ZoomControlCssResource::2.0.0
+org.geomajas.gwt2.client.widget.control.zoom.ZoomControlCssResource:String zoomControl():2.0.0
+org.geomajas.gwt2.client.widget.control.zoom.ZoomControlCssResource:String zoomControlZoomIn():2.0.0
+org.geomajas.gwt2.client.widget.control.zoom.ZoomControlCssResource:String zoomControlZoomOut():2.0.0
+org.geomajas.gwt2.client.widget.control.zoom.ZoomControlResource::2.0.0
+org.geomajas.gwt2.client.widget.control.zoom.ZoomControlResource:ZoomControlCssResource css():2.0.0
+org.geomajas.gwt2.client.widget.control.zoom.ZoomStepControl::2.0.0
+org.geomajas.gwt2.client.widget.control.zoom.ZoomStepControl:ZoomStepControl(MapPresenter, ):2.0.0
+org.geomajas.gwt2.client.widget.control.zoom.ZoomStepControl:ZoomStepControl(MapPresenter, ZoomStepControlResource, ):2.0.0
+org.geomajas.gwt2.client.widget.control.zoom.ZoomStepControlCssResource::2.0.0
+org.geomajas.gwt2.client.widget.control.zoom.ZoomStepControlCssResource:String zoomStepControl():2.0.0
+org.geomajas.gwt2.client.widget.control.zoom.ZoomStepControlCssResource:String zoomStepControlStep():2.0.0
+org.geomajas.gwt2.client.widget.control.zoom.ZoomStepControlCssResource:String zoomStepControlStepHandle():2.0.0
+org.geomajas.gwt2.client.widget.control.zoom.ZoomStepControlCssResource:String zoomStepControlSteps():2.0.0
+org.geomajas.gwt2.client.widget.control.zoom.ZoomStepControlCssResource:String zoomStepControlZoomIn():2.0.0
+org.geomajas.gwt2.client.widget.control.zoom.ZoomStepControlCssResource:String zoomStepControlZoomOut():2.0.0
+org.geomajas.gwt2.client.widget.control.zoom.ZoomStepControlResource::2.0.0
+org.geomajas.gwt2.client.widget.control.zoom.ZoomStepControlResource:ImageResource zoomStepControlHandle():2.0.0
+org.geomajas.gwt2.client.widget.control.zoom.ZoomStepControlResource:ImageResource zoomStepControlHandleHover():2.0.0
+org.geomajas.gwt2.client.widget.control.zoom.ZoomStepControlResource:ImageResource zoomStepControlStep():2.0.0
+org.geomajas.gwt2.client.widget.control.zoom.ZoomStepControlResource:ZoomStepControlCssResource css():2.0.0
+org.geomajas.gwt2.client.widget.control.zoomtorect.ZoomToRectangleControl::2.0.0
+org.geomajas.gwt2.client.widget.control.zoomtorect.ZoomToRectangleControl:ZoomToRectangleControl(MapPresenter, ):2.0.0
+org.geomajas.gwt2.client.widget.control.zoomtorect.ZoomToRectangleControl:ZoomToRectangleControl(MapPresenter, ZoomToRectangleControlResource, ):2.0.0
+org.geomajas.gwt2.client.widget.control.zoomtorect.ZoomToRectangleControlResource::2.0.0
+org.geomajas.gwt2.client.widget.control.zoomtorect.ZoomToRectangleControlResource:ImageResource zoomToRectangle():2.0.0
+org.geomajas.gwt2.client.widget.control.zoomtorect.ZoomToRectangleControlResource:ImageResource zoomToRectangleHover():2.0.0
+org.geomajas.gwt2.client.widget.control.zoomtorect.ZoomToRectangleControlResource:ZoomToRectangleCssResource css():2.0.0
+org.geomajas.gwt2.client.widget.control.zoomtorect.ZoomToRectangleCssResource::2.0.0
+org.geomajas.gwt2.client.widget.control.zoomtorect.ZoomToRectangleCssResource:String zoomToRectangle():2.0.0
+org.geomajas.gwt2.client.widget.map.MapWidgetCssResource::2.1.0
+org.geomajas.gwt2.client.widget.map.MapWidgetCssResource:String mapBackground():2.1.0
+org.geomajas.gwt2.client.widget.map.MapWidgetResource::2.1.0
+org.geomajas.gwt2.client.widget.map.MapWidgetResource:ImageResource mapBackground():2.1.0
+org.geomajas.gwt2.client.widget.map.MapWidgetResource:MapWidgetCssResource css():2.1.0
+org.geomajas.gwt2.client.widget.nostyle.GeomajasImplClientBundleFactoryNoStyle::2.1.0
+org.geomajas.gwt2.client.widget.nostyle.GeomajasImplClientBundleFactoryNoStyle:GeomajasImplClientBundleFactoryNoStyle():2.1.0
+org.geomajas.gwt2.client.widget.nostyle.GeomajasImplClientBundleFactoryNoStyle:MapWidgetResource createMapWidgetResource():2.1.0
+org.geomajas.gwt2.client.widget.nostyle.GeomajasImplClientBundleFactoryNoStyle:PanControlResource createPanControlResource():2.1.0
+org.geomajas.gwt2.client.widget.nostyle.GeomajasImplClientBundleFactoryNoStyle:ScalebarResource createScalebarResource():2.1.0
+org.geomajas.gwt2.client.widget.nostyle.GeomajasImplClientBundleFactoryNoStyle:ZoomControlResource createZoomControlResource():2.1.0
+org.geomajas.gwt2.client.widget.nostyle.GeomajasImplClientBundleFactoryNoStyle:ZoomStepControlResource createZoomStepControlResource():2.1.0
+org.geomajas.gwt2.client.widget.nostyle.GeomajasImplClientBundleFactoryNoStyle:ZoomToRectangleControlResource createZoomToRectangleControlResource():2.1.0
+org.geomajas.gwt2.client.widget.nostyle.NoStyleMapWidgetResource::2.0.0
+org.geomajas.gwt2.client.widget.nostyle.NoStyleMapWidgetResource:MapWidgetCssResource css():2.0.0
+org.geomajas.gwt2.client.widget.nostyle.NoStylePanControlResource::2.0.0
+org.geomajas.gwt2.client.widget.nostyle.NoStylePanControlResource:PanControlCssResource css():2.0.0
+org.geomajas.gwt2.client.widget.nostyle.NoStyleScalebarResource::2.0.0
+org.geomajas.gwt2.client.widget.nostyle.NoStyleScalebarResource:ScalebarCssResource css():2.0.0
+org.geomajas.gwt2.client.widget.nostyle.NoStyleZoomControlResource::2.0.0
+org.geomajas.gwt2.client.widget.nostyle.NoStyleZoomControlResource:ZoomControlCssResource css():2.0.0
+org.geomajas.gwt2.client.widget.nostyle.NoStyleZoomStepControlResource::2.0.0
+org.geomajas.gwt2.client.widget.nostyle.NoStyleZoomStepControlResource:ZoomStepControlCssResource css():2.0.0
+org.geomajas.gwt2.client.widget.nostyle.NoStyleZoomToRectangleControlResource::2.0.0
+org.geomajas.gwt2.client.widget.nostyle.NoStyleZoomToRectangleControlResource:ZoomToRectangleCssResource css():2.0.0

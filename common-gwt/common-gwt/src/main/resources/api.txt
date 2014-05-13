@@ -1,0 +1,61 @@
+org.geomajas.gwt.client.controller.AbstractController::2.0.0
+org.geomajas.gwt.client.controller.AbstractController:AbstractController(MapEventParser, boolean, ):2.0.0
+org.geomajas.gwt.client.controller.AbstractController:AbstractController(boolean, ):2.0.0
+org.geomajas.gwt.client.controller.AbstractController:Coordinate getLocation(HumanInputEvent<?>, RenderSpace, ):2.0.0
+org.geomajas.gwt.client.controller.AbstractController:Element getTarget(HumanInputEvent<?>, ):2.0.0
+org.geomajas.gwt.client.controller.AbstractController:boolean isDragging():2.0.0
+org.geomajas.gwt.client.controller.AbstractController:boolean isRightMouseButton(HumanInputEvent<?>, ):2.0.0
+org.geomajas.gwt.client.controller.AbstractController:void onDoubleClick(DoubleClickEvent, ):2.0.0
+org.geomajas.gwt.client.controller.AbstractController:void onDown(HumanInputEvent<?>, ):2.0.0
+org.geomajas.gwt.client.controller.AbstractController:void onDrag(HumanInputEvent<?>, ):2.0.0
+org.geomajas.gwt.client.controller.AbstractController:void onGestureChange(GestureChangeEvent, ):2.0.0
+org.geomajas.gwt.client.controller.AbstractController:void onGestureEnd(GestureEndEvent, ):2.0.0
+org.geomajas.gwt.client.controller.AbstractController:void onGestureStart(GestureStartEvent, ):2.0.0
+org.geomajas.gwt.client.controller.AbstractController:void onMouseDown(MouseDownEvent, ):2.0.0
+org.geomajas.gwt.client.controller.AbstractController:void onMouseMove(MouseMoveEvent, ):2.0.0
+org.geomajas.gwt.client.controller.AbstractController:void onMouseOut(MouseOutEvent, ):2.0.0
+org.geomajas.gwt.client.controller.AbstractController:void onMouseOver(MouseOverEvent, ):2.0.0
+org.geomajas.gwt.client.controller.AbstractController:void onMouseUp(MouseUpEvent, ):2.0.0
+org.geomajas.gwt.client.controller.AbstractController:void onMouseWheel(MouseWheelEvent, ):2.0.0
+org.geomajas.gwt.client.controller.AbstractController:void onTouchCancel(TouchCancelEvent, ):2.0.0
+org.geomajas.gwt.client.controller.AbstractController:void onTouchEnd(TouchEndEvent, ):2.0.0
+org.geomajas.gwt.client.controller.AbstractController:void onTouchMove(TouchMoveEvent, ):2.0.0
+org.geomajas.gwt.client.controller.AbstractController:void onTouchStart(TouchStartEvent, ):2.0.0
+org.geomajas.gwt.client.controller.AbstractController:void onUp(HumanInputEvent<?>, ):2.0.0
+org.geomajas.gwt.client.controller.Controller::2.0.0
+org.geomajas.gwt.client.controller.Controller:boolean isRightMouseButton(HumanInputEvent<?>, ):2.0.0
+org.geomajas.gwt.client.controller.MapEventParser::2.0.0
+org.geomajas.gwt.client.controller.MapEventParser:Coordinate getLocation(HumanInputEvent<?>, RenderSpace, ):2.0.0
+org.geomajas.gwt.client.controller.MapEventParser:Element getTarget(HumanInputEvent<?>, ):2.0.0
+org.geomajas.gwt.client.map.RenderSpace::2.0.0
+org.geomajas.gwt.client.map.RenderSpace:SCREEN:2.0.0
+org.geomajas.gwt.client.map.RenderSpace:WORLD:2.0.0
+org.geomajas.gwt.client.util.Dom::2.0.0
+org.geomajas.gwt.client.util.Dom:Dom():2.0.0
+org.geomajas.gwt.client.util.Dom:static Element cloneSvgElement(Element, ):2.0.0
+org.geomajas.gwt.client.util.Dom:static Element createElement(String, String, ):2.0.0
+org.geomajas.gwt.client.util.Dom:static Element createElementNS(String, String, ):2.0.0
+org.geomajas.gwt.client.util.Dom:static Element createElementNS(String, String, String, ):2.0.0
+org.geomajas.gwt.client.util.Dom:static String assembleId(String, String, ):2.0.0
+org.geomajas.gwt.client.util.Dom:static String disAssembleId(String, String, ):2.0.0
+org.geomajas.gwt.client.util.Dom:static String makeUrlAbsolute(String, ):2.0.0
+org.geomajas.gwt.client.util.Dom:static boolean isChrome():2.0.0
+org.geomajas.gwt.client.util.Dom:static boolean isFireFox():2.0.0
+org.geomajas.gwt.client.util.Dom:static boolean isIE():2.0.0
+org.geomajas.gwt.client.util.Dom:static boolean isMobile():2.0.0
+org.geomajas.gwt.client.util.Dom:static boolean isOrHasChild(Element, Element, ):2.0.0
+org.geomajas.gwt.client.util.Dom:static boolean isSafari():2.0.0
+org.geomajas.gwt.client.util.Dom:static boolean isSvg():2.0.0
+org.geomajas.gwt.client.util.Dom:static boolean isTouchSupported():2.0.0
+org.geomajas.gwt.client.util.Dom:static boolean isTransformationSupported():2.0.0
+org.geomajas.gwt.client.util.Dom:static boolean isWebkit():2.0.0
+org.geomajas.gwt.client.util.Dom:static final String ID_SEPARATOR:2.0.0
+org.geomajas.gwt.client.util.Dom:static final String NS_HTML:2.0.0
+org.geomajas.gwt.client.util.Dom:static final String NS_SVG:2.0.0
+org.geomajas.gwt.client.util.Dom:static final String NS_VML:2.0.0
+org.geomajas.gwt.client.util.Dom:static final String NS_XLINK:2.0.0
+org.geomajas.gwt.client.util.Dom:static void initVMLNamespace():2.0.0
+org.geomajas.gwt.client.util.Dom:static void setElementAttributeNS(String, Element, String, String, ):2.0.0
+org.geomajas.gwt.client.util.Dom:static void setInnerSvg(Element, String, ):2.0.0
+org.geomajas.gwt.client.util.Dom:static void setTransform(Element, String, ):2.0.0
+org.geomajas.gwt.client.util.Dom:static void setTransformOrigin(Element, String, ):2.0.0

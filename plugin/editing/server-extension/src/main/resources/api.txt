@@ -1,0 +1,76 @@
+org.geomajas.plugin.editing.client.EditingServerExtension::2.0.0
+org.geomajas.plugin.editing.client.EditingServerExtension:EditingServerExtension():2.0.0
+org.geomajas.plugin.editing.client.EditingServerExtension:GeometryMergeService getGeometryMergeService():2.0.0
+org.geomajas.plugin.editing.client.EditingServerExtension:GeometrySplitService createGeometrySplitService(GeometryEditService, ):2.0.0
+org.geomajas.plugin.editing.client.EditingServerExtension:static EditingServerExtension getInstance():2.0.0
+org.geomajas.plugin.editing.client.merge.GeometryMergeException::2.0.0
+org.geomajas.plugin.editing.client.merge.GeometryMergeException:GeometryMergeException():2.0.0
+org.geomajas.plugin.editing.client.merge.GeometryMergeException:GeometryMergeException(String, ):2.0.0
+org.geomajas.plugin.editing.client.merge.GeometryMergeException:GeometryMergeException(String, Throwable, ):2.0.0
+org.geomajas.plugin.editing.client.merge.GeometryMergeService::2.0.0
+org.geomajas.plugin.editing.client.merge.GeometryMergeService:GeometryMergeService():2.0.0
+org.geomajas.plugin.editing.client.merge.GeometryMergeService:HandlerRegistration addGeometryMergeAddedHandler(GeometryMergeAddedHandler, ):2.0.0
+org.geomajas.plugin.editing.client.merge.GeometryMergeService:HandlerRegistration addGeometryMergeRemovedHandler(GeometryMergeRemovedHandler, ):2.0.0
+org.geomajas.plugin.editing.client.merge.GeometryMergeService:HandlerRegistration addGeometryMergeStartHandler(GeometryMergeStartHandler, ):2.0.0
+org.geomajas.plugin.editing.client.merge.GeometryMergeService:HandlerRegistration addGeometryMergeStopHandler(GeometryMergeStopHandler, ):2.0.0
+org.geomajas.plugin.editing.client.merge.GeometryMergeService:boolean isBusy():2.0.0
+org.geomajas.plugin.editing.client.merge.GeometryMergeService:boolean usePrecisionAsBuffer():2.0.0
+org.geomajas.plugin.editing.client.merge.GeometryMergeService:int getPrecision():2.0.0
+org.geomajas.plugin.editing.client.merge.GeometryMergeService:void addGeometry(Geometry, ):2.0.0
+org.geomajas.plugin.editing.client.merge.GeometryMergeService:void cancel():2.0.0
+org.geomajas.plugin.editing.client.merge.GeometryMergeService:void clearGeometries():2.0.0
+org.geomajas.plugin.editing.client.merge.GeometryMergeService:void removeGeometry(Geometry, ):2.0.0
+org.geomajas.plugin.editing.client.merge.GeometryMergeService:void setPrecision(int, ):2.0.0
+org.geomajas.plugin.editing.client.merge.GeometryMergeService:void setUsePrecisionAsBuffer(boolean, ):2.0.0
+org.geomajas.plugin.editing.client.merge.GeometryMergeService:void start():2.0.0
+org.geomajas.plugin.editing.client.merge.GeometryMergeService:void stop(GeometryFunction, ):2.0.0
+org.geomajas.plugin.editing.client.merge.event.GeometryMergeAddedEvent::2.0.0
+org.geomajas.plugin.editing.client.merge.event.GeometryMergeAddedEvent:Geometry getGeometry():2.0.0
+org.geomajas.plugin.editing.client.merge.event.GeometryMergeAddedEvent:GeometryMergeAddedEvent(Geometry, ):2.0.0
+org.geomajas.plugin.editing.client.merge.event.GeometryMergeAddedEvent:Type<GeometryMergeAddedHandler> getAssociatedType():2.0.0
+org.geomajas.plugin.editing.client.merge.event.GeometryMergeAddedHandler:. TYPE:2.0.0
+org.geomajas.plugin.editing.client.merge.event.GeometryMergeAddedHandler::2.0.0
+org.geomajas.plugin.editing.client.merge.event.GeometryMergeAddedHandler:void onGeometryMergingAdded(GeometryMergeAddedEvent, ):2.0.0
+org.geomajas.plugin.editing.client.merge.event.GeometryMergeRemovedEvent::2.0.0
+org.geomajas.plugin.editing.client.merge.event.GeometryMergeRemovedEvent:Geometry getGeometry():2.0.0
+org.geomajas.plugin.editing.client.merge.event.GeometryMergeRemovedEvent:GeometryMergeRemovedEvent(Geometry, ):2.0.0
+org.geomajas.plugin.editing.client.merge.event.GeometryMergeRemovedEvent:Type<GeometryMergeRemovedHandler> getAssociatedType():2.0.0
+org.geomajas.plugin.editing.client.merge.event.GeometryMergeRemovedHandler:. TYPE:2.0.0
+org.geomajas.plugin.editing.client.merge.event.GeometryMergeRemovedHandler::2.0.0
+org.geomajas.plugin.editing.client.merge.event.GeometryMergeRemovedHandler:void onGeometryMergingRemoved(GeometryMergeRemovedEvent, ):2.0.0
+org.geomajas.plugin.editing.client.merge.event.GeometryMergeStartEvent::2.0.0
+org.geomajas.plugin.editing.client.merge.event.GeometryMergeStartEvent:GeometryMergeStartEvent():2.0.0
+org.geomajas.plugin.editing.client.merge.event.GeometryMergeStartEvent:Type<GeometryMergeStartHandler> getAssociatedType():2.0.0
+org.geomajas.plugin.editing.client.merge.event.GeometryMergeStartHandler:. TYPE:2.0.0
+org.geomajas.plugin.editing.client.merge.event.GeometryMergeStartHandler::2.0.0
+org.geomajas.plugin.editing.client.merge.event.GeometryMergeStartHandler:void onGeometryMergingStart(GeometryMergeStartEvent, ):2.0.0
+org.geomajas.plugin.editing.client.merge.event.GeometryMergeStopEvent::2.0.0
+org.geomajas.plugin.editing.client.merge.event.GeometryMergeStopEvent:Geometry getGeometry():2.0.0
+org.geomajas.plugin.editing.client.merge.event.GeometryMergeStopEvent:GeometryMergeStopEvent(Geometry, ):2.0.0
+org.geomajas.plugin.editing.client.merge.event.GeometryMergeStopEvent:Type<GeometryMergeStopHandler> getAssociatedType():2.0.0
+org.geomajas.plugin.editing.client.merge.event.GeometryMergeStopHandler:. TYPE:2.0.0
+org.geomajas.plugin.editing.client.merge.event.GeometryMergeStopHandler::2.0.0
+org.geomajas.plugin.editing.client.merge.event.GeometryMergeStopHandler:void onGeometryMergingStop(GeometryMergeStopEvent, ):2.0.0
+org.geomajas.plugin.editing.client.split.GeometrySplitService::2.0.0
+org.geomajas.plugin.editing.client.split.GeometrySplitService:Geometry getGeometry():2.0.0
+org.geomajas.plugin.editing.client.split.GeometrySplitService:Geometry getSplitLine():2.0.0
+org.geomajas.plugin.editing.client.split.GeometrySplitService:GeometryEditService getGeometryEditService():2.0.0
+org.geomajas.plugin.editing.client.split.GeometrySplitService:GeometrySplitService(GeometryEditService, ):2.0.0
+org.geomajas.plugin.editing.client.split.GeometrySplitService:HandlerRegistration addGeometrySplitStartHandler(GeometrySplitStartHandler, ):2.0.0
+org.geomajas.plugin.editing.client.split.GeometrySplitService:HandlerRegistration addGeometrySplitStopHandler(GeometrySplitStopHandler, ):2.0.0
+org.geomajas.plugin.editing.client.split.GeometrySplitService:void start(Geometry, ):2.0.0
+org.geomajas.plugin.editing.client.split.GeometrySplitService:void stop(GeometryArrayFunction, ):2.0.0
+org.geomajas.plugin.editing.client.split.event.GeometrySplitStartEvent::2.0.0
+org.geomajas.plugin.editing.client.split.event.GeometrySplitStartEvent:Geometry getGeometry():2.0.0
+org.geomajas.plugin.editing.client.split.event.GeometrySplitStartEvent:GeometrySplitStartEvent(Geometry, ):2.0.0
+org.geomajas.plugin.editing.client.split.event.GeometrySplitStartEvent:Type<GeometrySplitStartHandler> getAssociatedType():2.0.0
+org.geomajas.plugin.editing.client.split.event.GeometrySplitStartHandler:. TYPE:2.0.0
+org.geomajas.plugin.editing.client.split.event.GeometrySplitStartHandler::2.0.0
+org.geomajas.plugin.editing.client.split.event.GeometrySplitStartHandler:void onGeometrySplitStart(GeometrySplitStartEvent, ):2.0.0
+org.geomajas.plugin.editing.client.split.event.GeometrySplitStopEvent::2.0.0
+org.geomajas.plugin.editing.client.split.event.GeometrySplitStopEvent:Geometry getGeometry():2.0.0
+org.geomajas.plugin.editing.client.split.event.GeometrySplitStopEvent:GeometrySplitStopEvent(Geometry, ):2.0.0
+org.geomajas.plugin.editing.client.split.event.GeometrySplitStopEvent:Type<GeometrySplitStopHandler> getAssociatedType():2.0.0
+org.geomajas.plugin.editing.client.split.event.GeometrySplitStopHandler:. TYPE:2.0.0
+org.geomajas.plugin.editing.client.split.event.GeometrySplitStopHandler::2.0.0
+org.geomajas.plugin.editing.client.split.event.GeometrySplitStopHandler:void onGeometrySplitStop(GeometrySplitStopEvent, ):2.0.0
