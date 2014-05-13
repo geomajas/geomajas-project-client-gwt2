@@ -43,9 +43,9 @@ import com.google.gwt.event.dom.client.MouseUpHandler;
 
 /**
  * Controller for {@link GeometryEditable} objects.
- * 
+ *
  * @author Jan De Moerloose
- * 
+ *
  */
 public class GeometryEditController extends AbstractGraphicsController implements GeometryEditChangeStateHandler,
 		GeometryEditStopHandler, GraphicsObjectContainerEvent.Handler {
@@ -159,7 +159,7 @@ public class GeometryEditController extends AbstractGraphicsController implement
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	class EditHandler implements MouseUpHandler {
 
@@ -211,12 +211,6 @@ public class GeometryEditController extends AbstractGraphicsController implement
 		public void onClick(ClickEvent event) {
 		}
 
-	}
-
-	@Override
-	public void setVisible(boolean visible) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }
