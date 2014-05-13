@@ -13,17 +13,41 @@ package org.geomajas.gwt2.widget.client.featureselectbox.presenter;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.map.MapPresenter;
 
-
+/**
+ * MVP presenter for {@link org.geomajas.gwt2.widget.client.featureselectbox.FeatureSelectListener}.
+ * 
+ * @author Jan De Moerloose
+ * 
+ */
 public interface FeatureSelectBoxPresenter {
 
+	/**
+	 * 
+	 * @param label
+	 */
 	void onFeatureSelected(String label);
 
+	/**
+	 * 
+	 * @param mapPresenter
+	 */
 	void onActivate(MapPresenter mapPresenter);
 
+	/**
+	 * 
+	 */
 	void onDeactivate();
 
+	/**
+	 * 
+	 * @param worldCoordinate
+	 */
 	void onClick(Coordinate worldCoordinate);
 
+	/**
+	 * 
+	 * @param pixelBuffer
+	 */
 	void setPixelBuffer(int pixelBuffer);
 
 }

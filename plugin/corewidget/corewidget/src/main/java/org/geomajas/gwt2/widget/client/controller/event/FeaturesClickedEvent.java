@@ -22,7 +22,7 @@ import java.util.List;
  * list of features.
  *
  * @author Oliver May
- * @since 2.0.0
+ * @since 2.1.0
  */
 @Api(allMethods = true)
 public class FeaturesClickedEvent extends Event<FeaturesClickedHandler> {
@@ -30,6 +30,12 @@ public class FeaturesClickedEvent extends Event<FeaturesClickedHandler> {
 	private Coordinate coordinate;
 	private List<Feature> features;
 
+	/**
+	 * Main constructor.
+	 * 
+	 * @param coordinate world coordinate
+	 * @param features list of features
+	 */
 	public FeaturesClickedEvent(Coordinate coordinate, List<Feature> features) {
 		this.coordinate = coordinate;
 		this.features = features;

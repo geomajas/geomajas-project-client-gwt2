@@ -16,12 +16,12 @@ import org.geomajas.gwt2.widget.client.featureselectbox.view.FeatureSelectBoxVie
 
 /**
  * Starting point for the core widget plugin.
- *
+ * 
  * @author Jan De Moerloose
  * @since 2.0.0
  */
 @Api(allMethods = true)
-public class CoreWidget {
+public final class CoreWidget {
 
 	private static CoreWidget instance;
 
@@ -39,7 +39,7 @@ public class CoreWidget {
 
 	/**
 	 * Get a singleton instance.
-	 *
+	 * 
 	 * @return Return CoreWidget!
 	 */
 	public static CoreWidget getInstance() {
@@ -49,12 +49,31 @@ public class CoreWidget {
 		return instance;
 	}
 
+	/**
+	 * Replace the instance for testing.
+	 * 
+	 * @param coreWidget
+	 */
 	public static void setInstance(CoreWidget coreWidget) {
 		instance = coreWidget;
 	}
 
+	/**
+	 * Get the MVP view factory for the widgets of this plugin.
+	 * 
+	 * @return the factory
+	 */
 	public ViewFactory getViewFactory() {
 		return viewFactory;
+	}
+
+	/**
+	 * Replace the default MVP view factory for the widgets of this plugin.
+	 * 
+	 * @param viewFactory the new factory
+	 */
+	public void setViewFactory(ViewFactory viewFactory) {
+		this.viewFactory = viewFactory;
 	}
 
 }

@@ -18,7 +18,7 @@ import org.geomajas.annotation.Api;
  * Interface for handling {@link FeaturesClickedEvent}s.
  *
  * @author Oliver May
- * @since 2.0.0
+ * @since 2.1.0
  */
 @Api(allMethods = true)
 public interface FeaturesClickedHandler extends EventHandler {

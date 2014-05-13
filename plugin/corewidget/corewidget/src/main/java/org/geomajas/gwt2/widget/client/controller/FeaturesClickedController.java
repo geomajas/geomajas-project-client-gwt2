@@ -38,6 +38,7 @@ import java.util.Map;
  *
  * @author Dosi Bingov
  * @author Oliver May
+ * @since 2.1.0
  *
  */
 @Api(allMethods = true)

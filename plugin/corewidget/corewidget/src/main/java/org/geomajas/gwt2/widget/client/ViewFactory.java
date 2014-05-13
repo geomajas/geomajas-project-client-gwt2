@@ -10,10 +10,23 @@
  */
 package org.geomajas.gwt2.widget.client;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.widget.client.featureselectbox.view.FeatureSelectBoxView;
 
-
+/**
+ * MVP view factory for the widgets of this plugin.
+ * 
+ * @author Jan De Moerloose
+ * @since 2.1.0
+ * 
+ */
+@Api(allMethods = true)
 public interface ViewFactory {
 
+	/**
+	 * Create an instance of {@link FeatureSelectBoxView}.
+	 * 
+	 * @return the instance
+	 */
 	FeatureSelectBoxView createFeatureSelectBox();
 }

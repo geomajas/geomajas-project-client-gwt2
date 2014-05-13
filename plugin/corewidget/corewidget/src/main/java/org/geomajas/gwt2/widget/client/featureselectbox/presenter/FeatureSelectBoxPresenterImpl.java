@@ -10,6 +10,11 @@
  */
 package org.geomajas.gwt2.widget.client.featureselectbox.presenter;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
+
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.map.RenderSpace;
@@ -19,13 +24,8 @@ import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.client.map.feature.FeatureMapFunction;
 import org.geomajas.gwt2.client.map.feature.ServerFeatureService;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
-import org.geomajas.gwt2.widget.client.controller.event.FeatureClickedEvent;
+import org.geomajas.gwt2.widget.client.featureselectbox.event.FeatureClickedEvent;
 import org.geomajas.gwt2.widget.client.featureselectbox.view.FeatureSelectBoxView;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * Feature select box interface.
@@ -79,16 +79,19 @@ public class FeatureSelectBoxPresenterImpl implements FeatureSelectBoxPresenter 
 		Geometry point = new Geometry(Geometry.POINT, 0, -1);
 		point.setCoordinates(new Coordinate[] { worldCoordinate });
 
-		GeomajasServerExtension.getInstance().getServerFeatureService().search(mapPresenter, point,
-				calculateBufferFromPixelTolerance(), ServerFeatureService.QueryType.INTERSECTS, ServerFeatureService.SearchLayerType.SEARCH_ALL_LAYERS, -1,
-				new FeatureMapFunction() {
+		GeomajasServerExtension
+				.getInstance()
+				.getServerFeatureService()
+				.search(mapPresenter, point, calculateBufferFromPixelTolerance(),
+						ServerFeatureService.QueryType.INTERSECTS,
+						ServerFeatureService.SearchLayerType.SEARCH_ALL_LAYERS, -1, new FeatureMapFunction() {
 
-					@Override
-					public void execute(Map<FeaturesSupported, List<Feature>> featureMap) {
-						getData(featureMap);
+							@Override
+							public void execute(Map<FeaturesSupported, List<Feature>> featureMap) {
+								getData(featureMap);
 
-					}
-				});
+							}
+						});
 
 	}
 

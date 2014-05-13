@@ -33,7 +33,7 @@ org.geomajas.gwt2.widget.client.featureselectbox.event.FeatureClickedEvent:Featu
 org.geomajas.gwt2.widget.client.featureselectbox.event.FeatureClickedEvent:Type<FeatureClickedHandler> getAssociatedType():2.0.0
 org.geomajas.gwt2.widget.client.featureselectbox.event.FeatureClickedHandler::2.0.0
 org.geomajas.gwt2.widget.client.featureselectbox.event.FeatureClickedHandler:Type<FeatureClickedHandler> TYPE:2.0.0
-org.geomajas.gwt2.widget.client.featureselectbox.event.FeatureClickedHandler:void onFeatureClicked(., ):2.0.0
+org.geomajas.gwt2.widget.client.featureselectbox.event.FeatureClickedHandler:void onFeatureClicked(FeatureClickedEvent, ):2.0.0
 org.geomajas.gwt2.widget.client.featureselectbox.resource.FeatureSelectBoxCssResource::2.0.0
 org.geomajas.gwt2.widget.client.featureselectbox.resource.FeatureSelectBoxCssResource:String featureSelectBox():2.0.0
 org.geomajas.gwt2.widget.client.featureselectbox.resource.FeatureSelectBoxCssResource:String featureSelectBoxCell():2.0.0

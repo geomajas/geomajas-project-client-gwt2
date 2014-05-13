@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 
 /**
  * Tool tip box that displays a list of features from where one can be selected.
- *
+ * 
  * @author Dosi Bingov
  * @author Oliver May
  * @since 2.0.0
@@ -47,6 +47,9 @@ public class FeatureSelectListener extends AbstractMapController implements MapC
 
 	protected Coordinate clickedPosition;
 
+	/**
+	 * Default constructor.
+	 */
 	public FeatureSelectListener() {
 		super(false);
 		view = CoreWidget.getInstance().getViewFactory().createFeatureSelectBox();

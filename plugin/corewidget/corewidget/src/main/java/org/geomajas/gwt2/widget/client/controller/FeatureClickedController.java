@@ -11,7 +11,9 @@
 
 package org.geomajas.gwt2.widget.client.controller;
 
-import com.google.gwt.event.dom.client.MouseEvent;
+import java.util.List;
+import java.util.Map;
+
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
@@ -22,12 +24,11 @@ import org.geomajas.gwt2.client.map.feature.FeatureMapFunction;
 import org.geomajas.gwt2.client.map.feature.ServerFeatureService.QueryType;
 import org.geomajas.gwt2.client.map.feature.ServerFeatureService.SearchLayerType;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
-import org.geomajas.gwt2.widget.client.controller.event.FeatureClickedEvent;
+import org.geomajas.gwt2.widget.client.featureselectbox.event.FeatureClickedEvent;
 import org.geomajas.gwt2.widget.client.itemselect.ItemSelectView;
 import org.geomajas.gwt2.widget.client.itemselect.ItemSelectWidget;
 
-import java.util.List;
-import java.util.Map;
+import com.google.gwt.event.dom.client.MouseEvent;
 
 /**
  * Controller that provides a feature based on a location clicked on the map. When multiple features
@@ -36,7 +37,7 @@ import java.util.Map;
  *
  * @author Dosi Bingov
  * @author Oliver May
- * @since 2.0.0
+ * @since 2.1.0
  *
  */
 @Api(allMethods = true)
@@ -54,7 +55,11 @@ public class FeatureClickedController extends FeaturesClickedController implemen
 		this(new ItemSelectWidget<Feature>());
 	}
 
-
+	/**
+	 * Construct a feature clicked controller with a selection of features.
+	 * 
+	 * @param itemSelectView
+	 */
 	public FeatureClickedController(ItemSelectView<Feature> itemSelectView) {
 		super();
 		this.itemSelectView = itemSelectView;

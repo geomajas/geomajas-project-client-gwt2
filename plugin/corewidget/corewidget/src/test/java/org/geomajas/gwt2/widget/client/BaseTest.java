@@ -35,9 +35,6 @@ public abstract class BaseTest {
 	protected GeomajasImpl geomajasImpl;
 
 	@Mock
-	protected CoreWidget coreWidget;
-
-	@Mock
 	protected GeomajasServerExtension geomajasServerExtension;
 
 	@Mock
@@ -46,9 +43,8 @@ public abstract class BaseTest {
 	@Before
 	public void setUp() {
 		GeomajasImpl.setInstance(geomajasImpl);
-		CoreWidget.setInstance(coreWidget);
 		GeomajasServerExtension.setInstance(geomajasServerExtension);
-		when(coreWidget.getViewFactory()).thenReturn(viewFactory);
+		CoreWidget.getInstance().setViewFactory(viewFactory);
 		when(viewFactory.createFeatureSelectBox()).thenReturn(featureSelectBoxView);
 		when(geomajasServerExtension.getServerFeatureService()).thenReturn(serverFeatureService);
 	}
