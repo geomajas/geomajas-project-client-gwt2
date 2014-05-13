@@ -1,0 +1,21 @@
+org.geomajas.plugin.print.client.util.PrintLayout::2.0.0
+org.geomajas.plugin.print.client.util.PrintLayout:static String iconWaitBlank:2.0.0
+org.geomajas.plugin.print.client.util.PrintLayout:static String iconWaitMoving:2.0.0
+org.geomajas.plugin.print.client.util.PrintLayout:static String printPreferencesHeight:2.0.0
+org.geomajas.plugin.print.client.util.PrintLayout:static String printPreferencesResolutionHeight:2.0.0
+org.geomajas.plugin.print.client.util.PrintLayout:static String printPreferencesResolutionWidth:2.0.0
+org.geomajas.plugin.print.client.util.PrintLayout:static String printPreferencesWidth:2.0.0
+org.geomajas.plugin.print.client.util.PrintLayout:static String templateDefaultBackgroundColor:2.0.0
+org.geomajas.plugin.print.client.util.PrintLayout:static String templateDefaultBorderColor:2.0.0
+org.geomajas.plugin.print.client.util.PrintLayout:static String templateDefaultColor:2.0.0
+org.geomajas.plugin.print.client.util.PrintLayout:static String templateDefaultFontFamily:2.0.0
+org.geomajas.plugin.print.client.util.PrintLayout:static String templateDefaultFontStyle:2.0.0
+org.geomajas.plugin.print.client.util.PrintLayout:static boolean templateIncludeLegend:2.0.0
+org.geomajas.plugin.print.client.util.PrintLayout:static boolean templateIncludeNorthArrow:2.0.0
+org.geomajas.plugin.print.client.util.PrintLayout:static boolean templateIncludeScaleBar:2.0.0
+org.geomajas.plugin.print.client.util.PrintLayout:static double templateDefaultFontSize:2.0.0
+org.geomajas.plugin.print.client.util.PrintLayout:static double templateMarginX:2.0.0
+org.geomajas.plugin.print.client.util.PrintLayout:static double templateMarginY:2.0.0
+org.geomajas.plugin.print.client.util.PrintLayout:static double templateNorthArrowWidth:2.0.0
+org.geomajas.plugin.print.client.util.PrintLayout:static int iconWaitHeight:2.0.0
+org.geomajas.plugin.print.client.util.PrintLayout:static int iconWaitWidth:2.0.0
