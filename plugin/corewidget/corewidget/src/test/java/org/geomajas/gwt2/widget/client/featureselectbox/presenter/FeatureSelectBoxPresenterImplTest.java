@@ -10,19 +10,7 @@
  */
 package org.geomajas.gwt2.widget.client.featureselectbox.presenter;
 
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.mock;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import junit.framework.Assert;
-
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.geometry.service.WktException;
@@ -36,12 +24,20 @@ import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.client.map.feature.FeatureMapFunction;
 import org.geomajas.gwt2.client.map.feature.ServerFeatureService;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
-import org.geomajas.gwt2.client.map.render.LayerRenderer;
 import org.geomajas.gwt2.widget.client.BaseTest;
+import org.geomajas.gwt2.widget.client.controller.event.FeatureClickedEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
 
 public class FeatureSelectBoxPresenterImplTest extends BaseTest {
 
@@ -53,7 +49,7 @@ public class FeatureSelectBoxPresenterImplTest extends BaseTest {
 
 	@Mock
 	private MapEventBus eventBus;
-	
+
 	@Mock
 	private ViewPortTransformationService transformationService;
 
@@ -73,7 +69,7 @@ public class FeatureSelectBoxPresenterImplTest extends BaseTest {
 
 	@Test
 	public void onActivate() {
-		FeatureSelectBoxPresenterImpl presenter = new FeatureSelectBoxPresenterImpl();
+		FeatureSelectBoxPresenterImpl presenter = new FeatureSelectBoxPresenterImpl(featureSelectBoxView);
 		presenter.onActivate(mapPresenter);
 		Assert.assertEquals(mapPresenter, presenter.getMapPresenter());
 	}
@@ -84,8 +80,8 @@ public class FeatureSelectBoxPresenterImplTest extends BaseTest {
 	}
 
 	@Test
-	public void onClick() throws WktException {
-		FeatureSelectBoxPresenterImpl presenter = new FeatureSelectBoxPresenterImpl();
+	public void onClick2() throws WktException {
+		FeatureSelectBoxPresenterImpl presenter = new FeatureSelectBoxPresenterImpl(featureSelectBoxView);
 		presenter.onActivate(mapPresenter);
 		presenter.onClick(new Coordinate(100, 80));
 		// capturing arguments to verify in special way or to perform callback !
@@ -110,6 +106,30 @@ public class FeatureSelectBoxPresenterImplTest extends BaseTest {
 		verify(featureSelectBoxView).addLabel("label1");
 		verify(featureSelectBoxView).addLabel("label2");
 		verify(featureSelectBoxView).show(false);
+	}
+
+	@Test
+	public void onClick1() throws WktException {
+		FeatureSelectBoxPresenterImpl presenter = new FeatureSelectBoxPresenterImpl(featureSelectBoxView);
+		presenter.onActivate(mapPresenter);
+		presenter.onClick(new Coordinate(100, 80));
+		// capturing arguments to verify in special way or to perform callback !
+		ArgumentCaptor<Geometry> geom = ArgumentCaptor.forClass(Geometry.class);
+		ArgumentCaptor<FeatureMapFunction> function = ArgumentCaptor.forClass(FeatureMapFunction.class);
+		verify(serverFeatureService).search(eq(mapPresenter), geom.capture(), eq(200.0),
+				eq(ServerFeatureService.QueryType.INTERSECTS),
+				eq(ServerFeatureService.SearchLayerType.SEARCH_ALL_LAYERS), eq(-1f), function.capture());
+		// verify geometry
+		Assert.assertEquals("POINT (100.0 80.0)", WktService.toWkt(geom.getValue()));
+		// make the callback with some mocks
+		Map<FeaturesSupported, List<Feature>> features = new HashMap<FeaturesSupported, List<Feature>>();
+		FeaturesSupported layer = mock(FeaturesSupported.class);
+		Feature f1 = mock(Feature.class);
+		when(f1.getLabel()).thenReturn("label1");
+		features.put(layer, Arrays.asList(f1));
+		function.getValue().execute(features);
+		// verify event is sent
+		verify(eventBus).fireEvent(any(FeatureClickedEvent.class));
 	}
 
 	@Test

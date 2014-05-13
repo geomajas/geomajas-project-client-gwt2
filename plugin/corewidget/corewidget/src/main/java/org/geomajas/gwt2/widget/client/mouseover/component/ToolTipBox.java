@@ -1,7 +1,7 @@
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
- * Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+ * Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
  * The program is available in open source according to the GNU Affero
  * General Public License. All contributions in this program are covered
@@ -26,9 +26,9 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Tool tip box that is shown when the MouseOverListener is added to the map.
- * 
+ *
  * @author Dosi Bingov
- * 
+ *
  */
 public class ToolTipBox implements IsWidget {
 
@@ -43,9 +43,9 @@ public class ToolTipBox implements IsWidget {
 
 	/**
 	 * UI binder interface.
-	 * 
+	 *
 	 * @author Dosi Bingov
-	 * 
+	 *
 	 */
 	interface ToolTipBoxUiBinder extends UiBinder<Widget, ToolTipBox> {
 	}

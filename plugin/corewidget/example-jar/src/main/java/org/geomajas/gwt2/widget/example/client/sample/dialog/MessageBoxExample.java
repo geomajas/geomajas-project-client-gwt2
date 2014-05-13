@@ -1,7 +1,7 @@
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
- * Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+ * Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
  * The program is available in open source according to the GNU Affero
  * General Public License. All contributions in this program are covered
@@ -36,7 +36,7 @@ public class MessageBoxExample implements SamplePanel, Callback<Boolean, Void> {
 	private static final CloseableDialogUiBinder UIBINDER = GWT.create(CloseableDialogUiBinder.class);
 
 	private static final SampleMessages MSG = GWT.create(SampleMessages.class);
-	
+
 	/**
 	 * UI binder interface.
 	 */
@@ -51,9 +51,9 @@ public class MessageBoxExample implements SamplePanel, Callback<Boolean, Void> {
 	public Widget asWidget() {
 		return rootElement;
 	}
-	
+
 	// --------------------------------------------------------
-	
+
 	@UiHandler("infoMessageBtn")
 	protected void onInfoMessageBtnClicked(ClickEvent event) {
 		MessageBox.showMessageBox(MSG.messageBoxInfoMessageBtn(), MSG.messageBoxMessage());

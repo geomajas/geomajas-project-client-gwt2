@@ -1,7 +1,7 @@
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
- * Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+ * Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
  * The program is available in open source according to the GNU Affero
  * General Public License. All contributions in this program are covered
@@ -17,7 +17,7 @@ import com.google.gwt.resources.client.CssResource;
 
 /**
  * CSS resource bundle that contains styles used in pure Gwt Messagebox widget.
- * 
+ *
  * @author Kristof Heirwegh
  * @since 1.0.0
  */
@@ -44,7 +44,7 @@ public interface MessageBoxCssResource extends CssResource {
 	 * @return
 	 */
 	String messageBoxContent();
-	
+
 	/**
 	 * Get a CSS style class.
 	 * @return
@@ -65,5 +65,5 @@ public interface MessageBoxCssResource extends CssResource {
 	 * @return
 	 */
 	String messageBoxIconInfo();
-	
+
 }

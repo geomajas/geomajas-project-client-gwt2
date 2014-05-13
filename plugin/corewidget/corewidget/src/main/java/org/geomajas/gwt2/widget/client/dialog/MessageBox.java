@@ -1,7 +1,7 @@
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
- * Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+ * Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
  * The program is available in open source according to the GNU Affero
  * General Public License. All contributions in this program are covered
@@ -31,10 +31,10 @@ import org.geomajas.gwt2.widget.client.i18n.WidgetCoreInternationalization;
  * General MessageBox for showing a message.
  * <p>
  * Includes extra buttons so it can also be used to ask a question.
- * 
+ *
  * <p>
  * Use the different static methods to conveniently create a MessageBox.
- * 
+ *
  * @author Kristof Heirwegh
  */
 public class MessageBox implements IsWidget {
@@ -172,7 +172,7 @@ public class MessageBox implements IsWidget {
 
 	/***
 	 * Set width of all buttons in pixels.
-	 * 
+	 *
 	 * @param width
 	 */
 	public void setButtonWidth(int width) {
@@ -205,7 +205,7 @@ public class MessageBox implements IsWidget {
 			icon.getElement().getStyle().setDisplay(Display.NONE);
 		} else {
 			icon.getElement().getStyle().setDisplay(Display.BLOCK);
-			icon.setStyleName(MessageBoxResource.INSTANCE.css().messageBoxIcon());	
+			icon.setStyleName(MessageBoxResource.INSTANCE.css().messageBoxIcon());
 			switch (messageStyleType) {
 				case HELP:
 					icon.addStyleName(MessageBoxResource.INSTANCE.css().messageBoxIconHelp());
@@ -294,7 +294,7 @@ public class MessageBox implements IsWidget {
 	 * onFinished.onSuccess will be called with true for yes, and false for no.
 	 * <p>
 	 * if the dialogbox is closed with the closebutton instead of a button, onFinished.onFailure will be called.
-	 * 
+	 *
 	 * @param title
 	 * @param question
 	 * @param onFinished
@@ -313,7 +313,7 @@ public class MessageBox implements IsWidget {
 	 * <p>
 	 * onFinished.onSuccess will be called with true for yes, and false for no. onFinished.onFailure will be called for
 	 * cancel and when the dialogbox is closed with the closebutton.
-	 * 
+	 *
 	 * @param title
 	 * @param question
 	 * @param onFinished

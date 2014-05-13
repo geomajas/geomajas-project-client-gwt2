@@ -1,7 +1,7 @@
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
- * Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+ * Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
  * The program is available in open source according to the GNU Affero
  * General Public License. All contributions in this program are covered
@@ -17,7 +17,7 @@ import com.google.gwt.resources.client.ClientBundle;
 
 /**
  * Client resource bundle interface for pure GWT widgets related to the map.
- * 
+ *
  * @author Pieter De Graef
  * @since 1.0.0
  */
@@ -29,7 +29,7 @@ public interface WidgetMapResources extends ClientBundle {
 
 	/**
 	 * Get the css resource.
-	 * 
+	 *
 	 * @return the css resource
 	 */
 	@Source("geomajas-widget-map.css")

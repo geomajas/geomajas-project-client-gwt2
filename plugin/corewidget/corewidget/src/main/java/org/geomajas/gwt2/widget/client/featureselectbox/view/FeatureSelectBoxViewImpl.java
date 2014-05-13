@@ -20,7 +20,6 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.gwt2.widget.client.featureselectbox.presenter.FeatureSelectBoxPresenter;
-import org.geomajas.gwt2.widget.client.featureselectbox.presenter.FeatureSelectBoxPresenterImpl;
 import org.geomajas.gwt2.widget.client.featureselectbox.resource.FeatureSelectBoxResource;
 
 import java.util.List;
@@ -63,7 +62,6 @@ public class FeatureSelectBoxViewImpl implements FeatureSelectBoxView {
 		widget = (PopupPanel) UIBINDER.createAndBindUi(this);
 		widget.addStyleName(FeatureSelectBoxResource.INSTANCE.css().featureSelectBox());
 		FeatureSelectBoxResource.INSTANCE.css().ensureInjected();
-		presenter = new FeatureSelectBoxPresenterImpl();
 	}
 
 	@Override

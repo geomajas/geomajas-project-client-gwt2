@@ -1,7 +1,7 @@
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
- * Copyright 2008-2013 Geosparc nv, http://www.geosparc.com/, Belgium.
+ * Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
  * The program is available in open source according to the GNU Affero
  * General Public License. All contributions in this program are covered
@@ -28,14 +28,14 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * ContentPanel that demonstrates changing layer order.
- * 
+ *
  * @author Jan De Moerloose
  */
 public class MapLegendDropDownSample implements SamplePanel {
 
 	/**
 	 * UI binder for this widget.
-	 * 
+	 *
 	 * @author Pieter De Graef
 	 */
 	interface MyUiBinder extends UiBinder<Widget, MapLegendDropDownSample> {
