@@ -60,7 +60,7 @@ public class EditPolygonPanel implements SamplePanel {
 
 	private static final MyUiBinder UI_BINDER = GWT.create(MyUiBinder.class);
 	
-	private static final SampleMessages messages = GWT.create(SampleMessages.class);
+	private static final SampleMessages MESSAGES = GWT.create(SampleMessages.class);
 
 	private MapPresenter mapPresenter;
 
@@ -215,10 +215,10 @@ public class EditPolygonPanel implements SamplePanel {
 	protected void onSuspendButtonClicked(ClickEvent event) {
 		if (editService.isStarted() && !editService.isSuspended()) {
 			editService.suspend();
-			suspendBtn.setText(messages.generalResume());
+			suspendBtn.setText(MESSAGES.generalResume());
 		} else if (editService.isSuspended()) {
 			editService.resume();
-			suspendBtn.setText(messages.generalSuspend());
+			suspendBtn.setText(MESSAGES.generalSuspend());
 		}
 	}
 }

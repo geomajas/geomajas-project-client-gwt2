@@ -11,7 +11,7 @@
 
 package org.geomajas.plugin.editing.client.event;
 
-import org.geomajas.annotation.FutureApi;
+import org.geomajas.annotation.Api;
 import org.geomajas.annotation.UserImplemented;
 
 import com.google.gwt.event.shared.EventHandler;
@@ -23,10 +23,11 @@ import com.google.gwt.event.shared.GwtEvent;
  * @author Jan De Moerloose
  * @since 2.1.0
  */
-@FutureApi(allMethods = true)
+@Api(allMethods = true)
 @UserImplemented
 public interface GeometryEditSuspendHandler extends EventHandler {
 
+	/** The type of the handler. */
 	GwtEvent.Type<GeometryEditSuspendHandler> TYPE = new GwtEvent.Type<GeometryEditSuspendHandler>();
 
 	/**

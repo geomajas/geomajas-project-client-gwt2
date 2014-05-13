@@ -82,6 +82,7 @@ public interface GeometryEditService extends GeometryIndexOperationService {
 	 * 
 	 * @param handler The {@link GeometryEditSuspendHandler} to add as listener.
 	 * @return The registration of the handler.
+	 * @since 2.1.0
 	 */
 	HandlerRegistration addGeometryEditSuspendHandler(GeometryEditSuspendHandler handler);
 
@@ -91,6 +92,7 @@ public interface GeometryEditService extends GeometryIndexOperationService {
 	 * 
 	 * @param handler The {@link GeometryEditResumeHandler} to add as listener.
 	 * @return The registration of the handler.
+	 * @since 2.1.0
 	 */
 	HandlerRegistration addGeometryEditResumeHandler(GeometryEditResumeHandler handler);
 
@@ -180,6 +182,8 @@ public interface GeometryEditService extends GeometryIndexOperationService {
 	 * allows to interrupt the editing session and temporarily activate a different map controller (e.g measure
 	 * distance). 
 	 * Set your map controller after calling this method and call {@link #resume()} when done.
+	 * 
+	 * @since 2.1.0
 	 */
 	void suspend();
 
@@ -187,11 +191,14 @@ public interface GeometryEditService extends GeometryIndexOperationService {
 	 * Get the suspension state of the editing process.
 	 * 
 	 * @return suspension state
+	 * @since 2.1.0
 	 */
 	boolean isSuspended();
 	
 	/**
 	 * Resumes the suspended editing state. Resets all editing controllers on the geometry and the map.
+	 * 
+	 * @since 2.1.0
 	 */
 	void resume();
 

@@ -11,8 +11,8 @@
 
 package org.geomajas.plugin.editing.client.event;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.annotation.FutureApi;
 
 import com.google.gwt.event.shared.GwtEvent;
 
@@ -22,11 +22,16 @@ import com.google.gwt.event.shared.GwtEvent;
  * @author Jan De Moerloose
  * @since 2.1.0
  */
-@FutureApi(allMethods = true)
+@Api(allMethods = true)
 public class GeometryEditSuspendEvent extends GwtEvent<GeometryEditSuspendHandler> {
 
 	private final Geometry geometry;
 
+	/**
+	 * Main constructor.
+	 * 
+	 * @param geometry geometry
+	 */
 	public GeometryEditSuspendEvent(Geometry geometry) {
 		this.geometry = geometry;
 	}
