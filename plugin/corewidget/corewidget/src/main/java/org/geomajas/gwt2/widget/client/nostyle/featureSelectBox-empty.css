@@ -6,11 +6,8 @@
 
 @external .gm-featureSelectBoxCell;
 .gm-featureSelectBoxCell {
-	text-align: left;
-	cursor: pointer;
 }
 
 
 .gm-featureSelectBoxCell:hover {
-	color: #f56c22;
 }

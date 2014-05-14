@@ -11,9 +11,8 @@
 package org.geomajas.gwt2.widget.client;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.gwt2.widget.client.featureselectbox.view.FeatureSelectBoxView;
-import org.geomajas.gwt2.widget.client.featureselectbox.view.FeatureSelectBoxViewFactory;
-import org.geomajas.gwt2.widget.client.featureselectbox.view.FeatureSelectBoxViewImpl;
+
+import com.google.gwt.core.client.GWT;
 
 /**
  * Starting point for the core widget plugin.
@@ -26,16 +25,12 @@ public final class CoreWidget {
 
 	private static CoreWidget instance;
 
-	private FeatureSelectBoxViewFactory featureSelectBoxviewFactory;
+	private ViewFactory viewFactory;
+	
+	private CoreWidgetClientBundleFactory bundleFactory;
 
 	private CoreWidget() {
-		featureSelectBoxviewFactory = new FeatureSelectBoxViewFactory() {
-
-			@Override
-			public FeatureSelectBoxView create() {
-				return new FeatureSelectBoxViewImpl();
-			}
-		};
+		viewFactory = new ViewFactory();
 	}
 
 	/**
@@ -64,17 +59,32 @@ public final class CoreWidget {
 	 * 
 	 * @return the factory
 	 */
-	public FeatureSelectBoxViewFactory getFeatureSelectBoxViewFactory() {
-		return featureSelectBoxviewFactory;
+	public ViewFactory getViewFactory() {
+		return viewFactory;
 	}
 
 	/**
-	 * Replace the default MVP view factory for the {@link FeatureSelectBoxView}.
+	 * Replace the default MVP view factory for the widgets of this plugin.
 	 * 
 	 * @param viewFactory the new factory
 	 */
-	public void setFeatureSelectBoxViewFactory(FeatureSelectBoxViewFactory viewFactory) {
-		this.featureSelectBoxviewFactory = viewFactory;
+	public void setViewFactory(ViewFactory viewFactory) {
+		this.viewFactory = viewFactory;
 	}
+	
+	/**
+	 * Get a factory for creating resource bundles for this artifact. All widgets make use of this factory. If you want
+	 * to override the default styles, then override this factory through deferred binding.
+	 *
+	 * @return A factory for creating resource bundles for this artifact.
+	 * @since 2.1.0
+	 */
+	public CoreWidgetClientBundleFactory getClientBundleFactory() {
+		if (bundleFactory == null) {
+			bundleFactory = GWT.create(CoreWidgetClientBundleFactory.class);
+		}
+		return bundleFactory;
+	}
+
 
 }

@@ -17,7 +17,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean class="org.geomajas.configuration.FeatureInfo" name="beansFeatureInfo">
+	<bean class="org.geomajas.configuration.FeatureInfo" name="layerBeanCoreWidgetFeatureInfo">
 		<property name="dataSourceName" value="org.geomajas.layer.bean.FeatureBean" />
 		<property name="identifier">
 			<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
@@ -64,7 +64,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 	</bean>
 
-	<bean name="beansInfo" class="org.geomajas.configuration.VectorLayerInfo">
+	<bean name="layerBeanCoreWidgetInfo" class="org.geomajas.configuration.VectorLayerInfo">
 		<property name="layerType" value="POINT" />
 		<property name="crs" value="EPSG:900913" />
 		<property name="maxExtent">
@@ -75,52 +75,17 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 				<property name="height" value="40075016.68"/>
 			</bean>
 		</property>
-		<property name="featureInfo" ref="beansFeatureInfo" />
+		<property name="featureInfo" ref="layerBeanCoreWidgetFeatureInfo" />
 		<property name="namedStyleInfos">
 			<list>
 				<!--<ref bean="beansStyleInfo" />-->
-				<ref bean="SLDStyleInfo" />
+				<ref bean="layerBeanCoreWidgetStyleInfo" />
 			</list>
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.configuration.NamedStyleInfo" id="beansStyleInfo">
-		<property name="featureStyles">
-			<list>
-				<bean class="org.geomajas.configuration.FeatureStyleInfo">
-					<property name="name" value="default" />
-					<property name="fillColor" value="#FF0000" />
-					<property name="fillOpacity" value=".6" />
-					<property name="strokeColor" value="#FF0000" />
-					<property name="strokeOpacity" value=".3" />
-					<property name="strokeWidth" value="1" />
-				</bean>
-			</list>
-		</property>
-		<property name="labelStyle">
-			<bean class="org.geomajas.configuration.LabelStyleInfo">
-				<property name="labelAttributeName" value="stringAttr" />
-				<property name="fontStyle">
-					<bean class="org.geomajas.configuration.FontStyleInfo">
-						<property name="color" value="#998811" />
-						<property name="opacity" value="1" />
-					</bean>
-				</property>
-				<property name="backgroundStyle">
-					<bean class="org.geomajas.configuration.FeatureStyleInfo">
-						<property name="fillColor" value="#000000" />
-						<property name="fillOpacity" value=".7" />
-						<property name="strokeColor" value="#998811" />
-						<property name="strokeOpacity" value="1" />
-						<property name="strokeWidth" value="1" />
-					</bean>
-				</property>
-			</bean>
-		</property>
-	</bean>
-
-	<bean name="layerBean" class="org.geomajas.layer.bean.BeanLayer">
-		<property name="layerInfo" ref="beansInfo" />
+	<bean name="layerBeanCoreWidget" class="org.geomajas.layer.bean.BeanLayer">
+		<property name="layerInfo" ref="layerBeanCoreWidgetInfo" />
 		<property name="features">
 			<list>
 
@@ -175,8 +140,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 	</bean>
 
 	<!-- SLD Style definition -->
-	<bean class="org.geomajas.configuration.NamedStyleInfo" name="SLDStyleInfo">
-		<property name="sldLocation" value="classpath:org/geomajas/gwt2/widget/example/context/SLD-layerBean.sld.xml" />
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="layerBeanCoreWidgetStyleInfo">
+		<property name="sldLocation" value="classpath:org/geomajas/gwt2/widget/example/context/layerBeanCoreWidget.sld" />
 	</bean>
 
 </beans>

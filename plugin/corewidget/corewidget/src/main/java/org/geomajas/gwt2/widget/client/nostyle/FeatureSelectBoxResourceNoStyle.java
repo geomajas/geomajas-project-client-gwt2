@@ -8,27 +8,24 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.client.featureselectbox.resource;
 
-import org.geomajas.annotation.Api;
+package org.geomajas.gwt2.widget.client.nostyle;
 
-import com.google.gwt.resources.client.ClientBundle;
+import org.geomajas.gwt2.widget.client.featureselectbox.resource.FeatureSelectBoxCssResource;
+import org.geomajas.gwt2.widget.client.featureselectbox.resource.FeatureSelectBoxResource;
 
 /**
  * Client resource bundle interface for pure GWT widgets.
  * 
- * @author Dosi Bingov
- * 
+ * @author Jan De Moerloose
  * @since 2.0.0
  */
-@Api(allMethods = true)
-public interface FeatureSelectBoxResource extends ClientBundle {
+public interface FeatureSelectBoxResourceNoStyle extends FeatureSelectBoxResource {
 
 	/**
 	 * Get the css resource.
 	 * @return the css resource
 	 */
-	@Source("featureSelectBox.css")
+	@Source("featureSelectBox-empty.css")
 	FeatureSelectBoxCssResource css();	
-	
 }

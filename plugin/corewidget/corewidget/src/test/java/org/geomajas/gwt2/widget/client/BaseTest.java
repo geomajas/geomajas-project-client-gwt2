@@ -16,7 +16,6 @@ import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.feature.ServerFeatureService;
 import org.geomajas.gwt2.widget.client.featureselectbox.view.FeatureSelectBoxView;
-import org.geomajas.gwt2.widget.client.featureselectbox.view.FeatureSelectBoxViewFactory;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -40,14 +39,14 @@ public abstract class BaseTest {
 	protected GeomajasServerExtension geomajasServerExtension;
 
 	@Mock
-	protected FeatureSelectBoxViewFactory viewFactory;
+	protected ViewFactory viewFactory;
 
 	@Before
 	public void setUp() {
 		GeomajasImpl.setInstance(geomajasImpl);
 		GeomajasServerExtension.setInstance(geomajasServerExtension);
-		CoreWidget.getInstance().setFeatureSelectBoxViewFactory(viewFactory);
-		when(viewFactory.create()).thenReturn(featureSelectBoxView);
+		CoreWidget.getInstance().setViewFactory(viewFactory);
+		when(viewFactory.createFeatureSelectBox(null)).thenReturn(featureSelectBoxView);
 		when(geomajasServerExtension.getServerFeatureService()).thenReturn(serverFeatureService);
 	}
 

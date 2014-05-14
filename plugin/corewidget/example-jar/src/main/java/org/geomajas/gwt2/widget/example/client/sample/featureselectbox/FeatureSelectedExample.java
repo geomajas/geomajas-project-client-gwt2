@@ -83,7 +83,7 @@ public class FeatureSelectedExample implements SamplePanel {
 		mapPanel.add(resizeLayoutPanel);
 
 		// Initialize the map
-		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "gwt2-widget-app", "mapGhent");
+		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "appCoreWidget", "mapCoreWidget");
 
 		// add featured clicked listener.
 		mapPresenter.addMapListener(new FeatureSelectListener());

@@ -16,7 +16,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean name="mapGhent" class="org.geomajas.configuration.client.ClientMapInfo">
+	<bean name="mapCoreWidget" class="org.geomajas.configuration.client.ClientMapInfo">
 		<property name="backgroundColor" value="#E0E0E0" />
 		<property name="lineSelectStyle">
 			<bean class="org.geomajas.configuration.FeatureStyleInfo">
@@ -42,8 +42,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="panButtonsEnabled" value="true" />
 		<property name="initialBounds">
 			<bean class="org.geomajas.geometry.Bbox">
-				<property name="x" value="414000.3401850014" />
-				<property name="y" value="6630000.973030038" />
+				<property name="x" value="411000.3401850014" />
+				<property name="y" value="6628000.973030038" />
 				<property name="width" value="6000" />
 				<property name="height" value="5500" />
 			</bean>
@@ -86,18 +86,18 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 		<property name="layers">
 			<list>
-				<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="osmLayer">
+				<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="clientLayerOsmCoreWidget">
 					<property name="serverLayerId" value="osm" />
 					<property name="label" value="OpenStreetMap" />
 					<property name="visible" value="true" />
 					<property name="style" value="1" />
 				</bean>
 
-				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="pointsLayer">
-					<property name="serverLayerId" value="layerBean" />
+				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="clientLayerBeanCoreWidget">
+					<property name="serverLayerId" value="layerBeanCoreWidget" />
 					<property name="label" value="Points on the map"/>
 					<property name="visible" value="true" />
-					<property name="namedStyleInfo" ref="SLDStyleInfo"/>
+					<property name="namedStyleInfo" ref="layerBeanCoreWidgetStyleInfo"/>
 				<!--	<property name="namedStyleInfo" ref="beansStyleInfo"/>-->
 				</bean>
 

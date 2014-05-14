@@ -10,10 +10,8 @@
  */
 package org.geomajas.gwt2.widget.client.featureselectbox;
 
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.Widget;
+import java.util.logging.Logger;
+
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.map.RenderSpace;
@@ -23,15 +21,21 @@ import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.widget.client.CoreWidget;
 import org.geomajas.gwt2.widget.client.featureselectbox.presenter.FeatureSelectBoxPresenter;
 import org.geomajas.gwt2.widget.client.featureselectbox.presenter.FeatureSelectBoxPresenterImpl;
+import org.geomajas.gwt2.widget.client.featureselectbox.resource.FeatureSelectBoxResource;
 import org.geomajas.gwt2.widget.client.featureselectbox.view.FeatureSelectBoxView;
 
-import java.util.logging.Logger;
+import com.google.gwt.core.shared.GWT;
+import com.google.gwt.event.dom.client.MouseDownEvent;
+import com.google.gwt.event.dom.client.MouseMoveEvent;
+import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Tool tip box that displays a list of features from where one can be selected.
  * 
  * @author Dosi Bingov
  * @author Oliver May
+ * @author Jan De Moerloose
  * @since 2.0.0
  */
 @Api(allMethods = true)
@@ -51,8 +55,15 @@ public class FeatureSelectListener extends AbstractMapController implements MapC
 	 * Default constructor.
 	 */
 	public FeatureSelectListener() {
+		this(CoreWidget.getInstance().getClientBundleFactory().createFeatureSelectBoxResource());
+	}
+
+	/**
+	 * Default constructor.
+	 */
+	public FeatureSelectListener(FeatureSelectBoxResource resource) {
 		super(false);
-		view = CoreWidget.getInstance().getFeatureSelectBoxViewFactory().create();
+		view = CoreWidget.getInstance().getViewFactory().createFeatureSelectBox(resource);
 		presenter = new FeatureSelectBoxPresenterImpl(view);
 		view.setPresenter(presenter);
 	}

@@ -28,7 +28,7 @@ import org.geomajas.gwt2.widget.client.featureselectbox.event.FeatureClickedEven
 import org.geomajas.gwt2.widget.client.featureselectbox.view.FeatureSelectBoxView;
 
 /**
- * Feature select box interface.
+ * Feature select box presenter implementation.
  *
  * @author Jan De Moerloose
  *

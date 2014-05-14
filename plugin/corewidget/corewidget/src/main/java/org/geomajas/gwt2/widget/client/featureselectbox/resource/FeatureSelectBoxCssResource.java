@@ -29,6 +29,7 @@ public interface FeatureSelectBoxCssResource extends CssResource {
 	 *
 	 * @return
 	 */
+	@ClassName("gm-featureSelectBox")
 	String featureSelectBox();
 
 
@@ -37,5 +38,6 @@ public interface FeatureSelectBoxCssResource extends CssResource {
 	 *
 	 * @return
 	 */
+	@ClassName("gm-featureSelectBoxCell")
 	String featureSelectBoxCell();
 }

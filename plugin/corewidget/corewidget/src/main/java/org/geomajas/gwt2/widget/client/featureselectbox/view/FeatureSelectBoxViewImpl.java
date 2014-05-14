@@ -10,6 +10,12 @@
  */
 package org.geomajas.gwt2.widget.client.featureselectbox.view;
 
+import java.util.List;
+import java.util.logging.Logger;
+
+import org.geomajas.gwt2.widget.client.featureselectbox.presenter.FeatureSelectBoxPresenter;
+import org.geomajas.gwt2.widget.client.featureselectbox.resource.FeatureSelectBoxResource;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -19,11 +25,6 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import org.geomajas.gwt2.widget.client.featureselectbox.presenter.FeatureSelectBoxPresenter;
-import org.geomajas.gwt2.widget.client.featureselectbox.resource.FeatureSelectBoxResource;
-
-import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Class.
@@ -47,6 +48,8 @@ public class FeatureSelectBoxViewImpl implements FeatureSelectBoxView {
 	@UiField
 	protected VerticalPanel contentPanel;
 
+	private FeatureSelectBoxResource resource;
+
 	private static final FeatureSelectBoxUiBinder UIBINDER = GWT.create(FeatureSelectBoxUiBinder.class);
 
 	/**
@@ -58,10 +61,11 @@ public class FeatureSelectBoxViewImpl implements FeatureSelectBoxView {
 	interface FeatureSelectBoxUiBinder extends UiBinder<Widget, FeatureSelectBoxViewImpl> {
 	}
 
-	public FeatureSelectBoxViewImpl() {
+	public FeatureSelectBoxViewImpl(FeatureSelectBoxResource featureSelectBoxResource) {
+		resource = featureSelectBoxResource;
 		widget = (PopupPanel) UIBINDER.createAndBindUi(this);
-		widget.addStyleName(FeatureSelectBoxResource.INSTANCE.css().featureSelectBox());
-		FeatureSelectBoxResource.INSTANCE.css().ensureInjected();
+		widget.addStyleName(featureSelectBoxResource.css().featureSelectBox());
+		resource.css().ensureInjected();
 	}
 
 	@Override
@@ -70,7 +74,7 @@ public class FeatureSelectBoxViewImpl implements FeatureSelectBoxView {
 
 		for (String s : labels) {
 			Label label = new Label();
-			label.setStyleName(FeatureSelectBoxResource.INSTANCE.css().featureSelectBoxCell());
+			label.setStyleName(resource.css().featureSelectBoxCell());
 			label.setText(s);
 			label.addClickHandler(featureClickHandler);
 			contentPanel.add(label);
@@ -91,7 +95,7 @@ public class FeatureSelectBoxViewImpl implements FeatureSelectBoxView {
 	public void addLabel(String label) {
 		Label l = new Label();
 		l.setText(label);
-		l.setStyleName(FeatureSelectBoxResource.INSTANCE.css().featureSelectBoxCell());
+		l.setStyleName(resource.css().featureSelectBoxCell());
 		l.addClickHandler(featureClickHandler);
 		contentPanel.add(l);
 	}
