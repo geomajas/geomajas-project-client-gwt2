@@ -10,16 +10,18 @@
  */
 package org.geomajas.gwt2.widget.client;
 
+import static org.mockito.Mockito.when;
+
 import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.feature.ServerFeatureService;
 import org.geomajas.gwt2.widget.client.featureselectbox.view.FeatureSelectBoxView;
+import org.geomajas.gwt2.widget.client.featureselectbox.view.FeatureSelectBoxViewFactory;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 
 import com.google.gwtmockito.GwtMockitoTestRunner;
-import static org.mockito.Mockito.when;
 
 
 @RunWith(GwtMockitoTestRunner.class)
@@ -38,14 +40,14 @@ public abstract class BaseTest {
 	protected GeomajasServerExtension geomajasServerExtension;
 
 	@Mock
-	protected ViewFactory viewFactory;
+	protected FeatureSelectBoxViewFactory viewFactory;
 
 	@Before
 	public void setUp() {
 		GeomajasImpl.setInstance(geomajasImpl);
 		GeomajasServerExtension.setInstance(geomajasServerExtension);
-		CoreWidget.getInstance().setViewFactory(viewFactory);
-		when(viewFactory.createFeatureSelectBox()).thenReturn(featureSelectBoxView);
+		CoreWidget.getInstance().setFeatureSelectBoxViewFactory(viewFactory);
+		when(viewFactory.create()).thenReturn(featureSelectBoxView);
 		when(geomajasServerExtension.getServerFeatureService()).thenReturn(serverFeatureService);
 	}
 

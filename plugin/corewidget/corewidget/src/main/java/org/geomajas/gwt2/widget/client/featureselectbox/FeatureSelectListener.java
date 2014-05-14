@@ -52,7 +52,7 @@ public class FeatureSelectListener extends AbstractMapController implements MapC
 	 */
 	public FeatureSelectListener() {
 		super(false);
-		view = CoreWidget.getInstance().getViewFactory().createFeatureSelectBox();
+		view = CoreWidget.getInstance().getFeatureSelectBoxViewFactory().create();
 		presenter = new FeatureSelectBoxPresenterImpl(view);
 		view.setPresenter(presenter);
 	}

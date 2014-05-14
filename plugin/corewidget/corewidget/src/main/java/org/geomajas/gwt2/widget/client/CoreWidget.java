@@ -12,6 +12,7 @@ package org.geomajas.gwt2.widget.client;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.widget.client.featureselectbox.view.FeatureSelectBoxView;
+import org.geomajas.gwt2.widget.client.featureselectbox.view.FeatureSelectBoxViewFactory;
 import org.geomajas.gwt2.widget.client.featureselectbox.view.FeatureSelectBoxViewImpl;
 
 /**
@@ -25,13 +26,13 @@ public final class CoreWidget {
 
 	private static CoreWidget instance;
 
-	private ViewFactory viewFactory;
+	private FeatureSelectBoxViewFactory featureSelectBoxviewFactory;
 
 	private CoreWidget() {
-		viewFactory = new ViewFactory() {
+		featureSelectBoxviewFactory = new FeatureSelectBoxViewFactory() {
 
 			@Override
-			public FeatureSelectBoxView createFeatureSelectBox() {
+			public FeatureSelectBoxView create() {
 				return new FeatureSelectBoxViewImpl();
 			}
 		};
@@ -63,17 +64,17 @@ public final class CoreWidget {
 	 * 
 	 * @return the factory
 	 */
-	public ViewFactory getViewFactory() {
-		return viewFactory;
+	public FeatureSelectBoxViewFactory getFeatureSelectBoxViewFactory() {
+		return featureSelectBoxviewFactory;
 	}
 
 	/**
-	 * Replace the default MVP view factory for the widgets of this plugin.
+	 * Replace the default MVP view factory for the {@link FeatureSelectBoxView}.
 	 * 
 	 * @param viewFactory the new factory
 	 */
-	public void setViewFactory(ViewFactory viewFactory) {
-		this.viewFactory = viewFactory;
+	public void setFeatureSelectBoxViewFactory(FeatureSelectBoxViewFactory viewFactory) {
+		this.featureSelectBoxviewFactory = viewFactory;
 	}
 
 }

@@ -11,6 +11,8 @@
 package org.geomajas.gwt2.widget.client.featureselectbox.presenter;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyDouble;
+import static org.mockito.Matchers.anyFloat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -56,6 +58,8 @@ public class FeatureSelectBoxPresenterImplTest extends BaseTest {
 
 	@Mock
 	private ViewPortTransformationService transformationService;
+	
+	private FeatureSelectBoxPresenterImpl presenter;
 
 	@Before
 	public void before() throws Exception {
@@ -64,28 +68,36 @@ public class FeatureSelectBoxPresenterImplTest extends BaseTest {
 		when(viewPort.getTransformationService()).thenReturn(transformationService);
 		when(transformationService.transform(new Coordinate(0, 0), RenderSpace.SCREEN, RenderSpace.WORLD)).thenReturn(new Coordinate(0, 0));
 		when(transformationService.transform(new Coordinate(10, 0), RenderSpace.SCREEN, RenderSpace.WORLD)).thenReturn(new Coordinate(200, 0));
+		presenter = new FeatureSelectBoxPresenterImpl(featureSelectBoxView);
 	}
 
 	@Test
-	public void onFeatureSelected() {
-		// TODO
+	public void onFeatureSelected() throws WktException {
+		// first click 2
+		onClick2();
+		// select the second one
+		presenter.onFeatureSelected("label2");
+		ArgumentCaptor<FeatureClickedEvent> event = ArgumentCaptor.forClass(FeatureClickedEvent.class);
+		verify(eventBus).fireEvent(event.capture());
+		Assert.assertEquals("label2", event.getValue().getFeature().getLabel());
+		Assert.assertEquals(new Coordinate(100, 80), event.getValue().getCoordinate());
 	}
 
 	@Test
 	public void onActivate() {
-		FeatureSelectBoxPresenterImpl presenter = new FeatureSelectBoxPresenterImpl(featureSelectBoxView);
 		presenter.onActivate(mapPresenter);
 		Assert.assertEquals(mapPresenter, presenter.getMapPresenter());
 	}
 
 	@Test
 	public void onDeactivate() {
-
+		presenter.onActivate(mapPresenter);
+		presenter.onDeactivate();
+		verify(featureSelectBoxView).hide();
 	}
 
 	@Test
 	public void onClick2() throws WktException {
-		FeatureSelectBoxPresenterImpl presenter = new FeatureSelectBoxPresenterImpl(featureSelectBoxView);
 		presenter.onActivate(mapPresenter);
 		presenter.onClick(new Coordinate(100, 80));
 		// capturing arguments to verify in special way or to perform callback !
@@ -114,7 +126,6 @@ public class FeatureSelectBoxPresenterImplTest extends BaseTest {
 
 	@Test
 	public void onClick1() throws WktException {
-		FeatureSelectBoxPresenterImpl presenter = new FeatureSelectBoxPresenterImpl(featureSelectBoxView);
 		presenter.onActivate(mapPresenter);
 		presenter.onClick(new Coordinate(100, 80));
 		// capturing arguments to verify in special way or to perform callback !
@@ -138,6 +149,14 @@ public class FeatureSelectBoxPresenterImplTest extends BaseTest {
 
 	@Test
 	public void setPixelBuffer() {
+		when(transformationService.transform(new Coordinate(50, 0), RenderSpace.SCREEN, RenderSpace.WORLD)).thenReturn(new Coordinate(500, 0));
+		presenter.setPixelBuffer(50);
+		presenter.onActivate(mapPresenter);
+		presenter.onClick(new Coordinate(100, 80));
+		// world distance must return 500
+		verify(serverFeatureService).search(eq(mapPresenter), any(Geometry.class), eq(500.0),
+				eq(ServerFeatureService.QueryType.INTERSECTS),
+				eq(ServerFeatureService.SearchLayerType.SEARCH_ALL_LAYERS), eq(-1f), any(FeatureMapFunction.class));
 
 	}
 

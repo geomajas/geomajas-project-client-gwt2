@@ -8,25 +8,26 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.client;
+package org.geomajas.gwt2.widget.client.featureselectbox.view;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.gwt2.widget.client.featureselectbox.view.FeatureSelectBoxView;
+import org.geomajas.annotation.UserImplemented;
 
 /**
- * MVP view factory for the widgets of this plugin.
+ * MVP view factory for {@link FeatureSelectBoxView}.
  * 
  * @author Jan De Moerloose
  * @since 2.1.0
  * 
  */
 @Api(allMethods = true)
-public interface ViewFactory {
+@UserImplemented
+public interface FeatureSelectBoxViewFactory {
 
 	/**
 	 * Create an instance of {@link FeatureSelectBoxView}.
 	 * 
 	 * @return the instance
 	 */
-	FeatureSelectBoxView createFeatureSelectBox();
+	FeatureSelectBoxView create();
 }
