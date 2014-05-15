@@ -19,8 +19,5 @@
 	<!-- where value = "ie6/opera/gecko1_8/safari/gecko" , "gecko1_8" is FireFox 3 -->
 	<set-property name="user.agent" value="gecko1_8" />
 
-	<replace-with class="org.geomajas.gwt2.widget.client.nostyle.CoreWidgetClientBundleFactoryNoStyle">
-    <when-type-is class="org.geomajas.gwt2.widget.client.CoreWidgetClientBundleFactory"/>
-  </replace-with>
 	<source path='client' />
 </module>
