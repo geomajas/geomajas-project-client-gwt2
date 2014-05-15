@@ -11,6 +11,7 @@
 package org.geomajas.gwt2.widget.client.featureselectbox.resource;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.gwt2.widget.client.CoreWidget;
 
 import com.google.gwt.resources.client.ClientBundle;
 
@@ -23,6 +24,12 @@ import com.google.gwt.resources.client.ClientBundle;
  */
 @Api(allMethods = true)
 public interface FeatureSelectBoxResource extends ClientBundle {
+	
+	/**
+	 * Instance for use outside UIBinder.
+	 */
+	FeatureSelectBoxResource INSTANCE = CoreWidget.getInstance().getClientBundleFactory()
+			.createFeatureSelectBoxResource();	
 
 	/**
 	 * Get the css resource.

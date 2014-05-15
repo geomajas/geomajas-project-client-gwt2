@@ -27,8 +27,9 @@ import com.google.gwt.core.client.GWT;
 public class CoreWidgetClientBundleFactory {
 
 	/**
-	 * Create a new resource bundle for the {@link org.geomajas.gwt2.widget.client.featureselectbox.FeatureSelectListener} widget.
-	 *
+	 * Create a new resource bundle for the
+	 * {@link org.geomajas.gwt2.widget.client.featureselectbox.FeatureSelectListener} widget.
+	 * 
 	 * @return A new resource bundle.
 	 */
 	public FeatureSelectBoxResource createFeatureSelectBoxResource() {

@@ -17,6 +17,7 @@ import java.util.List;
 
 /**
  * @author Oliver May
+ * @author Jan De Moerloose
  */
 public interface FeatureSelectBoxView extends IsWidget {
 

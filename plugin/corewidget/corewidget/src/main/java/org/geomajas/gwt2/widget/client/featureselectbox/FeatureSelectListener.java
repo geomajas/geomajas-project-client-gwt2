@@ -24,7 +24,6 @@ import org.geomajas.gwt2.widget.client.featureselectbox.presenter.FeatureSelectB
 import org.geomajas.gwt2.widget.client.featureselectbox.resource.FeatureSelectBoxResource;
 import org.geomajas.gwt2.widget.client.featureselectbox.view.FeatureSelectBoxView;
 
-import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.user.client.ui.IsWidget;
