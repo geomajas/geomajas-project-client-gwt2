@@ -34,6 +34,10 @@ public interface SampleMessages extends Messages {
 
 	String generalStopEditing();
 
+	String generalSuspend();
+
+	String generalResume();
+
 	String generalExplanation();
 
 	String generalUndo();
