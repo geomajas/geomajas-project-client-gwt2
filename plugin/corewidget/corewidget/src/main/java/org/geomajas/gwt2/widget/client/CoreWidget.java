@@ -25,12 +25,11 @@ public final class CoreWidget {
 
 	private static CoreWidget instance;
 
-	private ViewFactory viewFactory;
+	private CoreWidgetViewFactory viewFactory;
 	
 	private CoreWidgetClientBundleFactory bundleFactory;
 
 	private CoreWidget() {
-		viewFactory = new ViewFactory();
 	}
 
 	/**
@@ -44,32 +43,27 @@ public final class CoreWidget {
 		}
 		return instance;
 	}
-
+	
 	/**
-	 * Replace the instance for testing.
-	 * 
-	 * @param coreWidget
+	 * Override the {@link CoreWidget} instance for mocking.
+	 *
+	 * @param instance the mock
 	 */
-	public static void setInstance(CoreWidget coreWidget) {
-		instance = coreWidget;
+	public static void setInstance(CoreWidget instance) {
+		CoreWidget.instance = instance;
 	}
+
 
 	/**
 	 * Get the MVP view factory for the widgets of this plugin.
 	 * 
 	 * @return the factory
 	 */
-	public ViewFactory getViewFactory() {
+	public CoreWidgetViewFactory getViewFactory() {
+		if (viewFactory == null) {
+			viewFactory = GWT.create(CoreWidgetViewFactory.class);
+		}
 		return viewFactory;
-	}
-
-	/**
-	 * Replace the default MVP view factory for the widgets of this plugin.
-	 * 
-	 * @param viewFactory the new factory
-	 */
-	public void setViewFactory(ViewFactory viewFactory) {
-		this.viewFactory = viewFactory;
 	}
 	
 	/**

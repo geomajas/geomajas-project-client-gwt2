@@ -19,10 +19,7 @@ import org.geomajas.gwt2.client.controller.AbstractMapController;
 import org.geomajas.gwt2.client.controller.MapController;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.widget.client.CoreWidget;
-import org.geomajas.gwt2.widget.client.featureselectbox.presenter.FeatureSelectBoxPresenter;
-import org.geomajas.gwt2.widget.client.featureselectbox.presenter.FeatureSelectBoxPresenterImpl;
 import org.geomajas.gwt2.widget.client.featureselectbox.resource.FeatureSelectBoxResource;
-import org.geomajas.gwt2.widget.client.featureselectbox.view.FeatureSelectBoxView;
 
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
@@ -30,7 +27,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Tool tip box that displays a list of features from where one can be selected.
+ * Tool tip box that displays a list of features from where one can be selected. Kept the name because it is api.
  * 
  * @author Dosi Bingov
  * @author Oliver May

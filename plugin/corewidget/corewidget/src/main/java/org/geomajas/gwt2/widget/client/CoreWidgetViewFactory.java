@@ -11,9 +11,9 @@
 package org.geomajas.gwt2.widget.client;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.gwt2.widget.client.featureselectbox.FeatureSelectBoxView;
+import org.geomajas.gwt2.widget.client.featureselectbox.FeatureSelectBoxViewImpl;
 import org.geomajas.gwt2.widget.client.featureselectbox.resource.FeatureSelectBoxResource;
-import org.geomajas.gwt2.widget.client.featureselectbox.view.FeatureSelectBoxView;
-import org.geomajas.gwt2.widget.client.featureselectbox.view.FeatureSelectBoxViewImpl;
 
 /**
  * MVP view factory for this plugin.
@@ -23,7 +23,7 @@ import org.geomajas.gwt2.widget.client.featureselectbox.view.FeatureSelectBoxVie
  * 
  */
 @Api(allMethods = true)
-public class ViewFactory {
+public class CoreWidgetViewFactory {
 
 	/**
 	 * Create a new {@link FeatureSelectBoxView}.

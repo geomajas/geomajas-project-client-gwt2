@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.client.featureselectbox.presenter;
+package org.geomajas.gwt2.widget.client.featureselectbox;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.map.MapPresenter;

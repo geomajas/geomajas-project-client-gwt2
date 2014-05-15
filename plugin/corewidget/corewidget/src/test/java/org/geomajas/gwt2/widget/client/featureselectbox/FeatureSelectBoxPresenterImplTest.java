@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.client.featureselectbox.presenter;
+package org.geomajas.gwt2.widget.client.featureselectbox;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyDouble;
@@ -39,6 +39,7 @@ import org.geomajas.gwt2.client.map.feature.FeatureMapFunction;
 import org.geomajas.gwt2.client.map.feature.ServerFeatureService;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
 import org.geomajas.gwt2.widget.client.BaseTest;
+import org.geomajas.gwt2.widget.client.featureselectbox.FeatureSelectBoxPresenterImpl;
 import org.geomajas.gwt2.widget.client.featureselectbox.event.FeatureClickedEvent;
 import org.junit.Before;
 import org.junit.Test;

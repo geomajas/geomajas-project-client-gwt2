@@ -8,12 +8,11 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.client.featureselectbox.view;
+package org.geomajas.gwt2.widget.client.featureselectbox;
 
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.geomajas.gwt2.widget.client.featureselectbox.presenter.FeatureSelectBoxPresenter;
 import org.geomajas.gwt2.widget.client.featureselectbox.resource.FeatureSelectBoxResource;
 
 import com.google.gwt.core.client.GWT;
