@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.client.featureselectbox.resource;
+package org.geomajas.gwt2.widget.client.feature.featureselectbox.resource;
 
 import org.geomajas.annotation.Api;
 

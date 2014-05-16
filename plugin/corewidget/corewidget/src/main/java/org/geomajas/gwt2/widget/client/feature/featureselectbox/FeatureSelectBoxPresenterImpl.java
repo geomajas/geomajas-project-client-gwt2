@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.client.featureselectbox;
+package org.geomajas.gwt2.widget.client.feature.featureselectbox;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +24,7 @@ import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.client.map.feature.FeatureMapFunction;
 import org.geomajas.gwt2.client.map.feature.ServerFeatureService;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
-import org.geomajas.gwt2.widget.client.featureselectbox.event.FeatureClickedEvent;
+import org.geomajas.gwt2.widget.client.feature.event.FeatureClickedEvent;
 
 /**
  * Feature select box presenter implementation.

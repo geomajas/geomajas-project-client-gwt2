@@ -11,6 +11,7 @@
 package org.geomajas.gwt2.widget.client;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.gwt2.widget.client.resource.CoreWidgetClientBundleFactory;
 
 import com.google.gwt.core.client.GWT;
 

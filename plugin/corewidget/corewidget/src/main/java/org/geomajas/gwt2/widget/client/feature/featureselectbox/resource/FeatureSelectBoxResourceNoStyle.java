@@ -9,10 +9,9 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.client.nostyle;
+package org.geomajas.gwt2.widget.client.feature.featureselectbox.resource;
 
-import org.geomajas.gwt2.widget.client.featureselectbox.resource.FeatureSelectBoxCssResource;
-import org.geomajas.gwt2.widget.client.featureselectbox.resource.FeatureSelectBoxResource;
+import com.google.gwt.resources.client.ClientBundle.Source;
 
 /**
  * Client resource bundle interface for pure GWT widgets.

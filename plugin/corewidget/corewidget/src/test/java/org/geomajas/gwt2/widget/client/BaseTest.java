@@ -15,7 +15,7 @@ import static org.mockito.Mockito.when;
 import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.feature.ServerFeatureService;
-import org.geomajas.gwt2.widget.client.featureselectbox.FeatureSelectBoxView;
+import org.geomajas.gwt2.widget.client.feature.featureselectbox.FeatureSelectBoxView;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;

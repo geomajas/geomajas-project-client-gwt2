@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.client.featureselectbox;
+package org.geomajas.gwt2.widget.client.feature.featureselectbox;
 
 import com.google.gwt.user.client.ui.IsWidget;
 

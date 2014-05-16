@@ -9,11 +9,13 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.client.controller;
+package org.geomajas.gwt2.widget.client.feature.controller;
 
-import com.google.gwt.event.dom.client.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.geomajas.annotation.Api;
-import com.google.gwt.event.dom.client.MouseDownEvent;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.controller.AbstractController;
@@ -26,11 +28,10 @@ import org.geomajas.gwt2.client.map.feature.FeatureMapFunction;
 import org.geomajas.gwt2.client.map.feature.ServerFeatureService.QueryType;
 import org.geomajas.gwt2.client.map.feature.ServerFeatureService.SearchLayerType;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
-import org.geomajas.gwt2.widget.client.controller.event.FeaturesClickedEvent;
+import org.geomajas.gwt2.widget.client.feature.event.FeaturesClickedEvent;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import com.google.gwt.event.dom.client.MouseDownEvent;
+import com.google.gwt.event.dom.client.MouseEvent;
 
 /**
  * Controller that provides a list of features based on a location clicked on the map.

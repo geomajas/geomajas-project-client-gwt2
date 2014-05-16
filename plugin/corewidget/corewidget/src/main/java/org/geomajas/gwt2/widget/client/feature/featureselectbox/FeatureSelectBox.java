@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.client.featureselectbox;
+package org.geomajas.gwt2.widget.client.feature.featureselectbox;
 
 import java.util.logging.Logger;
 
@@ -19,7 +19,7 @@ import org.geomajas.gwt2.client.controller.AbstractMapController;
 import org.geomajas.gwt2.client.controller.MapController;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.widget.client.CoreWidget;
-import org.geomajas.gwt2.widget.client.featureselectbox.resource.FeatureSelectBoxResource;
+import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.FeatureSelectBoxResource;
 
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
@@ -35,9 +35,9 @@ import com.google.gwt.user.client.ui.Widget;
  * @since 2.0.0
  */
 @Api(allMethods = true)
-public class FeatureSelectListener extends AbstractMapController implements MapController, IsWidget {
+public class FeatureSelectBox extends AbstractMapController implements MapController, IsWidget {
 
-	private Logger log = Logger.getLogger(FeatureSelectListener.class.getName());
+	private Logger log = Logger.getLogger(FeatureSelectBox.class.getName());
 
 	private FeatureSelectBoxPresenter presenter;
 
@@ -50,14 +50,14 @@ public class FeatureSelectListener extends AbstractMapController implements MapC
 	/**
 	 * Default constructor.
 	 */
-	public FeatureSelectListener() {
+	public FeatureSelectBox() {
 		this(CoreWidget.getInstance().getClientBundleFactory().createFeatureSelectBoxResource());
 	}
 
 	/**
 	 * Default constructor.
 	 */
-	public FeatureSelectListener(FeatureSelectBoxResource resource) {
+	public FeatureSelectBox(FeatureSelectBoxResource resource) {
 		super(false);
 		view = CoreWidget.getInstance().getViewFactory().createFeatureSelectBox(resource);
 		presenter = new FeatureSelectBoxPresenterImpl(view);

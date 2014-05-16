@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.client.controller;
+package org.geomajas.gwt2.widget.client.feature.controller;
 
 import java.util.List;
 import java.util.Map;
@@ -24,7 +24,7 @@ import org.geomajas.gwt2.client.map.feature.FeatureMapFunction;
 import org.geomajas.gwt2.client.map.feature.ServerFeatureService.QueryType;
 import org.geomajas.gwt2.client.map.feature.ServerFeatureService.SearchLayerType;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
-import org.geomajas.gwt2.widget.client.featureselectbox.event.FeatureClickedEvent;
+import org.geomajas.gwt2.widget.client.feature.event.FeatureClickedEvent;
 import org.geomajas.gwt2.widget.client.itemselect.ItemSelectView;
 import org.geomajas.gwt2.widget.client.itemselect.ItemSelectWidget;
 
@@ -33,7 +33,7 @@ import com.google.gwt.event.dom.client.MouseEvent;
 /**
  * Controller that provides a feature based on a location clicked on the map. When multiple features
  * are found on the location, a drop down box is presented from where a single feature can be selected.
- * The controller fires {@link org.geomajas.gwt2.widget.client.controller.event.FeatureClickedEvent}s.
+ * The controller fires {@link org.geomajas.gwt2.widget.client.event.event.FeatureClickedEvent}s.
  *
  * @author Dosi Bingov
  * @author Oliver May

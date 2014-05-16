@@ -9,10 +9,10 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.client;
+package org.geomajas.gwt2.widget.client.resource;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.gwt2.widget.client.featureselectbox.resource.FeatureSelectBoxResource;
+import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.FeatureSelectBoxResource;
 
 import com.google.gwt.core.client.GWT;
 
@@ -28,7 +28,7 @@ public class CoreWidgetClientBundleFactory {
 
 	/**
 	 * Create a new resource bundle for the
-	 * {@link org.geomajas.gwt2.widget.client.featureselectbox.FeatureSelectListener} widget.
+	 * {@link org.geomajas.gwt2.widget.client.FeatureSelectBox.FeatureSelectListener} widget.
 	 * 
 	 * @return A new resource bundle.
 	 */
