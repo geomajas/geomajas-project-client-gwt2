@@ -11,17 +11,19 @@
 
 package org.geomajas.gwt2.example.client.sample.general;
 
+import org.geomajas.geometry.Bbox;
 import org.geomajas.command.dto.TransformGeometryRequest;
 import org.geomajas.command.dto.TransformGeometryResponse;
-import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.event.MapInitializationEvent;
 import org.geomajas.gwt2.client.event.MapInitializationHandler;
+import org.geomajas.gwt2.client.gfx.VectorContainer;
 import org.geomajas.gwt2.client.map.MapConfiguration;
 import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.client.map.ZoomOption;
 import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.example.base.client.ExampleBase;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
@@ -47,6 +49,7 @@ import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import org.vaadin.gwtgraphics.client.shape.Rectangle;
 
 /**
  * ContentPanel that demonstrates some options regarding map navigation.
@@ -85,6 +88,10 @@ public class NavigationOptionPanel implements SamplePanel {
 
 	@UiField
 	protected ResizeLayoutPanel mapPanel;
+
+	private VectorContainer container;
+	private Bbox rectangleWideBbox;
+	private Bbox rectangleHighBbox;
 
 	public Widget asWidget() {
 		Widget layout = UI_BINDER.createAndBindUi(this);
@@ -169,6 +176,27 @@ public class NavigationOptionPanel implements SamplePanel {
 		}
 	}
 
+	@UiHandler("rectangleWideBtn")
+	public void onRectangleWideBtnClicked(ClickEvent event) {
+		mapPresenter.getViewPort().applyBounds(rectangleWideBbox, ZoomOption.LEVEL_FIT);
+	}
+
+	@UiHandler("rectangleHighBtn")
+	public void onRectangleHighBtnClicked(ClickEvent event) {
+		mapPresenter.getViewPort().applyBounds(rectangleHighBbox, ZoomOption.LEVEL_FIT);
+	}
+
+	@UiHandler("africaBoundsBtn")
+	public void onInitialBoundsBtnClicked(ClickEvent event) {
+		mapPresenter.getViewPort().applyBounds(ExampleBase.BBOX_AFRICA, ZoomOption.LEVEL_FIT);
+	}
+
+	@UiHandler("maxBoundsBtn")
+	public void onMaxBoundsBtnClicked(ClickEvent event) {
+		mapPresenter.getViewPort().applyBounds(mapPresenter.getViewPort().getMaximumBounds(), ZoomOption.LEVEL_FIT);
+	}
+
+
 	private void changeAnimationMillis() {
 		String txt = millisBox.getValue();
 		int time = defaultMillis;
@@ -195,6 +223,23 @@ public class NavigationOptionPanel implements SamplePanel {
 		mapPresenter.getConfiguration().setHintValue(MapConfiguration.FADE_IN_TIME, time);
 	}
 
+	private void fillContainerAndMakeBboxes() {
+		//add rectangleWide
+		Rectangle rectangleWide = new Rectangle(1000000, 1000000, 2000000, 1000000);
+		rectangleWide.setFillColor("#CC9900");
+		rectangleWide.setFillOpacity(0.4);
+		container.add(rectangleWide);
+		rectangleWideBbox = new Bbox(rectangleWide.getUserX(), rectangleWide.getUserY(),
+				rectangleWide.getUserWidth(), rectangleWide.getUserHeight());
+
+		Rectangle rectangleHigh = new Rectangle(-2000000, 1000000, 1000000, 2000000);
+		rectangleHigh.setFillColor("#66CC66");
+		rectangleHigh.setFillOpacity(0.4);
+		container.add(rectangleHigh);
+		rectangleHighBbox = new Bbox(rectangleHigh.getUserX(), rectangleHigh.getUserY(),
+				rectangleHigh.getUserWidth(), rectangleHigh.getUserHeight());
+	}
+
 	/**
 	 * Map initialization handler that adds checkboxes for every layer to enable/disable animated rendering for those
 	 * layers.
@@ -217,6 +262,9 @@ public class NavigationOptionPanel implements SamplePanel {
 				});
 				layerPanel.add(cb);
 			}
+
+			container = mapPresenter.getContainerManager().addWorldContainer();
+			fillContainerAndMakeBboxes();
 
 			// Zoom in (scale times 4), to get a better view:
 			mapPresenter.getViewPort().applyBounds(ExampleBase.BBOX_AFRICA);
