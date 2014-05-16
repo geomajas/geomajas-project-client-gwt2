@@ -30,6 +30,7 @@ import org.geomajas.gwt2.example.client.sample.layer.LayerOrderPanel;
 import org.geomajas.gwt2.example.client.sample.layer.LayerRefreshPanel;
 import org.geomajas.gwt2.example.client.sample.layer.LayerVisibilityPanel;
 import org.geomajas.gwt2.example.client.sample.listener.ListenerPanel;
+import org.geomajas.gwt2.example.client.sample.rendering.ApplyBoundsPanel;
 import org.geomajas.gwt2.example.client.sample.rendering.CanvasRenderingPanel;
 import org.geomajas.gwt2.example.client.sample.rendering.DrawingInteractionPanel;
 import org.geomajas.gwt2.example.client.sample.rendering.FixedSizeWorldSpaceRenderingPanel;
@@ -195,6 +196,28 @@ public class ExampleJar implements EntryPoint {
 
 			public String getDescription() {
 				return MESSAGES.generalServerExceptionDescription();
+			}
+
+			public String getCategory() {
+				return CATEGORY_GENERAL;
+			}
+		});
+		SamplePanelRegistry.registerFactory(CATEGORY_GENERAL, new ShowcaseSampleDefinition() {
+
+			public SamplePanel create() {
+				return new ApplyBoundsPanel();
+			}
+
+			public String getTitle() {
+				return MESSAGES.generalApplyBoundsTitle();
+			}
+
+			public String getShortDescription() {
+				return MESSAGES.generalApplyBoundShort();
+			}
+
+			public String getDescription() {
+				return MESSAGES.generalApplyBoundDescription();
 			}
 
 			public String getCategory() {
