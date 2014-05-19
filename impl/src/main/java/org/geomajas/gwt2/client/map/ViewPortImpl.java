@@ -420,7 +420,7 @@ public final class ViewPortImpl implements ViewPort {
 			hRatio = boundsHeight / mapHeight;
 		}
 		// Return the checked resolution for the minimum to fit inside:
-		return wRatio < hRatio ? wRatio : hRatio;
+		return wRatio > hRatio ? wRatio : hRatio;
 	}
 
 	// Returns a position that's within the maximum bounds:
