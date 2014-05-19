@@ -2,7 +2,7 @@
 /*====                            Scalebar                               ====*/
 /*===========================================================================*/
 
-@external gm-Scalebar;
+@external gm-ScalebarControl;
 .gm-ScalebarControl {
 	margin: 0px;
 	padding: 2px 3px;

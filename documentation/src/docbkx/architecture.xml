@@ -1601,6 +1601,50 @@ commandService.execute(command, new AbstractCommandCallback&lt;CommandResponse&g
           </mediaobject>
         </screenshot>
       </section>
+
+      <section>
+        <title>Styling the map control widgets</title>
+
+        <para>One of the strong points of GWT are it's resource bundles. These
+        are bits of content (js, html, css) that are created as part of the
+        GWT compilation process and injected at runtime as they are needed.
+        More information in GWT resource bundles can be found in the official
+        GWT documentation.</para>
+
+        <para>Every widget in Geomajas has it's own resource bundle for which
+        Geomajas provides a default style. Most widgets will allow a resource
+        bundle to be provided in it's constructor. For the map control widgets
+        though, there is an easier way to override the default style: by
+        defining a
+        <code>org.geomajas.gwt2.client.widget.GeomajasImplClientBundleFactory</code>.</para>
+
+        <para>This factory is responsible for providing resource bundles for
+        the widgets. This factory is created in the GeomajasImpl class through
+        deferred binding, and so it is possible to override the implementation
+        to use. Concretely this can be done by providing the new
+        implementation in your .gwt.xml file:</para>
+
+        <programlisting>&lt;replace-with class="com.mycompany.MyCustomGeomajasImplClientBundleFactory"&gt;
+    &lt;when-type-is class="org.geomajas.gwt2.client.widget.GeomajasImplClientBundleFactory" /&gt;
+&lt;/replace-with&gt;</programlisting>
+
+        <para>Of course this explanation assumes you are using GWT to define
+        the style in your application. </para>
+
+        <para>However there are situations where a separate CSS file is
+        provided that should provide the style for the Geomajas widgets.
+        Should that be the case, you find that the resource bundles will
+        override the CSS that you have provided in your CSS file. For this
+        case, there exists a GeomajasImplClientBundleFactory that uses empty
+        CSS classes. This way no CSS will be injected at runtime, and you can
+        provide the CSS yourself. This
+        <code>GeomajasImplClientBundleFactory</code> is called the
+        <code>org.geomajas.gwt2.client.widget.nostyle.GeomajasImplClientBundleFactoryNoStyle</code>,
+        and can be loaded by adding the following line to your .gwt.xml
+        file:</para>
+
+        <programlisting>&lt;inherits name="org.geomajas.gwt2.GeomajasClientImplNoStyle" /&gt;</programlisting>
+      </section>
     </section>
 
     <section>
@@ -1643,7 +1687,7 @@ commandService.execute(command, new AbstractCommandCallback&lt;CommandResponse&g
 
       <para>Note we have waited for the MapInitializationEvent to add widgets
       to the map. This is not strictly necessary, but safer. Perhaps some of
-      the widgets you use may need the map to be fully initialized.</para>
+      the widgets you use may need the map to be fully initialized</para>
     </section>
   </section>
 </chapter>

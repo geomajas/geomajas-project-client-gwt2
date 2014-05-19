@@ -26,6 +26,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.gwt.client.util.Dom;
+import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.animation.NavigationAnimationFactory;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.ViewPort;
@@ -74,14 +75,14 @@ public class ZoomControl extends AbstractMapWidget {
 	 * @param mapPresenter The map to show this widget on.
 	 */
 	public ZoomControl(MapPresenter mapPresenter) {
-		this(mapPresenter, (ZoomControlResource) GWT.create(ZoomControlResource.class));
+		this(mapPresenter, GeomajasImpl.getClientBundleFactory().createZoomControlResource());
 	}
 
 	/**
 	 * Create a widget with zoom in, zoom out and zoom to maximum extent button.
 	 *
 	 * @param mapPresenter The map to show this widget on.
-	 * @param resource Custom resource bundle in case you want to provide your own style for this widget.
+	 * @param resource     Custom resource bundle in case you want to provide your own style for this widget.
 	 */
 	public ZoomControl(MapPresenter mapPresenter, ZoomControlResource resource) {
 		super(mapPresenter);

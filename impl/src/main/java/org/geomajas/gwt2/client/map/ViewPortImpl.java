@@ -386,19 +386,19 @@ public final class ViewPortImpl implements ViewPort {
 		double wRatio;
 		double boundsWidth = bounds.getWidth();
 		if (boundsWidth <= 0) {
-			wRatio = getMaximumResolution();
+			wRatio = getMinimumResolution();
 		} else {
 			wRatio = boundsWidth / mapWidth;
 		}
 		double hRatio;
 		double boundsHeight = bounds.getHeight();
 		if (boundsHeight <= 0) {
-			hRatio = getMaximumResolution();
+			hRatio = getMinimumResolution();
 		} else {
 			hRatio = boundsHeight / mapHeight;
 		}
 		// Return the checked resolution for the minimum to fit inside:
-		return checkResolution(wRatio < hRatio ? wRatio : hRatio, zoomOption);
+		return checkResolution(wRatio > hRatio ? wRatio : hRatio, zoomOption);
 	}
 
 	private double getMaxBoundsResolution() {
@@ -420,7 +420,7 @@ public final class ViewPortImpl implements ViewPort {
 			hRatio = boundsHeight / mapHeight;
 		}
 		// Return the checked resolution for the minimum to fit inside:
-		return wRatio < hRatio ? wRatio : hRatio;
+		return wRatio > hRatio ? wRatio : hRatio;
 	}
 
 	// Returns a position that's within the maximum bounds:

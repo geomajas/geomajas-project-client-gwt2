@@ -1,0 +1,8 @@
+/*===========================================================================*/
+/*====                       ZoomControl Widget                          ====*/
+/*===========================================================================*/
+
+@external gm-ZoomControl, gm-ZoomControl-zoomIn, gm-ZoomControl-zoomOut;
+
+.gm-ZoomControl, .gm-ZoomControl-zoomIn, .gm-ZoomControl-zoomOut {
+}

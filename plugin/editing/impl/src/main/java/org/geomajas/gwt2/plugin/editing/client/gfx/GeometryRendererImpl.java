@@ -11,6 +11,10 @@
 
 package org.geomajas.gwt2.plugin.editing.client.gfx;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
@@ -26,12 +30,16 @@ import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditMoveEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditMoveHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditResumeEvent;
+import org.geomajas.plugin.editing.client.event.GeometryEditResumeHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditShapeChangedEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditShapeChangedHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditSuspendEvent;
+import org.geomajas.plugin.editing.client.event.GeometryEditSuspendHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveHandler;
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexDeselectedEvent;
@@ -63,10 +71,6 @@ import org.vaadin.gwtgraphics.client.shape.Path;
 import org.vaadin.gwtgraphics.client.shape.path.LineTo;
 import org.vaadin.gwtgraphics.client.shape.path.MoveTo;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Renderer for geometries during the editing process.
  *
@@ -74,11 +78,11 @@ import java.util.Map;
  * @author Jan De Moerloose
  */
 public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStartHandler, GeometryEditStopHandler,
-		GeometryIndexHighlightBeginHandler, GeometryIndexHighlightEndHandler, GeometryEditMoveHandler,
-		GeometryEditShapeChangedHandler, GeometryEditChangeStateHandler, GeometryIndexSelectedHandler,
-		GeometryIndexDeselectedHandler, GeometryIndexDisabledHandler, GeometryIndexEnabledHandler,
-		GeometryIndexMarkForDeletionBeginHandler, GeometryIndexMarkForDeletionEndHandler,
-		GeometryEditTentativeMoveHandler, ViewPortChangedHandler {
+		GeometryEditSuspendHandler, GeometryEditResumeHandler, GeometryIndexHighlightBeginHandler,
+		GeometryIndexHighlightEndHandler, GeometryEditMoveHandler, GeometryEditShapeChangedHandler,
+		GeometryEditChangeStateHandler, GeometryIndexSelectedHandler, GeometryIndexDeselectedHandler,
+		GeometryIndexDisabledHandler, GeometryIndexEnabledHandler, GeometryIndexMarkForDeletionBeginHandler,
+		GeometryIndexMarkForDeletionEndHandler, GeometryEditTentativeMoveHandler, ViewPortChangedHandler {
 
 	private final MapPresenter mapPresenter;
 
@@ -130,6 +134,8 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 		editService.addGeometryEditShapeChangedHandler(this);
 		editService.addGeometryEditStartHandler(this);
 		editService.addGeometryEditStopHandler(this);
+		editService.addGeometryEditSuspendHandler(this);
+		editService.addGeometryEditResumeHandler(this);
 		editService.addGeometryEditTentativeMoveHandler(this);
 
 		// Add GeometryIndex state handlers:
@@ -202,6 +208,24 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 		mapPresenter.getContainerManager().removeVectorContainer(container);
 		container = null;
 		shapes.clear();
+	}
+	
+	@Override
+	public void onGeometryEditSuspend(GeometryEditSuspendEvent event) {
+		if (container != null) {
+			mapPresenter.getContainerManager().removeVectorContainer(container);
+		}
+		container = mapPresenter.getContainerManager().addScreenContainer();
+		redraw();
+	}
+
+	@Override
+	public void onGeometryEditResume(GeometryEditResumeEvent event) {
+		if (container != null) {
+			mapPresenter.getContainerManager().removeVectorContainer(container);
+		}
+		container = mapPresenter.getContainerManager().addScreenContainer();
+		redraw();
 	}
 
 	// ------------------------------------------------------------------------
@@ -599,12 +623,14 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 		GeomajasImpl.getInstance().getGfxUtil().applyStyle(shape, style);
 
 		// Apply controller:
-		MapController controller = controllerFactory.create(editService, index);
-		if (controller != null) {
-			controller.onActivate(mapPresenter);
-			GeomajasImpl.getInstance().getGfxUtil().applyController(shape, controller);
+		if (!editService.isSuspended()) {
+			MapController controller = controllerFactory.create(editService, index);
+			if (controller != null) {
+				controller.onActivate(mapPresenter);
+				GeomajasImpl.getInstance().getGfxUtil().applyController(shape, controller);
+			}
 		}
-
+		
 		container.add(shape);
 		if (index == null) {
 			nullShape = shape;

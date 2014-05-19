@@ -11,26 +11,6 @@
 
 package org.geomajas.gwt2.client.widget.control.zoomtorect;
 
-import org.geomajas.annotation.Api;
-import org.geomajas.geometry.Bbox;
-import org.geomajas.gwt.client.map.RenderSpace;
-import org.geomajas.gwt2.client.animation.NavigationAnimationFactory;
-import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
-import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
-import org.geomajas.gwt2.client.gfx.VectorContainer;
-import org.geomajas.gwt2.client.map.MapPresenter;
-import org.geomajas.gwt2.client.map.View;
-import org.geomajas.gwt2.client.map.ViewPort;
-import org.geomajas.gwt2.client.map.ZoomOption;
-import org.geomajas.gwt2.client.widget.AbstractMapWidget;
-import org.vaadin.gwtgraphics.client.Group;
-import org.vaadin.gwtgraphics.client.shape.Path;
-import org.vaadin.gwtgraphics.client.shape.Rectangle;
-import org.vaadin.gwtgraphics.client.shape.path.ClosePath;
-import org.vaadin.gwtgraphics.client.shape.path.LineTo;
-import org.vaadin.gwtgraphics.client.shape.path.MoveTo;
-
-import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
@@ -52,6 +32,25 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.Event.NativePreviewHandler;
 import com.google.gwt.user.client.ui.SimplePanel;
+import org.geomajas.annotation.Api;
+import org.geomajas.geometry.Bbox;
+import org.geomajas.gwt.client.map.RenderSpace;
+import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.animation.NavigationAnimationFactory;
+import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
+import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
+import org.geomajas.gwt2.client.gfx.VectorContainer;
+import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.client.map.View;
+import org.geomajas.gwt2.client.map.ViewPort;
+import org.geomajas.gwt2.client.map.ZoomOption;
+import org.geomajas.gwt2.client.widget.AbstractMapWidget;
+import org.vaadin.gwtgraphics.client.Group;
+import org.vaadin.gwtgraphics.client.shape.Path;
+import org.vaadin.gwtgraphics.client.shape.Rectangle;
+import org.vaadin.gwtgraphics.client.shape.path.ClosePath;
+import org.vaadin.gwtgraphics.client.shape.path.LineTo;
+import org.vaadin.gwtgraphics.client.shape.path.MoveTo;
 
 /**
  * Map widget that displays a button for zooming in to a rectangle on the map. The user is supposed to drag the
@@ -83,7 +82,7 @@ public class ZoomToRectangleControl extends AbstractMapWidget {
 	 *            The map presenter.
 	 */
 	public ZoomToRectangleControl(MapPresenter mapPresenter) {
-		this(mapPresenter, (ZoomToRectangleControlResource) GWT.create(ZoomToRectangleControlResource.class));
+		this(mapPresenter, GeomajasImpl.getClientBundleFactory().createZoomToRectangleControlResource());
 	}
 
 	/**

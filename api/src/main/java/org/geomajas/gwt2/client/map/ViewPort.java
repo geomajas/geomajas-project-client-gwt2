@@ -32,6 +32,28 @@ import org.geomajas.gwt2.client.animation.NavigationAnimation;
 public interface ViewPort {
 
 	/**
+	 * Get the maximum zooming extent that is allowed on this view port. These bounds are determined by the map
+	 * configuration.
+	 *
+	 * @return The maximum zooming extent that is allowed on this view port.
+	 */
+	Bbox getMaximumBounds();
+
+	/**
+	 * Return the maximum allowed resolution. This means minimum scale or zoom level.
+	 *
+	 * @return The maximum allowed resolution.
+	 */
+	double getMaximumResolution();
+
+	/**
+	 * Return the minimum allowed resolution. This means maximum scale or zoom level.
+	 *
+	 * @return The minimum allowed resolution.
+	 */
+	double getMinimumResolution();
+
+	/**
 	 * Get the total number of preferred fixed resolutions. These resolutions are used among others by the zooming
 	 * controls on the map.
 	 *
@@ -50,32 +72,10 @@ public interface ViewPort {
 	/**
 	 * Get the index for the fixed resolution that is closest to the provided resolution.
 	 *
-	 * @param resolution The resolution to request the closest fixed resolution level for.
+	 * @param scale The resolution to request the closest fixed resolution level for.
 	 * @return Returns the fixed resolution level index.
 	 */
-	int getResolutionIndex(double resolution);
-
-	/**
-	 * Return the minimum allowed resolution. This means the maximum zoom out.
-	 *
-	 * @return The minimum allowed resolution.
-	 */
-	double getMaximumResolution();
-
-	/**
-	 * Return the maximum allowed resolution. This means the maximum zoom in.
-	 *
-	 * @return The maximum allowed resolution.
-	 */
-	double getMinimumResolution();
-
-	/**
-	 * Get the maximum zooming extent that is allowed on this view port. These bounds are determined by the map
-	 * configuration.
-	 *
-	 * @return The maximum zooming extent that is allowed on this view port.
-	 */
-	Bbox getMaximumBounds();
+	int getResolutionIndex(double scale);
 
 	/**
 	 * Get the current map width in pixels.

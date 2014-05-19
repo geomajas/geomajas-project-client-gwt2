@@ -1,0 +1,463 @@
+org.geomajas.gwt2.client.Geomajas::2.0.0
+org.geomajas.gwt2.client.Geomajas:EventBus getEventBus():2.0.0
+org.geomajas.gwt2.client.Geomajas:GfxUtil getGfxUtil():2.0.0
+org.geomajas.gwt2.client.Geomajas:MapPresenter createMapPresenter():2.0.0
+org.geomajas.gwt2.client.Geomajas:MapPresenter createMapPresenter(MapConfiguration, int, int, ):2.0.0
+org.geomajas.gwt2.client.Geomajas:MapPresenter createMapPresenter(MapConfiguration, int, int, DefaultMapWidget, ):2.0.0
+org.geomajas.gwt2.client.Geomajas:MapPresenter createMapPresenter(MapConfiguration, int, int, MapInitializationHandler, DefaultMapWidget, ):2.1.0
+org.geomajas.gwt2.client.animation.NavigationAnimation::2.0.0
+org.geomajas.gwt2.client.animation.NavigationAnimation:View getBeginView():2.0.0
+org.geomajas.gwt2.client.animation.NavigationAnimation:View getEndView():2.0.0
+org.geomajas.gwt2.client.animation.NavigationAnimation:int getAnimationMillis():2.0.0
+org.geomajas.gwt2.client.animation.NavigationAnimation:void cancel():2.0.0
+org.geomajas.gwt2.client.animation.NavigationAnimation:void run():2.0.0
+org.geomajas.gwt2.client.animation.Trajectory::2.0.0
+org.geomajas.gwt2.client.animation.Trajectory:View getView(double, ):2.0.0
+org.geomajas.gwt2.client.controller.AbstractMapController::2.0.0
+org.geomajas.gwt2.client.controller.AbstractMapController:void onActivate(MapPresenter, ):2.0.0
+org.geomajas.gwt2.client.controller.AbstractMapController:void onDeactivate(MapPresenter, ):2.0.0
+org.geomajas.gwt2.client.controller.MapController::2.0.0
+org.geomajas.gwt2.client.controller.MapController:void onActivate(MapPresenter, ):2.0.0
+org.geomajas.gwt2.client.controller.MapController:void onDeactivate(MapPresenter, ):2.0.0
+org.geomajas.gwt2.client.event.FeatureDeselectedEvent::2.0.0
+org.geomajas.gwt2.client.event.FeatureDeselectedEvent:Feature getFeature():2.0.0
+org.geomajas.gwt2.client.event.FeatureDeselectedEvent:FeatureDeselectedEvent(Layer, Feature, ):2.0.0
+org.geomajas.gwt2.client.event.FeatureDeselectedEvent:Type<FeatureSelectionHandler> getAssociatedType():2.0.0
+org.geomajas.gwt2.client.event.FeatureSelectedEvent::2.0.0
+org.geomajas.gwt2.client.event.FeatureSelectedEvent:Feature getFeature():2.0.0
+org.geomajas.gwt2.client.event.FeatureSelectedEvent:FeatureSelectedEvent(Layer, Feature, ):2.0.0
+org.geomajas.gwt2.client.event.FeatureSelectedEvent:Type<FeatureSelectionHandler> getAssociatedType():2.0.0
+org.geomajas.gwt2.client.event.FeatureSelectionHandler::2.0.0
+org.geomajas.gwt2.client.event.FeatureSelectionHandler:Type<FeatureSelectionHandler> TYPE:2.0.0
+org.geomajas.gwt2.client.event.FeatureSelectionHandler:void onFeatureDeselected(FeatureDeselectedEvent, ):2.0.0
+org.geomajas.gwt2.client.event.FeatureSelectionHandler:void onFeatureSelected(FeatureSelectedEvent, ):2.0.0
+org.geomajas.gwt2.client.event.LayerAddedEvent::2.0.0
+org.geomajas.gwt2.client.event.LayerAddedEvent:LayerAddedEvent(Layer, ):2.0.0
+org.geomajas.gwt2.client.event.LayerAddedEvent:Type<MapCompositionHandler> getAssociatedType():2.0.0
+org.geomajas.gwt2.client.event.LayerDeselectedEvent::2.0.0
+org.geomajas.gwt2.client.event.LayerDeselectedEvent:LayerDeselectedEvent(Layer, ):2.0.0
+org.geomajas.gwt2.client.event.LayerDeselectedEvent:Type<LayerSelectionHandler> getAssociatedType():2.0.0
+org.geomajas.gwt2.client.event.LayerHideEvent::2.0.0
+org.geomajas.gwt2.client.event.LayerHideEvent:LayerHideEvent(Layer, ):2.0.0
+org.geomajas.gwt2.client.event.LayerHideEvent:Type<LayerVisibilityHandler> getAssociatedType():2.0.0
+org.geomajas.gwt2.client.event.LayerLabelHideEvent::2.0.0
+org.geomajas.gwt2.client.event.LayerLabelHideEvent:LayerLabelHideEvent(Layer, ):2.0.0
+org.geomajas.gwt2.client.event.LayerLabelHideEvent:Type<LayerLabeledHandler> getAssociatedType():2.0.0
+org.geomajas.gwt2.client.event.LayerLabelMarkedEvent::2.0.0
+org.geomajas.gwt2.client.event.LayerLabelMarkedEvent:LayerLabelMarkedEvent(Layer, ):2.0.0
+org.geomajas.gwt2.client.event.LayerLabelMarkedEvent:Type<LayerLabeledHandler> getAssociatedType():2.0.0
+org.geomajas.gwt2.client.event.LayerLabelShowEvent::2.0.0
+org.geomajas.gwt2.client.event.LayerLabelShowEvent:LayerLabelShowEvent(Layer, ):2.0.0
+org.geomajas.gwt2.client.event.LayerLabelShowEvent:Type<LayerLabeledHandler> getAssociatedType():2.0.0
+org.geomajas.gwt2.client.event.LayerLabeledHandler::2.0.0
+org.geomajas.gwt2.client.event.LayerLabeledHandler:Type<LayerLabeledHandler> TYPE:2.0.0
+org.geomajas.gwt2.client.event.LayerLabeledHandler:void onLabelHide(LayerLabelHideEvent, ):2.0.0
+org.geomajas.gwt2.client.event.LayerLabeledHandler:void onLabelMarked(LayerLabelMarkedEvent, ):2.0.0
+org.geomajas.gwt2.client.event.LayerLabeledHandler:void onLabelShow(LayerLabelShowEvent, ):2.0.0
+org.geomajas.gwt2.client.event.LayerOrderChangedEvent::2.0.0
+org.geomajas.gwt2.client.event.LayerOrderChangedEvent:LayerOrderChangedEvent(int, int, ):2.0.0
+org.geomajas.gwt2.client.event.LayerOrderChangedEvent:Type<LayerOrderChangedHandler> getAssociatedType():2.0.0
+org.geomajas.gwt2.client.event.LayerOrderChangedEvent:int getFromIndex():2.0.0
+org.geomajas.gwt2.client.event.LayerOrderChangedEvent:int getMaxIndex():2.0.0
+org.geomajas.gwt2.client.event.LayerOrderChangedEvent:int getMinIndex():2.0.0
+org.geomajas.gwt2.client.event.LayerOrderChangedEvent:int getToIndex():2.0.0
+org.geomajas.gwt2.client.event.LayerOrderChangedHandler::2.0.0
+org.geomajas.gwt2.client.event.LayerOrderChangedHandler:Type<LayerOrderChangedHandler> TYPE:2.0.0
+org.geomajas.gwt2.client.event.LayerOrderChangedHandler:void onLayerOrderChanged(LayerOrderChangedEvent, ):2.0.0
+org.geomajas.gwt2.client.event.LayerRefreshedEvent::2.0.0
+org.geomajas.gwt2.client.event.LayerRefreshedEvent:LayerRefreshedEvent(Layer, ):2.0.0
+org.geomajas.gwt2.client.event.LayerRefreshedEvent:Type<LayerRefreshedHandler> getAssociatedType():2.0.0
+org.geomajas.gwt2.client.event.LayerRefreshedHandler::2.0.0
+org.geomajas.gwt2.client.event.LayerRefreshedHandler:Type<LayerRefreshedHandler> TYPE:2.0.0
+org.geomajas.gwt2.client.event.LayerRefreshedHandler:void onLayerRefreshed(LayerRefreshedEvent, ):2.0.0
+org.geomajas.gwt2.client.event.LayerRemovedEvent::2.0.0
+org.geomajas.gwt2.client.event.LayerRemovedEvent:LayerRemovedEvent(Layer, int, ):2.0.0
+org.geomajas.gwt2.client.event.LayerRemovedEvent:Type<MapCompositionHandler> getAssociatedType():2.0.0
+org.geomajas.gwt2.client.event.LayerRemovedEvent:int getIndex():2.0.0
+org.geomajas.gwt2.client.event.LayerSelectedEvent::2.0.0
+org.geomajas.gwt2.client.event.LayerSelectedEvent:LayerSelectedEvent(Layer, ):2.0.0
+org.geomajas.gwt2.client.event.LayerSelectedEvent:Type<LayerSelectionHandler> getAssociatedType():2.0.0
+org.geomajas.gwt2.client.event.LayerSelectionHandler::2.0.0
+org.geomajas.gwt2.client.event.LayerSelectionHandler:Type<LayerSelectionHandler> TYPE:2.0.0
+org.geomajas.gwt2.client.event.LayerSelectionHandler:void onDeselectLayer(LayerDeselectedEvent, ):2.0.0
+org.geomajas.gwt2.client.event.LayerSelectionHandler:void onSelectLayer(LayerSelectedEvent, ):2.0.0
+org.geomajas.gwt2.client.event.LayerShowEvent::2.0.0
+org.geomajas.gwt2.client.event.LayerShowEvent:LayerShowEvent(Layer, ):2.0.0
+org.geomajas.gwt2.client.event.LayerShowEvent:Type<LayerVisibilityHandler> getAssociatedType():2.0.0
+org.geomajas.gwt2.client.event.LayerStyleChangedEvent::2.0.0
+org.geomajas.gwt2.client.event.LayerStyleChangedEvent:LayerStyleChangedEvent(Layer, ):2.0.0
+org.geomajas.gwt2.client.event.LayerStyleChangedEvent:Type<LayerStyleChangedHandler> getAssociatedType():2.0.0
+org.geomajas.gwt2.client.event.LayerStyleChangedHandler::2.0.0
+org.geomajas.gwt2.client.event.LayerStyleChangedHandler:Type<LayerStyleChangedHandler> TYPE:2.0.0
+org.geomajas.gwt2.client.event.LayerStyleChangedHandler:void onLayerStyleChanged(LayerStyleChangedEvent, ):2.0.0
+org.geomajas.gwt2.client.event.LayerVisibilityHandler::2.0.0
+org.geomajas.gwt2.client.event.LayerVisibilityHandler:Type<LayerVisibilityHandler> TYPE:2.0.0
+org.geomajas.gwt2.client.event.LayerVisibilityHandler:void onHide(LayerHideEvent, ):2.0.0
+org.geomajas.gwt2.client.event.LayerVisibilityHandler:void onShow(LayerShowEvent, ):2.0.0
+org.geomajas.gwt2.client.event.LayerVisibilityHandler:void onVisibilityMarked(LayerVisibilityMarkedEvent, ):2.0.0
+org.geomajas.gwt2.client.event.LayerVisibilityMarkedEvent::2.0.0
+org.geomajas.gwt2.client.event.LayerVisibilityMarkedEvent:LayerVisibilityMarkedEvent(Layer, ):2.0.0
+org.geomajas.gwt2.client.event.LayerVisibilityMarkedEvent:Type<LayerVisibilityHandler> getAssociatedType():2.0.0
+org.geomajas.gwt2.client.event.MapCompositionHandler::2.0.0
+org.geomajas.gwt2.client.event.MapCompositionHandler:Type<MapCompositionHandler> TYPE:2.0.0
+org.geomajas.gwt2.client.event.MapCompositionHandler:void onLayerAdded(LayerAddedEvent, ):2.0.0
+org.geomajas.gwt2.client.event.MapCompositionHandler:void onLayerRemoved(LayerRemovedEvent, ):2.0.0
+org.geomajas.gwt2.client.event.MapInitializationEvent::2.0.0
+org.geomajas.gwt2.client.event.MapInitializationEvent:MapInitializationEvent(MapPresenter, ):2.1.0
+org.geomajas.gwt2.client.event.MapInitializationEvent:MapPresenter getMapPresenter():2.1.0
+org.geomajas.gwt2.client.event.MapInitializationEvent:Type<MapInitializationHandler> getAssociatedType():2.0.0
+org.geomajas.gwt2.client.event.MapInitializationHandler::2.0.0
+org.geomajas.gwt2.client.event.MapInitializationHandler:Type<MapInitializationHandler> TYPE:2.0.0
+org.geomajas.gwt2.client.event.MapInitializationHandler:void onMapInitialized(MapInitializationEvent, ):2.0.0
+org.geomajas.gwt2.client.event.MapResizedEvent::2.0.0
+org.geomajas.gwt2.client.event.MapResizedEvent:MapResizedEvent(int, int, ):2.0.0
+org.geomajas.gwt2.client.event.MapResizedEvent:Type<MapResizedHandler> getAssociatedType():2.0.0
+org.geomajas.gwt2.client.event.MapResizedEvent:int getMapHeight():2.0.0
+org.geomajas.gwt2.client.event.MapResizedEvent:int getMapWidth():2.0.0
+org.geomajas.gwt2.client.event.MapResizedHandler::2.0.0
+org.geomajas.gwt2.client.event.MapResizedHandler:Type<MapResizedHandler> TYPE:2.0.0
+org.geomajas.gwt2.client.event.MapResizedHandler:void onMapResized(MapResizedEvent, ):2.0.0
+org.geomajas.gwt2.client.event.NavigationStartEvent::2.0.0
+org.geomajas.gwt2.client.event.NavigationStartEvent:NavigationStartEvent(Trajectory, ):2.0.0
+org.geomajas.gwt2.client.event.NavigationStartEvent:Trajectory getTrajectory():2.0.0
+org.geomajas.gwt2.client.event.NavigationStartEvent:final Type<NavigationStartHandler> getAssociatedType():2.0.0
+org.geomajas.gwt2.client.event.NavigationStartHandler::2.0.0
+org.geomajas.gwt2.client.event.NavigationStartHandler:Type<NavigationStartHandler> TYPE:2.0.0
+org.geomajas.gwt2.client.event.NavigationStartHandler:void onNavigationStarted(NavigationStartEvent, ):2.0.0
+org.geomajas.gwt2.client.event.NavigationStopEvent::2.0.0
+org.geomajas.gwt2.client.event.NavigationStopEvent:NavigationStopEvent(View, ):2.0.0
+org.geomajas.gwt2.client.event.NavigationStopEvent:View getView():2.0.0
+org.geomajas.gwt2.client.event.NavigationStopEvent:final Type<NavigationStopHandler> getAssociatedType():2.0.0
+org.geomajas.gwt2.client.event.NavigationStopHandler::2.0.0
+org.geomajas.gwt2.client.event.NavigationStopHandler:Type<NavigationStopHandler> TYPE:2.0.0
+org.geomajas.gwt2.client.event.NavigationStopHandler:void onNavigationStopped(NavigationStopEvent, ):2.0.0
+org.geomajas.gwt2.client.event.NavigationUpdateEvent::2.0.0
+org.geomajas.gwt2.client.event.NavigationUpdateEvent:NavigationUpdateEvent(Trajectory, View, ):2.0.0
+org.geomajas.gwt2.client.event.NavigationUpdateEvent:Trajectory getTrajectory():2.0.0
+org.geomajas.gwt2.client.event.NavigationUpdateEvent:View getView():2.0.0
+org.geomajas.gwt2.client.event.NavigationUpdateEvent:final Type<NavigationUpdateHandler> getAssociatedType():2.0.0
+org.geomajas.gwt2.client.event.NavigationUpdateHandler::2.0.0
+org.geomajas.gwt2.client.event.NavigationUpdateHandler:Type<NavigationUpdateHandler> TYPE:2.0.0
+org.geomajas.gwt2.client.event.NavigationUpdateHandler:void onNavigationUpdated(NavigationUpdateEvent, ):2.0.0
+org.geomajas.gwt2.client.event.TileLevelRenderedEvent::2.0.0
+org.geomajas.gwt2.client.event.TileLevelRenderedEvent:TileLevelRenderedEvent(double, ):2.0.0
+org.geomajas.gwt2.client.event.TileLevelRenderedEvent:Type<TileLevelRenderedHandler> getAssociatedType():2.0.0
+org.geomajas.gwt2.client.event.TileLevelRenderedEvent:double getResolution():2.0.0
+org.geomajas.gwt2.client.event.TileLevelRenderedHandler::2.0.0
+org.geomajas.gwt2.client.event.TileLevelRenderedHandler:Type<TileLevelRenderedHandler> TYPE:2.0.0
+org.geomajas.gwt2.client.event.TileLevelRenderedHandler:void onScaleLevelRendered(TileLevelRenderedEvent, ):2.0.0
+org.geomajas.gwt2.client.event.ViewPortChangedEvent::2.0.0
+org.geomajas.gwt2.client.event.ViewPortChangedEvent:Trajectory getTrajectory():2.0.0
+org.geomajas.gwt2.client.event.ViewPortChangedEvent:Type<ViewPortChangedHandler> getAssociatedType():2.0.0
+org.geomajas.gwt2.client.event.ViewPortChangedEvent:View getFrom():2.0.0
+org.geomajas.gwt2.client.event.ViewPortChangedEvent:View getTo():2.0.0
+org.geomajas.gwt2.client.event.ViewPortChangedEvent:ViewPortChangedEvent(View, View, Trajectory, ):2.0.0
+org.geomajas.gwt2.client.event.ViewPortChangedHandler::2.0.0
+org.geomajas.gwt2.client.event.ViewPortChangedHandler:Type<ViewPortChangedHandler> TYPE:2.0.0
+org.geomajas.gwt2.client.event.ViewPortChangedHandler:void onViewPortChanged(ViewPortChangedEvent, ):2.0.0
+org.geomajas.gwt2.client.gfx.CanvasContainer::2.0.0
+org.geomajas.gwt2.client.gfx.CanvasContainer:void addAll(List<CanvasShape>, ):2.0.0
+org.geomajas.gwt2.client.gfx.CanvasContainer:void addShape(CanvasShape, ):2.0.0
+org.geomajas.gwt2.client.gfx.CanvasContainer:void clear():2.0.0
+org.geomajas.gwt2.client.gfx.CanvasContainer:void removeShape(CanvasShape, ):2.0.0
+org.geomajas.gwt2.client.gfx.CanvasContainer:void repaint():2.0.0
+org.geomajas.gwt2.client.gfx.CanvasContainer:void setPixelSize(int, int, ):2.0.0
+org.geomajas.gwt2.client.gfx.CanvasShape::2.0.0
+org.geomajas.gwt2.client.gfx.CanvasShape:Bbox getBounds():2.0.0
+org.geomajas.gwt2.client.gfx.CanvasShape:void paint(Canvas, Matrix, ):2.0.0
+org.geomajas.gwt2.client.gfx.FontStyle::2.0.0
+org.geomajas.gwt2.client.gfx.FontStyle:FontStyle():2.0.0
+org.geomajas.gwt2.client.gfx.FontStyle:String getColor():2.0.0
+org.geomajas.gwt2.client.gfx.FontStyle:String getFamily():2.0.0
+org.geomajas.gwt2.client.gfx.FontStyle:String getStyle():2.0.0
+org.geomajas.gwt2.client.gfx.FontStyle:String getWeight():2.0.0
+org.geomajas.gwt2.client.gfx.FontStyle:float getOpacity():2.0.0
+org.geomajas.gwt2.client.gfx.FontStyle:int getSize():2.0.0
+org.geomajas.gwt2.client.gfx.FontStyle:static final String DEFAULT_FONT_COLOR:2.0.0
+org.geomajas.gwt2.client.gfx.FontStyle:static final String DEFAULT_FONT_FAMILY:2.0.0
+org.geomajas.gwt2.client.gfx.FontStyle:static final int DEFAULT_FONT_SIZE:2.0.0
+org.geomajas.gwt2.client.gfx.FontStyle:void setColor(String, ):2.0.0
+org.geomajas.gwt2.client.gfx.FontStyle:void setFamily(String, ):2.0.0
+org.geomajas.gwt2.client.gfx.FontStyle:void setOpacity(float, ):2.0.0
+org.geomajas.gwt2.client.gfx.FontStyle:void setSize(int, ):2.0.0
+org.geomajas.gwt2.client.gfx.FontStyle:void setStyle(String, ):2.0.0
+org.geomajas.gwt2.client.gfx.FontStyle:void setWeight(String, ):2.0.0
+org.geomajas.gwt2.client.gfx.GfxUtil::2.0.0
+org.geomajas.gwt2.client.gfx.GfxUtil:List<HandlerRegistration> applyController(VectorObject, MapController, ):2.0.0
+org.geomajas.gwt2.client.gfx.GfxUtil:VectorObject toShape(Geometry, ):2.0.0
+org.geomajas.gwt2.client.gfx.GfxUtil:void applyFill(VectorObject, String, double, ):2.0.0
+org.geomajas.gwt2.client.gfx.GfxUtil:void applyStroke(VectorObject, String, double, int, String, ):2.0.0
+org.geomajas.gwt2.client.gfx.GfxUtil:void applyStyle(VectorObject, ShapeStyle, ):2.0.0
+org.geomajas.gwt2.client.gfx.ShapeStyle::2.0.0
+org.geomajas.gwt2.client.gfx.ShapeStyle:ShapeStyle():2.0.0
+org.geomajas.gwt2.client.gfx.ShapeStyle:ShapeStyle(ShapeStyle, ):2.0.0
+org.geomajas.gwt2.client.gfx.ShapeStyle:String getDashArray():2.0.0
+org.geomajas.gwt2.client.gfx.ShapeStyle:String getFillColor():2.0.0
+org.geomajas.gwt2.client.gfx.ShapeStyle:String getStrokeColor():2.0.0
+org.geomajas.gwt2.client.gfx.ShapeStyle:boolean equals(Object, ):2.0.0
+org.geomajas.gwt2.client.gfx.ShapeStyle:float getFillOpacity():2.0.0
+org.geomajas.gwt2.client.gfx.ShapeStyle:float getStrokeOpacity():2.0.0
+org.geomajas.gwt2.client.gfx.ShapeStyle:int getStrokeWidth():2.0.0
+org.geomajas.gwt2.client.gfx.ShapeStyle:int hashCode():2.0.0
+org.geomajas.gwt2.client.gfx.ShapeStyle:void applyDefaults():2.0.0
+org.geomajas.gwt2.client.gfx.ShapeStyle:void setDashArray(String, ):2.0.0
+org.geomajas.gwt2.client.gfx.ShapeStyle:void setFillColor(String, ):2.0.0
+org.geomajas.gwt2.client.gfx.ShapeStyle:void setFillOpacity(float, ):2.0.0
+org.geomajas.gwt2.client.gfx.ShapeStyle:void setStrokeColor(String, ):2.0.0
+org.geomajas.gwt2.client.gfx.ShapeStyle:void setStrokeOpacity(float, ):2.0.0
+org.geomajas.gwt2.client.gfx.ShapeStyle:void setStrokeWidth(int, ):2.0.0
+org.geomajas.gwt2.client.gfx.VectorContainer::2.0.0
+org.geomajas.gwt2.client.gfx.VectorContainer:boolean isVisible():2.0.0
+org.geomajas.gwt2.client.gfx.VectorContainer:void setVisible(boolean, ):2.0.0
+org.geomajas.gwt2.client.map.ContainerManager::2.0.0
+org.geomajas.gwt2.client.map.ContainerManager:CanvasContainer addWorldCanvasContainer():2.0.0
+org.geomajas.gwt2.client.map.ContainerManager:TransformableWidgetContainer addWorldWidgetContainer():2.0.0
+org.geomajas.gwt2.client.map.ContainerManager:VectorContainer addScreenContainer():2.0.0
+org.geomajas.gwt2.client.map.ContainerManager:VectorContainer addWorldContainer():2.0.0
+org.geomajas.gwt2.client.map.ContainerManager:boolean bringToFront(VectorContainer, ):2.0.0
+org.geomajas.gwt2.client.map.ContainerManager:boolean removeVectorContainer(VectorContainer, ):2.0.0
+org.geomajas.gwt2.client.map.ContainerManager:boolean removeWorldWidgetContainer(TransformableWidgetContainer, ):2.0.0
+org.geomajas.gwt2.client.map.Hint::2.0.0
+org.geomajas.gwt2.client.map.Hint:Hint(String, ):2.0.0
+org.geomajas.gwt2.client.map.Hint:String getName():2.0.0
+org.geomajas.gwt2.client.map.MapConfiguration::2.0.0
+org.geomajas.gwt2.client.map.MapConfiguration:Bbox getMaxBounds():2.0.0
+org.geomajas.gwt2.client.map.MapConfiguration:Hint<Bbox> INITIAL_BOUNDS:2.0.0
+org.geomajas.gwt2.client.map.MapConfiguration:Hint<Bbox> MAXIMUM_BOUNDS:2.0.0
+org.geomajas.gwt2.client.map.MapConfiguration:Hint<Boolean> ANIMATION_CANCEL_SUPPORT:2.0.0
+org.geomajas.gwt2.client.map.MapConfiguration:Hint<Double> DPI:2.0.0
+org.geomajas.gwt2.client.map.MapConfiguration:Hint<Double> MINIMUM_RESOLUTION:2.0.0
+org.geomajas.gwt2.client.map.MapConfiguration:Hint<Double> UNIT_LENGTH:2.0.0
+org.geomajas.gwt2.client.map.MapConfiguration:Hint<Integer> ANIMATION_TIME:2.0.0
+org.geomajas.gwt2.client.map.MapConfiguration:Hint<Integer> FADE_IN_TIME:2.0.0
+org.geomajas.gwt2.client.map.MapConfiguration:Hint<List<Double>> RESOLUTIONS:2.0.0
+org.geomajas.gwt2.client.map.MapConfiguration:Hint<String> CRS:2.0.0
+org.geomajas.gwt2.client.map.MapConfiguration:List<Double> getResolutions():2.0.0
+org.geomajas.gwt2.client.map.MapConfiguration:String getCrs():2.0.0
+org.geomajas.gwt2.client.map.MapConfiguration:T getHintValue(Hint<T>, ):2.0.0
+org.geomajas.gwt2.client.map.MapConfiguration:double getMinimumResolution():2.0.0
+org.geomajas.gwt2.client.map.MapConfiguration:double getUnitLength():2.0.0
+org.geomajas.gwt2.client.map.MapConfiguration:void setCrs(String, CrsType, ):2.0.0
+org.geomajas.gwt2.client.map.MapConfiguration:void setCrs(String, double, ):2.0.0
+org.geomajas.gwt2.client.map.MapConfiguration:void setHintValue(Hint<T>, T, ):2.0.0
+org.geomajas.gwt2.client.map.MapConfiguration:void setMaxBounds(Bbox, ):2.0.0
+org.geomajas.gwt2.client.map.MapConfiguration:void setMinimumResolution(double, ):2.0.0
+org.geomajas.gwt2.client.map.MapConfiguration:void setResolutions(List<Double>, ):2.0.0
+org.geomajas.gwt2.client.map.MapEventBus::2.0.0
+org.geomajas.gwt2.client.map.MapEventBus:HandlerRegistration addFeatureSelectionHandler(FeatureSelectionHandler, ):2.0.0
+org.geomajas.gwt2.client.map.MapEventBus:HandlerRegistration addFeatureSelectionHandler(FeatureSelectionHandler, Layer, ):2.0.0
+org.geomajas.gwt2.client.map.MapEventBus:HandlerRegistration addHandler(Type<H>, H, ):2.0.0
+org.geomajas.gwt2.client.map.MapEventBus:HandlerRegistration addLayerLabeledHandler(LayerLabeledHandler, ):2.0.0
+org.geomajas.gwt2.client.map.MapEventBus:HandlerRegistration addLayerLabeledHandler(LayerLabeledHandler, Layer, ):2.0.0
+org.geomajas.gwt2.client.map.MapEventBus:HandlerRegistration addLayerOrderChangedHandler(LayerOrderChangedHandler, ):2.0.0
+org.geomajas.gwt2.client.map.MapEventBus:HandlerRegistration addLayerRefreshedHandler(LayerRefreshedHandler, ):2.0.0
+org.geomajas.gwt2.client.map.MapEventBus:HandlerRegistration addLayerRefreshedHandler(LayerRefreshedHandler, Layer, ):2.0.0
+org.geomajas.gwt2.client.map.MapEventBus:HandlerRegistration addLayerSelectionHandler(LayerSelectionHandler, ):2.0.0
+org.geomajas.gwt2.client.map.MapEventBus:HandlerRegistration addLayerSelectionHandler(LayerSelectionHandler, Layer, ):2.0.0
+org.geomajas.gwt2.client.map.MapEventBus:HandlerRegistration addLayerStyleChangedHandler(LayerStyleChangedHandler, ):2.0.0
+org.geomajas.gwt2.client.map.MapEventBus:HandlerRegistration addLayerStyleChangedHandler(LayerStyleChangedHandler, Layer, ):2.0.0
+org.geomajas.gwt2.client.map.MapEventBus:HandlerRegistration addLayerVisibilityHandler(LayerVisibilityHandler, ):2.0.0
+org.geomajas.gwt2.client.map.MapEventBus:HandlerRegistration addLayerVisibilityHandler(LayerVisibilityHandler, Layer, ):2.0.0
+org.geomajas.gwt2.client.map.MapEventBus:HandlerRegistration addMapCompositionHandler(MapCompositionHandler, ):2.0.0
+org.geomajas.gwt2.client.map.MapEventBus:HandlerRegistration addMapInitializationHandler(MapInitializationHandler, ):2.0.0
+org.geomajas.gwt2.client.map.MapEventBus:HandlerRegistration addMapResizedHandler(MapResizedHandler, ):2.0.0
+org.geomajas.gwt2.client.map.MapEventBus:HandlerRegistration addNavigationStartHandler(NavigationStartHandler, ):2.0.0
+org.geomajas.gwt2.client.map.MapEventBus:HandlerRegistration addNavigationStopHandler(NavigationStopHandler, ):2.0.0
+org.geomajas.gwt2.client.map.MapEventBus:HandlerRegistration addNavigationUpdateHandler(NavigationUpdateHandler, ):2.0.0
+org.geomajas.gwt2.client.map.MapEventBus:HandlerRegistration addViewPortChangedHandler(ViewPortChangedHandler, ):2.0.0
+org.geomajas.gwt2.client.map.MapEventBus:void fireEvent(Event<H>, ):2.0.0
+org.geomajas.gwt2.client.map.MapPresenter::2.0.0
+org.geomajas.gwt2.client.map.MapPresenter:Collection<MapController> getMapListeners():2.0.0
+org.geomajas.gwt2.client.map.MapPresenter:ContainerManager getContainerManager():2.0.0
+org.geomajas.gwt2.client.map.MapPresenter:HasWidgets getWidgetPane():2.0.0
+org.geomajas.gwt2.client.map.MapPresenter:LayersModel getLayersModel():2.0.0
+org.geomajas.gwt2.client.map.MapPresenter:LayersModelRenderer getLayersModelRenderer():2.0.0
+org.geomajas.gwt2.client.map.MapPresenter:MapConfiguration getConfiguration():2.0.0
+org.geomajas.gwt2.client.map.MapPresenter:MapController getMapController():2.0.0
+org.geomajas.gwt2.client.map.MapPresenter:MapEventBus getEventBus():2.0.0
+org.geomajas.gwt2.client.map.MapPresenter:MapEventParser getMapEventParser():2.0.0
+org.geomajas.gwt2.client.map.MapPresenter:ViewPort getViewPort():2.0.0
+org.geomajas.gwt2.client.map.MapPresenter:Widget asWidget():2.0.0
+org.geomajas.gwt2.client.map.MapPresenter:boolean addMapListener(MapController, ):2.0.0
+org.geomajas.gwt2.client.map.MapPresenter:boolean removeMapListener(MapController, ):2.0.0
+org.geomajas.gwt2.client.map.MapPresenter:void setCursor(String, ):2.0.0
+org.geomajas.gwt2.client.map.MapPresenter:void setMapController(MapController, ):2.0.0
+org.geomajas.gwt2.client.map.MapPresenter:void setSize(int, int, ):2.0.0
+org.geomajas.gwt2.client.map.View::2.0.0
+org.geomajas.gwt2.client.map.View:Coordinate getPosition():2.0.0
+org.geomajas.gwt2.client.map.View:View(Coordinate, double, ):2.0.0
+org.geomajas.gwt2.client.map.View:boolean equals(Object, ):2.0.0
+org.geomajas.gwt2.client.map.View:double getResolution():2.0.0
+org.geomajas.gwt2.client.map.View:int hashCode():2.0.0
+org.geomajas.gwt2.client.map.ViewPort::2.0.0
+org.geomajas.gwt2.client.map.ViewPort:Bbox asBounds(View, ):2.0.0
+org.geomajas.gwt2.client.map.ViewPort:Bbox getBounds():2.0.0
+org.geomajas.gwt2.client.map.ViewPort:Bbox getMaximumBounds():2.0.0
+org.geomajas.gwt2.client.map.ViewPort:Coordinate getPosition():2.0.0
+org.geomajas.gwt2.client.map.ViewPort:String getCrs():2.0.0
+org.geomajas.gwt2.client.map.ViewPort:View asView(Bbox, ZoomOption, ):2.0.0
+org.geomajas.gwt2.client.map.ViewPort:View getView():2.0.0
+org.geomajas.gwt2.client.map.ViewPort:ViewPortTransformationService getTransformationService():2.0.0
+org.geomajas.gwt2.client.map.ViewPort:double getMaximumResolution():2.0.0
+org.geomajas.gwt2.client.map.ViewPort:double getMinimumResolution():2.0.0
+org.geomajas.gwt2.client.map.ViewPort:double getResolution():2.0.0
+org.geomajas.gwt2.client.map.ViewPort:double getResolution(int, ):2.0.0
+org.geomajas.gwt2.client.map.ViewPort:double toResolution(double, ):2.0.0
+org.geomajas.gwt2.client.map.ViewPort:int getMapHeight():2.0.0
+org.geomajas.gwt2.client.map.ViewPort:int getMapWidth():2.0.0
+org.geomajas.gwt2.client.map.ViewPort:int getResolutionCount():2.0.0
+org.geomajas.gwt2.client.map.ViewPort:int getResolutionIndex(double, ):2.0.0
+org.geomajas.gwt2.client.map.ViewPort:void applyBounds(Bbox, ):2.0.0
+org.geomajas.gwt2.client.map.ViewPort:void applyBounds(Bbox, ZoomOption, ):2.0.0
+org.geomajas.gwt2.client.map.ViewPort:void applyPosition(Coordinate, ):2.0.0
+org.geomajas.gwt2.client.map.ViewPort:void applyResolution(double, ):2.0.0
+org.geomajas.gwt2.client.map.ViewPort:void applyResolution(double, ZoomOption, ):2.0.0
+org.geomajas.gwt2.client.map.ViewPort:void applyView(View, ):2.0.0
+org.geomajas.gwt2.client.map.ViewPort:void applyView(View, ZoomOption, ):2.0.0
+org.geomajas.gwt2.client.map.ViewPort:void registerAnimation(NavigationAnimation, ):2.0.0
+org.geomajas.gwt2.client.map.ViewPortTransformationService::2.0.0
+org.geomajas.gwt2.client.map.ViewPortTransformationService:Bbox transform(Bbox, RenderSpace, RenderSpace, ):2.0.0
+org.geomajas.gwt2.client.map.ViewPortTransformationService:Coordinate transform(Coordinate, RenderSpace, RenderSpace, ):2.0.0
+org.geomajas.gwt2.client.map.ViewPortTransformationService:Geometry transform(Geometry, RenderSpace, RenderSpace, ):2.0.0
+org.geomajas.gwt2.client.map.ViewPortTransformationService:Matrix getTransformationMatrix(RenderSpace, RenderSpace, ):2.0.0
+org.geomajas.gwt2.client.map.ViewPortTransformationService:Matrix getTranslationMatrix(RenderSpace, RenderSpace, ):2.0.0
+org.geomajas.gwt2.client.map.ViewPortTransformationService:Matrix getTranslationMatrix(View, ):2.0.0
+org.geomajas.gwt2.client.map.ViewPortTransformationService:Matrix getTranslationMatrix(double, ):2.0.0
+org.geomajas.gwt2.client.map.ZoomOption::2.0.0
+org.geomajas.gwt2.client.map.ZoomOption:FREE:2.0.0
+org.geomajas.gwt2.client.map.ZoomOption:LEVEL_CLOSEST:2.0.0
+org.geomajas.gwt2.client.map.ZoomOption:LEVEL_FIT:2.0.0
+org.geomajas.gwt2.client.map.attribute.Attribute::2.0.0
+org.geomajas.gwt2.client.map.attribute.Attribute:VALUE_TYPE getValue():2.0.0
+org.geomajas.gwt2.client.map.attribute.AttributeDescriptor::2.0.0
+org.geomajas.gwt2.client.map.attribute.AttributeDescriptor:AttributeType getType():2.0.0
+org.geomajas.gwt2.client.map.attribute.AttributeDescriptor:String getName():2.0.0
+org.geomajas.gwt2.client.map.attribute.AttributeType::2.0.0
+org.geomajas.gwt2.client.map.attribute.AttributeType:Class<?> getBinding():2.0.0
+org.geomajas.gwt2.client.map.attribute.AttributeType:String getName():2.0.0
+org.geomajas.gwt2.client.map.attribute.GeometryAttributeType::2.0.0
+org.geomajas.gwt2.client.map.attribute.GeometryAttributeType:GeometryType getGeometryType():2.0.0
+org.geomajas.gwt2.client.map.attribute.GeometryType::2.0.0
+org.geomajas.gwt2.client.map.attribute.GeometryType:LINEARRING:2.0.0
+org.geomajas.gwt2.client.map.attribute.GeometryType:LINESTRING:2.0.0
+org.geomajas.gwt2.client.map.attribute.GeometryType:MULTILINESTRING:2.0.0
+org.geomajas.gwt2.client.map.attribute.GeometryType:MULTIPOINT:2.0.0
+org.geomajas.gwt2.client.map.attribute.GeometryType:MULTIPOLYGON:2.0.0
+org.geomajas.gwt2.client.map.attribute.GeometryType:POINT:2.0.0
+org.geomajas.gwt2.client.map.attribute.GeometryType:POLYGON:2.0.0
+org.geomajas.gwt2.client.map.attribute.GeometryType:static GeometryType fromValue(String, ):2.0.0
+org.geomajas.gwt2.client.map.attribute.PrimitiveAttributeType::2.0.0
+org.geomajas.gwt2.client.map.attribute.PrimitiveAttributeType:PrimitiveType getPrimitiveType():2.0.0
+org.geomajas.gwt2.client.map.attribute.PrimitiveType::2.0.0
+org.geomajas.gwt2.client.map.attribute.PrimitiveType:BOOLEAN:2.0.0
+org.geomajas.gwt2.client.map.attribute.PrimitiveType:DATE:2.0.0
+org.geomajas.gwt2.client.map.attribute.PrimitiveType:DOUBLE:2.0.0
+org.geomajas.gwt2.client.map.attribute.PrimitiveType:FLOAT:2.0.0
+org.geomajas.gwt2.client.map.attribute.PrimitiveType:INTEGER:2.0.0
+org.geomajas.gwt2.client.map.attribute.PrimitiveType:LONG:2.0.0
+org.geomajas.gwt2.client.map.attribute.PrimitiveType:SHORT:2.0.0
+org.geomajas.gwt2.client.map.attribute.PrimitiveType:STRING:2.0.0
+org.geomajas.gwt2.client.map.attribute.PrimitiveType:static PrimitiveType fromValue(String, ):2.0.0
+org.geomajas.gwt2.client.map.feature.Feature::2.0.0
+org.geomajas.gwt2.client.map.feature.Feature:FeaturesSupported getLayer():2.0.0
+org.geomajas.gwt2.client.map.feature.Feature:Geometry getGeometry():2.0.0
+org.geomajas.gwt2.client.map.feature.Feature:Map<String,Attribute<?>> getAttributes():2.0.0
+org.geomajas.gwt2.client.map.feature.Feature:Object getAttributeValue(String, ):2.0.0
+org.geomajas.gwt2.client.map.feature.Feature:String getId():2.0.0
+org.geomajas.gwt2.client.map.feature.Feature:String getLabel():2.0.0
+org.geomajas.gwt2.client.map.feature.Feature:boolean isSelected():2.0.0
+org.geomajas.gwt2.client.map.layer.FeaturesSupported::2.0.0
+org.geomajas.gwt2.client.map.layer.FeaturesSupported:Collection<Feature> getSelectedFeatures():2.0.0
+org.geomajas.gwt2.client.map.layer.FeaturesSupported:List<AttributeDescriptor> getAttributeDescriptors():2.0.0
+org.geomajas.gwt2.client.map.layer.FeaturesSupported:boolean deselectFeature(Feature, ):2.0.0
+org.geomajas.gwt2.client.map.layer.FeaturesSupported:boolean isFeatureSelected(String, ):2.0.0
+org.geomajas.gwt2.client.map.layer.FeaturesSupported:boolean selectFeature(Feature, ):2.0.0
+org.geomajas.gwt2.client.map.layer.FeaturesSupported:void clearSelectedFeatures():2.0.0
+org.geomajas.gwt2.client.map.layer.LabelsSupported::2.0.0
+org.geomajas.gwt2.client.map.layer.LabelsSupported:boolean isLabeled():2.0.0
+org.geomajas.gwt2.client.map.layer.LabelsSupported:void setLabeled(boolean, ):2.0.0
+org.geomajas.gwt2.client.map.layer.Layer::2.0.0
+org.geomajas.gwt2.client.map.layer.Layer:LayerRenderer getRenderer():2.0.0
+org.geomajas.gwt2.client.map.layer.Layer:String getId():2.0.0
+org.geomajas.gwt2.client.map.layer.Layer:String getTitle():2.0.0
+org.geomajas.gwt2.client.map.layer.Layer:boolean isMarkedAsVisible():2.0.0
+org.geomajas.gwt2.client.map.layer.Layer:boolean isSelected():2.0.0
+org.geomajas.gwt2.client.map.layer.Layer:boolean isShowing():2.0.0
+org.geomajas.gwt2.client.map.layer.Layer:double getOpacity():2.0.0
+org.geomajas.gwt2.client.map.layer.Layer:void refresh():2.0.0
+org.geomajas.gwt2.client.map.layer.Layer:void setMarkedAsVisible(boolean, ):2.0.0
+org.geomajas.gwt2.client.map.layer.Layer:void setOpacity(double, ):2.0.0
+org.geomajas.gwt2.client.map.layer.Layer:void setSelected(boolean, ):2.0.0
+org.geomajas.gwt2.client.map.layer.LayersModel::2.0.0
+org.geomajas.gwt2.client.map.layer.LayersModel:Layer getLayer(String, ):2.0.0
+org.geomajas.gwt2.client.map.layer.LayersModel:Layer getLayer(int, ):2.0.0
+org.geomajas.gwt2.client.map.layer.LayersModel:Layer getSelectedLayer():2.0.0
+org.geomajas.gwt2.client.map.layer.LayersModel:boolean addLayer(Layer, ):2.0.0
+org.geomajas.gwt2.client.map.layer.LayersModel:boolean moveLayer(Layer, int, ):2.0.0
+org.geomajas.gwt2.client.map.layer.LayersModel:boolean moveLayerDown(Layer, ):2.0.0
+org.geomajas.gwt2.client.map.layer.LayersModel:boolean moveLayerUp(Layer, ):2.0.0
+org.geomajas.gwt2.client.map.layer.LayersModel:boolean removeLayer(String, ):2.0.0
+org.geomajas.gwt2.client.map.layer.LayersModel:int getLayerCount():2.0.0
+org.geomajas.gwt2.client.map.layer.LayersModel:int getLayerPosition(Layer, ):2.0.0
+org.geomajas.gwt2.client.map.layer.LayersModel:void clear():2.0.0
+org.geomajas.gwt2.client.map.layer.LegendConfig::2.0.0
+org.geomajas.gwt2.client.map.layer.LegendConfig:Bbox getBounds():2.0.0
+org.geomajas.gwt2.client.map.layer.LegendConfig:FontStyle getFontStyle():2.0.0
+org.geomajas.gwt2.client.map.layer.LegendConfig:LegendConfig():2.0.0
+org.geomajas.gwt2.client.map.layer.LegendConfig:String getExceptions():2.0.0
+org.geomajas.gwt2.client.map.layer.LegendConfig:String getImageFormat():2.0.0
+org.geomajas.gwt2.client.map.layer.LegendConfig:int getIconHeight():2.0.0
+org.geomajas.gwt2.client.map.layer.LegendConfig:int getIconWidth():2.0.0
+org.geomajas.gwt2.client.map.layer.LegendConfig:static final String DEFAULT_IMAGE_FORMAT:2.0.0
+org.geomajas.gwt2.client.map.layer.LegendConfig:static final int DEFAULT_ICON_SIZE:2.0.0
+org.geomajas.gwt2.client.map.layer.LegendConfig:void setBounds(Bbox, ):2.0.0
+org.geomajas.gwt2.client.map.layer.LegendConfig:void setExceptions(String, ):2.0.0
+org.geomajas.gwt2.client.map.layer.LegendConfig:void setFontStyle(FontStyle, ):2.0.0
+org.geomajas.gwt2.client.map.layer.LegendConfig:void setIconHeight(int, ):2.0.0
+org.geomajas.gwt2.client.map.layer.LegendConfig:void setIconWidth(int, ):2.0.0
+org.geomajas.gwt2.client.map.layer.LegendConfig:void setImageFormat(String, ):2.0.0
+org.geomajas.gwt2.client.map.layer.LegendUrlSupported::2.0.0
+org.geomajas.gwt2.client.map.layer.LegendUrlSupported:String getLegendImageUrl():2.0.0
+org.geomajas.gwt2.client.map.layer.LegendUrlSupported:String getLegendImageUrl(LegendConfig, ):2.0.0
+org.geomajas.gwt2.client.map.render.BasicRenderer::2.0.0
+org.geomajas.gwt2.client.map.render.BasicRenderer:void render(RenderingInfo, ):2.0.0
+org.geomajas.gwt2.client.map.render.LayerRenderer::2.0.0
+org.geomajas.gwt2.client.map.render.LayerRenderer:Layer getLayer():2.0.0
+org.geomajas.gwt2.client.map.render.LayersModelRenderer::2.0.0
+org.geomajas.gwt2.client.map.render.LayersModelRenderer:LayerRenderer getLayerRenderer(Layer, ):2.0.0
+org.geomajas.gwt2.client.map.render.LayersModelRenderer:boolean isAnimated(Layer, ):2.0.0
+org.geomajas.gwt2.client.map.render.LayersModelRenderer:void registerLayerRenderer(Layer, LayerRenderer, ):2.0.0
+org.geomajas.gwt2.client.map.render.LayersModelRenderer:void setAnimated(Layer, boolean, ):2.0.0
+org.geomajas.gwt2.client.map.render.RenderingInfo::2.0.0
+org.geomajas.gwt2.client.map.render.RenderingInfo:IsWidget getWidget():2.0.0
+org.geomajas.gwt2.client.map.render.RenderingInfo:RenderingInfo(IsWidget, View, Trajectory, ):2.0.0
+org.geomajas.gwt2.client.map.render.RenderingInfo:Trajectory getTrajectory():2.0.0
+org.geomajas.gwt2.client.map.render.RenderingInfo:View getView():2.0.0
+org.geomajas.gwt2.client.map.render.Tile::2.0.0
+org.geomajas.gwt2.client.map.render.Tile:Bbox getBounds():2.0.0
+org.geomajas.gwt2.client.map.render.Tile:String getUrl():2.0.0
+org.geomajas.gwt2.client.map.render.Tile:Tile():2.0.0
+org.geomajas.gwt2.client.map.render.Tile:Tile(Bbox, ):2.0.0
+org.geomajas.gwt2.client.map.render.Tile:Tile(TileCode, Bbox, ):2.0.0
+org.geomajas.gwt2.client.map.render.Tile:TileCode getCode():2.0.0
+org.geomajas.gwt2.client.map.render.Tile:void setBounds(Bbox, ):2.0.0
+org.geomajas.gwt2.client.map.render.Tile:void setCode(TileCode, ):2.0.0
+org.geomajas.gwt2.client.map.render.Tile:void setUrl(String, ):2.0.0
+org.geomajas.gwt2.client.map.render.TileCode::2.0.0
+org.geomajas.gwt2.client.map.render.TileCode:TileCode clone():2.0.0
+org.geomajas.gwt2.client.map.render.TileCode:TileCode():2.0.0
+org.geomajas.gwt2.client.map.render.TileCode:TileCode(int, int, int, ):2.0.0
+org.geomajas.gwt2.client.map.render.TileCode:boolean equals(Object, ):2.0.0
+org.geomajas.gwt2.client.map.render.TileCode:int getTileLevel():2.0.0
+org.geomajas.gwt2.client.map.render.TileCode:int getX():2.0.0
+org.geomajas.gwt2.client.map.render.TileCode:int getY():2.0.0
+org.geomajas.gwt2.client.map.render.TileCode:int hashCode():2.0.0
+org.geomajas.gwt2.client.map.render.TileCode:void setTileLevel(int, ):2.0.0
+org.geomajas.gwt2.client.map.render.TileCode:void setX(int, ):2.0.0
+org.geomajas.gwt2.client.map.render.TileCode:void setY(int, ):2.0.0
+org.geomajas.gwt2.client.widget.DefaultMapWidget::2.0.0
+org.geomajas.gwt2.client.widget.DefaultMapWidget:PAN_CONTROL:2.0.0
+org.geomajas.gwt2.client.widget.DefaultMapWidget:SCALEBAR:2.0.0
+org.geomajas.gwt2.client.widget.DefaultMapWidget:ZOOM_CONTROL:2.0.0
+org.geomajas.gwt2.client.widget.DefaultMapWidget:ZOOM_STEP_CONTROL:2.0.0
+org.geomajas.gwt2.client.widget.DefaultMapWidget:ZOOM_TO_RECTANGLE_CONTROL:2.0.0

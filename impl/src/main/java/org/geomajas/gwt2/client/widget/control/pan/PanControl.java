@@ -14,6 +14,7 @@ package org.geomajas.gwt2.client.widget.control.pan;
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.widget.AbstractMapWidget;
@@ -75,7 +76,7 @@ public class PanControl extends AbstractMapWidget {
 	 *            The map presenter.
 	 */
 	public PanControl(MapPresenter mapPresenter) {
-		this(mapPresenter, (PanControlResource) GWT.create(PanControlResource.class));
+		this(mapPresenter, GeomajasImpl.getClientBundleFactory().createPanControlResource());
 	}
 
 	/**

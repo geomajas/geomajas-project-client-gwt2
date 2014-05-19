@@ -11,6 +11,7 @@
 <module rename-to="PrintGwt2">
     <inherits name="org.geomajas.gwt2.GeomajasClientImpl" />
 	<inherits name="org.geomajas.plugin.print.theme.PrintGwtTheme" />
+	<inherits name="org.geomajas.plugin.rasterizing.RasterizingDto" />
 
 	<!-- source code from geomajas-plugin-printing (=back-end) -->
 	<source path="component/dto" />

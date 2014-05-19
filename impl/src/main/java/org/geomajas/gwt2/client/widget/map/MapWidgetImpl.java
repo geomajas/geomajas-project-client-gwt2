@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.client.widget;
+package org.geomajas.gwt2.client.widget.map;
 
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.dom.client.Style;
@@ -47,7 +47,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.RequiresResize;
 import com.google.gwt.user.client.ui.Widget;
-
+import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.gfx.CanvasContainer;
 import org.geomajas.gwt2.client.gfx.CanvasContainerImpl;
 import org.geomajas.gwt2.client.gfx.TransformableWidgetContainer;
@@ -163,6 +163,11 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 				event.preventDefault();
 			}
 		});
+
+		// Apply the correct style name:
+		MapWidgetResource resource = GeomajasImpl.getClientBundleFactory().createMapWidgetResource();
+		resource.css().ensureInjected();
+		this.setStyleName(resource.css().mapBackground());
 	}
 
 	@Override

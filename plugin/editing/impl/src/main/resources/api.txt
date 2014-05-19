@@ -1,0 +1,8 @@
+org.geomajas.gwt2.plugin.editing.client.Editing::2.0.0
+org.geomajas.gwt2.plugin.editing.client.Editing:Editing():2.0.0
+org.geomajas.gwt2.plugin.editing.client.Editing:GeometryEditor createGeometryEditor(MapPresenter, ):2.0.0
+org.geomajas.gwt2.plugin.editing.client.Editing:static Editing getInstance():2.0.0
+org.geomajas.gwt2.plugin.editing.client.GeometryEditor::2.0.0
+org.geomajas.gwt2.plugin.editing.client.GeometryEditor:EditGeometryBaseController getBaseController():2.0.0
+org.geomajas.gwt2.plugin.editing.client.GeometryEditor:MapPresenter getMapPresenter():2.0.0
+org.geomajas.gwt2.plugin.editing.client.GeometryEditor:void setBaseController(EditGeometryBaseController, ):2.0.0
