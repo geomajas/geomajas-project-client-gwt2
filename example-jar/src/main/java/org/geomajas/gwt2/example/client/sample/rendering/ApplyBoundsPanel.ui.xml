@@ -1,0 +1,25 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+	<ui:with field='resource' type='org.geomajas.gwt2.example.base.client.resource.ShowcaseResource' />
+
+	<g:DockLayoutPanel unit="PX" width="100%" height="100%">
+		<g:west size="250">
+			<g:HTMLPanel addStyleNames="{resource.css.sampleLeftLayout}">
+				<h2>Apply bounds options:</h2>
+				<g:VerticalPanel spacing="10">
+					<g:Button ui:field="rectangleWideBtn" width="180px">Wide Rectangle</g:Button>
+					<g:Button ui:field="rectangleHighBtn" width="180px">High rectangle</g:Button>
+					<g:Button ui:field="geometryBtn" width="180px">Geometries</g:Button>
+					<g:Button ui:field="deleteBtn" width="180px">All together</g:Button>
+				</g:VerticalPanel>
+			</g:HTMLPanel>
+		</g:west>
+		<g:center>
+			<g:SimplePanel addStyleNames="{resource.css.sampleContentLayout}">
+				<g:ResizeLayoutPanel ui:field="mapPanel" width="100%" height="100%" />
+			</g:SimplePanel>
+		</g:center>
+	</g:DockLayoutPanel>
+
+</ui:UiBinder> 
