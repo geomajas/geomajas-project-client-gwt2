@@ -143,6 +143,12 @@ public class CanvasLayersModelRenderer implements LayersModelRenderer {
 			// Clear the canvas
 			canvas.getContext2d().clearRect(0, 0, canvas.getCoordinateSpaceWidth(), canvas.getCoordinateSpaceHeight());
 
+			//TODO: get rid of this code because it is time consuming (native android browser issue canvas is not cleared)
+			int w = canvas.getElement().getPropertyInt("width");
+			canvas.getElement().setPropertyInt("width", 1);
+			canvas.getElement().setPropertyInt("width", w);
+
+
 			// Delegate to the layers in layer order:
 			for (int i = 0; i < layersModel.getLayerCount(); i++) {
 				Layer layer = layersModel.getLayer(i);

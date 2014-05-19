@@ -12,6 +12,8 @@ package org.geomajas.gwt2.client.map.render.canvas.container;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.map.RenderSpace;
@@ -28,6 +30,7 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  */
 public class CanvasGroup implements IsWidget {
+	private Logger remoteLogger = Logger.getLogger("");
 
 	private Canvas canvas;
 
@@ -52,9 +55,18 @@ public class CanvasGroup implements IsWidget {
 						canvas.getContext2d().save();
 						canvas.getContext2d().setGlobalAlpha(opacity);
 					}
+					remoteLogger.log(Level.SEVERE, "Real canvas height:" +  canvas.getCoordinateSpaceHeight() + " width " + canvas.getCoordinateSpaceWidth());
+
+
+					remoteLogger.log(Level.SEVERE, "IN memory canvas id="+ ic.getCanvas().getCanvasElement().getId() + " height:" +  ic.getCanvas().getCoordinateSpaceHeight() + " width "+ ic.getCanvas().getCoordinateSpaceWidth());
+
+
 					canvas.getContext2d().drawImage(ic.getCanvasElement(), 0, 0, ic.getGridBounds().getWidth(),
 							ic.getGridBounds().getHeight(), origin.getX(), origin.getY(),
 							scale * ic.getGridBounds().getWidth(), scale * ic.getGridBounds().getHeight());
+
+					remoteLogger.log(Level.SEVERE, "Real canvas after height:" +  canvas.getCoordinateSpaceHeight() + " width " + canvas.getCoordinateSpaceWidth());
+
 					if (opacity < 1) {
 						canvas.getContext2d().restore();
 					}

@@ -56,12 +56,14 @@ public class TmsLayer extends AbstractTileBasedLayer {
 	 * @param tileMapInfo The configuration object to create a layer for.
 	 */
 	public TmsLayer(TileMapInfo tileMapInfo) {
+		//TODO: generate unique id (title is not really unique)
 		super(tileMapInfo.getTitle(), new TileConfiguration(tileMapInfo.getTileFormat().getWidth(),
 				tileMapInfo.getTileFormat().getHeight(), tileMapInfo.getOrigin(), new ArrayList<Double>()));
 		this.layerConfiguration = new TmsLayerConfiguration();
 		this.layerConfiguration.setBaseUrl(tileMapInfo.getHref());
 		this.layerConfiguration.setFileExtension(tileMapInfo.getTileFormat().getExtension());
 		this.tileRenderer = new TmsTileRenderer(layerConfiguration);
+		this.title = tileMapInfo.getTitle();
 
 		List<Double> resolutions = new ArrayList<Double>();
 		for (TileSetInfo tileSetInfo : tileMapInfo.getTileSets()) {

@@ -333,16 +333,19 @@ public final class MapPresenterImpl implements MapPresenter {
 			
 			@Override
 			public void onRender(RenderMapEvent event) {
-				if (handle == null) {
-					handle = AnimationScheduler.get().requestAnimationFrame(new AnimationCallback() {
-
-						@Override
-						public void execute(double timestamp) {
-							renderer.render(new RenderingInfo(rendererWidget, viewPort.getView(), null));
-							handle = null;
-						}
-					});
+				if (handle != null) {
+					handle.cancel();
 				}
+
+				handle = AnimationScheduler.get().requestAnimationFrame(new AnimationCallback() {
+
+					@Override
+					public void execute(double timestamp) {
+						renderer.render(new RenderingInfo(rendererWidget, viewPort.getView(), null));
+						handle = null;
+					}
+				});
+
 			}
 		});
 		// Fire initialization event

@@ -52,6 +52,7 @@ public class CanvasTileGrid implements IsWidget {
 
 	public CanvasTileGrid(TileConfiguration tileConfiguration, TileRenderer tileRenderer, int tileLevel) {
 		this.canvas = Canvas.createIfSupported();
+		this.canvas.setVisible(false);
 		this.tileConfiguration = tileConfiguration;
 		this.tileLevel = tileLevel;
 		this.tileRenderer = tileRenderer;
