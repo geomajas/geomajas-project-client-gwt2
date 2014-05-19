@@ -386,14 +386,14 @@ public final class ViewPortImpl implements ViewPort {
 		double wRatio;
 		double boundsWidth = bounds.getWidth();
 		if (boundsWidth <= 0) {
-			wRatio = getMaximumResolution();
+			wRatio = getMinimumResolution();
 		} else {
 			wRatio = boundsWidth / mapWidth;
 		}
 		double hRatio;
 		double boundsHeight = bounds.getHeight();
 		if (boundsHeight <= 0) {
-			hRatio = getMaximumResolution();
+			hRatio = getMinimumResolution();
 		} else {
 			hRatio = boundsHeight / mapHeight;
 		}
