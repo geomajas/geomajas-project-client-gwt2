@@ -13,16 +13,13 @@ package org.geomajas.gwt2.widget.client.feature.event;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.web.bindery.event.shared.Event.Type;
-import org.geomajas.annotation.Api;
 import org.geomajas.annotation.UserImplemented;
 
 /**
  * Interface for event handlers that catch {@link FeatureClickedEvent}s.
  *
  * @author Dosi Bingov
- * @since 2.0.0
  */
-@Api(allMethods = true)
 @UserImplemented
 public interface FeatureClickedHandler extends EventHandler {
 

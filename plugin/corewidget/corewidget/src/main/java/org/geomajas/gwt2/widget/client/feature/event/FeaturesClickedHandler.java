@@ -12,15 +12,12 @@ package org.geomajas.gwt2.widget.client.feature.event;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.web.bindery.event.shared.Event;
-import org.geomajas.annotation.Api;
 
 /**
  * Interface for handling {@link FeaturesClickedEvent}s.
  *
  * @author Oliver May
- * @since 2.1.0
  */
-@Api(allMethods = true)
 public interface FeaturesClickedHandler extends EventHandler {
 	/**
 	 * The type of the handler.

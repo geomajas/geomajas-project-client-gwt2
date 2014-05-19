@@ -10,7 +10,6 @@
  */
 package org.geomajas.gwt2.widget.client;
 
-import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.widget.client.resource.CoreWidgetClientBundleFactory;
 
 import com.google.gwt.core.client.GWT;
@@ -19,9 +18,7 @@ import com.google.gwt.core.client.GWT;
  * Starting point for the core widget plugin.
  * 
  * @author Jan De Moerloose
- * @since 2.0.0
  */
-@Api(allMethods = true)
 public final class CoreWidget {
 
 	private static CoreWidget instance;

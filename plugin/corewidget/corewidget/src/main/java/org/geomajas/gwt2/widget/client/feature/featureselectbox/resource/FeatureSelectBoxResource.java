@@ -10,7 +10,6 @@
  */
 package org.geomajas.gwt2.widget.client.feature.featureselectbox.resource;
 
-import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.widget.client.CoreWidget;
 
 import com.google.gwt.resources.client.ClientBundle;
@@ -20,9 +19,7 @@ import com.google.gwt.resources.client.ClientBundle;
  * 
  * @author Dosi Bingov
  * 
- * @since 2.0.0
  */
-@Api(allMethods = true)
 public interface FeatureSelectBoxResource extends ClientBundle {
 	
 	/**

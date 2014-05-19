@@ -11,7 +11,6 @@
 
 package org.geomajas.gwt2.widget.client.map;
 
-import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.client.event.LayerHideEvent;
 import org.geomajas.gwt2.client.event.LayerShowEvent;
 import org.geomajas.gwt2.client.event.LayerVisibilityHandler;
@@ -44,9 +43,8 @@ import com.google.gwt.user.client.ui.Widget;
  * </p>
  *
  * @author Pieter De Graef
- * @since 2.0.0
+ * 
  */
-@Api
 public class LayerLegendPanel extends Composite {
 
 	/**

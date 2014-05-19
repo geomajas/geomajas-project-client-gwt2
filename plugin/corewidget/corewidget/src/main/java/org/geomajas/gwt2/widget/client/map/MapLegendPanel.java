@@ -11,7 +11,6 @@
 
 package org.geomajas.gwt2.widget.client.map;
 
-import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.client.event.LayerAddedEvent;
 import org.geomajas.gwt2.client.event.LayerOrderChangedEvent;
 import org.geomajas.gwt2.client.event.LayerOrderChangedHandler;
@@ -32,9 +31,7 @@ import com.google.gwt.user.client.ui.Widget;
  * accordingly.
  *
  * @author Pieter De Graef
- * @since 2.0.0
  */
-@Api
 public class MapLegendPanel implements IsWidget {
 
 	private final MapPresenter mapPresenter;

@@ -11,13 +11,10 @@
 
 package org.geomajas.gwt2.widget.client.feature.featureselectbox.resource;
 
-import com.google.gwt.resources.client.ClientBundle.Source;
-
 /**
- * Client resource bundle interface for pure GWT widgets.
+ * Client resource bundle interface with empty css classes.
  * 
  * @author Jan De Moerloose
- * @since 2.0.0
  */
 public interface FeatureSelectBoxResourceNoStyle extends FeatureSelectBoxResource {
 

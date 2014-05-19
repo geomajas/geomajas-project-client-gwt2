@@ -11,17 +11,13 @@
 
 package org.geomajas.gwt2.widget.client.feature.featureselectbox.resource;
 
-import org.geomajas.annotation.Api;
-
 import com.google.gwt.resources.client.CssResource;
 
 /**
  * CSS resource bundle that contains all generic styles used in pure gwt geomajas widgets.
  *
  * @author Dosi Bingov
- * @since 2.0.0
  */
-@Api(allMethods = true)
 public interface FeatureSelectBoxCssResource extends CssResource {
 
 	/**

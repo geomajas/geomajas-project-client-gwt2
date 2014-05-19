@@ -10,8 +10,6 @@
  */
 package org.geomajas.gwt2.widget.client.dialog;
 
-import org.geomajas.annotation.Api;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.ImageResource;
@@ -23,9 +21,7 @@ import com.google.gwt.resources.client.ImageResource.RepeatStyle;
  *
  * @author Dosi Bingov
  * @author Jan De Moerloose
- * @since 2.0.0
  */
-@Api(allMethods = true)
 public interface CloseableDialogBoxResource extends ClientBundle {
 
 	/**

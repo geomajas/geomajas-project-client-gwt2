@@ -11,7 +11,6 @@
 
 package org.geomajas.gwt2.widget.client.resource;
 
-import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.FeatureSelectBoxResource;
 import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.FeatureSelectBoxResourceNoStyle;
 
@@ -21,9 +20,7 @@ import com.google.gwt.core.client.GWT;
  * No style factory for client bundles defined within this artifact. This factory wipes out all css.
  * 
  * @author Jan De Moerloose
- * @since 2.1.0
  */
-@Api(allMethods = true)
 public class CoreWidgetClientBundleFactoryNoStyle extends CoreWidgetClientBundleFactory {
 
 	/**

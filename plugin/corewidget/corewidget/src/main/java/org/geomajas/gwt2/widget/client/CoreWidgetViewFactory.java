@@ -10,7 +10,6 @@
  */
 package org.geomajas.gwt2.widget.client;
 
-import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.widget.client.feature.featureselectbox.FeatureSelectBoxView;
 import org.geomajas.gwt2.widget.client.feature.featureselectbox.FeatureSelectBoxViewImpl;
 import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.FeatureSelectBoxResource;
@@ -19,10 +18,8 @@ import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.Feature
  * MVP view factory for this plugin.
  * 
  * @author Jan De Moerloose
- * @since 2.1.0
- * 
+  * 
  */
-@Api(allMethods = true)
 public class CoreWidgetViewFactory {
 
 	/**

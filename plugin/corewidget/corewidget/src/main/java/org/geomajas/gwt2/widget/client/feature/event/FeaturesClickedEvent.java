@@ -11,7 +11,6 @@
 package org.geomajas.gwt2.widget.client.feature.event;
 
 import com.google.web.bindery.event.shared.Event;
-import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.map.feature.Feature;
 
@@ -22,9 +21,7 @@ import java.util.List;
  * list of features.
  *
  * @author Oliver May
- * @since 2.1.0
  */
-@Api(allMethods = true)
 public class FeaturesClickedEvent extends Event<FeaturesClickedHandler> {
 
 	private Coordinate coordinate;

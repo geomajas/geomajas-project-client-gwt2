@@ -11,7 +11,6 @@
 
 package org.geomajas.gwt2.widget.client.feature.event;
 
-import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.map.feature.Feature;
 import com.google.web.bindery.event.shared.Event;
@@ -20,9 +19,7 @@ import com.google.web.bindery.event.shared.Event;
  * Event which is passed when a feature is clicked.
  * 
  * @author Dosi Bingov
- * @since 2.0.0
  */
-@Api(allMethods = true)
 public class FeatureClickedEvent extends Event<FeatureClickedHandler> {
 
 	private Coordinate coordinate;
@@ -43,7 +40,6 @@ public class FeatureClickedEvent extends Event<FeatureClickedHandler> {
 	 * 
 	 * @param coordinate the coordinate where this feature is selected
 	 * @param feature the selected feature
-	 * @since 2.1.0
 	 */
 	public FeatureClickedEvent(Coordinate coordinate, Feature feature) {
 		this.feature = feature;
@@ -72,7 +68,6 @@ public class FeatureClickedEvent extends Event<FeatureClickedHandler> {
 	/**
 	 * Get the world coordinate where this feature is selected.
 	 * 
-	 * @since 2.1.0
 	 * @return the coordinate
 	 */
 	public Coordinate getCoordinate() {

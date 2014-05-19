@@ -11,7 +11,6 @@
 
 package org.geomajas.gwt2.widget.client.resource;
 
-import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.FeatureSelectBoxResource;
 
 import com.google.gwt.core.client.GWT;
@@ -21,9 +20,7 @@ import com.google.gwt.core.client.GWT;
  * override the default client bundles using deferred binding.
  *
  * @author Jan De Moerloose
- * @since 2.1.0
  */
-@Api(allMethods = true)
 public class CoreWidgetClientBundleFactory {
 
 	/**

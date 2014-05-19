@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.controller.AbstractController;
@@ -39,10 +38,8 @@ import com.google.gwt.event.dom.client.MouseEvent;
  *
  * @author Dosi Bingov
  * @author Oliver May
- * @since 2.1.0
  *
  */
-@Api(allMethods = true)
 public class FeaturesClickedController extends AbstractController implements MapController {
 
 	protected MapPresenter mapPresenter;

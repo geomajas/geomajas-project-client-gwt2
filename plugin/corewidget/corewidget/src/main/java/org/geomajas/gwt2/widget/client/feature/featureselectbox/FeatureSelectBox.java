@@ -12,7 +12,6 @@ package org.geomajas.gwt2.widget.client.feature.featureselectbox;
 
 import java.util.logging.Logger;
 
-import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt2.client.controller.AbstractMapController;
@@ -27,14 +26,12 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Tool tip box that displays a list of features from where one can be selected. Kept the name because it is api.
+ * Tool tip box that displays a list of features from where one can be selected.
  * 
  * @author Dosi Bingov
  * @author Oliver May
  * @author Jan De Moerloose
- * @since 2.0.0
  */
-@Api(allMethods = true)
 public class FeatureSelectBox extends AbstractMapController implements MapController, IsWidget {
 
 	private Logger log = Logger.getLogger(FeatureSelectBox.class.getName());
