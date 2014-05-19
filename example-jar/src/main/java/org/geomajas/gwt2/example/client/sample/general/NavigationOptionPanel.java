@@ -14,8 +14,6 @@ package org.geomajas.gwt2.example.client.sample.general;
 import org.geomajas.command.dto.TransformGeometryRequest;
 import org.geomajas.command.dto.TransformGeometryResponse;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.geometry.service.BboxService;
-import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt2.client.GeomajasImpl;
