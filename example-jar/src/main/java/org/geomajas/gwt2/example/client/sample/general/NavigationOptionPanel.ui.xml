@@ -25,6 +25,10 @@
 
                 <h3 style="margin-top: 20px;">Enable or disable animation for specific layers:</h3>
                 <g:VerticalPanel ui:field="layerPanel" width="97%" />
+               <h3 style="margin-top: 20px;">Zoom to current location:</h3>
+                <div style="text-align: right; padding-top: 10px;">
+                    <g:Button ui:field="currentLocationBtn">Ok</g:Button>
+                </div>
             </g:HTMLPanel>
         </g:west>
         <g:center>

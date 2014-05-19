@@ -11,6 +11,11 @@
 
 package org.geomajas.gwt2.example.client.sample.general;
 
+import org.geomajas.command.dto.TransformGeometryRequest;
+import org.geomajas.command.dto.TransformGeometryResponse;
+import org.geomajas.geometry.Bbox;
+import org.geomajas.gwt.client.command.AbstractCommandCallback;
+import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.event.MapInitializationEvent;
@@ -21,6 +26,7 @@ import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.example.base.client.ExampleBase;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 
+import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -28,6 +34,9 @@ import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.geolocation.client.Geolocation;
+import com.google.gwt.geolocation.client.Position;
+import com.google.gwt.geolocation.client.PositionError;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -110,7 +119,7 @@ public class NavigationOptionPanel implements SamplePanel {
 
 			public void onValueChange(ValueChangeEvent<Boolean> event) {
 				mapPresenter.getConfiguration().setHintValue(MapConfiguration.ANIMATION_CANCEL_SUPPORT,
-				  cancelAnimationSupport.getValue());
+						cancelAnimationSupport.getValue());
 			}
 		});
 
@@ -125,6 +134,39 @@ public class NavigationOptionPanel implements SamplePanel {
 	@UiHandler("fadeInBtn")
 	protected void onFadeInButtonClicked(ClickEvent event) {
 		changeFadeInMillis();
+	}
+
+	@UiHandler("currentLocationBtn")
+	protected void onCurrentLocationButtonClicked(ClickEvent event) {
+		if (Geolocation.isSupported()) {
+			Geolocation.getIfSupported().getCurrentPosition(new Callback<Position, PositionError>() {
+
+				@Override
+				public void onSuccess(Position result) {
+					TransformGeometryRequest request = new TransformGeometryRequest();
+					request.setBounds(new Bbox(result.getCoordinates().getLongitude(), result.getCoordinates()
+							.getLatitude(), 0, 0));
+					request.setSourceCrs("EPSG:4326");
+					request.setTargetCrs(mapPresenter.getViewPort().getCrs());
+					GwtCommand command = new GwtCommand(TransformGeometryRequest.COMMAND);
+					command.setCommandRequest(request);
+					GeomajasServerExtension.getInstance().getCommandService()
+							.execute(command, new AbstractCommandCallback<TransformGeometryResponse>() {
+
+								@Override
+								public void execute(TransformGeometryResponse response) {
+									mapPresenter.getViewPort().applyBounds(response.getBounds());
+								}
+							});
+				};
+
+				@Override
+				public void onFailure(PositionError reason) {
+					// TODO Auto-generated method stub
+
+				}
+			});
+		}
 	}
 
 	private void changeAnimationMillis() {
