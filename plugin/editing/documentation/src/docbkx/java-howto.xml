@@ -28,7 +28,7 @@
       <listitem>
         <para>Set up a <code>GeometryEditor</code> for the map. The editor is
         responsible for drawing the edited geometry and setting the correct
-        event presenter for capturing user events</para>
+        event handler for capturing user events</para>
       </listitem>
 
       <listitem>

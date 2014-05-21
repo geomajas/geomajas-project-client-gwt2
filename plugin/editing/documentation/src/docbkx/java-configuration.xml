@@ -109,7 +109,7 @@
         <para>The renderer is one example of a listener to the many events
         that the <code>GeometryEditService</code> fires, but essentially
         anyone can listen to those events. If you need to react to any change
-        in a geometry's shape, just add the correct presenter.</para>
+        in a geometry's shape, just add the correct handler.</para>
       </note>
     </section>
 
@@ -391,7 +391,7 @@ editService.start(geometry);</programlisting>
 Geometry line = new Geometry(Geometry.LINE_STRING, 0, -1);
 editService.start(line);
 
-// Set the editing service in "INSERTING" mode.
+// Set the editing service in "INSERTING" mode. 
 
 // Make sure it starts inserting in the correct index: the first vertex within the LineString:
 GeometryIndex index = editService.getIndexService().create(GeometryIndexType.TYPE_VERTEX, 0);

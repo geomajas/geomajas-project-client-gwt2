@@ -65,13 +65,13 @@
     <para>The security will be handled automatically by the command
     dispatcher.</para>
 
-    <para>You can register a token request presenter which is invoked when the
+    <para>You can register a token request handler which is invoked when the
     command returns with an invalid token exception (or any security exception
     when the token is null). Once the new token is available, the command will
     be retried.</para>
 
     <para>There are events on the dispatcher for changes in token. You can
-    register a presenter for them.</para>
+    register a handler for them.</para>
 
     <para>There are also events to indicate when a command is in process or
     not.</para>
