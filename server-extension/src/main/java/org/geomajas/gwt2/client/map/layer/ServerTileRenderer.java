@@ -11,6 +11,7 @@
 
 package org.geomajas.gwt2.client.map.layer;
 
+import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.map.render.TileCode;
 import org.geomajas.gwt2.client.map.render.TileRenderer;
 
@@ -35,6 +36,10 @@ public class ServerTileRenderer implements TileRenderer {
 
 	@Override
 	public String getUrl(TileCode tileCode) {
+		double resolution = layerConfiguration.getTileConfiguration().getResolution(tileCode.getTileLevel());
+		Coordinate tileOrigin = layerConfiguration.getTileConfiguration().getTileOrigin();
+		int tileWidth = layerConfiguration.getTileConfiguration().getTileWidth();
+		int tileHeight = layerConfiguration.getTileConfiguration().getTileHeight();
 		StringBuilder urlBuilder = new StringBuilder(layerConfiguration.getBaseUrl());
 		urlBuilder.append(tileCode.getTileLevel());
 		urlBuilder.append("/");
@@ -42,6 +47,10 @@ public class ServerTileRenderer implements TileRenderer {
 		urlBuilder.append("/");
 		urlBuilder.append(tileCode.getY());
 		urlBuilder.append(layerConfiguration.getExtension());
+		urlBuilder.append("?resolution=" + resolution);
+		urlBuilder.append("&tileOrigin=" + tileOrigin.getX() + "," + tileOrigin.getY());
+		urlBuilder.append("&tileWidth=" + tileWidth);
+		urlBuilder.append("&tileHeight=" + tileHeight);
 		return urlBuilder.toString();
 	}
 }

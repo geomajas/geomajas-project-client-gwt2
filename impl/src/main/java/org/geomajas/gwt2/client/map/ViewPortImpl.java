@@ -310,7 +310,7 @@ public final class ViewPortImpl implements ViewPort {
 	@Override
 	public void applyView(View view, ZoomOption zoomOption) {
 		double tempResolution = checkResolution(view.getResolution(), ZoomOption.FREE);
-		Coordinate tempPosition = checkPosition(view.getPosition(), resolution);
+		Coordinate tempPosition = checkPosition(view.getPosition(), tempResolution);
 		applyViewNoChecks(tempPosition, tempResolution);
 	}
 

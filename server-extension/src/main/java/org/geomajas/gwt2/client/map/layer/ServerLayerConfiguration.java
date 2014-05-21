@@ -10,6 +10,8 @@
  */
 package org.geomajas.gwt2.client.map.layer;
 
+import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
+
 /**
  * Base URL and extension for consistency with other layers like WMS, TMS.
  * 
@@ -22,9 +24,12 @@ public class ServerLayerConfiguration {
 
 	private String extension;
 
-	public ServerLayerConfiguration(String baseUrl, String extension) {
+	private TileConfiguration tileConfiguration ;
+
+	public ServerLayerConfiguration(String baseUrl, String extension, TileConfiguration tileConfiguration) {
 		this.baseUrl = baseUrl;
 		this.extension = extension;
+		this.tileConfiguration = tileConfiguration;
 	}
 
 	public String getBaseUrl() {
@@ -33,6 +38,10 @@ public class ServerLayerConfiguration {
 
 	public String getExtension() {
 		return extension;
+	}
+	
+	public TileConfiguration getTileConfiguration() {
+		return tileConfiguration;
 	}
 
 }
