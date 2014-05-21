@@ -13,6 +13,7 @@ package org.geomajas.gwt2.widget.client.feature.controller;
 
 import java.util.logging.Logger;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt2.client.controller.AbstractMapController;
@@ -30,8 +31,10 @@ import com.google.gwt.event.dom.client.MouseMoveEvent;
  * @author Dosi Bingov
  * @author Oliver May
  * @author Jan De Moerloose
+ * @since 2.1.0
  * 
  */
+@Api
 public class FeatureClickedListener extends AbstractMapController {
 
 	private Logger log = Logger.getLogger(FeatureSelectBox.class.getName());
@@ -42,15 +45,32 @@ public class FeatureClickedListener extends AbstractMapController {
 
 	protected Coordinate clickedPosition;
 
+	/**
+	 * Create a {@link FeatureClickedListener} in single feature mode.
+	 */
+	@Api
 	public FeatureClickedListener() {
 		this(true);
 	}
-	
+
+	/**
+	 * Create a {@link FeatureClickedListener} in the specified mode.
+	 * 
+	 * @param singleFeature
+	 */
+	@Api
 	public FeatureClickedListener(boolean singleFeature) {
 		featureSelectBox = new FeatureSelectBox();
 		setSingleFeature(singleFeature);
 	}
 
+	/**
+	 * Set the single feature mode. If true, clicking multiple features will result in a popup menu followed by user
+	 * selection.
+	 * 
+	 * @param singleFeature
+	 */
+	@Api
 	public void setSingleFeature(boolean singleFeature) {
 		featureSelectBox.setSingleFeature(singleFeature);
 	}

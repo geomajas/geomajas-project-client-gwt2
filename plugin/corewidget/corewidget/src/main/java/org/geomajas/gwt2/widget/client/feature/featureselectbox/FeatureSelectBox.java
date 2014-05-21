@@ -24,6 +24,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Dosi Bingov
  * @author Oliver May
  * @author Jan De Moerloose
+ * 
  */
 public class FeatureSelectBox implements IsWidget {
 
