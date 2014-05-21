@@ -11,9 +11,6 @@
 
 package org.geomajas.gwt2.widget.example.client;
 
-
-import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanelRegistry;
 import org.geomajas.gwt2.example.base.client.sample.ShowcaseSampleDefinition;
@@ -21,16 +18,18 @@ import org.geomajas.gwt2.widget.example.client.i18n.SampleMessages;
 import org.geomajas.gwt2.widget.example.client.resource.ExampleWidgetResource;
 import org.geomajas.gwt2.widget.example.client.sample.dialog.CloseableDialogExample;
 import org.geomajas.gwt2.widget.example.client.sample.dialog.MessageBoxExample;
-import org.geomajas.gwt2.widget.example.client.sample.featureselectbox.FeatureSelectedExample;
-import org.geomajas.gwt2.widget.example.client.sample.itemselect.ItemSelectExample;
+import org.geomajas.gwt2.widget.example.client.sample.feature.FeatureClickedExample;
 import org.geomajas.gwt2.widget.example.client.sample.map.LegendAddRemoveSample;
 import org.geomajas.gwt2.widget.example.client.sample.map.LegendOrderSample;
 import org.geomajas.gwt2.widget.example.client.sample.map.MapLegendDropDownSample;
 import org.geomajas.gwt2.widget.example.client.sample.mouseover.FeatureMouseOverExample;
 
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+
 /**
  * Entry point and main class for the widget core example application.
- *
+ * 
  * @author Pieter De Graef
  */
 public class ExampleJar implements EntryPoint {
@@ -176,7 +175,7 @@ public class ExampleJar implements EntryPoint {
 		SamplePanelRegistry.registerFactory(CATEGORY_WIDGET, new ShowcaseSampleDefinition() {
 
 			public SamplePanel create() {
-				return new FeatureSelectedExample();
+				return new FeatureClickedExample();
 			}
 
 			public String getTitle() {
@@ -214,33 +213,6 @@ public class ExampleJar implements EntryPoint {
 				return MESSAGES.featureMouseOverDescription();
 			}
 
-			public String getCategory() {
-				return CATEGORY_WIDGET;
-			}
-		});
-
-		SamplePanelRegistry.registerFactory(CATEGORY_WIDGET, new ShowcaseSampleDefinition() {
-			@Override
-			public SamplePanel create() {
-				return new ItemSelectExample();
-			}
-
-			@Override
-			public String getTitle() {
-				return MESSAGES.itemSelectTitle();
-			}
-
-			@Override
-			public String getShortDescription() {
-				return MESSAGES.itemSelectDescrShort();
-			}
-
-			@Override
-			public String getDescription() {
-				return MESSAGES.itemSelectDescription();
-			}
-
-			@Override
 			public String getCategory() {
 				return CATEGORY_WIDGET;
 			}

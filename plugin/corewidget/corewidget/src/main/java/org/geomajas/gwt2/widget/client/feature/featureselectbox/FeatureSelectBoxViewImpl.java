@@ -26,9 +26,9 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Class.
+ * Default implementation of {@link FeatureSelectBoxView}.
  *
- * @author David Debuck.
+ * @author Jan De Moerloose
  */
 public class FeatureSelectBoxViewImpl implements FeatureSelectBoxView {
 

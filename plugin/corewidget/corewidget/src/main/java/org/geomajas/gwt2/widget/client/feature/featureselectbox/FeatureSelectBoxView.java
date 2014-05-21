@@ -15,6 +15,8 @@ import com.google.gwt.user.client.ui.IsWidget;
 import java.util.List;
 
 /**
+ * MVP view for {@link FeatureSelectBox}.
+ * 
  * @author Oliver May
  * @author Jan De Moerloose
  */

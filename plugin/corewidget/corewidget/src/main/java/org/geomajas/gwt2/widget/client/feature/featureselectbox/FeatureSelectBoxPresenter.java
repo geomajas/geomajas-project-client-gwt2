@@ -14,7 +14,7 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.map.MapPresenter;
 
 /**
- * MVP presenter for {@link org.geomajas.gwt2.widget.client.FeatureSelectBox.FeatureSelectListener}.
+ * MVP presenter for {@link org.geomajas.gwt2.widget.client.FeatureSelectBox}.
  * 
  * @author Jan De Moerloose
  * 
@@ -22,32 +22,40 @@ import org.geomajas.gwt2.client.map.MapPresenter;
 public interface FeatureSelectBoxPresenter {
 
 	/**
+	 * Called when user selects a feature from the list.
 	 * 
 	 * @param label
 	 */
 	void onFeatureSelected(String label);
 
 	/**
+	 * Activate the presenter.
 	 * 
 	 * @param mapPresenter
 	 */
 	void onActivate(MapPresenter mapPresenter);
 
 	/**
-	 * 
+	 * Deactivate the presenter.
 	 */
 	void onDeactivate();
 
 	/**
+	 * Called when users clicks map in new position.
 	 * 
+	 * @param y
+	 * @param x
 	 * @param worldCoordinate
 	 */
-	void onClick(Coordinate worldCoordinate);
+	void onClick(int x, int y, Coordinate worldCoordinate);
 
 	/**
+	 * Set the pixel buffer to search for features.
 	 * 
 	 * @param pixelBuffer
 	 */
 	void setPixelBuffer(int pixelBuffer);
+
+	void setSingleFeature(boolean singleFeature);
 
 }

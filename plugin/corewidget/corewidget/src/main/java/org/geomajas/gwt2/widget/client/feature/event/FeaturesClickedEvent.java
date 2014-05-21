@@ -11,6 +11,7 @@
 package org.geomajas.gwt2.widget.client.feature.event;
 
 import com.google.web.bindery.event.shared.Event;
+
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.map.feature.Feature;
 
@@ -63,7 +64,7 @@ public class FeaturesClickedEvent extends Event<FeaturesClickedHandler> {
 	}
 
 	@Override
-	protected void dispatch(FeaturesClickedHandler handler) {
-
+	protected void dispatch(FeaturesClickedHandler featuresClickHandler) {
+		featuresClickHandler.onFeaturesClicked(this);
 	}
 }

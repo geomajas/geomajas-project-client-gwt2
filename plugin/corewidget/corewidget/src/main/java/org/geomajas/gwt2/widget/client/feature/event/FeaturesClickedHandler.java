@@ -29,6 +29,6 @@ public interface FeaturesClickedHandler extends EventHandler {
 	 *
 	 * @param event {@link FeatureClickedEvent}
 	 */
-	void onFeatureClicked(FeaturesClickedEvent event);
+	void onFeaturesClicked(FeaturesClickedEvent event);
 
 }

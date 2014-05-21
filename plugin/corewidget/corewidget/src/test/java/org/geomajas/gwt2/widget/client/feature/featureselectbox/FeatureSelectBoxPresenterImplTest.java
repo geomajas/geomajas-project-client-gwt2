@@ -38,6 +38,7 @@ import org.geomajas.gwt2.client.map.feature.ServerFeatureService;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
 import org.geomajas.gwt2.widget.client.BaseTest;
 import org.geomajas.gwt2.widget.client.feature.event.FeatureClickedEvent;
+import org.geomajas.gwt2.widget.client.feature.event.FeaturesClickedEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -97,7 +98,9 @@ public class FeatureSelectBoxPresenterImplTest extends BaseTest {
 	@Test
 	public void onClick2() throws WktException {
 		presenter.onActivate(mapPresenter);
-		presenter.onClick(new Coordinate(100, 80));
+		presenter.onClick(1, 2, new Coordinate(100, 80));
+		verify(featureSelectBoxView).hide();
+		verify(featureSelectBoxView).setShowPosition(1, 2);
 		// capturing arguments to verify in special way or to perform callback !
 		ArgumentCaptor<Geometry> geom = ArgumentCaptor.forClass(Geometry.class);
 		ArgumentCaptor<FeatureMapFunction> function = ArgumentCaptor.forClass(FeatureMapFunction.class);
@@ -125,7 +128,9 @@ public class FeatureSelectBoxPresenterImplTest extends BaseTest {
 	@Test
 	public void onClick1() throws WktException {
 		presenter.onActivate(mapPresenter);
-		presenter.onClick(new Coordinate(100, 80));
+		presenter.onClick(1, 2, new Coordinate(100, 80));
+		verify(featureSelectBoxView).hide();
+		verify(featureSelectBoxView).setShowPosition(1, 2);
 		// capturing arguments to verify in special way or to perform callback !
 		ArgumentCaptor<Geometry> geom = ArgumentCaptor.forClass(Geometry.class);
 		ArgumentCaptor<FeatureMapFunction> function = ArgumentCaptor.forClass(FeatureMapFunction.class);
@@ -150,12 +155,39 @@ public class FeatureSelectBoxPresenterImplTest extends BaseTest {
 		when(transformationService.transform(new Coordinate(50, 0), RenderSpace.SCREEN, RenderSpace.WORLD)).thenReturn(new Coordinate(500, 0));
 		presenter.setPixelBuffer(50);
 		presenter.onActivate(mapPresenter);
-		presenter.onClick(new Coordinate(100, 80));
+		presenter.onClick(1, 2, new Coordinate(100, 80));
+		verify(featureSelectBoxView).hide();
+		verify(featureSelectBoxView).setShowPosition(1, 2);
 		// world distance must return 500
 		verify(serverFeatureService).search(eq(mapPresenter), any(Geometry.class), eq(500.0),
 				eq(ServerFeatureService.QueryType.INTERSECTS),
 				eq(ServerFeatureService.SearchLayerType.SEARCH_ALL_LAYERS), eq(-1f), any(FeatureMapFunction.class));
 
+	}
+	
+	@Test
+	public void setSingleFeature() {
+		Assert.assertTrue(presenter.isSingleFeature());
+		presenter.setSingleFeature(false);
+		presenter.onActivate(mapPresenter);
+		presenter.onClick(1, 2, new Coordinate(100, 80));
+		ArgumentCaptor<FeatureMapFunction> function = ArgumentCaptor.forClass(FeatureMapFunction.class);
+		verify(serverFeatureService).search(eq(mapPresenter), any(Geometry.class), eq(200.0),
+				eq(ServerFeatureService.QueryType.INTERSECTS),
+				eq(ServerFeatureService.SearchLayerType.SEARCH_ALL_LAYERS), eq(-1f), function.capture());
+		// make the callback with some mocks
+		Map<FeaturesSupported, List<Feature>> features = new HashMap<FeaturesSupported, List<Feature>>();
+		FeaturesSupported layer = mock(FeaturesSupported.class);
+		Feature f1 = mock(Feature.class);
+		when(f1.getLabel()).thenReturn("label1");
+		Feature f2 = mock(Feature.class);
+		when(f2.getLabel()).thenReturn("label2");
+		features.put(layer, Arrays.asList(f1, f2));
+		function.getValue().execute(features);
+		// verify event is sent
+		ArgumentCaptor<FeaturesClickedEvent> event = ArgumentCaptor.forClass(FeaturesClickedEvent.class);
+		verify(eventBus).fireEvent(event.capture());	
+		Assert.assertEquals(2, event.getValue().getFeatures().size());
 	}
 
 }

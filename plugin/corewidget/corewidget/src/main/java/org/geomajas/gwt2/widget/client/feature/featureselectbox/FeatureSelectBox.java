@@ -10,18 +10,11 @@
  */
 package org.geomajas.gwt2.widget.client.feature.featureselectbox;
 
-import java.util.logging.Logger;
-
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt.client.map.RenderSpace;
-import org.geomajas.gwt2.client.controller.AbstractMapController;
-import org.geomajas.gwt2.client.controller.MapController;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.widget.client.CoreWidget;
 import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.FeatureSelectBoxResource;
 
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -32,15 +25,11 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Oliver May
  * @author Jan De Moerloose
  */
-public class FeatureSelectBox extends AbstractMapController implements MapController, IsWidget {
-
-	private Logger log = Logger.getLogger(FeatureSelectBox.class.getName());
+public class FeatureSelectBox implements IsWidget {
 
 	private FeatureSelectBoxPresenter presenter;
 
 	private FeatureSelectBoxView view;
-
-	private static final int MIN_PIXEL_DISTANCE = 120;
 
 	protected Coordinate clickedPosition;
 
@@ -55,40 +44,25 @@ public class FeatureSelectBox extends AbstractMapController implements MapContro
 	 * Default constructor.
 	 */
 	public FeatureSelectBox(FeatureSelectBoxResource resource) {
-		super(false);
 		view = CoreWidget.getInstance().getViewFactory().createFeatureSelectBox(resource);
 		presenter = new FeatureSelectBoxPresenterImpl(view);
 		view.setPresenter(presenter);
 	}
 
-	@Override
 	public void onActivate(MapPresenter mapPresenter) {
-		super.onActivate(mapPresenter);
 		presenter.onActivate(mapPresenter);
 	}
 
-	@Override
-	public void onDeactivate(MapPresenter mapPresenter) {
-		super.onDeactivate(mapPresenter);
+	public void onDeactivate() {
 		presenter.onDeactivate();
 	}
 
-	@Override
-	public void onMouseMove(MouseMoveEvent event) {
-		if (view.isVisible() && clickedPosition != null) {
-			if (getLocation(event, RenderSpace.SCREEN).distance(clickedPosition) > MIN_PIXEL_DISTANCE) {
-				view.hide();
-			}
-		}
+	public void onClick(int x, int y, Coordinate location) {
+		presenter.onClick(x, y, location);
 	}
 
-	@Override
-	public void onMouseDown(MouseDownEvent event) {
-		log.info("FeatureSelectedListener => mouse down fired");
-		view.hide();
-		view.setShowPosition(event.getClientX(), event.getClientY());
-		clickedPosition = getLocation(event, RenderSpace.SCREEN);
-		presenter.onClick(getLocation(event, RenderSpace.WORLD));
+	public void setSingleFeature(boolean singleFeature) {
+		presenter.setSingleFeature(singleFeature);
 	}
 
 	@Override

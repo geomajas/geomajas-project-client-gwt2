@@ -8,7 +8,9 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.example.client.sample.featureselectbox;
+package org.geomajas.gwt2.widget.example.client.sample.feature;
+
+import java.util.List;
 
 import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
@@ -16,13 +18,18 @@ import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.client.widget.MapLayoutPanel;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
+import org.geomajas.gwt2.widget.client.feature.controller.FeatureClickedListener;
 import org.geomajas.gwt2.widget.client.feature.event.FeatureClickedEvent;
 import org.geomajas.gwt2.widget.client.feature.event.FeatureClickedHandler;
-import org.geomajas.gwt2.widget.client.feature.featureselectbox.FeatureSelectBox;
+import org.geomajas.gwt2.widget.client.feature.event.FeaturesClickedEvent;
+import org.geomajas.gwt2.widget.client.feature.event.FeaturesClickedHandler;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.HeadingElement;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
@@ -31,10 +38,11 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Class description.
- *
+ * 
  * @author Dosi Bingov
+ * @author Jan De Moerloose
  */
-public class FeatureSelectedExample implements SamplePanel {
+public class FeatureClickedExample implements SamplePanel {
 
 	protected DockLayoutPanel rootElement;
 
@@ -46,25 +54,35 @@ public class FeatureSelectedExample implements SamplePanel {
 	@UiField
 	protected VerticalPanel layerEventLayout;
 
+	@UiField
+	protected HeadingElement title;
+
 	@Override
 	public Widget asWidget() {
 		// return root layout element
 		return rootElement;
 	}
 
+	@UiHandler("multiCheck")
+	public void onMulti(ValueChangeEvent<Boolean> value) {
+		mapListener.setSingleFeature(!value.getValue());
+		title.setInnerText("Feature" + (value.getValue() ? "s" : "") + "ClickedEvent");
+	}
+
 	/**
 	 * UI binder interface.
-	 *
+	 * 
 	 * @author Dosi Bingov
 	 */
-	interface FeatureSelectedExampleUiBinder extends
-			UiBinder<DockLayoutPanel, FeatureSelectedExample> {
+	interface FeatureSelectedExampleUiBinder extends UiBinder<DockLayoutPanel, FeatureClickedExample> {
 
 	}
 
 	private static final FeatureSelectedExampleUiBinder UIBINDER = GWT.create(FeatureSelectedExampleUiBinder.class);
 
-	public FeatureSelectedExample() {
+	private FeatureClickedListener mapListener;
+
+	public FeatureClickedExample() {
 		rootElement = UIBINDER.createAndBindUi(this);
 
 		// Create the MapPresenter
@@ -72,6 +90,7 @@ public class FeatureSelectedExample implements SamplePanel {
 
 		// add FeatureClickedHandler where we handle FeaturesClickedEvent
 		mapPresenter.getEventBus().addHandler(FeatureClickedHandler.TYPE, new MyFeatureClickedHandler());
+		mapPresenter.getEventBus().addHandler(FeaturesClickedHandler.TYPE, new MyFeatureClickedHandler());
 
 		// Define the layout:
 		ResizeLayoutPanel resizeLayoutPanel = new ResizeLayoutPanel();
@@ -85,14 +104,14 @@ public class FeatureSelectedExample implements SamplePanel {
 		// Initialize the map
 		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "appCoreWidget", "mapCoreWidget");
 
-		// add featured clicked listener.
-		mapPresenter.addMapListener(new FeatureSelectBox());
+		mapListener = new FeatureClickedListener();
+		mapPresenter.addMapListener(mapListener);
 	}
 
 	/**
 	 * Handler that handles FeaturesClickedEvent.
 	 */
-	private class MyFeatureClickedHandler implements FeatureClickedHandler {
+	private class MyFeatureClickedHandler implements FeatureClickedHandler, FeaturesClickedHandler {
 
 		@Override
 		public void onFeatureClicked(FeatureClickedEvent event) {
@@ -100,5 +119,17 @@ public class FeatureSelectedExample implements SamplePanel {
 			layerEventLayout.add(new Label("feature label => " + feature.getLabel()));
 			layerEventLayout.add(new Label("layer title => " + feature.getLayer().getTitle()));
 		}
+
+		@Override
+		public void onFeaturesClicked(FeaturesClickedEvent event) {
+			List<Feature> features = event.getFeatures();
+			layerEventLayout.add(new Label(features.size() + " features clicked"));
+			for (Feature feature : features) {
+				layerEventLayout.add(new Label("feature label => " + feature.getLabel()));
+				layerEventLayout.add(new Label("layer title => " + feature.getLayer().getTitle()));
+			}
+			layerEventLayout.add(new Label(""));
+		}
+
 	}
 }

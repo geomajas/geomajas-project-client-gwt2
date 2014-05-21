@@ -10,6 +10,7 @@
  */
 package org.geomajas.gwt2.widget.client.feature.featureselectbox;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,12 +26,13 @@ import org.geomajas.gwt2.client.map.feature.FeatureMapFunction;
 import org.geomajas.gwt2.client.map.feature.ServerFeatureService;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
 import org.geomajas.gwt2.widget.client.feature.event.FeatureClickedEvent;
+import org.geomajas.gwt2.widget.client.feature.event.FeaturesClickedEvent;
 
 /**
  * Feature select box presenter implementation.
- *
+ * 
  * @author Jan De Moerloose
- *
+ * 
  */
 public class FeatureSelectBoxPresenterImpl implements FeatureSelectBoxPresenter {
 
@@ -45,6 +47,8 @@ public class FeatureSelectBoxPresenterImpl implements FeatureSelectBoxPresenter 
 	private Map<String, org.geomajas.gwt2.client.map.feature.Feature> clickedFeatures;
 
 	private int pixelBuffer = 10;
+
+	private boolean singleFeature = true;
 
 	public FeatureSelectBoxPresenterImpl(FeatureSelectBoxView view) {
 		this.view = view;
@@ -73,7 +77,9 @@ public class FeatureSelectBoxPresenterImpl implements FeatureSelectBoxPresenter 
 	}
 
 	@Override
-	public void onClick(Coordinate worldCoordinate) {
+	public void onClick(int x, int y, Coordinate worldCoordinate) {
+		view.hide();
+		view.setShowPosition(x, y);
 		clickedCoordinate = worldCoordinate;
 		Geometry point = new Geometry(Geometry.POINT, 0, -1);
 		point.setCoordinates(new Coordinate[] { worldCoordinate });
@@ -87,15 +93,24 @@ public class FeatureSelectBoxPresenterImpl implements FeatureSelectBoxPresenter 
 
 							@Override
 							public void execute(Map<FeaturesSupported, List<Feature>> featureMap) {
-								getData(featureMap);
+								handleFeatures(featureMap);
 
 							}
 						});
 
 	}
 
+	@Override
+	public void setSingleFeature(boolean singleFeature) {
+		this.singleFeature = singleFeature;
+	}
+
 	protected MapPresenter getMapPresenter() {
 		return mapPresenter;
+	}
+	
+	protected boolean isSingleFeature() {
+		return singleFeature;
 	}
 
 	private double calculateBufferFromPixelTolerance() {
@@ -106,7 +121,7 @@ public class FeatureSelectBoxPresenterImpl implements FeatureSelectBoxPresenter 
 		return c1.distance(c2);
 	}
 
-	private void getData(Map<FeaturesSupported, List<Feature>> featureMap) {
+	private void handleFeatures(Map<FeaturesSupported, List<Feature>> featureMap) {
 		clickedFeatures.clear(); // clearLabels all stored features
 
 		for (FeaturesSupported layer : featureMap.keySet()) {
@@ -123,24 +138,28 @@ public class FeatureSelectBoxPresenterImpl implements FeatureSelectBoxPresenter 
 
 			}
 		}
-
-		showFeatureData();
+		showFeaturesOrFireEvent();
 	}
 
-	private void showFeatureData() {
-		// when there is more than one feature in the buffered area
-		if (clickedFeatures.size() >= 2) {
-			view.clearLabels();
+	private void showFeaturesOrFireEvent() {
+		if (singleFeature) {
+			// when there is more than one feature in the buffered area
+			if (clickedFeatures.size() >= 2) {
+				view.clearLabels();
 
-			for (org.geomajas.gwt2.client.map.feature.Feature f : clickedFeatures.values()) {
-				view.addLabel(f.getLabel());
+				for (org.geomajas.gwt2.client.map.feature.Feature f : clickedFeatures.values()) {
+					view.addLabel(f.getLabel());
+				}
+
+				view.show(false);
+			} else if (clickedFeatures.size() == 1) {
+				Feature clickedFeature = (Feature) clickedFeatures.values().toArray()[0];
+
+				mapPresenter.getEventBus().fireEvent(new FeatureClickedEvent(clickedCoordinate, clickedFeature));
 			}
-
-			view.show(false);
-		} else if (clickedFeatures.size() == 1) {
-			Feature clickedFeature = (Feature) clickedFeatures.values().toArray()[0];
-
-			mapPresenter.getEventBus().fireEvent(new FeatureClickedEvent(clickedCoordinate, clickedFeature));
+		} else {
+			mapPresenter.getEventBus().fireEvent(
+					new FeaturesClickedEvent(clickedCoordinate, new ArrayList<Feature>(clickedFeatures.values())));
 		}
 	}
 
