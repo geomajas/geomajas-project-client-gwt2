@@ -1,0 +1,46 @@
+org.geomajas.gwt2.client.GeomajasServerExtension::2.0.0
+org.geomajas.gwt2.client.GeomajasServerExtension:CommandService getCommandService():2.0.0
+org.geomajas.gwt2.client.GeomajasServerExtension:EndPointService getEndPointService():2.0.0
+org.geomajas.gwt2.client.GeomajasServerExtension:ServerFeatureService getServerFeatureService():2.0.0
+org.geomajas.gwt2.client.GeomajasServerExtension:ServerLayer<?> createLayer(ClientLayerInfo, ViewPort, MapEventBus, ):2.0.0
+org.geomajas.gwt2.client.GeomajasServerExtension:static GeomajasServerExtension getInstance():2.0.0
+org.geomajas.gwt2.client.GeomajasServerExtension:static final Hint<ClientMapInfo> MAPINFO:2.0.0
+org.geomajas.gwt2.client.GeomajasServerExtension:static void setInstance(GeomajasServerExtension, ):2.0.0
+org.geomajas.gwt2.client.GeomajasServerExtension:void initializeMap(MapPresenter, String, String, ):2.0.0
+org.geomajas.gwt2.client.GeomajasServerExtension:void initializeMap(MapPresenter, String, String, DefaultMapWidget, ):2.0.0
+org.geomajas.gwt2.client.controller.FeatureSelectionController::2.0.0
+org.geomajas.gwt2.client.controller.FeatureSelectionController:FeatureSelectionController():2.0.0
+org.geomajas.gwt2.client.controller.FeatureSelectionController:FeatureSelectionController(SelectionMethod, ):2.0.0
+org.geomajas.gwt2.client.controller.FeatureSelectionController:SelectionMethod getSelectionMethod():2.0.0
+org.geomajas.gwt2.client.controller.FeatureSelectionController:void onActivate(MapPresenter, ):2.0.0
+org.geomajas.gwt2.client.controller.FeatureSelectionController:void onDown(HumanInputEvent<?>, ):2.0.0
+org.geomajas.gwt2.client.controller.FeatureSelectionController:void onDrag(HumanInputEvent<?>, ):2.0.0
+org.geomajas.gwt2.client.controller.FeatureSelectionController:void onMouseDown(MouseDownEvent, ):2.0.0
+org.geomajas.gwt2.client.controller.FeatureSelectionController:void onMouseMove(MouseMoveEvent, ):2.0.0
+org.geomajas.gwt2.client.controller.FeatureSelectionController:void onMouseOut(MouseOutEvent, ):2.0.0
+org.geomajas.gwt2.client.controller.FeatureSelectionController:void onUp(HumanInputEvent<?>, ):2.0.0
+org.geomajas.gwt2.client.controller.FeatureSelectionController:void setSelectionMethod(SelectionMethod, ):2.0.0
+org.geomajas.gwt2.client.map.layer.ServerLayer::2.0.0
+org.geomajas.gwt2.client.map.layer.ServerLayer:String getServerLayerId():2.0.0
+org.geomajas.gwt2.client.map.layer.ServerLayer:T getLayerInfo():2.0.0
+org.geomajas.gwt2.client.service.CommandService::2.0.0
+org.geomajas.gwt2.client.service.CommandService:Deferred execute(GwtCommand, CommandCallback<?>, ):2.0.0
+org.geomajas.gwt2.client.service.CommandService:HandlerRegistration addTokenChangedHandler(TokenChangedHandler, ):2.0.0
+org.geomajas.gwt2.client.service.CommandService:String getUserToken():2.0.0
+org.geomajas.gwt2.client.service.CommandService:void login():2.0.0
+org.geomajas.gwt2.client.service.CommandService:void logout():2.0.0
+org.geomajas.gwt2.client.service.CommandService:void setTokenRequestHandler(TokenRequestHandler, ):2.0.0
+org.geomajas.gwt2.client.service.EndPointService::2.0.0
+org.geomajas.gwt2.client.service.EndPointService:String getCommandServiceUrl():2.0.0
+org.geomajas.gwt2.client.service.EndPointService:String getDispatcherUrl():2.0.0
+org.geomajas.gwt2.client.service.EndPointService:String getLegendServiceUrl():2.0.0
+org.geomajas.gwt2.client.service.EndPointService:void setCommandServiceUrl(String, ):2.0.0
+org.geomajas.gwt2.client.service.EndPointService:void setDispatcherUrl(String, ):2.0.0
+org.geomajas.gwt2.client.service.EndPointService:void setLegendServiceUrl(String, ):2.0.0
+org.geomajas.gwt2.client.widget.legend.DynamicVectorServerLayerLegend::2.0.0
+org.geomajas.gwt2.client.widget.legend.DynamicVectorServerLayerLegend:VectorServerLayer getLayer():2.0.0
+org.geomajas.gwt2.client.widget.legend.DynamicVectorServerLayerLegend:Widget asWidget():2.0.0
+org.geomajas.gwt2.client.widget.legend.RasterServerLayerLegend::2.0.0
+org.geomajas.gwt2.client.widget.legend.RasterServerLayerLegend:RasterServerLayer getLayer():2.0.0
+org.geomajas.gwt2.client.widget.legend.RasterServerLayerLegend:RasterServerLayerLegend(RasterServerLayer, ):2.0.0
+org.geomajas.gwt2.client.widget.legend.RasterServerLayerLegend:Widget asWidget():2.0.0
