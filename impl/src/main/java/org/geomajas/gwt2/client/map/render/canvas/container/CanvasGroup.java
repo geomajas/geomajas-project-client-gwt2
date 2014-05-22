@@ -55,17 +55,12 @@ public class CanvasGroup implements IsWidget {
 						canvas.getContext2d().save();
 						canvas.getContext2d().setGlobalAlpha(opacity);
 					}
-					remoteLogger.log(Level.SEVERE, "Real canvas height:" +  canvas.getCoordinateSpaceHeight() + " width " + canvas.getCoordinateSpaceWidth());
-
-
-					remoteLogger.log(Level.SEVERE, "IN memory canvas id="+ ic.getCanvas().getCanvasElement().getId() + " height:" +  ic.getCanvas().getCoordinateSpaceHeight() + " width "+ ic.getCanvas().getCoordinateSpaceWidth());
-
+					remoteLogger.log(Level.INFO, "Real canvas height:" +  canvas.getCoordinateSpaceHeight() + " width " + canvas.getCoordinateSpaceWidth());
+					remoteLogger.log(Level.INFO, "IN memory canvas id="+ ic.getCanvas().getCanvasElement().getId() + " height:" +  ic.getCanvas().getCoordinateSpaceHeight() + " width "+ ic.getCanvas().getCoordinateSpaceWidth());
 
 					canvas.getContext2d().drawImage(ic.getCanvasElement(), 0, 0, ic.getGridBounds().getWidth(),
-							ic.getGridBounds().getHeight(), origin.getX(), origin.getY(),
+							ic.getGridBounds().getHeight(), (int) origin.getX(), (int) origin.getY(),
 							scale * ic.getGridBounds().getWidth(), scale * ic.getGridBounds().getHeight());
-
-					remoteLogger.log(Level.SEVERE, "Real canvas after height:" +  canvas.getCoordinateSpaceHeight() + " width " + canvas.getCoordinateSpaceWidth());
 
 					if (opacity < 1) {
 						canvas.getContext2d().restore();

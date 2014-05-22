@@ -24,6 +24,7 @@ import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
+import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.geometry.service.BboxService;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
@@ -87,18 +88,18 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 	@Override
 	protected void initLayerConfiguration() {
 		String layerId = layerInfo.getServerLayerId();
-		ArrayList<Double> resolutions = new ArrayList<Double>();
 		String baseUrl = GWT.getModuleBaseURL() + RASTERIZING_PREFIX + layerId + "@" + mapInfo.getCrs() + "/"
 				+ layerInfo.getNamedStyleInfo().getName() + "/";
-		getTileConfiguration().setTileWidth(512);
-		getTileConfiguration().setTileHeight(512);
-		for (int i = 0; i < 50; i++) {
-			resolutions.add(layerInfo.getMaxExtent().getWidth() / (512 * Math.pow(2, i)));
+		getTileConfiguration().setTileWidth(mapInfo.getPreferredPixelsPerTile().getWidth());
+		getTileConfiguration().setTileHeight(mapInfo.getPreferredPixelsPerTile().getHeight());
+		List<Double> resolutions = new ArrayList<Double>();
+		for (ScaleInfo scale : mapInfo.getScaleConfiguration().getZoomLevels()) {
+			resolutions.add(1 / scale.getPixelPerUnit());
 		}
 		getTileConfiguration().setResolutions(resolutions);
-		getTileConfiguration().setTileOrigin(BboxService.getOrigin(layerInfo.getMaxExtent()));
+		getTileConfiguration().setTileOrigin(BboxService.getOrigin(mapInfo.getMaxBounds()));
 		getTileConfiguration().setLimitXYByTileLevel(true);
-		layerConfiguration = new ServerLayerConfiguration(baseUrl, ".png");
+		layerConfiguration = new ServerLayerConfiguration(baseUrl, ".png", getTileConfiguration());
 	}
 
 	// ------------------------------------------------------------------------

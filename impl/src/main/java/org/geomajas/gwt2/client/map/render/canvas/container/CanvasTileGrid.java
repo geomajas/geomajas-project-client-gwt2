@@ -79,6 +79,10 @@ public class CanvasTileGrid implements IsWidget {
 	public Widget asWidget() {
 		return canvas;
 	}
+	
+	public int getTileLevel() {
+		return tileLevel;
+	}
 
 	public void addBounds(Bbox bounds) {
 		Range newRange = calcTileRange(bounds);

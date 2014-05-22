@@ -72,7 +72,7 @@ public class RasterServerLayerImpl extends AbstractServerLayer<ClientRasterLayer
 		getTileConfiguration().setResolutions(resolutions);
 		getTileConfiguration().setTileOrigin(BboxService.getOrigin(layerInfo.getMaxExtent()));
 		getTileConfiguration().setLimitXYByTileLevel(true);
-		layerConfiguration = new ServerLayerConfiguration(baseUrl, ".png");
+		layerConfiguration = new ServerLayerConfiguration(baseUrl, ".png", getTileConfiguration());
 	}
 
 }
