@@ -43,12 +43,13 @@
 	</modules>
 
 	<properties>
-		<version-geomajas-backend>1.15.0-SNAPSHOT</version-geomajas-backend>
+		<version-geomajas-backend>1.15.0</version-geomajas-backend>
 		<version-geomajas-graphics>1.0.0-M3</version-geomajas-graphics>
 		<version-vaadin-graphics>1.0.0.TX11</version-vaadin-graphics>
 		<version-gwt>2.5.0</version-gwt>
 		<spring-version>3.0.5.RELEASE</spring-version>
 		<version-geomajas-build-tools>2.0.0</version-geomajas-build-tools>
+		<gwt-exporter-version>2.4.0</gwt-exporter-version>
 	</properties>
 
 	<dependencyManagement>
@@ -273,6 +274,11 @@
                 <artifactId>geomajas-client-gwt2-plugin-tms-example-jar</artifactId>
                 <version>${project.version}</version>
             </dependency>
+			<dependency>
+				<groupId>org.timepedia.exporter</groupId>
+				<artifactId>gwtexporter</artifactId>
+				<version>${gwt-exporter-version}</version>
+			</dependency>
 
 			<!-- WMS plugin -->
 			<dependency>
