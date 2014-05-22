@@ -145,6 +145,7 @@ public interface GeometryEditService extends GeometryIndexOperationService {
 	 * 
 	 * @param handler The {@link GeometryEditValidationHandler} to add as listener.
 	 * @return The registration of the handler.
+	 * @since 2.1.0
 	 */
 	HandlerRegistration addGeometryEditValidationHandler(GeometryEditValidationHandler handler);
 
@@ -277,6 +278,7 @@ public interface GeometryEditService extends GeometryIndexOperationService {
 	 * to an invalid geometry.
 	 * 
 	 * @param validating boolean value.
+	 * @since 2.1.0
 	 */
 	void setValidating(boolean validating);
 
@@ -284,6 +286,7 @@ public interface GeometryEditService extends GeometryIndexOperationService {
 	 * Is the editor service validating ?
 	 *
 	 * @return boolean true if validating
+	 * @since 2.1.0
 	 */
 	boolean isValidating();
 	
@@ -293,6 +296,7 @@ public interface GeometryEditService extends GeometryIndexOperationService {
 	 * invalid geometries, so applications can inform the end user).
 	 * 
 	 * @param invalidAllowed true if allowed.
+	 * @since 2.1.0
 	 */
 	void setInvalidAllowed(boolean invalidAllowed);
 
@@ -300,6 +304,7 @@ public interface GeometryEditService extends GeometryIndexOperationService {
 	 * Should operations that lead to invalid geometries be allowed ?
 	 * 
 	 * @see #setInvalidAllowed(boolean)
+	 * @since 2.1.0
 	 * @return boolean true if we allow invalid geometries, false otherwise
 	 */
 	boolean isInvalidAllowed();

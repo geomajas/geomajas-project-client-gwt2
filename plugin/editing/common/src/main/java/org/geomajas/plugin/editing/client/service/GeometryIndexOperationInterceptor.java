@@ -11,6 +11,8 @@
 
 package org.geomajas.plugin.editing.client.service;
 
+import org.geomajas.annotation.Api;
+import org.geomajas.annotation.UserImplemented;
 import org.geomajas.plugin.editing.client.operation.GeometryIndexOperation;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 
@@ -19,8 +21,11 @@ import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedExcep
  * operation by throwing an exception.
  * 
  * @author Jan De Moerloose
+ * @since 2.1.0
  * 
  */
+@Api(allMethods = true)
+@UserImplemented
 public interface GeometryIndexOperationInterceptor {
 
 	/**

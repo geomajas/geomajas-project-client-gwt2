@@ -237,6 +237,7 @@ public class GeometryIndexService {
 	 * 
 	 * @param index
 	 * @return the parent index
+	 * @since 2.1.0
 	 */
 	public GeometryIndex getParent(GeometryIndex index) {
 		return fromDelegate(delegate.getParent(toDelegate(index)));

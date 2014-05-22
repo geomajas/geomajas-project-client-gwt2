@@ -166,6 +166,7 @@ public interface GeometryIndexOperationService {
 	 * Add an interceptor to the list of operation interceptors of the service.
 	 * 
 	 * @param interceptor the interceptor
+	 * @since 2.1.0
 	 */
 	void addInterceptor(GeometryIndexOperationInterceptor interceptor);
 }
