@@ -40,16 +40,16 @@ public interface ViewPort {
 	Bbox getMaximumBounds();
 
 	/**
-	 * Return the minimum allowed resolution. This means the maximum zoom out.
+	 * Return the maximum allowed resolution. This means minimum scale or zoom level.
 	 *
-	 * @return The minimum allowed resolution.
+	 * @return The maximum allowed resolution.
 	 */
 	double getMaximumResolution();
 
 	/**
-	 * Return the maximum allowed resolution. This means the maximum zoom in.
+	 * Return the minimum allowed resolution. This means maximum scale or zoom level.
 	 *
-	 * @return The maximum allowed resolution.
+	 * @return The minimum allowed resolution.
 	 */
 	double getMinimumResolution();
 
