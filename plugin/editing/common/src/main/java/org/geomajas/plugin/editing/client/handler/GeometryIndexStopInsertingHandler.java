@@ -12,6 +12,7 @@
 package org.geomajas.plugin.editing.client.handler;
 
 import java.util.Collections;
+import java.util.List;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
@@ -50,12 +51,21 @@ public class GeometryIndexStopInsertingHandler extends AbstractGeometryIndexMapH
 	public void onDown(HumanInputEvent<?> event) {
 		if (service.getEditingState() == GeometryEditState.INSERTING && isCorrectVertex()) {
 			if (service.isValidating()) {
-				GeometryValidationState state = service.validate(service.getGeometry(), index);
-				if (state.isValid()) {
-					service.setEditingState(GeometryEditState.IDLE);
-				} else if (service.isInvalidAllowed()) {
-					Window.alert("Exception during editing: " + state);
+				try {
+					List<GeometryIndex> edges = service.getIndexService()
+							.getAdjacentEdges(service.getGeometry(), index);
+					// validate the closing edge
+					GeometryValidationState state = service.validate(service.getGeometry(), edges.get(0));
+					if (state.isValid()) {
+						service.setEditingState(GeometryEditState.IDLE);
+					} else if (!service.isInvalidAllowed()) {
+						Window.alert("Exception during editing: " + state);
+					}
+				} catch (GeometryIndexNotFoundException e) {
+					Window.alert("Exception during editing: geometry invalid");
 				}
+			} else {
+				service.setEditingState(GeometryEditState.IDLE);
 			}
 			service.getIndexStateService().highlightEnd(Collections.singletonList(index));
 		}

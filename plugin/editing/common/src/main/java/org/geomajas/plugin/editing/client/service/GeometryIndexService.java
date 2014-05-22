@@ -30,7 +30,8 @@ import org.geomajas.geometry.service.GeometryValidationState;
 @Api(allMethods = true)
 public class GeometryIndexService {
 
-	private org.geomajas.geometry.service.GeometryIndexService delegate = new org.geomajas.geometry.service.GeometryIndexService();
+	private org.geomajas.geometry.service.GeometryIndexService delegate =
+			new org.geomajas.geometry.service.GeometryIndexService();
 
 	// ------------------------------------------------------------------------
 	// Methods concerning index construction:
@@ -392,9 +393,10 @@ public class GeometryIndexService {
 		if (index == null) {
 			return null;
 		}
-		org.geomajas.geometry.service.GeometryIndex result = delegate.create(toDelegate(index.getType()), index.getValue());
+		org.geomajas.geometry.service.GeometryIndex result = delegate.create(toDelegate(index.getType()),
+				index.getValue());
 		GeometryIndex child = index.getChild();
-		while(child != null) {
+		while (child != null) {
 			result = delegate.addChildren(result, toDelegate(child.getType()), child.getValue());
 			child = child.getChild();
 		}
@@ -418,7 +420,8 @@ public class GeometryIndexService {
 		return GeometryIndexType.valueOf(type.name());
 	}
 
-	private GeometryIndexNotFoundException fromDelegate(org.geomajas.geometry.service.GeometryIndexNotFoundException e) {
+	private GeometryIndexNotFoundException fromDelegate(
+			org.geomajas.geometry.service.GeometryIndexNotFoundException e) {
 		return new GeometryIndexNotFoundException(e.getMessage(), e.getCause());
 	}
 
