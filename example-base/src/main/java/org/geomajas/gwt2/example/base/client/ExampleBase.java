@@ -62,6 +62,7 @@ public class ExampleBase implements EntryPoint {
 			}
 
 			layout = new SamplePage();
+			layout.setTitle(foundFactory.getTitle());
 
 			((SamplePage) layout).setSamplePanelFactory(foundFactory);
 
@@ -119,12 +120,9 @@ public class ExampleBase implements EntryPoint {
 
 	public static void showSampleInNewTab(ShowcaseSampleDefinition sample) {
 		UrlBuilder urlBuilder = Window.Location.createUrlBuilder();
-
 		urlBuilder.setParameter("sample", sample.getKey());
-
 		String url = urlBuilder.buildString();
-
-		Window.open(url, "", "");
+		Window.open(url, sample.getTitle(), "");
 	}
 
 	public static void setSampleInNewTab(boolean sampleInNewTab) {
