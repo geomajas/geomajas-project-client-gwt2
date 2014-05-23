@@ -197,7 +197,7 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-client-gwt2-plugin-graphicsediting-example-jar</artifactId>
+				<artifactId>geomajas-client-gwt2-plugin-graphicsediting-example</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
