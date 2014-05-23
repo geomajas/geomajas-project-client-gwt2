@@ -318,6 +318,11 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	public void remove(List<GeometryIndex> indices) throws GeometryOperationFailedException {
 		operationService.remove(indices);
 	}
+	
+	@Override
+	public void finish(GeometryIndex index) throws GeometryOperationFailedException {
+		operationService.finish(index);
+	}
 
 	@Override
 	public GeometryIndex addEmptyChild() throws GeometryOperationFailedException {

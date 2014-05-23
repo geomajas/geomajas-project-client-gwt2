@@ -21,6 +21,8 @@ import org.geomajas.geometry.service.validation.ValidationViolation;
 import org.geomajas.plugin.editing.client.operation.GeometryIndexOperation;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 
+import com.google.gwt.user.client.Window;
+
 /**
  * Interceptor that validates the resulting geometry of each operation.
  * 
@@ -96,11 +98,21 @@ public class GeometryValidationInterceptor implements GeometryIndexOperationInte
 	public void afterExecute(GeometryIndexOperation operation, GeometryIndex index)
 			throws GeometryOperationFailedException {
 		if (isEnabled()) {
-			GeometryValidationState state = validate(editService.getGeometry(), index);
-			if (!state.isValid() && isBlocking()) {
-				throw new GeometryOperationFailedException("Invalid geometry : " + state);
+			boolean valid = isValid(editService.getGeometry(), index);
+			if (!valid) {
+				if (isBlocking()) {
+					throw new GeometryOperationFailedException("Invalid geometry");
+				}
 			}
 		}
+	}
+
+	public boolean isValid(Geometry geom, GeometryIndex index) {
+		GeometryValidationState state = validate(geom, index);
+		if(!state.isValid()) {
+			Window.alert("Exception during editing: "+state.toString());
+		}
+		return state.isValid();
 	}
 
 	protected GeometryValidationState validate(Geometry geom, GeometryIndex index) {
@@ -111,18 +123,18 @@ public class GeometryValidationInterceptor implements GeometryIndexOperationInte
 				if (indexService.getSiblingCount(geom, index) > 2) {
 					try {
 						List<GeometryIndex> edges = indexService.getAdjacentEdges(geom, index);
-						return indexService.validate(geom, edges.get(0));
+						return editService.validate(geom, edges.get(0));
 					} catch (GeometryIndexNotFoundException e) {
 						// should never happen, must return something here
 						return GeometryValidationState.VALID;
 					}
 				} else {
 					// inserting 1st or 2nd point of new ring or geometry, evaluate the geometry
-					return indexService.validate(geom, indexService.getParent(index));
+					return editService.validate(geom, indexService.getParent(index));
 				}
 			} else {
 				// inserting ring or new geometry, evaluate normally
-				return indexService.validate(geom, index);
+				return editService.validate(geom, index);
 			}
 		} else {
 			if (indexService.isVertex(index)) {
@@ -130,7 +142,7 @@ public class GeometryValidationInterceptor implements GeometryIndexOperationInte
 					List<GeometryIndex> edges = indexService.getAdjacentEdges(geom, index);
 					List<ValidationViolation> violations = new ArrayList<ValidationViolation>();
 					for (GeometryIndex edge : edges) {
-						indexService.validate(geom, edge);
+						editService.validate(geom, edge);
 						violations.addAll(GeometryService.getValidationContext().getViolations());
 					}
 					return violations.size() == 0 ? GeometryValidationState.VALID : violations.get(0).getState();
@@ -139,7 +151,7 @@ public class GeometryValidationInterceptor implements GeometryIndexOperationInte
 					return GeometryValidationState.VALID;
 				}
 			} else {
-				return indexService.validate(geom, index);
+				return editService.validate(geom, index);
 			}
 		}
 	}

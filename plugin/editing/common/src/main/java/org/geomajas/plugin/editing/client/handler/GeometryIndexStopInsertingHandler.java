@@ -18,6 +18,7 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.geometry.service.GeometryValidationState;
 import org.geomajas.gwt.client.handler.MapDownHandler;
+import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
@@ -50,22 +51,10 @@ public class GeometryIndexStopInsertingHandler extends AbstractGeometryIndexMapH
 
 	public void onDown(HumanInputEvent<?> event) {
 		if (service.getEditingState() == GeometryEditState.INSERTING && isCorrectVertex()) {
-			if (service.isValidating()) {
-				try {
-					List<GeometryIndex> edges = service.getIndexService()
-							.getAdjacentEdges(service.getGeometry(), index);
-					// validate the closing edge
-					GeometryValidationState state = service.validate(service.getGeometry(), edges.get(0));
-					if (state.isValid()) {
-						service.setEditingState(GeometryEditState.IDLE);
-					} else if (!service.isInvalidAllowed()) {
-						Window.alert("Exception during editing: " + state);
-					}
-				} catch (GeometryIndexNotFoundException e) {
-					Window.alert("Exception during editing: geometry invalid");
-				}
-			} else {
-				service.setEditingState(GeometryEditState.IDLE);
+			try {
+				service.finish(service.getInsertIndex());
+			} catch (GeometryOperationFailedException e) {
+				// throw new IllegalStateException(e);
 			}
 			service.getIndexStateService().highlightEnd(Collections.singletonList(index));
 		}

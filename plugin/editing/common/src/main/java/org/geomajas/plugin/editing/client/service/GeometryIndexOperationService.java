@@ -144,6 +144,8 @@ public interface GeometryIndexOperationService {
 	 */
 	void remove(List<GeometryIndex> indices) throws GeometryOperationFailedException;
 
+	void finish(GeometryIndex index) throws GeometryOperationFailedException;
+
 	/**
 	 * Add an empty child at the lowest sub-geometry level.
 	 * 

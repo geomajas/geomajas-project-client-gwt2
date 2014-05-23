@@ -25,6 +25,7 @@ import org.geomajas.plugin.editing.client.event.GeometryEditStartEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
+import org.geomajas.plugin.editing.client.operation.ChangeInsertingStateOperation;
 import org.geomajas.plugin.editing.client.operation.DeleteGeometryOperation;
 import org.geomajas.plugin.editing.client.operation.DeleteVertexOperation;
 import org.geomajas.plugin.editing.client.operation.GeometryIndexOperation;
@@ -294,6 +295,23 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 		eventBus.fireEvent(new GeometryEditRemoveEvent(geometry, indices));
 		if (!isOperationSequenceActive()) {
 			eventBus.fireEvent(new GeometryEditShapeChangedEvent(service.getGeometry()));
+		}
+	}
+
+	@Override
+	public void finish(GeometryIndex index) throws GeometryOperationFailedException {
+		OperationSequence seq = null;
+		if (isOperationSequenceActive()) {
+			seq = current;
+		} else {
+			seq = new OperationSequence();
+			redoQueue.clear();
+		}
+		GeometryIndexOperation op = new ChangeInsertingStateOperation(service, GeometryEditState.IDLE);
+		executeOperation(op, index);
+		seq.addOperation(op);
+		if (!isOperationSequenceActive()) {
+			undoQueue.add(seq);
 		}
 	}
 

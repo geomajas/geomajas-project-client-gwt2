@@ -66,7 +66,7 @@ public class GeometryIndexInsertController extends AbstractGeometryIndexControll
 					service.setEditingState(GeometryEditState.IDLE);
 				}
 			} catch (GeometryOperationFailedException e) {
-				Window.alert("Exception during editing: " + e.getMessage());
+				// Window.alert("Exception during editing: " + e.getMessage());
 			}
 		}
 	}
