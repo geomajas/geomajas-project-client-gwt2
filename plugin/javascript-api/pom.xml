@@ -46,6 +46,8 @@
 
 	<modules>
 		<module>api</module>
+		<module>impl</module>
+		<module>example</module>
 	</modules>
 
 	<profiles>

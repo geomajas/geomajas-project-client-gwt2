@@ -126,11 +126,11 @@
 				<artifactId>geomajas-client-gwt2-plugin-editing-impl</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-            <dependency>
-                <groupId>org.geomajas.plugin</groupId>
-                <artifactId>geomajas-client-gwt2-plugin-editing-server-extension</artifactId>
-                <version>${project.version}</version>
-            </dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-client-gwt2-plugin-editing-server-extension</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-client-gwt2-plugin-editing-example-jar</artifactId>
@@ -263,17 +263,17 @@
 				<version>1.8.0.7</version>
 			</dependency>
 
-            <!-- TMS plugin -->
-            <dependency>
-                <groupId>org.geomajas.plugin</groupId>
-                <artifactId>geomajas-client-gwt2-plugin-tms</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.geomajas.plugin</groupId>
-                <artifactId>geomajas-client-gwt2-plugin-tms-example-jar</artifactId>
-                <version>${project.version}</version>
-            </dependency>
+			<!-- TMS plugin -->
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-client-gwt2-plugin-tms</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-client-gwt2-plugin-tms-example-jar</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.timepedia.exporter</groupId>
 				<artifactId>gwtexporter</artifactId>
@@ -316,6 +316,24 @@
 				<artifactId>gt-wms</artifactId>
 				<version>9.5</version>
 			</dependency>
+			
+			<!-- Javascript plugin -->
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-client-gwt2-plugin-javascript-api</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-client-gwt2-plugin-javascript-api-impl</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-client-gwt2-plugin-javascript-api-example</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			
 
 			<!-- Other Geomajas artifacts -->
 			<dependency>

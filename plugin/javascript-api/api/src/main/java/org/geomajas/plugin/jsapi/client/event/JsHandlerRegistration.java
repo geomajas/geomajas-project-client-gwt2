@@ -16,7 +16,8 @@ import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;
 
-import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.web.bindery.event.shared.HandlerRegistration;
+
 
 /**
  * Registration for a singular handler. This registration allows the handler to be unregistered (a.k.a removed) again.
