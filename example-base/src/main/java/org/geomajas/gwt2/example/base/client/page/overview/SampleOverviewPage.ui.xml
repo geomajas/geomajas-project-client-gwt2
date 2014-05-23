@@ -84,9 +84,9 @@
                                   addStyleNames="{style.icon}" title="Switch to block view." />
             </g:cell>
 
-            <g:cell width="60px" horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_MIDDLE">
+            <g:cell width="108px" horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_MIDDLE">
                 <g:HTMLPanel>
-                   <span>sample in new tab</span>
+                   <span>Sample in new tab</span>
                 </g:HTMLPanel>
             </g:cell>
 
