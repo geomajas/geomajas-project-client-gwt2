@@ -11,7 +11,6 @@
 
 package org.geomajas.gwt2.widget.client.map;
 
-import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.client.event.LayerAddedEvent;
 import org.geomajas.gwt2.client.event.LayerOrderChangedEvent;
 import org.geomajas.gwt2.client.event.LayerOrderChangedHandler;
@@ -30,11 +29,9 @@ import com.google.gwt.user.client.ui.Widget;
  * {@link org.geomajas.gwt2.client.map.layer.LayersModel}. If a new layer is added or layer is removed from the map,
  * this widget will change the legend accordingly. Also if the order of layers change, this widget will change
  * accordingly.
- * 
+ *
  * @author Pieter De Graef
- * @since 2.0.0
  */
-@Api
 public class MapLegendPanel implements IsWidget {
 
 	private final MapPresenter mapPresenter;
@@ -43,7 +40,7 @@ public class MapLegendPanel implements IsWidget {
 
 	/**
 	 * Create a legend that displays all layer legends of a map.
-	 * 
+	 *
 	 * @param mapPresenter
 	 *            The map to display a legend widget for.
 	 */
@@ -95,7 +92,7 @@ public class MapLegendPanel implements IsWidget {
 
 	/**
 	 * Add a layer to the legend drop down panel.
-	 * 
+	 *
 	 * @param layer
 	 *            The layer who's legend to add to the drop down panel.
 	 * @return success or not.
@@ -108,10 +105,10 @@ public class MapLegendPanel implements IsWidget {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Remove a layer from the drop down content panel again.
-	 * 
+	 *
 	 * @param layer
 	 *            The layer to remove.
 	 * @return success or not.

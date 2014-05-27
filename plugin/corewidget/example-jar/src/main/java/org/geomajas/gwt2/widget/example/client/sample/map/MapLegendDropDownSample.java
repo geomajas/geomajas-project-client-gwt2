@@ -28,14 +28,14 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * ContentPanel that demonstrates changing layer order.
- * 
+ *
  * @author Jan De Moerloose
  */
 public class MapLegendDropDownSample implements SamplePanel {
 
 	/**
 	 * UI binder for this widget.
-	 * 
+	 *
 	 * @author Pieter De Graef
 	 */
 	interface MyUiBinder extends UiBinder<Widget, MapLegendDropDownSample> {

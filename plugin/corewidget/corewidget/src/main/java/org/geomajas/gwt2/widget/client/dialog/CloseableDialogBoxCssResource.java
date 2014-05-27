@@ -11,18 +11,14 @@
 
 package org.geomajas.gwt2.widget.client.dialog;
 
-import org.geomajas.annotation.Api;
-
 import com.google.gwt.resources.client.CssResource;
 
 /**
  * CSS resource bundle that contains all generic styles used in pure gwt geomajas widgets.
- * 
+ *
  * @author Dosi Bingov
  * @author Jan De Moerloose
- * @since 2.0.0
  */
-@Api(allMethods = true)
 public interface CloseableDialogBoxCssResource extends CssResource {
 
 	/**
@@ -30,7 +26,7 @@ public interface CloseableDialogBoxCssResource extends CssResource {
 	 * @return
 	 */
 	String closeableDialogCloseIcon();
-	
+
 	/**
 	 * Get a CSS style class.
 	 * @return
@@ -48,5 +44,5 @@ public interface CloseableDialogBoxCssResource extends CssResource {
 	 * @return
 	 */
 	String captionBar();
-	
+
 }

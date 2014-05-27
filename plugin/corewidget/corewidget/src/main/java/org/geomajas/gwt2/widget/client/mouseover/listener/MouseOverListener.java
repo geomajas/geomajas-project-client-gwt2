@@ -43,9 +43,9 @@ import com.google.gwt.user.client.Timer;
 /**
  * Mouse over listener. When this listener is added to the map the users sees a dialog box with feature info when the
  * mouse is over a feature. By default just layer title and feature label are shown in the dialog box.
- * 
+ *
  * @author Dosi Bingov
- * 
+ *
  */
 public class MouseOverListener extends AbstractController implements MapController {
 
@@ -80,7 +80,7 @@ public class MouseOverListener extends AbstractController implements MapControll
 	}
 
 	/**
-	 * 
+	 *
 	 * @param showAllAtributes
 	 *            if true all attributes of a feature will be shown in the dialog pop up
 	 */
@@ -90,7 +90,7 @@ public class MouseOverListener extends AbstractController implements MapControll
 	}
 
 	/**
-	 * 
+	 *
 	 * @param pixelBuffer
 	 *            minimum distance between features to be included in the call out box.
 	 */

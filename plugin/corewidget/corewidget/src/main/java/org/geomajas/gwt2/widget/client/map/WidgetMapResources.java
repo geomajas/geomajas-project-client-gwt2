@@ -10,18 +10,15 @@
  */
 package org.geomajas.gwt2.widget.client.map;
 
-import org.geomajas.annotation.Api;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
 
 /**
  * Client resource bundle interface for pure GWT widgets related to the map.
- * 
+ *
  * @author Pieter De Graef
- * @since 2.0.0
  */
-@Api(allMethods = true)
 public interface WidgetMapResources extends ClientBundle {
 
 	/** Instance for use outside UIBinder. */
@@ -29,7 +26,7 @@ public interface WidgetMapResources extends ClientBundle {
 
 	/**
 	 * Get the css resource.
-	 * 
+	 *
 	 * @return the css resource
 	 */
 	@Source("geomajas-widget-map.css")

@@ -8,34 +8,27 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-
-package org.geomajas.gwt2.widget.client.featureselectbox.event;
-
-import org.geomajas.annotation.Api;
-import org.geomajas.annotation.UserImplemented;
+package org.geomajas.gwt2.widget.client.feature.event;
 
 import com.google.gwt.event.shared.EventHandler;
-import com.google.web.bindery.event.shared.Event.Type;
+import com.google.web.bindery.event.shared.Event;
 
 /**
- * Interface for event handlers that catch {@link FeatureClickedEvent}s.
+ * Interface for handling {@link FeaturesClickedEvent}s.
  *
- * @author Dosi Bingov
- * @since 2.0.0
+ * @author Oliver May
  */
-@Api(allMethods = true)
-@UserImplemented
-public interface FeatureClickedHandler extends EventHandler {
-
+public interface FeaturesClickedHandler extends EventHandler {
 	/**
 	 * The type of the handler.
 	 */
-	Type<FeatureClickedHandler> TYPE = new Type<FeatureClickedHandler>();
+	Event.Type<FeaturesClickedHandler> TYPE = new Event.Type<FeaturesClickedHandler>();
 
 	/**
 	 * Called when feature is selected.
 	 *
 	 * @param event {@link FeatureClickedEvent}
 	 */
-	void onFeatureClicked(org.geomajas.gwt2.widget.client.featureselectbox.event.FeatureClickedEvent event);
+	void onFeaturesClicked(FeaturesClickedEvent event);
+
 }

@@ -14,5 +14,34 @@
 <chapter id="chapter-introduction">
   <title>Introduction</title>
 
-  <para></para>
+  <para>The core widget plugin contains a set of widely used widgets in a
+  Geomajas application, as well as some very popular map controllers and
+  events. The current widget set contains:</para>
+
+  <itemizedlist>
+    <listitem>
+      <para>LayerLegendPanel: a panel that shows the title/legend of a layer
+      and some layer controls</para>
+    </listitem>
+
+    <listitem>
+      <para>MapLegendPanel: a container of LayerLegendPanel instance, one for
+      each map layer</para>
+    </listitem>
+  </itemizedlist>
+
+  <para>We also have the following map controllers/listeners:</para>
+
+  <itemizedlist>
+    <listitem>
+      <para>FeatureClickedListener: a listeners that sends an
+      <code>FeatureClickedEvent</code> when the user clicks on a feature
+      (including disambiguation in case of multiple features)</para>
+    </listitem>
+
+    <listitem>
+      <para>MouseOverListener: a listeners that shows a tooltip when hovering
+      over a feature</para>
+    </listitem>
+  </itemizedlist>
 </chapter>

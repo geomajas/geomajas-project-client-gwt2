@@ -8,11 +8,10 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.client.featureselectbox.resource;
+package org.geomajas.gwt2.widget.client.feature.featureselectbox.resource;
 
-import org.geomajas.annotation.Api;
+import org.geomajas.gwt2.widget.client.CoreWidget;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
 
 /**
@@ -20,21 +19,20 @@ import com.google.gwt.resources.client.ClientBundle;
  * 
  * @author Dosi Bingov
  * 
- * @since 2.0.0
  */
-@Api(allMethods = true)
 public interface FeatureSelectBoxResource extends ClientBundle {
-
+	
 	/**
 	 * Instance for use outside UIBinder.
 	 */
-	FeatureSelectBoxResource INSTANCE = GWT.create(FeatureSelectBoxResource.class);
+	FeatureSelectBoxResource INSTANCE = CoreWidget.getInstance().getClientBundleFactory()
+			.createFeatureSelectBoxResource();	
 
 	/**
 	 * Get the css resource.
 	 * @return the css resource
 	 */
-	@Source("featureSelectBox.css")
+	@Source("org/geomajas/gwt2/widget/client/resource/CoreWidget.css")
 	FeatureSelectBoxCssResource css();	
 	
 }
