@@ -20,6 +20,15 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="properties">
+			<value>
+				geomajasCacheLocation=/tmp/geomajas/javascript2
+			</value>
+		</property>
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+	</bean>
+
 	<context:component-scan base-package="org.geomajas.plugin.jsapi.example"
 		name-generator="org.geomajas.spring.GeomajasBeanNameGenerator" />
 
