@@ -62,6 +62,11 @@ public class ExampleJar implements EntryPoint {
 			public String getCategory() {
 				return CATEGORY_PRINT;
 			}
+
+			@Override
+			public String getKey() {
+				return "printplugin";
+			}
 		});
 	}
 }

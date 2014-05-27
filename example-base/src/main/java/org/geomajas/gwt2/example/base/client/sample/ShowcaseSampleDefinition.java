@@ -32,4 +32,7 @@ public interface ShowcaseSampleDefinition {
 
 	/** Get the category of samples this particular sample belongs to. */
 	String getCategory();
+
+	/** Get unique key. Should be short*/
+	String getKey();
 }

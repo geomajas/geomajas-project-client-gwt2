@@ -74,6 +74,11 @@ public class ExampleJar implements EntryPoint {
 			public String getCategory() {
 				return CATEGORY_WIDGET;
 			}
+
+			@Override
+			public String getKey() {
+				return "legendaddremove";
+			}
 		});
 
 		SamplePanelRegistry.registerFactory(CATEGORY_WIDGET, new ShowcaseSampleDefinition() {
@@ -98,6 +103,11 @@ public class ExampleJar implements EntryPoint {
 
 			public String getCategory() {
 				return CATEGORY_WIDGET;
+			}
+
+			@Override
+			public String getKey() {
+				return "legendorder";
 			}
 		});
 
@@ -124,6 +134,11 @@ public class ExampleJar implements EntryPoint {
 			public String getCategory() {
 				return CATEGORY_WIDGET;
 			}
+
+			@Override
+			public String getKey() {
+				return "maplegenddropdown";
+			}
 		});
 
 		SamplePanelRegistry.registerFactory(CATEGORY_WIDGET, new ShowcaseSampleDefinition() {
@@ -146,6 +161,11 @@ public class ExampleJar implements EntryPoint {
 
 			public String getCategory() {
 				return CATEGORY_WIDGET;
+			}
+
+			@Override
+			public String getKey() {
+				return "closeabledialog";
 			}
 		});
 
@@ -170,6 +190,11 @@ public class ExampleJar implements EntryPoint {
 			public String getCategory() {
 				return CATEGORY_WIDGET;
 			}
+
+			@Override
+			public String getKey() {
+				return "messagebox";
+			}
 		});
 
 		SamplePanelRegistry.registerFactory(CATEGORY_WIDGET, new ShowcaseSampleDefinition() {
@@ -192,6 +217,11 @@ public class ExampleJar implements EntryPoint {
 
 			public String getCategory() {
 				return CATEGORY_WIDGET;
+			}
+
+			@Override
+			public String getKey() {
+				return "featureselected";
 			}
 		});
 
@@ -216,6 +246,11 @@ public class ExampleJar implements EntryPoint {
 			public String getCategory() {
 				return CATEGORY_WIDGET;
 			}
-		});
+
+					@Override
+					public String getKey() {
+						return "FeatureMouseOver";
+					}
+				});
 	}
 }

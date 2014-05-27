@@ -63,6 +63,11 @@ public class GeoCoderExampleJar implements EntryPoint {
 			public String getCategory() {
 				return CATEGORY_GEOCODER;
 			}
+
+			@Override
+			public String getKey() {
+				return "geocoder";
+			}
 		});
 	}
 }

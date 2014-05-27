@@ -90,6 +90,11 @@ public class ExampleJar implements EntryPoint {
 			public String getCategory() {
 				return CATEGORY_GENERAL;
 			}
+
+			@Override
+			public String getKey() {
+				return "navoption";
+			}
 		});
 		SamplePanelRegistry.registerFactory(CATEGORY_GENERAL, new ShowcaseSampleDefinition() {
 
@@ -111,6 +116,11 @@ public class ExampleJar implements EntryPoint {
 
 			public String getCategory() {
 				return CATEGORY_GENERAL;
+			}
+
+			@Override
+			public String getKey() {
+				return "resizemap";
 			}
 		});
 		SamplePanelRegistry.registerFactory(CATEGORY_GENERAL, new ShowcaseSampleDefinition() {
@@ -134,6 +144,11 @@ public class ExampleJar implements EntryPoint {
 			public String getCategory() {
 				return CATEGORY_GENERAL;
 			}
+
+			@Override
+			public String getKey() {
+				return "mapfill";
+			}
 		});
 		SamplePanelRegistry.registerFactory(CATEGORY_GENERAL, new ShowcaseSampleDefinition() {
 
@@ -155,6 +170,11 @@ public class ExampleJar implements EntryPoint {
 
 			public String getCategory() {
 				return CATEGORY_GENERAL;
+			}
+
+			@Override
+			public String getKey() {
+				return "viewportevent";
 			}
 		});
 		SamplePanelRegistry.registerFactory(CATEGORY_GENERAL, new ShowcaseSampleDefinition() {
@@ -178,6 +198,11 @@ public class ExampleJar implements EntryPoint {
 			public String getCategory() {
 				return CATEGORY_GENERAL;
 			}
+
+			@Override
+			public String getKey() {
+				return "alternativecontrols";
+			}
 		});
 		SamplePanelRegistry.registerFactory(CATEGORY_GENERAL, new ShowcaseSampleDefinition() {
 
@@ -199,6 +224,11 @@ public class ExampleJar implements EntryPoint {
 
 			public String getCategory() {
 				return CATEGORY_GENERAL;
+			}
+
+			@Override
+			public String getKey() {
+				return "serverexception";
 			}
 		});
 //		SamplePanelRegistry.registerFactory(CATEGORY_GENERAL, new ShowcaseSampleDefinition() {
@@ -248,6 +278,11 @@ public class ExampleJar implements EntryPoint {
 			public String getCategory() {
 				return CATEGORY_LAYER;
 			}
+
+			@Override
+			public String getKey() {
+				return "layeraddremove";
+			}
 		});
 		SamplePanelRegistry.registerFactory(CATEGORY_LAYER, new ShowcaseSampleDefinition() {
 
@@ -269,6 +304,11 @@ public class ExampleJar implements EntryPoint {
 
 			public String getCategory() {
 				return CATEGORY_LAYER;
+			}
+
+			@Override
+			public String getKey() {
+				return "layerorder";
 			}
 		});
 		SamplePanelRegistry.registerFactory(CATEGORY_LAYER, new ShowcaseSampleDefinition() {
@@ -292,6 +332,11 @@ public class ExampleJar implements EntryPoint {
 			public String getCategory() {
 				return CATEGORY_LAYER;
 			}
+
+			@Override
+			public String getKey() {
+				return "layervisibility";
+			}
 		});
 		SamplePanelRegistry.registerFactory(CATEGORY_LAYER, new ShowcaseSampleDefinition() {
 
@@ -314,6 +359,11 @@ public class ExampleJar implements EntryPoint {
 			public String getCategory() {
 				return CATEGORY_LAYER;
 			}
+
+			@Override
+			public String getKey() {
+				return "layerrefresh";
+			}
 		});
 		SamplePanelRegistry.registerFactory(CATEGORY_LAYER, new ShowcaseSampleDefinition() {
 
@@ -335,6 +385,11 @@ public class ExampleJar implements EntryPoint {
 
 			public String getCategory() {
 				return CATEGORY_LAYER;
+			}
+
+			@Override
+			public String getKey() {
+				return "layeropacity";
 			}
 		});
 	}
@@ -362,6 +417,11 @@ public class ExampleJar implements EntryPoint {
 			public String getCategory() {
 				return CATEGORY_FEATURE;
 			}
+
+			@Override
+			public String getKey() {
+				return "featureselection";
+			}
 		});
 	}
 
@@ -388,6 +448,11 @@ public class ExampleJar implements EntryPoint {
 			public String getCategory() {
 				return CATEGORY_RENDERING;
 			}
+
+			@Override
+			public String getKey() {
+				return "drawinginteraction";
+			}
 		});
 		SamplePanelRegistry.registerFactory(CATEGORY_RENDERING, new ShowcaseSampleDefinition() {
 
@@ -409,6 +474,11 @@ public class ExampleJar implements EntryPoint {
 
 			public String getCategory() {
 				return CATEGORY_RENDERING;
+			}
+
+			@Override
+			public String getKey() {
+				return "screenspacerendering";
 			}
 		});
 		SamplePanelRegistry.registerFactory(CATEGORY_RENDERING, new ShowcaseSampleDefinition() {
@@ -432,6 +502,11 @@ public class ExampleJar implements EntryPoint {
 			public String getCategory() {
 				return CATEGORY_RENDERING;
 			}
+
+			@Override
+			public String getKey() {
+				return "worldspacerendering";
+			}
 		});
 		SamplePanelRegistry.registerFactory(CATEGORY_RENDERING, new ShowcaseSampleDefinition() {
 
@@ -453,6 +528,11 @@ public class ExampleJar implements EntryPoint {
 
 			public String getCategory() {
 				return CATEGORY_RENDERING;
+			}
+
+			@Override
+			public String getKey() {
+				return "htmlmarker";
 			}
 		});
 		SamplePanelRegistry.registerFactory(CATEGORY_RENDERING, new ShowcaseSampleDefinition() {
@@ -476,6 +556,11 @@ public class ExampleJar implements EntryPoint {
 			public String getCategory() {
 				return CATEGORY_RENDERING;
 			}
+
+			@Override
+			public String getKey() {
+				return "fixedsizeworldspacerendering";
+			}
 		});
 		SamplePanelRegistry.registerFactory(CATEGORY_RENDERING, new ShowcaseSampleDefinition() {
 
@@ -497,6 +582,11 @@ public class ExampleJar implements EntryPoint {
 
 			public String getCategory() {
 				return CATEGORY_RENDERING;
+			}
+
+			@Override
+			public String getKey() {
+				return "canvasrendering";
 			}
 		});
 	}
@@ -523,6 +613,11 @@ public class ExampleJar implements EntryPoint {
 
 			public String getCategory() {
 				return CATEGORY_GENERAL;
+			}
+
+			@Override
+			public String getKey() {
+				return "listener";
 			}
 		});
 	}

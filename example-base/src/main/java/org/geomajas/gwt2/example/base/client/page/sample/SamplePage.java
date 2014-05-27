@@ -11,6 +11,9 @@
 
 package org.geomajas.gwt2.example.base.client.page.sample;
 
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Style;
+import com.google.gwt.user.client.DOM;
 import org.geomajas.gwt2.example.base.client.ExampleBase;
 import org.geomajas.gwt2.example.base.client.resource.ShowcaseResource;
 import org.geomajas.gwt2.example.base.client.sample.ShowcaseSampleDefinition;
@@ -60,6 +63,16 @@ public class SamplePage extends Composite {
 	public void setSamplePanelFactory(ShowcaseSampleDefinition samplePanelFactory) {
 		this.samplePanelFactory = samplePanelFactory;
 		refreshGui();
+	}
+
+	public void setTitle(String title) {
+		Element h2 = DOM.createElement("h2");
+		h2.setInnerHTML(title);
+		h2.getStyle().setMarginBottom(5, Style.Unit.PX);
+		h2.getStyle().setMarginLeft(15, Style.Unit.PX);
+		h2.getStyle().setPaddingTop(5, Style.Unit.PX);
+		descriptionElement.getStyle().setPaddingTop(0, Style.Unit.PX);
+		descriptionElement.getParentElement().insertFirst(h2);
 	}
 
 	private void refreshGui() {

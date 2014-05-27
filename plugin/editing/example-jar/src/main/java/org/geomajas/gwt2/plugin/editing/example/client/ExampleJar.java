@@ -67,6 +67,12 @@ public class ExampleJar implements EntryPoint {
 			public String getCategory() {
 				return CATEGORY_EDITING;
 			}
+
+			@Override
+			public String getKey() {
+				return "editpoint";
+			}
+
 		});
 		SamplePanelRegistry.registerFactory(CATEGORY_EDITING, new ShowcaseSampleDefinition() {
 
@@ -88,6 +94,11 @@ public class ExampleJar implements EntryPoint {
 
 			public String getCategory() {
 				return CATEGORY_EDITING;
+			}
+
+			@Override
+			public String getKey() {
+				return "editline";
 			}
 		});
 		SamplePanelRegistry.registerFactory(CATEGORY_EDITING, new ShowcaseSampleDefinition() {
@@ -111,6 +122,11 @@ public class ExampleJar implements EntryPoint {
 			public String getCategory() {
 				return CATEGORY_EDITING;
 			}
+
+			@Override
+			public String getKey() {
+				return "editpolygon";
+			}
 		});
 		SamplePanelRegistry.registerFactory(CATEGORY_EDITING, new ShowcaseSampleDefinition() {
 
@@ -132,6 +148,11 @@ public class ExampleJar implements EntryPoint {
 
 			public String getCategory() {
 				return CATEGORY_EDITING;
+			}
+
+			@Override
+			public String getKey() {
+				return "undoredo";
 			}
 		});
 		SamplePanelRegistry.registerFactory(CATEGORY_EDITING, new ShowcaseSampleDefinition() {
@@ -155,6 +176,11 @@ public class ExampleJar implements EntryPoint {
 			public String getCategory() {
 				return CATEGORY_EDITING;
 			}
+
+			@Override
+			public String getKey() {
+				return "snaptocountries";
+			}
 		});
 		SamplePanelRegistry.registerFactory(CATEGORY_EDITING, new ShowcaseSampleDefinition() {
 
@@ -177,6 +203,11 @@ public class ExampleJar implements EntryPoint {
 			public String getCategory() {
 				return CATEGORY_EDITING;
 			}
+
+			@Override
+			public String getKey() {
+				return "splitcountry";
+			}
 		});
 		SamplePanelRegistry.registerFactory(CATEGORY_EDITING, new ShowcaseSampleDefinition() {
 
@@ -198,6 +229,11 @@ public class ExampleJar implements EntryPoint {
 
 			public String getCategory() {
 				return CATEGORY_EDITING;
+			}
+
+			@Override
+			public String getKey() {
+				return "mergecountries";
 			}
 		});
 	}
