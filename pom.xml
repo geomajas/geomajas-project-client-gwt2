@@ -49,6 +49,7 @@
 		<version-gwt>2.5.0</version-gwt>
 		<spring-version>3.0.5.RELEASE</spring-version>
 		<version-geomajas-build-tools>2.0.0</version-geomajas-build-tools>
+		<gwt-exporter-version>2.4.0</gwt-exporter-version>
 	</properties>
 
 	<dependencyManagement>
@@ -196,7 +197,7 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-client-gwt2-plugin-graphicsediting-example-jar</artifactId>
+				<artifactId>geomajas-client-gwt2-plugin-graphicsediting-example</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
@@ -260,6 +261,23 @@
 				<groupId>hsqldb</groupId>
 				<artifactId>hsqldb</artifactId>
 				<version>1.8.0.7</version>
+			</dependency>
+
+            <!-- TMS plugin -->
+            <dependency>
+                <groupId>org.geomajas.plugin</groupId>
+                <artifactId>geomajas-client-gwt2-plugin-tms</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.geomajas.plugin</groupId>
+                <artifactId>geomajas-client-gwt2-plugin-tms-example-jar</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+			<dependency>
+				<groupId>org.timepedia.exporter</groupId>
+				<artifactId>gwtexporter</artifactId>
+				<version>${gwt-exporter-version}</version>
 			</dependency>
 
 			<!-- WMS plugin -->

@@ -20,11 +20,15 @@ import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditInsertHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditMoveHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditRemoveHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditResumeEvent;
+import org.geomajas.plugin.editing.client.event.GeometryEditResumeHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditShapeChangedHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditSuspendEvent;
+import org.geomajas.plugin.editing.client.event.GeometryEditSuspendHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveHandler;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
@@ -77,6 +81,8 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	private Coordinate tentativeMoveLocation;
 
 	private boolean started;
+	
+	private boolean suspended;
 
 	// ------------------------------------------------------------------------
 	// Public constructors:
@@ -102,6 +108,16 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	@Override
 	public HandlerRegistration addGeometryEditStopHandler(GeometryEditStopHandler handler) {
 		return eventBus.addHandler(GeometryEditStopHandler.TYPE, handler);
+	}
+
+	@Override
+	public HandlerRegistration addGeometryEditSuspendHandler(GeometryEditSuspendHandler handler) {
+		return eventBus.addHandler(GeometryEditSuspendHandler.TYPE, handler);
+	}
+
+	@Override
+	public HandlerRegistration addGeometryEditResumeHandler(GeometryEditResumeHandler handler) {
+		return eventBus.addHandler(GeometryEditResumeHandler.TYPE, handler);
 	}
 
 	@Override
@@ -154,6 +170,34 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	@Override
 	public boolean isStarted() {
 		return started;
+	}
+
+	@Override
+	public void suspend() {
+		if (started) {
+			if (suspended) {
+				throw new IllegalStateException("The editing session is already suspended");
+			} else {
+				suspended = true;
+				eventBus.fireEvent(new GeometryEditSuspendEvent(geometry));
+			}
+		} else {
+			throw new IllegalStateException("The editing session is not started yet. Call start() before suspend()");
+		}
+	}
+	
+	public boolean isSuspended() {
+		return suspended;
+	}
+
+	@Override
+	public void resume() {
+		if (suspended) {
+			suspended = false;
+			eventBus.fireEvent(new GeometryEditResumeEvent(geometry));
+		} else {
+			throw new IllegalStateException("The editing session is not suspended. Call suspend() before resume()");
+		}
 	}
 
 	@Override

@@ -310,7 +310,7 @@ public final class ViewPortImpl implements ViewPort {
 	@Override
 	public void applyView(View view, ZoomOption zoomOption) {
 		double tempResolution = checkResolution(view.getResolution(), ZoomOption.FREE);
-		Coordinate tempPosition = checkPosition(view.getPosition(), resolution);
+		Coordinate tempPosition = checkPosition(view.getPosition(), tempResolution);
 		applyViewNoChecks(tempPosition, tempResolution);
 	}
 
@@ -386,19 +386,19 @@ public final class ViewPortImpl implements ViewPort {
 		double wRatio;
 		double boundsWidth = bounds.getWidth();
 		if (boundsWidth <= 0) {
-			wRatio = getMaximumResolution();
+			wRatio = getMinimumResolution();
 		} else {
 			wRatio = boundsWidth / mapWidth;
 		}
 		double hRatio;
 		double boundsHeight = bounds.getHeight();
 		if (boundsHeight <= 0) {
-			hRatio = getMaximumResolution();
+			hRatio = getMinimumResolution();
 		} else {
 			hRatio = boundsHeight / mapHeight;
 		}
 		// Return the checked resolution for the minimum to fit inside:
-		return checkResolution(wRatio < hRatio ? wRatio : hRatio, zoomOption);
+		return checkResolution(wRatio > hRatio ? wRatio : hRatio, zoomOption);
 	}
 
 	private double getMaxBoundsResolution() {
