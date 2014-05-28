@@ -26,7 +26,8 @@
 			map = Geomajas().createMap("app", "mapMain", "js-map-element");
 		}
 
-		function translate(directionX, directionY) {
+		<!-- using translate2 , as translate is a reserved word in chrome ! -->
+		function translate2(directionX, directionY) {
 			var distance = document.getElementById("translateDistance").value;
 			var position = map.getViewPort().getPosition();
 			var newX = position.getX() + directionX * distance;
@@ -82,10 +83,10 @@
 				<td valign="top">
 					<h2>Navigation</h2>
 					<h4>Translating</h4>
-					<button onclick="translate(-1, 0)">LEFT</button>
-					<button onclick="translate(1, 0)">RIGHT</button>
-					<button onclick="translate(0, -1)">DOWN</button>
-					<button onclick="translate(0, 1)">UP</button><br>
+					<button onclick="translate2(-1, 0)">LEFT</button>
+					<button onclick="translate2(1, 0)">RIGHT</button>
+					<button onclick="translate2(0, -1)">DOWN</button>
+					<button onclick="translate2(0, 1)">UP</button><br>
 					Move distance: <input type="text" id="translateDistance" value="500000" /> <i>(Map units, meters)</i>
 
 					<h4>Scaling (a.k.a zooming)</h4>

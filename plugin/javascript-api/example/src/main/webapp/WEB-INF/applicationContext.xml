@@ -23,7 +23,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="properties">
 			<value>
-				geomajasCacheLocation=/tmp/geomajas/javascript2
+				geomajasCacheLocation=${java.io.tmpdir}/geomajas/javascript2
 			</value>
 		</property>
 		<property name="ignoreUnresolvablePlaceholders" value="true" />
