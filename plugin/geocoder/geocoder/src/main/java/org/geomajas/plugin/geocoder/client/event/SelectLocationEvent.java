@@ -19,8 +19,6 @@ import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringAlternative;
 import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringResponse;
 
-import com.google.gwt.event.shared.GwtEvent;
-
 /**
  * Event which is used when a location was selected, This can occur either because the geocoder returned a match or
  * because one of the alternatives was selected by the user.
@@ -30,7 +28,7 @@ import com.google.gwt.event.shared.GwtEvent;
  * @since 2.0.0
  */
 @Api
-public class SelectLocationEvent extends GwtEvent<SelectLocationHandler> {
+public class SelectLocationEvent extends GeocoderEvent<SelectLocationHandler> {
 
 	private MapPresenter mapPresenter;
 	private String canonicalLocation;

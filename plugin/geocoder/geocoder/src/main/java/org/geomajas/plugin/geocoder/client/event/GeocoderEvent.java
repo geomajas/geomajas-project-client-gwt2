@@ -9,20 +9,19 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.geocoder.client;
+package org.geomajas.plugin.geocoder.client.event;
 
-import com.google.gwt.i18n.client.Messages;
+import com.google.gwt.event.shared.EventHandler;
+import com.google.gwt.event.shared.GwtEvent;
+
 
 /**
- * Messages for the GeocoderWidget.
+ * Common interface for all geocoder events.
  *
- * @author Joachim Van der Auwera
+ * @author Jan Venstermans
+ * @since 2.1.0
+ * @param <T> the handler for the Gecoder Event
  */
-public interface GeocoderMessages extends Messages {
+public abstract class GeocoderEvent<T extends EventHandler> extends GwtEvent<T> {
 
-	String alternativeSelectTitle();
-
-	String locationNotFound(String searchString);
-
-	String findPlaceOnMap();
 }
