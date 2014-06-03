@@ -31,7 +31,7 @@ import com.google.gwt.core.client.GWT;
  */
 public class RasterServerLayerImpl extends AbstractServerLayer<ClientRasterLayerInfo> implements RasterServerLayer {
 
-	private static final String RASTERIZING_PREFIX = "rasterizing/layer/";
+	private static final String TMS_PREFIX = "tms/";
 
 	/** The only constructor. */
 	public RasterServerLayerImpl(ClientMapInfo mapInfo, ClientRasterLayerInfo layerInfo, final ViewPort viewPort, MapEventBus eventBus) {
@@ -63,7 +63,7 @@ public class RasterServerLayerImpl extends AbstractServerLayer<ClientRasterLayer
 		String layerId = layerInfo.getServerLayerId();
 		ArrayList<Double> resolutions = new ArrayList<Double>();
 		RasterLayerInfo serverLayerInfo = (RasterLayerInfo) layerInfo.getLayerInfo();
-		String baseUrl = GWT.getModuleBaseURL() + RASTERIZING_PREFIX + layerId + "@" + getMapInfo().getCrs() + "/";
+		String baseUrl = GWT.getModuleBaseURL() + TMS_PREFIX + layerId + "@" + getMapInfo().getCrs() + "/";
 		getTileConfiguration().setTileWidth(serverLayerInfo.getTileWidth());
 		getTileConfiguration().setTileHeight(serverLayerInfo.getTileHeight());
 		for (int i = 0; i < 50; i++) {

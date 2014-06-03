@@ -55,7 +55,7 @@ import com.google.gwt.core.client.GWT;
  */
 public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayerInfo> implements VectorServerLayer {
 
-	private static final String RASTERIZING_PREFIX = "rasterizing/layer/";
+	private static final String RASTERIZING_PREFIX = "tms/";
 
 	private final Map<String, Feature> selection;
 
@@ -97,7 +97,7 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 			resolutions.add(1 / scale.getPixelPerUnit());
 		}
 		getTileConfiguration().setResolutions(resolutions);
-		getTileConfiguration().setTileOrigin(BboxService.getOrigin(mapInfo.getMaxBounds()));
+		getTileConfiguration().setTileOrigin(BboxService.getOrigin(mapInfo.getInitialBounds()));
 		getTileConfiguration().setLimitXYByTileLevel(true);
 		layerConfiguration = new ServerLayerConfiguration(baseUrl, ".png", getTileConfiguration());
 	}
