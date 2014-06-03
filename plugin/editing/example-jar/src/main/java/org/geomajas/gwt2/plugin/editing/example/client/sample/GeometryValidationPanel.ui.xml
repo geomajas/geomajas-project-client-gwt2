@@ -52,11 +52,11 @@
 						<tr>
 							<td width="90" valign="top">
 								<g:Button ui:field="editCustomBtn" width="85">
-									validate
+									<ui:text from="{messages.customEdit}" />
 								</g:Button>
 							</td>
 							<td>
-								validate
+								<ui:text from="{messages.editPolygonCustomEdit}" />
 							</td>
 						</tr>
 					</table>

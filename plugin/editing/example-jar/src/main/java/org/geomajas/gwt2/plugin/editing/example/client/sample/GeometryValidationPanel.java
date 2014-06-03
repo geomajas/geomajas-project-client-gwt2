@@ -217,7 +217,7 @@ public class GeometryValidationPanel implements SamplePanel {
 			
 			@Override
 			public GeometryValidationState validate(Geometry geometry, GeometryIndex index) {
-				if(GeometryService.getNumPoints(geometry) > 10) {
+				if(GeometryService.getNumPoints(geometry) > 6) {
 					return GeometryValidationState.INVALID_COORDINATE;
 				}
 				return GeometryValidationState.VALID;
