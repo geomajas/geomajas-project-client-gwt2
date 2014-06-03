@@ -47,6 +47,20 @@
 						</tr>
 					</table>
 				</div>
+				<div class="{resource.css.sampleRow}">
+					<table>
+						<tr>
+							<td width="90" valign="top">
+								<g:Button ui:field="editCustomBtn" width="85">
+									validate
+								</g:Button>
+							</td>
+							<td>
+								validate
+							</td>
+						</tr>
+					</table>
+				</div>
 				<!--<div style="margin-top: 20px; text-align: justify;">
 					<ui:safehtml from="{html.explanation}" />
 				</div>-->

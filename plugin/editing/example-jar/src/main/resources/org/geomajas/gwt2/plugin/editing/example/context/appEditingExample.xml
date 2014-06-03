@@ -16,4 +16,13 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
+	<bean name="appEditingExample" class="org.geomajas.configuration.client.ClientApplicationInfo">
+
+		<property name="maps">
+			<list>
+				<ref bean="mapEditingExampleOsm" />
+				<ref bean="mapEditingExampleCountries" />
+			</list>
+		</property>
+	</bean>
 </beans>

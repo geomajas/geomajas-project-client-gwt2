@@ -33,6 +33,8 @@ import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedExcep
 import org.geomajas.plugin.editing.client.operation.InsertGeometryOperation;
 import org.geomajas.plugin.editing.client.operation.InsertVertexOperation;
 import org.geomajas.plugin.editing.client.operation.MoveVertexOperation;
+import org.geomajas.plugin.editing.client.service.validation.GeometryValidationInterceptor;
+import org.geomajas.plugin.editing.client.service.validation.GeometryValidator;
 
 import com.google.gwt.event.shared.EventBus;
 
@@ -373,23 +375,41 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 		interceptors.add(interceptor);
 	}
 
-	private void executeOperation(GeometryIndexOperation operation, GeometryIndex index)
-			throws GeometryOperationFailedException {
-		Geometry geometry = service.getGeometry();
+	@Override
+	public void setValidating(boolean validating) {
+		boolean found = false;
 		for (GeometryIndexOperationInterceptor interceptor : interceptors) {
-			interceptor.beforeExecute(operation, index);
-		}
-		operation.execute(geometry, index);
-		for (GeometryIndexOperationInterceptor interceptor : interceptors) {
-			// invert the operation here if the after-execute fails !!! 
-			try {
-				interceptor.afterExecute(operation, index);
-			} catch (GeometryOperationFailedException e) {
-				operation.getInverseOperation().execute(geometry, index);
-				// and rethrow
-				throw e;
+			if (interceptor instanceof GeometryValidationInterceptor) {
+				found = true;
 			}
 		}
+		if (!found) {
+			addInterceptor(new GeometryValidationInterceptor(service));
+		}
+	}
+
+	@Override
+	public boolean isValidating() {
+		for (GeometryIndexOperationInterceptor interceptor : interceptors) {
+			if (interceptor instanceof GeometryValidationInterceptor) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public void setValidator(GeometryValidator validator) {
+		setValidating(true);
+		for (GeometryIndexOperationInterceptor interceptor : interceptors) {
+			if (interceptor instanceof GeometryValidationInterceptor) {
+				((GeometryValidationInterceptor) interceptor).setValidator(validator);
+			}
+		}
+	}
+
+	private void executeOperation(GeometryIndexOperation operation, GeometryIndex index) throws GeometryOperationFailedException {
+		new ChainImpl(operation, index).proceed();
 	}
 
 	// ------------------------------------------------------------------------
@@ -429,5 +449,59 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 		public boolean isEmpty() {
 			return operations.isEmpty();
 		}
+	}
+	
+	private class ChainImpl implements GeometryIndexOperationInterceptorChain {
+		
+		private int position;
+		
+		private GeometryIndexOperation operation;
+		
+		private GeometryIndex index;
+		
+		private boolean rollback;
+
+		public ChainImpl(GeometryIndexOperation operation, GeometryIndex index) {
+			this.operation = operation;
+			this.index = index;
+		}
+
+		@Override
+		public void proceed() throws GeometryOperationFailedException {
+			if(position == interceptors.size()) {
+				operation.execute(getGeometry(), index);
+			} else {
+				interceptors.get(position++).intercept(this);
+				if(rollback) {
+					operation.getInverseOperation().execute(getGeometry(), operation.getGeometryIndex());
+					throw new GeometryOperationFailedException("Operation rolled back");
+				}
+			}
+		}
+		
+		public GeometryIndexOperation getOperation() {
+			return operation;
+		}
+
+		@Override
+		public void rollback() {
+			rollback = true;
+		}
+
+		@Override
+		public GeometryIndex getIndex() {
+			return index;
+		}
+
+		@Override
+		public Geometry getGeometry() {
+			return service.getGeometry();
+		}
+
+		@Override
+		public com.google.web.bindery.event.shared.EventBus getEventBus() {
+			return eventBus;
+		}
+		
 	}
 }

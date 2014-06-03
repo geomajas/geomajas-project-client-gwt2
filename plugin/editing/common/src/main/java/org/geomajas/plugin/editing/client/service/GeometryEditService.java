@@ -272,52 +272,5 @@ public interface GeometryEditService extends GeometryIndexOperationService {
 	 * @return The geometry-index-state-change service.
 	 */
 	GeometryIndexStateService getIndexStateService();
-	
-	/**
-	 * To set whether the editing service is validating. If so, validation events will be thrown when an operation leads
-	 * to an invalid geometry.
-	 * 
-	 * @param validating boolean value.
-	 * @since 2.1.0
-	 */
-	void setValidating(boolean validating);
-
-	/**
-	 * Is the editor service validating ?
-	 *
-	 * @return boolean true if validating
-	 * @since 2.1.0
-	 */
-	boolean isValidating();
-	
-	/**
-	 * Set whether operations that lead to invalid geometries should be allowed. This option only has effect when
-	 * {@link #isValidating()} is true. Default is true, allowing invalid geometries (events are still fired in case of
-	 * invalid geometries, so applications can inform the end user).
-	 * 
-	 * @param invalidAllowed true if allowed.
-	 * @since 2.1.0
-	 */
-	void setInvalidAllowed(boolean invalidAllowed);
-
-	/**
-	 * Should operations that lead to invalid geometries be allowed ?
-	 * 
-	 * @see #setInvalidAllowed(boolean)
-	 * @since 2.1.0
-	 * @return boolean true if we allow invalid geometries, false otherwise
-	 */
-	boolean isInvalidAllowed();
-
-	/**
-	 * Validates a geometry, focusing on changes at a specific sub-level of the geometry. The sublevel is indicated by
-	 * passing an index. The only checks are on intersection (for coordinates) and containment (for subgeometries), we
-	 * don't check on too few coordinates as we want to support incremental creation of polygons.
-	 * 
-	 * @param geometry The geometry to check.
-	 * @param index index that points to a sub-geometry, edge, vertex, etc...
-	 * @return validation state.
-	 * @since 2.1.0
-	 */
-	GeometryValidationState validate(Geometry geometry, GeometryIndex index);
+		
 }

@@ -29,6 +29,8 @@ import org.geomajas.plugin.editing.client.service.GeometryIndex;
 public class GeometryEditValidationEvent extends AbstractGeometryEditEvent<GeometryEditValidationHandler> {
 
 	private GeometryValidationState state;
+	
+	private Object validationContext;
 
 	/**
 	 * Main constructor.
@@ -36,10 +38,12 @@ public class GeometryEditValidationEvent extends AbstractGeometryEditEvent<Geome
 	 * @param geometry geometry that is edited
 	 * @param index index that is edited
 	 * @param state state of editing
+	 * @param validationContext validation context as received from {@link org.geomajas.plugin.editing.client.service.validation.GeometryValidator}
 	 */
-	public GeometryEditValidationEvent(Geometry geometry, GeometryIndex index, GeometryValidationState state) {
+	public GeometryEditValidationEvent(Geometry geometry, GeometryIndex index, GeometryValidationState state, Object validationContext) {
 		super(geometry, Collections.singletonList(index));
 		this.state = state;
+		this.validationContext = validationContext;
 	}
 
 	/**
@@ -76,5 +80,15 @@ public class GeometryEditValidationEvent extends AbstractGeometryEditEvent<Geome
 	public GeometryValidationState getValidationState() {
 		return state;
 	}
+
+	/**
+	 * Get the validation context.
+	 * 
+	 * @return validation context
+	 */
+	public Object getValidationContext() {
+		return validationContext;
+	}	
+	
 	
 }

@@ -13,12 +13,12 @@ package org.geomajas.plugin.editing.client.service;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.annotation.UserImplemented;
-import org.geomajas.plugin.editing.client.operation.GeometryIndexOperation;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 
 /**
- * Interceptor for geometry operations. Interceptors are called before and after each operation and may block the
- * operation by throwing an exception.
+ * Interceptor for geometry operations. Interceptors are called before and after each operation. Interceptors are
+ * chained and should call {@link GeometryIndexOperationInterceptorChain#proceed()} to call the next interceptor in the
+ * chain or {@link GeometryIndexOperationInterceptorChain#rollback()} to roll back the operation.
  * 
  * @author Jan De Moerloose
  * @since 2.1.0
@@ -29,21 +29,11 @@ import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedExcep
 public interface GeometryIndexOperationInterceptor {
 
 	/**
-	 * Perform an action before the operation is executed. If the action fails, the complete operation will fail.
+	 * Intercept the operation for this chain. Implementors must call proceed() to invoke the next interceptor in the
+	 * chain or rollback() to roll back the operation.
 	 * 
-	 * @param operation
-	 * @param index
+	 * @param chain
 	 * @throws GeometryOperationFailedException
 	 */
-	void beforeExecute(GeometryIndexOperation operation, GeometryIndex index) throws GeometryOperationFailedException;
-
-	/**
-	 * Perform an action after the operation is executed. If the action fails, the complete operation will be inverted
-	 * and will fail.
-	 * 
-	 * @param operation
-	 * @param index
-	 * @throws GeometryOperationFailedException
-	 */
-	void afterExecute(GeometryIndexOperation operation, GeometryIndex index) throws GeometryOperationFailedException;
+	void intercept(GeometryIndexOperationInterceptorChain chain) throws GeometryOperationFailedException;
 }

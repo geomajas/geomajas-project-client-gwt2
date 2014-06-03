@@ -22,9 +22,12 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.geometry.service.GeometryService;
+import org.geomajas.geometry.service.GeometryValidationState;
 import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.MapPresenter;
@@ -44,6 +47,7 @@ import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
+import org.geomajas.plugin.editing.client.service.validation.GeometryValidator;
 
 /**
  * Sample that demonstrates validation of geometries when adding/editing.
@@ -70,6 +74,9 @@ public class GeometryValidationPanel implements SamplePanel {
 
 	@UiField
 	protected Button editBtn;
+
+	@UiField
+	protected Button editCustomBtn;
 
 	@UiField
 	protected Button stopBtn;
@@ -101,7 +108,7 @@ public class GeometryValidationPanel implements SamplePanel {
 		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "gwt-app", "mapOsm");
+		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "appEditingExample", "mapEditingExampleOsm");
 
 		// Prepare editing:
 		GeometryEditor editor = Editing.getInstance().createGeometryEditor(mapPresenter);
@@ -139,8 +146,6 @@ public class GeometryValidationPanel implements SamplePanel {
 		});
 		editService.addGeometryEditValidationHandler(new MyGeometryValidationHandler());
 		editService.setValidating(true);
-		editService.setInvalidAllowed(false);
-
 		return layout;
 	}
 
@@ -188,6 +193,46 @@ public class GeometryValidationPanel implements SamplePanel {
 		polygon.setGeometries(new Geometry[] { ring });
 
 		// Now start editing it:
+		editService.start(polygon);
+	}
+
+	@UiHandler("editCustomBtn")
+	protected void onEditCustomButtonClicked(ClickEvent event) {
+		validationEventLayout.clear();
+		// Create a point geometry in the center of the map:
+		Geometry ring = new Geometry(Geometry.LINEAR_RING, 0, -1);
+		Bbox bounds = mapPresenter.getViewPort().getBounds();
+		double x1 = bounds.getX() + bounds.getWidth() / 4;
+		double x2 = bounds.getMaxX() - bounds.getWidth() / 4;
+		double y1 = bounds.getY() + bounds.getHeight() / 4;
+		double y2 = bounds.getMaxY() - bounds.getHeight() / 4;
+
+		ring.setCoordinates(new Coordinate[] { new Coordinate(x1, y1), new Coordinate(x2, y1), new Coordinate(x2, y2),
+				new Coordinate(x1, y2), new Coordinate(x1, y1) });
+		Geometry polygon = new Geometry(Geometry.POLYGON, 0, 5);
+		polygon.setGeometries(new Geometry[] { ring });
+
+		// Now start editing it:
+		editService.setValidator(new GeometryValidator() {
+			
+			@Override
+			public GeometryValidationState validate(Geometry geometry, GeometryIndex index) {
+				if(GeometryService.getNumPoints(geometry) > 10) {
+					return GeometryValidationState.INVALID_COORDINATE;
+				}
+				return GeometryValidationState.VALID;
+			}
+			
+			@Override
+			public boolean isRollBack() {
+				return true;
+			}
+			
+			@Override
+			public Object getValidationContext() {
+				return null;
+			}
+		});
 		editService.start(polygon);
 	}
 

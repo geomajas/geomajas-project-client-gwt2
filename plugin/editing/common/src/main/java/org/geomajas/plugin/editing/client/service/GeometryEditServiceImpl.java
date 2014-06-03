@@ -31,6 +31,7 @@ import org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveHandler
 import org.geomajas.plugin.editing.client.event.GeometryEditValidationEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditValidationHandler;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
+import org.geomajas.plugin.editing.client.service.validation.GeometryValidator;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -80,8 +81,6 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	private Coordinate tentativeMoveLocation;
 
 	private boolean started;
-	
-	private GeometryValidationInterceptor validationInterceptor;
 
 	// ------------------------------------------------------------------------
 	// Public constructors:
@@ -93,8 +92,6 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 		indexService = new GeometryIndexService();
 		indexStateService = new GeometryIndexStateServiceImpl(this);
 		operationService = new GeometryIndexOperationServiceImpl(this, eventBus);
-		validationInterceptor = new GeometryValidationInterceptor(this);
-		operationService.addInterceptor(validationInterceptor);
 	}
 
 	// ------------------------------------------------------------------------
@@ -341,32 +338,19 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 
 	@Override
 	public void setValidating(boolean validating) {
-		validationInterceptor.setEnabled(validating);
+		operationService.setValidating(validating);
 	}
 
 	@Override
 	public boolean isValidating() {
-		return validationInterceptor.isEnabled();
+		return operationService.isValidating();
+	}
+
+	@Override
+	public void setValidator(GeometryValidator validator) {
+		operationService.setValidator(validator);
 	}
 	
-	
-
-	@Override
-	public void setInvalidAllowed(boolean invalidAllowed) {
-		validationInterceptor.setBlocking(!invalidAllowed);
-	}
-
-	@Override
-	public boolean isInvalidAllowed() {
-		return !validationInterceptor.isBlocking();
-	}
-
-	@Override
-	public GeometryValidationState validate(Geometry geometry, GeometryIndex index) {
-		GeometryValidationState state = indexService.validate(geometry, index);
-		eventBus.fireEvent(new GeometryEditValidationEvent(geometry, index, state));
-		return state;
-	}
 	
 	
 }
