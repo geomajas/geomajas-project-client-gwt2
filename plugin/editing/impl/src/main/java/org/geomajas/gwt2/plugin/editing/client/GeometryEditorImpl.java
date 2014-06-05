@@ -11,6 +11,7 @@
 
 package org.geomajas.gwt2.plugin.editing.client;
 
+import org.geomajas.gwt2.client.controller.BaseMapController;
 import org.geomajas.gwt2.client.controller.MapController;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
@@ -47,7 +48,7 @@ public class GeometryEditorImpl implements GeometryEditor, GeometryEditStartHand
 
 	private EditGeometryBaseController baseController;
 
-	private MapController previousController;
+	private BaseMapController previousController;
 
 	// ------------------------------------------------------------------------
 	// Constructors:

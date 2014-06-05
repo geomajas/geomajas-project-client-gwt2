@@ -15,6 +15,7 @@ import java.util.Collection;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.controller.MapEventParser;
+import org.geomajas.gwt2.client.controller.BaseMapController;
 import org.geomajas.gwt2.client.controller.MapController;
 import org.geomajas.gwt2.client.map.layer.LayersModel;
 import org.geomajas.gwt2.client.map.render.LayersModelRenderer;
@@ -88,14 +89,15 @@ public interface MapPresenter extends IsWidget {
 	 *            The new {@link MapController} object. If null is passed, then the active controller is again disabled.
 	 *            At that time the fall-back controller is again activated.
 	 */
-	void setMapController(MapController controller);
+	void setMapController(BaseMapController controller);
+
 
 	/**
 	 * Return the currently active controller on the map.
 	 * 
 	 * @return The currently active controller.
 	 */
-	MapController getMapController();
+	BaseMapController getMapController();
 
 	/**
 	 * Add a new listener to the map. These listeners passively listen to mouse events on the map, without actually
