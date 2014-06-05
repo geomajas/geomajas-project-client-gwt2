@@ -15,7 +15,6 @@ import java.util.List;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.geometry.service.GeometryValidationState;
 import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditInsertHandler;
@@ -28,9 +27,10 @@ import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveHandler;
-import org.geomajas.plugin.editing.client.event.GeometryEditValidationEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditValidationHandler;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
+import org.geomajas.plugin.editing.client.service.validation.DefaultGeometryValidator;
+import org.geomajas.plugin.editing.client.service.validation.GeometryValidationInterceptor;
 import org.geomajas.plugin.editing.client.service.validation.GeometryValidator;
 
 import com.google.gwt.event.shared.EventBus;
@@ -81,6 +81,8 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	private Coordinate tentativeMoveLocation;
 
 	private boolean started;
+	
+	private GeometryValidationInterceptor validationInterceptor;
 
 	// ------------------------------------------------------------------------
 	// Public constructors:
@@ -337,20 +339,35 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	}
 
 	@Override
-	public void setValidating(boolean validating) {
-		operationService.setValidating(validating);
+	public void removeInterceptor(GeometryIndexOperationInterceptor interceptor) {
+		operationService.removeInterceptor(interceptor);
 	}
 
 	@Override
-	public boolean isValidating() {
-		return operationService.isValidating();
+	public void setDefaultValidation(boolean b) {
+		if (b) {
+			getValidationInterceptor().setValidator(new DefaultGeometryValidator(this, true));
+			addInterceptor(getValidationInterceptor());
+		} else {
+			removeInterceptor(getValidationInterceptor());
+		}
 	}
 
 	@Override
 	public void setValidator(GeometryValidator validator) {
-		operationService.setValidator(validator);
+		if (validator != null) {
+			getValidationInterceptor().setValidator(validator);
+			addInterceptor(getValidationInterceptor());
+		} else {
+			removeInterceptor(getValidationInterceptor());
+		}
 	}
-	
-	
+
+	private GeometryValidationInterceptor getValidationInterceptor() {
+		if (validationInterceptor == null) {
+			validationInterceptor = new GeometryValidationInterceptor(this);
+		}
+		return validationInterceptor;
+	}
 	
 }

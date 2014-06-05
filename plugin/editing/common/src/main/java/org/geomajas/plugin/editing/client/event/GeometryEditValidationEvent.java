@@ -38,9 +38,11 @@ public class GeometryEditValidationEvent extends AbstractGeometryEditEvent<Geome
 	 * @param geometry geometry that is edited
 	 * @param index index that is edited
 	 * @param state state of editing
-	 * @param validationContext validation context as received from {@link org.geomajas.plugin.editing.client.service.validation.GeometryValidator}
+	 * @param validationContext validation context as received from 
+	 *     {@link org.geomajas.plugin.editing.client.service.validation.GeometryValidator}
 	 */
-	public GeometryEditValidationEvent(Geometry geometry, GeometryIndex index, GeometryValidationState state, Object validationContext) {
+	public GeometryEditValidationEvent(Geometry geometry, GeometryIndex index, GeometryValidationState state,
+			Object validationContext) {
 		super(geometry, Collections.singletonList(index));
 		this.state = state;
 		this.validationContext = validationContext;

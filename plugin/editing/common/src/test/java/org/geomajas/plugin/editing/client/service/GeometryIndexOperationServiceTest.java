@@ -27,7 +27,6 @@ import org.geomajas.plugin.editing.client.event.GeometryEditRemoveEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditRemoveHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditShapeChangedEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditShapeChangedHandler;
-import org.geomajas.plugin.editing.client.operation.GeometryIndexOperation;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 import org.junit.Test;
 

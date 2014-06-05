@@ -11,13 +11,11 @@
 
 package org.geomajas.plugin.editing.client.service.validation;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.geometry.Geometry;
 import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.geometry.service.GeometryValidationState;
-import org.geomajas.geometry.service.validation.ValidationViolation;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
@@ -36,6 +34,12 @@ public class DefaultGeometryValidator implements GeometryValidator {
 
 	private boolean rollBack;
 
+	/**
+	 * Creates a validator with optional roll back.
+	 * 
+	 * @param editService the edit service
+	 * @param rollBack if true, the validator will roll back invalid geometries
+	 */
 	public DefaultGeometryValidator(GeometryEditService editService, boolean rollBack) {
 		this.editService = editService;
 		this.rollBack = rollBack;
@@ -67,12 +71,13 @@ public class DefaultGeometryValidator implements GeometryValidator {
 			if (indexService.isVertex(index)) {
 				try {
 					List<GeometryIndex> edges = indexService.getAdjacentEdges(geometry, index);
-					List<ValidationViolation> violations = new ArrayList<ValidationViolation>();
 					for (GeometryIndex edge : edges) {
-						indexService.validate(geometry, edge);
-						violations.addAll(GeometryService.getValidationContext().getViolations());
+						GeometryValidationState state = indexService.validate(geometry, edge);
+						if (!state.isValid()) {
+							return state;
+						}
 					}
-					return violations.size() == 0 ? GeometryValidationState.VALID : violations.get(0).getState();
+					return GeometryValidationState.VALID;
 				} catch (GeometryIndexNotFoundException e) {
 					// should never happen, must return something here
 					return GeometryValidationState.VALID;
@@ -90,7 +95,7 @@ public class DefaultGeometryValidator implements GeometryValidator {
 
 	@Override
 	public boolean isRollBack() {
-		return rollBack;
+		return rollBack && !GeometryService.getValidationContext().isValid();
 	}
 
 }

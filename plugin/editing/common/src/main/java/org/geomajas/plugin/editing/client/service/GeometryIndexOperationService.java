@@ -16,7 +16,6 @@ import java.util.List;
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
-import org.geomajas.plugin.editing.client.service.validation.GeometryValidator;
 
 /**
  * <p>
@@ -145,6 +144,13 @@ public interface GeometryIndexOperationService {
 	 */
 	void remove(List<GeometryIndex> indices) throws GeometryOperationFailedException;
 
+	/**
+	 * Finish the geometry on the given index. This will set the service to idle state if successful.
+	 * 
+	 * @param index the last insert index
+	 * @throws GeometryOperationFailedException
+	 * @since 2.1.0
+	 */
 	void finish(GeometryIndex index) throws GeometryOperationFailedException;
 
 	/**
@@ -174,27 +180,11 @@ public interface GeometryIndexOperationService {
 	void addInterceptor(GeometryIndexOperationInterceptor interceptor);
 	
 	/**
-	 * To set whether the editing service is validating. If so, validation events will be thrown when an operation leads
-	 * to an invalid geometry.
+	 * Remove an interceptor from the list of operation interceptors of the service.
 	 * 
-	 * @param validating boolean value.
+	 * @param interceptor the interceptor
 	 * @since 2.1.0
 	 */
-	void setValidating(boolean validating);
-
-	/**
-	 * Is the editor service validating ?
-	 *
-	 * @return boolean true if validating
-	 * @since 2.1.0
-	 */
-	boolean isValidating();
-	
-	/**
-	 * Set a custom geometry validator to validate the geometry after each operation.
-	 * 
-	 * @param validator a custom validator
-	 */
-	void setValidator(GeometryValidator validator);
-
+	void removeInterceptor(GeometryIndexOperationInterceptor interceptor);
+		
 }

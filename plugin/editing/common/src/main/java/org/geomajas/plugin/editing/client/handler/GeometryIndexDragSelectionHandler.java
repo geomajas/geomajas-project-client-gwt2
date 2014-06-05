@@ -11,7 +11,11 @@
 
 package org.geomajas.plugin.editing.client.handler;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.geomajas.gwt.client.handler.MapDownHandler;
+import org.geomajas.plugin.editing.client.controller.GeometryIndexInsertController;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
 
@@ -23,6 +27,8 @@ import com.google.gwt.event.dom.client.HumanInputEvent;
  * @author Pieter De Graef
  */
 public class GeometryIndexDragSelectionHandler extends AbstractGeometryIndexMapHandler implements MapDownHandler {
+	
+	private static Logger logger = Logger.getLogger(GeometryIndexInsertController.class.getName());
 
 	public void onDown(HumanInputEvent<?> event) {
 		if (service.getIndexStateService().isSelected(index)) {
@@ -34,7 +40,7 @@ public class GeometryIndexDragSelectionHandler extends AbstractGeometryIndexMapH
 			try {
 				service.startOperationSequence();
 			} catch (GeometryOperationFailedException e) {
-				throw new IllegalStateException(e);
+				logger.log(Level.WARNING, "Operation failed", e);
 			}
 		}
 	}

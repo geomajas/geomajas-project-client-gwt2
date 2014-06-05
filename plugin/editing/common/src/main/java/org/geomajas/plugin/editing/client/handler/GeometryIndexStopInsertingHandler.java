@@ -12,11 +12,11 @@
 package org.geomajas.plugin.editing.client.handler;
 
 import java.util.Collections;
-import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.geometry.service.GeometryValidationState;
 import org.geomajas.gwt.client.handler.MapDownHandler;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
@@ -31,7 +31,6 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
-import com.google.gwt.user.client.Window;
 
 /**
  * <p>
@@ -48,13 +47,15 @@ import com.google.gwt.user.client.Window;
  */
 public class GeometryIndexStopInsertingHandler extends AbstractGeometryIndexMapHandler implements MapDownHandler,
 		MouseOverHandler, MouseOutHandler, MouseMoveHandler {
+	
+	private static Logger logger = Logger.getLogger(GeometryIndexSnapToDeleteHandler.class.getName());
 
 	public void onDown(HumanInputEvent<?> event) {
 		if (service.getEditingState() == GeometryEditState.INSERTING && isCorrectVertex()) {
 			try {
 				service.finish(service.getInsertIndex());
 			} catch (GeometryOperationFailedException e) {
-				// throw new IllegalStateException(e);
+				logger.log(Level.WARNING, "Operation failed", e);
 			}
 			service.getIndexStateService().highlightEnd(Collections.singletonList(index));
 		}

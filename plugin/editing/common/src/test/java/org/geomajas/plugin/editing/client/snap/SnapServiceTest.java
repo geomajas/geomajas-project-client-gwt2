@@ -14,9 +14,6 @@ package org.geomajas.plugin.editing.client.snap;
 import junit.framework.Assert;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.plugin.editing.client.snap.SnapAlgorithm;
-import org.geomajas.plugin.editing.client.snap.SnapService;
-import org.geomajas.plugin.editing.client.snap.SnapSourceProvider;
 import org.junit.Test;
 
 /**

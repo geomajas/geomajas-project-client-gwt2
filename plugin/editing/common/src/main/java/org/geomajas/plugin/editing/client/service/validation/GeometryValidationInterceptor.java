@@ -50,7 +50,7 @@ public class GeometryValidationInterceptor implements GeometryIndexOperationInte
 	public void intercept(GeometryIndexOperationInterceptorChain chain) throws GeometryOperationFailedException {
 		chain.proceed();
 		GeometryValidationState state = validator.validate(chain.getGeometry(), chain.getIndex());
-		if (!state.isValid() && validator.isRollBack()) {
+		if (validator.isRollBack()) {
 			chain.rollback();
 		}
 		// send an event with contextual info

@@ -112,6 +112,7 @@ public class GeometryValidationPanel implements SamplePanel {
 
 		// Prepare editing:
 		GeometryEditor editor = Editing.getInstance().createGeometryEditor(mapPresenter);
+		
 		editService = editor.getEditService();
 
 		// Add editing handlers that change the enabled state of the buttons:
@@ -121,6 +122,7 @@ public class GeometryValidationPanel implements SamplePanel {
 			public void onGeometryEditStart(GeometryEditStartEvent event) {
 				createBtn.setEnabled(false);
 				editBtn.setEnabled(false);
+				editCustomBtn.setEnabled(false);
 				stopBtn.setEnabled(true);
 
 				addRingBtn.setVisible(true);
@@ -132,6 +134,7 @@ public class GeometryValidationPanel implements SamplePanel {
 			public void onGeometryEditStop(GeometryEditStopEvent event) {
 				createBtn.setEnabled(true);
 				editBtn.setEnabled(true);
+				editCustomBtn.setEnabled(true);
 				stopBtn.setEnabled(false);
 				addRingBtn.setVisible(false);
 			}
@@ -145,7 +148,7 @@ public class GeometryValidationPanel implements SamplePanel {
 			}
 		});
 		editService.addGeometryEditValidationHandler(new MyGeometryValidationHandler());
-		editService.setValidating(true);
+		
 		return layout;
 	}
 
@@ -154,6 +157,8 @@ public class GeometryValidationPanel implements SamplePanel {
 		validationEventLayout.clear();
 		// Create an empty point geometry. It has no coordinate yet. That is up to the user...
 		Geometry point = new Geometry(Geometry.POLYGON, 0, -1);
+		// Enable default validation
+		editService.setDefaultValidation(true);
 		editService.start(point);
 
 		// Set the editing service in "INSERTING" mode. Make sure it starts inserting in the correct index.
@@ -192,6 +197,8 @@ public class GeometryValidationPanel implements SamplePanel {
 		Geometry polygon = new Geometry(Geometry.POLYGON, 0, 5);
 		polygon.setGeometries(new Geometry[] { ring });
 
+		// Enable default validation
+		editService.setDefaultValidation(true);
 		// Now start editing it:
 		editService.start(polygon);
 	}
@@ -212,20 +219,24 @@ public class GeometryValidationPanel implements SamplePanel {
 		Geometry polygon = new Geometry(Geometry.POLYGON, 0, 5);
 		polygon.setGeometries(new Geometry[] { ring });
 
-		// Now start editing it:
+		// Set a custom validator:
 		editService.setValidator(new GeometryValidator() {
+			
+			private boolean rollBack;
 			
 			@Override
 			public GeometryValidationState validate(Geometry geometry, GeometryIndex index) {
-				if(GeometryService.getNumPoints(geometry) > 6) {
+				if(GeometryService.getNumPoints(geometry) > 7) {
+					rollBack = true;
 					return GeometryValidationState.INVALID_COORDINATE;
 				}
+				rollBack = false;
 				return GeometryValidationState.VALID;
 			}
 			
 			@Override
 			public boolean isRollBack() {
-				return true;
+				return rollBack;
 			}
 			
 			@Override

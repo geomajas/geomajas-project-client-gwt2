@@ -33,8 +33,6 @@ import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedExcep
 import org.geomajas.plugin.editing.client.operation.InsertGeometryOperation;
 import org.geomajas.plugin.editing.client.operation.InsertVertexOperation;
 import org.geomajas.plugin.editing.client.operation.MoveVertexOperation;
-import org.geomajas.plugin.editing.client.service.validation.GeometryValidationInterceptor;
-import org.geomajas.plugin.editing.client.service.validation.GeometryValidator;
 
 import com.google.gwt.event.shared.EventBus;
 
@@ -376,39 +374,12 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 	}
 
 	@Override
-	public void setValidating(boolean validating) {
-		boolean found = false;
-		for (GeometryIndexOperationInterceptor interceptor : interceptors) {
-			if (interceptor instanceof GeometryValidationInterceptor) {
-				found = true;
-			}
-		}
-		if (!found) {
-			addInterceptor(new GeometryValidationInterceptor(service));
-		}
+	public void removeInterceptor(GeometryIndexOperationInterceptor interceptor) {
+		interceptors.remove(interceptor);
 	}
 
-	@Override
-	public boolean isValidating() {
-		for (GeometryIndexOperationInterceptor interceptor : interceptors) {
-			if (interceptor instanceof GeometryValidationInterceptor) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public void setValidator(GeometryValidator validator) {
-		setValidating(true);
-		for (GeometryIndexOperationInterceptor interceptor : interceptors) {
-			if (interceptor instanceof GeometryValidationInterceptor) {
-				((GeometryValidationInterceptor) interceptor).setValidator(validator);
-			}
-		}
-	}
-
-	private void executeOperation(GeometryIndexOperation operation, GeometryIndex index) throws GeometryOperationFailedException {
+	private void executeOperation(GeometryIndexOperation operation, GeometryIndex index)
+			throws GeometryOperationFailedException {
 		new ChainImpl(operation, index).proceed();
 	}
 
@@ -450,7 +421,13 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 			return operations.isEmpty();
 		}
 	}
-	
+
+	/**
+	 * Interceptor chain implementation.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
 	private class ChainImpl implements GeometryIndexOperationInterceptorChain {
 		
 		private int position;
@@ -468,11 +445,11 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 
 		@Override
 		public void proceed() throws GeometryOperationFailedException {
-			if(position == interceptors.size()) {
+			if (position == interceptors.size()) {
 				operation.execute(getGeometry(), index);
 			} else {
 				interceptors.get(position++).intercept(this);
-				if(rollback) {
+				if (rollback) {
 					operation.getInverseOperation().execute(getGeometry(), operation.getGeometryIndex());
 					throw new GeometryOperationFailedException("Operation rolled back");
 				}

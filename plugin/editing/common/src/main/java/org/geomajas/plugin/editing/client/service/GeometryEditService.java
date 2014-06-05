@@ -14,7 +14,6 @@ package org.geomajas.plugin.editing.client.service;
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.geometry.service.GeometryValidationState;
 import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditInsertHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditMoveHandler;
@@ -24,6 +23,7 @@ import org.geomajas.plugin.editing.client.event.GeometryEditStartHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditValidationHandler;
+import org.geomajas.plugin.editing.client.service.validation.GeometryValidator;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 
@@ -272,5 +272,21 @@ public interface GeometryEditService extends GeometryIndexOperationService {
 	 * @return The geometry-index-state-change service.
 	 */
 	GeometryIndexStateService getIndexStateService();
-		
+	
+	/**
+	 * Enable/disable the default geometry validation. This means standard geometry validation and disallowing invalid
+	 * operations.
+	 * 
+	 * @param true if default validation is enabled
+	 * @since 2.1.0
+	 */
+	void setDefaultValidation(boolean b);
+	
+	/**
+	 * Enable geometry validation with a custom validator.
+	 * 
+	 * @param validator validator or null to disable validation
+	 * @since 2.1.0
+	 */
+	void setValidator(GeometryValidator validator);		
 }

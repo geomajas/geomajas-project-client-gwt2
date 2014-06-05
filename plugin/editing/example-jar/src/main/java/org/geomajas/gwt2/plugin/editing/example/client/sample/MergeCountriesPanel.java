@@ -90,7 +90,8 @@ public class MergeCountriesPanel implements SamplePanel {
 		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "appEditingExample", "mapEditingExampleCountries");
+		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "appEditingExample",
+				"mapEditingExampleCountries");
 		mapPresenter.getEventBus().addMapInitializationHandler(new MapInitializationHandler() {
 
 			@Override

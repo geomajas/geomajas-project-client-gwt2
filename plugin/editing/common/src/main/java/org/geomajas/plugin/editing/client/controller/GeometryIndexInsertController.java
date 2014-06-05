@@ -12,6 +12,8 @@
 package org.geomajas.plugin.editing.client.controller;
 
 import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
@@ -26,7 +28,6 @@ import org.geomajas.plugin.editing.client.snap.SnapService;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.user.client.Window;
 
 /**
  * Controller that inserts vertices by clicking/tapping on the map.
@@ -34,6 +35,8 @@ import com.google.gwt.user.client.Window;
  * @author Pieter De Graef
  */
 public class GeometryIndexInsertController extends AbstractGeometryIndexController {
+	
+	private static Logger logger = Logger.getLogger(GeometryIndexInsertController.class.getName());
 
 	public GeometryIndexInsertController(GeometryEditService service, SnapService snappingService,
 			MapEventParser mapEventParser) {
@@ -66,7 +69,7 @@ public class GeometryIndexInsertController extends AbstractGeometryIndexControll
 					service.setEditingState(GeometryEditState.IDLE);
 				}
 			} catch (GeometryOperationFailedException e) {
-				// Window.alert("Exception during editing: " + e.getMessage());
+				logger.log(Level.WARNING, "Operation failed", e);
 			}
 		}
 	}
