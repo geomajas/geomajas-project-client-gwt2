@@ -259,6 +259,11 @@ public class ExampleJar implements EntryPoint {
 			public String getCategory() {
 				return CATEGORY_EDITING;
 			}
+			
+			@Override
+			public String getKey() {
+				return "geometryValidation";
+			}
 		});
 	}
 

@@ -15,17 +15,19 @@ import org.geomajas.gwt2.client.controller.MapController;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
 import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.plugin.editing.client.controller.EditGeometryBaseController;
+import org.geomajas.gwt2.plugin.editing.client.gfx.GeometryRendererImpl;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditResumeEvent;
+import org.geomajas.plugin.editing.client.event.GeometryEditResumeHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditSuspendEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditSuspendHandler;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditServiceImpl;
 import org.geomajas.plugin.editing.client.snap.SnapService;
-import org.geomajas.gwt2.plugin.editing.client.controller.EditGeometryBaseController;
-import org.geomajas.gwt2.plugin.editing.client.gfx.GeometryRendererImpl;
 
 /**
  * Central editor for geometries on the map.
