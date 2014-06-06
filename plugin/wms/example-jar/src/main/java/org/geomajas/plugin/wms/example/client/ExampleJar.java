@@ -66,6 +66,11 @@ public class ExampleJar implements EntryPoint {
 			public String getCategory() {
 				return CATEGORY_WMS;
 			}
+
+			@Override
+			public String getKey() {
+				return "basicwmslayer";
+			}
 		});
 		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
 
@@ -87,6 +92,11 @@ public class ExampleJar implements EntryPoint {
 
 			public String getCategory() {
 				return CATEGORY_WMS;
+			}
+
+			@Override
+			public String getKey() {
+				return "wmsgetcapabilities";
 			}
 		});
 		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
@@ -110,6 +120,11 @@ public class ExampleJar implements EntryPoint {
 			public String getCategory() {
 				return CATEGORY_WMS;
 			}
+
+			@Override
+			public String getKey() {
+				return "wmsgetfeatureinfo";
+			}
 		});
 		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
 
@@ -131,6 +146,11 @@ public class ExampleJar implements EntryPoint {
 
 			public String getCategory() {
 				return CATEGORY_WMS;
+			}
+
+			@Override
+			public String getKey() {
+				return "isfeaturessupported";
 			}
 		});
 		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
@@ -154,6 +174,11 @@ public class ExampleJar implements EntryPoint {
 			public String getCategory() {
 				return CATEGORY_WMS;
 			}
+
+			@Override
+			public String getKey() {
+				return "wmssearchbylocation";
+			}
 		});
 		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
 
@@ -176,6 +201,11 @@ public class ExampleJar implements EntryPoint {
 			public String getCategory() {
 				return CATEGORY_WMS;
 			}
+
+			@Override
+			public String getKey() {
+				return "selectstyle";
+			}
 		});
 		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
 
@@ -197,6 +227,11 @@ public class ExampleJar implements EntryPoint {
 
 			public String getCategory() {
 				return CATEGORY_WMS;
+			}
+
+			@Override
+			public String getKey() {
+				return "wmslayerlegend";
 			}
 		});
 	}

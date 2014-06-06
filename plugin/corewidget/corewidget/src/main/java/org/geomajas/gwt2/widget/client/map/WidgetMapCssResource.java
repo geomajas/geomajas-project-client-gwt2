@@ -11,17 +11,14 @@
 
 package org.geomajas.gwt2.widget.client.map;
 
-import org.geomajas.annotation.Api;
 
 import com.google.gwt.resources.client.CssResource;
 
 /**
  * CSS resource bundle that contains styles for map related widgets.
- * 
+ *
  * @author Pieter De Graef
- * @since 2.0.0
  */
-@Api(allMethods = true)
 public interface WidgetMapCssResource extends CssResource {
 
 	/** Style used in the {@link LayerLegendPanel} for the outer DIV. */

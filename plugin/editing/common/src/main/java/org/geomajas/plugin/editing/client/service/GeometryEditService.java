@@ -18,9 +18,11 @@ import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditInsertHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditMoveHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditRemoveHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditResumeHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditShapeChangedHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditSuspendHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditValidationHandler;
 import org.geomajas.plugin.editing.client.service.validation.GeometryValidator;
@@ -75,6 +77,26 @@ public interface GeometryEditService extends GeometryIndexOperationService {
 	 * @return The registration of the handler.
 	 */
 	HandlerRegistration addGeometryEditStopHandler(GeometryEditStopHandler handler);
+
+	/**
+	 * Register a {@link GeometryEditSuspendHandler} to listen to events that signal the editing process has been
+	 * suspended.
+	 * 
+	 * @param handler The {@link GeometryEditSuspendHandler} to add as listener.
+	 * @return The registration of the handler.
+	 * @since 2.1.0
+	 */
+	HandlerRegistration addGeometryEditSuspendHandler(GeometryEditSuspendHandler handler);
+
+	/**
+	 * Register a {@link GeometryEditResumeHandler} to listen to events that signal the editing process has been
+	 * resumed.
+	 * 
+	 * @param handler The {@link GeometryEditResumeHandler} to add as listener.
+	 * @return The registration of the handler.
+	 * @since 2.1.0
+	 */
+	HandlerRegistration addGeometryEditResumeHandler(GeometryEditResumeHandler handler);
 
 	/**
 	 * Register a {@link GeometryEditShapeChangedHandler} to listen to operation events (moving, inserting, deleting,
@@ -167,6 +189,31 @@ public interface GeometryEditService extends GeometryIndexOperationService {
 	 * @return started state
 	 */
 	boolean isStarted();
+	
+	/**
+	 * Suspend the current editing state. Removes all editing controllers from the geometry and the map. This methods
+	 * allows to interrupt the editing session and temporarily activate a different map controller (e.g measure
+	 * distance). 
+	 * Set your map controller after calling this method and call {@link #resume()} when done.
+	 * 
+	 * @since 2.1.0
+	 */
+	void suspend();
+
+	/**
+	 * Get the suspension state of the editing process.
+	 * 
+	 * @return suspension state
+	 * @since 2.1.0
+	 */
+	boolean isSuspended();
+	
+	/**
+	 * Resumes the suspended editing state. Resets all editing controllers on the geometry and the map.
+	 * 
+	 * @since 2.1.0
+	 */
+	void resume();
 
 	/**
 	 * Stop the geometry editing process.

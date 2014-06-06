@@ -16,7 +16,7 @@ import org.geomajas.annotation.Api;
 
 /**
  * CSS resource bundle that contains all generic styles used in the widgets example jar.
- * 
+ *
  * @author Dosi Bingov
  * @since 2.0.0
  */

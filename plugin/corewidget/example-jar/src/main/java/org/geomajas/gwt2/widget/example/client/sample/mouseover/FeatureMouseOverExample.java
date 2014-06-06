@@ -26,7 +26,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Class description.
- * 
+ *
  * @author Dosi Bingov
  */
 public class FeatureMouseOverExample implements SamplePanel {
@@ -46,7 +46,7 @@ public class FeatureMouseOverExample implements SamplePanel {
 
 	/**
 	 * UI binder interface.
-	 * 
+	 *
 	 * @author Dosi Bingov
 	 */
 	interface FeatureSelectedExampleUiBinder extends UiBinder<DockLayoutPanel, FeatureMouseOverExample> {
@@ -70,7 +70,7 @@ public class FeatureMouseOverExample implements SamplePanel {
 		mapPanel.add(resizeLayoutPanel);
 
 		// Initialize the map
-		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "gwt2-widget-app", "mapGhent");
+		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "appCoreWidget", "mapCoreWidget");
 
 		// add feature mouse over listener.
 		MouseOverListener listener = new MouseOverListener(7);

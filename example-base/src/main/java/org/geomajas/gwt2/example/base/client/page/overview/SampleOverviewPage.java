@@ -11,15 +11,6 @@
 
 package org.geomajas.gwt2.example.base.client.page.overview;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.geomajas.gwt2.example.base.client.ExampleBase;
-import org.geomajas.gwt2.example.base.client.resource.ShowcaseResource;
-import org.geomajas.gwt2.example.base.client.sample.SamplePanelRegistry;
-import org.geomajas.gwt2.example.base.client.sample.ShowcaseSampleDefinition;
-import org.geomajas.gwt2.example.base.client.widget.ClickableImage;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -28,15 +19,26 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import org.geomajas.gwt2.example.base.client.ExampleBase;
+import org.geomajas.gwt2.example.base.client.resource.ShowcaseResource;
+import org.geomajas.gwt2.example.base.client.sample.SamplePanelRegistry;
+import org.geomajas.gwt2.example.base.client.sample.ShowcaseSampleDefinition;
+import org.geomajas.gwt2.example.base.client.widget.ClickableImage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Samples overview page. Here you can search within all samples. You can also switch between block and list view.
@@ -80,6 +82,10 @@ public class SampleOverviewPage extends Composite {
 	protected ClickableImage blockViewImg;
 
 	@UiField
+	protected CheckBox sampleInNewTab;
+
+
+	@UiField
 	protected ResizeLayoutPanel sampleOverviewPanel;
 
 	public SampleOverviewPage() {
@@ -95,6 +101,14 @@ public class SampleOverviewPage extends Composite {
 
 			public void onClick(ClickEvent event) {
 				applyView(true);
+			}
+		});
+
+		sampleInNewTab.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+
+			@Override
+			public void onValueChange(ValueChangeEvent<Boolean> event) {
+				ExampleBase.setSampleInNewTab(event.getValue());
 			}
 		});
 	}

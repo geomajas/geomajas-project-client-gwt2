@@ -74,14 +74,26 @@
 					<span ui:field="countElement" class="{style.count}" />
 				</g:HTMLPanel>
 			</g:cell>
-			<g:cell width="32px">
-				<w:ClickableImage ui:field="listViewImg" normalResource="{resource.listView}" hoverResource="{resource.listViewHover}"
-					addStyleNames="{style.icon}" title="Switch to list view." />
-			</g:cell>
-			<g:cell width="32px">
-				<w:ClickableImage ui:field="blockViewImg" normalResource="{resource.blockView}" hoverResource="{resource.blockViewHover}"
-					addStyleNames="{style.icon}" title="Switch to block view." />
-			</g:cell>
+
+            <g:cell width="32px">
+                <w:ClickableImage ui:field="listViewImg" normalResource="{resource.listView}" hoverResource="{resource.listViewHover}"
+                                  addStyleNames="{style.icon}" title="Switch to list view." />
+            </g:cell>
+            <g:cell width="42px">
+                <w:ClickableImage ui:field="blockViewImg" normalResource="{resource.blockView}" hoverResource="{resource.blockViewHover}"
+                                  addStyleNames="{style.icon}" title="Switch to block view." />
+            </g:cell>
+
+            <g:cell width="108px" horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_MIDDLE">
+                <g:HTMLPanel>
+                   <span>Sample in new tab</span>
+                </g:HTMLPanel>
+            </g:cell>
+
+            <g:cell width="10px" horizontalAlignment="ALIGN_CENTER" verticalAlignment="ALIGN_MIDDLE">
+               <g:CheckBox ui:field="sampleInNewTab" />
+            </g:cell>
+
 		</g:HorizontalPanel>
 		<g:cell width="100%" height="100%">
 			<g:ResizeLayoutPanel width="100%" height="100%">

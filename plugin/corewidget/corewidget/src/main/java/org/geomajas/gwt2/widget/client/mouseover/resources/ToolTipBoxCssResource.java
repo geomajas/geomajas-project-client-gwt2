@@ -11,38 +11,34 @@
 
 package org.geomajas.gwt2.widget.client.mouseover.resources;
 
-import org.geomajas.annotation.Api;
-
 import com.google.gwt.resources.client.CssResource;
 
 /**
  * CSS resource bundle that contains all generic styles used in pure gwt geomajas widgets.
- * 
+ *
  * @author Dosi Bingov
- * @since 2.0.0
  */
-@Api(allMethods = true)
 public interface ToolTipBoxCssResource extends CssResource {
 
 	/**
 	 * Get a CSS style class.
-	 * 
+	 *
 	 * @return
 	 */
 	String toolTipBox();
-	
-	
+
+
 	/**
 	 * Get a CSS style class.
-	 * 
+	 *
 	 * @return
 	 */
 	String toolTipBoxCell();
-	
-	
+
+
 	/**
 	 * Get a CSS style class.
-	 * 
+	 *
 	 * @return
 	 */
 	String toolTipBoxCellTitle();

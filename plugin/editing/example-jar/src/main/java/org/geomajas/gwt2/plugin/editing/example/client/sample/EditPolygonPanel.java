@@ -18,6 +18,9 @@ import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
+import org.geomajas.gwt2.plugin.editing.client.Editing;
+import org.geomajas.gwt2.plugin.editing.client.GeometryEditor;
+import org.geomajas.gwt2.plugin.editing.example.client.i18n.SampleMessages;
 import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartEvent;
@@ -29,8 +32,6 @@ import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
-import org.geomajas.gwt2.plugin.editing.client.Editing;
-import org.geomajas.gwt2.plugin.editing.client.GeometryEditor;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -58,6 +59,8 @@ public class EditPolygonPanel implements SamplePanel {
 	}
 
 	private static final MyUiBinder UI_BINDER = GWT.create(MyUiBinder.class);
+	
+	private static final SampleMessages MESSAGES = GWT.create(SampleMessages.class);
 
 	private MapPresenter mapPresenter;
 
@@ -69,6 +72,9 @@ public class EditPolygonPanel implements SamplePanel {
 
 	@UiField
 	protected Button stopBtn;
+
+	@UiField
+	protected Button suspendBtn;
 
 	@UiField
 	protected Button addRingBtn;
@@ -105,7 +111,7 @@ public class EditPolygonPanel implements SamplePanel {
 				createBtn.setEnabled(false);
 				editBtn.setEnabled(false);
 				stopBtn.setEnabled(true);
-
+				suspendBtn.setEnabled(true);
 				addRingBtn.setVisible(true);
 			}
 		});
@@ -117,6 +123,7 @@ public class EditPolygonPanel implements SamplePanel {
 				editBtn.setEnabled(true);
 				stopBtn.setEnabled(false);
 				addRingBtn.setVisible(false);
+				suspendBtn.setEnabled(false);
 			}
 		});
 		editService.addGeometryEditChangeStateHandler(new GeometryEditChangeStateHandler() {
@@ -202,5 +209,16 @@ public class EditPolygonPanel implements SamplePanel {
 	@UiHandler("stopBtn")
 	protected void onStopButtonClicked(ClickEvent event) {
 		editService.stop();
+	}
+	
+	@UiHandler("suspendBtn")
+	protected void onSuspendButtonClicked(ClickEvent event) {
+		if (editService.isStarted() && !editService.isSuspended()) {
+			editService.suspend();
+			suspendBtn.setText(MESSAGES.generalResume());
+		} else if (editService.isSuspended()) {
+			editService.resume();
+			suspendBtn.setText(MESSAGES.generalSuspend());
+		}
 	}
 }

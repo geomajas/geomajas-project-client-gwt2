@@ -27,6 +27,7 @@ import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 import org.geomajas.gwt2.plugin.editing.client.Editing;
 import org.geomajas.gwt2.plugin.editing.client.GeometryEditor;
+import org.geomajas.gwt2.plugin.editing.example.client.i18n.SampleMessages;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -54,6 +55,8 @@ public class EditPointPanel implements SamplePanel {
 	}
 
 	private static final MyUiBinder UI_BINDER = GWT.create(MyUiBinder.class);
+	
+	private static final SampleMessages MESSAGES = GWT.create(SampleMessages.class);
 
 	private MapPresenter mapPresenter;
 
@@ -65,6 +68,9 @@ public class EditPointPanel implements SamplePanel {
 
 	@UiField
 	protected Button stopBtn;
+
+	@UiField
+	protected Button suspendBtn;
 
 	@UiField
 	protected ResizeLayoutPanel mapPanel;
@@ -97,6 +103,7 @@ public class EditPointPanel implements SamplePanel {
 			public void onGeometryEditStart(GeometryEditStartEvent event) {
 				createBtn.setEnabled(false);
 				editBtn.setEnabled(false);
+				suspendBtn.setEnabled(true);
 				stopBtn.setEnabled(true);
 			}
 		});
@@ -106,6 +113,7 @@ public class EditPointPanel implements SamplePanel {
 			public void onGeometryEditStop(GeometryEditStopEvent event) {
 				createBtn.setEnabled(true);
 				editBtn.setEnabled(true);
+				suspendBtn.setEnabled(false);
 				stopBtn.setEnabled(false);
 			}
 		});
@@ -141,4 +149,16 @@ public class EditPointPanel implements SamplePanel {
 	protected void onStopButtonClicked(ClickEvent event) {
 		editService.stop();
 	}
+	
+	@UiHandler("suspendBtn")
+	protected void onSuspendButtonClicked(ClickEvent event) {
+		if (editService.isStarted() && !editService.isSuspended()) {
+			editService.suspend();
+			suspendBtn.setText(MESSAGES.generalResume());
+		} else if (editService.isSuspended()) {
+			editService.resume();
+			suspendBtn.setText(MESSAGES.generalSuspend());
+		}
+	}
+
 }

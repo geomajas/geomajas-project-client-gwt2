@@ -15,22 +15,25 @@ import org.geomajas.gwt2.client.controller.MapController;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
 import org.geomajas.gwt2.client.map.MapPresenter;
-import org.geomajas.gwt2.plugin.editing.client.controller.EditGeometryBaseController;
-import org.geomajas.gwt2.plugin.editing.client.gfx.GeometryRendererImpl;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditSuspendEvent;
+import org.geomajas.plugin.editing.client.event.GeometryEditSuspendHandler;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditServiceImpl;
 import org.geomajas.plugin.editing.client.snap.SnapService;
+import org.geomajas.gwt2.plugin.editing.client.controller.EditGeometryBaseController;
+import org.geomajas.gwt2.plugin.editing.client.gfx.GeometryRendererImpl;
 
 /**
  * Central editor for geometries on the map.
  * 
  * @author Pieter De Graef
  */
-public class GeometryEditorImpl implements GeometryEditor, GeometryEditStartHandler, GeometryEditStopHandler {
+public class GeometryEditorImpl implements GeometryEditor, GeometryEditStartHandler, GeometryEditSuspendHandler,
+		GeometryEditResumeHandler, GeometryEditStopHandler {
 
 	private final MapPresenter mapPresenter;
 
@@ -55,6 +58,8 @@ public class GeometryEditorImpl implements GeometryEditor, GeometryEditStartHand
 		editService = new GeometryEditServiceImpl();
 		editService.addGeometryEditStartHandler(this);
 		editService.addGeometryEditStopHandler(this);
+		editService.addGeometryEditSuspendHandler(this);
+		editService.addGeometryEditResumeHandler(this);
 
 		// Initialize the rest:
 		snappingService = new SnapService();
@@ -87,6 +92,24 @@ public class GeometryEditorImpl implements GeometryEditor, GeometryEditStartHand
 	public void onGeometryEditStop(GeometryEditStopEvent event) {
 		// Restore the original map controller:
 		mapPresenter.setMapController(previousController);
+	}
+	
+	// ------------------------------------------------------------------------
+	// GeometryEditSuspendHandler implementation:
+	// ------------------------------------------------------------------------
+
+	@Override
+	public void onGeometryEditSuspend(GeometryEditSuspendEvent event) {
+		// Restore the original map controller:
+		mapPresenter.setMapController(previousController);		
+	}
+	// ------------------------------------------------------------------------
+	// GeometryEditResumeHandler implementation:
+	// ------------------------------------------------------------------------
+	@Override
+	public void onGeometryEditResume(GeometryEditResumeEvent event) {
+		// Restore the base controller:
+		mapPresenter.setMapController(baseController);
 	}
 
 	// ------------------------------------------------------------------------
@@ -132,6 +155,14 @@ public class GeometryEditorImpl implements GeometryEditor, GeometryEditStartHand
 	public void setBaseController(EditGeometryBaseController baseController) {
 		this.baseController = baseController;
 	}
-
-
+	//
+	// @Override
+	// public void addVertexHandlerFactory(VertexMapHandlerFactory factory) {
+	// renderer.addVertexHandlerFactory(factory);
+	// }
+	//
+	// @Override
+	// public void addEdgeHandlerFactory(EdgeMapHandlerFactory factory) {
+	// renderer.addEdgeHandlerFactory(factory);
+	// }
 }

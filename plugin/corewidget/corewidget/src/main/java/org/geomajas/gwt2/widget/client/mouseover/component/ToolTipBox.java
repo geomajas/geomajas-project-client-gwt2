@@ -26,9 +26,9 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Tool tip box that is shown when the MouseOverListener is added to the map.
- * 
+ *
  * @author Dosi Bingov
- * 
+ *
  */
 public class ToolTipBox implements IsWidget {
 
@@ -43,9 +43,9 @@ public class ToolTipBox implements IsWidget {
 
 	/**
 	 * UI binder interface.
-	 * 
+	 *
 	 * @author Dosi Bingov
-	 * 
+	 *
 	 */
 	interface ToolTipBoxUiBinder extends UiBinder<Widget, ToolTipBox> {
 	}
