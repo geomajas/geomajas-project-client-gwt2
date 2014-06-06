@@ -9,9 +9,9 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.client.featureselectbox.event;
+package org.geomajas.gwt2.widget.client.feature.event;
 
-import org.geomajas.annotation.Api;
+import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.map.feature.Feature;
 import com.google.web.bindery.event.shared.Event;
 
@@ -19,21 +19,31 @@ import com.google.web.bindery.event.shared.Event;
  * Event which is passed when a feature is clicked.
  * 
  * @author Dosi Bingov
- * @since 2.0.0
  */
-@Api(allMethods = true)
 public class FeatureClickedEvent extends Event<FeatureClickedHandler> {
+
+	private Coordinate coordinate;
 
 	private final Feature feature;
 
 	/**
 	 * Create an event for the specified feature.
 	 * 
-	 * @param feature
-	 *            the selected feature
+	 * @param feature the selected feature
 	 */
 	public FeatureClickedEvent(Feature feature) {
 		this.feature = feature;
+	}
+
+	/**
+	 * Create an event for the specified feature.
+	 * 
+	 * @param coordinate the coordinate where this feature is selected
+	 * @param feature the selected feature
+	 */
+	public FeatureClickedEvent(Coordinate coordinate, Feature feature) {
+		this.feature = feature;
+		this.coordinate = coordinate;
 	}
 
 	/**
@@ -49,9 +59,18 @@ public class FeatureClickedEvent extends Event<FeatureClickedHandler> {
 	public Type<FeatureClickedHandler> getAssociatedType() {
 		return FeatureClickedHandler.TYPE;
 	}
-	
+
 	@Override
 	protected void dispatch(FeatureClickedHandler featureClickHandler) {
 		featureClickHandler.onFeatureClicked(this);
+	}
+
+	/**
+	 * Get the world coordinate where this feature is selected.
+	 * 
+	 * @return the coordinate
+	 */
+	public Coordinate getCoordinate() {
+		return coordinate;
 	}
 }

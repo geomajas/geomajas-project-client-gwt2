@@ -13,9 +13,8 @@ package org.geomajas.gwt2.example.base.client.page.overview;
 
 import java.util.List;
 
-import org.geomajas.gwt2.example.base.client.sample.ShowcaseSampleDefinition;
-
 import com.google.gwt.user.client.ui.IsWidget;
+import org.geomajas.gwt2.example.base.client.sample.ShowcaseSampleDefinition;
 
 /**
  * Base definition for the sample overview GUI.

@@ -43,7 +43,7 @@
 	</modules>
 
 	<properties>
-		<version-geomajas-backend>1.15.0</version-geomajas-backend>
+		<version-geomajas-backend>1.15.1</version-geomajas-backend>
 		<version-geomajas-graphics>1.0.0-M3</version-geomajas-graphics>
 		<version-vaadin-graphics>1.0.0.TX11</version-vaadin-graphics>
 		<version-gwt>2.5.0</version-gwt>
@@ -400,6 +400,17 @@
 				<scope>test</scope>
 			</dependency>
 
+			<dependency>
+				<groupId>com.google.gwt.gwtmockito</groupId>
+				<artifactId>gwtmockito</artifactId>
+				<version>1.1.2</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-all</artifactId>
+				<version>1.9.5</version>
+			</dependency>
 
 		</dependencies>
 	</dependencyManagement>
