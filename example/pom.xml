@@ -114,19 +114,31 @@
                 <directory>${basedir}/src/main/resources/</directory>
                 <filtering>true</filtering>
                 <includes>
-                    <include>**/infinispanCachingOverride.xml</include>
+                    <include>**/cacheLocation.xml</include>
                 </includes>
             </resource>
             <resource>
                 <directory>${basedir}/src/main/resources/</directory>
                 <filtering>false</filtering>
                 <excludes>
-                    <exclude>**/infinispanCachingOverride.xml</exclude>
+                    <exclude>**/cacheLocation.xml</exclude>
                 </excludes>
             </resource>
         </resources>
 
 		<plugins>
+
+            <!-- plugins needed for parsing properties in cacheLocation.xml (configured in parent project) -->
+            <plugin>
+                <groupId>com.keyboardsamurais.maven</groupId>
+                <artifactId>maven-timestamp-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+            </plugin>
+
             <!-- Application specific cleanup -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
