@@ -12,6 +12,7 @@
     width: 200px;
     border: 1px solid #999999;
     color: #444;
+    vertical-align: middle;
 }
 
 .gm-GeocoderGadget-textBox-withAlts {
@@ -35,6 +36,7 @@
     width: 16px;
     background-repeat: no-repeat;
     background-position: left top;
+    vertical-align: middle;
 }
 
 .gm-GeocoderGadget-altPanel {
