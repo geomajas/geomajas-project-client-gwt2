@@ -28,6 +28,7 @@
 		<module>impl</module>
         <module>server-extension</module>
 		<module>example-jar</module>
+		<module>example</module>
 	</modules>
 
     <profiles>

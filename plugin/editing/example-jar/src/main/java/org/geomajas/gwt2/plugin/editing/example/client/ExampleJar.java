@@ -11,19 +11,21 @@
 
 package org.geomajas.gwt2.plugin.editing.example.client;
 
-import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanelRegistry;
 import org.geomajas.gwt2.example.base.client.sample.ShowcaseSampleDefinition;
 import org.geomajas.gwt2.plugin.editing.example.client.i18n.SampleMessages;
 import org.geomajas.gwt2.plugin.editing.example.client.sample.EditLinePanel;
-import org.geomajas.gwt2.plugin.editing.example.client.sample.SnapToCountriesPanel;
 import org.geomajas.gwt2.plugin.editing.example.client.sample.EditPointPanel;
 import org.geomajas.gwt2.plugin.editing.example.client.sample.EditPolygonPanel;
+import org.geomajas.gwt2.plugin.editing.example.client.sample.GeometryValidationPanel;
 import org.geomajas.gwt2.plugin.editing.example.client.sample.MergeCountriesPanel;
+import org.geomajas.gwt2.plugin.editing.example.client.sample.SnapToCountriesPanel;
 import org.geomajas.gwt2.plugin.editing.example.client.sample.SplitCountryPanel;
 import org.geomajas.gwt2.plugin.editing.example.client.sample.UndoRedoPanel;
+
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 
 /**
  * Entry point and main class for the GWT client example application.
@@ -236,5 +238,34 @@ public class ExampleJar implements EntryPoint {
 				return "mergecountries";
 			}
 		});
+		SamplePanelRegistry.registerFactory(CATEGORY_EDITING, new ShowcaseSampleDefinition() {
+
+			public SamplePanel create() {
+				return new GeometryValidationPanel();
+			}
+
+			public String getTitle() {
+				return MESSAGES.geometryValidationTitle();
+			}
+
+			public String getShortDescription() {
+				return MESSAGES.geometryValidationShort();
+			}
+
+			public String getDescription() {
+				return MESSAGES.geometryValidationDescription();
+			}
+
+			public String getCategory() {
+				return CATEGORY_EDITING;
+			}
+			
+			@Override
+			public String getKey() {
+				return "geometryValidation";
+			}
+		});
 	}
+
+
 }

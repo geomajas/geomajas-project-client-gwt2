@@ -16,6 +16,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.controller.MapEventParser;
@@ -30,7 +32,6 @@ import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException
 import org.geomajas.plugin.editing.client.snap.SnapService;
 
 import com.google.gwt.event.dom.client.HumanInputEvent;
-
 /**
  * <p>
  * Default controller to be used when in dragging mode during editing. It will allow the user to drag the selected
@@ -45,6 +46,8 @@ import com.google.gwt.event.dom.client.HumanInputEvent;
  * @author Pieter De Graef
  */
 public class GeometryIndexDragController extends AbstractGeometryIndexController {
+	
+	private static Logger logger = Logger.getLogger(GeometryIndexDragController.class.getName());
 
 	protected final Map<GeometryIndex, Coordinate> origins;
 
@@ -125,7 +128,7 @@ public class GeometryIndexDragController extends AbstractGeometryIndexController
 		try {
 			service.move(service.getIndexStateService().getSelection(), coordinateList);
 		} catch (GeometryOperationFailedException e) {
-			throw new IllegalStateException(e);
+			logger.log(Level.WARNING, "Operation failed", e);
 		}
 	}
 

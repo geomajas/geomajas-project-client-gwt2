@@ -31,7 +31,11 @@ import org.geomajas.plugin.editing.client.event.GeometryEditSuspendEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditSuspendHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditValidationHandler;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
+import org.geomajas.plugin.editing.client.service.validation.DefaultGeometryValidator;
+import org.geomajas.plugin.editing.client.service.validation.GeometryValidationInterceptor;
+import org.geomajas.plugin.editing.client.service.validation.GeometryValidator;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -81,6 +85,8 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	private Coordinate tentativeMoveLocation;
 
 	private boolean started;
+	
+	private GeometryValidationInterceptor validationInterceptor;
 	
 	private boolean suspended;
 
@@ -148,6 +154,11 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	@Override
 	public HandlerRegistration addGeometryEditTentativeMoveHandler(GeometryEditTentativeMoveHandler handler) {
 		return eventBus.addHandler(GeometryEditTentativeMoveHandler.TYPE, handler);
+	}
+
+	@Override
+	public HandlerRegistration addGeometryEditValidationHandler(GeometryEditValidationHandler handler) {
+		return eventBus.addHandler(GeometryEditValidationHandler.TYPE, handler);
 	}
 
 	// ------------------------------------------------------------------------
@@ -350,6 +361,11 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	public void remove(List<GeometryIndex> indices) throws GeometryOperationFailedException {
 		operationService.remove(indices);
 	}
+	
+	@Override
+	public void finish(GeometryIndex index) throws GeometryOperationFailedException {
+		operationService.finish(index);
+	}
 
 	@Override
 	public GeometryIndex addEmptyChild() throws GeometryOperationFailedException {
@@ -360,4 +376,42 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	public GeometryIndex addEmptyChild(GeometryIndex index) throws GeometryOperationFailedException {
 		return operationService.addEmptyChild(index);
 	}
+
+	@Override
+	public void addInterceptor(GeometryIndexOperationInterceptor interceptor) {
+		operationService.addInterceptor(interceptor);
+	}
+
+	@Override
+	public void removeInterceptor(GeometryIndexOperationInterceptor interceptor) {
+		operationService.removeInterceptor(interceptor);
+	}
+
+	@Override
+	public void setDefaultValidation(boolean b) {
+		if (b) {
+			getValidationInterceptor().setValidator(new DefaultGeometryValidator(this, true));
+			addInterceptor(getValidationInterceptor());
+		} else {
+			removeInterceptor(getValidationInterceptor());
+		}
+	}
+
+	@Override
+	public void setValidator(GeometryValidator validator) {
+		if (validator != null) {
+			getValidationInterceptor().setValidator(validator);
+			addInterceptor(getValidationInterceptor());
+		} else {
+			removeInterceptor(getValidationInterceptor());
+		}
+	}
+
+	private GeometryValidationInterceptor getValidationInterceptor() {
+		if (validationInterceptor == null) {
+			validationInterceptor = new GeometryValidationInterceptor(this);
+		}
+		return validationInterceptor;
+	}
+	
 }

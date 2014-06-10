@@ -13,6 +13,8 @@ package org.geomajas.plugin.editing.client.handler;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
@@ -47,6 +49,8 @@ import com.google.gwt.event.dom.client.MouseOverHandler;
  */
 public class GeometryIndexSnapToDeleteHandler extends AbstractGeometryIndexMapHandler implements MouseOverHandler,
 		MouseOutHandler, MapDragHandler, MapUpHandler, MouseMoveHandler {
+	
+	private static Logger logger = Logger.getLogger(GeometryIndexSnapToDeleteHandler.class.getName());
 
 	private boolean allowMoreThanNeighbours;
 
@@ -88,7 +92,7 @@ public class GeometryIndexSnapToDeleteHandler extends AbstractGeometryIndexMapHa
 				service.getIndexStateService().deselectAll();
 				service.remove(toDelete);
 			} catch (GeometryOperationFailedException e) {
-				throw new IllegalStateException(e);
+				logger.log(Level.WARNING, "Operation failed", e);
 			}
 		}
 	}
@@ -146,9 +150,9 @@ public class GeometryIndexSnapToDeleteHandler extends AbstractGeometryIndexMapHa
 								Collections.singletonList(Collections.singletonList(location)));
 						event.stopPropagation();
 					} catch (GeometryIndexNotFoundException e) {
-						throw new IllegalStateException(e);
+						logger.log(Level.WARNING, "Index not found", e);
 					} catch (GeometryOperationFailedException e) {
-						throw new IllegalStateException(e);
+						logger.log(Level.WARNING, "Operation failed", e);
 					}
 				}
 			}

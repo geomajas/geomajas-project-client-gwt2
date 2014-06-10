@@ -55,6 +55,10 @@ public class GeometryIndexOperationServiceTest {
 
 	private int shapeChangedCount;
 
+	private int beforeCount;
+
+	private int afterCount;
+
 	// ------------------------------------------------------------------------
 	// Constructor
 	// ------------------------------------------------------------------------
@@ -108,7 +112,7 @@ public class GeometryIndexOperationServiceTest {
 		service.stop();
 		Assert.assertFalse(service.isStarted());
 	}
-	
+
 	@Test
 	public void testInsert() throws GeometryOperationFailedException {
 		service.start(polygon);
@@ -411,5 +415,29 @@ public class GeometryIndexOperationServiceTest {
 		service.addEmptyChild(new GeometryIndex(GeometryIndexType.TYPE_GEOMETRY, 0, null));
 		int afterNumber = polygon.getGeometries().length;
 		Assert.assertTrue(originalNumber + 1 == afterNumber);
+	}
+
+	@Test
+	public void testInterceptor() throws GeometryOperationFailedException {
+		afterCount = 0;
+		beforeCount = 0;
+		service.addInterceptor(new GeometryIndexOperationInterceptor() {
+
+			@Override
+			public void intercept(GeometryIndexOperationInterceptorChain chain) throws GeometryOperationFailedException {
+				beforeCount++;
+				chain.proceed();
+				afterCount++;
+			}
+
+		});
+		service.start(polygon);
+		service.move(Collections.singletonList(index), Collections.singletonList(Collections.singletonList(coord)));
+		Assert.assertEquals(1, beforeCount);
+		Assert.assertEquals(1, afterCount);
+		service.move(Collections.singletonList(index), Collections.singletonList(Collections.singletonList(coord)));
+		Assert.assertEquals(2, beforeCount);
+		Assert.assertEquals(2, afterCount);
+		service.stop();
 	}
 }

@@ -8,22 +8,21 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.gwt2.plugin.editing.example.client;
 
-import org.geomajas.gwt2.client.GeomajasGinjector;
-import org.geomajas.gwt2.plugin.editing.client.GeomajasEditorModule;
-import org.geomajas.gwt2.plugin.editing.client.GeometryEditorFactory;
+import org.geomajas.gwt2.example.base.client.ExampleBase;
 
-import com.google.gwt.inject.client.GinModules;
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 
 /**
- * Ginjector for the showcase.
- * 
+ * Entry point and main class for editing example application.
  * @author Jan De Moerloose
  */
-@GinModules(GeomajasEditorModule.class)
-public interface ShowCaseGinjector extends GeomajasGinjector {
+public class Example implements EntryPoint {
 
-	/** Geometry editor factory. */
-	GeometryEditorFactory getGeometryEditorFactory();
+	public void onModuleLoad() {
+		RootLayoutPanel.get().add(ExampleBase.getLayout());
+	}
 }

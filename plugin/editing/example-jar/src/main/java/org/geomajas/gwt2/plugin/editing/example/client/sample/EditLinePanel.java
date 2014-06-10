@@ -91,7 +91,7 @@ public class EditLinePanel implements SamplePanel {
 		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "gwt-app", "mapOsm");
+		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "appEditingExample", "mapEditingExampleOsm");
 
 		// Prepare editing:
 		GeometryEditor editor = Editing.getInstance().createGeometryEditor(mapPresenter);
