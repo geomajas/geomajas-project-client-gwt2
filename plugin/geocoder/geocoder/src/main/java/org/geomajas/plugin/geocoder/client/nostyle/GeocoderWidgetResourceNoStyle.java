@@ -20,6 +20,6 @@ import org.geomajas.plugin.geocoder.client.widget.GeocoderWidgetResource;
  */
 public interface GeocoderWidgetResourceNoStyle extends GeocoderWidgetResource {
 
-	@Source("../widget/theme/public/nostyle/geomajas-geocoderGadget-nostyle.css")
+	@Source("geomajas-geocoderGadget-nostyle.css")
 	GeocoderWidgetCssResource css();
 }

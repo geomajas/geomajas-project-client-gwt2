@@ -20,9 +20,9 @@ import com.google.gwt.resources.client.ImageResource;
  */
 public interface GeocoderWidgetResource extends ClientBundle {
 
-	@Source("theme/public/default/geomajas-geocoderGadget-default.css")
+	@Source("theme/default/geomajas-geocoderGadget-default.css")
 	GeocoderWidgetCssResource css();
 
-	@Source("theme/public/default/images/magnifying-glass16.png")
+	@Source("theme/default/images/magnifying-glass16.png")
 	ImageResource magnifyingGlass();
 }

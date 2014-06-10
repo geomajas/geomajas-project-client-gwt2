@@ -28,13 +28,14 @@
     gwt-image: "magnifyingGlass";
 	cursor: pointer;
 	position: relative;
-	top: -4px;
+	-moz-m: -4px;
 	left: -21px;
 	border: 0;
 	height: 16px;
     width: 16px;
     background-repeat: no-repeat;
-    /*background: no-repeat center center url("images/magnifying-glass16.png");*/
+    background-position: left top;
+    background-color: red;
 }
 
 .gm-GeocoderGadget-altPanel {
