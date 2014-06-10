@@ -12,19 +12,29 @@
 package org.geomajas.gwt2.client.map.layer;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
+import org.geomajas.gwt2.client.map.MapConfiguration;
 import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.ViewPort;
+import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
+import org.geomajas.gwt2.client.map.render.TileRenderer;
 
 /**
  * Abstraction of the basic layer interface. Specific layer implementations should use this as a base.
  * 
- * @param <T>
- *            The layer meta-data. Some extension of {@link ClientLayerInfo}.
+ * @param <T> The layer meta-data. Some extension of {@link ClientLayerInfo}.
  * @author Pieter De Graef
  */
-public abstract class AbstractServerLayer<T extends ClientLayerInfo> extends AbstractLayer {
+public abstract class AbstractServerLayer<T extends ClientLayerInfo> extends AbstractTileBasedLayer {
+
+	protected ClientMapInfo mapInfo;
 
 	protected T layerInfo;
+	
+	protected TileRenderer tileRenderer;
+	
+	protected ServerLayerConfiguration layerConfiguration;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -33,24 +43,30 @@ public abstract class AbstractServerLayer<T extends ClientLayerInfo> extends Abs
 	/**
 	 * Create a new layer that belongs to the given map model, using the given meta-data.
 	 * 
-	 * @param layerInfo
-	 *            The layer configuration from which to create the layer.
-	 * @param viewPort
-	 *            The view port of the map.
-	 * @param eventBus
-	 *            The map centric event bus.
+	 * @param layerInfo The layer configuration from which to create the layer.
+	 * @param viewPort The view port of the map.
+	 * @param eventBus The map centric event bus.
 	 */
-	public AbstractServerLayer(T layerInfo, ViewPort viewPort, MapEventBus eventBus) {
-		super(layerInfo.getId());
-
+	public AbstractServerLayer(MapConfiguration mapConfiguration, T layerInfo, ViewPort viewPort, MapEventBus eventBus) {
+		super(layerInfo.getId(), mapConfiguration, new TileConfiguration());
+		this.mapInfo = mapConfiguration.getHintValue(GeomajasServerExtension.MAPINFO);
 		this.layerInfo = layerInfo;
 		this.markedAsVisible = layerInfo.isVisible();
 		this.title = layerInfo.getLabel();
-
 		setViewPort(viewPort);
 		setEventBus(eventBus);
-
+		initLayerConfiguration();
 		eventBus.addViewPortChangedHandler(new LayerScaleVisibilityHandler());
+	}
+
+	protected abstract void initLayerConfiguration();
+
+	@Override
+	public TileRenderer getTileRenderer() {
+		if(tileRenderer == null) {
+			tileRenderer = new ServerTileRenderer(layerConfiguration);
+		}
+		return tileRenderer;
 	}
 
 	// ------------------------------------------------------------------------
@@ -59,6 +75,10 @@ public abstract class AbstractServerLayer<T extends ClientLayerInfo> extends Abs
 
 	public String getServerLayerId() {
 		return layerInfo.getServerLayerId();
+	}
+	
+	public ClientMapInfo getMapInfo() {
+		return mapInfo;
 	}
 
 	public T getLayerInfo() {
@@ -76,4 +96,5 @@ public abstract class AbstractServerLayer<T extends ClientLayerInfo> extends Abs
 		}
 		return false;
 	}
+	
 }

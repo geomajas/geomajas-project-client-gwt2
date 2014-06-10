@@ -27,11 +27,11 @@ import org.geomajas.gwt2.client.map.MapConfiguration;
 import org.geomajas.gwt2.client.map.MapConfiguration.CrsType;
 import org.geomajas.gwt2.client.map.MapConfigurationImpl;
 import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.plugin.wms.client.WmsClient;
 import org.geomajas.plugin.wms.client.layer.WmsLayer;
 import org.geomajas.plugin.wms.client.layer.WmsLayerConfiguration;
-import org.geomajas.plugin.wms.client.layer.WmsTileConfiguration;
 import org.geomajas.plugin.wms.client.service.WmsService.WmsVersion;
 
 /**
@@ -93,7 +93,8 @@ public class WmsLayerPanel implements SamplePanel {
 		mapPresenter.getLayersModel().clear();
 
 		// Now create a WMS layer and add it to the map:
-		WmsTileConfiguration tileConfig = new WmsTileConfiguration(256, 256, new Coordinate(-180, -90));
+		TileConfiguration tileConfig = new TileConfiguration(256, 256, new Coordinate(-180, -90),
+				mapPresenter.getViewPort());
 		WmsLayerConfiguration layerConfig = new WmsLayerConfiguration();
 		layerConfig.setBaseUrl(WMS_BASE_URL);
 		layerConfig.setFormat("image/png");
@@ -102,7 +103,7 @@ public class WmsLayerPanel implements SamplePanel {
 		layerConfig.setMaximumResolution(Double.MAX_VALUE);
 		layerConfig.setMinimumResolution(2.1457672119140625E-5);
 
-		final WmsLayer wmsLayer = WmsClient.getInstance().createLayer("Blue Marble", tileConfig, layerConfig, null);
+		final WmsLayer wmsLayer = WmsClient.getInstance().createLayer("Blue Marble", mapPresenter.getConfiguration(), tileConfig, layerConfig, null);
 		mapPresenter.getLayersModel().addLayer(wmsLayer);
 
 	}

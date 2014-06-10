@@ -14,8 +14,8 @@ package org.geomajas.plugin.wms.client.service;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.map.ViewPort;
+import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
 import org.geomajas.gwt2.client.map.render.TileCode;
-import org.geomajas.plugin.wms.client.layer.WmsTileConfiguration;
 
 import java.util.List;
 
@@ -35,18 +35,18 @@ public interface WmsTileService {
 	 * Get a list of tile codes for a certain location (bounding box).
 	 * 
 	 * @param viewPort
-	 *            The ViewPort on the map we are calculating tile codes for. We need the ViewPort for resolution to
+	 *            The ViewPort on the map we are calculating tile codes for. We need the ViewPort for scale to
 	 *            tile-level translations.
 	 * @param tileConfiguration
 	 *            The basic tile configuration.
 	 * @param bounds
 	 *            The bounds in world space (map CRS).
-	 * @param resolution
-	 *            The resolution at which to search for tiles.
+	 * @param scale
+	 *            The scale at which to search for tiles.
 	 * @return A list of all tiles that lie within the location.
 	 */
-	List<TileCode> getTileCodesForBounds(ViewPort viewPort, WmsTileConfiguration tileConfiguration, Bbox bounds,
-			double resolution);
+	List<TileCode> getTileCodesForBounds(ViewPort viewPort, TileConfiguration tileConfiguration, Bbox bounds,
+			double scale);
 
 	/**
 	 * Given a tile for a layer, what are the tiles bounds in world space.
@@ -54,13 +54,13 @@ public interface WmsTileService {
 	 * @param viewPort
 	 *            The ViewPort on the map we are calculating tile codes for. We need the ViewPort for scale to
 	 *            tile-level translations.
-	 * @param tileConfig
+	 * @param tileConfiguration
 	 *            The basic tile configuration.
 	 * @param tileCode
 	 *            The tile code.
 	 * @return The tile bounds in map CRS.
 	 */
-	Bbox getWorldBoundsForTile(ViewPort viewPort, WmsTileConfiguration tileConfig, TileCode tileCode);
+	Bbox getWorldBoundsForTile(ViewPort viewPort, TileConfiguration tileConfiguration, TileCode tileCode);
 
 	/**
 	 * Given a certain location at a certain scale, what tile lies there?
@@ -68,7 +68,7 @@ public interface WmsTileService {
 	 * @param viewPort
 	 *            The ViewPort on the map we are calculating tile codes for. We need the ViewPort for scale to
 	 *            tile-level translations.
-	 * @param tileConfig
+	 * @param tileConfiguration
 	 *            The basic tile configuration.
 	 * @param location
 	 *            The location to retrieve a tile for.
@@ -76,6 +76,6 @@ public interface WmsTileService {
 	 *            The scale at which to retrieve a tile.
 	 * @return Returns the tile code for the requested location.
 	 */
-	TileCode getTileCodeForLocation(ViewPort viewPort, WmsTileConfiguration tileConfig, Coordinate location,
+	TileCode getTileCodeForLocation(ViewPort viewPort, TileConfiguration tileConfiguration, Coordinate location,
 			double scale);
 }

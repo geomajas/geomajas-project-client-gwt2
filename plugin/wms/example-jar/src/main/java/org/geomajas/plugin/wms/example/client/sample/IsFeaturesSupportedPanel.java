@@ -30,6 +30,7 @@ import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
+import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
 import org.geomajas.gwt2.client.widget.MapLayoutPanel;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.plugin.wms.client.WmsClient;
@@ -38,7 +39,6 @@ import org.geomajas.plugin.wms.client.capabilities.WmsGetCapabilitiesInfo;
 import org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo;
 import org.geomajas.plugin.wms.client.layer.FeaturesSupportedWmsLayer;
 import org.geomajas.plugin.wms.client.layer.WmsLayerConfiguration;
-import org.geomajas.plugin.wms.client.layer.WmsTileConfiguration;
 import org.geomajas.plugin.wms.client.service.WmsService.WmsRequest;
 import org.geomajas.plugin.wms.client.service.WmsService.WmsUrlTransformer;
 import org.geomajas.plugin.wms.client.service.WmsService.WmsVersion;
@@ -183,15 +183,15 @@ public class IsFeaturesSupportedPanel implements SamplePanel {
 		attributePanel.clear();
 
 		// Prepare the layer configuration:
-		final WmsTileConfiguration tileConfig = WmsClient.getInstance().createTileConfig(layerInfo,
-				mapPresenter.getViewPort().getCrs(), 256, 256);
+		final TileConfiguration tileConfig = WmsClient.getInstance().createTileConfig(layerInfo,
+				mapPresenter.getViewPort(), 256, 256);
 		final WmsLayerConfiguration layerConfig = WmsClient.getInstance().createLayerConfig(
 				layerInfo, WMS_BASE_URL, getWmsVersion());
 
 		// Then add the new WMS layer to the map:
 		if (featuresSupported) {
 			final FeaturesSupportedWmsLayer layer = WmsServerExtension.getInstance().createLayer(layerInfo.getTitle(),
-					tileConfig, layerConfig, layerInfo, new Callback<List<AttributeDescriptor>, String>() {
+					mapPresenter.getConfiguration(), tileConfig, layerConfig, layerInfo, new Callback<List<AttributeDescriptor>, String>() {
 
 				@Override
 				public void onFailure(String s) {
@@ -209,7 +209,7 @@ public class IsFeaturesSupportedPanel implements SamplePanel {
 			mapPresenter.getLayersModel().addLayer(layer);
 		} else {
 			mapPresenter.getLayersModel().addLayer(WmsClient.getInstance().createLayer(layerInfo.getTitle(),
-					tileConfig, layerConfig, layerInfo));
+					mapPresenter.getConfiguration(), tileConfig, layerConfig, layerInfo));
 			attributePanel.add(new HTML("This layer does not support features..."));
 		}
 	}
