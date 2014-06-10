@@ -14,7 +14,6 @@
 <module rename-to="geoCoderExamplejar">
 	<inherits name='org.geomajas.gwt2.example.base.ExampleBase' />
 	<inherits name='org.geomajas.plugin.geocoder.Geocoder' />
-	<inherits name='org.geomajas.plugin.geocoder.client.widget.theme.GeomajasGeocoderDefaultTheme' />
     <entry-point class="org.geomajas.plugin.geocoder.puregwt.example.client.GeoCoderExampleJar"/>
 	<source path='client'/>
 </module>
