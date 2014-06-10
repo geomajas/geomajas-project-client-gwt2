@@ -24,15 +24,18 @@
 	color: #A8A8A8;
 }
 
-.gm-GeocoderGadget-glass {
+@sprite .gm-GeocoderGadget-glass {
+    gwt-image: "magnifyingGlass";
 	cursor: pointer;
 	position: relative;
-	top: -4px;
+	-moz-m: -4px;
 	left: -21px;
 	border: 0;
 	height: 16px;
     width: 16px;
-    background: no-repeat center center url("images/magnifying-glass16.png");
+    background-repeat: no-repeat;
+    background-position: left top;
+    background-color: red;
 }
 
 .gm-GeocoderGadget-altPanel {

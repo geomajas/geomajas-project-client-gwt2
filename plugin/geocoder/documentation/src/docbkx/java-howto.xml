@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<chapter id="chapter-java-howto">
+  <title>How-to</title>
+
+  <para>This chapter shows how to create and use the default Geocoder Widget.</para>
+
+  <section>
+    <title>Default Geocoder Widget</title>
+
+    <para>The default Geocoder widget is class <code>org.geomajas.plugin.geocoder.client.widget.GeocoderWidget</code>.
+		The following code creates the Geocoder Widget and
+		defines the position of the widget on the map:</para>
+
+    <programlisting>GeocoderWidget geocoder = new GeocoderWidget(mapPresenter);
+geocoder.asWidget().getElement().getStyle().setTop(7, Style.Unit.PX);
+geocoder.asWidget().getElement().getStyle().setLeft(100, Style.Unit.PX);</programlisting>
+
+    <para>Alternatively, the position can be set in the constructor:</para>
+
+	  <programlisting>GeocoderWidget geocoder = new GeocoderWidget(mapPresenter, 7, 100);</programlisting>
+  </section>
+
+  <section>
+    <title>Default Geocoder Widget without css (no style)</title>
+
+    <para>The geocoder widget can be loaded with empty css classes. This can be achieved by
+	setting the resource bundle factory <emphase>before</emphase> creating the widget:</para>
+
+	  <programlisting>Geocoder.getInstance().setBundleFactory(new ExampleClientBundleFactoryNoStyle());
+// create the widget
+GeocoderWidget geocoder = new GeocoderWidget(mapPresenter);</programlisting>
+  </section>
+</chapter>
