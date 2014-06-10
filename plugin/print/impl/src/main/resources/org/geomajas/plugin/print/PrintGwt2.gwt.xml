@@ -10,13 +10,16 @@
   -->
 <module rename-to="PrintGwt2">
     <inherits name="org.geomajas.gwt2.GeomajasClientImpl" />
-	<inherits name="org.geomajas.plugin.print.theme.PrintGwtTheme" />
 	<inherits name="org.geomajas.plugin.rasterizing.RasterizingDto" />
 
-	<!-- source code from geomajas-plugin-printing (=back-end) -->
+	<!-- server side sources -->
+	<!-- currently from geomajas-client-gwt2-plugin-print-common-->
 	<source path="component/dto" />
 	<source path="command/dto" />
+	<!-- TO BE from geomajas-plugin-printing (=server project) -->
+
+	<!-- client source code -->
     <source path="client" />
 
-  	<entry-point class='org.geomajas.plugin.print.client.Print'/>
+  	<entry-point class='org.geomajas.plugin.print.client.PrintEntryPoint'/>
 </module>

@@ -207,6 +207,8 @@
 			</dependency>
 
 			<!-- Print plugin -->
+			<!-- in stead of org.geomajas.plugin:geomajas-client-gwt2-plugin-print-common,
+			we would like to use org.geomajas.plugin:geomajas-plugin-print from server project -->
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-client-gwt2-plugin-print-common</artifactId>

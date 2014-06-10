@@ -47,7 +47,7 @@ import org.geomajas.sld.RuleInfo;
  * Default print template builder, parameters include title, size, raster DPI, orientation, etc...
  * 
  * @author Jan De Moerloose (smartGWT version)
- * @author An Buyle (pureGWT version)
+ * @author An Buyle (GWT2 version)
  */
 public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 

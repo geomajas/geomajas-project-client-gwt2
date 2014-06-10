@@ -10,16 +10,32 @@
  */
 package org.geomajas.plugin.print.client.widget;
 
-import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.user.client.ui.IsWidget;
+import org.geomajas.plugin.print.client.template.PageSize;
 
 /**
- * {@link ClientBundle} for {@link PrintPanel}.
+ * View interface for the widget.
  * 
  * @author Jan De Moerloose
- * 
  */
-public interface PrintPanelResource extends ClientBundle {
+public interface PrintWidgetView extends IsWidget {
 
-	@Source("PrintPanel.css")
-	PrintPanelCssResource css();
+	void setHandler(PrintWidgetPresenter handler);
+
+	String getTitle();
+
+	/**
+	 *
+	 * @return true landscape
+	 * 			false portrait
+	 */
+	boolean isLandscape();
+
+	PageSize getPageSize();
+
+	boolean isWithArrow();
+
+	boolean isWithScaleBar();
+
+	int getRasterDpi();
 }

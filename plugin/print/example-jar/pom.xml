@@ -21,8 +21,8 @@
 	</parent>
 
 	<artifactId>geomajas-client-gwt2-plugin-print-example-jar</artifactId>
-	<name>Geomajas GWT2 client: Plugin print - Examples</name>
-	<description>Geomajas GWT2 client: Plugin print - Examples</description>
+	<name>Geomajas GWT2 client: Plugin Print - Examples</name>
+	<description>Geomajas GWT2 client: Plugin Print - Examples</description>
 
 	<dependencies>
 		<!-- GWT dependencies -->
@@ -36,6 +36,14 @@
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-client-gwt2-plugin-print-impl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-geotools</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-testdata</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>

@@ -18,7 +18,7 @@ import com.google.gwt.resources.client.CssResource;
  * @author Jan De Moerloose
  * 
  */
-interface PrintPanelCssResource extends CssResource {
+public interface PrintWidgetCssResource extends CssResource {
 
 	@ClassName("gm-print-button")
 	String printButton();

@@ -11,25 +11,51 @@
 package org.geomajas.plugin.print.client;
 
 
-import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 
 /**
- * Initializes the puregwt print plugin.
+ * Start point class for the print plugin.
  * 
- * @author An Buyle
+ * @author Jan Venstermans
  * 
  */
-public class Print implements EntryPoint {
+public final class Print {
 
-	public static final String SHOW_DEFAULT_PRINT_KEY = "ShowDefaultPrint";
+	private static Print instance;
 
-	public void onModuleLoad() {
-//		ToolbarRegistry.put(SHOW_DEFAULT_PRINT_KEY, new ToolCreator() {
-//
-//			public ToolbarBaseAction createTool(MapWidget mapWidget) {
-//				return new PrintAction(mapWidget);
-//			}
-//		});
+	private PrintViewFactory viewFactory;
+
+	private PrintClientBundleFactory bundleFactory;
+
+	private Print() {
 	}
 
+	public static Print getInstance() {
+		if (instance == null) {
+			instance = new Print();
+		}
+		return instance;
+	}
+
+	public PrintClientBundleFactory getBundleFactory() {
+		if (bundleFactory == null) {
+			bundleFactory = GWT.create(PrintClientBundleFactory.class);
+		}
+		return bundleFactory;
+	}
+
+	public PrintViewFactory getViewFactory() {
+		if (viewFactory == null) {
+			viewFactory = GWT.create(PrintViewFactory.class);
+		}
+		return viewFactory;
+	}
+
+	public void setViewFactory(PrintViewFactory viewFactory) {
+		this.viewFactory = viewFactory;
+	}
+
+	public void setBundleFactory(PrintClientBundleFactory bundleFactory) {
+		this.bundleFactory = bundleFactory;
+	}
 }

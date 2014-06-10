@@ -12,9 +12,9 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
 	<ui:with field='msg' type='org.geomajas.plugin.print.client.i18n.PrintMessages' />
-	<ui:with field='resource' type='org.geomajas.plugin.print.client.widget.PrintPanelResource' />
+	<ui:with field='resource' type='org.geomajas.plugin.print.client.widget.PrintWidgetResource' />
 
-	<g:FlowPanel > <!-- no width: 100% here ? -->
+	<g:FlowPanel ui:field="totalPanel"> <!-- no width: 100% here ? -->
 	
 		<g:HTMLPanel addStyleNames="{resource.css.subMenuPanel}">  <!-- no width: 100% here ! -->
 		<!--  title -->
@@ -29,7 +29,8 @@
 								:
 							</g:Label>
 							
-							<g:TextBox ui:field="titleTextBox" width="180px" 
+							<g:TextBox ui:field="titleTextBox" width="180px"
+									   title="{msg.printPrefsTitleTooltip}"
 								addStyleNames="{resource.css.textboxSuitableMargin}"	/> <!--  excl padding-left: 5px and padding-right: 2px -->
 						</li>
 						<li>
