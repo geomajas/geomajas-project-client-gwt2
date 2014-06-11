@@ -41,7 +41,7 @@ public class TileConfiguration implements Serializable {
 
 	private Coordinate tileOrigin;
 	
-	private Bbox maxBounds;
+	private Bbox maxBounds = Bbox.ALL;
 
 	// ------------------------------------------------------------------------
 	// Constructors:

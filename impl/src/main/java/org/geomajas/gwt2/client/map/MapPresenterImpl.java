@@ -258,8 +258,11 @@ public final class MapPresenterImpl implements MapPresenter {
 	// ------------------------------------------------------------------------
 	// MapPresenter implementation:
 	// ------------------------------------------------------------------------
-
 	public void initialize(MapConfiguration configuration, DefaultMapWidget... mapWidgets) {
+		initialize(configuration, true, mapWidgets);
+	}
+	
+	public void initialize(MapConfiguration configuration, boolean fireEvent, DefaultMapWidget... mapWidgets) {
 		this.configuration = configuration;
 
 		// Apply this configuration on the LayersModelRenderer:

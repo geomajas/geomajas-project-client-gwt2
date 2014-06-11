@@ -22,8 +22,8 @@ import org.geomajas.command.dto.RegisterNamedStyleInfoResponse;
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
-import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.geometry.service.BboxService;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
@@ -43,6 +43,8 @@ import org.geomajas.gwt2.client.map.attribute.AttributeType;
 import org.geomajas.gwt2.client.map.attribute.PrimitiveAttributeTypeImpl;
 import org.geomajas.gwt2.client.map.attribute.PrimitiveType;
 import org.geomajas.gwt2.client.map.feature.Feature;
+import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
+import org.geomajas.gwt2.client.map.render.TileRenderer;
 import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.RuleInfo;
 
@@ -69,9 +71,9 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 	// ------------------------------------------------------------------------
 
 	@SuppressWarnings("deprecation")
-	public VectorServerLayerImpl(MapConfiguration mapConfiguration, ClientVectorLayerInfo layerInfo,
-			final ViewPort viewPort, MapEventBus eventBus) {
-		super(mapConfiguration, layerInfo, viewPort, eventBus);
+	public VectorServerLayerImpl(MapConfiguration mapConfig, ClientVectorLayerInfo layerInfo, final ViewPort viewPort,
+			MapEventBus eventBus) {
+		super(mapConfig, layerInfo, createTileConfiguration(mapConfig, layerInfo, viewPort), viewPort, eventBus);
 		this.selection = new HashMap<String, Feature>();
 		this.descriptors = new ArrayList<AttributeDescriptor>();
 		if (layerInfo.getFeatureInfo() != null && layerInfo.getFeatureInfo().getAttributes() != null) {
@@ -82,23 +84,20 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 				}
 			}
 		}
+
+		//
 	}
 
 	@Override
-	protected void initLayerConfiguration() {
-		String layerId = layerInfo.getServerLayerId();
-		String dispatcher = GeomajasServerExtension.getInstance().getEndPointService().getDispatcherUrl();
-		String baseUrl = dispatcher + RASTERIZING_PREFIX + layerId + "@" + mapInfo.getCrs() + "/"
-				+ layerInfo.getNamedStyleInfo().getName() + "/";
-		getTileConfiguration().setTileWidth(mapInfo.getPreferredPixelsPerTile().getWidth());
-		getTileConfiguration().setTileHeight(mapInfo.getPreferredPixelsPerTile().getHeight());
-		List<Double> resolutions = new ArrayList<Double>();
-		for (int i = 0; i < viewPort.getResolutionCount(); i++) {
-			resolutions.add(viewPort.getResolution(i));
+	public TileRenderer getTileRenderer() {
+		if (tileRenderer == null) {
+			 String layerId = layerInfo.getServerLayerId();
+			 String dispatcher = GeomajasServerExtension.getInstance().getEndPointService().getDispatcherUrl();
+			 String baseUrl = dispatcher + RASTERIZING_PREFIX + layerId + "@" + mapInfo.getCrs() + "/"
+			 + layerInfo.getNamedStyleInfo().getName() + "/";
+			tileRenderer = new VectorServerTileRenderer(tileConfiguration, baseUrl, ".png");
 		}
-		getTileConfiguration().setResolutions(resolutions);
-		getTileConfiguration().setTileOrigin(BboxService.getOrigin(viewPort.getMaximumBounds()));
-		layerConfiguration = new ServerLayerConfiguration(baseUrl, ".png", getTileConfiguration());
+		return tileRenderer;
 	}
 
 	// ------------------------------------------------------------------------
@@ -261,6 +260,25 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 			return new AttributeDescriptorImpl(type, pai.getName());
 		}
 		return null;
+	}
+
+	/**
+	 * Create the tile configuration
+	 */
+	private static TileConfiguration createTileConfiguration(MapConfiguration mapConfig,
+			ClientVectorLayerInfo layerInfo, final ViewPort viewPort) {
+		TileConfiguration tileConfig = new TileConfiguration();
+		ClientMapInfo mapInfo = mapConfig.getHintValue(GeomajasServerExtension.MAPINFO);
+		tileConfig.setTileWidth(mapInfo.getPreferredPixelsPerTile().getWidth());
+		tileConfig.setTileHeight(mapInfo.getPreferredPixelsPerTile().getHeight());
+		List<Double> resolutions = new ArrayList<Double>();
+		for (int i = 0; i < viewPort.getResolutionCount(); i++) {
+			resolutions.add(viewPort.getResolution(i));
+		}
+		tileConfig.setResolutions(resolutions);
+		tileConfig.setMaxBounds(layerInfo.getMaxExtent());
+		tileConfig.setTileOrigin(BboxService.getOrigin(layerInfo.getMaxExtent()));
+		return tileConfig;
 	}
 
 }

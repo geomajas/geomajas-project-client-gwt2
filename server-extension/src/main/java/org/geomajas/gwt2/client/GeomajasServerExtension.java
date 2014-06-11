@@ -24,6 +24,7 @@ import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
+import org.geomajas.gwt2.client.event.MapInitializationEvent;
 import org.geomajas.gwt2.client.map.Hint;
 import org.geomajas.gwt2.client.map.MapConfiguration;
 import org.geomajas.gwt2.client.map.MapEventBus;
@@ -168,8 +169,8 @@ public final class GeomajasServerExtension {
 				// Create the map configuration
 				MapConfiguration configuration = createMapConfiguration(mapInfo, mapPresenter);
 
-				// We must initialize the map first, as layer constructors may depend on it:
-				((MapPresenterImpl) mapPresenter).initialize(configuration, mapWidgets);
+				// We must initialize the map first (without firing the event), as layer constructors may depend on it :
+				((MapPresenterImpl) mapPresenter).initialize(configuration, false, mapWidgets);
 
 				// Add all layers:
 				for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
@@ -177,7 +178,6 @@ public final class GeomajasServerExtension {
 							mapPresenter.getEventBus());
 					mapPresenter.getLayersModel().addLayer(layer);
 				}
-
 				// All layers animated
 				LayersModelRenderer modelRenderer = mapPresenter.getLayersModelRenderer();
 				for (int i = 0; i < mapPresenter.getLayersModel().getLayerCount(); i++) {
@@ -189,6 +189,9 @@ public final class GeomajasServerExtension {
 				renderer.initialize(mapInfo);
 				mapPresenter.getEventBus().addFeatureSelectionHandler(renderer);
 				mapPresenter.getEventBus().addLayerVisibilityHandler(renderer);
+				
+				// now we can fire the initialization event
+				mapPresenter.getEventBus().fireEvent(new MapInitializationEvent(mapPresenter));
 			}
 		});
 	}

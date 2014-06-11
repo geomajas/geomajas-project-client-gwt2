@@ -13,6 +13,7 @@ package org.geomajas.gwt2.client.map.render.dom;
 
 import com.google.gwt.core.client.Callback;
 import com.google.web.bindery.event.shared.HandlerRegistration;
+
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.service.BboxService;
@@ -33,6 +34,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * Definition for a renderer for WMS layers.
@@ -40,6 +42,10 @@ import java.util.Map;
  * @author Pieter De Graef
  */
 public class DomTileLevelRenderer implements TileLevelRenderer {
+
+	private static Logger logger = Logger.getLogger(DomTileLevelRenderer.class.getName());
+
+	private static final int MAX_NR_TILES = 500;
 
 	private final HtmlContainer container;
 
@@ -174,9 +180,14 @@ public class DomTileLevelRenderer implements TileLevelRenderer {
 			return codes;
 		}
 
+		int count = 0;
 		for (int x = xmin; x <= xmax; x++) {
 			for (int y = ymin; y <= ymax; y++) {
 				codes.add(new TileCode(tileLevel, x, y));
+				if (count++ > MAX_NR_TILES) {
+					logger.severe("Too many tiles for level " + tileLevel + " of layer " + layer.getId());
+					break;
+				}
 			}
 		}
 		return codes;

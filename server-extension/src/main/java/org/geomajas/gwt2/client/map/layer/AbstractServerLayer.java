@@ -31,10 +31,8 @@ public abstract class AbstractServerLayer<T extends ClientLayerInfo> extends Abs
 	protected ClientMapInfo mapInfo;
 
 	protected T layerInfo;
-	
+
 	protected TileRenderer tileRenderer;
-	
-	protected ServerLayerConfiguration layerConfiguration;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -47,26 +45,16 @@ public abstract class AbstractServerLayer<T extends ClientLayerInfo> extends Abs
 	 * @param viewPort The view port of the map.
 	 * @param eventBus The map centric event bus.
 	 */
-	public AbstractServerLayer(MapConfiguration mapConfiguration, T layerInfo, ViewPort viewPort, MapEventBus eventBus) {
-		super(layerInfo.getId(), mapConfiguration, new TileConfiguration());
-		this.mapInfo = mapConfiguration.getHintValue(GeomajasServerExtension.MAPINFO);
+	public AbstractServerLayer(MapConfiguration mapConfig, T layerInfo, TileConfiguration tileConfig,
+			ViewPort viewPort, MapEventBus eventBus) {
+		super(layerInfo.getId(), mapConfig, tileConfig);
+		this.mapInfo = mapConfig.getHintValue(GeomajasServerExtension.MAPINFO);
 		this.layerInfo = layerInfo;
 		this.markedAsVisible = layerInfo.isVisible();
 		this.title = layerInfo.getLabel();
 		setViewPort(viewPort);
 		setEventBus(eventBus);
-		initLayerConfiguration();
 		eventBus.addViewPortChangedHandler(new LayerScaleVisibilityHandler());
-	}
-
-	protected abstract void initLayerConfiguration();
-
-	@Override
-	public TileRenderer getTileRenderer() {
-		if(tileRenderer == null) {
-			tileRenderer = new ServerTileRenderer(layerConfiguration);
-		}
-		return tileRenderer;
 	}
 
 	// ------------------------------------------------------------------------
@@ -76,7 +64,7 @@ public abstract class AbstractServerLayer<T extends ClientLayerInfo> extends Abs
 	public String getServerLayerId() {
 		return layerInfo.getServerLayerId();
 	}
-	
+
 	public ClientMapInfo getMapInfo() {
 		return mapInfo;
 	}
@@ -96,5 +84,5 @@ public abstract class AbstractServerLayer<T extends ClientLayerInfo> extends Abs
 		}
 		return false;
 	}
-	
+
 }

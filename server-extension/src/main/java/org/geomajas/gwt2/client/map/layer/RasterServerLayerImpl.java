@@ -20,6 +20,8 @@ import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.MapConfiguration;
 import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.ViewPort;
+import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
+import org.geomajas.gwt2.client.map.render.TileRenderer;
 
 /**
  * The client side representation of a raster layer defined on the backend.
@@ -33,9 +35,20 @@ public class RasterServerLayerImpl extends AbstractServerLayer<ClientRasterLayer
 	private static final String TMS_PREFIX = "tms/";
 
 	/** The only constructor. */
-	public RasterServerLayerImpl(MapConfiguration mapConfiguration, ClientRasterLayerInfo layerInfo,
-			final ViewPort viewPort, MapEventBus eventBus) {
-		super(mapConfiguration, layerInfo, viewPort, eventBus);
+	public RasterServerLayerImpl(MapConfiguration mapConfiguration, ClientRasterLayerInfo layerInfo, ViewPort viewPort,
+			MapEventBus eventBus) {
+		super(mapConfiguration, layerInfo, createTileConfiguration(layerInfo), viewPort, eventBus);
+	}
+
+	@Override
+	public TileRenderer getTileRenderer() {
+		if (tileRenderer == null) {
+			String dispatcher = GeomajasServerExtension.getInstance().getEndPointService().getDispatcherUrl();
+			String layerId = layerInfo.getServerLayerId();
+			String baseUrl = dispatcher + TMS_PREFIX + layerId + "@" + viewPort.getCrs() + "/";
+			tileRenderer = new RasterServerTileRenderer(baseUrl, ".png");
+		}
+		return tileRenderer;
 	}
 
 	// ------------------------------------------------------------------------
@@ -58,19 +71,29 @@ public class RasterServerLayerImpl extends AbstractServerLayer<ClientRasterLayer
 		return Double.parseDouble(getLayerInfo().getStyle());
 	}
 
-	@Override
-	protected void initLayerConfiguration() {
-		String dispatcher = GeomajasServerExtension.getInstance().getEndPointService().getDispatcherUrl();
-		String layerId = layerInfo.getServerLayerId();
-		ArrayList<Double> resolutions = new ArrayList<Double>();
+	/**
+	 * Create the tile configuration
+	 */
+	private static TileConfiguration createTileConfiguration(ClientRasterLayerInfo layerInfo) {
 		RasterLayerInfo serverLayerInfo = (RasterLayerInfo) layerInfo.getLayerInfo();
-		String baseUrl = dispatcher + TMS_PREFIX + layerId + "@" + getMapInfo().getCrs() + "/";
-		getTileConfiguration().setTileWidth(serverLayerInfo.getTileWidth());
-		getTileConfiguration().setTileHeight(serverLayerInfo.getTileHeight());
-		getTileConfiguration().setMaxBounds(layerInfo.getMaxExtent());
-		getTileConfiguration().setResolutions(serverLayerInfo.getResolutions());
-		getTileConfiguration().setTileOrigin(BboxService.getOrigin(layerInfo.getMaxExtent()));
-		layerConfiguration = new ServerLayerConfiguration(baseUrl, ".png", getTileConfiguration());
+		TileConfiguration tileConfig = new TileConfiguration();
+		tileConfig.setTileWidth(serverLayerInfo.getTileWidth());
+		tileConfig.setTileHeight(serverLayerInfo.getTileHeight());
+		tileConfig.setMaxBounds(layerInfo.getMaxExtent());
+		if (serverLayerInfo.getResolutions().size() > 0) {
+			// use resolutions of server for raster layer (as yet not reprojectable)
+			tileConfig.setResolutions(serverLayerInfo.getResolutions());
+		} else {
+			// if no resolutions, fall back to quad tree numbers
+			ArrayList<Double> resolutions = new ArrayList<Double>();
+			for (int i = 0; i < 50; i++) {
+				resolutions
+						.add(layerInfo.getMaxExtent().getWidth() / (serverLayerInfo.getTileWidth() * Math.pow(2, i)));
+				tileConfig.setResolutions(resolutions);
+			}
+		}
+		tileConfig.setTileOrigin(BboxService.getOrigin(layerInfo.getMaxExtent()));
+		return tileConfig;
 	}
 
 }
