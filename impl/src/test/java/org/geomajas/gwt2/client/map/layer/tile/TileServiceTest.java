@@ -46,7 +46,7 @@ public class TileServiceTest {
 		viewPort = TestConfigUtil.createViewPort(eventBus, TestConfigUtil.getMapConfig(), 1000, 1000);
 
 		Bbox max = viewPort.getMaximumBounds();
-		tileConfig = new TileConfiguration(200, 200, new Coordinate(max.getX(), max.getY()), viewPort);
+		tileConfig = new TileConfiguration(200, 200, new Coordinate(max.getX(), max.getY()), viewPort, new Bbox(200, 200, 800, 800));
 	}
 
 	//	@Test

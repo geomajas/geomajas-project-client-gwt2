@@ -33,7 +33,8 @@ public class RasterServerLayerImpl extends AbstractServerLayer<ClientRasterLayer
 	private static final String TMS_PREFIX = "tms/";
 
 	/** The only constructor. */
-	public RasterServerLayerImpl(MapConfiguration mapConfiguration, ClientRasterLayerInfo layerInfo, final ViewPort viewPort, MapEventBus eventBus) {
+	public RasterServerLayerImpl(MapConfiguration mapConfiguration, ClientRasterLayerInfo layerInfo,
+			final ViewPort viewPort, MapEventBus eventBus) {
 		super(mapConfiguration, layerInfo, viewPort, eventBus);
 	}
 
@@ -66,12 +67,9 @@ public class RasterServerLayerImpl extends AbstractServerLayer<ClientRasterLayer
 		String baseUrl = dispatcher + TMS_PREFIX + layerId + "@" + getMapInfo().getCrs() + "/";
 		getTileConfiguration().setTileWidth(serverLayerInfo.getTileWidth());
 		getTileConfiguration().setTileHeight(serverLayerInfo.getTileHeight());
-		for (int i = 0; i < 50; i++) {
-			resolutions.add(layerInfo.getMaxExtent().getWidth() / (serverLayerInfo.getTileWidth() * Math.pow(2, i)));
-		}
-		getTileConfiguration().setResolutions(resolutions);
+		getTileConfiguration().setMaxBounds(layerInfo.getMaxExtent());
+		getTileConfiguration().setResolutions(serverLayerInfo.getResolutions());
 		getTileConfiguration().setTileOrigin(BboxService.getOrigin(layerInfo.getMaxExtent()));
-		getTileConfiguration().setLimitXYByTileLevel(true);
 		layerConfiguration = new ServerLayerConfiguration(baseUrl, ".png", getTileConfiguration());
 	}
 

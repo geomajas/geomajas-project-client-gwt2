@@ -113,7 +113,7 @@ public final class WmsClient {
 			throw new IllegalArgumentException("Layer does not support map CRS (" + viewPort.getCrs() + ").");
 		}
 		Coordinate origin = new Coordinate(bbox.getX(), bbox.getY());
-		return new TileConfiguration(tileWidth, tileHeight, origin, viewPort);
+		return new TileConfiguration(tileWidth, tileHeight, origin, viewPort, viewPort.getMaximumBounds());
 	}
 
 	/**

@@ -48,7 +48,7 @@ import org.geomajas.sld.RuleInfo;
 
 /**
  * Vector layer representation.
- *
+ * 
  * @author Pieter De Graef
  * @author Jan De Moerloose
  */
@@ -69,7 +69,8 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 	// ------------------------------------------------------------------------
 
 	@SuppressWarnings("deprecation")
-	public VectorServerLayerImpl(MapConfiguration mapConfiguration, ClientVectorLayerInfo layerInfo, final ViewPort viewPort, MapEventBus eventBus) {
+	public VectorServerLayerImpl(MapConfiguration mapConfiguration, ClientVectorLayerInfo layerInfo,
+			final ViewPort viewPort, MapEventBus eventBus) {
 		super(mapConfiguration, layerInfo, viewPort, eventBus);
 		this.selection = new HashMap<String, Feature>();
 		this.descriptors = new ArrayList<AttributeDescriptor>();
@@ -83,7 +84,6 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 		}
 	}
 
-
 	@Override
 	protected void initLayerConfiguration() {
 		String layerId = layerInfo.getServerLayerId();
@@ -93,12 +93,11 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 		getTileConfiguration().setTileWidth(mapInfo.getPreferredPixelsPerTile().getWidth());
 		getTileConfiguration().setTileHeight(mapInfo.getPreferredPixelsPerTile().getHeight());
 		List<Double> resolutions = new ArrayList<Double>();
-		for (ScaleInfo scale : mapInfo.getScaleConfiguration().getZoomLevels()) {
-			resolutions.add(1 / scale.getPixelPerUnit());
+		for (int i = 0; i < viewPort.getResolutionCount(); i++) {
+			resolutions.add(viewPort.getResolution(i));
 		}
 		getTileConfiguration().setResolutions(resolutions);
-		getTileConfiguration().setTileOrigin(BboxService.getOrigin(mapInfo.getInitialBounds()));
-		getTileConfiguration().setLimitXYByTileLevel(true);
+		getTileConfiguration().setTileOrigin(BboxService.getOrigin(viewPort.getMaximumBounds()));
 		layerConfiguration = new ServerLayerConfiguration(baseUrl, ".png", getTileConfiguration());
 	}
 
@@ -263,6 +262,5 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 		}
 		return null;
 	}
-
 
 }

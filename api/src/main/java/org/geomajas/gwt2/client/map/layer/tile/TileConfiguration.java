@@ -11,15 +11,16 @@
 
 package org.geomajas.gwt2.client.map.layer.tile;
 
-import org.geomajas.annotation.Api;
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt2.client.map.ViewPort;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import org.geomajas.annotation.Api;
+import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt2.client.map.ViewPort;
 
 /**
  * Basic configuration object for a tile based layer.
@@ -40,7 +41,7 @@ public class TileConfiguration implements Serializable {
 
 	private Coordinate tileOrigin;
 	
-	private boolean limitXYByTileLevel;
+	private Bbox maxBounds;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -59,11 +60,13 @@ public class TileConfiguration implements Serializable {
 	 * @param tileHeight  The height in pixels for image tiles.
 	 * @param tileOrigin  The position in world space where tile (0,0) begins.
 	 * @param resolutions The list of resolutions for this configuration object. Each should represent a tile level.
+	 * @param maxBounds   The maximum bounds of the tile configuration (same for each tile level).
 	 */
-	public TileConfiguration(int tileWidth, int tileHeight, Coordinate tileOrigin, List<Double> resolutions) {
+	public TileConfiguration(int tileWidth, int tileHeight, Coordinate tileOrigin, List<Double> resolutions, Bbox maxBounds) {
 		this.tileWidth = tileWidth;
 		this.tileHeight = tileHeight;
 		this.tileOrigin = tileOrigin;
+		this.maxBounds = maxBounds;
 		setResolutions(resolutions);
 	}
 
@@ -76,11 +79,13 @@ public class TileConfiguration implements Serializable {
 	 * @param viewPort   The ViewPort from which to take over the list of resolutions. Better make sure the map has
 	 *                   already been initialized before calling this method. Otherwise the ViewPort won't have any
 	 *                   resolutions.
+	 * @param maxBounds  The maximum bounds of the tile configuration (same for each tile level).
 	 */
-	public TileConfiguration(int tileWidth, int tileHeight, Coordinate tileOrigin, ViewPort viewPort) {
+	public TileConfiguration(int tileWidth, int tileHeight, Coordinate tileOrigin, ViewPort viewPort, Bbox maxBounds) {
 		this.tileWidth = tileWidth;
 		this.tileHeight = tileHeight;
 		this.tileOrigin = tileOrigin;
+		this.maxBounds = maxBounds;
 
 		List<Double> vpResolutions = new ArrayList<Double>(viewPort.getResolutionCount());
 		for (int i = 0; i < viewPort.getResolutionCount(); i++) {
@@ -251,20 +256,22 @@ public class TileConfiguration implements Serializable {
 	}
 	
 	/**
-	 * see {@link #setLimitXYByTileLevel(boolean)}
-	 * @return
-	 */
-	public boolean isLimitXYByTileLevel() {
-		return limitXYByTileLevel;
-	}
-	
-	/**
-	 * If set to true, the indexes in x and y direction are limited to 2^n-1, where n is the tile level.
+	 * Return the maximum bounds.
 	 * 
-	 * @param limitXYByTileLevel
+	 * @return the maximum bounds
 	 */
-	public void setLimitXYByTileLevel(boolean limitXYByTileLevel) {
-		this.limitXYByTileLevel = limitXYByTileLevel;
+	public Bbox getMaxBounds() {
+		return maxBounds;
+	}
+
+	/**
+	 * Set the maximum bounds. Only tiles within the maximum bounds will be fetched. To avoid rounding errors, the
+	 * center of the tile may be used for checking the condition.
+	 * 
+	 * @param maxBounds
+	 */
+	public void setMaxBounds(Bbox maxBounds) {
+		this.maxBounds = maxBounds;
 	}
 	
 }

@@ -148,6 +148,8 @@ public class DomTileLevelRenderer implements TileLevelRenderer {
 
 	private List<TileCode> getTileCodesForView(View view) {
 		Bbox bounds = asBounds(view);
+		// clip to maximum bounds
+		bounds = BboxService.intersection(bounds, layer.getTileConfiguration().getMaxBounds());
 		List<TileCode> codes = new ArrayList<TileCode>();
 		if (bounds.getHeight() == 0 || bounds.getWidth() == 0) {
 			return codes;

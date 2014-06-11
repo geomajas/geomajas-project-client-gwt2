@@ -171,7 +171,7 @@ public class WmsFeatureInfoPanel implements SamplePanel {
 
 		// Now create a WMS layer and add it to the map:
 		TileConfiguration tileConfig = new TileConfiguration(256, 256, new Coordinate(-180, -90),
-				mapPresenter.getViewPort());
+				mapPresenter.getViewPort(), new Bbox(-180, -90, 360, 360));
 		WmsLayerConfiguration layerConfig = new WmsLayerConfiguration();
 		layerConfig.setBaseUrl(WMS_BASE_URL);
 		layerConfig.setFormat("image/png");
