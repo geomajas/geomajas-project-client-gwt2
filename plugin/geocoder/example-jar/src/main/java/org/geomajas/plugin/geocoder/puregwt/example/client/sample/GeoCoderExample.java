@@ -10,15 +10,6 @@
  */
 package org.geomajas.plugin.geocoder.puregwt.example.client.sample;
 
-import org.geomajas.gwt2.client.GeomajasImpl;
-import org.geomajas.gwt2.client.GeomajasServerExtension;
-import org.geomajas.gwt2.client.event.MapInitializationEvent;
-import org.geomajas.gwt2.client.event.MapInitializationHandler;
-import org.geomajas.gwt2.client.map.MapPresenter;
-import org.geomajas.gwt2.client.widget.MapLayoutPanel;
-import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
-import org.geomajas.plugin.geocoder.client.GeocoderWidget;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -26,6 +17,14 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
+import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
+import org.geomajas.gwt2.client.event.MapInitializationEvent;
+import org.geomajas.gwt2.client.event.MapInitializationHandler;
+import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.client.widget.MapLayoutPanel;
+import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
+import org.geomajas.plugin.geocoder.client.widget.GeocoderWidget;
 
 /**
  * Class description.
@@ -74,11 +73,11 @@ public class GeoCoderExample implements SamplePanel {
 
 		// create geocoder widget
 		GeocoderWidget geocoder = new GeocoderWidget(mapPresenter);
-		geocoder.getElement().getStyle().setTop(7, Style.Unit.PX);
-		geocoder.getElement().getStyle().setLeft(100, Style.Unit.PX);
+		geocoder.asWidget().getElement().getStyle().setTop(7, Style.Unit.PX);
+		geocoder.asWidget().getElement().getStyle().setLeft(100, Style.Unit.PX);
 
 		// add geocoder widget to the map
-		mapPresenter.getWidgetPane().add(geocoder);
+		mapPresenter.getWidgetPane().add(geocoder.asWidget());
 
 		mapPanel.setWidget(resizeLayoutPanel);
 	}

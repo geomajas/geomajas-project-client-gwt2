@@ -105,7 +105,8 @@ public class SplitCountryPanel implements SamplePanel {
 		mapPanel.add(mapDecorator);
 
 		// Initialize the map, and return the layout:
-		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "gwt-app", "mapCountries");
+		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "appEditingExample",
+				"mapEditingExampleCountries");
 		mapPresenter.getEventBus().addMapInitializationHandler(new MapInitializationHandler() {
 
 			@Override

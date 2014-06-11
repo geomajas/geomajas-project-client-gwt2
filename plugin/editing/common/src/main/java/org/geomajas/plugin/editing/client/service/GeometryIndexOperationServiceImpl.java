@@ -25,6 +25,7 @@ import org.geomajas.plugin.editing.client.event.GeometryEditStartEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
+import org.geomajas.plugin.editing.client.operation.ChangeInsertingStateOperation;
 import org.geomajas.plugin.editing.client.operation.DeleteGeometryOperation;
 import org.geomajas.plugin.editing.client.operation.DeleteVertexOperation;
 import org.geomajas.plugin.editing.client.operation.GeometryIndexOperation;
@@ -67,6 +68,8 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 	private final EventBus eventBus;
 
 	private OperationSequence current;
+	
+	private List<GeometryIndexOperationInterceptor> interceptors;
 
 	// ------------------------------------------------------------------------
 	// Protected constructor:
@@ -86,6 +89,7 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 		indexService = service.getIndexService();
 		undoQueue = new Stack<OperationSequence>();
 		redoQueue = new Stack<OperationSequence>();
+		interceptors = new ArrayList<GeometryIndexOperationInterceptor>();
 
 		service.addGeometryEditStartHandler(this);
 		service.addGeometryEditStopHandler(this);
@@ -194,7 +198,7 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 		for (int i = 0; i < indices.size(); i++) {
 			if (indexService.getType(indices.get(i)) == GeometryIndexType.TYPE_VERTEX) {
 				GeometryIndexOperation op = new MoveVertexOperation(indexService, coordinates.get(i).get(0));
-				op.execute(geometry, indices.get(i));
+				executeOperation(op, indices.get(i));
 				seq.addOperation(op);
 			} else {
 				throw new GeometryOperationFailedException("Can only move vertices. Other types not suported.");
@@ -235,7 +239,7 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 							child = new Geometry(Geometry.POLYGON, 0, 0);
 						}
 						GeometryIndexOperation op = new InsertGeometryOperation(indexService, child);
-						op.execute(geometry, indices.get(i));
+						executeOperation(op, indices.get(i));
 						seq.addOperation(op);
 					} else {
 						throw new GeometryOperationFailedException("Cannot insert new geometries (yet).");
@@ -246,7 +250,7 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 						throw new GeometryOperationFailedException("No coordinates passed to insert.");
 					}
 					GeometryIndexOperation op2 = new InsertVertexOperation(indexService, coordinates.get(i).get(0));
-					op2.execute(geometry, indices.get(i));
+					executeOperation(op2, indices.get(i));
 					seq.addOperation(op2);
 			}
 		}
@@ -282,7 +286,7 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 				default:
 					op = new DeleteVertexOperation(indexService);
 			}
-			op.execute(geometry, indices.get(i));
+			executeOperation(op, indices.get(i));
 			seq.addOperation(op);
 		}
 		if (!isOperationSequenceActive()) {
@@ -291,6 +295,23 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 		eventBus.fireEvent(new GeometryEditRemoveEvent(geometry, indices));
 		if (!isOperationSequenceActive()) {
 			eventBus.fireEvent(new GeometryEditShapeChangedEvent(service.getGeometry()));
+		}
+	}
+
+	@Override
+	public void finish(GeometryIndex index) throws GeometryOperationFailedException {
+		OperationSequence seq = null;
+		if (isOperationSequenceActive()) {
+			seq = current;
+		} else {
+			seq = new OperationSequence();
+			redoQueue.clear();
+		}
+		GeometryIndexOperation op = new ChangeInsertingStateOperation(service, GeometryEditState.IDLE);
+		executeOperation(op, index);
+		seq.addOperation(op);
+		if (!isOperationSequenceActive()) {
+			undoQueue.add(seq);
 		}
 	}
 
@@ -332,7 +353,7 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 					index = indexService.create(GeometryIndexType.TYPE_GEOMETRY, geometry.getGeometries().length);
 				}
 			}
-			operation.execute(geometry, index);
+			executeOperation(operation, index);
 
 			// Add the operation to the queue (if not part of a sequence):
 			seq.addOperation(operation);
@@ -345,6 +366,21 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 			return index;
 		}
 		throw new GeometryOperationFailedException("Can't add a new geometry to the given geometry.");
+	}
+	
+	@Override
+	public void addInterceptor(GeometryIndexOperationInterceptor interceptor) {
+		interceptors.add(interceptor);
+	}
+
+	@Override
+	public void removeInterceptor(GeometryIndexOperationInterceptor interceptor) {
+		interceptors.remove(interceptor);
+	}
+
+	private void executeOperation(GeometryIndexOperation operation, GeometryIndex index)
+			throws GeometryOperationFailedException {
+		new ChainImpl(operation, index).proceed();
 	}
 
 	// ------------------------------------------------------------------------
@@ -384,5 +420,65 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 		public boolean isEmpty() {
 			return operations.isEmpty();
 		}
+	}
+
+	/**
+	 * Interceptor chain implementation.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	private class ChainImpl implements GeometryIndexOperationInterceptorChain {
+		
+		private int position;
+		
+		private GeometryIndexOperation operation;
+		
+		private GeometryIndex index;
+		
+		private boolean rollback;
+
+		public ChainImpl(GeometryIndexOperation operation, GeometryIndex index) {
+			this.operation = operation;
+			this.index = index;
+		}
+
+		@Override
+		public void proceed() throws GeometryOperationFailedException {
+			if (position == interceptors.size()) {
+				operation.execute(getGeometry(), index);
+			} else {
+				interceptors.get(position++).intercept(this);
+				if (rollback) {
+					operation.getInverseOperation().execute(getGeometry(), operation.getGeometryIndex());
+					throw new GeometryOperationFailedException("Operation rolled back");
+				}
+			}
+		}
+		
+		public GeometryIndexOperation getOperation() {
+			return operation;
+		}
+
+		@Override
+		public void rollback() {
+			rollback = true;
+		}
+
+		@Override
+		public GeometryIndex getIndex() {
+			return index;
+		}
+
+		@Override
+		public Geometry getGeometry() {
+			return service.getGeometry();
+		}
+
+		@Override
+		public com.google.web.bindery.event.shared.EventBus getEventBus() {
+			return eventBus;
+		}
+		
 	}
 }

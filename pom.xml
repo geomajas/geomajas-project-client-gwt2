@@ -148,6 +148,11 @@
 				<artifactId>geomajas-client-gwt2-plugin-geocoder-example-jar</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-client-gwt2-plugin-geocoder-documentation</artifactId>
+				<version>${project.version}</version>
+			</dependency>
  			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-geocoder</artifactId>
@@ -197,7 +202,7 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-client-gwt2-plugin-graphicsediting-example</artifactId>
+				<artifactId>geomajas-client-gwt2-plugin-graphicsediting-example-jar</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 

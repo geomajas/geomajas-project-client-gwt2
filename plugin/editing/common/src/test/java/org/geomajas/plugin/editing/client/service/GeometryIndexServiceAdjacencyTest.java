@@ -17,10 +17,6 @@ import junit.framework.Assert;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.plugin.editing.client.service.GeometryIndex;
-import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
-import org.geomajas.plugin.editing.client.service.GeometryIndexService;
-import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 import org.junit.Test;
 
 /**

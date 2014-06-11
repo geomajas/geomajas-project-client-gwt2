@@ -11,13 +11,11 @@
 
 package org.geomajas.plugin.geocoder.client.event;
 
-import java.util.List;
-
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringAlternative;
 
-import com.google.gwt.event.shared.GwtEvent;
+import java.util.List;
 
 /**
  * Event which is used when the geocoder returned alternatives.
@@ -29,7 +27,7 @@ import com.google.gwt.event.shared.GwtEvent;
  * @since 2.0.0
  */
 @Api()
-public class SelectAlternativeEvent extends GwtEvent<SelectAlternativeHandler> {
+public class SelectAlternativeEvent extends GeocoderEvent<SelectAlternativeHandler> {
 
 	private MapPresenter mapPresenter;
 	private List<GetLocationForStringAlternative> alternatives;

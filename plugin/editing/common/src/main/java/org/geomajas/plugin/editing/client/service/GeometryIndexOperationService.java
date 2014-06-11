@@ -145,6 +145,15 @@ public interface GeometryIndexOperationService {
 	void remove(List<GeometryIndex> indices) throws GeometryOperationFailedException;
 
 	/**
+	 * Finish the geometry on the given index. This will set the service to idle state if successful.
+	 * 
+	 * @param index the last insert index
+	 * @throws GeometryOperationFailedException
+	 * @since 2.1.0
+	 */
+	void finish(GeometryIndex index) throws GeometryOperationFailedException;
+
+	/**
 	 * Add an empty child at the lowest sub-geometry level.
 	 * 
 	 * @return The index that points to the empty child within the geometry.
@@ -161,4 +170,21 @@ public interface GeometryIndexOperationService {
 	 * @throws GeometryOperationFailedException
 	 */
 	GeometryIndex addEmptyChild(GeometryIndex index) throws GeometryOperationFailedException;
+	
+	/**
+	 * Add an interceptor to the list of operation interceptors of the service.
+	 * 
+	 * @param interceptor the interceptor
+	 * @since 2.1.0
+	 */
+	void addInterceptor(GeometryIndexOperationInterceptor interceptor);
+	
+	/**
+	 * Remove an interceptor from the list of operation interceptors of the service.
+	 * 
+	 * @param interceptor the interceptor
+	 * @since 2.1.0
+	 */
+	void removeInterceptor(GeometryIndexOperationInterceptor interceptor);
+		
 }

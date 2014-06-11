@@ -10,10 +10,11 @@
   -->
 
 <module>
-
 	<inherits name="org.geomajas.gwt2.GeomajasClientImpl" />
 
 	<source path="client" />
+
+	<!-- server side section-->
 	<source path="command/dto" />
 
 </module>
