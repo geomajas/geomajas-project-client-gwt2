@@ -11,7 +11,7 @@
 package org.geomajas.plugin.print.client;
 
 
-import org.geomajas.plugin.print.client.widget.PrintPanel;
+import org.geomajas.plugin.print.client.widget.BasePrintPanel;
 import org.geomajas.plugin.print.client.widget.PrintWidgetView;
 
 /**
@@ -23,7 +23,7 @@ import org.geomajas.plugin.print.client.widget.PrintWidgetView;
 public class PrintViewFactory {
 
 	 public PrintWidgetView createPrintWidgetView() {
-		 return new PrintPanel();
+		 return new BasePrintPanel();
 	 }
 
 }

@@ -22,26 +22,26 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-import org.geomajas.plugin.print.client.util.PrintSettings;
 import org.geomajas.plugin.print.client.i18n.PrintMessages;
 import org.geomajas.plugin.print.client.template.PageSize;
 import org.geomajas.plugin.print.client.template.TemplateBuilderDataProvider;
+import org.geomajas.plugin.print.client.util.PrintSettings;
 
 /**
- * Default implementation of {@link PrintWidgetView}.
- * 
+ * Default implementation of {@link org.geomajas.plugin.print.client.widget.PrintWidgetView}.
+ *
  * @author An Buyle
  * @author Jan De Moerloose
  * @author Jan Venstermans
  */
-public class PrintPanel extends Composite implements PrintWidgetView, TemplateBuilderDataProvider {
+public class FullOptionsPrintPanel extends Composite implements PrintWidgetView, TemplateBuilderDataProvider {
 
 	/**
 	 * UI binder definition for the {@link } widget.
-	 * 
+	 *
 	 * @author An Buyle
 	 */
-	interface PrintPanelUiBinder extends UiBinder<Widget, PrintPanel> {
+	interface PrintPanelUiBinder extends UiBinder<Widget, FullOptionsPrintPanel> {
 	}
 
 	private final PrintWidgetResource resource;
@@ -74,16 +74,16 @@ public class PrintPanel extends Composite implements PrintWidgetView, TemplateBu
 	protected RadioButton optionPortraitOrientation;
 
 	/** Default constructor. Create an instance using the default resource bundle and layout. */
-	public PrintPanel() {
+	public FullOptionsPrintPanel() {
 		this((PrintWidgetResource) GWT.create(PrintWidgetResource.class));
 	}
 
 	/**
 	 * Create a new instance using a custom resource bundle.
-	 * 
+	 *
 	 * @param resource The custom resource bundle to use.
 	 */
-	public PrintPanel(PrintWidgetResource resource) {
+	public FullOptionsPrintPanel(PrintWidgetResource resource) {
 		this.resource = resource;
 
 		// Inject the CSS and create the GUI:

@@ -13,7 +13,7 @@ package org.geomajas.plugin.print.client.widget;
 import com.google.gwt.resources.client.CssResource;
 
 /**
- * {@link CssResource} for {@link PrintPanel}.
+ * {@link CssResource} for {@link BasePrintPanel}.
  * 
  * @author Jan De Moerloose
  * 
