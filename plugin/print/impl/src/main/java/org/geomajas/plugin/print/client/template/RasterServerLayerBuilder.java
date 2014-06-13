@@ -26,7 +26,7 @@ import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
 public class RasterServerLayerBuilder implements PrintableLayerBuilder {
 
 	@Override
-	public ClientLayerInfo build(MapPresenter mapPresenter, Layer layer, Bbox worldBounds, double scale) {
+	public ClientLayerInfo build(MapPresenter mapPresenter, Layer layer, Bbox worldBounds, double resolution) {
 		RasterServerLayer rasterServerLayer = (RasterServerLayer) layer;
 		ClientRasterLayerInfo layerInfo = (ClientRasterLayerInfo) rasterServerLayer.getLayerInfo();
 		RasterLayerRasterizingInfo rasterInfo = new RasterLayerRasterizingInfo();

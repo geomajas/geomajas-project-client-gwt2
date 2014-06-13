@@ -30,10 +30,10 @@ public interface PrintableLayerBuilder {
 	 * @param mapPresenter
 	 * @param layer
 	 * @param worldBounds
-	 * @param rasterScale
+	 * @param rasterResolution
 	 * @return
 	 */
-	ClientLayerInfo build(MapPresenter mapPresenter, Layer layer, Bbox worldBounds, double rasterScale);
+	ClientLayerInfo build(MapPresenter mapPresenter, Layer layer, Bbox worldBounds, double rasterResolution);
 
 	/**
 	 * Is the specified layer supported ?

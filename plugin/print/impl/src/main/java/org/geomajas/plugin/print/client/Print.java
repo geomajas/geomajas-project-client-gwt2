@@ -27,6 +27,8 @@ public final class Print {
 
 	private PrintClientBundleFactory bundleFactory;
 
+	private PrintService printService;
+
 	private Print() {
 	}
 
@@ -49,6 +51,17 @@ public final class Print {
 			viewFactory = GWT.create(PrintViewFactory.class);
 		}
 		return viewFactory;
+	}
+
+	public PrintService getPrintService() {
+		if (printService == null) {
+			printService = new PrintServiceImpl();
+		}
+		return printService;
+	}
+
+	public void setPrintService(PrintService printService) {
+		this.printService = printService;
 	}
 
 	public void setViewFactory(PrintViewFactory viewFactory) {

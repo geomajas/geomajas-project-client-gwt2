@@ -33,18 +33,18 @@ import java.util.List;
 public class WmsLayerBuilder implements PrintableLayerBuilder {
 
 	@Override
-	public ClientLayerInfo build(MapPresenter mapPresenter, Layer layer, Bbox worldBounds, double scale) {
+	public ClientLayerInfo build(MapPresenter mapPresenter, Layer layer, Bbox worldBounds, double resolution) {
 		WmsLayer wmsLayer = (WmsLayer) layer;
 
 		WmsClientLayerInfo info = new WmsClientLayerInfo();
 		List<RasterTile> tiles = new ArrayList<RasterTile>();
-		for (Tile tile : wmsLayer.getTiles(scale, worldBounds)) {
+		for (Tile tile : wmsLayer.getTiles(resolution, worldBounds)) {
 			tiles.add(toRasterTile(tile));
 		}
 		info.setTiles(tiles);
 		info.setTileHeight(wmsLayer.getTileConfig().getTileHeight());
 		info.setTileWidth(wmsLayer.getTileConfig().getTileWidth());
-		info.setScale(scale);
+		info.setScale(resolution);
 
 		info.setId(wmsLayer.getId());
 		RasterLayerRasterizingInfo rasterInfo = new RasterLayerRasterizingInfo();

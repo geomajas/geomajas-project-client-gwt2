@@ -37,7 +37,7 @@ import org.geomajas.sld.RuleInfo;
 public class VectorServerLayerBuilder implements PrintableLayerBuilder {
 
 	@Override
-	public ClientLayerInfo build(MapPresenter mapPresenter, Layer layer, Bbox worldBounds, double scale) {
+	public ClientLayerInfo build(MapPresenter mapPresenter, Layer layer, Bbox worldBounds, double resolution) {
 		VectorServerLayer vectorLayer = (VectorServerLayer) layer;
 		VectorLayerRasterizingInfo vectorRasterizingInfo = new VectorLayerRasterizingInfo();
 		vectorRasterizingInfo.setPaintGeometries(true);

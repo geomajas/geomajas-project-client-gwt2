@@ -49,7 +49,7 @@ import org.geomajas.sld.RuleInfo;
  * @author Jan De Moerloose (smartGWT version)
  * @author An Buyle (GWT2 version)
  */
-public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
+public class DefaultTemplateBuilder extends AbstractTemplateBuilder implements TemplateBuilder {
 
 	protected double pageWidth;
 
@@ -117,9 +117,9 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder {
 
 		// use rasterized layers for pure GWT
 		double rasterScale = map.getPpUnit() * map.getRasterResolution() / 72.0;
-		// map.getPpUnit() = aantal pixels per map unit bij 72 dpi
+		// map.getPpUnit() = number of pixels per map unit at 72 dpi
 
-		mapBuilder.build(mapPresenter, fittingBox, rasterScale);
+		mapBuilder.build(mapPresenter, fittingBox, 1 / rasterScale);
 
 		List<PrintComponentInfo> layers = new ArrayList<PrintComponentInfo>();
 		RasterizedLayersComponentInfo rasterizedLayersComponentInfo = new RasterizedLayersComponentInfo();

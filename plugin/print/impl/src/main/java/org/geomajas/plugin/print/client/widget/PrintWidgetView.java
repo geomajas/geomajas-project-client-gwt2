@@ -38,4 +38,5 @@ public interface PrintWidgetView extends IsWidget {
 	boolean isWithScaleBar();
 
 	int getRasterDpi();
+
 }

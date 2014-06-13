@@ -11,10 +11,15 @@
 package org.geomajas.plugin.print.client.widget;
 
 
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.plugin.print.client.Print;
+import org.geomajas.plugin.print.client.event.PrintFinishedHandler;
+import org.geomajas.plugin.print.client.template.PrintableLayerBuilder;
+import org.geomajas.plugin.print.client.template.PrintableMapBuilder;
+import org.geomajas.plugin.print.client.template.TemplateBuilderFactory;
 
 /**
  *
@@ -24,8 +29,6 @@ import org.geomajas.plugin.print.client.Print;
  */
 public class PrintWidget implements IsWidget {
 
-	private PrintWidgetView view;
-
 	private PrintWidgetPresenter presenter;
 
 	public PrintWidget(MapPresenter mapPresenter, String applicationId) {
@@ -33,12 +36,27 @@ public class PrintWidget implements IsWidget {
 	}
 
 	public PrintWidget(MapPresenter mapPresenter, String applicationId, PrintWidgetView view) {
-		this.view = view;
 		presenter = new PrintWidgetPresenterImpl(mapPresenter, applicationId, view);
 	}
 
 	@Override
 	public Widget asWidget() {
-		return view.asWidget();
+		return presenter.getView().asWidget();
+	}
+
+	public void registerLayerBuilder(PrintableLayerBuilder layerBuilder) {
+		presenter.registerLayerBuilder(layerBuilder);
+	}
+
+	public void setTemplateBuilderFactory(TemplateBuilderFactory templateBuilderFactory) {
+		presenter.setTemplateBuilderFactory(templateBuilderFactory);
+	}
+
+	public void setMapBuilder(PrintableMapBuilder mapBuilder) {
+		presenter.setMapBuilder(mapBuilder);
+	}
+
+	public HandlerRegistration setPrintFinishedHandler(PrintFinishedHandler handler) {
+		return presenter.setPrintFinishedHandler(handler);
 	}
 }

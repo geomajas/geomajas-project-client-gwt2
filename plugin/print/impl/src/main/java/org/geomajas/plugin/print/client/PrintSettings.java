@@ -20,11 +20,31 @@ package org.geomajas.plugin.print.client;
  */
 public interface PrintSettings {
 
-	String SAVE = "save";
+	/**
+	 * Enum choice of what to do when print has been created. E.g. open in new window, or save on machine.
+	 */
+	public enum ActionType {
+		SAVE("save"),
+		OPEN("open");
+		private String typeName;
 
-	String OPEN = "open";
+		private ActionType(String typeName) {
+			this.typeName = typeName;
+		}
+
+		public String getTypeName() {
+			return typeName;
+		}
+	}
+
+	String URL_DOWNLOAD_YES = "1";
+
+	String URL_DOWNLOAD_NO = "0";
 
 	// String EXTENSION = ".pdf";
+
+	// url parameter keys
+
 	String URL_PATH = "d/print";
 
 	String URL_DOCUMENT_ID = "documentId";
@@ -34,9 +54,5 @@ public interface PrintSettings {
 	String URL_TOKEN = "userToken";
 
 	String URL_DOWNLOAD = "download";
-
-	String URL_DOWNLOAD_YES = "1";
-
-	String URL_DOWNLOAD_NO = "0";
 
 }

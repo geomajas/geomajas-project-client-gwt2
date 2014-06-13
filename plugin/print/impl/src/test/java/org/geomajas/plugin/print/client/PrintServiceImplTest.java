@@ -9,25 +9,26 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.print.client.widget;
+package org.geomajas.plugin.print.client;
 
 import com.google.gwt.core.client.Callback;
+import com.google.gwtmockito.GwtMock;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import junit.framework.Assert;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.MapConfiguration;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.LayersModel;
-import org.geomajas.plugin.print.client.Print;
-import org.geomajas.plugin.print.client.PrintService;
-import org.geomajas.plugin.print.client.PrintServiceImpl;
-import org.geomajas.plugin.print.client.event.PrintFinishedEvent;
-import org.geomajas.plugin.print.client.event.PrintFinishedHandler;
+import org.geomajas.gwt2.client.service.CommandService;
 import org.geomajas.plugin.print.client.event.PrintFinishedInfo;
 import org.geomajas.plugin.print.client.template.PageSize;
+import org.geomajas.plugin.print.client.widget.PrintWidgetView;
+import org.geomajas.plugin.print.command.dto.PrintGetTemplateRequest;
 import org.geomajas.plugin.print.command.dto.PrintTemplateInfo;
 import org.geomajas.plugin.print.component.dto.ImageComponentInfo;
 import org.geomajas.plugin.print.component.dto.LayoutConstraintInfo;
@@ -48,18 +49,16 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.stub;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.eq;
-import static org.mockito.Mockito.any;
 
 /**
- * Test class for {@link PrintWidgetPresenterImpl}.
+ * Test class for {@link org.geomajas.plugin.print.client.widget.PrintWidgetPresenterImpl}.
  *
  * @author Jan Venstermans
  */
 @RunWith(GwtMockitoTestRunner.class) // for the final class GeomajasServerExtension
-public class PrintWidgetPresenterImplTest {
+public class PrintServiceImplTest {
 
-	private PrintWidgetPresenterImpl presenter;
+	private PrintServiceImpl printService;
 
 	@Mock
 	private MapPresenter mapPresenterMock;
@@ -67,8 +66,14 @@ public class PrintWidgetPresenterImplTest {
 	@Mock
 	private PrintWidgetView printWidgetViewMock;
 
+	@GwtMock   // used because GeomajasServerExtension is final
+	private GeomajasServerExtension serverExtensionMock;
+
 	@Mock
-	private PrintService printServiceMock;
+	private CommandService commandServiceMock;
+
+	//@Mock
+	//private ClientUserDataInfo infoMock;
 
 	@Mock
 	private ViewPort viewPortMock;
@@ -89,114 +94,43 @@ public class PrintWidgetPresenterImplTest {
 	public void before() {
 		MockitoAnnotations.initMocks(this);
 		viewData.resetData();
-		Print.getInstance().setPrintService(printServiceMock);
-		presenter = new PrintWidgetPresenterImpl(mapPresenterMock, viewData.getApplicationId(), printWidgetViewMock);
+		printService = new PrintServiceImpl();
 		reset(mapPresenterMock);
 		reset(printWidgetViewMock);
 
 		// stub Geomajas framework for testing
+		stub(serverExtensionMock.getCommandService()).toReturn(commandServiceMock);
 		stub(mapPresenterMock.getViewPort()).toReturn(viewPortMock);
 		stub(mapPresenterMock.getLayersModel()).toReturn(layersModelMock);
 		stub(viewPortMock.getBounds()).toReturn(viewPortBounds);
 		stub(mapPresenterMock.getConfiguration()).toReturn(mapConfigurationMock);
 		stub(mapConfigurationMock.getHintValue(GeomajasServerExtension.MAPINFO)).toReturn(clientMapInfoMock);
+		GeomajasServerExtension.setInstance(serverExtensionMock);
 
 		// add dummy data to printWidgetViewMock
 		stubViewMockWithViewData();
 	}
 
 	@Test
-	public void setHandlerToViewOnConstructionTest() {
-		presenter = new PrintWidgetPresenterImpl(mapPresenterMock, viewData.getApplicationId(), printWidgetViewMock);
-		verify(printWidgetViewMock).setHandler(presenter);
-	}
+	public void printWithTemplateArgumentTest() {
+		PrintTemplateInfo templateInfo = new PrintTemplateInfo();
+		Callback<PrintFinishedInfo, Void> callbackMock = mock(Callback.class);
 
-	@Test
-	public void printMethodUsesViewDataToCreateTemplateTest() {
-		presenter.print();
+		printService.print(templateInfo, callbackMock);
 
-		//attempt to get data from view
-		verify(printWidgetViewMock).isLandscape();
-		verify(printWidgetViewMock).isWithArrow();
-		verify(printWidgetViewMock).isWithScaleBar();
-		verify(printWidgetViewMock).getPageSize();
-		verify(printWidgetViewMock).getRasterDpi();
-		verify(printWidgetViewMock).getTitle();
-	}
+		ArgumentCaptor<GwtCommand> commandCaptor = ArgumentCaptor.forClass(GwtCommand.class);
+		ArgumentCaptor<CommandCallback> callbackCaptor = ArgumentCaptor.forClass(CommandCallback.class);
+		verify(commandServiceMock).execute(commandCaptor.capture(), callbackCaptor.capture());
 
-	@Test
-	public void dummyDataTest() {
-		presenter.print();
+		// assert command
+		GwtCommand command = commandCaptor.getValue();
+		Assert.assertEquals(PrintGetTemplateRequest.COMMAND, command.getCommandName());
+		Assert.assertTrue(command.getCommandRequest() instanceof PrintGetTemplateRequest);
+		PrintGetTemplateRequest request = (PrintGetTemplateRequest) command.getCommandRequest();
+		Assert.assertEquals(templateInfo, request.getTemplate());
 
-		captureServiceCallAndAssertTemplate();
-	}
-
-	@Test
-	public void noScaleBarTest() {
-		viewData.setWithScaleBar(false);
-		stubViewMockWithViewData();
-
-		presenter.print();
-
-		captureServiceCallAndAssertTemplate();
-	}
-
-	@Test
-	public void noArrowTest() {
-		viewData.setWithArrow(false);
-		stubViewMockWithViewData();
-
-		presenter.print();
-
-		captureServiceCallAndAssertTemplate();
-	}
-
-	@Test
-	public void noLandscapeTest() {
-		viewData.setLandscape(false);
-		stubViewMockWithViewData();
-
-		presenter.print();
-
-		captureServiceCallAndAssertTemplate();
-	}
-
-	@Test
-	public void pageSizeA4Test() {
-		viewData.setPageSize(PageSize.A4);
-		stubViewMockWithViewData();
-
-		presenter.print();
-
-		captureServiceCallAndAssertTemplate();
-	}
-
-	@Test
-	public void rasterDpi200Test() {
-		viewData.setRasterDpi(200);
-		stubViewMockWithViewData();
-
-		presenter.print();
-
-		captureServiceCallAndAssertTemplate();
-	}
-
-	@Test
-	public void customPrintFinishedHandlerTest() {
-		PrintFinishedHandler printFinishedHandlerMock = mock(PrintFinishedHandler.class);
-		presenter.setPrintFinishedHandler(printFinishedHandlerMock);
-		PrintFinishedInfo printFinishedInfo = new PrintFinishedInfo();
-
-		presenter.print();
-
-		ArgumentCaptor<Callback> callbackCaptor = ArgumentCaptor.forClass(Callback.class);
-		verify(printServiceMock).print(any(PrintTemplateInfo.class), callbackCaptor.capture());
-		callbackCaptor.getValue().onSuccess(printFinishedInfo);
-
-		ArgumentCaptor<PrintFinishedEvent> printFinishedEventCaptor = ArgumentCaptor.forClass(PrintFinishedEvent.class);
-		verify(printFinishedHandlerMock).onPrintFinished(printFinishedEventCaptor.capture());
-		PrintFinishedEvent event = printFinishedEventCaptor.getValue();
-		Assert.assertEquals(printFinishedInfo, event.getPrintFinishedInfo());
+		// assert callback
+		//callbackCaptor.getValue().execute();
 	}
 
 	private PrintComponentInfo getChildOfType(List<PrintComponentInfo> children, Class<? extends PrintComponentInfo> typeClass) {
@@ -215,15 +149,18 @@ public class PrintWidgetPresenterImplTest {
 		return null;
 	}
 
-	private void captureServiceCallAndAssertTemplate() {
+	private void capturePrintGetTemplateCommandAndAssertPage() {
 		//attempt to get data from view
-		ArgumentCaptor<PrintTemplateInfo> templateCaptor = ArgumentCaptor.forClass(PrintTemplateInfo.class);
-		ArgumentCaptor<Callback> callbackCaptor = ArgumentCaptor.forClass(Callback.class);
-		verify(printServiceMock).print(templateCaptor.capture(), callbackCaptor.capture());
+		ArgumentCaptor<GwtCommand> commandCaptor = ArgumentCaptor.forClass(GwtCommand.class);
+		ArgumentCaptor<CommandCallback> callbackCaptor = ArgumentCaptor.forClass(CommandCallback.class);
+		verify(commandServiceMock).execute(commandCaptor.capture(), callbackCaptor.capture());
 
 		// assert command
-		PrintTemplateInfo templateInfo = templateCaptor.getValue();
-		assertPageComponentInfo(templateInfo.getPage());
+		GwtCommand command = commandCaptor.getValue();
+		Assert.assertEquals(PrintGetTemplateRequest.COMMAND, command.getCommandName());
+		Assert.assertTrue(command.getCommandRequest() instanceof PrintGetTemplateRequest);
+		PrintGetTemplateRequest request = (PrintGetTemplateRequest) command.getCommandRequest();
+		assertPageComponentInfo(request.getTemplate().getPage());
 	}
 
 	private void assertPageComponentInfo(PageComponentInfo pageComponentInfo) {

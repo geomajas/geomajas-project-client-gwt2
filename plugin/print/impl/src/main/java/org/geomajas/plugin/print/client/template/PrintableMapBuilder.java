@@ -70,14 +70,14 @@ public class PrintableMapBuilder {
 		return mapRasterizingInfo;
 	}
 
-	public void build(MapPresenter mapPresenter, Bbox worldBounds, double rasterScale) {
+	public void build(MapPresenter mapPresenter, Bbox worldBounds, double rasterResolution) {
 		buildMap(mapPresenter);
 		List<ClientLayerInfo> clientLayers = new ArrayList<ClientLayerInfo>();
 		for (int i = 0; i < mapPresenter.getLayersModel().getLayerCount(); i++) {
 			Layer layer = mapPresenter.getLayersModel().getLayer(i);
 			for (PrintableLayerBuilder layerBuilder : layerBuilders) {
 				if (layerBuilder.supports(layer)) {
-					clientLayers.add(layerBuilder.build(mapPresenter, layer, worldBounds, rasterScale));
+					clientLayers.add(layerBuilder.build(mapPresenter, layer, worldBounds, rasterResolution));
 				}
 			}
 		}
