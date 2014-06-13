@@ -12,6 +12,7 @@ package org.geomajas.plugin.print.client.event;
 
 
 import org.geomajas.plugin.print.client.util.PrintSettings;
+import org.geomajas.plugin.print.command.dto.PrintTemplateInfo;
 
 /**
  * Info object, containing info necessary for throwing event.
@@ -19,16 +20,16 @@ import org.geomajas.plugin.print.client.util.PrintSettings;
  * @author Jan Venstermans
  * 
  */
-public class PrintFinishedInfo {
-	private String encodedUrl;
+public class PrintRequestInfo {
+	private PrintTemplateInfo printTemplateInfo;
 	private PrintSettings.ActionType actionType;
 
-	public String getEncodedUrl() {
-		return encodedUrl;
+	public PrintTemplateInfo getPrintTemplateInfo() {
+		return printTemplateInfo;
 	}
 
-	public void setEncodedUrl(String encodedUrl) {
-		this.encodedUrl = encodedUrl;
+	public void setPrintTemplateInfo(PrintTemplateInfo printTemplateInfo) {
+		this.printTemplateInfo = printTemplateInfo;
 	}
 
 	public PrintSettings.ActionType getActionType() {

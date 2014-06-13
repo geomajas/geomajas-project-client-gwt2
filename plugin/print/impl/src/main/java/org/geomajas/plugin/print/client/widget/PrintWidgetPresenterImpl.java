@@ -16,11 +16,13 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.plugin.print.client.Print;
-import org.geomajas.plugin.print.client.event.PrintFinishedEvent;
-import org.geomajas.plugin.print.client.event.PrintFinishedHandler;
+import org.geomajas.plugin.print.client.util.PrintSettings;
 import org.geomajas.plugin.print.client.event.PrintFinishedInfo;
+import org.geomajas.plugin.print.client.event.PrintRequestInfo;
+import org.geomajas.plugin.print.client.event.PrintRequestFinishedEvent;
+import org.geomajas.plugin.print.client.event.PrintRequestHandler;
+import org.geomajas.plugin.print.client.event.PrintRequestStartedEvent;
 import org.geomajas.plugin.print.client.template.DefaultTemplateBuilder;
-import org.geomajas.plugin.print.client.template.PageSize;
 import org.geomajas.plugin.print.client.template.PrintableLayerBuilder;
 import org.geomajas.plugin.print.client.template.PrintableMapBuilder;
 import org.geomajas.plugin.print.client.template.TemplateBuilder;
@@ -29,13 +31,13 @@ import org.geomajas.plugin.print.client.util.PrintLayout;
 import org.geomajas.plugin.print.command.dto.PrintTemplateInfo;
 
 /**
- * Initializes the GWT2 print plugin.
+ * Default implementation of {@link PrintWidgetPresenter}.
  * 
  * @author An Buyle
  * @author Jan Venstermans
  * 
  */
-public class PrintWidgetPresenterImpl implements PrintWidgetPresenter, PrintFinishedHandler {
+public class PrintWidgetPresenterImpl implements PrintWidgetPresenter {
 
 	/* Fields that are set on construction */
 
@@ -46,10 +48,18 @@ public class PrintWidgetPresenterImpl implements PrintWidgetPresenter, PrintFini
 	private PrintWidgetView view;
 
 	/* Fields used for creation of PrintTemplateInfo objects. They are created using default values.
-	 * The {@link TemplateBuilderFactory} can be overwritten via the setter. */
+	 * These defaults can be overwritten via their setter. */
 
+	/**
+	 *  Field used for creation of {@link PrintTemplateInfo} objects. It is created with a default value.
+	 * This defaults can be overwritten via the setter
+	 */
 	private PrintableMapBuilder mapBuilder = new PrintableMapBuilder();
 
+	/**
+	 *  Field used for creation of {@link PrintTemplateInfo} objects. It is created with a default value.
+	 * This defaults can be overwritten via the setter
+	 */
 	private TemplateBuilderFactory templateBuilderFactory = new TemplateBuilderFactory() {
 		@Override
 		public TemplateBuilder createTemplateBuilder(PrintableMapBuilder mapBuilder) {
@@ -60,6 +70,13 @@ public class PrintWidgetPresenterImpl implements PrintWidgetPresenter, PrintFini
 	/* events handler */
 	private HandlerManager handlerManager;
 
+	/**
+	 * Default constructor.
+	 *
+	 * @param mapPresenter mapPresenter of the map to be printed.
+	 * @param applicationId Id of the application whose elements need to be printed.
+	 * @param view view
+	 */
 	public PrintWidgetPresenterImpl(MapPresenter mapPresenter, String applicationId, PrintWidgetView view) {
 		this.view = view;
 		this.mapPresenter = mapPresenter;
@@ -70,8 +87,8 @@ public class PrintWidgetPresenterImpl implements PrintWidgetPresenter, PrintFini
 
 	private void bind() {
 		view.setHandler(this);
-		// set default handlers
-		setPrintFinishedHandler(this);
+		// set default handler
+		setPrintRequestHandler(new DefaultPrintRequestHandler());
 	}
 
 	@Override
@@ -97,7 +114,13 @@ public class PrintWidgetPresenterImpl implements PrintWidgetPresenter, PrintFini
 	@Override
 	public void print() {
 		if (mapPresenter != null) {
-			Print.getInstance().getPrintService().print(createDefaultTemplateFromViewData(),
+			PrintRequestInfo printRequestInfo = new PrintRequestInfo();
+			printRequestInfo.setActionType(view.getActionType());
+			printRequestInfo.setPrintTemplateInfo(createDefaultTemplateFromViewData());
+			PrintRequestStartedEvent startedEvent = new PrintRequestStartedEvent();
+			startedEvent.setPrintRequestInfo(printRequestInfo);
+			handlerManager.fireEvent(startedEvent);
+			Print.getInstance().getPrintService().print(printRequestInfo,
 					new Callback<PrintFinishedInfo, Void>() {
 				@Override
 				public void onFailure(Void reason) {
@@ -106,27 +129,27 @@ public class PrintWidgetPresenterImpl implements PrintWidgetPresenter, PrintFini
 
 				@Override
 				public void onSuccess(PrintFinishedInfo printFinishedInfo) {
-					 handlerManager.fireEvent(new PrintFinishedEvent(printFinishedInfo));
+					 handlerManager.fireEvent(new PrintRequestFinishedEvent(printFinishedInfo));
 				}
 			});
 		}
 	}
 
 	/**
-	 * Set the print finished handler.
+	 * Set the {@link PrintRequestHandler}; there can only be one handler.
 	 * <p/>
-	 * There can only be one handler, the default always opens the url in a new window.
+	 * The default handler is {@link DefaultPrintRequestHandler}.
 	 *
 	 * @param handler select location handler
 	 * @return handler registration.
 	 */
 	@Override
-	public HandlerRegistration setPrintFinishedHandler(PrintFinishedHandler handler) {
-		if (handlerManager.getHandlerCount(PrintFinishedHandler.TYPE) > 0) {
-			PrintFinishedHandler previous = handlerManager.getHandler(PrintFinishedHandler.TYPE, 0);
-			handlerManager.removeHandler(PrintFinishedHandler.TYPE, previous);
+	public HandlerRegistration setPrintRequestHandler(PrintRequestHandler handler) {
+		if (handlerManager.getHandlerCount(PrintRequestHandler.TYPE) > 0) {
+			PrintRequestHandler previous = handlerManager.getHandler(PrintRequestHandler.TYPE, 0);
+			handlerManager.removeHandler(PrintRequestHandler.TYPE, previous);
 		}
-		return handlerManager.addHandler(PrintFinishedHandler.TYPE, handler);
+		return handlerManager.addHandler(PrintRequestHandler.TYPE, handler);
 	}
 
 	/**
@@ -137,48 +160,47 @@ public class PrintWidgetPresenterImpl implements PrintWidgetPresenter, PrintFini
 	 */
 	protected PrintTemplateInfo createDefaultTemplateFromViewData() {
 		TemplateBuilder builder = templateBuilderFactory.createTemplateBuilder(mapBuilder);
-
-		// non-view data
 		builder.setApplicationId(this.applicationId);
 		builder.setMapPresenter(mapPresenter);
 		builder.setMarginX((int) PrintLayout.templateMarginX);
 		builder.setMarginY((int) PrintLayout.templateMarginY);
 
-		// view data
-		PageSize size = view.getPageSize();
-		if (view.isLandscape()) {
-			builder.setPageHeight(size.getWidth());
-			builder.setPageWidth(size.getHeight());
-		} else {
-			builder.setPageHeight(size.getHeight());
-			builder.setPageWidth(size.getWidth());
-		}
-		builder.setTitleText(view.getTitle());
-		builder.setWithArrow(view.isWithArrow());
-		builder.setWithScaleBar(view.isWithScaleBar());
-		builder.setRasterDpi(view.getRasterDpi());
+		Print.getInstance().getPrintUtil().copyProviderDataToBuilder(builder, view.getTemplateBuilderDataProvider());
+
 		return builder.buildTemplate();
 	}
 
 	/**
-	 * Default {@link PrintFinishedEvent}. Can be overwritten.
-	 * @param event event
+	 * Default implementation of {@link PrintRequestHandler}. This handler will be registered by default
+	 * when the {@link org.geomajas.plugin.print.client.widget.PrintWidgetPresenterImpl} is created.
 	 */
-	@Override
-	public void onPrintFinished(PrintFinishedEvent event) {
-		switch (event.getPrintFinishedInfo().getActionType()) {
-			case SAVE:
-				// TODO Converted to GWT2
-				// // create a hidden iframe to avoid popups ???
-				// HTMLPanel hiddenFrame = new HTMLPanel("<iframe src='" + encodedUrl
-				// + "'+style='position:absolute;width:0;height:0;border:0'>");
-				// hiddenFrame.setVisible(false);
-				//
-				// addChild(hiddenFrame);
-				break;
-			default:
-				com.google.gwt.user.client.Window.open(event.getPrintFinishedInfo().getEncodedUrl(), "_blank", null);
-				break;
+	public class DefaultPrintRequestHandler implements PrintRequestHandler {
+
+		@Override
+		public void onPrintRequestStarted(PrintRequestStartedEvent event) {
+			// do nothing
+		}
+
+		/**
+		 * Default {@link org.geomajas.plugin.print.client.event.PrintRequestFinishedEvent}. Can be overwritten.
+		 * @param event event
+		 */
+		@Override
+		public void onPrintRequestFinished(PrintRequestFinishedEvent event) {
+			switch (event.getPrintFinishedInfo().getActionType()) {
+				case SAVE:
+					// TODO Converted to GWT2
+					// // create a hidden iframe to avoid popups ???
+					// HTMLPanel hiddenFrame = new HTMLPanel("<iframe src='" + encodedUrl
+					// + "'+style='position:absolute;width:0;height:0;border:0'>");
+					// hiddenFrame.setVisible(false);
+					//
+					// addChild(hiddenFrame);
+					break;
+				default:
+					com.google.gwt.user.client.Window.open(event.getPrintFinishedInfo().getEncodedUrl(), "_blank", null);
+					break;
+			}
 		}
 	}
 }

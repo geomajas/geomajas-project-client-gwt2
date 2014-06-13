@@ -13,10 +13,10 @@ package org.geomajas.plugin.print.client;
 
 import com.google.gwt.core.client.Callback;
 import org.geomajas.plugin.print.client.event.PrintFinishedInfo;
-import org.geomajas.plugin.print.command.dto.PrintTemplateInfo;
+import org.geomajas.plugin.print.client.event.PrintRequestInfo;
 
 /**
- * Presenter for print method.
+ * Service for print-related server calls.
  * 
  * @author Jan Venstermans
  * 
@@ -24,11 +24,14 @@ import org.geomajas.plugin.print.command.dto.PrintTemplateInfo;
 public interface PrintService {
 
 	/**
-	 * Will communicate with server to turn a {@link PrintTemplateInfo} into printed form.
+	 * Generic print method based on a {@link org.geomajas.plugin.print.command.dto.PrintTemplateInfo}.
+	 * A {@link org.geomajas.plugin.print.command.dto.PrintGetTemplateRequest} is send to server.
+	 * Based on response, an encode url is created.
+	 * This url returned in a callback.
 	 *
-	 * @param printTemplateInfo
-	 * @param callback
+	 * @param printRequestInfo info necessary to create the request (and later process it), containing the template
+	 * @param callback callback with the encodeUrl
 	 */
-	void print(PrintTemplateInfo printTemplateInfo, final Callback<PrintFinishedInfo, Void> callback);
+	void print(PrintRequestInfo printRequestInfo, final Callback<PrintFinishedInfo, Void> callback);
 
 }

@@ -12,7 +12,7 @@ package org.geomajas.plugin.print.client.widget;
 
 
 import com.google.gwt.event.shared.HandlerRegistration;
-import org.geomajas.plugin.print.client.event.PrintFinishedHandler;
+import org.geomajas.plugin.print.client.event.PrintRequestHandler;
 import org.geomajas.plugin.print.client.template.PrintableLayerBuilder;
 import org.geomajas.plugin.print.client.template.PrintableMapBuilder;
 import org.geomajas.plugin.print.client.template.TemplateBuilderFactory;
@@ -35,5 +35,5 @@ public interface PrintWidgetPresenter {
 
 	PrintWidgetView getView();
 
-	HandlerRegistration setPrintFinishedHandler(PrintFinishedHandler handler);
+	HandlerRegistration setPrintRequestHandler(PrintRequestHandler handler);
 }

@@ -18,22 +18,22 @@ import com.google.gwt.event.shared.GwtEvent;
  *
  * @author Jan Venstermans
  */
-public class PrintFinishedEvent extends GwtEvent<PrintFinishedHandler> {
+public class PrintRequestFinishedEvent extends GwtEvent<PrintRequestHandler> {
 
 	private PrintFinishedInfo printFinishedInfo;
 
-	public PrintFinishedEvent(PrintFinishedInfo printFinishedInfo) {
+	public PrintRequestFinishedEvent(PrintFinishedInfo printFinishedInfo) {
 		this.printFinishedInfo = printFinishedInfo;
 	}
 
 	@Override
-	public Type<PrintFinishedHandler> getAssociatedType() {
-		return PrintFinishedHandler.TYPE;
+	public Type<PrintRequestHandler> getAssociatedType() {
+		return PrintRequestHandler.TYPE;
 	}
 
 	@Override
-	protected void dispatch(PrintFinishedHandler handler) {
-	   handler.onPrintFinished(this);
+	protected void dispatch(PrintRequestHandler handler) {
+	   handler.onPrintRequestFinished(this);
 	}
 
 	public PrintFinishedInfo getPrintFinishedInfo() {

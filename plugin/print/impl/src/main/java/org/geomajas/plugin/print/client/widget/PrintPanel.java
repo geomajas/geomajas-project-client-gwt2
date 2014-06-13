@@ -22,17 +22,19 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import org.geomajas.plugin.print.client.util.PrintSettings;
 import org.geomajas.plugin.print.client.i18n.PrintMessages;
 import org.geomajas.plugin.print.client.template.PageSize;
+import org.geomajas.plugin.print.client.template.TemplateBuilderDataProvider;
 
 /**
- * Widget for choosing print preferences and printing.
+ * Default implementation of {@link PrintWidgetView}.
  * 
  * @author An Buyle
  * @author Jan De Moerloose
  * @author Jan Venstermans
  */
-public class PrintPanel extends Composite implements PrintWidgetView {
+public class PrintPanel extends Composite implements PrintWidgetView, TemplateBuilderDataProvider {
 
 	/**
 	 * UI binder definition for the {@link } widget.
@@ -118,6 +120,11 @@ public class PrintPanel extends Composite implements PrintWidgetView {
 	}
 
 	@Override
+	public TemplateBuilderDataProvider getTemplateBuilderDataProvider() {
+		return this;
+	}
+
+	@Override
 	public String getTitle() {
 		String title = titleTextBox.getText().trim();
 		if (title == null || title.isEmpty()) {
@@ -157,6 +164,12 @@ public class PrintPanel extends Composite implements PrintWidgetView {
 		// default
 		return 200;
 		// TODO: get value from (Integer) rasterDpiSlider.getValue()
+	}
+
+	@Override
+	public PrintSettings.ActionType getActionType() {
+		// default
+		return PrintSettings.ActionType.OPEN;
 	}
 
 	@UiHandler("printButton")

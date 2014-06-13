@@ -15,14 +15,14 @@ import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 
 /**
- * Handler for {@link org.geomajas.plugin.print.client.event.PrintFinishedEvent}.
+ * Handler for {@link PrintRequestFinishedEvent}.
  *
  * @author Jan Venstermans
  */
-public interface PrintFinishedHandler extends EventHandler {
+public interface PrintRequestHandler extends EventHandler {
 
 	/** Event type. */
-	GwtEvent.Type<PrintFinishedHandler> TYPE = new GwtEvent.Type<PrintFinishedHandler>();
+	GwtEvent.Type<PrintRequestHandler> TYPE = new GwtEvent.Type<PrintRequestHandler>();
 
 	/**
 	 * Called when the location is selected either because the geocoder returned a match or because the user
@@ -30,5 +30,13 @@ public interface PrintFinishedHandler extends EventHandler {
 	 *
 	 * @param event event, contains the location which is selected
 	 */
-	void onPrintFinished(PrintFinishedEvent event);
+	void onPrintRequestStarted(PrintRequestStartedEvent event);
+
+	/**
+	 * Called when the location is selected either because the geocoder returned a match or because the user
+	 * chose one of the alternatives.
+	 *
+	 * @param event event, contains the location which is selected
+	 */
+	void onPrintRequestFinished(PrintRequestFinishedEvent event);
 }

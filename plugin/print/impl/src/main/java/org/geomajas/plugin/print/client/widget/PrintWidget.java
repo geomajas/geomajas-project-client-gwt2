@@ -16,7 +16,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.plugin.print.client.Print;
-import org.geomajas.plugin.print.client.event.PrintFinishedHandler;
+import org.geomajas.plugin.print.client.event.PrintRequestHandler;
 import org.geomajas.plugin.print.client.template.PrintableLayerBuilder;
 import org.geomajas.plugin.print.client.template.PrintableMapBuilder;
 import org.geomajas.plugin.print.client.template.TemplateBuilderFactory;
@@ -56,7 +56,7 @@ public class PrintWidget implements IsWidget {
 		presenter.setMapBuilder(mapBuilder);
 	}
 
-	public HandlerRegistration setPrintFinishedHandler(PrintFinishedHandler handler) {
-		return presenter.setPrintFinishedHandler(handler);
+	public HandlerRegistration setPrintRequestHandler(PrintRequestHandler handler) {
+		return presenter.setPrintRequestHandler(handler);
 	}
 }

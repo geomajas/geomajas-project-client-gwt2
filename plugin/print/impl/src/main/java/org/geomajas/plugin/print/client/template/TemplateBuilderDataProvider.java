@@ -8,23 +8,34 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.print.client.widget;
+package org.geomajas.plugin.print.client.template;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import org.geomajas.plugin.print.client.util.PrintSettings;
-import org.geomajas.plugin.print.client.template.TemplateBuilderDataProvider;
+import org.geomajas.plugin.print.client.template.PageSize;
 
 /**
- * View interface for the widget.
+ * Interface for data provider of a Builder.
+ * This is the default data provider.
  * 
  * @author Jan Venstermans
  */
-public interface PrintWidgetView extends IsWidget {
+public interface TemplateBuilderDataProvider {
 
-	void setHandler(PrintWidgetPresenter handler);
+	String getTitle();
 
-	TemplateBuilderDataProvider getTemplateBuilderDataProvider();
+	/**
+	 *
+	 * @return true landscape
+	 * 			false portrait
+	 */
+	boolean isLandscape();
 
-	PrintSettings.ActionType getActionType();
+	PageSize getPageSize();
 
+	boolean isWithArrow();
+
+	boolean isWithScaleBar();
+
+	int getRasterDpi();
 }

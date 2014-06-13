@@ -14,36 +14,27 @@ package org.geomajas.plugin.print.client.widget;
 import com.google.gwt.core.client.Callback;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import junit.framework.Assert;
-import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.gwt2.client.GeomajasServerExtension;
-import org.geomajas.gwt2.client.map.MapConfiguration;
-import org.geomajas.gwt2.client.map.MapPresenter;
-import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.Layer;
-import org.geomajas.gwt2.client.map.layer.LayersModel;
-import org.geomajas.plugin.print.client.Print;
-import org.geomajas.plugin.print.client.PrintService;
-import org.geomajas.plugin.print.client.event.PrintFinishedEvent;
-import org.geomajas.plugin.print.client.event.PrintFinishedHandler;
+import org.geomajas.plugin.print.client.event.PrintRequestFinishedEvent;
+import org.geomajas.plugin.print.client.event.PrintRequestHandler;
 import org.geomajas.plugin.print.client.event.PrintFinishedInfo;
+import org.geomajas.plugin.print.client.event.PrintRequestInfo;
+import org.geomajas.plugin.print.client.event.PrintRequestStartedEvent;
 import org.geomajas.plugin.print.client.template.PrintableLayerBuilder;
 import org.geomajas.plugin.print.client.template.PrintableMapBuilder;
 import org.geomajas.plugin.print.client.template.TemplateBuilder;
 import org.geomajas.plugin.print.client.template.TemplateBuilderFactory;
-import org.geomajas.plugin.print.command.dto.PrintTemplateInfo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.stub;
 import static org.mockito.Mockito.verify;
 
@@ -69,19 +60,20 @@ public class PrintWidgetConfigurationTest extends PrintWidgetMockStart {
 
 	@Test
 	public void customPrintFinishedHandlerTest() {
-		PrintFinishedHandler printFinishedHandlerMock = mock(PrintFinishedHandler.class);
-		presenter.setPrintFinishedHandler(printFinishedHandlerMock);
+		PrintRequestHandler printFinishedHandlerMock = mock(PrintRequestHandler.class);
+		presenter.setPrintRequestHandler(printFinishedHandlerMock);
 		PrintFinishedInfo printFinishedInfo = new PrintFinishedInfo();
 
 		presenter.print();
 
+		verify(printFinishedHandlerMock).onPrintRequestStarted(any(PrintRequestStartedEvent.class));
 		ArgumentCaptor<Callback> callbackCaptor = ArgumentCaptor.forClass(Callback.class);
-		verify(printServiceMock).print(any(PrintTemplateInfo.class), callbackCaptor.capture());
+		verify(printServiceMock).print(any(PrintRequestInfo.class), callbackCaptor.capture());
 		callbackCaptor.getValue().onSuccess(printFinishedInfo);
 
-		ArgumentCaptor<PrintFinishedEvent> printFinishedEventCaptor = ArgumentCaptor.forClass(PrintFinishedEvent.class);
-		verify(printFinishedHandlerMock).onPrintFinished(printFinishedEventCaptor.capture());
-		PrintFinishedEvent event = printFinishedEventCaptor.getValue();
+		ArgumentCaptor<PrintRequestFinishedEvent> printFinishedEventCaptor = ArgumentCaptor.forClass(PrintRequestFinishedEvent.class);
+		verify(printFinishedHandlerMock).onPrintRequestFinished(printFinishedEventCaptor.capture());
+		PrintRequestFinishedEvent event = printFinishedEventCaptor.getValue();
 		Assert.assertEquals(printFinishedInfo, event.getPrintFinishedInfo());
 	}
 

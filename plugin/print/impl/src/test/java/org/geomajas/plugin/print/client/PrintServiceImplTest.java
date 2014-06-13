@@ -26,7 +26,11 @@ import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.LayersModel;
 import org.geomajas.gwt2.client.service.CommandService;
 import org.geomajas.plugin.print.client.event.PrintFinishedInfo;
+import org.geomajas.plugin.print.client.event.PrintRequestInfo;
 import org.geomajas.plugin.print.client.template.PageSize;
+import org.geomajas.plugin.print.client.template.TemplateBuilder;
+import org.geomajas.plugin.print.client.template.TemplateBuilderDataProvider;
+import org.geomajas.plugin.print.client.widget.PrintWidgetMockStart;
 import org.geomajas.plugin.print.client.widget.PrintWidgetView;
 import org.geomajas.plugin.print.command.dto.PrintGetTemplateRequest;
 import org.geomajas.plugin.print.command.dto.PrintTemplateInfo;
@@ -43,6 +47,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import javax.validation.constraints.AssertTrue;
 import java.util.List;
 
 import static org.mockito.Mockito.mock;
@@ -56,15 +61,9 @@ import static org.mockito.Mockito.verify;
  * @author Jan Venstermans
  */
 @RunWith(GwtMockitoTestRunner.class) // for the final class GeomajasServerExtension
-public class PrintServiceImplTest {
+public class PrintServiceImplTest extends PrintWidgetMockStart {
 
 	private PrintServiceImpl printService;
-
-	@Mock
-	private MapPresenter mapPresenterMock;
-
-	@Mock
-	private PrintWidgetView printWidgetViewMock;
 
 	@GwtMock   // used because GeomajasServerExtension is final
 	private GeomajasServerExtension serverExtensionMock;
@@ -72,28 +71,15 @@ public class PrintServiceImplTest {
 	@Mock
 	private CommandService commandServiceMock;
 
-	//@Mock
-	//private ClientUserDataInfo infoMock;
+	@Mock
+	private TemplateBuilderDataProvider dataProviderMock;
 
 	@Mock
-	private ViewPort viewPortMock;
-
-	@Mock
-	private MapConfiguration mapConfigurationMock;
-	@Mock
-	private ClientMapInfo clientMapInfoMock;
-	@Mock
-	private LayersModel layersModelMock;
-
-	// response dummy data
-	private Bbox viewPortBounds = new Bbox(0,0,200,100);
-
-	private ViewData viewData = new ViewData();
+	private TemplateBuilder builderMock;
 
 	@Before
 	public void before() {
-		MockitoAnnotations.initMocks(this);
-		viewData.resetData();
+		super.before();
 		printService = new PrintServiceImpl();
 		reset(mapPresenterMock);
 		reset(printWidgetViewMock);
@@ -106,17 +92,16 @@ public class PrintServiceImplTest {
 		stub(mapPresenterMock.getConfiguration()).toReturn(mapConfigurationMock);
 		stub(mapConfigurationMock.getHintValue(GeomajasServerExtension.MAPINFO)).toReturn(clientMapInfoMock);
 		GeomajasServerExtension.setInstance(serverExtensionMock);
-
-		// add dummy data to printWidgetViewMock
-		stubViewMockWithViewData();
 	}
 
 	@Test
 	public void printWithTemplateArgumentTest() {
-		PrintTemplateInfo templateInfo = new PrintTemplateInfo();
+		PrintTemplateInfo printTemplateInfo = new PrintTemplateInfo();
+		PrintRequestInfo createInfo = new PrintRequestInfo();
+		createInfo.setPrintTemplateInfo(printTemplateInfo);
 		Callback<PrintFinishedInfo, Void> callbackMock = mock(Callback.class);
 
-		printService.print(templateInfo, callbackMock);
+		printService.print(createInfo, callbackMock);
 
 		ArgumentCaptor<GwtCommand> commandCaptor = ArgumentCaptor.forClass(GwtCommand.class);
 		ArgumentCaptor<CommandCallback> callbackCaptor = ArgumentCaptor.forClass(CommandCallback.class);
@@ -127,148 +112,9 @@ public class PrintServiceImplTest {
 		Assert.assertEquals(PrintGetTemplateRequest.COMMAND, command.getCommandName());
 		Assert.assertTrue(command.getCommandRequest() instanceof PrintGetTemplateRequest);
 		PrintGetTemplateRequest request = (PrintGetTemplateRequest) command.getCommandRequest();
-		Assert.assertEquals(templateInfo, request.getTemplate());
+		Assert.assertEquals(printTemplateInfo, request.getTemplate());
 
 		// assert callback
 		//callbackCaptor.getValue().execute();
-	}
-
-	private PrintComponentInfo getChildOfType(List<PrintComponentInfo> children, Class<? extends PrintComponentInfo> typeClass) {
-		return  getChildOfTypeAndTag(children, typeClass, null);
-	}
-
-	private PrintComponentInfo getChildOfTypeAndTag(List<PrintComponentInfo> children,
-											  Class<? extends PrintComponentInfo> typeClass, String tag) {
-		for (PrintComponentInfo component : children) {
-			if (typeClass.isInstance(component)) {
-				if (tag == null || component.getTag().equals(tag)) {
-					return component;
-				}
-			}
-		}
-		return null;
-	}
-
-	private void capturePrintGetTemplateCommandAndAssertPage() {
-		//attempt to get data from view
-		ArgumentCaptor<GwtCommand> commandCaptor = ArgumentCaptor.forClass(GwtCommand.class);
-		ArgumentCaptor<CommandCallback> callbackCaptor = ArgumentCaptor.forClass(CommandCallback.class);
-		verify(commandServiceMock).execute(commandCaptor.capture(), callbackCaptor.capture());
-
-		// assert command
-		GwtCommand command = commandCaptor.getValue();
-		Assert.assertEquals(PrintGetTemplateRequest.COMMAND, command.getCommandName());
-		Assert.assertTrue(command.getCommandRequest() instanceof PrintGetTemplateRequest);
-		PrintGetTemplateRequest request = (PrintGetTemplateRequest) command.getCommandRequest();
-		assertPageComponentInfo(request.getTemplate().getPage());
-	}
-
-	private void assertPageComponentInfo(PageComponentInfo pageComponentInfo) {
-		assertBounds(pageComponentInfo.getLayoutConstraint(), viewData.isLandscape(), viewData.getPageSize());
-
-		MapComponentInfo mapComponent = (MapComponentInfo) getChildOfType(pageComponentInfo.getChildren(), MapComponentInfo.class);
-		Assert.assertNotNull(mapComponent);
-		Assert.assertEquals(viewData.getApplicationId(), mapComponent.getApplicationId());
-		Assert.assertEquals(viewData.getRasterDpi(), (int) mapComponent.getRasterResolution());
-
-		// check scalebar
-		ScaleBarComponentInfo scaleBarComponent = (ScaleBarComponentInfo)
-				getChildOfType(mapComponent.getChildren(), ScaleBarComponentInfo.class);
-		Assert.assertEquals(viewData.isWithScaleBar(), scaleBarComponent != null);
-
-		// check scalebar
-		ImageComponentInfo imageComponentInfo = (ImageComponentInfo)
-				getChildOfTypeAndTag(mapComponent.getChildren(), ImageComponentInfo.class, "arrow");
-		Assert.assertEquals(viewData.isWithArrow(), imageComponentInfo != null);
-	}
-
-	private void assertBounds(LayoutConstraintInfo bounds, boolean landscape, PageSize pageSize) {
-		double width = bounds.getWidth();
-		double height = bounds.getHeight();
-		// assert landscape
-		if (landscape) {
-			Assert.assertTrue(width >= height);
-		} else {
-			Assert.assertTrue(width <= height);
-		}
-
-		double pageSizeWidth = pageSize.getWidth();
-		double pageSizeHeight = pageSize.getHeight();
-		Assert.assertEquals(Math.max(width, height), Math.max(pageSizeWidth, pageSizeHeight), 0.005);
-		Assert.assertEquals(Math.min(width, height), Math.min(pageSizeWidth, pageSizeHeight), 0.005);
-	}
-
-	private void stubViewMockWithViewData() {
-		stub(printWidgetViewMock.getPageSize()).toReturn(viewData.getPageSize());
-		stub(printWidgetViewMock.getRasterDpi()).toReturn(viewData.getRasterDpi());
-		stub(printWidgetViewMock.isLandscape()).toReturn(viewData.isLandscape());
-		stub(printWidgetViewMock.isWithArrow()).toReturn(viewData.isWithArrow());
-		stub(printWidgetViewMock.isWithScaleBar()).toReturn(viewData.isWithScaleBar());
-	}
-
-	public class ViewData {
-		private String applicationId;
-		private PageSize pageSize;
-		private int rasterDpi;
-		private boolean landscape;
-		private boolean withArrow;
-		private boolean withScaleBar;
-
-		public void resetData() {
-			applicationId = "applicationId";
-			pageSize = PageSize.A2;
-			rasterDpi = 123;
-			landscape = true;
-			withArrow = true;
-			withScaleBar = true;
-		}
-
-		public String getApplicationId() {
-			return applicationId;
-		}
-
-		public void setApplicationId(String applicationId) {
-			this.applicationId = applicationId;
-		}
-
-		public PageSize getPageSize() {
-			return pageSize;
-		}
-
-		public void setPageSize(PageSize pageSize) {
-			this.pageSize = pageSize;
-		}
-
-		public int getRasterDpi() {
-			return rasterDpi;
-		}
-
-		public void setRasterDpi(int rasterDpi) {
-			this.rasterDpi = rasterDpi;
-		}
-
-		public boolean isLandscape() {
-			return landscape;
-		}
-
-		public void setLandscape(boolean landscape) {
-			this.landscape = landscape;
-		}
-
-		public boolean isWithArrow() {
-			return withArrow;
-		}
-
-		public void setWithArrow(boolean withArrow) {
-			this.withArrow = withArrow;
-		}
-
-		public boolean isWithScaleBar() {
-			return withScaleBar;
-		}
-
-		public void setWithScaleBar(boolean withScaleBar) {
-			this.withScaleBar = withScaleBar;
-		}
 	}
 }

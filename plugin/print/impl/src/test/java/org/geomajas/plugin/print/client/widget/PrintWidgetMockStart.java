@@ -20,10 +20,11 @@ import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.MapConfiguration;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.ViewPort;
-import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.client.map.layer.LayersModel;
 import org.geomajas.plugin.print.client.Print;
 import org.geomajas.plugin.print.client.PrintService;
+import org.geomajas.plugin.print.client.ViewMockData;
+import org.geomajas.plugin.print.client.event.PrintRequestInfo;
 import org.geomajas.plugin.print.client.template.PageSize;
 import org.geomajas.plugin.print.command.dto.PrintTemplateInfo;
 import org.geomajas.plugin.print.component.dto.ImageComponentInfo;
@@ -33,7 +34,6 @@ import org.geomajas.plugin.print.component.dto.PageComponentInfo;
 import org.geomajas.plugin.print.component.dto.PrintComponentInfo;
 import org.geomajas.plugin.print.component.dto.ScaleBarComponentInfo;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
@@ -51,7 +51,7 @@ import static org.mockito.Mockito.verify;
  * @author Jan Venstermans
  */
 @RunWith(GwtMockitoTestRunner.class) // for the final class GeomajasServerExtension
-public class PrintWidgetMockStart {
+public abstract class PrintWidgetMockStart {
 
 	protected PrintWidgetPresenterImpl presenter;
 
@@ -77,7 +77,7 @@ public class PrintWidgetMockStart {
 	// response dummy data
 	protected Bbox viewPortBounds = new Bbox(0,0,200,100);
 
-	protected ViewData viewData = new ViewData();
+	protected ViewMockData viewData = new ViewMockData();
 
 	@Before
 	public void before() {
@@ -118,12 +118,12 @@ public class PrintWidgetMockStart {
 
 	protected void captureServiceCallAndAssertTemplate() {
 		//attempt to get data from view
-		ArgumentCaptor<PrintTemplateInfo> templateCaptor = ArgumentCaptor.forClass(PrintTemplateInfo.class);
+		ArgumentCaptor<PrintRequestInfo> templateCaptor = ArgumentCaptor.forClass(PrintRequestInfo.class);
 		ArgumentCaptor<Callback> callbackCaptor = ArgumentCaptor.forClass(Callback.class);
 		verify(printServiceMock).print(templateCaptor.capture(), callbackCaptor.capture());
 
 		// assert command
-		PrintTemplateInfo templateInfo = templateCaptor.getValue();
+		PrintTemplateInfo templateInfo = templateCaptor.getValue().getPrintTemplateInfo();
 		assertPageComponentInfo(templateInfo.getPage());
 	}
 
@@ -163,76 +163,7 @@ public class PrintWidgetMockStart {
 	}
 
 	protected void stubViewMockWithViewData() {
-		stub(printWidgetViewMock.getPageSize()).toReturn(viewData.getPageSize());
-		stub(printWidgetViewMock.getRasterDpi()).toReturn(viewData.getRasterDpi());
-		stub(printWidgetViewMock.isLandscape()).toReturn(viewData.isLandscape());
-		stub(printWidgetViewMock.isWithArrow()).toReturn(viewData.isWithArrow());
-		stub(printWidgetViewMock.isWithScaleBar()).toReturn(viewData.isWithScaleBar());
+		stub(printWidgetViewMock.getTemplateBuilderDataProvider()).toReturn(viewData);
 	}
 
-	public class ViewData {
-		private String applicationId;
-		private PageSize pageSize;
-		private int rasterDpi;
-		private boolean landscape;
-		private boolean withArrow;
-		private boolean withScaleBar;
-
-		public void resetData() {
-			applicationId = "applicationId";
-			pageSize = PageSize.A2;
-			rasterDpi = 123;
-			landscape = true;
-			withArrow = true;
-			withScaleBar = true;
-		}
-
-		public String getApplicationId() {
-			return applicationId;
-		}
-
-		public void setApplicationId(String applicationId) {
-			this.applicationId = applicationId;
-		}
-
-		public PageSize getPageSize() {
-			return pageSize;
-		}
-
-		public void setPageSize(PageSize pageSize) {
-			this.pageSize = pageSize;
-		}
-
-		public int getRasterDpi() {
-			return rasterDpi;
-		}
-
-		public void setRasterDpi(int rasterDpi) {
-			this.rasterDpi = rasterDpi;
-		}
-
-		public boolean isLandscape() {
-			return landscape;
-		}
-
-		public void setLandscape(boolean landscape) {
-			this.landscape = landscape;
-		}
-
-		public boolean isWithArrow() {
-			return withArrow;
-		}
-
-		public void setWithArrow(boolean withArrow) {
-			this.withArrow = withArrow;
-		}
-
-		public boolean isWithScaleBar() {
-			return withScaleBar;
-		}
-
-		public void setWithScaleBar(boolean withScaleBar) {
-			this.withScaleBar = withScaleBar;
-		}
-	}
 }

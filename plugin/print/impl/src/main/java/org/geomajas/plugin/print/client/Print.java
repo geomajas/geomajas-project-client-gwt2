@@ -12,6 +12,8 @@ package org.geomajas.plugin.print.client;
 
 
 import com.google.gwt.core.client.GWT;
+import org.geomajas.plugin.print.client.util.PrintUtil;
+import org.geomajas.plugin.print.client.util.PrintUtilImpl;
 
 /**
  * Start point class for the print plugin.
@@ -28,6 +30,8 @@ public final class Print {
 	private PrintClientBundleFactory bundleFactory;
 
 	private PrintService printService;
+
+	private PrintUtil printUtil;
 
 	private Print() {
 	}
@@ -60,6 +64,13 @@ public final class Print {
 		return printService;
 	}
 
+	public PrintUtil getPrintUtil() {
+		if (printUtil == null) {
+			printUtil = new PrintUtilImpl();
+		}
+		return printUtil;
+	}
+
 	public void setPrintService(PrintService printService) {
 		this.printService = printService;
 	}
@@ -70,5 +81,9 @@ public final class Print {
 
 	public void setBundleFactory(PrintClientBundleFactory bundleFactory) {
 		this.bundleFactory = bundleFactory;
+	}
+
+	public void setPrintUtil(PrintUtil printUtil) {
+		this.printUtil = printUtil;
 	}
 }

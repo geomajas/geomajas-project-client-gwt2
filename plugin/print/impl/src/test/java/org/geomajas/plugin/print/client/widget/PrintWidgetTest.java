@@ -17,7 +17,6 @@ import junit.framework.Assert;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.plugin.print.client.Print;
 import org.geomajas.plugin.print.client.PrintViewFactory;
-import org.geomajas.plugin.print.client.event.PrintFinishedHandler;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
