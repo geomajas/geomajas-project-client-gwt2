@@ -54,7 +54,7 @@ public class ViewMockData implements TemplateBuilderDataProvider {
 		this.pageSize = pageSize;
 	}
 
-	public int getRasterDpi() {
+	public Integer getRasterDpi() {
 		return rasterDpi;
 	}
 

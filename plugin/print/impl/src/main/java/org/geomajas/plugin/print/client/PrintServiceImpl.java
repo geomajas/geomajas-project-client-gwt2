@@ -32,7 +32,8 @@ public class PrintServiceImpl implements PrintService {
 
 	@Override
 	public void print(PrintRequestInfo printRequestInfo, final Callback<PrintFinishedInfo, Void> callback) {
-		final PrintSettings.ActionType actionType = printRequestInfo.getActionType();
+		final PrintSettings.PostPrintAction postPrintAction = printRequestInfo.getPostPrintAction();
+		final String fileName = printRequestInfo.getFileName();
 		PrintGetTemplateRequest request = new PrintGetTemplateRequest();
 		request.setTemplate(printRequestInfo.getPrintTemplateInfo());
 		final GwtCommand command = new GwtCommand(PrintGetTemplateRequest.COMMAND);
@@ -43,7 +44,9 @@ public class PrintServiceImpl implements PrintService {
 					public void execute(PrintGetTemplateResponse response) {
 						PrintFinishedInfo printFinishedInfo = new PrintFinishedInfo();
 						printFinishedInfo.setEncodedUrl(Print.getInstance().getPrintUtil()
-								.getPrintEncodeUrl(response.getDocumentId(), command.getUserToken(), actionType));
+								.getPrintEncodeUrl(response.getDocumentId(), fileName,
+										command.getUserToken(), postPrintAction));
+						printFinishedInfo.setPostPrintAction(postPrintAction);
 						callback.onSuccess(printFinishedInfo);
 					}
 				});

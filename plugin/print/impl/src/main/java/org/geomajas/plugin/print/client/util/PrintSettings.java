@@ -23,12 +23,13 @@ public interface PrintSettings {
 	/**
 	 * Enum choice of what to do when print has been created. E.g. open in new window, or save on machine.
 	 */
-	public enum ActionType {
-		SAVE("save"),
-		OPEN("open");
+	public enum PostPrintAction {
+		SAVE("save"), // save as a file
+		OPEN("open"); // open in a new window
+
 		private String typeName;
 
-		private ActionType(String typeName) {
+		private PostPrintAction(String typeName) {
 			this.typeName = typeName;
 		}
 
@@ -41,18 +42,6 @@ public interface PrintSettings {
 
 	String URL_DOWNLOAD_NO = "0";
 
-	// String EXTENSION = ".pdf";
-
-	// url parameter keys
-
-	String URL_PATH = "d/print";
-
-	String URL_DOCUMENT_ID = "documentId";
-
-	String URL_NAME = "name";
-
-	String URL_TOKEN = "userToken";
-
-	String URL_DOWNLOAD = "download";
+	String DEFAULT_DOWNLOAD_EXTENSION = ".pdf";
 
 }

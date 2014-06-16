@@ -62,6 +62,48 @@
 							<g:ListBox ui:field="pageSizeListBox" width="180px"
 									   title="{msg.printPrefsPageSizeTooltip}"/> <!--  excl padding-left: 5px and padding-right: 2px -->
 						</li>
+						<li>
+							<g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE">
+								<g:Label><ui:text from='{msg.printPrefsWithArrow}' /></g:Label>
+								<g:CheckBox ui:field="arrowCheckBox"/>
+							</g:HorizontalPanel>
+						</li>
+						<li>
+							<g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE">
+								<g:Label><ui:text from='{msg.printPrefsWithScaleBar}' /></g:Label>
+								<g:CheckBox ui:field="scaleBarBox"/>
+							</g:HorizontalPanel>
+						</li>
+
+						<li>
+							<g:Label addStyleNames="{resource.css.fieldLabel}">
+								<ui:text from='{msg.printPrefsRasterDpi}' />
+								:
+							</g:Label>
+
+							<g:TextBox ui:field="rasterDpiTextBox" width="180px"
+									   title="{msg.printPrefsRasterDpiTooltip}"
+									   addStyleNames="{resource.css.textboxSuitableMargin}"	/> <!--  excl padding-left: 5px and padding-right: 2px -->
+						</li>
+						<li>
+							<g:Label addStyleNames="{resource.css.fieldLabel}">
+								<ui:text from='{msg.printPrefsPostPrintActionLabel}' />
+								:
+							</g:Label>
+
+							<!--fill in the java file-->
+							<g:VerticalPanel ui:field="postPrintActionRadioGroup" addStyleNames="{resource.css.radioGroup}"/>
+						</li>
+						<li>
+							<g:Label addStyleNames="{resource.css.fieldLabel}">
+								<ui:text from='{msg.printPrefsFileName}' />
+								:
+							</g:Label>
+
+							<g:TextBox ui:field="fileNameTextBox" width="180px"
+									   title="{msg.printPrefsFileNameTooltip}"
+									   addStyleNames="{resource.css.textboxSuitableMargin}"	/> <!--  excl padding-left: 5px and padding-right: 2px -->
+						</li>
 
 					</ul>
 	

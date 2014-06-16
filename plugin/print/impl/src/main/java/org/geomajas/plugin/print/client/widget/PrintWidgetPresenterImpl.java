@@ -12,11 +12,14 @@ package org.geomajas.plugin.print.client.widget;
 
 
 import com.google.gwt.core.client.Callback;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Frame;
+import com.google.gwt.user.client.ui.RootPanel;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.plugin.print.client.Print;
-import org.geomajas.plugin.print.client.util.PrintSettings;
 import org.geomajas.plugin.print.client.event.PrintFinishedInfo;
 import org.geomajas.plugin.print.client.event.PrintRequestInfo;
 import org.geomajas.plugin.print.client.event.PrintRequestFinishedEvent;
@@ -115,7 +118,8 @@ public class PrintWidgetPresenterImpl implements PrintWidgetPresenter {
 	public void print() {
 		if (mapPresenter != null) {
 			PrintRequestInfo printRequestInfo = new PrintRequestInfo();
-			printRequestInfo.setActionType(view.getActionType());
+			printRequestInfo.setPostPrintAction(view.getActionType());
+			printRequestInfo.setFileName(view.getFileName());
 			printRequestInfo.setPrintTemplateInfo(createDefaultTemplateFromViewData());
 			PrintRequestStartedEvent startedEvent = new PrintRequestStartedEvent();
 			startedEvent.setPrintRequestInfo(printRequestInfo);
@@ -187,18 +191,18 @@ public class PrintWidgetPresenterImpl implements PrintWidgetPresenter {
 		 */
 		@Override
 		public void onPrintRequestFinished(PrintRequestFinishedEvent event) {
-			switch (event.getPrintFinishedInfo().getActionType()) {
+			switch (event.getPrintFinishedInfo().getPostPrintAction()) {
 				case SAVE:
-					// TODO Converted to GWT2
-					// // create a hidden iframe to avoid popups ???
-					// HTMLPanel hiddenFrame = new HTMLPanel("<iframe src='" + encodedUrl
-					// + "'+style='position:absolute;width:0;height:0;border:0'>");
-					// hiddenFrame.setVisible(false);
-					//
-					// addChild(hiddenFrame);
+					Frame frame = new Frame();
+					frame.setVisible(false);
+					frame.setUrl(event.getPrintFinishedInfo().getEncodedUrl());
+					frame.setPixelSize(0, 0);
+					frame.getElement().getStyle().setPosition(Style.Position.ABSOLUTE);
+					frame.getElement().getStyle().setBorderWidth(0, Style.Unit.PX);
+					RootPanel.get().add(frame);
 					break;
 				default:
-					com.google.gwt.user.client.Window.open(event.getPrintFinishedInfo().getEncodedUrl(), "_blank", null);
+					Window.open(event.getPrintFinishedInfo().getEncodedUrl(), "_blank", null);
 					break;
 			}
 		}

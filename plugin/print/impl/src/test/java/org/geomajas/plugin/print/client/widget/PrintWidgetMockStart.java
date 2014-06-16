@@ -133,7 +133,7 @@ public abstract class PrintWidgetMockStart {
 		MapComponentInfo mapComponent = (MapComponentInfo) getChildOfType(pageComponentInfo.getChildren(), MapComponentInfo.class);
 		Assert.assertNotNull(mapComponent);
 		Assert.assertEquals(viewData.getApplicationId(), mapComponent.getApplicationId());
-		Assert.assertEquals(viewData.getRasterDpi(), (int) mapComponent.getRasterResolution());
+		Assert.assertEquals((int) viewData.getRasterDpi(), (int) mapComponent.getRasterResolution());
 
 		// check scalebar
 		ScaleBarComponentInfo scaleBarComponent = (ScaleBarComponentInfo)

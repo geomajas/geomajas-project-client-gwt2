@@ -12,23 +12,30 @@ package org.geomajas.plugin.print.client.widget;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import org.geomajas.plugin.print.client.Print;
 import org.geomajas.plugin.print.client.i18n.PrintMessages;
 import org.geomajas.plugin.print.client.template.PageSize;
 import org.geomajas.plugin.print.client.template.TemplateBuilderDataProvider;
 import org.geomajas.plugin.print.client.util.PrintSettings;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * Default implementation of {@link org.geomajas.plugin.print.client.widget.PrintWidgetView}.
+ * Implementation of {@link org.geomajas.plugin.print.client.widget.PrintWidgetView}, enable changing all data elements.
  *
  * @author An Buyle
  * @author Jan De Moerloose
@@ -37,7 +44,7 @@ import org.geomajas.plugin.print.client.util.PrintSettings;
 public class FullOptionsPrintPanel extends Composite implements PrintWidgetView, TemplateBuilderDataProvider {
 
 	/**
-	 * UI binder definition for the {@link } widget.
+	 * UI binder definition.
 	 *
 	 * @author An Buyle
 	 */
@@ -57,21 +64,40 @@ public class FullOptionsPrintPanel extends Composite implements PrintWidgetView,
 	protected TextBox titleTextBox;
 
 	@UiField
+	protected TextBox rasterDpiTextBox;
+
+	@UiField
+	protected TextBox fileNameTextBox;
+
+	@UiField
 	protected FlowPanel totalPanel;
+
+	@UiField
+	protected ListBox pageSizeListBox;
 
 	private PrintWidgetPresenter handler;
 
 	//
 	// private TextItem fileNameItem;
 	//
-	// private SelectItem sizeItem;
 	//
-	// private RadioGroupItem orientationGroup;
 	@UiField
 	protected RadioButton optionLandscapeOrientation;
 
 	@UiField
 	protected RadioButton optionPortraitOrientation;
+
+	@UiField
+	protected CheckBox arrowCheckBox;
+
+	@UiField
+	protected CheckBox scaleBarBox;
+
+	@UiField
+	protected VerticalPanel postPrintActionRadioGroup;
+
+	private Map<PrintSettings.PostPrintAction, RadioButton> postPrintActionRadioButtonMap =
+			new HashMap<PrintSettings.PostPrintAction, RadioButton>();
 
 	/** Default constructor. Create an instance using the default resource bundle and layout. */
 	public FullOptionsPrintPanel() {
@@ -97,21 +123,25 @@ public class FullOptionsPrintPanel extends Composite implements PrintWidgetView,
 
 		titleTextBox.getElement().setAttribute("placeholder", MESSAGES.printPrefsTitlePlaceholder());
 
-		final ClickHandler orientationOptionClickedHandler = new ClickHandler() {
+		// fill the pageSizeListBox
+		for (String pageSizeName : PageSize.getAllNames()) {
+			pageSizeListBox.addItem(pageSizeName);
+		}
+		// fill the postPrintActionRadioButtonMap
+		postPrintActionRadioButtonMap.clear();
+		for (PrintSettings.PostPrintAction postPrintAction : PrintSettings.PostPrintAction.values()) {
+			RadioButton radioButton = new RadioButton("postPrintAction",
+					Print.getInstance().getPrintUtil().toString(postPrintAction));
+			postPrintActionRadioButtonMap.put(postPrintAction, radioButton);
+			postPrintActionRadioGroup.add(radioButton);
+		}
 
-			public void onClick(ClickEvent event) {
-				if (event != null) {
-					optionLandscapeOrientation.setValue(event.getSource().equals(optionLandscapeOrientation));
-					optionPortraitOrientation.setValue(event.getSource().equals(optionPortraitOrientation));
-				}
-			}
-		};
-		optionLandscapeOrientation.addClickHandler(orientationOptionClickedHandler);
-		optionPortraitOrientation.addClickHandler(orientationOptionClickedHandler);
-
-		// Defayult = Landscape
+		// default values
 		optionLandscapeOrientation.setValue(true);
-		optionPortraitOrientation.setValue(false);
+		scaleBarBox.setValue(true);
+		arrowCheckBox.setValue(false);
+		rasterDpiTextBox.setText("200");
+		postPrintActionRadioButtonMap.get(PrintSettings.PostPrintAction.OPEN).setValue(true);
 	}
 
 	@Override
@@ -140,40 +170,59 @@ public class FullOptionsPrintPanel extends Composite implements PrintWidgetView,
 
 	@Override
 	public PageSize getPageSize() {
-		// default value
-		return PageSize.A4;
-		// TODO: get value from view element
+		return PageSize.getByName(pageSizeListBox.getValue(pageSizeListBox.getSelectedIndex()));
 	}
 
 	@Override
 	public boolean isWithArrow() {
-		// default
-		return true;
-		// TODO: get value from (Boolean) arrowCheckbox.getValue()
+		return arrowCheckBox.getValue();
 	}
 
 	@Override
 	public boolean isWithScaleBar() {
-		//default
-		return true;
-		// TODO: get value from (Boolean) scaleBarCheckbox.getValue()
+		return scaleBarBox.getValue();
 	}
 
 	@Override
-	public int getRasterDpi() {
-		// default
-		return 200;
-		// TODO: get value from (Integer) rasterDpiSlider.getValue()
+	public Integer getRasterDpi() {
+		// TODO turn into a slider?: get value from (Integer) rasterDpiSlider.getValue()
+		try {
+			return Integer.parseInt(rasterDpiTextBox.getText());
+		} catch (NumberFormatException nfe) {
+			return null;
+		}
 	}
 
 	@Override
-	public PrintSettings.ActionType getActionType() {
-		// default
-		return PrintSettings.ActionType.OPEN;
+	public PrintSettings.PostPrintAction getActionType() {
+		for (Map.Entry<PrintSettings.PostPrintAction, RadioButton> entry : postPrintActionRadioButtonMap.entrySet()) {
+			if (entry.getValue().getValue()) {
+				return entry.getKey();
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public String getFileName() {
+		String fileName = fileNameTextBox.getText();
+		if (fileName != null && !fileName.isEmpty()) {
+			return fileName;
+		}
+		return MESSAGES.defaultPrintFileName();
 	}
 
 	@UiHandler("printButton")
 	public void onClick(ClickEvent event) {
+		// validation
+		if (getRasterDpi() == null) {
+			Window.alert("The dpi must be an integer value");
+			return;
+		}
+		if (getActionType() == null) {
+			Window.alert("Incorrect Action Type");
+			return;
+		}
 		handler.print();
 	}
 }

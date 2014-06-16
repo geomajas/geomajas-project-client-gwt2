@@ -22,7 +22,8 @@ import org.geomajas.plugin.print.command.dto.PrintTemplateInfo;
  */
 public class PrintRequestInfo {
 	private PrintTemplateInfo printTemplateInfo;
-	private PrintSettings.ActionType actionType;
+	private String fileName;
+	private PrintSettings.PostPrintAction postPrintAction;
 
 	public PrintTemplateInfo getPrintTemplateInfo() {
 		return printTemplateInfo;
@@ -32,11 +33,19 @@ public class PrintRequestInfo {
 		this.printTemplateInfo = printTemplateInfo;
 	}
 
-	public PrintSettings.ActionType getActionType() {
-		return actionType;
+	public PrintSettings.PostPrintAction getPostPrintAction() {
+		return postPrintAction;
 	}
 
-	public void setActionType(PrintSettings.ActionType actionType) {
-		this.actionType = actionType;
+	public void setPostPrintAction(PrintSettings.PostPrintAction postPrintAction) {
+		this.postPrintAction = postPrintAction;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 }

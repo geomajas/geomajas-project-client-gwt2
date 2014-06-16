@@ -14,7 +14,8 @@ import org.geomajas.plugin.print.client.widget.PrintWidgetCssResource;
 import org.geomajas.plugin.print.client.widget.PrintWidgetResource;
 
 /**
- * {@link com.google.gwt.resources.client.ClientBundle} for {@link org.geomajas.plugin.print.client.widget.BasePrintPanel}.
+ * {@link com.google.gwt.resources.client.ClientBundle} for
+ * {@link org.geomajas.plugin.print.client.widget.BasePrintPanel}.
  *
  * @author Jan De Moerloose
  *

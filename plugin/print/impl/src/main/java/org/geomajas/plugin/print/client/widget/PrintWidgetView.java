@@ -25,6 +25,7 @@ public interface PrintWidgetView extends IsWidget {
 
 	TemplateBuilderDataProvider getTemplateBuilderDataProvider();
 
-	PrintSettings.ActionType getActionType();
+	PrintSettings.PostPrintAction getActionType();
 
+	String getFileName();
 }

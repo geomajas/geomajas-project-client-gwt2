@@ -61,12 +61,6 @@ public class BasePrintPanel extends Composite implements PrintWidgetView, Templa
 
 	private PrintWidgetPresenter handler;
 
-	//
-	// private TextItem fileNameItem;
-	//
-	// private SelectItem sizeItem;
-	//
-	// private RadioGroupItem orientationGroup;
 	@UiField
 	protected RadioButton optionLandscapeOrientation;
 
@@ -147,29 +141,27 @@ public class BasePrintPanel extends Composite implements PrintWidgetView, Templa
 
 	@Override
 	public boolean isWithArrow() {
-		// default
 		return true;
-		// TODO: get value from (Boolean) arrowCheckbox.getValue()
 	}
 
 	@Override
 	public boolean isWithScaleBar() {
-		//default
 		return true;
-		// TODO: get value from (Boolean) scaleBarCheckbox.getValue()
 	}
 
 	@Override
-	public int getRasterDpi() {
-		// default
+	public Integer getRasterDpi() {
 		return 200;
-		// TODO: get value from (Integer) rasterDpiSlider.getValue()
 	}
 
 	@Override
-	public PrintSettings.ActionType getActionType() {
-		// default
-		return PrintSettings.ActionType.OPEN;
+	public PrintSettings.PostPrintAction getActionType() {
+		return PrintSettings.PostPrintAction.OPEN;
+	}
+
+	@Override
+	public String getFileName() {
+		return MESSAGES.defaultPrintFileName();
 	}
 
 	@UiHandler("printButton")

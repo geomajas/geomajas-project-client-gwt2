@@ -11,9 +11,6 @@
 package org.geomajas.plugin.print.client.util;
 
 
-import com.google.gwt.core.client.Callback;
-import org.geomajas.plugin.print.client.event.PrintFinishedInfo;
-import org.geomajas.plugin.print.client.event.PrintRequestInfo;
 import org.geomajas.plugin.print.client.template.TemplateBuilder;
 import org.geomajas.plugin.print.client.template.TemplateBuilderDataProvider;
 
@@ -33,7 +30,7 @@ public interface PrintUtil {
 	 * @param templateBuilderDataProvider provides data for the builder
 	 * @return
 	 */
-	public void copyProviderDataToBuilder(TemplateBuilder builder,
+	void copyProviderDataToBuilder(TemplateBuilder builder,
 												 TemplateBuilderDataProvider templateBuilderDataProvider);
 
 	UrlBuilder createUrlBuilder(String baseUrl);
@@ -42,8 +39,12 @@ public interface PrintUtil {
 	 * Create a parameterized url for the created pdf.
 	 *
 	 * @param documentId a String value
+	 * @param fileName name given to the downloaded file.
 	 * @param userToken token of the user that had send the command.
 	 * @return info object containing parameterized url
 	 */
-	String getPrintEncodeUrl(String documentId, String userToken, PrintSettings.ActionType actionType);
+	String getPrintEncodeUrl(String documentId, String fileName,
+							 String userToken, PrintSettings.PostPrintAction postPrintAction);
+
+	String toString(PrintSettings.PostPrintAction postPrintAction);
 }

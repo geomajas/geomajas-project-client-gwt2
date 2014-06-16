@@ -12,11 +12,10 @@ package org.geomajas.plugin.print.client.util;
 
 import com.google.gwt.core.client.GWT;
 import org.geomajas.plugin.print.client.Print;
-import org.geomajas.plugin.print.client.event.PrintFinishedInfo;
+import org.geomajas.plugin.print.client.i18n.PrintMessages;
 import org.geomajas.plugin.print.client.template.PageSize;
 import org.geomajas.plugin.print.client.template.TemplateBuilder;
 import org.geomajas.plugin.print.client.template.TemplateBuilderDataProvider;
-import org.geomajas.plugin.print.command.dto.PrintGetTemplateResponse;
 
 /**
  * Builds parametrized URL from a base URL.
@@ -56,23 +55,37 @@ public class PrintUtilImpl implements PrintUtil {
 	}
 
 	@Override
-	public String getPrintEncodeUrl(String documentId, String userToken,
-									PrintSettings.ActionType actionType) {
+	public String getPrintEncodeUrl(String documentId, String fileName, String userToken,
+									PrintSettings.PostPrintAction postPrintAction) {
 		UrlBuilder url = Print.getInstance().getPrintUtil().createUrlBuilder(GWT.getHostPageBaseURL());
-		url.addPath(PrintSettings.URL_PATH);
-		url.addParameter(PrintSettings.URL_DOCUMENT_ID, documentId);
-		// url.addParameter(URL_NAME, (String) fileNameItem.getValue());
-		url.addParameter(PrintSettings.URL_NAME, "mapPrint.pdf");
-		url.addParameter(PrintSettings.URL_TOKEN, userToken);
-		// TODO String downloadType = downloadTypeGroup.getValue()
-		switch (actionType) {
+		url.addPath(PrintUrlParameterKey.URL_PATH);
+		url.addParameter(PrintUrlParameterKey.URL_DOCUMENT_ID, documentId);
+		if (fileName.lastIndexOf(".") < 0) {
+		   fileName += PrintSettings.DEFAULT_DOWNLOAD_EXTENSION;
+		}
+		url.addParameter(PrintUrlParameterKey.URL_NAME, fileName);
+		url.addParameter(PrintUrlParameterKey.URL_TOKEN, userToken);
+		switch (postPrintAction) {
 			case OPEN:
-				url.addParameter(PrintSettings.URL_DOWNLOAD, PrintSettings.URL_DOWNLOAD_NO);
+				url.addParameter(PrintUrlParameterKey.URL_DOWNLOAD, PrintSettings.URL_DOWNLOAD_NO);
 				break;
 			case SAVE:
-				url.addParameter(PrintSettings.URL_DOWNLOAD, PrintSettings.URL_DOWNLOAD_YES);
+				url.addParameter(PrintUrlParameterKey.URL_DOWNLOAD, PrintSettings.URL_DOWNLOAD_YES);
 				break;
 		}
 		return url.toString();
+	}
+
+	@Override
+	public String toString(PrintSettings.PostPrintAction postPrintAction) {
+		// create locally, because of GWT.create
+		PrintMessages messages = GWT.create(PrintMessages.class);
+		switch (postPrintAction) {
+			case OPEN:
+				return messages.printPrefsOpenInBrowserWindow();
+			case SAVE:
+				return messages.printPrefsSaveAsFile();
+		}
+		return null;
 	}
 }

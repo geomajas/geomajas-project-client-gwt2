@@ -8,30 +8,26 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.print.client.template;
+package org.geomajas.plugin.print.client.util;
+
 
 /**
- * Interface for data provider of a Builder.
- * This is the default data provider.
+ * Url parameter keys for the Url buildup.
  * 
+ * @author An Buyle
  * @author Jan Venstermans
+ * 
  */
-public interface TemplateBuilderDataProvider {
+public interface PrintUrlParameterKey {
 
-	String getTitle();
+	String URL_PATH = "d/print";
 
-	/**
-	 *
-	 * @return true landscape
-	 * 			false portrait
-	 */
-	boolean isLandscape();
+	String URL_DOCUMENT_ID = "documentId";
 
-	PageSize getPageSize();
+	String URL_NAME = "name";
 
-	boolean isWithArrow();
+	String URL_TOKEN = "userToken";
 
-	boolean isWithScaleBar();
+	String URL_DOWNLOAD = "download";
 
-	Integer getRasterDpi();
 }

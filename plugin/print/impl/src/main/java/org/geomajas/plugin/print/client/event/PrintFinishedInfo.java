@@ -21,7 +21,7 @@ import org.geomajas.plugin.print.client.util.PrintSettings;
  */
 public class PrintFinishedInfo {
 	private String encodedUrl;
-	private PrintSettings.ActionType actionType;
+	private PrintSettings.PostPrintAction postPrintAction;
 
 	public String getEncodedUrl() {
 		return encodedUrl;
@@ -31,11 +31,11 @@ public class PrintFinishedInfo {
 		this.encodedUrl = encodedUrl;
 	}
 
-	public PrintSettings.ActionType getActionType() {
-		return actionType;
+	public PrintSettings.PostPrintAction getPostPrintAction() {
+		return postPrintAction;
 	}
 
-	public void setActionType(PrintSettings.ActionType actionType) {
-		this.actionType = actionType;
+	public void setPostPrintAction(PrintSettings.PostPrintAction postPrintAction) {
+		this.postPrintAction = postPrintAction;
 	}
 }
