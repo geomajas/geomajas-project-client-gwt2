@@ -26,4 +26,26 @@ public interface SampleMessages extends Messages {
 
 	String printDescription();
 
+	/* custom view */
+
+	String printCustomViewTitle();
+
+	String printCustomViewShort();
+
+	String printCustomViewDescription();
+
+	/* custom handler */
+
+	String printCustomHandlerTitle();
+
+	String printCustomHandlerShort();
+
+	String printCustomHandlerDescription();
+
+	/* svg layer */
+	String printSvgLayerTitle();
+
+	String printSvgLayerShort();
+
+	String printSvgLayerDescription();
 }

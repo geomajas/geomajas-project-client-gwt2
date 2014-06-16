@@ -15,10 +15,13 @@ import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanelRegistry;
 import org.geomajas.gwt2.example.base.client.sample.ShowcaseSampleDefinition;
 import org.geomajas.plugin.print.example.client.i18n.SampleMessages;
+import org.geomajas.plugin.print.example.client.sample.PrintExampleCustomHandlerPanel;
+import org.geomajas.plugin.print.example.client.sample.PrintExampleCustomViewPanel;
 import org.geomajas.plugin.print.example.client.sample.PrintExamplePanel;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import org.geomajas.plugin.print.example.client.sample.PrintExampleSvgLayerPanel;
 
 /**
  * Entry point and main class for the GWT client example application.
@@ -66,6 +69,88 @@ public class ExampleJar implements EntryPoint {
 			@Override
 			public String getKey() {
 				return "printplugin";
+			}
+		});
+		SamplePanelRegistry.registerFactory(CATEGORY_PRINT, new ShowcaseSampleDefinition() {
+
+			public SamplePanel create() {
+				return new PrintExampleCustomViewPanel();
+			}
+
+			public String getTitle() {
+				return MESSAGES.printCustomViewTitle();
+			}
+
+			public String getShortDescription() {
+				return MESSAGES.printCustomViewShort();
+			}
+
+			public String getDescription() {
+				return MESSAGES.printCustomViewDescription();
+			}
+
+			public String getCategory() {
+				return CATEGORY_PRINT;
+			}
+
+			@Override
+			public String getKey() {
+				return "printplugin-customview";
+			}
+
+		});
+		SamplePanelRegistry.registerFactory(CATEGORY_PRINT, new ShowcaseSampleDefinition() {
+
+			public SamplePanel create() {
+				return new PrintExampleCustomHandlerPanel();
+			}
+
+			public String getTitle() {
+				return MESSAGES.printCustomHandlerTitle();
+			}
+
+			public String getShortDescription() {
+				return MESSAGES.printCustomHandlerShort();
+			}
+
+			public String getDescription() {
+				return MESSAGES.printCustomHandlerDescription();
+			}
+
+			public String getCategory() {
+				return CATEGORY_PRINT;
+			}
+
+			@Override
+			public String getKey() {
+				return "printplugin-customhandler";
+			}
+		});
+		SamplePanelRegistry.registerFactory(CATEGORY_PRINT, new ShowcaseSampleDefinition() {
+
+			public SamplePanel create() {
+				return new PrintExampleSvgLayerPanel();
+			}
+
+			public String getTitle() {
+				return MESSAGES.printSvgLayerTitle();
+			}
+
+			public String getShortDescription() {
+				return MESSAGES.printSvgLayerShort();
+			}
+
+			public String getDescription() {
+				return MESSAGES.printSvgLayerDescription();
+			}
+
+			public String getCategory() {
+				return CATEGORY_PRINT;
+			}
+
+			@Override
+			public String getKey() {
+				return "printplugin-svgLayer";
 			}
 		});
 	}
