@@ -10,16 +10,13 @@
  */
 package org.geomajas.gwt2.widget.client.other.dialog;
 
-import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.widget.client.BaseTest;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
+
+import static org.mockito.Mockito.verify;
 
 public class CloseableDialogBoxWidgetPresenterImplTest extends BaseTest {
-
-	@Mock
-	private MapEventBus eventBus;
 
 	private CloseableDialogBoxWidgetPresenterImpl presenter;
 
@@ -30,12 +27,18 @@ public class CloseableDialogBoxWidgetPresenterImplTest extends BaseTest {
 
 	@Test
 	public void onShow() {
-		//verify(closeableDialogBoxWidgetView).show();
+
+		presenter.show();
+		verify(closeableDialogBoxWidgetView).show();
+
 	}
 
 	@Test
 	public void onHide() {
-		//verify(closeableDialogBoxWidgetView).hide();
+
+		presenter.hide();
+		verify(closeableDialogBoxWidgetView).hide();
+
 	}
 
 }

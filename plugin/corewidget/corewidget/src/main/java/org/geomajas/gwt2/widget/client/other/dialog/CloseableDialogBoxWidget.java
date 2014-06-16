@@ -53,7 +53,7 @@ public class CloseableDialogBoxWidget implements IsWidget {
 	 */
 	@Api
 	public void setTitle(String title) {
-		view.setTitle(title);
+		presenter.setTitle(title);
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class CloseableDialogBoxWidget implements IsWidget {
 	 */
 	@Api
 	public void addContent(Widget content) {
-		view.addContent(content);
+		presenter.addContent(content);
 	}
 
 	/**
@@ -71,7 +71,7 @@ public class CloseableDialogBoxWidget implements IsWidget {
 	 */
 	@Api
 	public void show() {
-		view.show();
+		presenter.show();
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class CloseableDialogBoxWidget implements IsWidget {
 	 */
 	@Api
 	public void hide() {
-		view.hide();
+		presenter.hide();
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class CloseableDialogBoxWidget implements IsWidget {
 	 */
 	@Api
 	public void center() {
-		view.center();
+		presenter.center();
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class CloseableDialogBoxWidget implements IsWidget {
 	 */
 	@Api
 	public void setSize(int width, int height) {
-		view.setSize(width, height);
+		presenter.setSize(width, height);
 	}
 
 	/**
@@ -108,7 +108,7 @@ public class CloseableDialogBoxWidget implements IsWidget {
 	 */
 	@Api
 	public void setGlassEnabled(boolean isGlassEnabled) {
-		view.setGlassEnabled(isGlassEnabled);
+		presenter.setGlassEnabled(isGlassEnabled);
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class CloseableDialogBoxWidget implements IsWidget {
 	 */
 	@Api
 	public void setModal(boolean isModal) {
-		view.setModal(isModal);
+		presenter.setModal(isModal);
 	}
 
 	/**
@@ -129,7 +129,7 @@ public class CloseableDialogBoxWidget implements IsWidget {
 	 */
 	@Api
 	public  void setOnCloseHandler(ClickHandler onCloseHandler) {
-		view.setOnCloseHandler(onCloseHandler);
+		presenter.setOnCloseHandler(onCloseHandler);
 	}
 
 	@Override
