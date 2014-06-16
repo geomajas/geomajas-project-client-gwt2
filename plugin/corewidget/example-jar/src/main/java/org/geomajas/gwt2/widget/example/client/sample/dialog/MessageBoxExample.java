@@ -12,8 +12,8 @@ package org.geomajas.gwt2.widget.example.client.sample.dialog;
 
 
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
-import org.geomajas.gwt2.widget.client.dialog.MessageBox;
-import org.geomajas.gwt2.widget.client.dialog.MessageBox.MessageStyleType;
+import org.geomajas.gwt2.widget.client.other.dialog.MessageBox;
+import org.geomajas.gwt2.widget.client.other.dialog.MessageBox.MessageStyleType;
 import org.geomajas.gwt2.widget.example.client.i18n.SampleMessages;
 
 import com.google.gwt.core.client.Callback;
