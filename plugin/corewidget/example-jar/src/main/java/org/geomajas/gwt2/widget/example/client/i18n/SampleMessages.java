@@ -26,6 +26,8 @@ public interface SampleMessages extends Messages {
 	// ------------------------------------------------------------------------
 
 	String closeableDialogTitle();
+	String closeableDialogBoxHandlerTitle();
+	String closeableDialogBoxHandlerMessage();
 	String closeableDialogDescrShort();
 	String closeableDialogDescription();
 	String closeableDialogButShow();

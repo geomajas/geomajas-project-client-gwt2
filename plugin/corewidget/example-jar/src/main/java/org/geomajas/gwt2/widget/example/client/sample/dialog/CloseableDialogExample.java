@@ -19,13 +19,13 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.gwt2.widget.client.other.dialog.CloseableDialogBoxWidget;
+import org.geomajas.gwt2.widget.example.client.i18n.SampleMessages;
 
 /**
  * Closeable dialog widget showcase panel.
@@ -34,6 +34,8 @@ import org.geomajas.gwt2.widget.client.other.dialog.CloseableDialogBoxWidget;
  * @author David Debuck
  */
 public class CloseableDialogExample implements SamplePanel {
+
+	private SampleMessages msg = GWT.create(SampleMessages.class);
 
 	private DockLayoutPanel rootElement;
 
@@ -61,18 +63,14 @@ public class CloseableDialogExample implements SamplePanel {
 
 				final CloseableDialogBoxWidget widget = new CloseableDialogBoxWidget();
 
-				HTMLPanel temp = new HTMLPanel("");
-				InlineLabel label = new InlineLabel("Sample text.");
-				Button button = new Button("test");
-				temp.add(label);
-				temp.add(button);
+				InlineLabel label = new InlineLabel(msg.closeableDialogDescription());
 
 				widget.addContent(label);
 
 				widget.setGlassEnabled(true);
 				widget.setModal(true);
 
-				widget.setTitle("Window title");
+				widget.setTitle(msg.closeableDialogTitle());
 				widget.setSize(400, 200);
 				widget.center();
 				widget.show();
@@ -81,7 +79,7 @@ public class CloseableDialogExample implements SamplePanel {
 					@Override
 					public void onClick(ClickEvent event) {
 
-						layerEventLayout.add(new Label("CloseableDialogBox has been closed."));
+						layerEventLayout.add(new Label(msg.closeableDialogBoxHandlerMessage()));
 
 					}
 				});

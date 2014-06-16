@@ -7,7 +7,9 @@
 		<g:west size="350">
 			<g:ScrollPanel>
 				<g:HTMLPanel addStyleNames="{resource.css.sampleLeftLayout}">
-					<h2 ui:field="title">CloseableDialogBox close handler:</h2>
+					<h2 ui:field="title">
+						<g:InlineLabel text="{messages.closeableDialogBoxHandlerTitle}" />
+					</h2>
 					<g:VerticalPanel ui:field="layerEventLayout" width="97%"/>
 				</g:HTMLPanel>
 			</g:ScrollPanel>
