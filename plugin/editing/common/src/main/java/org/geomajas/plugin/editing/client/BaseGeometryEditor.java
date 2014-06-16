@@ -72,4 +72,5 @@ public interface BaseGeometryEditor {
 	 * @param true if snapping is on
 	 */
 	void setSnapOnInsert(boolean b);
+	
 }

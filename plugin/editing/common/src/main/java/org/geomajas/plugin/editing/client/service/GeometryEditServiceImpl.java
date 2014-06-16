@@ -20,14 +20,22 @@ import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditInsertHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditMoveHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditRemoveHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditResumeEvent;
+import org.geomajas.plugin.editing.client.event.GeometryEditResumeHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditShapeChangedHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStartHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditSuspendEvent;
+import org.geomajas.plugin.editing.client.event.GeometryEditSuspendHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditTentativeMoveHandler;
+import org.geomajas.plugin.editing.client.event.GeometryEditValidationHandler;
 import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
+import org.geomajas.plugin.editing.client.service.validation.DefaultGeometryValidator;
+import org.geomajas.plugin.editing.client.service.validation.GeometryValidationInterceptor;
+import org.geomajas.plugin.editing.client.service.validation.GeometryValidator;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -77,6 +85,10 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	private Coordinate tentativeMoveLocation;
 
 	private boolean started;
+	
+	private GeometryValidationInterceptor validationInterceptor;
+	
+	private boolean suspended;
 
 	// ------------------------------------------------------------------------
 	// Public constructors:
@@ -102,6 +114,16 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	@Override
 	public HandlerRegistration addGeometryEditStopHandler(GeometryEditStopHandler handler) {
 		return eventBus.addHandler(GeometryEditStopHandler.TYPE, handler);
+	}
+
+	@Override
+	public HandlerRegistration addGeometryEditSuspendHandler(GeometryEditSuspendHandler handler) {
+		return eventBus.addHandler(GeometryEditSuspendHandler.TYPE, handler);
+	}
+
+	@Override
+	public HandlerRegistration addGeometryEditResumeHandler(GeometryEditResumeHandler handler) {
+		return eventBus.addHandler(GeometryEditResumeHandler.TYPE, handler);
 	}
 
 	@Override
@@ -134,6 +156,11 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 		return eventBus.addHandler(GeometryEditTentativeMoveHandler.TYPE, handler);
 	}
 
+	@Override
+	public HandlerRegistration addGeometryEditValidationHandler(GeometryEditValidationHandler handler) {
+		return eventBus.addHandler(GeometryEditValidationHandler.TYPE, handler);
+	}
+
 	// ------------------------------------------------------------------------
 	// Methods concerning Workflow:
 	// ------------------------------------------------------------------------
@@ -154,6 +181,34 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	@Override
 	public boolean isStarted() {
 		return started;
+	}
+
+	@Override
+	public void suspend() {
+		if (started) {
+			if (suspended) {
+				throw new IllegalStateException("The editing session is already suspended");
+			} else {
+				suspended = true;
+				eventBus.fireEvent(new GeometryEditSuspendEvent(geometry));
+			}
+		} else {
+			throw new IllegalStateException("The editing session is not started yet. Call start() before suspend()");
+		}
+	}
+	
+	public boolean isSuspended() {
+		return suspended;
+	}
+
+	@Override
+	public void resume() {
+		if (suspended) {
+			suspended = false;
+			eventBus.fireEvent(new GeometryEditResumeEvent(geometry));
+		} else {
+			throw new IllegalStateException("The editing session is not suspended. Call suspend() before resume()");
+		}
 	}
 
 	@Override
@@ -306,6 +361,11 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	public void remove(List<GeometryIndex> indices) throws GeometryOperationFailedException {
 		operationService.remove(indices);
 	}
+	
+	@Override
+	public void finish(GeometryIndex index) throws GeometryOperationFailedException {
+		operationService.finish(index);
+	}
 
 	@Override
 	public GeometryIndex addEmptyChild() throws GeometryOperationFailedException {
@@ -316,4 +376,42 @@ public class GeometryEditServiceImpl implements GeometryEditService {
 	public GeometryIndex addEmptyChild(GeometryIndex index) throws GeometryOperationFailedException {
 		return operationService.addEmptyChild(index);
 	}
+
+	@Override
+	public void addInterceptor(GeometryIndexOperationInterceptor interceptor) {
+		operationService.addInterceptor(interceptor);
+	}
+
+	@Override
+	public void removeInterceptor(GeometryIndexOperationInterceptor interceptor) {
+		operationService.removeInterceptor(interceptor);
+	}
+
+	@Override
+	public void setDefaultValidation(boolean b) {
+		if (b) {
+			getValidationInterceptor().setValidator(new DefaultGeometryValidator(this, true));
+			addInterceptor(getValidationInterceptor());
+		} else {
+			removeInterceptor(getValidationInterceptor());
+		}
+	}
+
+	@Override
+	public void setValidator(GeometryValidator validator) {
+		if (validator != null) {
+			getValidationInterceptor().setValidator(validator);
+			addInterceptor(getValidationInterceptor());
+		} else {
+			removeInterceptor(getValidationInterceptor());
+		}
+	}
+
+	private GeometryValidationInterceptor getValidationInterceptor() {
+		if (validationInterceptor == null) {
+			validationInterceptor = new GeometryValidationInterceptor(this);
+		}
+		return validationInterceptor;
+	}
+	
 }

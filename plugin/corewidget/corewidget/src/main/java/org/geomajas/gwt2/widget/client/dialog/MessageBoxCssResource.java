@@ -11,17 +11,13 @@
 
 package org.geomajas.gwt2.widget.client.dialog;
 
-import org.geomajas.annotation.Api;
-
 import com.google.gwt.resources.client.CssResource;
 
 /**
  * CSS resource bundle that contains styles used in pure Gwt Messagebox widget.
- * 
+ *
  * @author Kristof Heirwegh
- * @since 2.0.0
  */
-@Api(allMethods = true)
 public interface MessageBoxCssResource extends CssResource {
 
 	/**
@@ -44,7 +40,7 @@ public interface MessageBoxCssResource extends CssResource {
 	 * @return
 	 */
 	String messageBoxContent();
-	
+
 	/**
 	 * Get a CSS style class.
 	 * @return
@@ -65,5 +61,5 @@ public interface MessageBoxCssResource extends CssResource {
 	 * @return
 	 */
 	String messageBoxIconInfo();
-	
+
 }

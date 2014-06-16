@@ -15,7 +15,9 @@ import com.google.gwt.i18n.client.Messages;
 
 /**
  * Localization constants for the GWT client widgets.
- * 
+ *
+ * FIXME: per widget
+ *
  * @author Dosi Bingov
  */
 public interface WidgetCoreInternationalization extends Messages {

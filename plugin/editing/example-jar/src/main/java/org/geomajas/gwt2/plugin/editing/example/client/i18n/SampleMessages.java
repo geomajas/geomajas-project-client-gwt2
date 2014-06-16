@@ -20,6 +20,10 @@ import com.google.gwt.i18n.client.Messages;
  */
 public interface SampleMessages extends Messages {
 
+	String customEdit();
+
+	String editPolygonCustomEdit();
+
 	String editingTitle();
 
 	String editingShort();
@@ -33,6 +37,10 @@ public interface SampleMessages extends Messages {
 	String generalEdit();
 
 	String generalStopEditing();
+
+	String generalSuspend();
+
+	String generalResume();
 
 	String generalExplanation();
 
@@ -139,4 +147,19 @@ public interface SampleMessages extends Messages {
 	String mergeCountriesSelect();
 
 	String mergeCountriesMerge();
+
+	// GeometryValidationPanel:
+
+	String geometryValidationTitle();
+
+	String geometryValidationShort();
+
+	String geometryValidationDescription();
+
+	String geometryValidationSubTitle();
+
+	String geometryValidationSubTitleEvents();
+
+	String geometryValidationClearEventList();
+
 }

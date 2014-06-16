@@ -315,18 +315,12 @@ public class GeometryIndexServiceGeneralTest {
 		Assert.assertEquals(6.0, geom.getCoordinates()[2].getX());
 		Assert.assertEquals(6.0, geom.getCoordinates()[2].getY());
 
-		try {
-			service.getGeometry(multiPolygon, service.create(GeometryIndexType.TYPE_VERTEX, 0, 1, 2));
-			Assert.fail();
-		} catch (GeometryIndexNotFoundException e) {
-			// We expect to get here...
-		}
-		try {
-			service.getGeometry(multiPolygon, service.create(GeometryIndexType.TYPE_EDGE, 0, 1, 2));
-			Assert.fail();
-		} catch (GeometryIndexNotFoundException e) {
-			// We expect to get here...
-		}
+		geom = service.getGeometry(multiPolygon, service.create(GeometryIndexType.TYPE_VERTEX, 0, 1, 2));
+		Assert.assertEquals(Geometry.POINT, geom.getGeometryType());
+		
+		geom = service.getGeometry(multiPolygon, service.create(GeometryIndexType.TYPE_EDGE, 0, 1, 2));
+		Assert.assertEquals(Geometry.LINE_STRING, geom.getGeometryType());
+		
 		try {
 			service.getGeometry(multiPolygon, service.create(GeometryIndexType.TYPE_GEOMETRY, 0, 10));
 			Assert.fail();

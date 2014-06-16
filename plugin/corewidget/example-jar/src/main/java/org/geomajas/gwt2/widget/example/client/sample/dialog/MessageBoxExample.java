@@ -36,7 +36,7 @@ public class MessageBoxExample implements SamplePanel, Callback<Boolean, Void> {
 	private static final CloseableDialogUiBinder UIBINDER = GWT.create(CloseableDialogUiBinder.class);
 
 	private static final SampleMessages MSG = GWT.create(SampleMessages.class);
-	
+
 	/**
 	 * UI binder interface.
 	 */
@@ -51,9 +51,9 @@ public class MessageBoxExample implements SamplePanel, Callback<Boolean, Void> {
 	public Widget asWidget() {
 		return rootElement;
 	}
-	
+
 	// --------------------------------------------------------
-	
+
 	@UiHandler("infoMessageBtn")
 	protected void onInfoMessageBtnClicked(ClickEvent event) {
 		MessageBox.showMessageBox(MSG.messageBoxInfoMessageBtn(), MSG.messageBoxMessage());

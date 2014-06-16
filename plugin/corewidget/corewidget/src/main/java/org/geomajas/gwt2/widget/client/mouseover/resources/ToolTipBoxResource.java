@@ -10,8 +10,6 @@
  */
 package org.geomajas.gwt2.widget.client.mouseover.resources;
 
-import org.geomajas.annotation.Api;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
 
@@ -20,9 +18,7 @@ import com.google.gwt.resources.client.ClientBundle;
  * 
  * @author Dosi Bingov
  * 
- * @since 2.0.0
  */
-@Api(allMethods = true)
 public interface ToolTipBoxResource extends ClientBundle {
 
 	/**

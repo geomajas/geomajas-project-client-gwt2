@@ -14,5 +14,49 @@
 <chapter id="chapter-howto">
   <title>How-to</title>
 
-  <para></para>
+  <section>
+    <title>Replacing the default style through GWT</title>
+
+    <para>To replace the default style, define another implementation for the
+    client resource bundle factory through deferred binding:</para>
+
+    <programlisting>&lt;replace-with class="org.geomajas.gwt2.widget.client.resource.MyCoreWidgetClientBundleFactory"&gt;
+    &lt;when-type-is class="org.geomajas.gwt2.widget.client.resource.CoreWidgetClientBundleFactory" /&gt;
+&lt;/replace-with&gt;</programlisting>
+
+    <para><code>MyCoreWidgetClientBundleFactory</code> should implement the
+    same methods but use different css files and images.</para>
+  </section>
+
+  <section>
+    <title>Replacing the default style through css</title>
+
+    <para>To replace the default style through css, define the nostyle
+    implementation for the client resource bundle factory through deferred
+    binding:</para>
+
+    <programlisting>&lt;replace-with class="org.geomajas.gwt2.widget.client.resource.CoreWidgetClientBundleFactoryNoStyle"&gt;
+    &lt;when-type-is class="org.geomajas.gwt2.widget.client.resource.CoreWidgetClientBundleFactory" /&gt;
+&lt;/replace-with&gt;</programlisting>
+
+    <para>CoreWidgetClientBundleFactoryNoStyle is an implementation that
+    provides empty css classes for all the css used. By importing a css file
+    at the web page level, the web developer can now define his or her own
+    style for each of these classes. The default css can be found at
+    <code>org/geomajas/gwt2/widget/client/resource/CoreWidget.css.</code></para>
+  </section>
+
+  <section>
+    <title>Replacing the complete view of one or more widgets</title>
+
+    <para>To replace the view completely, define another implementation for
+    the view factory through deferred binding:</para>
+
+    <programlisting>&lt;replace-with class="org.geomajas.gwt2.widget.client.MyCoreWidgetViewFactory"&gt;
+    &lt;when-type-is class="org.geomajas.gwt2.widget.client.CoreWidgetViewFactory" /&gt;
+&lt;/replace-with&gt;</programlisting>
+
+    <para>The factory has create methods for each widget's view, just replace
+    the default implementations by your own implementation classes.</para>
+  </section>
 </chapter>

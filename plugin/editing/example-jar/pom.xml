@@ -42,6 +42,16 @@
 			<artifactId>geomajas-client-gwt2-impl</artifactId>
 		</dependency>
 		
+			<!-- Geomajas Layer plugins: -->
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-geotools</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-openstreetmap</artifactId>
+		</dependency>
+		
 		<!-- Example base library -->
 		<dependency>
 			<groupId>org.geomajas</groupId>

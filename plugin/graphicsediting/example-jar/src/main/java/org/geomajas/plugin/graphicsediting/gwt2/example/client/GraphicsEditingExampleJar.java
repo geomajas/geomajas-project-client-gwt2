@@ -63,6 +63,11 @@ public class GraphicsEditingExampleJar implements EntryPoint {
 			public String getCategory() {
 				return CATEGORY_GRAPHICS_EDITING;
 			}
+
+			@Override
+			public String getKey() {
+				return "graphicsgeometryeditcontroller";
+			}
 		});
 		SamplePanelRegistry.registerFactory(CATEGORY_GRAPHICS_EDITING, new ShowcaseSampleDefinition() {
 
@@ -89,6 +94,11 @@ public class GraphicsEditingExampleJar implements EntryPoint {
 			@Override
 			public String getCategory() {
 				return CATEGORY_GRAPHICS_EDITING;
+			}
+
+			@Override
+			public String getKey() {
+				return "graphicseditingeditactiontitle";
 			}
 		});
 	}

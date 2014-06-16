@@ -16,7 +16,7 @@ import com.google.gwt.safehtml.shared.SafeHtml;
 
 /**
  * Specific messages for the many samples.
- * 
+ *
  * @author Pieter De Graef
  */
 public interface SampleMessages extends Messages {
@@ -44,7 +44,7 @@ public interface SampleMessages extends Messages {
 	String messageBoxResponseNo();
 	String messageBoxResponseCancel();
 	SafeHtml messageBoxMessageLong();
-	
+
 	String featureSelectedTitle();
 	String featureSelectedDescrShort();
 	String featureSelectedDescription();
@@ -88,4 +88,18 @@ public interface SampleMessages extends Messages {
 	String mapLegendDropDownDescrShort();
 
 	String mapLegendDropDownDescription();
+
+	String itemSelectTitle();
+
+	String itemSelectDescrShort();
+
+	String itemSelectDescription();
+
+	String itemSelectFirstItem();
+
+	String itemSelectSecondItem();
+
+	String itemSelectThirdItem();
+
+	String itemSelectYouSelected(String item);
 }
