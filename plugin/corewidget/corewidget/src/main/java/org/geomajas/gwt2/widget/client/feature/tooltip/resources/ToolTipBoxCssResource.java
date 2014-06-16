@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.client.other.tooltip.resources;
+package org.geomajas.gwt2.widget.client.feature.tooltip.resources;
 
 import com.google.gwt.resources.client.CssResource;
 

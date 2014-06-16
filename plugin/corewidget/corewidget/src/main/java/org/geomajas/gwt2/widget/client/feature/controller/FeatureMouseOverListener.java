@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.client.mouseover.listener;
+package org.geomajas.gwt2.widget.client.feature.controller;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.MouseDownEvent;
@@ -30,7 +30,7 @@ import org.geomajas.gwt2.client.controller.MapController;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
 import org.geomajas.gwt2.client.map.layer.ServerLayer;
-import org.geomajas.gwt2.widget.client.other.tooltip.ToolTipBox;
+import org.geomajas.gwt2.widget.client.feature.tooltip.ToolTipBox;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.Feature;
 
@@ -46,7 +46,7 @@ import java.util.Map.Entry;
  * @author Dosi Bingov
  *
  */
-public class MouseOverListener extends AbstractController implements MapController {
+public class FeatureMouseOverListener extends AbstractController implements MapController {
 
 	private Coordinate currentPos;
 
@@ -74,7 +74,7 @@ public class MouseOverListener extends AbstractController implements MapControll
 	// Constructors:
 	// -------------------------------------------------------------------------
 
-	public MouseOverListener() {
+	public FeatureMouseOverListener() {
 		this(32);
 	}
 
@@ -83,7 +83,7 @@ public class MouseOverListener extends AbstractController implements MapControll
 	 * @param showAllAtributes
 	 *            if true all attributes of a feature will be shown in the dialog pop up
 	 */
-	public MouseOverListener(boolean showAllAtributes) {
+	public FeatureMouseOverListener(boolean showAllAtributes) {
 		this(32);
 		this.showAllAtributes = showAllAtributes;
 	}
@@ -93,7 +93,7 @@ public class MouseOverListener extends AbstractController implements MapControll
 	 * @param pixelBuffer
 	 *            minimum distance between features to be included in the call out box.
 	 */
-	public MouseOverListener(int pixelBuffer) {
+	public FeatureMouseOverListener(int pixelBuffer) {
 		super(false);
 		this.pixelBuffer = pixelBuffer;
 	}
@@ -128,13 +128,13 @@ public class MouseOverListener extends AbstractController implements MapControll
 
 	@Override
 	public void onMouseOut(MouseOutEvent event) {
-		GWT.log("MouseOverListener => mouse out fired");
+		GWT.log("FeatureMouseOverListener => mouse out fired");
 		destroyToolTip();
 	}
 
 	@Override
 	public void onMouseMove(MouseMoveEvent event) {
-		GWT.log("MouseOverListener => mouse move fired");
+		GWT.log("FeatureMouseOverListener => mouse move fired");
 		GWT.log("Client X =" + event.getClientX() + " Client Y =" + event.getClientY());
 		xPos = event.getClientX();
 		yPos = event.getClientY();

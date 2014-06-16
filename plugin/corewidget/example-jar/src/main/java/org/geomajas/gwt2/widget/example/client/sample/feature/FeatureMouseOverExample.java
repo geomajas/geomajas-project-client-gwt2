@@ -8,14 +8,14 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.example.client.sample.mouseover;
+package org.geomajas.gwt2.widget.example.client.sample.feature;
 
 import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.widget.MapLayoutPanel;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
-import org.geomajas.gwt2.widget.client.mouseover.listener.MouseOverListener;
+import org.geomajas.gwt2.widget.client.feature.controller.FeatureMouseOverListener;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -73,7 +73,7 @@ public class FeatureMouseOverExample implements SamplePanel {
 		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "appCoreWidget", "mapCoreWidget");
 
 		// add feature mouse over listener.
-		MouseOverListener listener = new MouseOverListener(7);
+		FeatureMouseOverListener listener = new FeatureMouseOverListener(7);
 		mapPresenter.addMapListener(listener);
 	}
 }

@@ -28,6 +28,10 @@
       <para>MapLegendPanel: a container of LayerLegendPanel instance, one for
       each map layer</para>
     </listitem>
+
+	<listitem>
+	  <para>CloseableDialogBox: a dialogbox with a close button</para>
+	</listitem>
   </itemizedlist>
 
   <para>We also have the following map controllers/listeners:</para>

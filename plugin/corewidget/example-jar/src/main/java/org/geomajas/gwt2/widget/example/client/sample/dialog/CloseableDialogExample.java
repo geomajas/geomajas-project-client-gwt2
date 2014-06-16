@@ -30,6 +30,7 @@ import org.geomajas.gwt2.widget.client.other.dialog.CloseableDialogBoxWidget;
  * Closeable dialog widget showcase panel.
  *
  * @author Dosi Bingov
+ * @author David Debuck
  */
 public class CloseableDialogExample implements SamplePanel {
 

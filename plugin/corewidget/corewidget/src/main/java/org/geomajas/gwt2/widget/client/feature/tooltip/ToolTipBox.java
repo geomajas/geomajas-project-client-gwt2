@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.client.other.tooltip;
+package org.geomajas.gwt2.widget.client.feature.tooltip;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -19,12 +19,12 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import org.geomajas.gwt2.widget.client.other.tooltip.resources.ToolTipBoxResource;
+import org.geomajas.gwt2.widget.client.feature.tooltip.resources.ToolTipBoxResource;
 
 import java.util.List;
 
 /**
- * Tool tip box that is shown when the MouseOverListener is added to the map.
+ * Tool tip box that is shown when the FeatureMouseOverListener is added to the map.
  *
  * @author Dosi Bingov
  *

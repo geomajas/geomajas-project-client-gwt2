@@ -24,6 +24,7 @@ public interface CloseableDialogBoxWidgetMessages extends Messages {
 	String closeableDialogBoxWidgetDefaultTitle();
 
 	/* Messages for the MessageBox */
+
 	String messageBoxBtnYes();
 	String messageBoxBtnNo();
 	String messageBoxBtnCancel();
