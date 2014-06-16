@@ -11,21 +11,17 @@
 package org.geomajas.plugin.print.client.widget;
 
 import com.google.gwt.user.client.ui.IsWidget;
-import org.geomajas.plugin.print.client.util.PrintSettings;
-import org.geomajas.plugin.print.client.template.TemplateBuilderDataProvider;
+import org.geomajas.plugin.print.client.template.DefaultPrintRequestDataProvider;
+import org.geomajas.plugin.print.client.template.PrintRequestDataProvider;
 
 /**
  * View interface for the widget.
  * 
  * @author Jan Venstermans
  */
-public interface PrintWidgetView extends IsWidget {
+public interface PrintWidgetView extends IsWidget, PrintRequestDataProvider {
 
 	void setHandler(PrintWidgetPresenter handler);
 
-	TemplateBuilderDataProvider getTemplateBuilderDataProvider();
-
-	PrintSettings.PostPrintAction getActionType();
-
-	String getFileName();
+	DefaultPrintRequestDataProvider getDefaultPrintRequestDataProvider();
 }

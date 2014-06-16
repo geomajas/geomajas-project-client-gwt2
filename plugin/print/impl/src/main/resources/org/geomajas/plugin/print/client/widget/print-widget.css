@@ -6,15 +6,10 @@
   		/* padding: 8px; */
  }
 
-.gm-print-subMenuPanel {
-	/* No width 100% ! */
-	/* padding: 3px 5px; */
+.gm-print-subMenuPanel, .gm-print-optionsPanel {
 	background: #F8F8F8;
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#F6F6F6) );
 	background-image: -moz-linear-gradient(top, #FAFAFA, #F6F6F6);
-	/* border: 1px solid #666666; */
-	/* border-radius: 2px; */
-	/* -moz-border-radius: 2px;*/
 }
 
 .gm-print-fieldList {

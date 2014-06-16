@@ -8,30 +8,15 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.print.client.template;
+package org.geomajas.plugin.print.client.layerbuilder;
+
+import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Interface for data provider of a Builder.
- * This provider can give the builder all custom information necessary to create a print.
- * 
+ *
  * @author Jan Venstermans
+ *
  */
-public interface TemplateBuilderDataProvider {
+public interface PrintableWidgetLayerBuilder extends PrintableLayerBuilder<Widget> {
 
-	String getTitle();
-
-	/**
-	 *
-	 * @return true landscape
-	 * 			false portrait
-	 */
-	boolean isLandscape();
-
-	PageSize getPageSize();
-
-	boolean isWithArrow();
-
-	boolean isWithScaleBar();
-
-	Integer getRasterDpi();
 }

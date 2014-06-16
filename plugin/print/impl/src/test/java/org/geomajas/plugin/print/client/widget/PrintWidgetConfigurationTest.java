@@ -21,7 +21,7 @@ import org.geomajas.plugin.print.client.event.PrintRequestHandler;
 import org.geomajas.plugin.print.client.event.PrintFinishedInfo;
 import org.geomajas.plugin.print.client.event.PrintRequestInfo;
 import org.geomajas.plugin.print.client.event.PrintRequestStartedEvent;
-import org.geomajas.plugin.print.client.template.PrintableLayerBuilder;
+import org.geomajas.plugin.print.client.layerbuilder.PrintableLayersModelBuilder;
 import org.geomajas.plugin.print.client.template.PrintableMapBuilder;
 import org.geomajas.plugin.print.client.template.TemplateBuilder;
 import org.geomajas.plugin.print.client.template.TemplateBuilderFactory;
@@ -79,7 +79,7 @@ public class PrintWidgetConfigurationTest extends PrintWidgetMockStart {
 
 	@Test
 	public void registerLayerBuilderTest() {
-		PrintableLayerBuilder printableLayerBuilderMock = mock(PrintableLayerBuilder.class);
+		PrintableLayersModelBuilder printableLayerBuilderMock = mock(PrintableLayersModelBuilder.class);
 		stub(printableLayerBuilderMock.supports(layerMock)).toReturn(true);
 		presenter.registerLayerBuilder(printableLayerBuilderMock);
 
@@ -99,19 +99,5 @@ public class PrintWidgetConfigurationTest extends PrintWidgetMockStart {
 		presenter.print();
 
 		verify(templateBuilderFactoryMock).createTemplateBuilder(any(PrintableMapBuilder.class));
-	}
-
-	@Test
-	public void customMapBuilderTest() {
-		PrintableMapBuilder mapBuilderMock = mock(PrintableMapBuilder.class);
-		TemplateBuilderFactory templateBuilderFactoryMock = mock(TemplateBuilderFactory.class);
-		TemplateBuilder templateBuilderMock = mock(TemplateBuilder.class);
-		stub(templateBuilderFactoryMock.createTemplateBuilder(any(PrintableMapBuilder.class))).toReturn(templateBuilderMock);
-		presenter.setMapBuilder(mapBuilderMock);
-		presenter.setTemplateBuilderFactory(templateBuilderFactoryMock);
-
-		presenter.print();
-
-		verify(templateBuilderFactoryMock).createTemplateBuilder(mapBuilderMock);
 	}
 }

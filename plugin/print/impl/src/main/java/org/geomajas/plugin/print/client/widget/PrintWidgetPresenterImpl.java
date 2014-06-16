@@ -26,10 +26,10 @@ import org.geomajas.plugin.print.client.event.PrintRequestFinishedEvent;
 import org.geomajas.plugin.print.client.event.PrintRequestHandler;
 import org.geomajas.plugin.print.client.event.PrintRequestStartedEvent;
 import org.geomajas.plugin.print.client.template.DefaultTemplateBuilder;
-import org.geomajas.plugin.print.client.template.PrintableLayerBuilder;
 import org.geomajas.plugin.print.client.template.PrintableMapBuilder;
 import org.geomajas.plugin.print.client.template.TemplateBuilder;
 import org.geomajas.plugin.print.client.template.TemplateBuilderFactory;
+import org.geomajas.plugin.print.client.layerbuilder.PrintableLayerBuilder;
 import org.geomajas.plugin.print.client.util.PrintLayout;
 import org.geomajas.plugin.print.command.dto.PrintTemplateInfo;
 
@@ -50,12 +50,8 @@ public class PrintWidgetPresenterImpl implements PrintWidgetPresenter {
 
 	private PrintWidgetView view;
 
-	/* Fields used for creation of PrintTemplateInfo objects. They are created using default values.
-	 * These defaults can be overwritten via their setter. */
-
 	/**
 	 *  Field used for creation of {@link PrintTemplateInfo} objects. It is created with a default value.
-	 * This defaults can be overwritten via the setter
 	 */
 	private PrintableMapBuilder mapBuilder = new PrintableMapBuilder();
 
@@ -110,15 +106,10 @@ public class PrintWidgetPresenterImpl implements PrintWidgetPresenter {
 	}
 
 	@Override
-	public void setMapBuilder(PrintableMapBuilder mapBuilder) {
-		this.mapBuilder = mapBuilder;
-	}
-
-	@Override
 	public void print() {
 		if (mapPresenter != null) {
 			PrintRequestInfo printRequestInfo = new PrintRequestInfo();
-			printRequestInfo.setPostPrintAction(view.getActionType());
+			printRequestInfo.setPostPrintAction(view.getPostPrintAction());
 			printRequestInfo.setFileName(view.getFileName());
 			printRequestInfo.setPrintTemplateInfo(createDefaultTemplateFromViewData());
 			PrintRequestStartedEvent startedEvent = new PrintRequestStartedEvent();

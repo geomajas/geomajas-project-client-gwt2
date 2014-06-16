@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.print.client.template;
+package org.geomajas.plugin.print.client.layerbuilder;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,11 +30,11 @@ import org.geomajas.plugin.rasterizing.command.dto.VectorLayerRasterizingInfo;
 import org.geomajas.sld.RuleInfo;
 
 /**
- * {@link PrintableLayerBuilder} for {@link VectorServerLayer} instances.
+ * {@link PrintableLayersModelBuilder} for {@link VectorServerLayer} instances.
  * 
  * @author Jan De Moerloose
  */
-public class VectorServerLayerBuilder implements PrintableLayerBuilder {
+public class VectorServerLayerBuilder implements PrintableLayersModelBuilder {
 
 	@Override
 	public ClientLayerInfo build(MapPresenter mapPresenter, Layer layer, Bbox worldBounds, double resolution) {

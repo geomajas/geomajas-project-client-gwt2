@@ -13,9 +13,8 @@ package org.geomajas.plugin.print.client.widget;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 import org.geomajas.plugin.print.client.event.PrintRequestHandler;
-import org.geomajas.plugin.print.client.template.PrintableLayerBuilder;
-import org.geomajas.plugin.print.client.template.PrintableMapBuilder;
 import org.geomajas.plugin.print.client.template.TemplateBuilderFactory;
+import org.geomajas.plugin.print.client.layerbuilder.PrintableLayerBuilder;
 
 /**
  * Presenter for the print widgets.
@@ -26,8 +25,6 @@ import org.geomajas.plugin.print.client.template.TemplateBuilderFactory;
 public interface PrintWidgetPresenter {
 
 	void setTemplateBuilderFactory(TemplateBuilderFactory templateBuilderFactory);
-
-	void setMapBuilder(PrintableMapBuilder mapBuilder);
 
 	void print();
 

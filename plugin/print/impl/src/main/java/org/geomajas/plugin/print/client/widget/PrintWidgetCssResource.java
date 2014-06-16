@@ -44,6 +44,9 @@ public interface PrintWidgetCssResource extends CssResource {
 	@ClassName("gm-print-subMenuPanel")
 	String subMenuPanel();
 
+	@ClassName("gm-print-optionsPanel")
+	String optionsPanel();
+
 	@ClassName("gm-print-textbox-suitable-margin")
 	String textboxSuitableMargin();
 }

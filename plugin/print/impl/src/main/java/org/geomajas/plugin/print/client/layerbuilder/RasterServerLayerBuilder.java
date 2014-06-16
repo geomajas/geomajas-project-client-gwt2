@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.print.client.template;
+package org.geomajas.plugin.print.client.layerbuilder;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
@@ -19,11 +19,11 @@ import org.geomajas.gwt2.client.map.layer.RasterServerLayer;
 import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
 
 /**
- * {@link PrintableLayerBuilder} for {@link RasterServerLayer} instances.
+ * {@link PrintableLayersModelBuilder} for {@link RasterServerLayer} instances.
  * 
  * @author Jan De Moerloose
  */
-public class RasterServerLayerBuilder implements PrintableLayerBuilder {
+public class RasterServerLayerBuilder implements PrintableLayersModelBuilder {
 
 	@Override
 	public ClientLayerInfo build(MapPresenter mapPresenter, Layer layer, Bbox worldBounds, double resolution) {

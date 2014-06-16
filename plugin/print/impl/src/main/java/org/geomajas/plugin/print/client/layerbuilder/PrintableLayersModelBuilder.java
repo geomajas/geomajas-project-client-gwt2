@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.print.client.template;
+package org.geomajas.plugin.print.client.layerbuilder;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.geometry.Bbox;
@@ -23,7 +23,7 @@ import org.geomajas.gwt2.client.map.layer.Layer;
  * @author Jan De Moerloose
  * 
  */
-public interface PrintableLayerBuilder {
+public interface PrintableLayersModelBuilder extends PrintableLayerBuilder<Layer> {
 
 	/**
 	 * 
@@ -34,11 +34,4 @@ public interface PrintableLayerBuilder {
 	 * @return
 	 */
 	ClientLayerInfo build(MapPresenter mapPresenter, Layer layer, Bbox worldBounds, double rasterResolution);
-
-	/**
-	 * Is the specified layer supported ?
-	 * @param layer
-	 * @return
-	 */
-	boolean supports(Layer layer);
 }

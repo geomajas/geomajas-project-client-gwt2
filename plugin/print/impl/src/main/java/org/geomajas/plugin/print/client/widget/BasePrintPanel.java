@@ -17,15 +17,10 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-import org.geomajas.plugin.print.client.util.PrintSettings;
-import org.geomajas.plugin.print.client.i18n.PrintMessages;
-import org.geomajas.plugin.print.client.template.PageSize;
-import org.geomajas.plugin.print.client.template.TemplateBuilderDataProvider;
 
 /**
  * Default implementation of {@link PrintWidgetView}.
@@ -34,7 +29,7 @@ import org.geomajas.plugin.print.client.template.TemplateBuilderDataProvider;
  * @author Jan De Moerloose
  * @author Jan Venstermans
  */
-public class BasePrintPanel extends Composite implements PrintWidgetView, TemplateBuilderDataProvider {
+public class BasePrintPanel extends AbstractPrintWidgetView {
 
 	/**
 	 * UI binder definition for the {@link } widget.
@@ -44,9 +39,6 @@ public class BasePrintPanel extends Composite implements PrintWidgetView, Templa
 	interface PrintPanelUiBinder extends UiBinder<Widget, BasePrintPanel> {
 	}
 
-	private final PrintWidgetResource resource;
-
-	private static final PrintMessages MESSAGES = GWT.create(PrintMessages.class);
 
 	private static final PrintPanelUiBinder UIBINDER = GWT.create(PrintPanelUiBinder.class);
 
@@ -58,8 +50,6 @@ public class BasePrintPanel extends Composite implements PrintWidgetView, Templa
 
 	@UiField
 	protected FlowPanel totalPanel;
-
-	private PrintWidgetPresenter handler;
 
 	@UiField
 	protected RadioButton optionLandscapeOrientation;
@@ -78,14 +68,8 @@ public class BasePrintPanel extends Composite implements PrintWidgetView, Templa
 	 * @param resource The custom resource bundle to use.
 	 */
 	public BasePrintPanel(PrintWidgetResource resource) {
-		this.resource = resource;
-
-		// Inject the CSS and create the GUI:
-		this.resource.css().ensureInjected();
+		super(resource);
 		UIBINDER.createAndBindUi(this);
-
-		// Composite.initWidget
-		initWidget(totalPanel);
 
 		printButton.setEnabled(true);
 
@@ -109,16 +93,6 @@ public class BasePrintPanel extends Composite implements PrintWidgetView, Templa
 	}
 
 	@Override
-	public void setHandler(PrintWidgetPresenter handler) {
-		this.handler = handler;
-	}
-
-	@Override
-	public TemplateBuilderDataProvider getTemplateBuilderDataProvider() {
-		return this;
-	}
-
-	@Override
 	public String getTitle() {
 		String title = titleTextBox.getText().trim();
 		if (title == null || title.isEmpty()) {
@@ -132,40 +106,13 @@ public class BasePrintPanel extends Composite implements PrintWidgetView, Templa
 		return optionLandscapeOrientation.getValue();
 	}
 
-	@Override
-	public PageSize getPageSize() {
-		// default value
-		return PageSize.A4;
-		// TODO: get value from view element
-	}
-
-	@Override
-	public boolean isWithArrow() {
-		return true;
-	}
-
-	@Override
-	public boolean isWithScaleBar() {
-		return true;
-	}
-
-	@Override
-	public Integer getRasterDpi() {
-		return 200;
-	}
-
-	@Override
-	public PrintSettings.PostPrintAction getActionType() {
-		return PrintSettings.PostPrintAction.OPEN;
-	}
-
-	@Override
-	public String getFileName() {
-		return MESSAGES.defaultPrintFileName();
-	}
-
 	@UiHandler("printButton")
 	public void onClick(ClickEvent event) {
 		handler.print();
+	}
+
+	@Override
+	public Widget asWidget() {
+		return totalPanel;
 	}
 }

@@ -10,28 +10,19 @@
  */
 package org.geomajas.plugin.print.client.template;
 
+import org.geomajas.plugin.print.client.util.PrintSettings;
+
 /**
  * Interface for data provider of a Builder.
  * This provider can give the builder all custom information necessary to create a print.
  * 
  * @author Jan Venstermans
  */
-public interface TemplateBuilderDataProvider {
+public interface PrintRequestDataProvider {
 
-	String getTitle();
+	TemplateBuilderDataProvider getTemplateBuilderDataProvider();
 
-	/**
-	 *
-	 * @return true landscape
-	 * 			false portrait
-	 */
-	boolean isLandscape();
+	PrintSettings.PostPrintAction getPostPrintAction();
 
-	PageSize getPageSize();
-
-	boolean isWithArrow();
-
-	boolean isWithScaleBar();
-
-	Integer getRasterDpi();
+	String getFileName();
 }
