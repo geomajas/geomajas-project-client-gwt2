@@ -16,7 +16,9 @@
 
 /* the top left cell  */
 @external gwt-DialogBox .dialogTopLeft;
-.gm-closeableDialogBox .dialogTopLeft { /* empty */ }
+.gm-closeableDialogBox .dialogTopLeft {
+	display: none
+}
 
 	/* the inner element of the cell  */
 	@external gwt-DialogBox .dialogTopLeftInner;
@@ -43,7 +45,9 @@
 
 /* the top right cell  */
 @external gwt-DialogBox .dialogTopRight;
-.gm-closeableDialogBox .dialogTopRight { /* empty */ }
+.gm-closeableDialogBox .dialogTopRight {
+	display: none
+}
 
 	/* the inner element of the cell  */
 	@external gwt-DialogBox .dialogTopRightInner;
@@ -55,9 +59,11 @@
 
 /* the middle left cell  */
 @external gwt-DialogBox .dialogMiddleLeft;
-.gm-closeableDialogBox .dialogMiddleLeft { /* empty */ }
+.gm-closeableDialogBox .dialogMiddleLeft {
+	display: none
+}
 
-	/* the inner element of the cell  */
+/* the inner element of the cell  */
 	@external gwt-DialogBox .dialogMiddleLeftInner;
 	.gm-closeableDialogBox .dialogMiddleLeftInner { /* empty */ }
 
@@ -82,9 +88,11 @@
 
 /*  the middle right cell */
 @external gwt-DialogBox .dialogMiddleRight;
-.gm-closeableDialogBox .dialogMiddleRight { /* empty */ }
+.gm-closeableDialogBox .dialogMiddleRight {
+	display: none
+}
 
-	/* the inner element of the cell  */
+/* the inner element of the cell  */
 	@external gwt-DialogBox .dialogMiddleRightInner;
 	.gm-closeableDialogBox .dialogMiddleRightInner { /* empty */ }
 
@@ -94,9 +102,11 @@
 
 /*  the bottom left cell */
 @external gwt-DialogBox .dialogBottomLeft;
-.gm-closeableDialogBox .dialogBottomLeft { /* empty */ }
+.gm-closeableDialogBox .dialogBottomLeft {
+	display: none
+}
 
-	/*  the inner element of the cell */
+/*  the inner element of the cell */
 	@external gwt-DialogBox .dialogBottomLeftInner;
 	.gm-closeableDialogBox .dialogBottomLeftInner { /* empty */ }
 
@@ -112,9 +122,11 @@
 
 /* the bottom right cell  */
 @external gwt-DialogBox .dialogBottomRight;
-.gm-closeableDialogBox .dialogBottomRight { /* empty */ }
+.gm-closeableDialogBox .dialogBottomRight {
+	display: none
+}
 
-	/* the inner element of the cell  */
+/* the inner element of the cell  */
 	@external gwt-DialogBox .dialogBottomRightInner;
 	.gm-closeableDialogBox .dialogBottomRightInner { /* empty */ }
 

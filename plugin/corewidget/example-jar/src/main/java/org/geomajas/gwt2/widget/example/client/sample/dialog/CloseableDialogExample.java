@@ -17,11 +17,12 @@ import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.gwt2.widget.client.other.dialog.CloseableDialogBoxWidget;
@@ -38,6 +39,9 @@ public class CloseableDialogExample implements SamplePanel {
 
 	@UiField
 	protected Button button;
+
+	@UiField
+	protected VerticalPanel layerEventLayout;
 
 	private static final CloseableDialogUiBinder UIBINDER = GWT.create(CloseableDialogUiBinder.class);
 
@@ -77,7 +81,7 @@ public class CloseableDialogExample implements SamplePanel {
 					@Override
 					public void onClick(ClickEvent event) {
 
-						Window.alert("Close handler action.");
+						layerEventLayout.add(new Label("CloseableDialogBox has been closed."));
 
 					}
 				});
