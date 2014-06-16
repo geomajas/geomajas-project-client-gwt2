@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.client.mouseover.resources;
+package org.geomajas.gwt2.widget.client.other.tooltip.resources;
 
 import com.google.gwt.resources.client.CssResource;
 
@@ -17,6 +17,7 @@ import com.google.gwt.resources.client.CssResource;
  * CSS resource bundle that contains all generic styles used in pure gwt geomajas widgets.
  *
  * @author Dosi Bingov
+ * @since 2.0.0
  */
 public interface ToolTipBoxCssResource extends CssResource {
 

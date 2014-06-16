@@ -8,16 +8,17 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.client.mouseover.resources;
+package org.geomajas.gwt2.widget.client.other.tooltip.resources;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
 
 /**
  * Client resource bundle interface for pure GWT widgets.
- * 
+ *
  * @author Dosi Bingov
- * 
+ *
+ * @since 2.0.0
  */
 public interface ToolTipBoxResource extends ClientBundle {
 
@@ -31,6 +32,6 @@ public interface ToolTipBoxResource extends ClientBundle {
 	 * @return the css resource
 	 */
 	@Source("toolTipBox.css")
-	ToolTipBoxCssResource css();	
-	
+	ToolTipBoxCssResource css();
+
 }

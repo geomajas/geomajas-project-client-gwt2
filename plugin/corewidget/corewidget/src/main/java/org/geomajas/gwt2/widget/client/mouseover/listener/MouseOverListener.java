@@ -11,11 +11,11 @@
 
 package org.geomajas.gwt2.widget.client.mouseover.listener;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.MouseDownEvent;
+import com.google.gwt.event.dom.client.MouseMoveEvent;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.user.client.Timer;
 import org.geomajas.command.dto.SearchByLocationRequest;
 import org.geomajas.command.dto.SearchByLocationResponse;
 import org.geomajas.geometry.Coordinate;
@@ -26,19 +26,18 @@ import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.controller.AbstractController;
 import org.geomajas.gwt.client.map.RenderSpace;
-import org.geomajas.layer.feature.Attribute;
-import org.geomajas.layer.feature.Feature;
 import org.geomajas.gwt2.client.controller.MapController;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
 import org.geomajas.gwt2.client.map.layer.ServerLayer;
-import org.geomajas.gwt2.widget.client.mouseover.component.ToolTipBox;
+import org.geomajas.gwt2.widget.client.other.tooltip.ToolTipBox;
+import org.geomajas.layer.feature.Attribute;
+import org.geomajas.layer.feature.Feature;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.user.client.Timer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Mouse over listener. When this listener is added to the map the users sees a dialog box with feature info when the
