@@ -11,18 +11,20 @@
 package org.geomajas.gwt2.widget.example.client.sample.dialog;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
-import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
-import org.geomajas.gwt2.widget.client.other.dialog.CloseableDialogBox;
-import org.geomajas.gwt2.widget.example.client.ExampleJar;
-import org.geomajas.gwt2.widget.example.client.resource.ExampleWidgetResource;
+import org.geomajas.gwt2.widget.client.other.dialog.CloseableDialogBoxWidget;
 
 /**
  * Closeable dialog widget showcase panel.
@@ -32,8 +34,6 @@ import org.geomajas.gwt2.widget.example.client.resource.ExampleWidgetResource;
 public class CloseableDialogExample implements SamplePanel {
 
 	private DockLayoutPanel rootElement;
-
-	private CloseableDialogBox closeableDialogBox;
 
 	@UiField
 	protected Button button;
@@ -48,19 +48,39 @@ public class CloseableDialogExample implements SamplePanel {
 
 	public CloseableDialogExample() {
 		rootElement = UIBINDER.createAndBindUi(this);
-		closeableDialogBox = new CloseableDialogBox();
-		Image dialogContent = new Image(ExampleWidgetResource.INSTANCE.geomajasLogo().getSafeUri());
-		closeableDialogBox.add(dialogContent);
-		closeableDialogBox.setModal(true);
-		closeableDialogBox.setAutoHideEnabled(true);
-		closeableDialogBox.setAnimationEnabled(true);
 
 		button.addMouseDownHandler(new MouseDownHandler() {
 
 			@Override
 			public void onMouseDown(MouseDownEvent mouseDownEvent) {
-				closeableDialogBox.setText(ExampleJar.getMessages().closeableDialogTitle());
-				closeableDialogBox.center();
+
+				final CloseableDialogBoxWidget widget = new CloseableDialogBoxWidget();
+
+				HTMLPanel temp = new HTMLPanel("");
+				InlineLabel label = new InlineLabel("Sample text.");
+				Button button = new Button("test");
+				temp.add(label);
+				temp.add(button);
+
+				widget.addContent(label);
+
+				widget.setGlassEnabled(true);
+				widget.setModal(true);
+
+				widget.setTitle("Window title");
+				widget.setSize(400, 200);
+				widget.center();
+				widget.show();
+
+				widget.setOnCloseHandler(new ClickHandler() {
+					@Override
+					public void onClick(ClickEvent event) {
+
+						Window.alert("Close handler action.");
+
+					}
+				});
+
 			}
 		});
 

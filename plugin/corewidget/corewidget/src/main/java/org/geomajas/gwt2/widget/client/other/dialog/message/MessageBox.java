@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.client.other.dialog;
+package org.geomajas.gwt2.widget.client.other.dialog.message;
 
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.GWT;
@@ -22,10 +22,13 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-import org.geomajas.gwt2.widget.client.i18n.WidgetCoreInternationalization;
+import org.geomajas.gwt2.widget.client.other.dialog.CloseableDialogBoxWidget;
+import org.geomajas.gwt2.widget.client.other.dialog.CloseableDialogBoxWidgetResource;
+import org.geomajas.gwt2.widget.client.other.dialog.i18n.CloseableDialogBoxWidgetMessages;
 
 /**
  * General MessageBox for showing a message.
@@ -36,12 +39,13 @@ import org.geomajas.gwt2.widget.client.i18n.WidgetCoreInternationalization;
  * Use the different static methods to conveniently create a MessageBox.
  *
  * @author Kristof Heirwegh
+ * @author David Debuck
  */
 public class MessageBox implements IsWidget {
 
-	// can't directly inherit from CloseableDialogbox because it has ui:fields in its binder (which we don't need/want).
+	private CloseableDialogBoxWidgetMessages msg = GWT.create(CloseableDialogBoxWidgetMessages.class);
 
-	private static final WidgetCoreInternationalization MSG = GWT.create(WidgetCoreInternationalization.class);
+	private CloseableDialogBoxWidgetResource resource = GWT.create(CloseableDialogBoxWidgetResource.class);
 
 	/**
 	 * Style of the MessageBox.
@@ -82,7 +86,7 @@ public class MessageBox implements IsWidget {
 	@UiField
 	protected Button btnCancel;
 
-	private CloseableDialogBox dialog;
+	private CloseableDialogBoxWidget dialog;
 
 	/**
 	 * Create a MessageBox.
@@ -123,14 +127,17 @@ public class MessageBox implements IsWidget {
 	 * @param onFinished
 	 */
 	public MessageBox(String title, SafeHtml messageText, final Callback<Boolean, Void> onFinished) {
-		MessageBoxResource.INSTANCE.css().ensureInjected();
-		Widget inner = UIBINDER.createAndBindUi(this);
-		dialog = new CloseableDialogBox();
-		dialog.setWidget(inner);
-		dialog.setAnimationEnabled(true);
+
+		HTMLPanel inner = (HTMLPanel) UIBINDER.createAndBindUi(this);
+
+		dialog = new CloseableDialogBoxWidget();
 		dialog.setGlassEnabled(true);
 		dialog.setModal(true);
-		dialog.setHTML(title);
+		dialog.addContent(inner);
+		dialog.setTitle(title);
+
+
+
 		message.setHTML(messageText);
 
 		btnYes.addClickHandler(new ClickHandler() {
@@ -195,7 +202,7 @@ public class MessageBox implements IsWidget {
 
 	@Override
 	public Widget asWidget() {
-		return dialog;
+		return dialog.asWidget();
 	}
 
 	// ---------------------------------------------------
@@ -205,19 +212,19 @@ public class MessageBox implements IsWidget {
 			icon.getElement().getStyle().setDisplay(Display.NONE);
 		} else {
 			icon.getElement().getStyle().setDisplay(Display.BLOCK);
-			icon.setStyleName(MessageBoxResource.INSTANCE.css().messageBoxIcon());
+			icon.setStyleName(resource.css().messageBoxIcon());
 			switch (messageStyleType) {
 				case HELP:
-					icon.addStyleName(MessageBoxResource.INSTANCE.css().messageBoxIconHelp());
+					icon.addStyleName(resource.css().messageBoxIconHelp());
 					break;
 				case WARN:
-					icon.addStyleName(MessageBoxResource.INSTANCE.css().messageBoxIconWarn());
+					icon.addStyleName(resource.css().messageBoxIconWarn());
 					break;
 				case ERROR:
-					icon.addStyleName(MessageBoxResource.INSTANCE.css().messageBoxIconError());
+					icon.addStyleName(resource.css().messageBoxIconError());
 					break;
 				default:
-					icon.addStyleName(MessageBoxResource.INSTANCE.css().messageBoxIconInfo());
+					icon.addStyleName(resource.css().messageBoxIconInfo());
 			}
 		}
 	}
@@ -237,14 +244,14 @@ public class MessageBox implements IsWidget {
 				btnYes.setVisible(true);
 				btnNo.setVisible(true);
 				btnCancel.setVisible(true);
-				btnCancel.setText(MSG.messageBoxBtnCancel());
+				btnCancel.setText(msg.messageBoxBtnCancel());
 				break;
 
 			default: // MESSAGE
 				btnYes.setVisible(false);
 				btnNo.setVisible(false);
 				btnCancel.setVisible(true);
-				btnCancel.setText(MSG.messageBoxBtnClose());
+				btnCancel.setText(msg.messageBoxBtnClose());
 				break;
 		}
 	}

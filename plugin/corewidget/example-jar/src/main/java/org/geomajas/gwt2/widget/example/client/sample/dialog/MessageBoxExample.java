@@ -11,11 +11,6 @@
 package org.geomajas.gwt2.widget.example.client.sample.dialog;
 
 
-import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
-import org.geomajas.gwt2.widget.client.other.dialog.MessageBox;
-import org.geomajas.gwt2.widget.client.other.dialog.MessageBox.MessageStyleType;
-import org.geomajas.gwt2.widget.example.client.i18n.SampleMessages;
-
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -23,6 +18,9 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
+import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
+import org.geomajas.gwt2.widget.client.other.dialog.message.MessageBox;
+import org.geomajas.gwt2.widget.example.client.i18n.SampleMessages;
 
 /**
  * Sample showing off MessageBox capabilities.
@@ -61,17 +59,20 @@ public class MessageBoxExample implements SamplePanel, Callback<Boolean, Void> {
 
 	@UiHandler("warnMessageBtn")
 	protected void onWarnMessageBtnClicked(ClickEvent event) {
-		MessageBox.showMessageBox(MSG.messageBoxWarnMessageBtn(), MSG.messageBoxMessage(), MessageStyleType.WARN);
+		MessageBox.showMessageBox(MSG.messageBoxWarnMessageBtn(), MSG.messageBoxMessage(),
+				MessageBox.MessageStyleType.WARN);
 	}
 
 	@UiHandler("errorMessageBtn")
 	protected void onErrorMessageBtnClicked(ClickEvent event) {
-		MessageBox.showMessageBox(MSG.messageBoxErrorMessageBtn(), MSG.messageBoxMessage(), MessageStyleType.ERROR);
+		MessageBox.showMessageBox(MSG.messageBoxErrorMessageBtn(), MSG.messageBoxMessage(),
+				MessageBox.MessageStyleType.ERROR);
 	}
 
 	@UiHandler("helpMessageBtn")
 	protected void onHelpMessageBtnClicked(ClickEvent event) {
-		MessageBox.showMessageBox(MSG.messageBoxHelpMessageBtn(), MSG.messageBoxMessageLong(), MessageStyleType.HELP);
+		MessageBox.showMessageBox(MSG.messageBoxHelpMessageBtn(), MSG.messageBoxMessageLong(),
+				MessageBox.MessageStyleType.HELP);
 	}
 
 	@UiHandler("yesNoBtn")
