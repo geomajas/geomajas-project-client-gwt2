@@ -12,6 +12,8 @@
 					<g:Button ui:field="rectBtn" width="180px">Rectangles</g:Button>
 					<g:ListBox ui:field="countBox" width="180px"/>
 					<g:Label ui:field="label" width="180px"/>
+					<g:Button ui:field="sizeBtn" width="180px">Test size</g:Button>
+					<g:TextBox ui:field="testBox"></g:TextBox>
 				</g:VerticalPanel>
 			</g:HTMLPanel>
 		</g:west>

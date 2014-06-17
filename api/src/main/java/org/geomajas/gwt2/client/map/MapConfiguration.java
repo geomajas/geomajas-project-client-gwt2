@@ -11,10 +11,10 @@
 
 package org.geomajas.gwt2.client.map;
 
+import java.util.List;
+
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
-
-import java.util.List;
 
 /**
  * Map configuration definition. Contains a server configuration object and a series of map hints to apply specific
@@ -43,6 +43,30 @@ public interface MapConfiguration {
 		 * Defines a coordinate system of which the units are expressed in degrees, such as EPSG:4326.
 		 */
 		DEGREES
+	}
+	
+	/**
+	 * Prescribes the rendering technology for rendering the map.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	public enum RendererType {
+
+		/**
+		 * Render on HTML.
+		 */
+		HTML,
+
+		/**
+		 * Render on canvas.
+		 */
+		CANVAS,
+		
+		/**
+		 * Render automatically.
+		 */
+		AUTO
 	}
 
 	// ------------------------------------------------------------------------
@@ -130,6 +154,13 @@ public interface MapConfiguration {
 	 * @since 2.0.0
 	 */
 	Hint<List<Double>> RESOLUTIONS = new Hint<List<Double>>("resolutions");
+	
+	/**
+	 * {@link Hint} that determines the type of renderer.
+	 *
+	 * @since 2.1.0
+	 */
+	Hint<RendererType> RENDERER_TYPE = new Hint<RendererType>("rendererType");
 
 	// ------------------------------------------------------------------------
 	// Working with map hints:
@@ -151,7 +182,7 @@ public interface MapConfiguration {
 	 * @return The map hint value.
 	 */
 	<T> T getHintValue(Hint<T> hint);
-
+	
 	// ------------------------------------------------------------------------
 	// Convenience methods:
 	// ------------------------------------------------------------------------
@@ -243,4 +274,18 @@ public interface MapConfiguration {
 	 * @return unit length in m.
 	 */
 	double getUnitLength();
+	
+	/**
+	 * Convenience method that sets the renderer type of this map (html, canvas,...). Do not change this value once the map has been initialized.
+	 *
+	 * @param rendererType renderer type.
+	 */
+	void setRendererType(RendererType rendererType);
+	
+	/**
+	 * Convenience method that gets the renderer type of this map. This indicates the technology used to render the map. Default is HTML.
+	 *
+	 * @return renderer type
+	 */
+	RendererType getRendererType();
 }

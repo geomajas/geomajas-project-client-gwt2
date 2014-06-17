@@ -26,6 +26,7 @@ import org.geomajas.gwt2.client.gfx.CanvasPath;
 import org.geomajas.gwt2.client.gfx.CanvasRect;
 import org.geomajas.gwt2.client.gfx.CanvasShape;
 import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.client.map.render.canvas.container.CanvasSizeTest;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.gwt2.example.client.ExampleJar;
 
@@ -37,10 +38,12 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Random;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -72,6 +75,9 @@ public class CanvasRenderingPanel implements SamplePanel {
 
 	@UiField
 	protected ListBox countBox;
+	
+	@UiField
+	protected TextBox testBox;
 
 	private static final double TOTAL_SIZE = 40000000;
 
@@ -135,6 +141,16 @@ public class CanvasRenderingPanel implements SamplePanel {
 			}
 			container.addAll(shapes);
 			container.repaint();
+		}
+	}
+	
+	@UiHandler("sizeBtn")
+	public void onSizeClicked(ClickEvent event) {
+		CanvasSizeTest t = CanvasSizeTest.getInstance();
+		if(t.isTooBig(Integer.parseInt(testBox.getText()), Integer.parseInt(testBox.getText()))) {
+			Window.alert("Too big !");
+		} else {
+			Window.alert("Ok");
 		}
 	}
 

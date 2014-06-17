@@ -19,6 +19,9 @@ import org.geomajas.gwt2.client.map.render.LayerRenderer;
 import org.geomajas.gwt2.client.map.render.TileLevelLayerRenderer;
 import org.geomajas.gwt2.client.map.render.TileLevelRenderer;
 import org.geomajas.gwt2.client.map.render.TileRenderer;
+import org.geomajas.gwt2.client.map.render.canvas.CanvasTileLevelLayerRenderer;
+import org.geomajas.gwt2.client.map.render.canvas.CanvasTileLevelRenderer;
+import org.geomajas.gwt2.client.map.render.canvas.container.CanvasTileGrid;
 import org.geomajas.gwt2.client.map.render.dom.DomTileLevelLayerRenderer;
 import org.geomajas.gwt2.client.map.render.dom.DomTileLevelRenderer;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
@@ -79,14 +82,21 @@ public abstract class AbstractTileBasedLayer extends AbstractLayer implements Ti
 	@Override
 	public LayerRenderer getRenderer() {
 		if (renderer == null) {
-			renderer = new DomTileLevelLayerRenderer(viewPort, this, eventBus) {
-
-				@Override
-				public TileLevelRenderer createNewScaleRenderer(int tileLevel, View view, HtmlContainer container) {
-					return new DomTileLevelRenderer(AbstractTileBasedLayer.this, tileLevel, viewPort, container,
-							getTileRenderer());
-				}
-			};
+			switch (mapConfiguration.getRendererType()) {
+				case CANVAS:
+					renderer = createCanvasRenderer();
+					break;
+				case HTML:
+					renderer = createDomRenderer();
+					break;
+				case AUTO:
+				default:
+					if(Canvas.isSupported()) {
+						renderer = createCanvasRenderer();
+					} else {
+						renderer = createDomRenderer();
+					}
+			}
 		}
 		return renderer;
 	}
@@ -100,4 +110,30 @@ public abstract class AbstractTileBasedLayer extends AbstractLayer implements Ti
 	public double getOpacity() {
 		return renderer.getOpacity();
 	}
+
+	private DomTileLevelLayerRenderer createDomRenderer() {
+		return new DomTileLevelLayerRenderer(viewPort, this, eventBus) {
+
+			@Override
+			public TileLevelRenderer createNewScaleRenderer(int tileLevel, View view,
+					HtmlContainer container) {
+				return new DomTileLevelRenderer(AbstractTileBasedLayer.this, tileLevel, viewPort,
+						container, getTileRenderer());
+			}
+		};
+	}
+	
+	private TileLevelLayerRenderer createCanvasRenderer() {
+		renderer = new CanvasTileLevelLayerRenderer(viewPort, this, eventBus) {
+
+			@Override
+			public TileLevelRenderer createNewScaleRenderer(int tileLevel, View view,
+					CanvasTileGrid container) {
+				return new CanvasTileLevelRenderer(AbstractTileBasedLayer.this, tileLevel, viewPort,
+						container, getTileRenderer());
+			}
+		};
+		return renderer;
+	}
+
 }
