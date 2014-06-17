@@ -28,7 +28,7 @@ import org.geomajas.plugin.print.client.util.PrintConfiguration;
  *
  * @author Jan Venstermans
  */
-public abstract class AbstractPrintWidgetView implements PrintWidgetView, TemplateBuilderDataProvider {
+public abstract class DefaultDataProviderPrintWidgetView implements PrintWidgetView, TemplateBuilderDataProvider {
 
 	protected final PrintWidgetResource resource;
 
@@ -42,7 +42,7 @@ public abstract class AbstractPrintWidgetView implements PrintWidgetView, Templa
 	protected PrintWidgetPresenter handler;
 
 	/** Default constructor. Create an instance using the default resource bundle and layout. */
-	public AbstractPrintWidgetView() {
+	public DefaultDataProviderPrintWidgetView() {
 		this((PrintWidgetResource) GWT.create(PrintWidgetResource.class));
 	}
 
@@ -52,7 +52,7 @@ public abstract class AbstractPrintWidgetView implements PrintWidgetView, Templa
 	 *
 	 * @param resource The custom resource bundle to use.
 	 */
-	public AbstractPrintWidgetView(PrintWidgetResource resource) {
+	public DefaultDataProviderPrintWidgetView(PrintWidgetResource resource) {
 		this.resource = resource;
 
 		// Inject the CSS and create the GUI:

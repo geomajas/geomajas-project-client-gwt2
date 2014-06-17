@@ -23,14 +23,14 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Basic implementation of {@link PrintWidgetView}, extending the {@link AbstractPrintWidgetView}.
+ * Basic implementation of {@link PrintWidgetView}, extending the {@link DefaultDataProviderPrintWidgetView}.
  * This view will only show title and page orientation.
  * 
  * @author An Buyle
  * @author Jan De Moerloose
  * @author Jan Venstermans
  */
-public class BasePrintPanel extends AbstractPrintWidgetView {
+public class BasePrintPanel extends DefaultDataProviderPrintWidgetView {
 
 	/**
 	 * UI binder definition for the {@link } widget.

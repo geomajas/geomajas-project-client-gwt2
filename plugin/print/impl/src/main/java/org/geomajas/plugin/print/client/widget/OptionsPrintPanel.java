@@ -41,7 +41,7 @@ import java.util.Map;
  * @author Jan De Moerloose
  * @author Jan Venstermans
  */
-public class OptionsPrintPanel extends AbstractPrintWidgetView {
+public class OptionsPrintPanel extends DefaultDataProviderPrintWidgetView {
 
 	/**
 	 * UI binder definition.
