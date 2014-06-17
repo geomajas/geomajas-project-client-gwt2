@@ -102,7 +102,6 @@ public class OptionsPrintPanel extends AbstractPrintWidgetView {
 	@UiField
 	protected VerticalPanel fileNameSection;
 
-
 	private Map<PrintSettings.PostPrintAction, RadioButton> postPrintActionRadioButtonMap =
 			new HashMap<PrintSettings.PostPrintAction, RadioButton>();
 
@@ -138,7 +137,6 @@ public class OptionsPrintPanel extends AbstractPrintWidgetView {
 			postPrintActionRadioButtonMap.put(postPrintAction, radioButton);
 			postPrintActionRadioGroup.add(radioButton);
 		}
-
 		createViewBasedOnConfiguration();
 	}
 
@@ -261,7 +259,11 @@ public class OptionsPrintPanel extends AbstractPrintWidgetView {
 		arrowCheckBox.setValue(super.isWithArrow());
 		scaleBarBox.setValue(super.isWithScaleBar());
 		rasterDpiTextBox.setText(super.getRasterDpi().toString());
-		optionLandscapeOrientation.setValue(super.isLandscape());
+		if (super.isLandscape()) {
+			optionLandscapeOrientation.setValue(true);
+		} else {
+			optionPortraitOrientation.setValue(true);
+		}
 		postPrintActionRadioButtonMap.get(super.getPostPrintAction()).setValue(true);
 
 		// show/hide option sections

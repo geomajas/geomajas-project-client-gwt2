@@ -11,11 +11,13 @@
 package org.geomajas.plugin.print.client.util;
 
 import com.google.gwt.core.client.GWT;
+import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.plugin.print.client.Print;
 import org.geomajas.plugin.print.client.i18n.PrintMessages;
 import org.geomajas.plugin.print.client.template.PageSize;
 import org.geomajas.plugin.print.client.template.TemplateBuilder;
 import org.geomajas.plugin.print.client.template.TemplateBuilderDataProvider;
+import org.geomajas.plugin.print.command.dto.PrintTemplateInfo;
 
 /**
  * Builds parametrized URL from a base URL.
@@ -76,6 +78,11 @@ public class PrintUtilImpl implements PrintUtil {
 		return url.toString();
 	}
 
+	/**
+	 * This method will use GWT.create !
+	 * @param postPrintAction
+	 * @return
+	 */
 	@Override
 	public String toString(PrintSettings.PostPrintAction postPrintAction) {
 		// create locally, because of GWT.create
@@ -87,5 +94,20 @@ public class PrintUtilImpl implements PrintUtil {
 				return messages.printPrefsSaveAsFile();
 		}
 		return null;
+	}
+
+	@Override
+	public PrintTemplateInfo createPrintTemplateInfo(MapPresenter mapPresenter,
+													 String applicationId,
+													 TemplateBuilder builder,
+													 TemplateBuilderDataProvider templateBuilderDataProvider) {
+		builder.setApplicationId(applicationId);
+		builder.setMapPresenter(mapPresenter);
+		builder.setMarginX((int) PrintLayout.templateMarginX);
+		builder.setMarginY((int) PrintLayout.templateMarginY);
+
+		copyProviderDataToBuilder(builder, templateBuilderDataProvider);
+
+		return builder.buildTemplate();
 	}
 }

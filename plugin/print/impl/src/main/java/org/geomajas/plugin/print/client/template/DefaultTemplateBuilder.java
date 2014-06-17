@@ -71,7 +71,11 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder implements T
 
 	protected String applicationId;
 
-	private PrintableMapBuilder mapBuilder = new PrintableMapBuilder();
+	private PrintableMapBuilder mapBuilder;
+
+	public DefaultTemplateBuilder() {
+		this(new DefaultPrintableMapBuilder());
+	}
 
 	public DefaultTemplateBuilder(PrintableMapBuilder mapBuilder) {
 		this.mapBuilder = mapBuilder;

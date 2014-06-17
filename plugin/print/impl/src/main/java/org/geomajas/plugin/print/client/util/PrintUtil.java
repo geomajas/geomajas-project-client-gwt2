@@ -11,8 +11,10 @@
 package org.geomajas.plugin.print.client.util;
 
 
+import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.plugin.print.client.template.TemplateBuilder;
 import org.geomajas.plugin.print.client.template.TemplateBuilderDataProvider;
+import org.geomajas.plugin.print.command.dto.PrintTemplateInfo;
 
 /**
  * Presenter for print method.
@@ -47,4 +49,8 @@ public interface PrintUtil {
 							 String userToken, PrintSettings.PostPrintAction postPrintAction);
 
 	String toString(PrintSettings.PostPrintAction postPrintAction);
+
+	PrintTemplateInfo createPrintTemplateInfo(MapPresenter mapPresenter, String applicationId,
+											  TemplateBuilder builder,
+											  TemplateBuilderDataProvider templateBuilderDataProvider);
 }

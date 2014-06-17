@@ -12,26 +12,22 @@ package org.geomajas.plugin.print.client.widget;
 
 
 import com.google.gwt.core.client.Callback;
-import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Frame;
-import com.google.gwt.user.client.ui.RootPanel;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.plugin.print.client.Print;
+import org.geomajas.plugin.print.client.event.DefaultPrintRequestHandler;
 import org.geomajas.plugin.print.client.event.PrintFinishedInfo;
-import org.geomajas.plugin.print.client.event.PrintRequestInfo;
 import org.geomajas.plugin.print.client.event.PrintRequestFinishedEvent;
 import org.geomajas.plugin.print.client.event.PrintRequestHandler;
+import org.geomajas.plugin.print.client.event.PrintRequestInfo;
 import org.geomajas.plugin.print.client.event.PrintRequestStartedEvent;
+import org.geomajas.plugin.print.client.layerbuilder.PrintableLayerBuilder;
+import org.geomajas.plugin.print.client.template.DefaultPrintableMapBuilder;
 import org.geomajas.plugin.print.client.template.DefaultTemplateBuilder;
 import org.geomajas.plugin.print.client.template.PrintableMapBuilder;
 import org.geomajas.plugin.print.client.template.TemplateBuilder;
 import org.geomajas.plugin.print.client.template.TemplateBuilderFactory;
-import org.geomajas.plugin.print.client.layerbuilder.PrintableLayerBuilder;
-import org.geomajas.plugin.print.client.util.PrintLayout;
-import org.geomajas.plugin.print.command.dto.PrintTemplateInfo;
 
 /**
  * Default implementation of {@link PrintWidgetPresenter}.
@@ -53,7 +49,7 @@ public class PrintWidgetPresenterImpl implements PrintWidgetPresenter {
 	/**
 	 *  Field used for creation of {@link PrintTemplateInfo} objects. It is created with a default value.
 	 */
-	private PrintableMapBuilder mapBuilder = new PrintableMapBuilder();
+	private PrintableMapBuilder mapBuilder = new DefaultPrintableMapBuilder();
 
 	/**
 	 *  Field used for creation of {@link PrintTemplateInfo} objects. It is created with a default value.
@@ -111,7 +107,10 @@ public class PrintWidgetPresenterImpl implements PrintWidgetPresenter {
 			PrintRequestInfo printRequestInfo = new PrintRequestInfo();
 			printRequestInfo.setPostPrintAction(view.getPostPrintAction());
 			printRequestInfo.setFileName(view.getFileName());
-			printRequestInfo.setPrintTemplateInfo(createDefaultTemplateFromViewData());
+			printRequestInfo.setPrintTemplateInfo(Print.getInstance().getPrintUtil().
+					createPrintTemplateInfo(mapPresenter, applicationId,
+							templateBuilderFactory.createTemplateBuilder(mapBuilder),
+							view.getTemplateBuilderDataProvider()));
 			PrintRequestStartedEvent startedEvent = new PrintRequestStartedEvent();
 			startedEvent.setPrintRequestInfo(printRequestInfo);
 			handlerManager.fireEvent(startedEvent);
@@ -145,57 +144,5 @@ public class PrintWidgetPresenterImpl implements PrintWidgetPresenter {
 			handlerManager.removeHandler(PrintRequestHandler.TYPE, previous);
 		}
 		return handlerManager.addHandler(PrintRequestHandler.TYPE, handler);
-	}
-
-	/**
-	 * Build a PrintTemplateInfo object using the {@link DefaultTemplateBuilder}.
-	 * Some values are retrieved from the view element.
-	 *
-	 * @return constructed template
-	 */
-	protected PrintTemplateInfo createDefaultTemplateFromViewData() {
-		TemplateBuilder builder = templateBuilderFactory.createTemplateBuilder(mapBuilder);
-		builder.setApplicationId(this.applicationId);
-		builder.setMapPresenter(mapPresenter);
-		builder.setMarginX((int) PrintLayout.templateMarginX);
-		builder.setMarginY((int) PrintLayout.templateMarginY);
-
-		Print.getInstance().getPrintUtil().copyProviderDataToBuilder(builder, view.getTemplateBuilderDataProvider());
-
-		return builder.buildTemplate();
-	}
-
-	/**
-	 * Default implementation of {@link PrintRequestHandler}. This handler will be registered by default
-	 * when the {@link org.geomajas.plugin.print.client.widget.PrintWidgetPresenterImpl} is created.
-	 */
-	public class DefaultPrintRequestHandler implements PrintRequestHandler {
-
-		@Override
-		public void onPrintRequestStarted(PrintRequestStartedEvent event) {
-			// do nothing
-		}
-
-		/**
-		 * Default {@link org.geomajas.plugin.print.client.event.PrintRequestFinishedEvent}. Can be overwritten.
-		 * @param event event
-		 */
-		@Override
-		public void onPrintRequestFinished(PrintRequestFinishedEvent event) {
-			switch (event.getPrintFinishedInfo().getPostPrintAction()) {
-				case SAVE:
-					Frame frame = new Frame();
-					frame.setVisible(false);
-					frame.setUrl(event.getPrintFinishedInfo().getEncodedUrl());
-					frame.setPixelSize(0, 0);
-					frame.getElement().getStyle().setPosition(Style.Position.ABSOLUTE);
-					frame.getElement().getStyle().setBorderWidth(0, Style.Unit.PX);
-					RootPanel.get().add(frame);
-					break;
-				default:
-					Window.open(event.getPrintFinishedInfo().getEncodedUrl(), "_blank", null);
-					break;
-			}
-		}
 	}
 }

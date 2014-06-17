@@ -35,6 +35,12 @@ public abstract class AbstractPrintWidgetView implements PrintWidgetView, Templa
 
 	protected PrintWidgetPresenter handler;
 
+	/** Default constructor. Create an instance using the default resource bundle and layout. */
+	public AbstractPrintWidgetView() {
+		this((PrintWidgetResource) GWT.create(PrintWidgetResource.class));
+	}
+
+
 	/**
 	 * Create a new instance using a custom resource bundle.
 	 *

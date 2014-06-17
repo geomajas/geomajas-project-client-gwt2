@@ -16,7 +16,10 @@ import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.plugin.print.client.event.PrintFinishedInfo;
+import org.geomajas.plugin.print.client.event.PrintRequestFinishedEvent;
+import org.geomajas.plugin.print.client.event.PrintRequestHandler;
 import org.geomajas.plugin.print.client.event.PrintRequestInfo;
+import org.geomajas.plugin.print.client.event.PrintRequestStartedEvent;
 import org.geomajas.plugin.print.client.util.PrintSettings;
 import org.geomajas.plugin.print.command.dto.PrintGetTemplateRequest;
 import org.geomajas.plugin.print.command.dto.PrintGetTemplateResponse;
@@ -50,5 +53,23 @@ public class PrintServiceImpl implements PrintService {
 						callback.onSuccess(printFinishedInfo);
 					}
 				});
+	}
+
+	@Override
+	public void print(PrintRequestInfo printRequestInfo, final PrintRequestHandler printRequestHandler) {
+		PrintRequestStartedEvent startedEvent = new PrintRequestStartedEvent();
+		startedEvent.setPrintRequestInfo(printRequestInfo);
+		printRequestHandler.onPrintRequestStarted(startedEvent);
+		print(printRequestInfo, new Callback<PrintFinishedInfo, Void>() {
+			@Override
+			public void onFailure(Void reason) {
+
+			}
+
+			@Override
+			public void onSuccess(PrintFinishedInfo result) {
+				printRequestHandler.onPrintRequestFinished(new PrintRequestFinishedEvent(result));
+			}
+		});
 	}
 }

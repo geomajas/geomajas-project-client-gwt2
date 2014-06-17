@@ -12,6 +12,7 @@
 package org.geomajas.plugin.print.client.widget;
 
 import com.google.gwt.core.client.Callback;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 import junit.framework.Assert;
 import org.geomajas.configuration.client.ClientMapInfo;
@@ -66,6 +67,8 @@ public abstract class PrintWidgetMockStart {
 
 	@Mock
 	protected ViewPort viewPortMock;
+	@Mock
+	protected AbsolutePanel mapPresenterPanelMock;
 
 	@Mock
 	protected MapConfiguration mapConfigurationMock;
@@ -90,6 +93,7 @@ public abstract class PrintWidgetMockStart {
 
 		// stub Geomajas framework for testing
 		stub(mapPresenterMock.getViewPort()).toReturn(viewPortMock);
+		stub(mapPresenterMock.asWidget()).toReturn(mapPresenterPanelMock);
 		stub(mapPresenterMock.getLayersModel()).toReturn(layersModelMock);
 		stub(layersModelMock.getLayerCount()).toReturn(0);
 		stub(viewPortMock.getBounds()).toReturn(viewPortBounds);
