@@ -27,7 +27,19 @@
 		<module>common</module>
 		<module>impl</module>
 		<module>example-jar</module>
-		<!--<module>example</module>-->
 	</modules>
+
+	<profiles>
+		<profile>
+			<id>full-build</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<module>example</module>
+				<module>documentation</module>
+			</modules>
+		</profile>
+	</profiles>
 
 </project>
