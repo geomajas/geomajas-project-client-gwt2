@@ -11,16 +11,19 @@
 
 package org.geomajas.plugin.print.example.client.sample;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import org.geomajas.plugin.print.client.Print;
 import org.geomajas.plugin.print.client.event.PrintRequestFinishedEvent;
 import org.geomajas.plugin.print.client.event.PrintRequestHandler;
 import org.geomajas.plugin.print.client.event.PrintRequestStartedEvent;
 import org.geomajas.plugin.print.client.widget.OptionsPrintPanel;
 import org.geomajas.plugin.print.client.widget.PrintWidget;
+import org.geomajas.plugin.print.example.client.i18n.SampleMessages;
 
 /**
  * Extension of {@link org.geomajas.plugin.print.example.client.sample.PrintExamplePanel} for custom view.
@@ -28,6 +31,8 @@ import org.geomajas.plugin.print.client.widget.PrintWidget;
  * @author Jan Venstermans
  */
 public class PrintExampleCustomHandlerPanel extends PrintExamplePanel  {
+
+	private static final SampleMessages MESSAGES = GWT.create(SampleMessages.class);
 
 	@Override
 	protected void setPrintPanelContent() {
@@ -64,7 +69,7 @@ public class PrintExampleCustomHandlerPanel extends PrintExamplePanel  {
 
 		private Label typeLabel = new Label();
 
-		private Anchor urlLink = new Anchor("Perform print action", false, null, "_blank");
+		private Anchor urlLink = new Anchor(MESSAGES.printCustomHandlerUrlLabel(), false, null, "_blank");
 
 		public PrintRequestListener() {
 			handlerPanel = new VerticalPanel();
@@ -72,25 +77,26 @@ public class PrintExampleCustomHandlerPanel extends PrintExamplePanel  {
 			handlerPanel.add(typeLabel);
 			handlerPanel.add(urlLink);
 			setElementVisible(false);
-			statusLabel.setText("Info on print request will be here.");
+			statusLabel.setText(MESSAGES.printCustomHandlerTitleInitial());
 		}
 
 		@Override
 		public void onPrintRequestStarted(PrintRequestStartedEvent event) {
-			statusLabel.setText("Started printing.");
+			statusLabel.setText(MESSAGES.printCustomHandlerTitleRequestStart());
 			setElementVisible(false);
 		}
 
 		@Override
 		public void onPrintRequestFinished(PrintRequestFinishedEvent event) {
-			statusLabel.setText("Printing finished.");
-			setTypeLabelContent(event.getPrintFinishedInfo().getPostPrintAction().getTypeName());
+			statusLabel.setText(MESSAGES.printCustomHandlerTitleRequestFinish());
+			setTypeLabelContent(Print.getInstance().getPrintUtil().
+					toString(event.getPrintFinishedInfo().getPostPrintAction()));
 			urlLink.setHref(event.getPrintFinishedInfo().getEncodedUrl());
 			setElementVisible(true);
 		}
 
 		private void setTypeLabelContent(String type) {
-			typeLabel.setText("Print goal: " + type);
+			typeLabel.setText(MESSAGES.printCustomHandlerTypeLabel(type));
 		}
 
 		private void setElementVisible(boolean visible) {

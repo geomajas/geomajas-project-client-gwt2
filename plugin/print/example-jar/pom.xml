@@ -42,6 +42,10 @@
 			<artifactId>geomajas-layer-geotools</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-openstreetmap</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-testdata</artifactId>
 		</dependency>

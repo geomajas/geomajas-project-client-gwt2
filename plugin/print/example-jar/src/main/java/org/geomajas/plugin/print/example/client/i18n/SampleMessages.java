@@ -34,6 +34,8 @@ public interface SampleMessages extends Messages {
 
 	String printCustomViewDescription();
 
+	String printCustomViewFileName();
+
 	/* custom handler */
 
 	String printCustomHandlerTitle();
@@ -42,10 +44,28 @@ public interface SampleMessages extends Messages {
 
 	String printCustomHandlerDescription();
 
+	String printCustomHandlerTitleInitial();
+	String printCustomHandlerTitleRequestStart();
+	String printCustomHandlerTitleRequestFinish();
+	String printCustomHandlerTypeLabel(String type);
+	String printCustomHandlerUrlLabel();
+
 	/* svg layer */
 	String printSvgLayerTitle();
 
 	String printSvgLayerShort();
 
 	String printSvgLayerDescription();
+
+	/* without widget */
+
+	String printServiceExampleTitle();
+
+	String printServiceExampleShort();
+
+	String printServiceExampleDescription();
+
+	String printServiceExampleFixedFileName();
+
+	String printServiceExampleFixedPrintTitle();
 }

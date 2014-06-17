@@ -50,6 +50,7 @@ public class PrintExamplePanel implements SamplePanel {
 	protected SimplePanel printPanel;
 
 	public static final String APPLICATION_ID = "gwt-print-app";
+	public static final String MAP_ID = "mapPrint";
 
 	public Widget asWidget() {
 		Widget layout = UI_BINDER.createAndBindUi(this);
@@ -64,7 +65,7 @@ public class PrintExamplePanel implements SamplePanel {
 		mapPanel.add(mapLayout);
 
 		// Initialize the map, and return the layout:
-		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, APPLICATION_ID, "mapPrint");
+		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, APPLICATION_ID, MAP_ID);
 
 		setPrintPanelContent();
 

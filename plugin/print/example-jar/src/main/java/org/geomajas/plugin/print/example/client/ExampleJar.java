@@ -21,6 +21,7 @@ import org.geomajas.plugin.print.example.client.sample.PrintExamplePanel;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import org.geomajas.plugin.print.example.client.sample.PrintExamplePrintServicePanel;
 import org.geomajas.plugin.print.example.client.sample.PrintExampleSvgLayerPanel;
 
 /**
@@ -150,7 +151,34 @@ public class ExampleJar implements EntryPoint {
 
 			@Override
 			public String getKey() {
-				return "printplugin-svgLayer";
+				return "printplugin-svglayer";
+			}
+		});
+		SamplePanelRegistry.registerFactory(CATEGORY_PRINT, new ShowcaseSampleDefinition() {
+
+			public SamplePanel create() {
+				return new PrintExamplePrintServicePanel();
+			}
+
+			public String getTitle() {
+				return MESSAGES.printServiceExampleTitle();
+			}
+
+			public String getShortDescription() {
+				return MESSAGES.printServiceExampleShort();
+			}
+
+			public String getDescription() {
+				return MESSAGES.printServiceExampleDescription();
+			}
+
+			public String getCategory() {
+				return CATEGORY_PRINT;
+			}
+
+			@Override
+			public String getKey() {
+				return "printplugin-printservice";
 			}
 		});
 	}
