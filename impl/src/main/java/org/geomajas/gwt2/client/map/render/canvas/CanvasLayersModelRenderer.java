@@ -14,6 +14,7 @@ package org.geomajas.gwt2.client.map.render.canvas;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.geomajas.gwt.client.util.Dom;
 import org.geomajas.gwt2.client.event.LayerAddedEvent;
 import org.geomajas.gwt2.client.event.LayerOrderChangedEvent;
 import org.geomajas.gwt2.client.event.LayerOrderChangedHandler;
@@ -31,6 +32,9 @@ import org.geomajas.gwt2.client.map.render.LayersModelRenderer;
 import org.geomajas.gwt2.client.map.render.RenderingInfo;
 
 import com.google.gwt.canvas.client.Canvas;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.user.client.Timer;
 
 /**
  * LayersModelRenderer implementation that uses a HTML5 Canvas tag to render upon. Keeps layers synchronized and
@@ -47,6 +51,8 @@ public class CanvasLayersModelRenderer implements LayersModelRenderer {
 	private final Map<Layer, LayerRenderer> layerRenderers;
 
 	private Canvas canvas;
+	
+	private Timer androidTimer;
 
 	public CanvasLayersModelRenderer(MapPresenter mapPresenter) {
 		layersModel = mapPresenter.getLayersModel();
@@ -141,13 +147,12 @@ public class CanvasLayersModelRenderer implements LayersModelRenderer {
 	private void renderAll(RenderingInfo renderingInfo) {
 		if (canvas != null) {
 			// Clear the canvas
-			canvas.getContext2d().clearRect(0, 0, canvas.getCoordinateSpaceWidth(), canvas.getCoordinateSpaceHeight());
-
-			//TODO: get rid of this code because it is time consuming (native android browser issue canvas is not cleared)
-			int w = canvas.getElement().getPropertyInt("width");
-			canvas.getElement().setPropertyInt("width", 1);
-			canvas.getElement().setPropertyInt("width", w);
-
+			// native android browser issue: canvas is not cleared
+			if(Dom.isAndroid()) {
+				clearCanvasAndroid();
+			} else {
+				canvas.getContext2d().clearRect(0, 0, canvas.getCoordinateSpaceWidth(), canvas.getCoordinateSpaceHeight());
+			}
 
 			// Delegate to the layers in layer order:
 			for (int i = 0; i < layersModel.getLayerCount(); i++) {
@@ -171,6 +176,12 @@ public class CanvasLayersModelRenderer implements LayersModelRenderer {
 	@Override
 	public void setAnimated(Layer layer, boolean animated) {
 
+	}
+
+	private void clearCanvasAndroid() {
+		int w = canvas.getElement().getPropertyInt("width");
+		canvas.getElement().setPropertyInt("width", 1);
+		canvas.getElement().setPropertyInt("width", w);
 	}
 
 }

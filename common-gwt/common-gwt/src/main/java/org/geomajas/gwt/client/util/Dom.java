@@ -288,6 +288,21 @@ public class Dom extends com.google.gwt.user.client.DOM {
 	}
 
 	/**
+	 * Checks if the user agent belongs to android device.
+	 *
+	 * @return whether the browser is mobile (true or false)
+	 */
+	public static boolean isAndroid() {
+		if (GWT.isClient()) {
+			String userAgent = Navigator.getUserAgent();
+			if (userAgent.toLowerCase().indexOf("android") != -1) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Checks if touch events are supported.
 	 *
 	 * @return whether the browser is running on device with touch support (true or false)
