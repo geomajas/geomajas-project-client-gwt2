@@ -13,7 +13,7 @@ package org.geomajas.plugin.print.example.client.sample;
 
 import com.google.gwt.core.client.GWT;
 import org.geomajas.plugin.print.client.template.PageSize;
-import org.geomajas.plugin.print.client.util.PrintSettings;
+import org.geomajas.plugin.print.client.util.PrintConfiguration;
 import org.geomajas.plugin.print.client.widget.OptionsPrintPanel;
 import org.geomajas.plugin.print.client.widget.PrintWidget;
 import org.geomajas.plugin.print.example.client.i18n.SampleMessages;
@@ -37,8 +37,10 @@ public class PrintExampleCustomViewPanel extends PrintExamplePanel {
 				.setLandscape(false);
 		optionsPrintPanel.getDefaultPrintRequestDataProvider().getDefaultTemplateBuilderDataProvider()
 				.setPageSize(PageSize.A1);
-		optionsPrintPanel.getDefaultPrintRequestDataProvider().setFileName(MESSAGES.printCustomViewFileName());
-		optionsPrintPanel.getDefaultPrintRequestDataProvider().setPostPrintAction(PrintSettings.PostPrintAction.SAVE);
+		optionsPrintPanel.getDefaultPrintRequestDataProvider().
+				setFileName(MESSAGES.printCustomViewFileName());
+		optionsPrintPanel.getDefaultPrintRequestDataProvider().
+				setPostPrintAction(PrintConfiguration.PostPrintAction.SAVE);
 
 		// activate all options
 		optionsPrintPanel.getOptionsToShowConfiguration().setShowTitleOption(true);

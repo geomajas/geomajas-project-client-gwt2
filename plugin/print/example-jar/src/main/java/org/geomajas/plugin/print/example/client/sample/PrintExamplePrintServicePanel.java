@@ -30,10 +30,10 @@ import org.geomajas.plugin.print.client.event.DefaultPrintRequestHandler;
 import org.geomajas.plugin.print.client.event.PrintRequestFinishedEvent;
 import org.geomajas.plugin.print.client.event.PrintRequestInfo;
 import org.geomajas.plugin.print.client.event.PrintRequestStartedEvent;
-import org.geomajas.plugin.print.client.template.DefaultTemplateBuilder;
+import org.geomajas.plugin.print.client.template.impl.DefaultTemplateBuilder;
 import org.geomajas.plugin.print.client.template.PageSize;
 import org.geomajas.plugin.print.client.template.TemplateBuilderDataProvider;
-import org.geomajas.plugin.print.client.util.PrintSettings;
+import org.geomajas.plugin.print.client.util.PrintConfiguration;
 import org.geomajas.plugin.print.command.dto.PrintTemplateInfo;
 import org.geomajas.plugin.print.example.client.i18n.SampleMessages;
 import org.geomajas.plugin.print.example.client.resources.PrintPluginExampleResource;
@@ -96,7 +96,7 @@ public class PrintExamplePrintServicePanel implements SamplePanel {
 			public void onClick(ClickEvent event) {
 				PrintRequestInfo printRequestInfo = new PrintRequestInfo();
 				printRequestInfo.setFileName(MESSAGES.printServiceExampleFixedFileName());
-				printRequestInfo.setPostPrintAction(PrintSettings.PostPrintAction.SAVE);
+				printRequestInfo.setPostPrintAction(PrintConfiguration.PostPrintAction.SAVE);
 				PrintTemplateInfo printTemplateInfo = Print.getInstance().getPrintUtil().
 						createPrintTemplateInfo(mapPresenter, APPLICATION_ID,
 								new DefaultTemplateBuilder(),
