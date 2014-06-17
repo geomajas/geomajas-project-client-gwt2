@@ -5,7 +5,7 @@
 
 	<g:DockLayoutPanel unit="PX" width="100%" height="100%">
 		<g:west size="350">
-			<g:ScrollPanel>
+			<g:ScrollPanel ui:field="scrollPanel">
 				<g:HTMLPanel addStyleNames="{resource.css.sampleLeftLayout}">
 					<h2 ui:field="title">
 						<g:InlineLabel text="{messages.closeableDialogBoxHandlerTitle}" />
