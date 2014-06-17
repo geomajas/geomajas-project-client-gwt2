@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<chapter id="chapter-java-configuration">
+  <title>Gwt2 Print Plugin API</title>
+
+  <section>
+    <title>Further Configuration</title>
+
+    <para>As with most Geomajas plugins, the print plugin has a single class
+    that provides access to all the configurable functional classes within the
+    plugin. In this case:</para>
+
+    <programlisting>org.geomajas.plugin.print.client.Print</programlisting>
+
+	   <para>This class provides access to the client bundle factory and view factory that are used
+		   in the creation of the Print Widget. Both factories can be overwritten by customized classes.</para>
+
+	  <para>The <code>Print</code> class also provides access to a <code>PrintService</code>. This service allows
+	  to create a print request without the need for a widget of view.</para>
+
+	  <para><code>Print</code> contains a <code>PrintUtil</code> reference.</para>
+
+  </section>
+
+	<section>
+		<title>Calling the PrintService without the PrintWidget.</title>
+
+		<para>It is possible to use the print plugin without the widget. The information that is necessary to build the pdf
+		can also be provided by encoding. A simple example can be found below:</para>
+
+		<programlisting>// create a custom TemplateBuilderDataProvider. This is an object that provides for all the data necessary for a TemplatBuilder.
+TemplateBuilderDataProvider customDataProvider = new CustomTemplateBuilderDataProvider();
+// create a PrintTemplateInfo object. TemplateBuilder can be customized, here we use DefaultTemplateBuilder
+PrintTemplateInfo printTemplateInfo = Print.getInstance().getPrintUtil().createPrintTemplateInfo(mapPresenter, applicationId, new DefaultTemplateBuilder(), customDataProvider);
+// create a print request
+PrintRequestInfo printRequestInfo = new PrintRequestInfo();
+printRequestInfo.setFileName("customFileName");
+printRequestInfo.setPostPrintAction(PrintSettings.PostPrintAction.SAVE);
+printRequestInfo.setPrintTemplateInfo(printTemplateInfo);
+// call the print method. The PrintRequestHandler can also be customized
+Print.getInstance().getPrintService().print(printRequestInfo, new DefaultPrintRequestHandler());</programlisting>
+	</section>
+
+
+</chapter>
