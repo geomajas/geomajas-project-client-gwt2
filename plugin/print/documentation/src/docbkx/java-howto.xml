@@ -71,6 +71,25 @@ PrintWidget printWidget = new PrintWidget(mapPresenter, applicationId, optionsPr
 				</imageobject>
 			</mediaobject>
 		</screenshot>
+
+		<para>Both <code>BasePrintPanel</code> and <code>OptionsPrintPanel</code> extend the abstract class <code>DefaultDataProviderPrintWidgetView</code>.
+		This is an implementation of the <code>PrintWidgetView</code> that contains a <code>DefaultPrintRequestDataProvider</code> implementation.
+		The <code>DefaultPrintRequestDataProvider</code> contains setters and getters fot the default values of data that
+		a gui user does not need to specify, but that a print builder still requires. For example, if an <code>OptionsPrintPanel</code>
+		does not show the rasterDpi option, the print builder still need to have a rasterDpi value for creating the print.</para>
+
+		<para>The example below shows how you can overwrite the default values of the <code>DefaultDataProviderPrintWidgetView</code></para>
+		<programlisting>DefaultDataProviderPrintWidgetView dataProviderWidgetView = new OptionsPrintPanel();
+// set some default options
+optionsPrintPanel.getDefaultPrintRequestDataProvider().getDefaultTemplateBuilderDataProvider().setWithArrow(false);
+optionsPrintPanel.getDefaultPrintRequestDataProvider().getDefaultTemplateBuilderDataProvider().setLandscape(false);
+optionsPrintPanel.getDefaultPrintRequestDataProvider().getDefaultTemplateBuilderDataProvider().setPageSize(PageSize.A1);
+optionsPrintPanel.getDefaultPrintRequestDataProvider().setFileName("custom file name");
+optionsPrintPanel.getDefaultPrintRequestDataProvider().setPostPrintAction(PrintConfiguration.PostPrintAction.SAVE);
+// activate some options
+...
+// create the printWidget
+PrintWidget printWidget = new PrintWidget(mapPresenter, applicationId, dataProviderWidgetView);</programlisting>
 	</section>
 
 	<section>
