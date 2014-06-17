@@ -12,7 +12,7 @@
 package org.geomajas.plugin.print.client.template;
 
 /**
- * Factory for {@link TemplateBuilder} instances. (Directory pattern)
+ * Factory for {@link TemplateBuilder} instances.
  *
  * @author Jan Venstermans
  */

@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.print.client.template;
+package org.geomajas.plugin.print.client.template.impl;
 
 import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.geometry.Bbox;

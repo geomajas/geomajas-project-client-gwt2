@@ -13,30 +13,31 @@ package org.geomajas.plugin.print.client.event;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
+import org.geomajas.annotation.Api;
 
 /**
  * Handler for {@link PrintRequestFinishedEvent}.
  *
  * @author Jan Venstermans
+ * @since 2.1.0
  */
+@Api(allMethods = true)
 public interface PrintRequestHandler extends EventHandler {
 
 	/** Event type. */
 	GwtEvent.Type<PrintRequestHandler> TYPE = new GwtEvent.Type<PrintRequestHandler>();
 
 	/**
-	 * Called when the location is selected either because the geocoder returned a match or because the user
-	 * chose one of the alternatives.
+	 * Called just before a print request is send to the server.
 	 *
-	 * @param event event, contains the location which is selected
+	 * @param event event, contains a {@link PrintRequestInfo}.
 	 */
 	void onPrintRequestStarted(PrintRequestStartedEvent event);
 
 	/**
-	 * Called when the location is selected either because the geocoder returned a match or because the user
-	 * chose one of the alternatives.
+	 * Called when a print request has been successfully processed.
 	 *
-	 * @param event event, contains the location which is selected
+	 * @param event event, contains a {@link PrintFinishedInfo}.
 	 */
 	void onPrintRequestFinished(PrintRequestFinishedEvent event);
 }

@@ -12,30 +12,21 @@ package org.geomajas.plugin.print.client.util;
 
 
 /**
- * Presenter for the print widgets.
+ * Configuration options for download.
  * 
  * @author An Buyle
  * @author Jan Venstermans
  * 
  */
-public interface PrintSettings {
+public interface PrintConfiguration {
 
 	/**
-	 * Enum choice of what to do when print has been created. E.g. open in new window, or save on machine.
+	 * Enum choice of what action should be performed when the print object has been created.
+	 * @author Jan Venstermans
 	 */
 	public enum PostPrintAction {
-		SAVE("save"), // save as a file
-		OPEN("open"); // open in a new window
-
-		private String typeName;
-
-		private PostPrintAction(String typeName) {
-			this.typeName = typeName;
-		}
-
-		public String getTypeName() {
-			return typeName;
-		}
+		SAVE, // save as a file
+		OPEN; // open in a new window
 	}
 
 	String URL_DOWNLOAD_YES = "1";

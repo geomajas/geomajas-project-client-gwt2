@@ -26,13 +26,16 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.plugin.print.client.Print;
 import org.geomajas.plugin.print.client.template.PageSize;
-import org.geomajas.plugin.print.client.util.PrintSettings;
+import org.geomajas.plugin.print.client.util.PrintConfiguration;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Implementation of {@link org.geomajas.plugin.print.client.widget.PrintWidgetView}, enable changing all data elements.
+ * No options are shown by default. <br>
+ * Options can be shown by setting boolean values on {@link #getOptionsToShowConfiguration()}. Make sure to 'redraw'
+ * the view by calling {@link #createViewBasedOnConfiguration()} afterwards.
  *
  * @author An Buyle
  * @author Jan De Moerloose
@@ -102,8 +105,8 @@ public class OptionsPrintPanel extends AbstractPrintWidgetView {
 	@UiField
 	protected VerticalPanel fileNameSection;
 
-	private Map<PrintSettings.PostPrintAction, RadioButton> postPrintActionRadioButtonMap =
-			new HashMap<PrintSettings.PostPrintAction, RadioButton>();
+	private Map<PrintConfiguration.PostPrintAction, RadioButton> postPrintActionRadioButtonMap =
+			new HashMap<PrintConfiguration.PostPrintAction, RadioButton>();
 
 	private OptionsToShowConfiguration optionsToShowConfiguration = new OptionsToShowConfiguration();
 
@@ -131,7 +134,7 @@ public class OptionsPrintPanel extends AbstractPrintWidgetView {
 		}
 		// fill the postPrintActionRadioButtonMap
 		postPrintActionRadioButtonMap.clear();
-		for (PrintSettings.PostPrintAction postPrintAction : PrintSettings.PostPrintAction.values()) {
+		for (PrintConfiguration.PostPrintAction postPrintAction : PrintConfiguration.PostPrintAction.values()) {
 			RadioButton radioButton = new RadioButton("postPrintAction",
 					Print.getInstance().getPrintUtil().toString(postPrintAction));
 			postPrintActionRadioButtonMap.put(postPrintAction, radioButton);
@@ -140,6 +143,10 @@ public class OptionsPrintPanel extends AbstractPrintWidgetView {
 		createViewBasedOnConfiguration();
 	}
 
+	/**
+	 * Returns the configuration object, enabling to show or hide the view options.
+	 * @return optionsToShowConfiguration
+	 */
 	public OptionsToShowConfiguration getOptionsToShowConfiguration() {
 		return optionsToShowConfiguration;
 	}
@@ -202,9 +209,9 @@ public class OptionsPrintPanel extends AbstractPrintWidgetView {
 	}
 
 	@Override
-	public PrintSettings.PostPrintAction getPostPrintAction() {
+	public PrintConfiguration.PostPrintAction getPostPrintAction() {
 		if (optionsToShowConfiguration.isShowPostPrintActionOption())  {
-			for (Map.Entry<PrintSettings.PostPrintAction, RadioButton> entry :
+			for (Map.Entry<PrintConfiguration.PostPrintAction, RadioButton> entry :
 					postPrintActionRadioButtonMap.entrySet()) {
 				if (entry.getValue().getValue()) {
 					return entry.getKey();
@@ -252,7 +259,8 @@ public class OptionsPrintPanel extends AbstractPrintWidgetView {
 	}
 
 	/**
-	 * Will set current default values and show/hide options.
+	 * Method to set the visibility of the view and thereby 'redrawing' it.
+	 * Make sure to call after changing the {@link OptionsToShowConfiguration}.
 	 */
 	public void createViewBasedOnConfiguration() {
 		// set default values, when appropriate
@@ -286,7 +294,8 @@ public class OptionsPrintPanel extends AbstractPrintWidgetView {
 	}
 
 	/**
-	 * Contains booleans for the configuration of the visibility of the panel elements.
+	 * Configuration object for the view options. Contains booleans for each option.
+	 * Initiated with all false values (default).
 	 */
 	public class OptionsToShowConfiguration {
 		private boolean showTitleOption;

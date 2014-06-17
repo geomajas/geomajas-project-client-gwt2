@@ -10,19 +10,35 @@
  */
 package org.geomajas.plugin.print.client.template;
 
-import org.geomajas.plugin.print.client.util.PrintSettings;
+import org.geomajas.annotation.Api;
+import org.geomajas.plugin.print.client.util.PrintConfiguration;
 
 /**
  * Interface for data provider of a Builder.
  * This provider can give the builder all custom information necessary to create a print.
  * 
  * @author Jan Venstermans
+ * @since 2.1.0
  */
+@Api(allMethods = true)
 public interface PrintRequestDataProvider {
 
+	/**
+	 * Getter for the {@link TemplateBuilderDataProvider}.
+	 *
+	 * @return
+	 */
 	TemplateBuilderDataProvider getTemplateBuilderDataProvider();
 
-	PrintSettings.PostPrintAction getPostPrintAction();
+	/**
+	 * Getter for the {@link PrintConfiguration.PostPrintAction}.
+	 * @return
+	 */
+	PrintConfiguration.PostPrintAction getPostPrintAction();
 
+	/**
+	 * Getter for the file name.
+	 * @return
+	 */
 	String getFileName();
 }

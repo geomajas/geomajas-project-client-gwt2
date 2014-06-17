@@ -12,7 +12,7 @@ package org.geomajas.plugin.print.client.util;
 
 
 /**
- * Url parameter keys for the Url buildup.
+ * Url parameter keys for the print url buildup.
  * 
  * @author An Buyle
  * @author Jan Venstermans

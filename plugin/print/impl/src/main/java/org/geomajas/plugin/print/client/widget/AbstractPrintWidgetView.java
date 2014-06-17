@@ -13,12 +13,18 @@ package org.geomajas.plugin.print.client.widget;
 import com.google.gwt.core.client.GWT;
 import org.geomajas.plugin.print.client.i18n.PrintMessages;
 import org.geomajas.plugin.print.client.template.DefaultPrintRequestDataProvider;
+import org.geomajas.plugin.print.client.template.impl.DefaultPrintRequestDataProviderImpl;
 import org.geomajas.plugin.print.client.template.PageSize;
 import org.geomajas.plugin.print.client.template.TemplateBuilderDataProvider;
-import org.geomajas.plugin.print.client.util.PrintSettings;
+import org.geomajas.plugin.print.client.util.PrintConfiguration;
 
 /**
  * Default abstract implementation of {@link org.geomajas.plugin.print.client.widget.PrintWidgetView}.
+ * This class contains an instance of
+ * {@link org.geomajas.plugin.print.client.template.impl.DefaultPrintRequestDataProviderImpl},
+ * that contains the default values.
+ * An extension of this class may overwrite the {@link TemplateBuilderDataProvider} getter methods to prohibit
+ * returning the default values.
  *
  * @author Jan Venstermans
  */
@@ -31,7 +37,7 @@ public abstract class AbstractPrintWidgetView implements PrintWidgetView, Templa
 	/**
 	 * contains the default values.
 	 */
-	private DefaultPrintRequestDataProvider defaultPrintRequestDataProvider = new DefaultPrintRequestDataProvider();
+	private DefaultPrintRequestDataProvider defaultPrintRequestDataProvider = new DefaultPrintRequestDataProviderImpl();
 
 	protected PrintWidgetPresenter handler;
 
@@ -69,7 +75,7 @@ public abstract class AbstractPrintWidgetView implements PrintWidgetView, Templa
 	}
 
 	@Override
-	public PrintSettings.PostPrintAction getPostPrintAction() {
+	public PrintConfiguration.PostPrintAction getPostPrintAction() {
 		return defaultPrintRequestDataProvider.getPostPrintAction();
 	}
 

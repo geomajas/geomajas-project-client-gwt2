@@ -10,28 +10,33 @@
  */
 package org.geomajas.plugin.print.client.layerbuilder;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.client.map.MapPresenter;
 
 /**
- * Empty interface for turning a specific layer into a print layer.
+ * Interface for building printable layers. The interface requires an object as the data source for the print layer.
  *
- * @param <T> type of object that is supported by the interface.
+ * @param <T> type of object that is supported as the data source for creating the print layer.
  *           This is to distinguish between larger types of objects.
  *
  * @author Jan Venstermans
+ * @since 2.1.0
  */
+@Api(allMethods = true)
 public interface PrintableLayerBuilder<T> {
 
 	/**
-	 * Is the specified object supported ?
+	 * Is the specified object supported as the data source?
 	 * @param object
-	 * @return
+	 * @return boolean value
 	 */
 	boolean supports(T object);
 
 	/**
+	 * Builds the {@link ClientLayerInfo} based on the data source object. The return value contains all info
+	 * for printing the layer.
 	 *
 	 * @param mapPresenter
 	 * @param object

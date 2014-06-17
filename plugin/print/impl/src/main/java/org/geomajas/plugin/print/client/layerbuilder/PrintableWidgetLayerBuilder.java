@@ -11,12 +11,16 @@
 package org.geomajas.plugin.print.client.layerbuilder;
 
 import com.google.gwt.user.client.ui.Widget;
+import org.geomajas.annotation.Api;
 
 /**
+ * Extension of {@link PrintableLayerBuilder} with {@link Widget} as data source object.
  *
  * @author Jan Venstermans
+ * @since 2.1.0
  *
  */
+@Api(allMethods = true)
 public interface PrintableWidgetLayerBuilder extends PrintableLayerBuilder<Widget> {
 
 }

@@ -10,119 +10,55 @@
  */
 package org.geomajas.plugin.print.client.template;
 
-import com.google.gwt.core.client.GWT;
-import org.geomajas.plugin.print.client.i18n.PrintMessages;
-import org.geomajas.plugin.print.client.util.PrintSettings;
+import org.geomajas.annotation.Api;
+import org.geomajas.plugin.print.client.util.PrintConfiguration;
 
 /**
- * Default implementation of {@link PrintRequestDataProvider}.
- * It is a container for the default values.
+ * Setter extension of {@link org.geomajas.plugin.print.client.template.PrintRequestDataProvider}.
  *
  * @author Jan Venstermans
+ * @since 2.1.0
  */
-public class DefaultPrintRequestDataProvider implements PrintRequestDataProvider {
-
-	private static final PrintMessages MESSAGES = GWT.create(PrintMessages.class);
-
-	private DefaultTemplateBuilderDataProvider defaultTemplateBuilderDataProvider
-			= new DefaultTemplateBuilderDataProvider();
-	private PrintSettings.PostPrintAction defaultPostPrintAction = PrintSettings.PostPrintAction.OPEN;
-	private String defaultFileName = MESSAGES.defaultPrintFileName();
-
-	/* getters */
-	@Override
-	public TemplateBuilderDataProvider getTemplateBuilderDataProvider() {
-		return defaultTemplateBuilderDataProvider;
-	}
-
-	public DefaultTemplateBuilderDataProvider getDefaultTemplateBuilderDataProvider() {
-		return defaultTemplateBuilderDataProvider;
-	}
-
-	@Override
-	public PrintSettings.PostPrintAction getPostPrintAction() {
-		return defaultPostPrintAction;
-	}
-
-	@Override
-	public String getFileName() {
-		return defaultFileName;
-	}
-
-	/* setters */
-
-	public void setFileName(String fileName) {
-		this.defaultFileName = fileName;
-	}
-
-	public void setPostPrintAction(PrintSettings.PostPrintAction postPrintAction) {
-		this.defaultPostPrintAction = postPrintAction;
-	}
+@Api(allMethods = true)
+public interface DefaultPrintRequestDataProvider extends PrintRequestDataProvider {
 
 	/**
-	 * Private default implementation of {@link TemplateBuilderDataProvider}.
+	 * Getter for the {@link DefaultTemplateBuilderDataProvider}.
+	 * @return
 	 */
-	public class DefaultTemplateBuilderDataProvider implements TemplateBuilderDataProvider {
+	DefaultTemplateBuilderDataProvider getDefaultTemplateBuilderDataProvider();
 
-		private String defaultTitle = MESSAGES.defaultPrintTitle();
-		private PageSize defaultPageSize = PageSize.A4;
-		private int defaultRasterDpi = 200;
-		private boolean defaultLandscape = true;
-		private boolean defaultWithArrow = true;
-		private boolean defaultWithScaleBar = true;
+	/**
+	 * Setter for the file name.
+	 * @param fileName
+	 */
+	void setFileName(String fileName);
 
-		@Override
-		public String getTitle() {
-			return defaultTitle;
-		}
+	/**
+	 * Setter for the {@link PrintConfiguration.PostPrintAction}.
+	 * @param postPrintAction
+	 */
+	void setPostPrintAction(PrintConfiguration.PostPrintAction postPrintAction);
 
-		public void setTitle(String title) {
-			this.defaultTitle = title;
-		}
+	/**
+	 * Setter extension of {@link org.geomajas.plugin.print.client.template.TemplateBuilderDataProvider}.
+	 *
+	 * @author Jan Venstermans
+	 * @since 2.1.0
+	 */
+	@Api(allMethods = true)
+	public interface DefaultTemplateBuilderDataProvider extends TemplateBuilderDataProvider {
 
-		@Override
-		public PageSize getPageSize() {
-			return defaultPageSize;
-		}
+		void setTitle(String title);
 
-		public void setPageSize(PageSize pageSize) {
-			this.defaultPageSize = pageSize;
-		}
+		void setPageSize(PageSize pageSize);
 
-		@Override
-		public Integer getRasterDpi() {
-			return defaultRasterDpi;
-		}
+		void setRasterDpi(int rasterDpi);
 
-		public void setRasterDpi(int rasterDpi) {
-			this.defaultRasterDpi = rasterDpi;
-		}
+		void setLandscape(boolean landscape);
 
-		@Override
-		public boolean isLandscape() {
-			return defaultLandscape;
-		}
+		void setWithArrow(boolean withArrow);
 
-		public void setLandscape(boolean landscape) {
-			this.defaultLandscape = landscape;
-		}
-
-		@Override
-		public boolean isWithArrow() {
-			return defaultWithArrow;
-		}
-
-		public void setWithArrow(boolean withArrow) {
-			this.defaultWithArrow = withArrow;
-		}
-
-		@Override
-		public boolean isWithScaleBar() {
-			return defaultWithScaleBar;
-		}
-
-		public void setWithScaleBar(boolean withScaleBar) {
-			this.defaultWithScaleBar = withScaleBar;
-		}
+		void setWithScaleBar(boolean withScaleBar);
 	}
 }

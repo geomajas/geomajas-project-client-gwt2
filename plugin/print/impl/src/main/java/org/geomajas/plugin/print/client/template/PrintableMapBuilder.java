@@ -24,7 +24,21 @@ import org.geomajas.plugin.print.client.layerbuilder.PrintableLayerBuilder;
  */
 public interface PrintableMapBuilder {
 
+	/**
+	 * Method for registering a {@link PrintableLayerBuilder}.
+	 * This will allow for specific layers to be rendered in the printed map.
+	 * Multiple layerBuilders can be registered at the same time.
+	 *
+	 * @param layerBuilder
+	 */
 	void registerLayerBuilder(PrintableLayerBuilder layerBuilder);
 
+	/**
+	 * Performs the build process of creation the printed map.
+	 *
+	 * @param mapPresenter
+	 * @param worldBounds
+	 * @param rasterResolution
+	 */
 	void build(MapPresenter mapPresenter, Bbox worldBounds, double rasterResolution);
 }

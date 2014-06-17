@@ -20,7 +20,7 @@ import org.geomajas.plugin.print.client.event.PrintRequestFinishedEvent;
 import org.geomajas.plugin.print.client.event.PrintRequestHandler;
 import org.geomajas.plugin.print.client.event.PrintRequestInfo;
 import org.geomajas.plugin.print.client.event.PrintRequestStartedEvent;
-import org.geomajas.plugin.print.client.util.PrintSettings;
+import org.geomajas.plugin.print.client.util.PrintConfiguration;
 import org.geomajas.plugin.print.command.dto.PrintGetTemplateRequest;
 import org.geomajas.plugin.print.command.dto.PrintGetTemplateResponse;
 
@@ -35,7 +35,7 @@ public class PrintServiceImpl implements PrintService {
 
 	@Override
 	public void print(PrintRequestInfo printRequestInfo, final Callback<PrintFinishedInfo, Void> callback) {
-		final PrintSettings.PostPrintAction postPrintAction = printRequestInfo.getPostPrintAction();
+		final PrintConfiguration.PostPrintAction postPrintAction = printRequestInfo.getPostPrintAction();
 		final String fileName = printRequestInfo.getFileName();
 		PrintGetTemplateRequest request = new PrintGetTemplateRequest();
 		request.setTemplate(printRequestInfo.getPrintTemplateInfo());
@@ -57,9 +57,7 @@ public class PrintServiceImpl implements PrintService {
 
 	@Override
 	public void print(PrintRequestInfo printRequestInfo, final PrintRequestHandler printRequestHandler) {
-		PrintRequestStartedEvent startedEvent = new PrintRequestStartedEvent();
-		startedEvent.setPrintRequestInfo(printRequestInfo);
-		printRequestHandler.onPrintRequestStarted(startedEvent);
+		printRequestHandler.onPrintRequestStarted(new PrintRequestStartedEvent(printRequestInfo));
 		print(printRequestInfo, new Callback<PrintFinishedInfo, Void>() {
 			@Override
 			public void onFailure(Void reason) {

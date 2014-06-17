@@ -11,6 +11,7 @@
 package org.geomajas.plugin.print.client.util;
 
 
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.plugin.print.client.template.TemplateBuilder;
 import org.geomajas.plugin.print.client.template.TemplateBuilderDataProvider;
@@ -20,13 +21,13 @@ import org.geomajas.plugin.print.command.dto.PrintTemplateInfo;
  * Presenter for print method.
  * 
  * @author Jan Venstermans
- * 
+ * @since 2.1.0
  */
+@Api(allMethods = true)
 public interface PrintUtil {
 
 	/**
 	 *  Fill the builder with information from the data provider.
-	 *  UTIL method.
 	 *
 	 * @param builder
 	 * @param templateBuilderDataProvider provides data for the builder
@@ -34,8 +35,6 @@ public interface PrintUtil {
 	 */
 	void copyProviderDataToBuilder(TemplateBuilder builder,
 												 TemplateBuilderDataProvider templateBuilderDataProvider);
-
-	UrlBuilder createUrlBuilder(String baseUrl);
 
 	/**
 	 * Create a parameterized url for the created pdf.
@@ -46,10 +45,26 @@ public interface PrintUtil {
 	 * @return info object containing parameterized url
 	 */
 	String getPrintEncodeUrl(String documentId, String fileName,
-							 String userToken, PrintSettings.PostPrintAction postPrintAction);
+							 String userToken, PrintConfiguration.PostPrintAction postPrintAction);
 
-	String toString(PrintSettings.PostPrintAction postPrintAction);
+	/**
+	 * Returns a text representation of a {@link PrintConfiguration.PostPrintAction}.
+	 *
+	 * @param postPrintAction
+	 * @return
+	 */
+	String toString(PrintConfiguration.PostPrintAction postPrintAction);
 
+	/**
+	 * Returns a new {@link PrintTemplateInfo} instance, created by the builder, based on the data provided by
+	 * the templateBuilderDataProvider.
+	 *
+	 * @param mapPresenter
+	 * @param applicationId
+	 * @param builder
+	 * @param templateBuilderDataProvider
+	 * @return
+	 */
 	PrintTemplateInfo createPrintTemplateInfo(MapPresenter mapPresenter, String applicationId,
 											  TemplateBuilder builder,
 											  TemplateBuilderDataProvider templateBuilderDataProvider);

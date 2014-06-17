@@ -9,10 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.print.client.template;
-
-import java.util.ArrayList;
-import java.util.List;
+package org.geomajas.plugin.print.client.template.impl;
 
 import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
@@ -26,6 +23,8 @@ import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.client.map.layer.LayersModel;
 import org.geomajas.gwt2.client.map.layer.RasterServerLayer;
 import org.geomajas.gwt2.client.map.layer.VectorServerLayer;
+import org.geomajas.plugin.print.client.template.PrintableMapBuilder;
+import org.geomajas.plugin.print.client.template.TemplateBuilder;
 import org.geomajas.plugin.print.client.util.PrintLayout;
 import org.geomajas.plugin.print.command.dto.PrintTemplateInfo;
 import org.geomajas.plugin.print.component.dto.ImageComponentInfo;
@@ -42,6 +41,9 @@ import org.geomajas.plugin.print.component.dto.RasterizedLayersComponentInfo;
 import org.geomajas.plugin.print.component.dto.ScaleBarComponentInfo;
 import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.RuleInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Default print template builder, parameters include title, size, raster DPI, orientation, etc...

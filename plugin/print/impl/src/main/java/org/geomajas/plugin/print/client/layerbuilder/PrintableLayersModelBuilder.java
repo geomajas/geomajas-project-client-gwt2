@@ -10,28 +10,20 @@
  */
 package org.geomajas.plugin.print.client.layerbuilder;
 
-import org.geomajas.configuration.client.ClientLayerInfo;
-import org.geomajas.geometry.Bbox;
-import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.client.map.layer.Layer;
 
 /**
  * Builder that prepares a specific type of layer for printing. Server layers should enhance their existing client info,
- * other layers should return a suitable {@link ClientLayerInfo} instance that can be picked up by a
+ * other layers should return a suitable {@link org.geomajas.configuration.client.ClientLayerInfo}
+ * instance that can be picked up by a
  * {@link org.geomajas.plugin.rasterizing.api.LayerFactory} in the rasterizing plugin.
  * 
  * @author Jan De Moerloose
+ * @since 2.1.0
  * 
  */
+@Api(allMethods = true)
 public interface PrintableLayersModelBuilder extends PrintableLayerBuilder<Layer> {
 
-	/**
-	 * 
-	 * @param mapPresenter
-	 * @param layer
-	 * @param worldBounds
-	 * @param rasterResolution
-	 * @return
-	 */
-	ClientLayerInfo build(MapPresenter mapPresenter, Layer layer, Bbox worldBounds, double rasterResolution);
 }

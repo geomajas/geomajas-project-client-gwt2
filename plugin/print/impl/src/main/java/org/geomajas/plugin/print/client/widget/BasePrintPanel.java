@@ -23,7 +23,8 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Default implementation of {@link PrintWidgetView}.
+ * Basic implementation of {@link PrintWidgetView}, extending the {@link AbstractPrintWidgetView}.
+ * This view will only show title and page orientation.
  * 
  * @author An Buyle
  * @author Jan De Moerloose

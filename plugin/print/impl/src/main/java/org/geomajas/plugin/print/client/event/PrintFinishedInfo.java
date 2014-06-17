@@ -11,17 +11,17 @@
 package org.geomajas.plugin.print.client.event;
 
 
-import org.geomajas.plugin.print.client.util.PrintSettings;
+import org.geomajas.plugin.print.client.util.PrintConfiguration;
 
 /**
- * Info object, containing info necessary for throwing event.
+ * Info object, containing info of the successful end of a print request.
  * 
  * @author Jan Venstermans
  * 
  */
 public class PrintFinishedInfo {
 	private String encodedUrl;
-	private PrintSettings.PostPrintAction postPrintAction;
+	private PrintConfiguration.PostPrintAction postPrintAction;
 
 	public String getEncodedUrl() {
 		return encodedUrl;
@@ -31,11 +31,11 @@ public class PrintFinishedInfo {
 		this.encodedUrl = encodedUrl;
 	}
 
-	public PrintSettings.PostPrintAction getPostPrintAction() {
+	public PrintConfiguration.PostPrintAction getPostPrintAction() {
 		return postPrintAction;
 	}
 
-	public void setPostPrintAction(PrintSettings.PostPrintAction postPrintAction) {
+	public void setPostPrintAction(PrintConfiguration.PostPrintAction postPrintAction) {
 		this.postPrintAction = postPrintAction;
 	}
 }

@@ -12,6 +12,7 @@ package org.geomajas.plugin.print.client;
 
 
 import com.google.gwt.core.client.GWT;
+import org.geomajas.annotation.Api;
 import org.geomajas.plugin.print.client.util.PrintUtil;
 import org.geomajas.plugin.print.client.util.PrintUtilImpl;
 
@@ -19,8 +20,9 @@ import org.geomajas.plugin.print.client.util.PrintUtilImpl;
  * Start point class for the print plugin.
  * 
  * @author Jan Venstermans
- * 
+ * @since 2.1.0
  */
+@Api(allMethods = true)
 public final class Print {
 
 	private static Print instance;
@@ -36,6 +38,10 @@ public final class Print {
 	private Print() {
 	}
 
+	/**
+	 * Get the {@link Print} singleton instance.
+	 * @return
+	 */
 	public static Print getInstance() {
 		if (instance == null) {
 			instance = new Print();
@@ -43,6 +49,11 @@ public final class Print {
 		return instance;
 	}
 
+	/**
+	 * Getter for the {@link PrintClientBundleFactory} instance.
+	 *
+	 * @return bundle factory
+	 */
 	public PrintClientBundleFactory getBundleFactory() {
 		if (bundleFactory == null) {
 			bundleFactory = GWT.create(PrintClientBundleFactory.class);
@@ -50,6 +61,10 @@ public final class Print {
 		return bundleFactory;
 	}
 
+	/**
+	 * Getter for the {@link PrintViewFactory} used for default view creation.
+	 * @return view factory
+	 */
 	public PrintViewFactory getViewFactory() {
 		if (viewFactory == null) {
 			viewFactory = GWT.create(PrintViewFactory.class);
@@ -57,6 +72,10 @@ public final class Print {
 		return viewFactory;
 	}
 
+	/**
+	 * Getter for the {@link org.geomajas.plugin.print.client.PrintService}.
+	 * @return print service
+	 */
 	public PrintService getPrintService() {
 		if (printService == null) {
 			printService = new PrintServiceImpl();
@@ -64,6 +83,10 @@ public final class Print {
 		return printService;
 	}
 
+	/**
+	 * Getter for the {@link org.geomajas.plugin.print.client.util.PrintUtil} instance.
+	 * @return print util instance
+	 */
 	public PrintUtil getPrintUtil() {
 		if (printUtil == null) {
 			printUtil = new PrintUtilImpl();
@@ -71,18 +94,34 @@ public final class Print {
 		return printUtil;
 	}
 
+	/**
+	 * Setter for the {@link PrintService}.
+	 * @param printService
+	 */
 	public void setPrintService(PrintService printService) {
 		this.printService = printService;
 	}
 
+	/**
+	 * Setter for the {@link PrintViewFactory}.
+	 * @param viewFactory
+	 */
 	public void setViewFactory(PrintViewFactory viewFactory) {
 		this.viewFactory = viewFactory;
 	}
 
+	/**
+	 *  Setter for the {@link PrintClientBundleFactory}.
+	 * @param bundleFactory
+	 */
 	public void setBundleFactory(PrintClientBundleFactory bundleFactory) {
 		this.bundleFactory = bundleFactory;
 	}
 
+	/**
+	 * Setter for the {@link PrintUtil} instance.
+	 * @param printUtil
+	 */
 	public void setPrintUtil(PrintUtil printUtil) {
 		this.printUtil = printUtil;
 	}

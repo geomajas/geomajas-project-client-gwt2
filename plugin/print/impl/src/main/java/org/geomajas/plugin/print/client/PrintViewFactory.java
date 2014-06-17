@@ -11,6 +11,7 @@
 package org.geomajas.plugin.print.client;
 
 
+import org.geomajas.annotation.Api;
 import org.geomajas.plugin.print.client.widget.BasePrintPanel;
 import org.geomajas.plugin.print.client.widget.PrintWidgetView;
 
@@ -18,10 +19,16 @@ import org.geomajas.plugin.print.client.widget.PrintWidgetView;
  * Factory for the widgets.
  * 
  * @author Jan Venstermans
- * 
+ * @since 2.1.0
  */
+@Api(allMethods = true)
 public class PrintViewFactory {
 
+	/**
+	 * Creates the default implementation of{@link PrintWidgetView}.
+	 *
+	 * @return new printWidgetView instance
+	 */
 	 public PrintWidgetView createPrintWidgetView() {
 		 return new BasePrintPanel();
 	 }

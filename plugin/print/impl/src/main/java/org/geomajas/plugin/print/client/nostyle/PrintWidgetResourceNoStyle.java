@@ -14,10 +14,9 @@ import org.geomajas.plugin.print.client.widget.PrintWidgetCssResource;
 import org.geomajas.plugin.print.client.widget.PrintWidgetResource;
 
 /**
- * {@link com.google.gwt.resources.client.ClientBundle} for
- * {@link org.geomajas.plugin.print.client.widget.BasePrintPanel}.
+ * No style versiobn of the {@link PrintWidgetResource}.
  *
- * @author Jan De Moerloose
+ * @author Jan Venstermans
  *
  */
 public interface PrintWidgetResourceNoStyle extends PrintWidgetResource {

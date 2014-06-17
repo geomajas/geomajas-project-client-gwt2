@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.print.client.template;
+package org.geomajas.plugin.print.client.template.impl;
 
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -26,6 +26,7 @@ import org.geomajas.plugin.print.client.layerbuilder.PrintableLayersModelBuilder
 import org.geomajas.plugin.print.client.layerbuilder.PrintableWidgetLayerBuilder;
 import org.geomajas.plugin.print.client.layerbuilder.RasterServerLayerBuilder;
 import org.geomajas.plugin.print.client.layerbuilder.VectorServerLayerBuilder;
+import org.geomajas.plugin.print.client.template.PrintableMapBuilder;
 import org.geomajas.plugin.rasterizing.command.dto.LegendRasterizingInfo;
 import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
 
@@ -33,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Builds a printable version of a live map.
+ * Default implementation of {@link PrintableMapBuilder}.
  * 
  * @author Jan De Moerloose
  * @author An Buyle (support for extra layer with e.g. selected geometries)
@@ -48,10 +49,12 @@ public class DefaultPrintableMapBuilder implements PrintableMapBuilder {
 		layerBuilders.add(new VectorServerLayerBuilder());
 	}
 
+	@Override
 	public void registerLayerBuilder(PrintableLayerBuilder layerBuilder) {
 		layerBuilders.add(layerBuilder);
 	}
 
+	@Override
 	public void build(MapPresenter mapPresenter, Bbox worldBounds, double rasterResolution) {
 		MapRasterizingInfo mapRasterizingInfo = buildMap(mapPresenter);
 		createWidgetPrintLayers(mapPresenter, mapRasterizingInfo, worldBounds, rasterResolution);

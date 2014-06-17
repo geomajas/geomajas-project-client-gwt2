@@ -23,8 +23,8 @@ import org.geomajas.plugin.print.client.event.PrintRequestHandler;
 import org.geomajas.plugin.print.client.event.PrintRequestInfo;
 import org.geomajas.plugin.print.client.event.PrintRequestStartedEvent;
 import org.geomajas.plugin.print.client.layerbuilder.PrintableLayerBuilder;
-import org.geomajas.plugin.print.client.template.DefaultPrintableMapBuilder;
-import org.geomajas.plugin.print.client.template.DefaultTemplateBuilder;
+import org.geomajas.plugin.print.client.template.impl.DefaultPrintableMapBuilder;
+import org.geomajas.plugin.print.client.template.impl.DefaultTemplateBuilder;
 import org.geomajas.plugin.print.client.template.PrintableMapBuilder;
 import org.geomajas.plugin.print.client.template.TemplateBuilder;
 import org.geomajas.plugin.print.client.template.TemplateBuilderFactory;
@@ -47,13 +47,14 @@ public class PrintWidgetPresenterImpl implements PrintWidgetPresenter {
 	private PrintWidgetView view;
 
 	/**
-	 *  Field used for creation of {@link PrintTemplateInfo} objects. It is created with a default value.
+	 *  Field used for creation of {@link org.geomajas.plugin.print.command.dto.PrintTemplateInfo} objects.
+	 *  It is created with a default value.
 	 */
 	private PrintableMapBuilder mapBuilder = new DefaultPrintableMapBuilder();
 
 	/**
-	 *  Field used for creation of {@link PrintTemplateInfo} objects. It is created with a default value.
-	 * This defaults can be overwritten via the setter
+	 *  Field used for creation of {@link org.geomajas.plugin.print.command.dto.PrintTemplateInfo} objects.
+	 *  It is created with a default value. This defaults can be overwritten via the setter
 	 */
 	private TemplateBuilderFactory templateBuilderFactory = new TemplateBuilderFactory() {
 		@Override
@@ -111,9 +112,7 @@ public class PrintWidgetPresenterImpl implements PrintWidgetPresenter {
 					createPrintTemplateInfo(mapPresenter, applicationId,
 							templateBuilderFactory.createTemplateBuilder(mapBuilder),
 							view.getTemplateBuilderDataProvider()));
-			PrintRequestStartedEvent startedEvent = new PrintRequestStartedEvent();
-			startedEvent.setPrintRequestInfo(printRequestInfo);
-			handlerManager.fireEvent(startedEvent);
+			handlerManager.fireEvent(new PrintRequestStartedEvent(printRequestInfo));
 			Print.getInstance().getPrintService().print(printRequestInfo,
 					new Callback<PrintFinishedInfo, Void>() {
 				@Override
@@ -129,14 +128,6 @@ public class PrintWidgetPresenterImpl implements PrintWidgetPresenter {
 		}
 	}
 
-	/**
-	 * Set the {@link PrintRequestHandler}; there can only be one handler.
-	 * <p/>
-	 * The default handler is {@link DefaultPrintRequestHandler}.
-	 *
-	 * @param handler select location handler
-	 * @return handler registration.
-	 */
 	@Override
 	public HandlerRegistration setPrintRequestHandler(PrintRequestHandler handler) {
 		if (handlerManager.getHandlerCount(PrintRequestHandler.TYPE) > 0) {

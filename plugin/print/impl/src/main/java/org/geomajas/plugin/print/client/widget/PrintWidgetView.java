@@ -11,17 +11,30 @@
 package org.geomajas.plugin.print.client.widget;
 
 import com.google.gwt.user.client.ui.IsWidget;
+import org.geomajas.annotation.Api;
 import org.geomajas.plugin.print.client.template.DefaultPrintRequestDataProvider;
 import org.geomajas.plugin.print.client.template.PrintRequestDataProvider;
 
 /**
- * View interface for the widget.
+ * View interface for the {@link org.geomajas.plugin.print.client.widget.PrintWidget}.
  * 
  * @author Jan Venstermans
+ * @since 2.1.0
  */
+@Api(allMethods = true)
 public interface PrintWidgetView extends IsWidget, PrintRequestDataProvider {
 
+	/**
+	 * Registration of the handler, type {@link org.geomajas.plugin.print.client.widget.PrintWidgetPresenter}.
+	 * @param handler
+	 */
 	void setHandler(PrintWidgetPresenter handler);
 
+	/**
+	 * Getter for the {@link org.geomajas.plugin.print.client.template.DefaultPrintRequestDataProvider}.
+	 * This interface contains both getters and setters for the data values.
+	 *
+	 * @return
+	 */
 	DefaultPrintRequestDataProvider getDefaultPrintRequestDataProvider();
 }

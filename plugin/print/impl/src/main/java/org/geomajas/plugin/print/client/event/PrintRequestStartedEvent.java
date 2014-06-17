@@ -22,6 +22,10 @@ public class PrintRequestStartedEvent extends GwtEvent<PrintRequestHandler> {
 
 	private PrintRequestInfo printRequestInfo;
 
+	public PrintRequestStartedEvent(PrintRequestInfo printRequestInfo) {
+		this.printRequestInfo = printRequestInfo;
+	}
+
 	@Override
 	public Type<PrintRequestHandler> getAssociatedType() {
 		return PrintRequestHandler.TYPE;
@@ -34,9 +38,5 @@ public class PrintRequestStartedEvent extends GwtEvent<PrintRequestHandler> {
 
 	public PrintRequestInfo getPrintRequestInfo() {
 		return printRequestInfo;
-	}
-
-	public void setPrintRequestInfo(PrintRequestInfo printRequestInfo) {
-		this.printRequestInfo = printRequestInfo;
 	}
 }

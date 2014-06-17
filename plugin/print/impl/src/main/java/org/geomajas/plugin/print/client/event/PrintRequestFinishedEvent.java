@@ -40,7 +40,4 @@ public class PrintRequestFinishedEvent extends GwtEvent<PrintRequestHandler> {
 		return printFinishedInfo;
 	}
 
-	public void setPrintFinishedInfo(PrintFinishedInfo printFinishedInfo) {
-		this.printFinishedInfo = printFinishedInfo;
-	}
 }

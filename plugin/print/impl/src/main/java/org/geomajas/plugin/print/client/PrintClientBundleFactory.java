@@ -19,7 +19,6 @@ import org.geomajas.plugin.print.client.widget.PrintWidgetView;
  * Factory for the resources.
  * 
  * @author Jan Venstermans
- * 
  */
 public class PrintClientBundleFactory {
 

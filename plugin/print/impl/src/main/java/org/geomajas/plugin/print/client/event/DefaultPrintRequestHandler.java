@@ -17,8 +17,10 @@ import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.RootPanel;
 
 /**
- * Default implementation of {@link PrintRequestHandler}. This handler will be registered by default
- * when the {@link org.geomajas.plugin.print.client.widget.PrintWidgetPresenterImpl} is created.
+ * Default implementation of {@link PrintRequestHandler}.
+ * It will do nothing on a {@link PrintRequestStartedEvent}.
+ * On a {@link PrintRequestFinishedEvent}, it open or download the printed document,
+ * depending on the event information.
  *
  * @author Jan Venstermans
  */
@@ -29,10 +31,6 @@ public class DefaultPrintRequestHandler implements PrintRequestHandler {
 		// do nothing
 	}
 
-	/**
-	 * Default {@link org.geomajas.plugin.print.client.event.PrintRequestFinishedEvent}. Can be overwritten.
-	 * @param event event
-	 */
 	@Override
 	public void onPrintRequestFinished(PrintRequestFinishedEvent event) {
 		switch (event.getPrintFinishedInfo().getPostPrintAction()) {

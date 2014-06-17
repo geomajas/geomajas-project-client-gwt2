@@ -19,7 +19,7 @@ import org.geomajas.plugin.rasterizing.command.dto.ClientSvgLayerInfo;
 import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 
 /**
- * Builds a printable version of a live map.
+ * {@link PrintableWidgetLayerBuilder} for {@link VectorObjectContainer} instances.
  * 
  * @author Jan De Moerloose
  * @author An Buyle (support for extra layer with e.g. selected geometries)
