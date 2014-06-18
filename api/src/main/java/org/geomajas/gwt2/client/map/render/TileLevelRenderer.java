@@ -12,6 +12,8 @@
 package org.geomajas.gwt2.client.map.render;
 
 import com.google.web.bindery.event.shared.HandlerRegistration;
+
+import org.geomajas.gwt2.client.event.TileLevelRenderedHandler;
 import org.geomajas.gwt2.client.map.View;
 
 /**

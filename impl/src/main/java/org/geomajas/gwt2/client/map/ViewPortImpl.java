@@ -62,7 +62,7 @@ public final class ViewPortImpl implements ViewPort {
 
 	private String crs;
 
-	private double resolution;
+	private double resolution = 1.0;
 
 	private Coordinate position;
 

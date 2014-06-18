@@ -51,8 +51,8 @@ public class ViewPortMaxBoundsNoResolutionsTest {
 
 		viewPort.applyResolution(viewPort.getMaximumResolution());
 		Bbox boundsOnMaxResolution = viewPort.getBounds();
-		Assert.assertTrue(maxBounds.getWidth() <= boundsOnMaxResolution.getWidth());
-		Assert.assertTrue(maxBounds.getHeight() <= boundsOnMaxResolution.getHeight());
+		Assert.assertTrue(maxBounds.getWidth() >= boundsOnMaxResolution.getWidth());
+		Assert.assertTrue(maxBounds.getHeight() >= boundsOnMaxResolution.getHeight());
 	}
 
 	@Test
@@ -69,8 +69,8 @@ public class ViewPortMaxBoundsNoResolutionsTest {
 
 		viewPort.applyResolution(viewPort.getMaximumResolution());
 		Bbox boundsOnMaxResolution = viewPort.getBounds();
-		Assert.assertTrue(maxBounds.getWidth() <= boundsOnMaxResolution.getWidth());
-		Assert.assertTrue(maxBounds.getHeight() <= boundsOnMaxResolution.getHeight());
+		Assert.assertTrue(maxBounds.getWidth() >= boundsOnMaxResolution.getWidth());
+		Assert.assertTrue(maxBounds.getHeight() >= boundsOnMaxResolution.getHeight());
 	}
 
 	private MapConfiguration getMapConfigWithoutMaxBounds() {

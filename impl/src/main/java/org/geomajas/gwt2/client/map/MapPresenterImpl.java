@@ -322,7 +322,7 @@ public final class MapPresenterImpl implements MapPresenter {
 
 	@Override
 	public MapConfiguration getConfiguration() {
-		if(configuration == null) {
+		if (configuration == null) {
 			configuration = new MapConfigurationImpl();
 		}
 		return configuration;

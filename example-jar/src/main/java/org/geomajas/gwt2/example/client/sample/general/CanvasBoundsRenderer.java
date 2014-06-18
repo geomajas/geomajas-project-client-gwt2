@@ -42,6 +42,8 @@ public class CanvasBoundsRenderer implements LayerRenderer {
 	private List<Double> scales = new ArrayList<Double>();
 
 	private boolean enabled;
+	
+	private double opacity = 1.0;
 
 	public CanvasBoundsRenderer(Layer layer, ViewPort viewPort, CanvasContainer canvasContainer) {
 		this.layer = layer;
@@ -89,6 +91,17 @@ public class CanvasBoundsRenderer implements LayerRenderer {
 	@Override
 	public Layer getLayer() {
 		return layer;
+	}
+
+	@Override
+	public void setOpacity(double opacity) {
+		this.opacity = opacity;
+		canvasContainer.setOpacity(opacity);
+	}
+
+	@Override
+	public double getOpacity() {
+		return opacity;
 	}
 
 }

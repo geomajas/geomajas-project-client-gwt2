@@ -24,6 +24,7 @@ import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
+import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.service.BboxService;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
@@ -276,8 +277,11 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 			resolutions.add(viewPort.getResolution(i));
 		}
 		tileConfig.setResolutions(resolutions);
-		tileConfig.setMaxBounds(layerInfo.getMaxExtent());
-		tileConfig.setTileOrigin(BboxService.getOrigin(layerInfo.getMaxExtent()));
+		if (layerInfo.getMaxExtent() != null) {
+			tileConfig.setTileOrigin(BboxService.getOrigin(layerInfo.getMaxExtent()));
+		} else {
+			tileConfig.setTileOrigin(new Coordinate());
+		}
 		return tileConfig;
 	}
 

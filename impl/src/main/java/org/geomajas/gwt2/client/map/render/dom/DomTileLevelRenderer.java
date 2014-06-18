@@ -11,30 +11,30 @@
 
 package org.geomajas.gwt2.client.map.render.dom;
 
-import com.google.gwt.core.client.Callback;
-import com.google.web.bindery.event.shared.HandlerRegistration;
-
-import org.geomajas.geometry.Bbox;
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.geometry.service.BboxService;
-import org.geomajas.gwt2.client.GeomajasImpl;
-import org.geomajas.gwt2.client.map.View;
-import org.geomajas.gwt2.client.map.ViewPort;
-import org.geomajas.gwt2.client.map.layer.tile.TileBasedLayer;
-import org.geomajas.gwt2.client.map.render.Tile;
-import org.geomajas.gwt2.client.map.render.TileCode;
-import org.geomajas.gwt2.client.map.render.TileLevelRenderedEvent;
-import org.geomajas.gwt2.client.map.render.TileLevelRenderedHandler;
-import org.geomajas.gwt2.client.map.render.TileLevelRenderer;
-import org.geomajas.gwt2.client.map.render.TileRenderer;
-import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
-import org.geomajas.gwt2.client.map.render.dom.container.HtmlImageImpl;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+
+import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.geometry.service.BboxService;
+import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.event.TileLevelRenderedEvent;
+import org.geomajas.gwt2.client.event.TileLevelRenderedHandler;
+import org.geomajas.gwt2.client.map.View;
+import org.geomajas.gwt2.client.map.ViewPort;
+import org.geomajas.gwt2.client.map.layer.tile.TileBasedLayer;
+import org.geomajas.gwt2.client.map.render.Tile;
+import org.geomajas.gwt2.client.map.render.TileCode;
+import org.geomajas.gwt2.client.map.render.TileLevelRenderer;
+import org.geomajas.gwt2.client.map.render.TileRenderer;
+import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
+import org.geomajas.gwt2.client.map.render.dom.container.HtmlImageImpl;
+
+import com.google.gwt.core.client.Callback;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 
 /**
  * Definition for a renderer for WMS layers.
@@ -155,7 +155,7 @@ public class DomTileLevelRenderer implements TileLevelRenderer {
 	private List<TileCode> getTileCodesForView(View view) {
 		Bbox bounds = asBounds(view);
 		// clip to maximum bounds
-		bounds = BboxService.intersection(bounds, layer.getTileConfiguration().getMaxBounds());
+		bounds = BboxService.intersection(bounds, layer.getMaxBounds());
 		List<TileCode> codes = new ArrayList<TileCode>();
 		if (bounds.getHeight() == 0 || bounds.getWidth() == 0) {
 			return codes;

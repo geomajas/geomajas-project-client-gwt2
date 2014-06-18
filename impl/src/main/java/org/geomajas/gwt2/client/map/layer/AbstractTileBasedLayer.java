@@ -16,14 +16,11 @@ import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.layer.tile.TileBasedLayer;
 import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
 import org.geomajas.gwt2.client.map.render.LayerRenderer;
-import org.geomajas.gwt2.client.map.render.TileLevelLayerRenderer;
 import org.geomajas.gwt2.client.map.render.TileLevelRenderer;
 import org.geomajas.gwt2.client.map.render.TileRenderer;
 import org.geomajas.gwt2.client.map.render.dom.DomTileLevelLayerRenderer;
 import org.geomajas.gwt2.client.map.render.dom.DomTileLevelRenderer;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
-
-import com.google.gwt.canvas.client.Canvas;
 
 /**
  * This is an abstract class representing a basic layer that depends on tile for it's rendering. Examples are TMS layers
@@ -37,7 +34,7 @@ public abstract class AbstractTileBasedLayer extends AbstractLayer implements Ti
 
 	protected final TileConfiguration tileConfiguration;
 
-	protected TileLevelLayerRenderer renderer;
+	protected LayerRenderer renderer;
 
 	private MapConfiguration mapConfiguration;
 

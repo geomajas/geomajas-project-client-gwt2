@@ -195,7 +195,7 @@ public final class GeomajasServerExtension {
 			}
 		});
 	}
-
+	
 	/**
 	 * Create a new layer, based upon a server-side layer configuration object.
 	 * 
@@ -204,8 +204,21 @@ public final class GeomajasServerExtension {
 	 * @param eventBus The map eventBus.
 	 * @return The new layer object. It has NOT been added to the map just yet.
 	 */
-	public ServerLayer<?> createLayer(MapConfiguration mapConfiguration, ClientLayerInfo layerInfo, ViewPort viewPort,
-			MapEventBus eventBus) {
+	public ServerLayer<?> createLayer(ClientLayerInfo layerInfo, ViewPort viewPort, MapEventBus eventBus) {
+		throw new UnsupportedOperationException("Creating layers is deprecated, this method should not have been API.");
+	}
+
+	/**
+	 * Create a new layer, based upon a server-side layer configuration object.
+	 * 
+	 * @param mapConfiguration The map configuration.
+	 * @param layerInfo The server-side configuration object.
+	 * @param viewPort The map viewport.
+	 * @param eventBus The map eventBus.
+	 * @return The new layer object. It has NOT been added to the map just yet.
+	 */
+	protected ServerLayer<?> createLayer(MapConfiguration mapConfiguration, ClientLayerInfo layerInfo,
+			ViewPort viewPort, MapEventBus eventBus) {
 		ServerLayer<?> layer = null;
 		switch (layerInfo.getLayerType()) {
 			case RASTER:

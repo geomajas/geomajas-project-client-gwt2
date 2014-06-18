@@ -79,7 +79,6 @@ public class RasterServerLayerImpl extends AbstractServerLayer<ClientRasterLayer
 		TileConfiguration tileConfig = new TileConfiguration();
 		tileConfig.setTileWidth(serverLayerInfo.getTileWidth());
 		tileConfig.setTileHeight(serverLayerInfo.getTileHeight());
-		tileConfig.setMaxBounds(layerInfo.getMaxExtent());
 		if (serverLayerInfo.getResolutions().size() > 0) {
 			// use resolutions of server for raster layer (as yet not reprojectable)
 			tileConfig.setResolutions(serverLayerInfo.getResolutions());

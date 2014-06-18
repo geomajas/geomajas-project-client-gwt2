@@ -52,6 +52,7 @@ public abstract class AbstractServerLayer<T extends ClientLayerInfo> extends Abs
 		this.layerInfo = layerInfo;
 		this.markedAsVisible = layerInfo.isVisible();
 		this.title = layerInfo.getLabel();
+		setMaxBounds(layerInfo.getMaxExtent());
 		setViewPort(viewPort);
 		setEventBus(eventBus);
 		eventBus.addViewPortChangedHandler(new LayerScaleVisibilityHandler());

@@ -17,26 +17,16 @@ import java.util.List;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.client.map.MapConfiguration;
 import org.geomajas.gwt2.client.map.MapEventBus;
-import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.ViewPort;
-import org.geomajas.gwt2.client.map.layer.AbstractLayer;
 import org.geomajas.gwt2.client.map.layer.AbstractTileBasedLayer;
 import org.geomajas.gwt2.client.map.layer.LegendConfig;
 import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
-import org.geomajas.gwt2.client.map.render.LayerRenderer;
 import org.geomajas.gwt2.client.map.render.Tile;
 import org.geomajas.gwt2.client.map.render.TileCode;
-import org.geomajas.gwt2.client.map.render.TileLevelLayerRenderer;
-import org.geomajas.gwt2.client.map.render.TileLevelRenderer;
 import org.geomajas.gwt2.client.map.render.TileRenderer;
-import org.geomajas.gwt2.client.map.render.dom.DomTileLevelLayerRenderer;
-import org.geomajas.gwt2.client.map.render.dom.DomTileLevelRenderer;
-import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
 import org.geomajas.gwt2.client.service.TileService;
 import org.geomajas.plugin.wms.client.WmsClient;
 import org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo;
-
-import com.google.gwt.canvas.client.Canvas;
 
 /**
  * Default implementation of a {@link WmsLayer}.
@@ -54,8 +44,6 @@ public class WmsLayerImpl extends AbstractTileBasedLayer implements WmsLayer {
 
 	protected TileRenderer tileRenderer;
 
-	protected TileLevelLayerRenderer renderer;
-
 	private double opacity = 1.0;
 
 	public WmsLayerImpl(String title, MapConfiguration mapConfig, WmsLayerConfiguration wmsConfig,
@@ -66,6 +54,13 @@ public class WmsLayerImpl extends AbstractTileBasedLayer implements WmsLayer {
 		this.wmsConfig = wmsConfig;
 		this.tileConfig = tileConfig;
 		this.layerCapabilities = layerCapabilities;
+		if(layerCapabilities != null) {
+			Bbox maxBounds = layerCapabilities.getBoundingBox(mapConfig.getCrs());
+			// we could transform if maxBounds = null, but that probably means the WMS is not configured correctly
+			if(maxBounds != null) {
+				setMaxBounds(maxBounds);
+			}
+		}
 	}
 
 	@Override

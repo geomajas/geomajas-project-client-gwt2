@@ -139,7 +139,7 @@ public class WmsSearchByLocationPanel implements SamplePanel {
 
 		// Now create a WMS layer and add it to the map:
 		TileConfiguration tileConfig = new TileConfiguration(256, 256, new Coordinate(-180, -90),
-				mapPresenter.getViewPort(), new Bbox(-180, -90, 360, 360));
+				mapPresenter.getViewPort());
 		WmsLayerConfiguration layerConfig = new WmsLayerConfiguration();
 		layerConfig.setBaseUrl(WMS_BASE_URL);
 		layerConfig.setFormat("image/png");
@@ -149,6 +149,7 @@ public class WmsSearchByLocationPanel implements SamplePanel {
 		layerConfig.setMinimumResolution(2.1457672119140625E-5);
 
 		wmsLayer = WmsServerExtension.getInstance().createLayer("Countries", mapPresenter.getConfiguration(), tileConfig, layerConfig, null);
+		wmsLayer.setMaxBounds(new Bbox(-180, -90, 360, 360));
 		mapPresenter.getLayersModel().addLayer(wmsLayer);
 		mapPresenter.getViewPort().applyBounds(mapPresenter.getViewPort().getMaximumBounds());
 	}
