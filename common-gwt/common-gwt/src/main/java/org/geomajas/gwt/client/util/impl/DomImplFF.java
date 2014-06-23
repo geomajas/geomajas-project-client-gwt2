@@ -61,14 +61,17 @@ public class DomImplFF extends DomImpl {
 	 */
 	public void setTransform(Element element, String transform) {
 		DOM.setStyleAttribute(element, "MozTransform", transform);
-	}	
+		// added for IE11
+		DOM.setStyleAttribute(element, "transform", transform);
+	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public void setTransformOrigin(Element element, String origin) {
 		DOM.setStyleAttribute(element, "MozTransformOrigin", origin);
+		// added for IE11
+		DOM.setStyleAttribute(element, "transformOrigin", origin);
 	}
-
 
 }

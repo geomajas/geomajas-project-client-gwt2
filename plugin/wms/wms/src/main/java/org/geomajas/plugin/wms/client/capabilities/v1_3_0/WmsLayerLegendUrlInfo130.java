@@ -18,7 +18,7 @@ import com.google.gwt.xml.client.Node;
 
 /**
  * Default {@link org.geomajas.plugin.wms.client.capabilities.WmsLayerLegendUrlInfo} implementation for WMS 1.3.0.
- * 
+ *
  * @author Pieter De Graef
  */
 public class WmsLayerLegendUrlInfo130 extends WmsLayerLegendUrlInfo111 {

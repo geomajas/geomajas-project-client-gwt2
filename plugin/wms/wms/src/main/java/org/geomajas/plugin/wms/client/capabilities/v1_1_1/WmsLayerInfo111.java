@@ -16,7 +16,7 @@ import com.google.gwt.xml.client.NamedNodeMap;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.plugin.wms.client.capabilities.AbstractXmlNodeWrapper;
+import org.geomajas.gwt2.client.service.AbstractXmlNodeWrapper;
 import org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo;
 import org.geomajas.plugin.wms.client.capabilities.WmsLayerMetadataUrlInfo;
 import org.geomajas.plugin.wms.client.capabilities.WmsLayerStyleInfo;
@@ -242,6 +242,7 @@ public class WmsLayerInfo111 extends AbstractXmlNodeWrapper implements WmsLayerI
 	}
 
 	private void addLatLonBoundingBox(Node bboxNode) {
+		// TODO use super.getBoundingBox();
 		NamedNodeMap attributes = bboxNode.getAttributes();
 
 		Node minx = attributes.getNamedItem("minx");

@@ -9,10 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.client.map.render;
-
-import java.util.HashMap;
-import java.util.Map;
+package org.geomajas.gwt2.client.map.render.dom;
 
 import org.geomajas.gwt2.client.event.LayerAddedEvent;
 import org.geomajas.gwt2.client.event.LayerOrderChangedEvent;
@@ -28,18 +25,25 @@ import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.client.map.layer.LayersModel;
+import org.geomajas.gwt2.client.map.render.LayerRenderer;
+import org.geomajas.gwt2.client.map.render.LayersModelRenderer;
+import org.geomajas.gwt2.client.map.render.RenderingInfo;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlGroup;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlObject;
 import org.geomajas.gwt2.client.service.DomService;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * Default implementation of the {@link LayersModelRenderer}. Delegates the rendering to specific {@link LayerRenderer}
- * s. Also checks the {@link MapConfiguration} to see if layer should be animated or not before delegating.
- * 
+ * Default implementation of the {@link org.geomajas.gwt2.client.map.render.LayersModelRenderer}. Delegates the
+ * rendering to specific {@link org.geomajas.gwt2.client.map.render.LayerRenderer}s. Also checks the {@link
+ * org.geomajas.gwt2.client.map.MapConfiguration} to see if layer should be animated or not before delegating.
+ *
  * @author Pieter De Graef
  */
-public class LayersModelRendererImpl implements LayersModelRenderer {
+public class DomLayersModelRenderer implements LayersModelRenderer {
 
 	private final LayersModel layersModel;
 
@@ -61,12 +65,19 @@ public class LayersModelRendererImpl implements LayersModelRenderer {
 	// Constructor:
 	// ------------------------------------------------------------------------
 
-	public LayersModelRendererImpl(LayersModel layersModel, ViewPort viewPort, MapEventBus eventBus) {
+	public DomLayersModelRenderer(LayersModel layersModel, ViewPort viewPort, MapEventBus eventBus) {
 		this.layersModel = layersModel;
 		this.viewPort = viewPort;
 		this.layerRenderers = new HashMap<Layer, LayerRenderer>();
 		this.layerContainers = new HashMap<Layer, HtmlContainer>();
 		this.layerAnimation = new HashMap<Layer, Boolean>();
+		// register all layers
+		for (int i = 0; i < layersModel.getLayerCount(); i++) {
+			LayerRenderer layerRenderer = layersModel.getLayer(i).getRenderer();
+			if (layerRenderer != null) {
+				registerLayerRenderer(layersModel.getLayer(i), layerRenderer);
+			}
+		}
 
 		// Keep the list of LayerRenderers synchronized with the list of layers:
 		eventBus.addMapCompositionHandler(new MapCompositionHandler() {
@@ -84,7 +95,7 @@ public class LayersModelRendererImpl implements LayersModelRenderer {
 				if (layerRenderer != null) {
 					registerLayerRenderer(event.getLayer(), layerRenderer);
 					layerRenderer.render(new RenderingInfo(getOrCreateLayerContainer(event.getLayer()),
-							LayersModelRendererImpl.this.viewPort.getView(), null));
+							DomLayersModelRenderer.this.viewPort.getView(), null));
 				}
 			}
 		});
@@ -140,10 +151,10 @@ public class LayersModelRendererImpl implements LayersModelRenderer {
 						HtmlContainer layerContainer = getOrCreateLayerContainer(layer);
 						LayerRenderer layerRenderer = layerRenderers.get(layer);
 						layerRenderer.render(new RenderingInfo(layerContainer, event.getView(), null));
-						if (LayersModelRendererImpl.this.configuration != null) {
+						if (DomLayersModelRenderer.this.configuration != null) {
 							DomService.applyTransition(layerContainer.asWidget().getElement(),
 									new String[] { "opacity" },
-									new Integer[] { LayersModelRendererImpl.this.configuration
+									new Integer[] { DomLayersModelRenderer.this.configuration
 											.getHintValue(MapConfiguration.FADE_IN_TIME) });
 						}
 						layerContainer.asWidget().getElement().getStyle().setOpacity(1.0f);

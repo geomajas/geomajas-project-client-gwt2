@@ -12,6 +12,7 @@
 package org.geomajas.gwt2.client.map.layer;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.client.map.render.LayerRenderer;
 
 /**
@@ -109,4 +110,23 @@ public interface Layer {
 	 * @return The current opacity value for this layer.
 	 */
 	double getOpacity();
+	
+	/**
+	 * Return the maximum bounds. The bounds is defined in the map CRS.
+	 * 
+	 * @return the maximum bounds
+	 * @since 2.1.0
+	 */
+	Bbox getMaxBounds();
+
+	/**
+	 * Set the maximum bounds. The bounds is defined in the map CRS. For tile-based layers, only tiles within the
+	 * maximum bounds will be fetched. To avoid rounding errors, the center of the tile may be used for checking the
+	 * condition.
+	 * 
+	 * @param maxBounds The maximum bounds
+	 * @since 2.1.0
+	 */
+	void setMaxBounds(Bbox maxBounds);
+
 }

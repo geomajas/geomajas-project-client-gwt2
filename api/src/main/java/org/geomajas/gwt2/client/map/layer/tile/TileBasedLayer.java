@@ -9,40 +9,24 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.client.map.render;
+package org.geomajas.gwt2.client.map.layer.tile;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.client.map.layer.Layer;
 
 /**
- * Definition of a renderer responsible for rendering a single layer.
- * 
+ * Base definition for a layer that uses tiles for it's rendering.
+ *
  * @author Pieter De Graef
- * @since 2.0.0
+ * @since 2.1.0
  */
 @Api(allMethods = true)
-public interface LayerRenderer extends BasicRenderer {
+public interface TileBasedLayer extends Layer {
 
 	/**
-	 * Get the layer this renderer is supposed to render.
-	 * 
-	 * @return The layer.
+	 * Get the tile configuration object associated with this layer.
+	 *
+	 * @return The tile configuration object.
 	 */
-	Layer getLayer();
-
-	/**
-	 * Set the opacity of this renderer.
-	 * 
-	 * @param opacity (1 = opaque, 0 = transparent)
-	 * @since 2.1.0
-	 */
-	void setOpacity(double opacity);
-
-	/**
-	 * Get the opacity of this renderer.
-	 * 
-	 * @param opacity the opacity
-	 * @since 2.1.0
-	 */
-	double getOpacity();
+	TileConfiguration getTileConfiguration();
 }

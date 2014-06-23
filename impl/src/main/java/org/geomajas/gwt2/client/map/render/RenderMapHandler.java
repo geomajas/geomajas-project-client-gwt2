@@ -15,22 +15,22 @@ import com.google.gwt.event.shared.EventHandler;
 import com.google.web.bindery.event.shared.Event.Type;
 
 /**
- * Interface for event handlers that catch tile level rendered events.
+ * Interface for event handlers that catch {@link RenderMapEvent}s.
  * 
- * @author Pieter De Graef
+ * @author Jan De Moerloose
  */
-public interface TileLevelRenderedHandler extends EventHandler {
+public interface RenderMapHandler extends EventHandler {
 
 	/**
 	 * The type of the handler.
 	 */
-	Type<TileLevelRenderedHandler> TYPE = new Type<TileLevelRenderedHandler>();
+	Type<RenderMapHandler> TYPE = new Type<RenderMapHandler>();
 
 	/**
-	 * Catches events that signal a tile level for a certain layer has been rendered.
+	 * Called when map has to be rendered.
 	 * 
-	 * @param event
-	 *            The actual {@link TileLevelRenderedEvent}.
+	 * @param event {@link RenderMapEvent}
 	 */
-	void onTileLevelRendered(TileLevelRenderedEvent event);
+	void onRender(RenderMapEvent event);
+
 }

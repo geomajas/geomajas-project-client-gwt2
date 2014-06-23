@@ -11,14 +11,13 @@
 
 package org.geomajas.plugin.wms.client.capabilities.v1_3_0;
 
+import com.google.gwt.xml.client.Node;
 import org.geomajas.plugin.wms.client.capabilities.WmsLayerLegendUrlInfo;
 import org.geomajas.plugin.wms.client.capabilities.v1_1_1.WmsLayerStyleInfo111;
 
-import com.google.gwt.xml.client.Node;
-
 /**
  * Default {@link org.geomajas.plugin.wms.client.capabilities.WmsLayerStyleInfo} implementation for WMS 1.3.0.
- * 
+ *
  * @author Pieter De Graef
  */
 public class WmsLayerStyleInfo130 extends WmsLayerStyleInfo111 {
