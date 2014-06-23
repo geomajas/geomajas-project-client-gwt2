@@ -11,25 +11,24 @@
 
 package org.geomajas.plugin.wms.client.capabilities.v1_3_0;
 
+import com.google.gwt.xml.client.Element;
+import com.google.gwt.xml.client.NamedNodeMap;
+import com.google.gwt.xml.client.Node;
+import com.google.gwt.xml.client.NodeList;
+import org.geomajas.geometry.Bbox;
+import org.geomajas.gwt2.client.service.AbstractXmlNodeWrapper;
+import org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo;
+import org.geomajas.plugin.wms.client.capabilities.WmsLayerMetadataUrlInfo;
+import org.geomajas.plugin.wms.client.capabilities.WmsLayerStyleInfo;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.geomajas.geometry.Bbox;
-import org.geomajas.plugin.wms.client.capabilities.AbstractXmlNodeWrapper;
-import org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo;
-import org.geomajas.plugin.wms.client.capabilities.WmsLayerMetadataUrlInfo;
-import org.geomajas.plugin.wms.client.capabilities.WmsLayerStyleInfo;
-
-import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.NamedNodeMap;
-import com.google.gwt.xml.client.Node;
-import com.google.gwt.xml.client.NodeList;
-
 /**
  * Default {@link WmsLayerInfo} implementation for WMS 1.3.0.
- * 
+ *
  * @author Pieter De Graef
  * @author An Buyle
  */
@@ -107,7 +106,7 @@ public class WmsLayerInfo130 extends AbstractXmlNodeWrapper implements WmsLayerI
 		return queryable;
 	}
 
-	
+
 	@Override
 	public Bbox getBoundingBox(String boundingBoxCrs) {
 		if (name == null) {
@@ -121,7 +120,7 @@ public class WmsLayerInfo130 extends AbstractXmlNodeWrapper implements WmsLayerI
 		if (name == null) {
 			parse(getNode());
 		}
-		if (null != this.crs &&  !this.crs.isEmpty() && null != boundingBoxes.get(this.crs.get(0))) {
+		if (null != this.crs && !this.crs.isEmpty() && null != boundingBoxes.get(this.crs.get(0))) {
 			return this.crs.get(0);
 		}
 		return null;
@@ -132,7 +131,7 @@ public class WmsLayerInfo130 extends AbstractXmlNodeWrapper implements WmsLayerI
 		if (name == null) {
 			parse(getNode());
 		}
-		if (null != this.crs &&  !this.crs.isEmpty() && null != boundingBoxes.get(this.crs.get(0))) {
+		if (null != this.crs && !this.crs.isEmpty() && null != boundingBoxes.get(this.crs.get(0))) {
 			return boundingBoxes.get(this.crs.get(0));
 		}
 		return null;
@@ -158,14 +157,14 @@ public class WmsLayerInfo130 extends AbstractXmlNodeWrapper implements WmsLayerI
 		}
 		return styleInfo;
 	}
-	
+
 	public int getMinScaleDenominator() {
 		if (name == null) {
 			parse(getNode());
 		}
 		return minScaleDenominator;
 	}
-	
+
 	public int getMaxScaleDenominator() {
 		if (name == null) {
 			parse(getNode());
@@ -246,7 +245,7 @@ public class WmsLayerInfo130 extends AbstractXmlNodeWrapper implements WmsLayerI
 		Bbox boundingBox = new Bbox(x, y, width, height);
 		this.boundingBoxes.put(boundingBoxCrs, boundingBox);
 	}
-	
+
 	private void addLatLonBoundingBox(Node bboxNode) {
 		NodeList childNodes = bboxNode.getChildNodes();
 		double x = 0, y = 0, maxx = 0, maxy = 0;

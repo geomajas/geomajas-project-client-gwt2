@@ -61,7 +61,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<!-- Scale configuration -->
 		<property name="scaleConfiguration">
 			<bean class="org.geomajas.configuration.client.ScaleConfigurationInfo">
-				<property name="maximumScale" value="1:100000" />
+				<property name="maximumScale" value="25" />
 			</bean>
 		</property>
 

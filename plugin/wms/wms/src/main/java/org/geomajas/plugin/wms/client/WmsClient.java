@@ -14,11 +14,13 @@ package org.geomajas.plugin.wms.client;
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt2.client.map.MapConfiguration;
+import org.geomajas.gwt2.client.map.ViewPort;
+import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
 import org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo;
 import org.geomajas.plugin.wms.client.layer.WmsLayer;
 import org.geomajas.plugin.wms.client.layer.WmsLayerConfiguration;
 import org.geomajas.plugin.wms.client.layer.WmsLayerImpl;
-import org.geomajas.plugin.wms.client.layer.WmsTileConfiguration;
 import org.geomajas.plugin.wms.client.service.WmsService;
 import org.geomajas.plugin.wms.client.service.WmsService.WmsVersion;
 import org.geomajas.plugin.wms.client.service.WmsServiceImpl;
@@ -27,7 +29,7 @@ import org.geomajas.plugin.wms.client.service.WmsServiceImpl;
  * Starting point for the WMS client plugin.
  *
  * @author Pieter De Graef
- * @since 2.0.0
+ * @since 2.1.0
  */
 @Api(allMethods = true)
 public final class WmsClient {
@@ -61,20 +63,21 @@ public final class WmsClient {
 	 * have just acquired.</p> <p>This layer does not support a GetFeatureInfo call! If you need that, you'll have to
 	 * use the server extension of this plug-in.</p>
 	 *
+	 * @param mapConfig  The map configuration
 	 * @param baseUrl    The WMS base URL. This is the same URL you fed the GetCapabilities call. See {@link
 	 *                   WmsService#getCapabilities(String, WmsVersion, com.google.gwt.core.client.Callback)}.
 	 * @param version    The WMS version.
 	 * @param layerInfo  The layer info object. Acquired from a WMS GetCapabilities.
-	 * @param crs        The coordinate reference system to describe the configuration in.
+	 * @param viewPort   The ViewPort to get the CRS and fixed resolutions from.
 	 * @param tileWidth  The tile width in pixels.
 	 * @param tileHeight The tile height in pixels.
 	 * @return A new WMS layer.
 	 */
-	public WmsLayer createLayer(String baseUrl, WmsVersion version, WmsLayerInfo layerInfo,
-			String crs, int tileWidth, int tileHeight) {
-		WmsTileConfiguration tileConf = createTileConfig(layerInfo, crs, tileWidth, tileHeight);
+	public WmsLayer createLayer(MapConfiguration mapConfig, String baseUrl, WmsVersion version, WmsLayerInfo layerInfo,
+			ViewPort viewPort, int tileWidth, int tileHeight) {
+		TileConfiguration tileConf = createTileConfig(layerInfo, viewPort, tileWidth, tileHeight);
 		WmsLayerConfiguration layerConf = createLayerConfig(layerInfo, baseUrl, version);
-		return createLayer(layerInfo.getTitle(), tileConf, layerConf, layerInfo);
+		return createLayer(layerInfo.getTitle(), mapConfig, tileConf, layerConf, layerInfo);
 	}
 
 	/**
@@ -82,34 +85,35 @@ public final class WmsClient {
 	 * the server extension of this plug-in.
 	 *
 	 * @param title       The layer title.
+	 * @param mapConfig  The map configuration
 	 * @param tileConfig  The tile configuration object.
 	 * @param layerConfig The layer configuration object.
 	 * @param layerInfo   The layer info object. Acquired from a WMS GetCapabilities. This object is optional.
 	 * @return A new WMS layer.
 	 */
-	public WmsLayer createLayer(String title, WmsTileConfiguration tileConfig, WmsLayerConfiguration layerConfig,
-			WmsLayerInfo layerInfo) {
-		return new WmsLayerImpl(title, layerConfig, tileConfig, layerInfo);
+	public WmsLayer createLayer(String title, MapConfiguration mapConfig, TileConfiguration tileConfig,
+			WmsLayerConfiguration layerConfig, WmsLayerInfo layerInfo) {
+		return new WmsLayerImpl(title, mapConfig, layerConfig, tileConfig, layerInfo);
 	}
 
 	/**
 	 * Create a new tile configuration object from a WmsLayerInfo object.
 	 *
 	 * @param layerInfo  The layer info object. Acquired from a WMS GetCapabilities.
-	 * @param crs        The coordinate reference system to describe the configuration in.
+	 * @param viewPort   The ViewPort to get the CRS and fixed resolutions from.
 	 * @param tileWidth  The tile width in pixels.
 	 * @param tileHeight The tile height in pixels.
 	 * @return Returns a tile configuration object.
 	 * @throws IllegalArgumentException Throw when the CRS is not supported for this layerInfo object.
 	 */
-	public WmsTileConfiguration createTileConfig(WmsLayerInfo layerInfo, String crs, int tileWidth, int tileHeight)
+	public TileConfiguration createTileConfig(WmsLayerInfo layerInfo, ViewPort viewPort, int tileWidth, int tileHeight)
 			throws IllegalArgumentException {
-		Bbox bbox = layerInfo.getBoundingBox(crs);
+		Bbox bbox = layerInfo.getBoundingBox(viewPort.getCrs());
 		if (bbox == null) {
-			throw new IllegalArgumentException("Layer does not support map CRS (" + crs + ").");
+			throw new IllegalArgumentException("Layer does not support map CRS (" + viewPort.getCrs() + ").");
 		}
 		Coordinate origin = new Coordinate(bbox.getX(), bbox.getY());
-		return new WmsTileConfiguration(tileWidth, tileHeight, origin);
+		return new TileConfiguration(tileWidth, tileHeight, origin, viewPort);
 	}
 
 	/**

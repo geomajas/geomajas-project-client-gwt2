@@ -11,16 +11,15 @@
 
 package org.geomajas.plugin.wms.client.capabilities.v1_1_1;
 
-import org.geomajas.plugin.wms.client.capabilities.AbstractXmlNodeWrapper;
+import com.google.gwt.xml.client.Node;
+import com.google.gwt.xml.client.NodeList;
+import org.geomajas.gwt2.client.service.AbstractXmlNodeWrapper;
 import org.geomajas.plugin.wms.client.capabilities.WmsLayerLegendUrlInfo;
 import org.geomajas.plugin.wms.client.capabilities.WmsLayerStyleInfo;
 
-import com.google.gwt.xml.client.Node;
-import com.google.gwt.xml.client.NodeList;
-
 /**
  * Implementation of the {@link WmsLayerStyleInfo} for WMS version 1.1.1.
- * 
+ *
  * @author Pieter De Graef
  */
 public class WmsLayerStyleInfo111 extends AbstractXmlNodeWrapper implements WmsLayerStyleInfo {
@@ -87,7 +86,7 @@ public class WmsLayerStyleInfo111 extends AbstractXmlNodeWrapper implements WmsL
 			}
 		}
 	}
-	
+
 	protected WmsLayerLegendUrlInfo createLegendInfo(Node node) {
 		return new WmsLayerLegendUrlInfo111(node);
 	}
