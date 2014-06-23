@@ -34,6 +34,7 @@ import org.geomajas.geometry.Matrix;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt.client.util.Dom;
+import org.geomajas.gwt2.client.controller.BaseMapController;
 import org.geomajas.gwt2.client.controller.MapController;
 import org.geomajas.gwt2.client.controller.MapEventParserImpl;
 import org.geomajas.gwt2.client.controller.NavigationController;
@@ -197,9 +198,9 @@ public final class MapPresenterImpl implements MapPresenter {
 
 	private List<HandlerRegistration> handlers;
 
-	private MapController mapController;
+	private BaseMapController mapController;
 
-	private MapController fallbackController;
+	private BaseMapController fallbackController;
 
 	private LayersModelRenderer renderer;
 
@@ -342,7 +343,7 @@ public final class MapPresenterImpl implements MapPresenter {
 	}
 
 	@Override
-	public void setMapController(MapController mapController) {
+	public void setMapController(BaseMapController baseMapController) {
 		for (HandlerRegistration registration : handlers) {
 			registration.removeHandler();
 		}
@@ -351,35 +352,40 @@ public final class MapPresenterImpl implements MapPresenter {
 			this.mapController = null;
 		}
 		handlers = new ArrayList<HandlerRegistration>();
-		if (null == mapController) {
-			mapController = fallbackController;
+
+		if (null == baseMapController) {
+			baseMapController = fallbackController;
 		}
-		if (mapController != null) {
+
+		if (baseMapController != null && baseMapController instanceof MapController) {
+			MapController mappController = (MapController) baseMapController;
+
 			if (isTouchSupported) {
-				handlers.add(display.addTouchStartHandler(mapController));
-				handlers.add(display.addTouchMoveHandler(mapController));
-				handlers.add(display.addTouchCancelHandler(mapController));
-				handlers.add(display.addGestureStartHandler(mapController));
-				handlers.add(display.addGestureChangeHandler(mapController));
-				handlers.add(display.addGestureEndHandler(mapController));
+				handlers.add(display.addTouchStartHandler(mappController));
+				handlers.add(display.addTouchMoveHandler(mappController));
+				handlers.add(display.addTouchCancelHandler(mappController));
+				handlers.add(display.addGestureStartHandler(mappController));
+				handlers.add(display.addGestureChangeHandler(mappController));
+				handlers.add(display.addGestureEndHandler(mappController));
 
 			} else {
-				handlers.add(display.addMouseDownHandler(mapController));
-				handlers.add(display.addMouseMoveHandler(mapController));
-				handlers.add(display.addMouseOutHandler(mapController));
-				handlers.add(display.addMouseOverHandler(mapController));
-				handlers.add(display.addMouseUpHandler(mapController));
-				handlers.add(display.addMouseWheelHandler(mapController));
-				handlers.add(display.addDoubleClickHandler(mapController));
+				handlers.add(display.addMouseDownHandler(mappController));
+				handlers.add(display.addMouseMoveHandler(mappController));
+				handlers.add(display.addMouseOutHandler(mappController));
+				handlers.add(display.addMouseOverHandler(mappController));
+				handlers.add(display.addMouseUpHandler(mappController));
+				handlers.add(display.addMouseWheelHandler(mappController));
+				handlers.add(display.addDoubleClickHandler(mappController));
 			}
 
-			this.mapController = mapController;
+			this.mapController = baseMapController;
 			mapController.onActivate(this);
 		}
+
 	}
 
 	@Override
-	public MapController getMapController() {
+	public BaseMapController getMapController() {
 		return mapController;
 	}
 
