@@ -17,7 +17,7 @@ import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.client.map.render.Tile;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
-import org.geomajas.plugin.print.client.template.PrintableLayerBuilder;
+import org.geomajas.plugin.print.client.layerbuilder.PrintableLayersModelBuilder;
 import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
 import org.geomajas.plugin.wms.client.layer.WmsLayer;
 import org.geomajas.plugin.wmsclient.printing.server.dto.WmsClientLayerInfo;
@@ -30,21 +30,21 @@ import java.util.List;
  * 
  * @author Jan De Moerloose
  */
-public class WmsLayerBuilder implements PrintableLayerBuilder {
+public class WmsLayerBuilder implements PrintableLayersModelBuilder {
 
 	@Override
-	public ClientLayerInfo build(MapPresenter mapPresenter, Layer layer, Bbox worldBounds, double scale) {
+	public ClientLayerInfo build(MapPresenter mapPresenter, Layer layer, Bbox worldBounds, double resolution) {
 		WmsLayer wmsLayer = (WmsLayer) layer;
 
 		WmsClientLayerInfo info = new WmsClientLayerInfo();
 		List<RasterTile> tiles = new ArrayList<RasterTile>();
-		for (Tile tile : wmsLayer.getTiles(scale, worldBounds)) {
+		for (Tile tile : wmsLayer.getTiles(resolution, worldBounds)) {
 			tiles.add(toRasterTile(tile));
 		}
 		info.setTiles(tiles);
 		info.setTileHeight(wmsLayer.getTileConfiguration().getTileHeight());
 		info.setTileWidth(wmsLayer.getTileConfiguration().getTileWidth());
-		info.setScale(scale);
+		info.setScale(resolution);
 
 		info.setId(wmsLayer.getId());
 		RasterLayerRasterizingInfo rasterInfo = new RasterLayerRasterizingInfo();

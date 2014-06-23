@@ -20,28 +20,15 @@
 	<description>Geomajas GWT2 client: Plugin Print - Implementation</description>
 
 	<dependencies>
-        <dependency>
-            <groupId>org.geomajas.plugin</groupId>
-            <artifactId>geomajas-plugin-rasterizing</artifactId>
-        </dependency>
-
+		<!-- Geomajas dependencies -->
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-api</artifactId>
+			<artifactId>geomajas-client-gwt2-api</artifactId>
 		</dependency>
 
 		<dependency>
-	 		<groupId>org.geomajas.plugin</groupId>
-  			<artifactId>geomajas-client-gwt2-plugin-print-common</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-client-common-gwt</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-client-common-gwt-command</artifactId>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-client-gwt2-plugin-print-common</artifactId>
 		</dependency>
 
 		<dependency>
@@ -50,10 +37,10 @@
 		</dependency>
 
 		<dependency>
-		    <groupId>org.geomajas.plugin</groupId>
-		    <artifactId>geomajas-client-gwt2-plugin-corewidget</artifactId>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-rasterizing</artifactId>
 		</dependency>
-				
+
 		<!-- Google dependencies -->
 		<dependency>
 			<groupId>com.google.gwt</groupId>
@@ -70,12 +57,19 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 		</dependency>
+
+		<!-- logging -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+
+		<!-- test dependencies -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-impl</artifactId>
@@ -85,10 +79,6 @@
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-testdata</artifactId>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
 		</dependency>
 
 		<dependency>
@@ -109,6 +99,11 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt.gwtmockito</groupId>
+			<artifactId>gwtmockito</artifactId>
 			<scope>test</scope>
 		</dependency>
 
