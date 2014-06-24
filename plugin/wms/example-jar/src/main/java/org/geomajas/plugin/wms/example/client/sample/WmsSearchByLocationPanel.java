@@ -148,7 +148,8 @@ public class WmsSearchByLocationPanel implements SamplePanel {
 		layerConfig.setMaximumResolution(Double.MAX_VALUE);
 		layerConfig.setMinimumResolution(2.1457672119140625E-5);
 
-		wmsLayer = WmsServerExtension.getInstance().createLayer("Countries", mapPresenter.getConfiguration(), tileConfig, layerConfig, null);
+		wmsLayer = WmsServerExtension.getInstance().createLayer("Countries", mapPresenter.getConfiguration(),
+				tileConfig, layerConfig, null);
 		wmsLayer.setMaxBounds(new Bbox(-180, -90, 360, 360));
 		mapPresenter.getLayersModel().addLayer(wmsLayer);
 		mapPresenter.getViewPort().applyBounds(mapPresenter.getViewPort().getMaximumBounds());
