@@ -25,6 +25,7 @@ import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.client.map.render.TileCode;
+import org.geomajas.gwt2.client.service.TileService;
 import org.geomajas.plugin.wms.client.WmsServerExtension;
 import org.geomajas.plugin.wms.client.layer.FeaturesSupportedWmsLayer;
 import org.geomajas.plugin.wms.client.layer.WmsLayer;
@@ -117,7 +118,7 @@ public class WmsFeatureServiceImpl extends WmsServiceImpl implements WmsFeatureS
 
 	private String getFeatureInfoUrl(ViewPort viewPort, WmsLayer layer, Coordinate location,
 			GetFeatureInfoFormat format, double tolerance, int maxFeatures) {
-		StringBuilder url = getBaseUrlBuilder(layer.getConfig());
+		StringBuilder url = getBaseUrlBuilder(layer.getConfiguration());
 
 		// Calculate the denominator for tile height and width adaptation to reflect the specified tolerance in pixels
 		int toleranceCorrection = (int) Math.round(tolerance * 2.0);
@@ -128,10 +129,9 @@ public class WmsFeatureServiceImpl extends WmsServiceImpl implements WmsFeatureS
 			toleranceCorrection = 2; // limit because it seems sometimes not to work if > 2
 		}
 
-		TileCode tileCode = WmsTileServiceImpl.getInstance().getTileCodeForLocation(viewPort,
-				layer.getTileConfig(), location, viewPort.getResolution());
-		Bbox worldBounds = WmsTileServiceImpl.getInstance().getWorldBoundsForTile(viewPort,
-				layer.getTileConfig(), tileCode);
+		TileCode tileCode = TileService.getTileCodeForLocation(layer.getTileConfiguration(), location,
+				viewPort.getResolution());
+		Bbox worldBounds = TileService.getWorldBoundsForTile(layer.getTileConfiguration(), tileCode);
 
 		Bbox screenBounds = viewPort.getTransformationService()
 				.transform(worldBounds, RenderSpace.WORLD, RenderSpace.SCREEN);
@@ -139,13 +139,14 @@ public class WmsFeatureServiceImpl extends WmsServiceImpl implements WmsFeatureS
 				.transform(location, RenderSpace.WORLD, RenderSpace.SCREEN);
 
 		// Add the base parameters needed for getMap:
-		addBaseParameters(url, layer.getConfig(), viewPort.getCrs(), worldBounds, layer.getTileConfig().getTileWidth()
-				/ toleranceCorrection, layer.getTileConfig().getTileHeight() / toleranceCorrection);
+		addBaseParameters(url, layer.getConfiguration(), viewPort.getCrs(), worldBounds, layer.getTileConfiguration().
+				getTileWidth() / toleranceCorrection, layer.getTileConfiguration().getTileHeight() /
+				toleranceCorrection);
 
 		url.append("&QUERY_LAYERS=");
-		url.append(layer.getConfig().getLayers()); // No URL.encode here!
+		url.append(layer.getConfiguration().getLayers()); // No URL.encode here!
 		url.append("&request=GetFeatureInfo");
-		switch (layer.getConfig().getVersion()) {
+		switch (layer.getConfiguration().getVersion()) {
 			case V1_3_0:
 				url.append("&I=");
 				url.append((int) Math.round((screenLocation.getX() - screenBounds.getX())

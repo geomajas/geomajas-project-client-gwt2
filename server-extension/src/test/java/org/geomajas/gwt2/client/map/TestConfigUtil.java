@@ -13,6 +13,7 @@ package org.geomajas.gwt2.client.map;
 
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ScaleInfo;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.MapConfiguration.CrsType;
 
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class TestConfigUtil {
 			resolutions.add(1 / scale.getPixelPerUnit());
 		}
 		mapConfig.setResolutions(resolutions);
+		mapConfig.setHintValue(GeomajasServerExtension.MAPINFO, mapInfo);
 		return mapConfig;
 	}
 

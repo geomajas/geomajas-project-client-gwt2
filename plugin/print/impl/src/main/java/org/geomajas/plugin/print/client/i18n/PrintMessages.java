@@ -14,51 +14,45 @@ import com.google.gwt.i18n.client.Messages;
 
 /**
  * Message bundle for print plugin.
- * 
+ *
  * @author An Buyle
  * @author Jan De Moerloose
- * 
+ *
  */
 public interface PrintMessages extends Messages {
 
 	String printPrefsTitleLabel();
-
 	String printPrefsTitleTooltip();
-
+	String printPrefsTitlePlaceholder();
+	String defaultPrintTitle();
 	String printButtonTitle();
 
-	String printPrefsHeader();
-
 	String printPrefsChoose();
-
+	String printPrefsHeader();
 	String printPrefsPrint();
 
 	String printPrefsSize();
+	String printPrefsPageSizeLabel();
+	String printPrefsPageSizeTooltip();
 
 	String printPrefsOrientation();
-
 	String printPrefsPortrait();
-
 	String printPrefsLandscape();
 
 	String printPrefsWithArrow();
-
 	String printPrefsWithScaleBar();
 
-	String printPrefsRasterDPI();
+	String printPrefsRasterDpi();
+	String printPrefsRasterDpiTooltip();
 
 	String printPrefsStatus();
 
 	String printPrefsDownloadType();
-
+	String printPrefsPostPrintActionLabel();
 	String printPrefsSaveAsFile();
-
 	String printPrefsOpenInBrowserWindow();
 
 	String printPrefsFileName();
-
-	String printPrefsTitlePlaceholder();
-
-	String defaultPrintTitle();
-
+	String printPrefsFileNameTooltip();
+	String defaultPrintFileName();
 }

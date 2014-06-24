@@ -11,6 +11,9 @@
 
 package org.geomajas.gwt2.client;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.annotation.Api;
 import org.geomajas.command.dto.GetMapConfigurationRequest;
 import org.geomajas.command.dto.GetMapConfigurationResponse;
@@ -21,9 +24,9 @@ import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
+import org.geomajas.gwt2.client.event.MapInitializationEvent;
 import org.geomajas.gwt2.client.map.Hint;
 import org.geomajas.gwt2.client.map.MapConfiguration;
-import org.geomajas.gwt2.client.map.MapConfigurationImpl;
 import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.MapPresenterImpl;
@@ -34,18 +37,16 @@ import org.geomajas.gwt2.client.map.feature.ServerFeatureServiceImpl;
 import org.geomajas.gwt2.client.map.layer.RasterServerLayerImpl;
 import org.geomajas.gwt2.client.map.layer.ServerLayer;
 import org.geomajas.gwt2.client.map.layer.VectorServerLayerImpl;
+import org.geomajas.gwt2.client.map.render.LayersModelRenderer;
 import org.geomajas.gwt2.client.service.CommandService;
 import org.geomajas.gwt2.client.service.CommandServiceImpl;
 import org.geomajas.gwt2.client.service.EndPointService;
 import org.geomajas.gwt2.client.service.EndPointServiceImpl;
 import org.geomajas.gwt2.client.widget.DefaultMapWidget;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Singleton service that provides access to other services within this artifact.
- *
+ * 
  * @author Pieter De Graef
  * @since 2.0.0
  */
@@ -53,8 +54,8 @@ import java.util.List;
 public final class GeomajasServerExtension {
 
 	/**
-	 * {@link org.geomajas.gwt2.client.map.Hint} used to save the server-side configuration object into the {@link
-	 * MapConfiguration}.
+	 * {@link org.geomajas.gwt2.client.map.Hint} used to save the server-side configuration object into the
+	 * {@link MapConfiguration}.
 	 */
 	public static final Hint<ClientMapInfo> MAPINFO = new Hint<ClientMapInfo>("mapInfo");
 
@@ -81,7 +82,7 @@ public final class GeomajasServerExtension {
 
 	/**
 	 * Get the GeomajasServerExtension instance.
-	 *
+	 * 
 	 * @return The GeomajasServerExtension instance.
 	 */
 	public static GeomajasServerExtension getInstance() {
@@ -93,9 +94,9 @@ public final class GeomajasServerExtension {
 
 	/**
 	 * Override the GeomajasServerExtension instance.
-	 *
+	 * 
 	 * @param instance The new GeomajasServerExtension instance. You could override this class. On the other hand, to
-	 *                 reset to the default implementation (i.e. this class), you can provide null.
+	 *        reset to the default implementation (i.e. this class), you can provide null.
 	 */
 	public static void setInstance(GeomajasServerExtension instance) {
 		GeomajasServerExtension.instance = instance;
@@ -108,7 +109,7 @@ public final class GeomajasServerExtension {
 	/**
 	 * Get the {@link CommandService} singleton. This service allows for executing commands on the back-end. It is the
 	 * base for all Geomajas client-server communication.
-	 *
+	 * 
 	 * @return The {@link EndPointService} singleton.
 	 */
 	public CommandService getCommandService() {
@@ -118,7 +119,7 @@ public final class GeomajasServerExtension {
 	/**
 	 * Get the {@link EndPointService} singleton. Has pointers to the Geomajas services on the back-end, and allows
 	 * those end-points to be altered in case your server is somewhere else (for example behind a proxy).
-	 *
+	 * 
 	 * @return The {@link EndPointService} singleton.
 	 */
 	public EndPointService getEndPointService() {
@@ -127,7 +128,7 @@ public final class GeomajasServerExtension {
 
 	/**
 	 * Get a service for working with or searching for features in server-side layers.
-	 *
+	 * 
 	 * @return The feature service.
 	 */
 	public ServerFeatureService getServerFeatureService() {
@@ -137,24 +138,23 @@ public final class GeomajasServerExtension {
 	/**
 	 * Initialize the map by fetching a configuration on the server. This method will create a map and add the default
 	 * map widgets (zoom in/out, zoom to rectangle and scale bar).
-	 *
-	 * @param mapPresenter  The map to initialize.
+	 * 
+	 * @param mapPresenter The map to initialize.
 	 * @param applicationId The application ID in the backend configuration.
-	 * @param id            The map ID in the backend configuration.
+	 * @param id The map ID in the backend configuration.
 	 */
 	public void initializeMap(final MapPresenter mapPresenter, String applicationId, String id) {
-		initializeMap(mapPresenter, applicationId, id, new DefaultMapWidget[] {
-				DefaultMapWidget.ZOOM_CONTROL, DefaultMapWidget.ZOOM_TO_RECTANGLE_CONTROL,
-				DefaultMapWidget.SCALEBAR });
+		initializeMap(mapPresenter, applicationId, id, new DefaultMapWidget[] { DefaultMapWidget.ZOOM_CONTROL,
+				DefaultMapWidget.ZOOM_TO_RECTANGLE_CONTROL, DefaultMapWidget.SCALEBAR });
 	}
 
 	/**
 	 * Initialize the map by fetching a configuration on the server.
-	 *
-	 * @param mapPresenter  The map to initialize.
+	 * 
+	 * @param mapPresenter The map to initialize.
 	 * @param applicationId The application ID in the backend configuration.
-	 * @param id            The map ID in the backend configuration.
-	 * @param mapWidgets    A set of widgets that should be added to the map by default.
+	 * @param id The map ID in the backend configuration.
+	 * @param mapWidgets A set of widgets that should be added to the map by default.
 	 */
 	public void initializeMap(final MapPresenter mapPresenter, String applicationId, String id,
 			final DefaultMapWidget... mapWidgets) {
@@ -166,41 +166,68 @@ public final class GeomajasServerExtension {
 				// Initialize the MapModel and ViewPort:
 				ClientMapInfo mapInfo = response.getMapInfo();
 
-				// Now add all layers:
-				for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
-					mapPresenter.getLayersModel().addLayer(
-							createLayer(layerInfo, mapPresenter.getViewPort(), mapPresenter.getEventBus()));
-				}
+				// Create the map configuration
+				MapConfiguration configuration = createMapConfiguration(mapInfo, mapPresenter);
 
-				// Initialize the map:
-				MapConfiguration configuration = createMapConfiguration(mapInfo);
-				((MapPresenterImpl) mapPresenter).initialize(configuration, mapWidgets);
+				// We must initialize the map first (without firing the event), as layer constructors may depend on it :
+				((MapPresenterImpl) mapPresenter).initialize(configuration, false, mapWidgets);
+
+				// Add all layers:
+				for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
+					ServerLayer<?> layer = createLayer(configuration, layerInfo, mapPresenter.getViewPort(),
+							mapPresenter.getEventBus());
+					mapPresenter.getLayersModel().addLayer(layer);
+				}
+				// All layers animated
+				LayersModelRenderer modelRenderer = mapPresenter.getLayersModelRenderer();
+				for (int i = 0; i < mapPresenter.getLayersModel().getLayerCount(); i++) {
+					modelRenderer.setAnimated(mapPresenter.getLayersModel().getLayer(i), true);
+				}
 
 				// Also add a renderer for feature selection:
 				FeatureSelectionRenderer renderer = new FeatureSelectionRenderer(mapPresenter);
 				renderer.initialize(mapInfo);
 				mapPresenter.getEventBus().addFeatureSelectionHandler(renderer);
 				mapPresenter.getEventBus().addLayerVisibilityHandler(renderer);
+				
+				// now we can fire the initialization event
+				mapPresenter.getEventBus().fireEvent(new MapInitializationEvent(mapPresenter));
 			}
 		});
+	}
+	
+	/**
+	 * Create a new layer, based upon a server-side layer configuration object.
+	 * 
+	 * @param layerInfo The server-side configuration object.
+	 * @param viewPort The map viewport.
+	 * @param eventBus The map eventBus.
+	 * @return The new layer object. It has NOT been added to the map just yet.
+	 */
+	public ServerLayer<?> createLayer(ClientLayerInfo layerInfo, ViewPort viewPort, MapEventBus eventBus) {
+		throw new UnsupportedOperationException("Creating layers is deprecated, this method should not have been API.");
 	}
 
 	/**
 	 * Create a new layer, based upon a server-side layer configuration object.
-	 *
+	 * 
+	 * @param mapConfiguration The map configuration.
 	 * @param layerInfo The server-side configuration object.
-	 * @param viewPort  The map viewport.
-	 * @param eventBus  The map eventBus.
+	 * @param viewPort The map viewport.
+	 * @param eventBus The map eventBus.
 	 * @return The new layer object. It has NOT been added to the map just yet.
 	 */
-	public ServerLayer<?> createLayer(ClientLayerInfo layerInfo, ViewPort viewPort, MapEventBus eventBus) {
+	protected ServerLayer<?> createLayer(MapConfiguration mapConfiguration, ClientLayerInfo layerInfo,
+			ViewPort viewPort, MapEventBus eventBus) {
 		ServerLayer<?> layer = null;
 		switch (layerInfo.getLayerType()) {
 			case RASTER:
-				layer = new RasterServerLayerImpl((ClientRasterLayerInfo) layerInfo, viewPort, eventBus);
+				layer = new RasterServerLayerImpl(mapConfiguration, (ClientRasterLayerInfo) layerInfo, viewPort,
+						eventBus);
 				break;
 			default:
-				layer = new VectorServerLayerImpl((ClientVectorLayerInfo) layerInfo, viewPort, eventBus);
+				layer = new VectorServerLayerImpl(mapConfiguration, (ClientVectorLayerInfo) layerInfo, viewPort,
+						eventBus);
 				break;
 		}
 		return layer;
@@ -210,8 +237,8 @@ public final class GeomajasServerExtension {
 	// Private methods:
 	// ------------------------------------------------------------------------
 
-	private MapConfiguration createMapConfiguration(ClientMapInfo mapInfo) {
-		MapConfiguration configuration = new MapConfigurationImpl();
+	private MapConfiguration createMapConfiguration(ClientMapInfo mapInfo, MapPresenter mapPresenter) {
+		MapConfiguration configuration = mapPresenter.getConfiguration();
 		configuration.setCrs(mapInfo.getCrs(), mapInfo.getUnitLength());
 		configuration.setHintValue(MapConfiguration.INITIAL_BOUNDS, mapInfo.getInitialBounds());
 		configuration.setMaxBounds(mapInfo.getMaxBounds());
@@ -220,7 +247,9 @@ public final class GeomajasServerExtension {
 		for (ScaleInfo scale : mapInfo.getScaleConfiguration().getZoomLevels()) {
 			resolutions.add(1 / scale.getPixelPerUnit());
 		}
-		configuration.setResolutions(resolutions);
+		if (resolutions.size() != 0) {
+			configuration.setResolutions(resolutions);
+		}
 		configuration.setHintValue(MAPINFO, mapInfo);
 		return configuration;
 	}

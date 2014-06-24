@@ -30,6 +30,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.RequiresResize;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.EventBus;
+
 import org.geomajas.geometry.Matrix;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt.client.map.RenderSpace;
@@ -51,8 +52,8 @@ import org.geomajas.gwt2.client.gfx.VectorContainer;
 import org.geomajas.gwt2.client.map.layer.LayersModel;
 import org.geomajas.gwt2.client.map.layer.LayersModelImpl;
 import org.geomajas.gwt2.client.map.render.LayersModelRenderer;
-import org.geomajas.gwt2.client.map.render.LayersModelRendererImpl;
 import org.geomajas.gwt2.client.map.render.RenderingInfo;
+import org.geomajas.gwt2.client.map.render.dom.DomLayersModelRenderer;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
 import org.geomajas.gwt2.client.widget.DefaultMapWidget;
 import org.geomajas.gwt2.client.widget.map.MapWidgetImpl;
@@ -217,7 +218,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		this.viewPort = new ViewPortImpl(this.eventBus);
 		this.layersModel = new LayersModelImpl(this.viewPort, this.eventBus);
 		this.mapEventParser = new MapEventParserImpl(this);
-		this.renderer = new LayersModelRendererImpl(layersModel, viewPort, this.eventBus);
+		this.renderer = new DomLayersModelRenderer(layersModel, viewPort, this.eventBus);
 		this.containerManager = new ContainerManagerImpl(display, viewPort);
 		this.isTouchSupported = Dom.isTouchSupported();
 
@@ -257,13 +258,16 @@ public final class MapPresenterImpl implements MapPresenter {
 	// ------------------------------------------------------------------------
 	// MapPresenter implementation:
 	// ------------------------------------------------------------------------
-
 	public void initialize(MapConfiguration configuration, DefaultMapWidget... mapWidgets) {
+		initialize(configuration, true, mapWidgets);
+	}
+	
+	public void initialize(MapConfiguration configuration, boolean fireEvent, DefaultMapWidget... mapWidgets) {
 		this.configuration = configuration;
 
 		// Apply this configuration on the LayersModelRenderer:
-		if (renderer instanceof LayersModelRendererImpl) {
-			((LayersModelRendererImpl) renderer).setMapConfiguration(configuration);
+		if (renderer instanceof DomLayersModelRenderer) {
+			((DomLayersModelRenderer) renderer).setMapConfiguration(configuration);
 		}
 
 		// Configure the ViewPort. This will immediately zoom to the initial bounds:
@@ -298,7 +302,9 @@ public final class MapPresenterImpl implements MapPresenter {
 			}
 		}
 		// Fire initialization event
-		eventBus.fireEvent(new MapInitializationEvent(this));
+		if (fireEvent) {
+			eventBus.fireEvent(new MapInitializationEvent(this));
+		}
 	}
 
 	@Override
@@ -316,6 +322,9 @@ public final class MapPresenterImpl implements MapPresenter {
 
 	@Override
 	public MapConfiguration getConfiguration() {
+		if (configuration == null) {
+			configuration = new MapConfigurationImpl();
+		}
 		return configuration;
 	}
 

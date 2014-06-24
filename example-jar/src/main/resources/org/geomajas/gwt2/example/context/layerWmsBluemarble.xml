@@ -25,7 +25,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
         <!-- When configuring your own applications, please do not use this WMS server -->
         <property name="baseWmsUrl" value="http://apps.geomajas.org/geoserver/wms"/>
         <property name="version" value="1.1.1"/>
-        <property name="format" value="image/jpeg"/>
+        <property name="format" value="image/png"/>
         <property name="styles" value=""/>
 	</bean>
 
@@ -36,7 +36,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
                 <property name="x" value="-180"/>
                 <property name="y" value="-90"/>
                 <property name="width" value="360"/>
-                <property name="height" value="180"/>
+                <property name="height" value="360"/>
 			</bean>
 		</property>
         <property name="resolutions">

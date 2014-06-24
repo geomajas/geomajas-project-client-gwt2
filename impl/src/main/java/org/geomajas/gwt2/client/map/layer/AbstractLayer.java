@@ -11,6 +11,7 @@
 
 package org.geomajas.gwt2.client.map.layer;
 
+import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.client.event.LayerDeselectedEvent;
 import org.geomajas.gwt2.client.event.LayerHideEvent;
 import org.geomajas.gwt2.client.event.LayerRefreshedEvent;
@@ -46,6 +47,8 @@ public abstract class AbstractLayer implements Layer {
 	protected String title;
 
 	private HandlerRegistration visibilityReg;
+	
+	private Bbox maxBounds = Bbox.ALL;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -115,6 +118,16 @@ public abstract class AbstractLayer implements Layer {
 	@Override
 	public boolean isShowing() {
 		return markedAsVisible;
+	}
+
+	@Override
+	public Bbox getMaxBounds() {
+		return maxBounds;
+	}
+
+	@Override
+	public void setMaxBounds(Bbox maxBounds) {
+		this.maxBounds = maxBounds;
 	}
 
 	@Override
