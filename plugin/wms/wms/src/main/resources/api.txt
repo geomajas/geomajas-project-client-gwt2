@@ -1,10 +1,10 @@
-org.geomajas.plugin.wms.client.WmsClient::2.0.0
-org.geomajas.plugin.wms.client.WmsClient:WmsLayer createLayer(String, WmsTileConfiguration, WmsLayerConfiguration, WmsLayerInfo, ):2.0.0
-org.geomajas.plugin.wms.client.WmsClient:WmsLayer createLayer(String, WmsVersion, WmsLayerInfo, String, int, int, ):2.0.0
-org.geomajas.plugin.wms.client.WmsClient:WmsLayerConfiguration createLayerConfig(WmsLayerInfo, String, WmsVersion, ):2.0.0
-org.geomajas.plugin.wms.client.WmsClient:WmsService getWmsService():2.0.0
-org.geomajas.plugin.wms.client.WmsClient:WmsTileConfiguration createTileConfig(WmsLayerInfo, String, int, int, ):2.0.0
-org.geomajas.plugin.wms.client.WmsClient:static WmsClient getInstance():2.0.0
+org.geomajas.plugin.wms.client.WmsClient::2.1.0
+org.geomajas.plugin.wms.client.WmsClient:TileConfiguration createTileConfig(WmsLayerInfo, ViewPort, int, int, ):2.1.0
+org.geomajas.plugin.wms.client.WmsClient:WmsLayer createLayer(MapConfiguration, String, WmsVersion, WmsLayerInfo, ViewPort, int, int, ):2.1.0
+org.geomajas.plugin.wms.client.WmsClient:WmsLayer createLayer(String, MapConfiguration, TileConfiguration, WmsLayerConfiguration, WmsLayerInfo, ):2.1.0
+org.geomajas.plugin.wms.client.WmsClient:WmsLayerConfiguration createLayerConfig(WmsLayerInfo, String, WmsVersion, ):2.1.0
+org.geomajas.plugin.wms.client.WmsClient:WmsService getWmsService():2.1.0
+org.geomajas.plugin.wms.client.WmsClient:static WmsClient getInstance():2.1.0
 org.geomajas.plugin.wms.client.capabilities.WmsGetCapabilitiesInfo::2.0.0
 org.geomajas.plugin.wms.client.capabilities.WmsGetCapabilitiesInfo:List<WmsLayerInfo> getLayers():2.0.0
 org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo::2.0.0
@@ -42,9 +42,8 @@ org.geomajas.plugin.wms.client.capabilities.WmsOnlineResourceInfo:String getType
 org.geomajas.plugin.wms.client.capabilities.WmsOnlineResourceInfo:String getXLink():2.0.0
 org.geomajas.plugin.wms.client.layer.WmsLayer::2.0.0
 org.geomajas.plugin.wms.client.layer.WmsLayer:List<Tile> getTiles(double, Bbox, ):2.0.0
-org.geomajas.plugin.wms.client.layer.WmsLayer:WmsLayerConfiguration getConfig():2.0.0
+org.geomajas.plugin.wms.client.layer.WmsLayer:WmsLayerConfiguration getConfiguration():2.0.0
 org.geomajas.plugin.wms.client.layer.WmsLayer:WmsLayerInfo getCapabilities():2.0.0
-org.geomajas.plugin.wms.client.layer.WmsLayer:WmsTileConfiguration getTileConfig():2.0.0
 org.geomajas.plugin.wms.client.layer.WmsLayerConfiguration::2.0.0
 org.geomajas.plugin.wms.client.layer.WmsLayerConfiguration:LegendConfig getLegendConfig():2.0.0
 org.geomajas.plugin.wms.client.layer.WmsLayerConfiguration:String getBaseUrl():2.0.0
@@ -74,15 +73,6 @@ org.geomajas.plugin.wms.client.layer.WmsLayerConfiguration:void setWmsServiceVen
 org.geomajas.plugin.wms.client.layer.WmsServiceVendor::2.0.0
 org.geomajas.plugin.wms.client.layer.WmsServiceVendor:GEOSERVER_WMS:2.0.0
 org.geomajas.plugin.wms.client.layer.WmsServiceVendor:UNSPECIFIED:2.0.0
-org.geomajas.plugin.wms.client.layer.WmsTileConfiguration::2.0.0
-org.geomajas.plugin.wms.client.layer.WmsTileConfiguration:Coordinate getTileOrigin():2.0.0
-org.geomajas.plugin.wms.client.layer.WmsTileConfiguration:WmsTileConfiguration():2.0.0
-org.geomajas.plugin.wms.client.layer.WmsTileConfiguration:WmsTileConfiguration(int, int, Coordinate, ):2.0.0
-org.geomajas.plugin.wms.client.layer.WmsTileConfiguration:int getTileHeight():2.0.0
-org.geomajas.plugin.wms.client.layer.WmsTileConfiguration:int getTileWidth():2.0.0
-org.geomajas.plugin.wms.client.layer.WmsTileConfiguration:void setTileHeight(int, ):2.0.0
-org.geomajas.plugin.wms.client.layer.WmsTileConfiguration:void setTileOrigin(Coordinate, ):2.0.0
-org.geomajas.plugin.wms.client.layer.WmsTileConfiguration:void setTileWidth(int, ):2.0.0
 org.geomajas.plugin.wms.client.service.WmsService::2.0.0
 org.geomajas.plugin.wms.client.service.WmsService:String getLegendGraphicUrl(WmsLayerConfiguration, ):2.0.0
 org.geomajas.plugin.wms.client.service.WmsService:String getLegendGraphicUrl(WmsLayerConfiguration, LegendConfig, ):2.0.0

@@ -54,10 +54,10 @@ public class WmsLayerImpl extends AbstractTileBasedLayer implements WmsLayer {
 		this.wmsConfig = wmsConfig;
 		this.tileConfig = tileConfig;
 		this.layerCapabilities = layerCapabilities;
-		if(layerCapabilities != null) {
+		if (layerCapabilities != null) {
 			Bbox maxBounds = layerCapabilities.getBoundingBox(mapConfig.getCrs());
 			// we could transform if maxBounds = null, but that probably means the WMS is not configured correctly
-			if(maxBounds != null) {
+			if (maxBounds != null) {
 				setMaxBounds(maxBounds);
 			}
 		}
