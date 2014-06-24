@@ -78,6 +78,12 @@ public interface SampleMessages extends Messages {
 
 	String generalTraceNavigationDescription();
 
+	String generalPinchPanControllerHammerTitle();
+
+	String generalPinchPanControllerHammerDescription();
+
+	String generalPinchPanControllerHammerShort();
+
 	// ------------------------------------------------------------------------
 	// Category: Layers
 	// ------------------------------------------------------------------------

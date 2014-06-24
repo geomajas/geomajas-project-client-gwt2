@@ -11,34 +11,23 @@
 
 package org.geomajas.gwt2.client.controller;
 
-import org.geomajas.annotation.Api;
-import org.geomajas.annotation.UserImplemented;
-import org.geomajas.gwt.client.controller.Controller;
 import org.geomajas.gwt2.client.map.MapPresenter;
 
 /**
+ *
  * <p>
- * General interface for an event controller that catches different types of mouse events on a map. Implementations of
- * this interface must than decide how to react on these events. Since a <code>MapController</code> receives the
- * original mouse events, it can influence their behavior. As such only one <code>MapController</code> can be active at
- * any one time on a {@link MapPresenter}.
+ * General interface for an event controller. Implementations of
+ * this interface must than decide how to interact with the map via events.
  * </p>
- * <p>
- * Note that the {@link MapPresenter} also has a {@link MapPresenter#addMapListener(MapController)} method that allows
- * setting multiple <code>MapController</code>s as passive listeners to mouse events.
- * </p>
- * 
- * @author Pieter De Graef
- * @since 2.0.0
+ *
+ * @author Dosi Bingov
  */
-@UserImplemented
-@Api(allMethods = true)
-public interface MapController extends SimpleMapController, Controller {
+public interface SimpleMapController {
 
 	/**
 	 * Function executed when the controller instance is applied on the map. If something needs initializing, do it
-	 * here.
-	 * 
+	 * here. Here is the place where all map events related to this controller should be registered.
+	 *
 	 * @param presenter
 	 *            The map presenter onto which this controller has been activated.
 	 */
@@ -46,7 +35,8 @@ public interface MapController extends SimpleMapController, Controller {
 
 	/**
 	 * Function executed when the controller instance is removed from the map. The perfect moment to clean up all the
-	 * mess this controller made.
+	 * mess this controller made, so remove all events that were registered in
+	 * {@link SimpleMapController#onActivate(MapPresenter)}.
 	 * 
 	 * @param presenter
 	 *            The map presenter onto which this controller has been deactivated.

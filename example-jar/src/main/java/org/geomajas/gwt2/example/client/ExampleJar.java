@@ -23,6 +23,7 @@ import org.geomajas.gwt2.example.client.sample.general.MapFillPanel;
 import org.geomajas.gwt2.example.client.sample.general.NavigationOptionPanel;
 import org.geomajas.gwt2.example.client.sample.general.ResizeMapPanel;
 import org.geomajas.gwt2.example.client.sample.general.ServerExceptionPanel;
+import org.geomajas.gwt2.example.client.sample.general.SimpleMapControllerPanel;
 import org.geomajas.gwt2.example.client.sample.general.ViewPortEventPanel;
 import org.geomajas.gwt2.example.client.sample.layer.LayerAddRemovePanel;
 import org.geomajas.gwt2.example.client.sample.layer.LayerOpacityPanel;
@@ -229,6 +230,35 @@ public class ExampleJar implements EntryPoint {
 			@Override
 			public String getKey() {
 				return "serverexception";
+			}
+		});
+
+		SamplePanelRegistry.registerFactory(CATEGORY_GENERAL, new ShowcaseSampleDefinition() {
+
+			public SamplePanel create() {
+				return new SimpleMapControllerPanel();
+			}
+
+			public String getTitle() {
+				return MESSAGES.generalPinchPanControllerHammerTitle();
+			}
+
+			public String getShortDescription() {
+				return MESSAGES.generalPinchPanControllerHammerShort();
+			}
+
+			public String getDescription() {
+				return MESSAGES.generalPinchPanControllerHammerDescription();
+			}
+
+
+			public String getCategory() {
+				return CATEGORY_GENERAL;
+			}
+
+			@Override
+			public String getKey() {
+				return "pinchpansimplecontroller";
 			}
 		});
 //		SamplePanelRegistry.registerFactory(CATEGORY_GENERAL, new ShowcaseSampleDefinition() {

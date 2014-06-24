@@ -37,6 +37,7 @@ import org.geomajas.gwt.client.util.Dom;
 import org.geomajas.gwt2.client.controller.MapController;
 import org.geomajas.gwt2.client.controller.MapEventParserImpl;
 import org.geomajas.gwt2.client.controller.NavigationController;
+import org.geomajas.gwt2.client.controller.SimpleMapController;
 import org.geomajas.gwt2.client.controller.TouchNavigationController;
 import org.geomajas.gwt2.client.event.LayerAddedEvent;
 import org.geomajas.gwt2.client.event.LayerRemovedEvent;
@@ -197,7 +198,7 @@ public final class MapPresenterImpl implements MapPresenter {
 
 	private List<HandlerRegistration> handlers;
 
-	private MapController mapController;
+	private SimpleMapController mapController;
 
 	private MapController fallbackController;
 
@@ -379,8 +380,33 @@ public final class MapPresenterImpl implements MapPresenter {
 	}
 
 	@Override
+	public void setMapController(SimpleMapController simpleMapController) {
+		if (null == simpleMapController) {
+			setMapController(fallbackController);
+		} else {
+			for (HandlerRegistration registration : handlers) {
+				registration.removeHandler();
+			}
+
+			handlers.clear();
+
+			if (this.mapController != null) {
+				this.mapController.onDeactivate(this);
+				this.mapController = null;
+			}
+
+			this.mapController = simpleMapController;
+			mapController.onActivate(this);
+		}
+	}
+
+	@Override
 	public MapController getMapController() {
-		return mapController;
+		if (mapController instanceof MapController) {
+			return (MapController) mapController;
+		}
+
+		throw new NullPointerException("MapController is null, probably SimpleMapController is set on the map");
 	}
 
 	@Override

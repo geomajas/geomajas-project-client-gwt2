@@ -16,6 +16,7 @@ import java.util.Collection;
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt2.client.controller.MapController;
+import org.geomajas.gwt2.client.controller.SimpleMapController;
 import org.geomajas.gwt2.client.map.layer.LayersModel;
 import org.geomajas.gwt2.client.map.render.LayersModelRenderer;
 
@@ -89,6 +90,17 @@ public interface MapPresenter extends IsWidget {
 	 *            At that time the fall-back controller is again activated.
 	 */
 	void setMapController(MapController controller);
+
+
+	/**
+	 * Apply a new {@link SimpleMapController} on the map.
+	 *
+	 * @param controller
+	 *            The new {@link SimpleMapController} object. If null is passed, the fall-back controller
+	 *            is again activated.
+	 * @since 2.1.0
+	 */
+	void setMapController(SimpleMapController controller);
 
 	/**
 	 * Return the currently active controller on the map.
