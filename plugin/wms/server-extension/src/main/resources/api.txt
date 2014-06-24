@@ -1,14 +1,14 @@
-org.geomajas.plugin.wms.client.WmsServerExtension::2.0.0
-org.geomajas.plugin.wms.client.WmsServerExtension:FeaturesSupportedWmsLayer createLayer(String, ., WmsLayerInfo, String, int, int, ):2.0.0
-org.geomajas.plugin.wms.client.WmsServerExtension:FeaturesSupportedWmsLayer createLayer(String, WmsTileConfiguration, WmsLayerConfiguration, WmsLayerInfo, ):2.0.0
-org.geomajas.plugin.wms.client.WmsServerExtension:FeaturesSupportedWmsLayer createLayer(String, WmsTileConfiguration, WmsLayerConfiguration, WmsLayerInfo, Callback<List<AttributeDescriptor>,String>, ):2.0.0
-org.geomajas.plugin.wms.client.WmsServerExtension:T getHintValue(Hint<T>, ):2.0.0
-org.geomajas.plugin.wms.client.WmsServerExtension:WmsFeatureService getFeatureService():2.0.0
-org.geomajas.plugin.wms.client.WmsServerExtension:static WmsServerExtension getInstance():2.0.0
-org.geomajas.plugin.wms.client.WmsServerExtension:static final Hint<Integer> GET_FEATUREINFO_MAX_COORDS:2.0.0
-org.geomajas.plugin.wms.client.WmsServerExtension:static final Hint<Integer> GET_FEATUREINFO_MAX_FEATURES:2.0.0
-org.geomajas.plugin.wms.client.WmsServerExtension:void setHintValue(Hint<T>, T, ):2.0.0
-org.geomajas.plugin.wms.client.WmsServerExtension:void supportsFeatures(String, String, Callback<Boolean,String>, ):2.0.0
+org.geomajas.plugin.wms.client.WmsServerExtension::2.1.0
+org.geomajas.plugin.wms.client.WmsServerExtension:FeaturesSupportedWmsLayer createLayer(MapConfiguration, String, ., WmsLayerInfo, ViewPort, int, int, ):2.1.0
+org.geomajas.plugin.wms.client.WmsServerExtension:FeaturesSupportedWmsLayer createLayer(String, MapConfiguration, TileConfiguration, WmsLayerConfiguration, WmsLayerInfo, ):2.1.0
+org.geomajas.plugin.wms.client.WmsServerExtension:FeaturesSupportedWmsLayer createLayer(String, MapConfiguration, TileConfiguration, WmsLayerConfiguration, WmsLayerInfo, Callback<List<AttributeDescriptor>,String>, ):2.1.0
+org.geomajas.plugin.wms.client.WmsServerExtension:T getHintValue(Hint<T>, ):2.1.0
+org.geomajas.plugin.wms.client.WmsServerExtension:WmsFeatureService getFeatureService():2.1.0
+org.geomajas.plugin.wms.client.WmsServerExtension:static WmsServerExtension getInstance():2.1.0
+org.geomajas.plugin.wms.client.WmsServerExtension:static final Hint<Integer> GET_FEATUREINFO_MAX_COORDS:2.1.0
+org.geomajas.plugin.wms.client.WmsServerExtension:static final Hint<Integer> GET_FEATUREINFO_MAX_FEATURES:2.1.0
+org.geomajas.plugin.wms.client.WmsServerExtension:void setHintValue(Hint<T>, T, ):2.1.0
+org.geomajas.plugin.wms.client.WmsServerExtension:void supportsFeatures(String, String, Callback<Boolean,String>, ):2.1.0
 org.geomajas.plugin.wms.client.controller.WmsGetFeatureInfoController::2.0.0
 org.geomajas.plugin.wms.client.controller.WmsGetFeatureInfoController:GetFeatureInfoFormat getFormat():2.0.0
 org.geomajas.plugin.wms.client.controller.WmsGetFeatureInfoController:WmsGetFeatureInfoController():2.0.0
