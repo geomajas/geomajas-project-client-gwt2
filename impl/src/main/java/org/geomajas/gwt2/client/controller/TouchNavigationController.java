@@ -132,7 +132,7 @@ public class TouchNavigationController extends AbstractMapController {
 	protected void zoomTo(double scale) {
 		logger.log(Level.INFO, "TouchNavigationController -> zoomTo(resolution=" + scale + " )");
 		logger.log(Level.INFO, "begin viewport resolution =" + beginResolution);
-		double zoomResolution = beginResolution * scale;
+		double zoomResolution = beginResolution / scale;
 		logger.log(Level.INFO, "zoomResolution=" + zoomResolution);
 		mapPresenter.getViewPort().registerAnimation(null); // without animation for touch devices
 		mapPresenter.getViewPort().applyResolution(zoomResolution);
