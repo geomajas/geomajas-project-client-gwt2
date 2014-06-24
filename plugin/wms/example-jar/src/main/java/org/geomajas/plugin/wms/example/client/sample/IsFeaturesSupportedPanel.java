@@ -191,25 +191,27 @@ public class IsFeaturesSupportedPanel implements SamplePanel {
 		// Then add the new WMS layer to the map:
 		if (featuresSupported) {
 			final FeaturesSupportedWmsLayer layer = WmsServerExtension.getInstance().createLayer(layerInfo.getTitle(),
-					mapPresenter.getConfiguration(), tileConfig, layerConfig, layerInfo, new Callback<List<AttributeDescriptor>, String>() {
+					mapPresenter.getConfiguration(), tileConfig, layerConfig, layerInfo,
+					new Callback<List<AttributeDescriptor>, String>() {
 
-				@Override
-				public void onFailure(String s) {
-				}
+						@Override
+						public void onFailure(String s) {
+						}
 
-				@Override
-				public void onSuccess(List<AttributeDescriptor> descriptors) {
-					// When this layer is initialized, we can write out it's attribute descriptors:
-					for (AttributeDescriptor descriptor : descriptors) {
-						attributePanel.add(new HTML("Attribute: <b>" + descriptor.getName() + "</b> (" + descriptor
-								.getType().getName() + ")"));
-					}
-				}
-			});
+						@Override
+						public void onSuccess(List<AttributeDescriptor> descriptors) {
+							// When this layer is initialized, we can write out it's attribute descriptors:
+							for (AttributeDescriptor descriptor : descriptors) {
+								attributePanel.add(new HTML("Attribute: <b>" + descriptor.getName() + "</b> ("
+										+ descriptor.getType().getName() + ")"));
+							}
+						}
+					});
 			mapPresenter.getLayersModel().addLayer(layer);
 		} else {
-			mapPresenter.getLayersModel().addLayer(WmsClient.getInstance().createLayer(layerInfo.getTitle(),
-					mapPresenter.getConfiguration(), tileConfig, layerConfig, layerInfo));
+			mapPresenter.getLayersModel().addLayer(
+					WmsClient.getInstance().createLayer(layerInfo.getTitle(), mapPresenter.getConfiguration(),
+							tileConfig, layerConfig, layerInfo));
 			attributePanel.add(new HTML("This layer does not support features..."));
 		}
 	}
