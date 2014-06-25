@@ -18,7 +18,9 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
+import org.geomajas.gwt2.widget.client.CoreWidget;
 import org.geomajas.gwt2.widget.client.other.dialog.caption.CloseableDialogBoxCaption;
+import org.geomajas.gwt2.widget.client.other.dialog.resource.CloseableDialogBoxWidgetResource;
 
 /**
  * Implementation of the CloseableDialogBoxWidgetView.
@@ -50,7 +52,7 @@ public class CloseableDialogBoxWidgetViewImpl implements CloseableDialogBoxWidge
 	}
 
 	public CloseableDialogBoxWidgetViewImpl() {
-		this(CloseableDialogBox.getInstance().getBundleFactory().createCloseableDialogBoxWidgetResource());
+		this(CoreWidget.getInstance().getClientBundleFactory().createCloseableDialogBoxWidgetResource());
 	}
 
 	public CloseableDialogBoxWidgetViewImpl(CloseableDialogBoxWidgetResource resource) {

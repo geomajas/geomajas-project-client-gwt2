@@ -10,10 +10,8 @@
  */
 package org.geomajas.gwt2.widget.client.other.dialog;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Widget;
-import org.geomajas.gwt2.widget.client.other.dialog.i18n.CloseableDialogBoxWidgetMessages;
 
 /**
  * Implementation of the CloseableDialogBoxWidgetPresenter interface.
@@ -21,8 +19,6 @@ import org.geomajas.gwt2.widget.client.other.dialog.i18n.CloseableDialogBoxWidge
  * @author David Debuck.
  */
 public class CloseableDialogBoxWidgetPresenterImpl implements CloseableDialogBoxWidgetPresenter {
-
-	private CloseableDialogBoxWidgetMessages msg = GWT.create(CloseableDialogBoxWidgetMessages.class);
 
 	private CloseableDialogBoxWidgetView view;
 

@@ -8,30 +8,20 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.client.feature.tooltip.resources;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.resources.client.ClientBundle;
+package org.geomajas.gwt2.widget.client.other.dialog.resource;
 
 /**
- * Client resource bundle interface for pure GWT widgets.
+ * Client resource bundle interface with empty css classes.
  *
- * @author Dosi Bingov
- *
- * @since 2.0.0
+ * @author David Debuck
  */
-public interface ToolTipBoxResource extends ClientBundle {
-
-	/**
-	 * Instance for use outside UIBinder.
-	 */
-	ToolTipBoxResource INSTANCE = GWT.create(ToolTipBoxResource.class);
+public interface CloseableDialogBoxWidgetResourceNoStyle extends CloseableDialogBoxWidgetResource {
 
 	/**
 	 * Get the css resource.
 	 * @return the css resource
 	 */
-	@Source("toolTipBox.css")
-	ToolTipBoxCssResource css();
-
+	@Source("featureSelectBox-empty.css")
+	CloseableDialogBoxWidgetCssResource css();
 }

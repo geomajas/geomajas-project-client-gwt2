@@ -14,6 +14,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.annotation.Api;
+import org.geomajas.gwt2.widget.client.CoreWidget;
 
 /**
  * Entry point for the CloseableDialogBoxWidget.
@@ -33,7 +34,9 @@ public class CloseableDialogBoxWidget implements IsWidget {
 	 */
 	@Api
 	public CloseableDialogBoxWidget() {
-		this(CloseableDialogBox.getInstance().getViewFactory().createCloseableDialogBoxWidgetView());
+		this(CoreWidget.getInstance().getViewFactory().createCloseableDialogBox(
+			CoreWidget.getInstance().getClientBundleFactory().createCloseableDialogBoxWidgetResource()
+		));
 	}
 
 	/**

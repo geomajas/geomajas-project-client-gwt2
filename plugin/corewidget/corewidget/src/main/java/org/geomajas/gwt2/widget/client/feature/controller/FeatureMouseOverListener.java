@@ -30,7 +30,7 @@ import org.geomajas.gwt2.client.controller.MapController;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
 import org.geomajas.gwt2.client.map.layer.ServerLayer;
-import org.geomajas.gwt2.widget.client.feature.tooltip.ToolTipBox;
+import org.geomajas.gwt2.widget.client.other.tooltip.ToolTipBox;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.Feature;
 

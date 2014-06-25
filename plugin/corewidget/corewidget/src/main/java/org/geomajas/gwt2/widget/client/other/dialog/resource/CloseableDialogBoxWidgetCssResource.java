@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.client.other.dialog;
+package org.geomajas.gwt2.widget.client.other.dialog.resource;
 
 import com.google.gwt.resources.client.CssResource;
 import org.geomajas.annotation.Api;

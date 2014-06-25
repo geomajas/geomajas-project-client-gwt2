@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.client.other.dialog;
+package org.geomajas.gwt2.widget.client.other.dialog.resource;
 
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.ImageResource;
@@ -28,7 +28,7 @@ public interface CloseableDialogBoxWidgetResource extends ClientBundle {
 	 *
 	 * @return CloseableDialogBoxWidgetCssResource
 	 */
-	@Source("closeableDialogBox-widget.css")
+	@Source("org/geomajas/gwt2/widget/client/resource/CoreWidget.css")
 	CloseableDialogBoxWidgetCssResource css();
 
 	/**
@@ -36,7 +36,7 @@ public interface CloseableDialogBoxWidgetResource extends ClientBundle {
 	 *
 	 * @return ImageResource
 	 */
-	@Source("image/close.png")
+	@Source("org/geomajas/gwt2/widget/client/resource/image/close.png")
 	@ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
 	ImageResource closeableDialogCloseIcon();
 
@@ -45,7 +45,7 @@ public interface CloseableDialogBoxWidgetResource extends ClientBundle {
 	 *
 	 * @return ImageResource
 	 */
-	@Source("image/close_hover.png")
+	@Source("org/geomajas/gwt2/widget/client/resource/image/close_hover.png")
 	@ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None)
 	ImageResource closeableDialogCloseIconHover();
 
@@ -54,7 +54,7 @@ public interface CloseableDialogBoxWidgetResource extends ClientBundle {
 	 *
 	 * @return ImageResource
 	 */
-	@Source("image/dialog-error.png")
+	@Source("org/geomajas/gwt2/widget/client/resource/image/dialog-error.png")
 	@ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None, width = 48, height = 48)
 	ImageResource messageBoxErrorIcon();
 
@@ -63,7 +63,7 @@ public interface CloseableDialogBoxWidgetResource extends ClientBundle {
 	 *
 	 * @return ImageResource
 	 */
-	@Source("image/dialog-help.png")
+	@Source("org/geomajas/gwt2/widget/client/resource/image/dialog-help.png")
 	@ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None, width = 48, height = 48)
 	ImageResource messageBoxHelpIcon();
 
@@ -72,7 +72,7 @@ public interface CloseableDialogBoxWidgetResource extends ClientBundle {
 	 *
 	 * @return ImageResource
 	 */
-	@Source("image/dialog-information.png")
+	@Source("org/geomajas/gwt2/widget/client/resource/image/dialog-information.png")
 	@ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None, width = 48, height = 48)
 	ImageResource messageBoxInfoIcon();
 
@@ -81,7 +81,7 @@ public interface CloseableDialogBoxWidgetResource extends ClientBundle {
 	 *
 	 * @return ImageResource
 	 */
-	@Source("image/dialog-warning.png")
+	@Source("org/geomajas/gwt2/widget/client/resource/image/dialog-warning.png")
 	@ImageResource.ImageOptions(repeatStyle = ImageResource.RepeatStyle.None, width = 48, height = 48)
 	ImageResource messageBoxWarnIcon();
 
