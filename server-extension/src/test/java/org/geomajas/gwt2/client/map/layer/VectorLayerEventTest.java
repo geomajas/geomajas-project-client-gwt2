@@ -12,13 +12,17 @@
 package org.geomajas.gwt2.client.map.layer;
 
 import junit.framework.Assert;
+
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.event.LayerHideEvent;
 import org.geomajas.gwt2.client.event.LayerShowEvent;
 import org.geomajas.gwt2.client.event.LayerVisibilityHandler;
 import org.geomajas.gwt2.client.event.LayerVisibilityMarkedEvent;
+import org.geomajas.gwt2.client.map.MapConfiguration;
+import org.geomajas.gwt2.client.map.MapConfigurationImpl;
 import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.MapEventBusImpl;
 import org.geomajas.gwt2.client.map.TestConfigUtil;
@@ -37,7 +41,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author Pieter De Graef
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml", "layerBeans1.xml", "mapBeans.xml" })
+@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml", "beansContext.xml", "layerBeans1.xml", "mapBeans.xml" })
 public class VectorLayerEventTest {
 
 	@Autowired
@@ -54,17 +58,21 @@ public class VectorLayerEventTest {
 
 	private boolean isShowing;
 
+	private MapConfiguration mapConfig;
+
 	@Before
 	public void initialize() {
 		// Initialize main components:
 		eventBus = new MapEventBusImpl(this, GeomajasImpl.getInstance().getEventBus());
 		viewPort = TestConfigUtil.createViewPort(eventBus, mapInfo, 1000, 1000);
 		layerInfo = (ClientVectorLayerInfo) mapInfo.getLayers().get(0);
+		mapConfig = new MapConfigurationImpl();
+		mapConfig.setHintValue(GeomajasServerExtension.MAPINFO, mapInfo);
 	}
 
 	@Test
 	public void testMarkedAsVisibleEvents() {
-		VectorServerLayerImpl layer = new VectorServerLayerImpl(layerInfo, viewPort, eventBus);
+		VectorServerLayerImpl layer = new VectorServerLayerImpl(mapConfig, layerInfo, viewPort, eventBus);
 		count = 0;
 
 		eventBus.addLayerVisibilityHandler(new LayerVisibilityHandler() {
@@ -93,7 +101,7 @@ public class VectorLayerEventTest {
 
 	@Test
 	public void testShowHideEvents() {
-		VectorServerLayerImpl layer = new VectorServerLayerImpl(layerInfo, viewPort, eventBus);
+		VectorServerLayerImpl layer = new VectorServerLayerImpl(mapConfig, layerInfo, viewPort, eventBus);
 
 		eventBus.addLayerVisibilityHandler(new LayerVisibilityHandler() {
 

@@ -137,7 +137,8 @@ public class LayerOrderPanel implements SamplePanel {
 		public void onLayerAdded(LayerAddedEvent event) {
 			LayerWidget widget = new LayerWidget(event.getLayer());
 			layerDragController.makeDraggable(widget);
-			layerPanel.add(widget);
+			layerPanel.insert(widget, mapPresenter.getLayersModel().getLayerCount()
+					- mapPresenter.getLayersModel().getLayerPosition(event.getLayer()));
 		}
 
 		@Override

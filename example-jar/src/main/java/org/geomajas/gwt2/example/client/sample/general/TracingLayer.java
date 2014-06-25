@@ -10,6 +10,7 @@
  */
 package org.geomajas.gwt2.example.client.sample.general;
 
+import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.client.gfx.CanvasContainer;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.Layer;
@@ -81,5 +82,14 @@ public class TracingLayer implements Layer {
 	@Override
 	public double getOpacity() {
 		return 0;
+	}
+
+	@Override
+	public Bbox getMaxBounds() {
+		return Bbox.ALL;
+	}
+
+	@Override
+	public void setMaxBounds(Bbox maxBounds) {
 	}
 }

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<chapter id="chapter-java-howto">
+  <title>How-to Print Widget</title>
+
+  <para>This chapter shows how to create and use the Print Widget.</para>
+
+  <section>
+    <title>Default Print Widget</title>
+
+    <para>The default Print widget is class <code>org.geomajas.plugin.print.client.widget.PrintWidget</code>.
+		The following code creates the Print Widget. Map and application specifications are required beforehand.</para>
+
+    <programlisting>// MapPresenter mapPresenter : defines the specific map
+// String applicationId : id of the application to build, server-side configuration
+PrintWidget widget = new PrintWidget(mapPresenter, applicationId);</programlisting>
+  </section>
+
+	<section>
+		<title>Print Widget with custom view.</title>
+
+		<para>The view of the print widget can be customized by creating a custom class that extends <code>PrintWidgetView</code>:</para>
+
+		<programlisting>PrintWidgetView customView = new CustomView();
+PrintWidget widget = new PrintWidget(getMapPresenter(), applicationId, customView);</programlisting>
+
+		<para>Some useful views are available in the plugin. The <code>BasePrintPanel</code> is the default view, containing title and orientation request.</para>
+		<screenshot>
+			<screeninfo>Default view: BasePrintPanel</screeninfo>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="images/PrintWidget_DefaultView.png" width="100%"/>
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+
+		<para>The <code>OptionsPrintPanel</code> is a view where the different options can be activated or not. By default, no option
+		is active. The code below activates all options. Make sure to call the method <code>createViewBasedOnConfiguration</code>!</para>
+		<programlisting>OptionsPrintPanel optionsPrintPanel = new OptionsPrintPanel();
+// activate all options
+optionsPrintPanel.getOptionsToShowConfiguration().setShowTitleOption(true);
+optionsPrintPanel.getOptionsToShowConfiguration().setShowLandscapeOption(true);
+optionsPrintPanel.getOptionsToShowConfiguration().setShowPageSizeOption(true);
+optionsPrintPanel.getOptionsToShowConfiguration().setShowWithArrowOption(true);
+optionsPrintPanel.getOptionsToShowConfiguration().setShowWithScaleBarOption(true);
+optionsPrintPanel.getOptionsToShowConfiguration().setShowRasterDpiOption(true);
+optionsPrintPanel.getOptionsToShowConfiguration().setShowPostPrintActionOption(true);
+optionsPrintPanel.getOptionsToShowConfiguration().setShowFileNameOption(true);
+// recreate (redraw) the view.
+optionsPrintPanel.createViewBasedOnConfiguration();
+
+PrintWidget printWidget = new PrintWidget(mapPresenter, applicationId, optionsPrintPanel);</programlisting>
+		<screenshot>
+			<screeninfo>Full Options Print widget</screeninfo>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="images/PrintWidget_FullOptionsView.png" width="100%"/>
+				</imageobject>
+			</mediaobject>
+		</screenshot>
+
+		<para>Both <code>BasePrintPanel</code> and <code>OptionsPrintPanel</code> extend the abstract class <code>DefaultDataProviderPrintWidgetView</code>.
+		This is an implementation of the <code>PrintWidgetView</code> that contains a <code>DefaultPrintRequestDataProvider</code> implementation.
+		The <code>DefaultPrintRequestDataProvider</code> contains setters and getters fot the default values of data that
+		a gui user does not need to specify, but that a print builder still requires. For example, if an <code>OptionsPrintPanel</code>
+		does not show the rasterDpi option, the print builder still need to have a rasterDpi value for creating the print.</para>
+
+		<para>The example below shows how you can overwrite the default values of the <code>DefaultDataProviderPrintWidgetView</code></para>
+		<programlisting>DefaultDataProviderPrintWidgetView dataProviderWidgetView = new OptionsPrintPanel();
+// set some default options
+optionsPrintPanel.getDefaultPrintRequestDataProvider().getDefaultTemplateBuilderDataProvider().setWithArrow(false);
+optionsPrintPanel.getDefaultPrintRequestDataProvider().getDefaultTemplateBuilderDataProvider().setLandscape(false);
+optionsPrintPanel.getDefaultPrintRequestDataProvider().getDefaultTemplateBuilderDataProvider().setPageSize(PageSize.A1);
+optionsPrintPanel.getDefaultPrintRequestDataProvider().setFileName("custom file name");
+optionsPrintPanel.getDefaultPrintRequestDataProvider().setPostPrintAction(PrintConfiguration.PostPrintAction.SAVE);
+// activate some options
+...
+// create the printWidget
+PrintWidget printWidget = new PrintWidget(mapPresenter, applicationId, dataProviderWidgetView);</programlisting>
+	</section>
+
+	<section>
+		<title>Print Widget with custom PrintRequestHandler</title>
+
+		<para>When the print action is requested, a call is send to the server.
+			When the pdf file has been created, a response is send back to the client. By default,
+		the pdf is opened in a new browser window. Alternatively a download of the file is started (see full options panel).</para>
+
+		<para>The response is handled by a <code>PrintRequestHandler</code> instance. This handler can be customized; the widget can contain only one handler at the same time.
+			A custom handler can be registered as follows:</para>
+
+		<programlisting>PrintWidget widget = new PrintWidget(mapPresenter, applicationId);
+PrintRequestHandler customHandler = new CustomPrintRequestHandler();
+widget.setPrintRequestHandler(customHandler);</programlisting>
+
+		<para>The <code>PrintRequestHandler</code> contains two methods.
+			<code>onPrintRequestStarted</code> will provide with some information just before the request is send to server.
+			<code>onPrintRequestFinished</code> will provide with the url and other information when the request has been successfully completed.
+		</para>
+	</section>
+
+  <section>
+    <title>Print Widget without css (no style)</title>
+
+    <para>The print widget can be loaded with empty css classes. This can be achieved by
+	setting the resource bundle factory <emphase>before</emphase> creating the widget:</para>
+
+	  <programlisting>Print.getInstance().setBundleFactory(new PrintClientBundleFactoryNoStyle());
+// create the widget</programlisting>
+  </section>
+</chapter>

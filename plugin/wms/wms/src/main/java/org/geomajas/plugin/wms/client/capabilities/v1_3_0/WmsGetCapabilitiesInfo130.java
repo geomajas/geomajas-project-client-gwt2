@@ -11,20 +11,19 @@
 
 package org.geomajas.plugin.wms.client.capabilities.v1_3_0;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.geomajas.plugin.wms.client.capabilities.AbstractXmlNodeWrapper;
-import org.geomajas.plugin.wms.client.capabilities.WmsGetCapabilitiesInfo;
-import org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo;
-
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
+import org.geomajas.gwt2.client.service.AbstractXmlNodeWrapper;
+import org.geomajas.plugin.wms.client.capabilities.WmsGetCapabilitiesInfo;
+import org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Implementation of the {@link WmsGetCapabilitiesInfo} for WMS version 1.3.0.
- * 
+ *
  * @author Pieter De Graef
  */
 public class WmsGetCapabilitiesInfo130 extends AbstractXmlNodeWrapper implements WmsGetCapabilitiesInfo {

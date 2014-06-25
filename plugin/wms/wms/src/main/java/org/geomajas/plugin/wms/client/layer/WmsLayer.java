@@ -13,8 +13,8 @@ package org.geomajas.plugin.wms.client.layer;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.client.map.layer.LegendUrlSupported;
+import org.geomajas.gwt2.client.map.layer.tile.TileBasedLayer;
 import org.geomajas.gwt2.client.map.render.Tile;
 import org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo;
 
@@ -30,21 +30,14 @@ import java.util.List;
  * @since 2.0.0
  */
 @Api(allMethods = true)
-public interface WmsLayer extends Layer, LegendUrlSupported {
+public interface WmsLayer extends TileBasedLayer, LegendUrlSupported {
 
 	/**
 	 * Get the main WMS options. These options are translated into HTTP GET parameters for the WMS calls.
 	 *
 	 * @return Get the main WMS options object.
 	 */
-	WmsLayerConfiguration getConfig();
-
-	/**
-	 * Get this layers tile configuration object.
-	 *
-	 * @return The tile configuration object.
-	 */
-	WmsTileConfiguration getTileConfig();
+	WmsLayerConfiguration getConfiguration();
 
 	/**
 	 * Get the capabilities object that describes this layer. This object is part from the WMS GetCapabilities request
@@ -55,11 +48,12 @@ public interface WmsLayer extends Layer, LegendUrlSupported {
 	WmsLayerInfo getCapabilities();
 
 	/**
-	 * Get the tiles for the specified scale and world bounds.
+	 * Get the tiles for the specified scale and world bounds.<p/> TODO remove this method before making this class API
+	 * ...
 	 *
-	 * @param scale       The scale at which to ask for tiles.
+	 * @param resolution       The scale at which to ask for tiles.
 	 * @param worldBounds The bounds in WorldSpace at which to ask for tiles.
 	 * @return The list of tiles fitting the given parameters.
 	 */
-	List<Tile> getTiles(double scale, Bbox worldBounds);
+	List<Tile> getTiles(double resolution, Bbox worldBounds);
 }

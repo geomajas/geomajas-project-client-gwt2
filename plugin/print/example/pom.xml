@@ -22,8 +22,8 @@
 	<artifactId>geomajas-client-gwt2-plugin-print-example</artifactId>
 	<packaging>war</packaging>
 
-	<name>Geomajas print plugin - GWT2 Client application war</name>
-	<description>Geomajas GWT2 Client application for the print plugin.</description>
+	<name>Geomajas GWT2 client: Plugin Print - Standalone sample application</name>
+	<description>Geomajas GWT2 client: Plugin Print - Standalone sample application</description>
 	
 	<properties>
 		<gwt-version>2.5.0</gwt-version>
@@ -46,18 +46,18 @@
 		</dependency>
 
 		<!-- Geomajas dependencies -->
-		<dependency>
+		<!--dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-rasterizing</artifactId>
-		</dependency>
+		</dependency-->
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-openstreetmap</artifactId>
 		</dependency>
-		<dependency>
+		<!--dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-client-gwt2-plugin-print-impl</artifactId>
-		</dependency>
+		</dependency-->
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-client-gwt2-plugin-print-example-jar</artifactId>
