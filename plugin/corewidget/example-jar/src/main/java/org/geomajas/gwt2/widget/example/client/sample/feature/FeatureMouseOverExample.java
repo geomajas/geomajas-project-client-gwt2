@@ -10,19 +10,18 @@
  */
 package org.geomajas.gwt2.widget.example.client.sample.feature;
 
-import org.geomajas.gwt2.client.GeomajasImpl;
-import org.geomajas.gwt2.client.GeomajasServerExtension;
-import org.geomajas.gwt2.client.map.MapPresenter;
-import org.geomajas.gwt2.client.widget.MapLayoutPanel;
-import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
-import org.geomajas.gwt2.widget.client.feature.controller.FeatureMouseOverListener;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
+import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
+import org.geomajas.gwt2.client.controller.FeatureMouseOverListener;
+import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.client.widget.MapLayoutPanel;
+import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 
 /**
  * Class description.
@@ -73,7 +72,8 @@ public class FeatureMouseOverExample implements SamplePanel {
 		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "appCoreWidget", "mapCoreWidget");
 
 		// add feature mouse over listener.
-		FeatureMouseOverListener listener = new FeatureMouseOverListener(7);
+
+		FeatureMouseOverListener listener = new FeatureMouseOverListener();
 		mapPresenter.addMapListener(listener);
 	}
 }

@@ -10,35 +10,30 @@
  */
 package org.geomajas.gwt2.widget.example.client.sample.feature;
 
-import java.util.List;
-
-import org.geomajas.gwt2.client.GeomajasImpl;
-import org.geomajas.gwt2.client.GeomajasServerExtension;
-import org.geomajas.gwt2.client.map.MapPresenter;
-import org.geomajas.gwt2.client.map.feature.Feature;
-import org.geomajas.gwt2.client.widget.MapLayoutPanel;
-import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
-import org.geomajas.gwt2.widget.client.feature.controller.FeatureClickedListener;
-import org.geomajas.gwt2.widget.client.feature.event.FeatureClickedEvent;
-import org.geomajas.gwt2.widget.client.feature.event.FeatureClickedHandler;
-import org.geomajas.gwt2.widget.client.feature.event.FeaturesClickedEvent;
-import org.geomajas.gwt2.widget.client.feature.event.FeaturesClickedHandler;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.HeadingElement;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
+import org.geomajas.gwt2.client.controller.FeatureClickedListener;
+import org.geomajas.gwt2.client.event.FeatureClickedEvent;
+import org.geomajas.gwt2.client.event.FeatureClickedHandler;
+import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.client.map.feature.Feature;
+import org.geomajas.gwt2.client.widget.MapLayoutPanel;
+import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
+
+import java.util.List;
 
 /**
  * Class description.
- * 
+ *
  * @author Dosi Bingov
  * @author Jan De Moerloose
  */
@@ -63,15 +58,9 @@ public class FeatureClickedExample implements SamplePanel {
 		return rootElement;
 	}
 
-	@UiHandler("multiCheck")
-	public void onMulti(ValueChangeEvent<Boolean> value) {
-		mapListener.setSingleFeature(!value.getValue());
-		title.setInnerText("Feature" + (value.getValue() ? "s" : "") + "ClickedEvent");
-	}
-
 	/**
 	 * UI binder interface.
-	 * 
+	 *
 	 * @author Dosi Bingov
 	 */
 	interface FeatureSelectedExampleUiBinder extends UiBinder<DockLayoutPanel, FeatureClickedExample> {
@@ -90,7 +79,6 @@ public class FeatureClickedExample implements SamplePanel {
 
 		// add FeatureClickedHandler where we handle FeaturesClickedEvent
 		mapPresenter.getEventBus().addHandler(FeatureClickedHandler.TYPE, new MyFeatureClickedHandler());
-		mapPresenter.getEventBus().addHandler(FeaturesClickedHandler.TYPE, new MyFeatureClickedHandler());
 
 		// Define the layout:
 		ResizeLayoutPanel resizeLayoutPanel = new ResizeLayoutPanel();
@@ -109,21 +97,14 @@ public class FeatureClickedExample implements SamplePanel {
 	}
 
 	/**
-	 * Handler that handles FeaturesClickedEvent.
+	 * Handler that handles FeatureClickedEvent.
 	 */
-	private class MyFeatureClickedHandler implements FeatureClickedHandler, FeaturesClickedHandler {
+	private class MyFeatureClickedHandler implements FeatureClickedHandler {
 
 		@Override
 		public void onFeatureClicked(FeatureClickedEvent event) {
-			Feature feature = event.getFeature();
-			layerEventLayout.add(new Label("feature label => " + feature.getLabel()));
-			layerEventLayout.add(new Label("layer title => " + feature.getLayer().getTitle()));
-		}
-
-		@Override
-		public void onFeaturesClicked(FeaturesClickedEvent event) {
 			List<Feature> features = event.getFeatures();
-			layerEventLayout.add(new Label(features.size() + " features clicked"));
+			layerEventLayout.add(new Label(features.size() + " feature(s) clicked"));
 			for (Feature feature : features) {
 				layerEventLayout.add(new Label("feature label => " + feature.getLabel()));
 				layerEventLayout.add(new Label("layer title => " + feature.getLayer().getTitle()));

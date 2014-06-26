@@ -9,35 +9,10 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.client.feature.controller;
+package org.geomajas.gwt2.client.controller;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.user.client.Timer;
-import org.geomajas.command.dto.SearchByLocationRequest;
-import org.geomajas.command.dto.SearchByLocationResponse;
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.geometry.Geometry;
-import org.geomajas.geometry.service.MathService;
-import org.geomajas.gwt.client.command.AbstractCommandCallback;
-import org.geomajas.gwt.client.command.GwtCommand;
-import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.controller.AbstractController;
-import org.geomajas.gwt.client.map.RenderSpace;
-import org.geomajas.gwt2.client.controller.MapController;
 import org.geomajas.gwt2.client.map.MapPresenter;
-import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
-import org.geomajas.gwt2.client.map.layer.ServerLayer;
-import org.geomajas.gwt2.widget.client.other.tooltip.ToolTipBox;
-import org.geomajas.layer.feature.Attribute;
-import org.geomajas.layer.feature.Feature;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 /**
  * Mouse over listener. When this listener is added to the map the users sees a dialog box with feature info when the
@@ -46,9 +21,23 @@ import java.util.Map.Entry;
  * @author Dosi Bingov
  *
  */
-public class FeatureMouseOverListener extends AbstractController implements MapController {
+public class FeatureMouseOverListenerBCK extends AbstractController implements MapController {
 
-	private Coordinate currentPos;
+	public FeatureMouseOverListenerBCK(boolean dragging) {
+		super(dragging);
+	}
+
+	@Override
+	public void onActivate(MapPresenter presenter) {
+
+	}
+
+	@Override
+	public void onDeactivate(MapPresenter presenter) {
+
+	}
+
+/*	private Coordinate currentPos;
 
 	private Coordinate lastPosition;
 
@@ -78,21 +67,21 @@ public class FeatureMouseOverListener extends AbstractController implements MapC
 		this(32);
 	}
 
-	/**
+	*//**
 	 *
 	 * @param showAllAtributes
 	 *            if true all attributes of a feature will be shown in the dialog pop up
-	 */
+	 *//*
 	public FeatureMouseOverListener(boolean showAllAtributes) {
 		this(32);
 		this.showAllAtributes = showAllAtributes;
 	}
 
-	/**
+	*//**
 	 *
 	 * @param pixelBuffer
 	 *            minimum distance between features to be included in the call out box.
-	 */
+	 *//*
 	public FeatureMouseOverListener(int pixelBuffer) {
 		super(false);
 		this.pixelBuffer = pixelBuffer;
@@ -287,5 +276,5 @@ public class FeatureMouseOverListener extends AbstractController implements MapC
 		Coordinate c2 = mapPresenter.getViewPort().getTransformationService()
 				.transform(new Coordinate(pixelBuffer, 0), RenderSpace.SCREEN, RenderSpace.WORLD);
 		return MathService.distance(c1, c2);
-	}
+	}*/
 }

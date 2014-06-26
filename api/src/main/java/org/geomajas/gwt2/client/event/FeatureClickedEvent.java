@@ -8,10 +8,10 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.client.feature.event;
+package org.geomajas.gwt2.client.event;
 
 import com.google.web.bindery.event.shared.Event;
-
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.map.feature.Feature;
 
@@ -22,19 +22,21 @@ import java.util.List;
  * list of features.
  *
  * @author Oliver May
+ * @since 2.1.0
  */
-public class FeaturesClickedEvent extends Event<FeaturesClickedHandler> {
+@Api(allMethods = true)
+public class FeatureClickedEvent extends Event<FeatureClickedHandler> {
 
 	private Coordinate coordinate;
 	private List<Feature> features;
 
 	/**
 	 * Main constructor.
-	 * 
+	 *
 	 * @param coordinate world coordinate
 	 * @param features list of features
 	 */
-	public FeaturesClickedEvent(Coordinate coordinate, List<Feature> features) {
+	public FeatureClickedEvent(Coordinate coordinate, List<Feature> features) {
 		this.coordinate = coordinate;
 		this.features = features;
 	}
@@ -59,12 +61,12 @@ public class FeaturesClickedEvent extends Event<FeaturesClickedHandler> {
 
 
 	@Override
-	public Type<FeaturesClickedHandler> getAssociatedType() {
-		return FeaturesClickedHandler.TYPE;
+	public Type<FeatureClickedHandler> getAssociatedType() {
+		return FeatureClickedHandler.TYPE;
 	}
 
 	@Override
-	protected void dispatch(FeaturesClickedHandler featuresClickHandler) {
-		featuresClickHandler.onFeaturesClicked(this);
+	protected void dispatch(FeatureClickedHandler featuresClickHandler) {
+		featuresClickHandler.onFeatureClicked(this);
 	}
 }

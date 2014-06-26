@@ -10,24 +10,13 @@
  */
 package org.geomajas.gwt2.widget.client.feature.featureselectbox;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import junit.framework.Assert;
-
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.geometry.service.WktException;
 import org.geomajas.geometry.service.WktService;
 import org.geomajas.gwt.client.map.RenderSpace;
+import org.geomajas.gwt2.client.event.FeatureClickedEvent;
 import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.ViewPort;
@@ -37,12 +26,19 @@ import org.geomajas.gwt2.client.map.feature.FeatureMapFunction;
 import org.geomajas.gwt2.client.map.feature.ServerFeatureService;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
 import org.geomajas.gwt2.widget.client.BaseTest;
-import org.geomajas.gwt2.widget.client.feature.event.FeatureClickedEvent;
-import org.geomajas.gwt2.widget.client.feature.event.FeaturesClickedEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
 
 public class FeatureSelectBoxPresenterImplTest extends BaseTest {
 
@@ -57,7 +53,7 @@ public class FeatureSelectBoxPresenterImplTest extends BaseTest {
 
 	@Mock
 	private ViewPortTransformationService transformationService;
-	
+
 	private FeatureSelectBoxPresenterImpl presenter;
 
 	@Before
@@ -78,7 +74,7 @@ public class FeatureSelectBoxPresenterImplTest extends BaseTest {
 		presenter.onFeatureSelected("label2");
 		ArgumentCaptor<FeatureClickedEvent> event = ArgumentCaptor.forClass(FeatureClickedEvent.class);
 		verify(eventBus).fireEvent(event.capture());
-		Assert.assertEquals("label2", event.getValue().getFeature().getLabel());
+		Assert.assertEquals("label2", event.getValue().getFeatures().get(0).getLabel());
 		Assert.assertEquals(new Coordinate(100, 80), event.getValue().getCoordinate());
 	}
 
@@ -164,7 +160,7 @@ public class FeatureSelectBoxPresenterImplTest extends BaseTest {
 				eq(ServerFeatureService.SearchLayerType.SEARCH_ALL_LAYERS), eq(-1f), any(FeatureMapFunction.class));
 
 	}
-	
+
 	@Test
 	public void setSingleFeature() {
 		Assert.assertTrue(presenter.isSingleFeature());
@@ -185,8 +181,8 @@ public class FeatureSelectBoxPresenterImplTest extends BaseTest {
 		features.put(layer, Arrays.asList(f1, f2));
 		function.getValue().execute(features);
 		// verify event is sent
-		ArgumentCaptor<FeaturesClickedEvent> event = ArgumentCaptor.forClass(FeaturesClickedEvent.class);
-		verify(eventBus).fireEvent(event.capture());	
+		ArgumentCaptor<FeatureClickedEvent> event = ArgumentCaptor.forClass(FeatureClickedEvent.class);
+		verify(eventBus).fireEvent(event.capture());
 		Assert.assertEquals(2, event.getValue().getFeatures().size());
 	}
 

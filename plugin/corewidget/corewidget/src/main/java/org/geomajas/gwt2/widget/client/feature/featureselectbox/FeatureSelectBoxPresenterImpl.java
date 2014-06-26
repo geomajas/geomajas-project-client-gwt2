@@ -10,29 +10,28 @@
  */
 package org.geomajas.gwt2.widget.client.feature.featureselectbox;
 
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.geometry.Geometry;
+import org.geomajas.gwt.client.map.RenderSpace;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
+import org.geomajas.gwt2.client.event.FeatureClickedEvent;
+import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.client.map.feature.Feature;
+import org.geomajas.gwt2.client.map.feature.FeatureMapFunction;
+import org.geomajas.gwt2.client.map.feature.ServerFeatureService;
+import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.geometry.Geometry;
-import org.geomajas.gwt.client.map.RenderSpace;
-import org.geomajas.gwt2.client.GeomajasServerExtension;
-import org.geomajas.gwt2.client.map.MapPresenter;
-import org.geomajas.gwt2.client.map.feature.Feature;
-import org.geomajas.gwt2.client.map.feature.FeatureMapFunction;
-import org.geomajas.gwt2.client.map.feature.ServerFeatureService;
-import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
-import org.geomajas.gwt2.widget.client.feature.event.FeatureClickedEvent;
-import org.geomajas.gwt2.widget.client.feature.event.FeaturesClickedEvent;
-
 /**
  * Feature select box presenter implementation.
- * 
+ *
  * @author Jan De Moerloose
- * 
+ *
  */
 public class FeatureSelectBoxPresenterImpl implements FeatureSelectBoxPresenter {
 
@@ -63,7 +62,9 @@ public class FeatureSelectBoxPresenterImpl implements FeatureSelectBoxPresenter 
 	public void onFeatureSelected(String label) {
 		view.hide();
 		Feature clickedFeature = clickedFeatures.get(label);
-		mapPresenter.getEventBus().fireEvent(new FeatureClickedEvent(clickedCoordinate, clickedFeature));
+		List<Feature> tempList = new ArrayList<Feature>(clickedFeatures.size());
+		tempList.add(clickedFeature);
+		mapPresenter.getEventBus().fireEvent(new FeatureClickedEvent(clickedCoordinate, tempList));
 	}
 
 	@Override
@@ -108,7 +109,7 @@ public class FeatureSelectBoxPresenterImpl implements FeatureSelectBoxPresenter 
 	protected MapPresenter getMapPresenter() {
 		return mapPresenter;
 	}
-	
+
 	protected boolean isSingleFeature() {
 		return singleFeature;
 	}
@@ -154,12 +155,13 @@ public class FeatureSelectBoxPresenterImpl implements FeatureSelectBoxPresenter 
 				view.show(false);
 			} else if (clickedFeatures.size() == 1) {
 				Feature clickedFeature = (Feature) clickedFeatures.values().toArray()[0];
-
-				mapPresenter.getEventBus().fireEvent(new FeatureClickedEvent(clickedCoordinate, clickedFeature));
+				List<Feature> tempList = new ArrayList<Feature>(clickedFeatures.size());
+				tempList.add(clickedFeature);
+				mapPresenter.getEventBus().fireEvent(new FeatureClickedEvent(clickedCoordinate, tempList));
 			}
 		} else {
 			mapPresenter.getEventBus().fireEvent(
-					new FeaturesClickedEvent(clickedCoordinate, new ArrayList<Feature>(clickedFeatures.values())));
+					new FeatureClickedEvent(clickedCoordinate, new ArrayList<Feature>(clickedFeatures.values())));
 		}
 	}
 
