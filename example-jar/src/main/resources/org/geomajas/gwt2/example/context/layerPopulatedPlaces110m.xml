@@ -29,10 +29,10 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		<property name="crs" value="EPSG:4326"/>
 		<property name="maxExtent">
 			<bean class="org.geomajas.geometry.Bbox">
-				<property name="x" value="-128.5"/>
-				<property name="y" value="16"/>
-				<property name="width" value="64.5"/>
-				<property name="height" value="35"/>
+                <property name="x" value="-181"/>
+                <property name="y" value="-91"/>
+                <property name="width" value="362"/>
+                <property name="height" value="181"/>
 			</bean>
 		</property>
 		<property name="featureInfo" ref="layerPopulatedPlaces110mFeatureInfo" />
