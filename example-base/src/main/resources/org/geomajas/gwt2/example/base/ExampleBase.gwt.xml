@@ -13,13 +13,14 @@
 
 <module rename-to="examplebase">
 
-	<inherits name='com.google.gwt.user.User'/>
-	<inherits name="com.google.gwt.user.theme.standard.Standard" />
+    <inherits name='com.google.gwt.user.User'/>
+    <inherits name="com.google.gwt.user.theme.standard.Standard"/>
 
-	<!-- Geomajas Client -->
-    <inherits name="org.geomajas.gwt2.GeomajasClientImpl" />
+    <!-- Geomajas Client -->
+    <inherits name="org.geomajas.gwt2.GeomajasClientImpl"/>
 
     <entry-point class="org.geomajas.gwt2.example.base.client.ExampleBase"/>
 
-	<source path='client'/>
+    <source path='client'/>
+
 </module>

@@ -15,8 +15,7 @@ import com.google.gwt.i18n.client.Messages;
 
 /**
  * Localization constants for the GWT client widgets.
- *
- * FIXME: per widget
+ * <p/>
  *
  * @author Dosi Bingov
  */
@@ -28,8 +27,19 @@ public interface WidgetCoreInternationalization extends Messages {
 
 	/*	Message box widget messages */
 	String messageBoxBtnYes();
+
 	String messageBoxBtnNo();
+
 	String messageBoxBtnCancel();
+
 	String messageBoxBtnClose();
 
+	/* Feature info widget messages */
+	String featureDetailTitle();
+
+	String zoomToObjectButton();
+
+	String yes();
+
+	String no();
 }
