@@ -32,8 +32,7 @@
 		<module>geocoder</module>
 		<module>print</module>
 		<module>wms</module>
-		 <module>graphicsediting</module>
- 		 <module>javascript-api</module>
- 	</modules>
+		<module>graphicsediting</module>
+	</modules>
 	
 </project>
