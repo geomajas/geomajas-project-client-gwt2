@@ -35,21 +35,13 @@ public class SvgClientLayerBuilder implements PrintableWidgetLayerBuilder {
 	@Override
 	public ClientLayerInfo build(MapPresenter mapPresenter, Widget widget, Bbox worldBounds, double rasterResolution) {
 		ClientSvgLayerInfo svg = new ClientSvgLayerInfo();
-		String svgContent = widget.getElement().getInnerHTML();
-		//svgContent = svgContent.replace("overflow=\"hidden\"", "");
-		svg.setSvgContent(svgContent);
+		svg.setSvgContent(widget.getElement().getInnerHTML());
 		Bbox viewPortBounds = mapPresenter.getViewPort().getBounds();
-		double xRatio = worldBounds.getWidth() / viewPortBounds.getWidth();
-		double yRatio = worldBounds.getHeight() / viewPortBounds.getHeight();
-		svg.setViewBoxWidth((int) (mapPresenter.getViewPort().getMapWidth() * xRatio));
-		svg.setViewBoxHeight((int) (mapPresenter.getViewPort().getMapHeight() * yRatio));
-		Bbox alteredBounds = new Bbox(worldBounds.getX() - (worldBounds.getWidth() - viewPortBounds.getWidth()) / 2,
-				worldBounds.getY() - (worldBounds.getHeight() - viewPortBounds.getHeight()) / 2,
-				worldBounds.getWidth(),
-				worldBounds.getHeight());
-		svg.setViewBoxBounds(alteredBounds);
-		// Should be :
-		//svg.setViewBoxBounds(viewPortBounds);
+		// width and height of the svg (pixels)
+		svg.setWidth(mapPresenter.getViewPort().getMapWidth());
+		svg.setHeight(mapPresenter.getViewPort().getMapHeight());
+		// the world bounds (in world coordinates)
+		svg.setBounds(viewPortBounds);
 		return svg;
 	}
 }
