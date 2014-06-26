@@ -36,22 +36,12 @@ public class SvgClientLayerBuilder implements PrintableWidgetLayerBuilder {
 	public ClientLayerInfo build(MapPresenter mapPresenter, Widget widget, Bbox worldBounds, double rasterResolution) {
 		ClientSvgLayerInfo svg = new ClientSvgLayerInfo();
 		svg.setSvgContent(widget.getElement().getInnerHTML());
-
 		Bbox viewPortBounds = mapPresenter.getViewPort().getBounds();
-		int mapWidthPixels = mapPresenter.getViewPort().getMapWidth();
-		int mapHeightPixels = mapPresenter.getViewPort().getMapHeight();
-		int printWidthPixels = (int) (mapWidthPixels * worldBounds.getWidth() / viewPortBounds.getWidth());
-		int printHeightPixels = (int) (mapHeightPixels * worldBounds.getHeight() / viewPortBounds.getHeight());
-		// width and height of the viewBox (pixels)
-		svg.setViewBoxWidth(printWidthPixels);
-		svg.setViewBoxHeight(printHeightPixels);
-		// difference of the viewPort dimensions (pixels)
-		svg.setPrintVsMapWidthDifference(printWidthPixels - mapWidthPixels);
-		svg.setPrintVsMapHeightDifference(printHeightPixels - mapHeightPixels);
-
+		// width and height of the svg (pixels)
+		svg.setWidth(mapPresenter.getViewPort().getMapWidth());
+		svg.setHeight(mapPresenter.getViewPort().getMapHeight());
 		// the world bounds (in world coordinates)
-		svg.setViewBoxBounds(worldBounds);
-
+		svg.setBounds(viewPortBounds);
 		return svg;
 	}
 }
