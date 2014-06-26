@@ -120,7 +120,9 @@ public class FeatureClickedListener extends AbstractMapController {
 
 				if (features != null) {
 					for (Feature f : features) {
+
 						clickedFeatures.put(f.getLabel(), f);
+
 					}
 
 				}

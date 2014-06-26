@@ -18,18 +18,17 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
+import org.geomajas.gwt2.client.event.FeatureMouseOverEvent;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.client.map.feature.FeatureMapFunction;
+import org.geomajas.gwt2.client.map.feature.ServerFeatureService;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
-import org.geomajas.gwt2.client.map.layer.ServerLayer;
-import org.geomajas.gwt2.client.map.layer.VectorServerLayer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Controller that provides a feature based on a location clicked on the map. When multiple features are found on the
@@ -44,17 +43,13 @@ import java.util.logging.Logger;
 @Api(allMethods = true)
 public class FeatureMouseOverListener extends AbstractMapController {
 
-	private static Logger logger = Logger.getLogger("");
-
 	private Map<String, Feature> clickedFeatures = new HashMap<String, Feature>();
 
 	private int pixelBuffer = 10;
 
-	private static final int TIMER_DELAY = 500; // 0.5s
+	private int delay = 250; // 0.25s
 
 	private Timer timer;
-
-	VectorServerLayer temp;
 
 	protected Coordinate clickedPosition;
 
@@ -66,12 +61,24 @@ public class FeatureMouseOverListener extends AbstractMapController {
 	}
 
 	/**
-	 * Constructor with parameter for the buffer.
+	 * Constructor with parameter for the delay.
 	 *
+	 * @param delay how long to wait for another search on the position.
+	 */
+	public FeatureMouseOverListener(int delay) {
+		super(true);
+		this.delay = delay;
+	}
+
+	/**
+	 * Constructor with parameter for the delay and buffer.
+	 *
+	 * @param delay how long to wait for another search on the position.
 	 * @param pixelBuffer buffer in pixels.
 	 */
-	public FeatureMouseOverListener(int pixelBuffer) {
+	public FeatureMouseOverListener(int delay, int pixelBuffer) {
 		super(true);
+		this.delay = delay;
 		this.pixelBuffer = pixelBuffer;
 	}
 
@@ -91,46 +98,32 @@ public class FeatureMouseOverListener extends AbstractMapController {
 
 		clickedPosition = getLocation(event, RenderSpace.WORLD);
 
-		// place new tooltip after some time
+		// Only execute a search after a certain time.
+		// Save some server power here.
 		if (timer == null) {
 			timer = new Timer() {
 
 				public void run() {
 
-					String crs = mapPresenter.getViewPort().getCrs();
-
 					Geometry point = new Geometry(Geometry.POINT, 0, -1);
 					point.setCoordinates(new Coordinate[] { clickedPosition });
-
-					int index = mapPresenter.getLayersModel().getLayerCount();
-
-
-
-					for (int i = 0; i < index; i++) {
-						org.geomajas.gwt2.client.map.layer.Layer layer = mapPresenter.getLayersModel().getLayer(i);
-
-						if (layer.isShowing() && layer instanceof FeaturesSupported && layer instanceof ServerLayer) {
-
-							temp = (VectorServerLayer) layer;
-
-						}
-					}
 
 					GeomajasServerExtension
 							.getInstance()
 							.getServerFeatureService()
-							.search(crs, temp , point,
-									calculateBufferFromPixelTolerance(), new SelectionCallback()
+							.search(mapPresenter, point, calculateBufferFromPixelTolerance(),
+									ServerFeatureService.QueryType.INTERSECTS,
+									ServerFeatureService.SearchLayerType.SEARCH_ALL_LAYERS, -1, new SelectionCallback()
 							);
 
 
 				}
 			};
-			timer.schedule(TIMER_DELAY);
+			timer.schedule(delay);
 
 		} else {
 			timer.cancel();
-			timer.schedule(TIMER_DELAY);
+			timer.schedule(delay);
 		}
 
 	}
@@ -160,16 +153,15 @@ public class FeatureMouseOverListener extends AbstractMapController {
 				if (features != null) {
 					for (Feature f : features) {
 
-						logger.log(Level.INFO, "Feature: " + f.getLabel());
-
 						clickedFeatures.put(f.getLabel(), f);
+
 					}
 
 				}
 			}
 
-			//mapPresenter.getEventBus().fireEvent(
-					//new FeatureClickedEvent(clickedPosition, new ArrayList<Feature>(clickedFeatures.values())));
+			mapPresenter.getEventBus().fireEvent(
+					new FeatureMouseOverEvent(clickedPosition, new ArrayList<Feature>(clickedFeatures.values())));
 
 		}
 

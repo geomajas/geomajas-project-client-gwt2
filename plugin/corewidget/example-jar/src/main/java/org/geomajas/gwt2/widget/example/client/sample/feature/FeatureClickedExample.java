@@ -11,12 +11,12 @@
 package org.geomajas.gwt2.widget.example.client.sample.feature;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.HeadingElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.gwt2.client.GeomajasImpl;
@@ -36,6 +36,7 @@ import java.util.List;
  *
  * @author Dosi Bingov
  * @author Jan De Moerloose
+ * @author David Debuck
  */
 public class FeatureClickedExample implements SamplePanel {
 
@@ -50,7 +51,7 @@ public class FeatureClickedExample implements SamplePanel {
 	protected VerticalPanel layerEventLayout;
 
 	@UiField
-	protected HeadingElement title;
+	protected ScrollPanel scrollPanel;
 
 	@Override
 	public Widget asWidget() {
@@ -68,8 +69,6 @@ public class FeatureClickedExample implements SamplePanel {
 	}
 
 	private static final FeatureSelectedExampleUiBinder UIBINDER = GWT.create(FeatureSelectedExampleUiBinder.class);
-
-	private FeatureClickedListener mapListener;
 
 	public FeatureClickedExample() {
 		rootElement = UIBINDER.createAndBindUi(this);
@@ -92,7 +91,8 @@ public class FeatureClickedExample implements SamplePanel {
 		// Initialize the map
 		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "appCoreWidget", "mapCoreWidget");
 
-		mapListener = new FeatureClickedListener();
+		// add feature clicked listener.
+		FeatureClickedListener mapListener = new FeatureClickedListener();
 		mapPresenter.addMapListener(mapListener);
 	}
 
@@ -103,13 +103,16 @@ public class FeatureClickedExample implements SamplePanel {
 
 		@Override
 		public void onFeatureClicked(FeatureClickedEvent event) {
+
 			List<Feature> features = event.getFeatures();
-			layerEventLayout.add(new Label(features.size() + " feature(s) clicked"));
+			layerEventLayout.add(new Label("### " + features.size() + " feature(s) clicked"));
 			for (Feature feature : features) {
-				layerEventLayout.add(new Label("feature label => " + feature.getLabel()));
-				layerEventLayout.add(new Label("layer title => " + feature.getLayer().getTitle()));
+				layerEventLayout.add(new Label("-- feature label => " + feature.getLabel()));
+				layerEventLayout.add(new Label("-- layer title => " + feature.getLayer().getTitle()));
 			}
 			layerEventLayout.add(new Label(""));
+
+			scrollPanel.scrollToBottom();
 		}
 
 	}
