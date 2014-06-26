@@ -12,6 +12,7 @@
 package org.geomajas.gwt2.client.controller;
 
 import com.google.gwt.event.dom.client.MouseMoveEvent;
+import com.google.gwt.user.client.Timer;
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
@@ -48,6 +49,10 @@ public class FeatureMouseOverListener extends AbstractMapController {
 	private Map<String, Feature> clickedFeatures = new HashMap<String, Feature>();
 
 	private int pixelBuffer = 10;
+
+	private static final int TIMER_DELAY = 500; // 0.5s
+
+	private Timer timer;
 
 	VectorServerLayer temp;
 
@@ -86,31 +91,47 @@ public class FeatureMouseOverListener extends AbstractMapController {
 
 		clickedPosition = getLocation(event, RenderSpace.WORLD);
 
-		String crs = mapPresenter.getViewPort().getCrs();
+		// place new tooltip after some time
+		if (timer == null) {
+			timer = new Timer() {
 
-		Geometry point = new Geometry(Geometry.POINT, 0, -1);
-		point.setCoordinates(new Coordinate[] { clickedPosition });
+				public void run() {
 
-		int index = mapPresenter.getLayersModel().getLayerCount();
+					String crs = mapPresenter.getViewPort().getCrs();
+
+					Geometry point = new Geometry(Geometry.POINT, 0, -1);
+					point.setCoordinates(new Coordinate[] { clickedPosition });
+
+					int index = mapPresenter.getLayersModel().getLayerCount();
 
 
 
-		for (int i = 0; i < index; i++) {
-			org.geomajas.gwt2.client.map.layer.Layer layer = mapPresenter.getLayersModel().getLayer(i);
+					for (int i = 0; i < index; i++) {
+						org.geomajas.gwt2.client.map.layer.Layer layer = mapPresenter.getLayersModel().getLayer(i);
 
-			if (layer.isShowing() && layer instanceof FeaturesSupported && layer instanceof ServerLayer) {
+						if (layer.isShowing() && layer instanceof FeaturesSupported && layer instanceof ServerLayer) {
 
-				temp = (VectorServerLayer) layer;
+							temp = (VectorServerLayer) layer;
 
-			}
+						}
+					}
+
+					GeomajasServerExtension
+							.getInstance()
+							.getServerFeatureService()
+							.search(crs, temp , point,
+									calculateBufferFromPixelTolerance(), new SelectionCallback()
+							);
+
+
+				}
+			};
+			timer.schedule(TIMER_DELAY);
+
+		} else {
+			timer.cancel();
+			timer.schedule(TIMER_DELAY);
 		}
-
-		GeomajasServerExtension
-				.getInstance()
-				.getServerFeatureService()
-				.search(crs, temp , point,
-						calculateBufferFromPixelTolerance(), new SelectionCallback()
-				);
 
 	}
 
