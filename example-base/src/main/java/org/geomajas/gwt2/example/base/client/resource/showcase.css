@@ -258,6 +258,40 @@ h1,h2,h3,h4,h5,h6 {
 	text-decoration: underline;
 }
 
+@external gwt-ToggleButton, gwt-ToggleButton-up;
+@sprite .gwt-ToggleButton, .gwt-ToggleButton-up {
+    gwt-image: 'header';
+    height: 30px;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    color: #FFFFFF;
+    padding: 1px 15px;
+    border: 1px solid #333333;
+}
+
+@external gwt-ToggleButton-down, gwt-ToggleButton-down-hovering;
+.gwt-ToggleButton-down, .gwt-ToggleButton-down-hovering {
+    background: #F0F0F0; /* for non-css3 browsers */
+    background: -webkit-gradient(linear, left top, left bottom, from(#F6F6F6), to(#E8E8E8)); /* for webkit browsers */
+    background: -moz-linear-gradient(top,  #F6F6F6,  #E8E8E8); /* for firefox 3.6+ */
+    height: 30px;
+    border: 1px solid #D0D0D0;
+    border-radius: 2px;
+    padding: 1px 15px;
+    -moz-border-radius: 2px;
+    color: #333333;
+}
+
+@external html-face;
+.html-face {
+    line-height: 30px;
+}
+
+@external gwt-ToggleButton-up-hovering, gwt-ToggleButton-down-hovering;
+.gwt-ToggleButton-up-hovering, .gwt-ToggleButton-down-hovering {
+    text-decoration: underline;
+}
+
 .gwt-Label {
 	line-height: 32px;
 	font-weight: bold;
