@@ -14,8 +14,6 @@ package org.geomajas.gwt2.widget.client.resource;
 import com.google.gwt.core.client.GWT;
 import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.FeatureSelectBoxResource;
 import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.FeatureSelectBoxResourceNoStyle;
-import org.geomajas.gwt2.widget.client.other.dialog.resource.CloseableDialogBoxWidgetResource;
-import org.geomajas.gwt2.widget.client.other.dialog.resource.CloseableDialogBoxWidgetResourceNoStyle;
 
 /**
  * No style factory for client bundles defined within this artifact. This factory wipes out all css.
@@ -26,22 +24,12 @@ public class CoreWidgetClientBundleFactoryNoStyle extends CoreWidgetClientBundle
 
 	/**
 	 * Create an empty resource bundle for the
-	 * {@link org.geomajas.gwt2.widget.client.FeatureSelectBox.FeatureSelectListener} widget.
+	 * {@link org.geomajas.gwt2.widget.client.feature.featureselectbox.FeatureSelectBox} widget.
 	 *
 	 * @return A new resource bundle.
 	 */
 	public FeatureSelectBoxResource createFeatureSelectBoxResource() {
 		return GWT.create(FeatureSelectBoxResourceNoStyle.class);
-	}
-
-	/**
-	 * Create an empty resource bundle for the
-	 * {@link org.geomajas.gwt2.widget.client.other.dialog.CloseableDialogBoxWidget}.
-	 *
-	 * @return CloseableDialogBoxWidgetResource
-	 */
-	public CloseableDialogBoxWidgetResource createCloseableDialogBoxWidgetResource() {
-		return GWT.create(CloseableDialogBoxWidgetResourceNoStyle.class);
 	}
 
 }

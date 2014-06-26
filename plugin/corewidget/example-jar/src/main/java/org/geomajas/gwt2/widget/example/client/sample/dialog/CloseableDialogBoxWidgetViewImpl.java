@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.client.other.dialog;
+package org.geomajas.gwt2.widget.example.client.sample.dialog;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -18,9 +18,8 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
-import org.geomajas.gwt2.widget.client.CoreWidget;
-import org.geomajas.gwt2.widget.client.other.dialog.caption.CloseableDialogBoxCaption;
-import org.geomajas.gwt2.widget.client.other.dialog.resource.CloseableDialogBoxWidgetResource;
+import org.geomajas.gwt2.widget.example.client.sample.dialog.caption.CloseableDialogBoxCaption;
+import org.geomajas.gwt2.widget.example.client.sample.dialog.resource.CloseableDialogBoxWidgetResource;
 
 /**
  * Implementation of the CloseableDialogBoxWidgetView.
@@ -52,7 +51,7 @@ public class CloseableDialogBoxWidgetViewImpl implements CloseableDialogBoxWidge
 	}
 
 	public CloseableDialogBoxWidgetViewImpl() {
-		this(CoreWidget.getInstance().getClientBundleFactory().createCloseableDialogBoxWidgetResource());
+		this(CloseableDialogBox.getInstance().getClientBundleFactory().closeableDialogBoxWidgetResource());
 	}
 
 	public CloseableDialogBoxWidgetViewImpl(CloseableDialogBoxWidgetResource resource) {

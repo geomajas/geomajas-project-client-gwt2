@@ -8,20 +8,23 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-
-package org.geomajas.gwt2.widget.client.other.dialog.resource;
+package org.geomajas.gwt2.widget.example.client.sample.dialog;
 
 /**
- * Client resource bundle interface with empty css classes.
+ * MVP view factory for this plugin.
  *
  * @author David Debuck
+  *
  */
-public interface CloseableDialogBoxWidgetResourceNoStyle extends CloseableDialogBoxWidgetResource {
+public class CloseableDialogBoxWidgetViewFactory {
 
 	/**
-	 * Get the css resource.
-	 * @return the css resource
+	 * Get the CloseableDialogBox view.
+	 *
+	 * @return CloseableDialogBoxWidgetView
 	 */
-	@Source("featureSelectBox-empty.css")
-	CloseableDialogBoxWidgetCssResource css();
+	public CloseableDialogBoxWidgetView closeableDialogBoxWidgetView() {
+		return new CloseableDialogBoxWidgetViewImpl();
+	}
+
 }

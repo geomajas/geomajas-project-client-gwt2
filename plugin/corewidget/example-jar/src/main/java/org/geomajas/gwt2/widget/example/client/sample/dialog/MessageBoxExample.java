@@ -19,7 +19,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
-import org.geomajas.gwt2.widget.client.other.message.MessageBox;
+import org.geomajas.gwt2.widget.example.client.sample.message.MessageBox;
 import org.geomajas.gwt2.widget.example.client.i18n.SampleMessages;
 
 /**

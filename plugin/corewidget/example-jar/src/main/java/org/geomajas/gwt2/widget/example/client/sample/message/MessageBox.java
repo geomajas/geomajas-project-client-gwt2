@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.client.other.message;
+package org.geomajas.gwt2.widget.example.client.sample.message;
 
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.GWT;
@@ -26,9 +26,9 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-import org.geomajas.gwt2.widget.client.other.dialog.CloseableDialogBoxWidget;
-import org.geomajas.gwt2.widget.client.other.dialog.resource.CloseableDialogBoxWidgetResource;
-import org.geomajas.gwt2.widget.client.other.dialog.i18n.CloseableDialogBoxWidgetMessages;
+import org.geomajas.gwt2.widget.example.client.sample.dialog.CloseableDialogBoxWidget;
+import org.geomajas.gwt2.widget.example.client.sample.dialog.resource.CloseableDialogBoxWidgetResource;
+import org.geomajas.gwt2.widget.example.client.sample.dialog.i18n.CloseableDialogBoxWidgetMessages;
 
 /**
  * General MessageBox for showing a message.

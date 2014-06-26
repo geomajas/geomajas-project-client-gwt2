@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.client.other.dialog.i18n;
+package org.geomajas.gwt2.widget.example.client.sample.dialog.i18n;
 
 import com.google.gwt.i18n.client.Messages;
 

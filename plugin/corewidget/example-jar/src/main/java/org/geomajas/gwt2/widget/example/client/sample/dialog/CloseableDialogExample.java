@@ -27,7 +27,6 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
-import org.geomajas.gwt2.widget.client.other.dialog.CloseableDialogBoxWidget;
 import org.geomajas.gwt2.widget.example.client.i18n.SampleMessages;
 
 /**

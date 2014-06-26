@@ -10,9 +10,9 @@
 -->
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
-			 xmlns:cdc="urn:import:org.geomajas.gwt2.widget.client.other.dialog.caption">
+             xmlns:cdc="urn:import:org.geomajas.gwt2.widget.example.client.sample.dialog.caption">
 
-	<ui:with field="resource" type="org.geomajas.gwt2.widget.client.other.dialog.resource.CloseableDialogBoxWidgetResource" />
+	<ui:with field="resource" type="org.geomajas.gwt2.widget.example.client.sample.dialog.resource.CloseableDialogBoxWidgetResource" />
 
 	<g:DialogBox styleName="{resource.css.closeableDialogBox}">
 

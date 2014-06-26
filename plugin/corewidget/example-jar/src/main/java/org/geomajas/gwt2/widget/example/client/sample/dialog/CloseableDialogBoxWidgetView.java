@@ -8,17 +8,25 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.client.other.dialog;
+package org.geomajas.gwt2.widget.example.client.sample.dialog;
 
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Interface for the CloseableDialogBox Presenter.
+ * Interface for the CloseableDialogBox Widget View.
  *
  * @author David Debuck.
  */
-public interface CloseableDialogBoxWidgetPresenter {
+public interface CloseableDialogBoxWidgetView extends IsWidget {
+
+	/**
+	 * Sets the presenter for callback.
+	 *
+	 * @param presenter CloseableDialogBoxWidgetPresenter
+	 */
+	void setPresenter(CloseableDialogBoxWidgetPresenter presenter);
 
 	/**
 	 * Set the title of the Closeable dialog box.

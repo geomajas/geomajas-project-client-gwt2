@@ -8,18 +8,15 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.client.other.dialog.resource;
+package org.geomajas.gwt2.widget.example.client.sample.dialog.resource;
 
 import com.google.gwt.resources.client.CssResource;
-import org.geomajas.annotation.Api;
 
 /**
  * Interface for the CloseableDialogBox Widget Resource.
  *
  * @author David Debuck.
- * @since 2.1.0
  */
-@Api(allMethods = true)
 public interface CloseableDialogBoxWidgetCssResource extends CssResource  {
 
 	/**

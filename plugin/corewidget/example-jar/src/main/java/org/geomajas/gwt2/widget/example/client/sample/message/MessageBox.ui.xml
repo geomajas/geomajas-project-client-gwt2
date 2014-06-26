@@ -10,8 +10,8 @@
 -->
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
-	<ui:with field="resource" type="org.geomajas.gwt2.widget.client.other.dialog.resource.CloseableDialogBoxWidgetResource"/>
-	<ui:with field="msg" type="org.geomajas.gwt2.widget.client.other.dialog.i18n.CloseableDialogBoxWidgetMessages" />
+	<ui:with field="resource" type="org.geomajas.gwt2.widget.example.client.sample.dialog.resource.CloseableDialogBoxWidgetResource"/>
+	<ui:with field="msg" type="org.geomajas.gwt2.widget.example.client.sample.dialog.i18n.CloseableDialogBoxWidgetMessages" />
 
 	<g:HTMLPanel>
 		<div style="margin: 5px 15px 10px 15px;">

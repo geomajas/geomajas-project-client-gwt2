@@ -8,21 +8,17 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.client.other.dialog;
+package org.geomajas.gwt2.widget.example.client.sample.dialog;
 
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
-import org.geomajas.annotation.Api;
-import org.geomajas.gwt2.widget.client.CoreWidget;
 
 /**
  * Entry point for the CloseableDialogBoxWidget.
  *
  * @author David Debuck.
- * @since 2.1.0
  */
-@Api
 public class CloseableDialogBoxWidget implements IsWidget {
 
 	private CloseableDialogBoxWidgetView view;
@@ -32,11 +28,8 @@ public class CloseableDialogBoxWidget implements IsWidget {
 	/**
 	 * CloseableDialogBoxWidget constructor.
 	 */
-	@Api
 	public CloseableDialogBoxWidget() {
-		this(CoreWidget.getInstance().getViewFactory().createCloseableDialogBox(
-			CoreWidget.getInstance().getClientBundleFactory().createCloseableDialogBoxWidgetResource()
-		));
+		this(CloseableDialogBox.getInstance().getViewFactory().closeableDialogBoxWidgetView());
 	}
 
 	/**
@@ -54,7 +47,6 @@ public class CloseableDialogBoxWidget implements IsWidget {
 	 *
 	 * @param title String
 	 */
-	@Api
 	public void setTitle(String title) {
 		presenter.setTitle(title);
 	}
@@ -64,7 +56,6 @@ public class CloseableDialogBoxWidget implements IsWidget {
 	 *
 	 * @param content Widget
 	 */
-	@Api
 	public void addContent(Widget content) {
 		presenter.addContent(content);
 	}
@@ -72,7 +63,6 @@ public class CloseableDialogBoxWidget implements IsWidget {
 	/**
 	 * Show the Closeable dialog box.
 	 */
-	@Api
 	public void show() {
 		presenter.show();
 	}
@@ -80,7 +70,6 @@ public class CloseableDialogBoxWidget implements IsWidget {
 	/**
 	 * Hide the Closeable dialog box.
 	 */
-	@Api
 	public void hide() {
 		presenter.hide();
 	}
@@ -88,7 +77,6 @@ public class CloseableDialogBoxWidget implements IsWidget {
 	/**
 	 * Center the Closeable dialog box.
 	 */
-	@Api
 	public void center() {
 		presenter.center();
 	}
@@ -99,7 +87,6 @@ public class CloseableDialogBoxWidget implements IsWidget {
 	 * @param width integer
 	 * @param height integer
 	 */
-	@Api
 	public void setSize(int width, int height) {
 		presenter.setSize(width, height);
 	}
@@ -109,7 +96,6 @@ public class CloseableDialogBoxWidget implements IsWidget {
 	 *
 	 * @param isGlassEnabled boolean
 	 */
-	@Api
 	public void setGlassEnabled(boolean isGlassEnabled) {
 		presenter.setGlassEnabled(isGlassEnabled);
 	}
@@ -119,7 +105,6 @@ public class CloseableDialogBoxWidget implements IsWidget {
 	 *
 	 * @param isModal boolean
 	 */
-	@Api
 	public void setModal(boolean isModal) {
 		presenter.setModal(isModal);
 	}
@@ -130,7 +115,6 @@ public class CloseableDialogBoxWidget implements IsWidget {
 	 *
 	 * @param onCloseHandler ClickHandler
 	 */
-	@Api
 	public  void setOnCloseHandler(ClickHandler onCloseHandler) {
 		presenter.setOnCloseHandler(onCloseHandler);
 	}

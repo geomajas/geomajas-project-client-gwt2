@@ -14,9 +14,6 @@ import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.widget.client.feature.featureselectbox.FeatureSelectBoxView;
 import org.geomajas.gwt2.widget.client.feature.featureselectbox.FeatureSelectBoxViewImpl;
 import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.FeatureSelectBoxResource;
-import org.geomajas.gwt2.widget.client.other.dialog.resource.CloseableDialogBoxWidgetResource;
-import org.geomajas.gwt2.widget.client.other.dialog.CloseableDialogBoxWidgetView;
-import org.geomajas.gwt2.widget.client.other.dialog.CloseableDialogBoxWidgetViewImpl;
 
 /**
  * MVP view factory for this plugin.
@@ -34,16 +31,6 @@ public class CoreWidgetViewFactory {
 	 */
 	public FeatureSelectBoxView createFeatureSelectBox(FeatureSelectBoxResource resource) {
 		return new FeatureSelectBoxViewImpl(resource);
-	}
-
-	/**
-	 * Create a new {@link org.geomajas.gwt2.widget.client.other.dialog.CloseableDialogBoxWidgetView}
-	 *
-	 * @param resource CloseableDialogBoxWidgetResource
-	 * @return the view
-	 */
-	public CloseableDialogBoxWidgetView createCloseableDialogBox(CloseableDialogBoxWidgetResource resource) {
-		return new CloseableDialogBoxWidgetViewImpl(resource);
 	}
 
 }

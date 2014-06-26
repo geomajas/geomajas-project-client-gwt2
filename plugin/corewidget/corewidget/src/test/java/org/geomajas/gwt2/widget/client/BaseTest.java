@@ -15,7 +15,6 @@ import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.feature.ServerFeatureService;
 import org.geomajas.gwt2.widget.client.feature.featureselectbox.FeatureSelectBoxView;
-import org.geomajas.gwt2.widget.client.other.dialog.CloseableDialogBoxWidgetView;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -28,9 +27,6 @@ public abstract class BaseTest {
 
 	@Mock
 	protected FeatureSelectBoxView featureSelectBoxView;
-
-	@Mock
-	protected CloseableDialogBoxWidgetView closeableDialogBoxWidgetView;
 
 	@Mock
 	protected ServerFeatureService serverFeatureService;
