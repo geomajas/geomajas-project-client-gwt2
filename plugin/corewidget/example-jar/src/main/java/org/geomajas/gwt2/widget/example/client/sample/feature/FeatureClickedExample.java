@@ -11,11 +11,14 @@
 package org.geomajas.gwt2.widget.example.client.sample.feature;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.MouseMoveEvent;
+import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -28,14 +31,14 @@ import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.client.widget.MapLayoutPanel;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
+import org.geomajas.gwt2.widget.example.client.sample.feature.tooltip.ToolTip;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class description.
+ * FeatureClicked showcase example.
  *
- * @author Dosi Bingov
- * @author Jan De Moerloose
  * @author David Debuck
  */
 public class FeatureClickedExample implements SamplePanel {
@@ -43,6 +46,12 @@ public class FeatureClickedExample implements SamplePanel {
 	protected DockLayoutPanel rootElement;
 
 	private MapPresenter mapPresenter;
+
+	private ToolTip toolTip;
+
+	private int clientX;
+
+	private int clientY;
 
 	@UiField
 	protected ResizeLayoutPanel mapPanel;
@@ -62,7 +71,7 @@ public class FeatureClickedExample implements SamplePanel {
 	/**
 	 * UI binder interface.
 	 *
-	 * @author Dosi Bingov
+	 * @author David Debuck
 	 */
 	interface FeatureSelectedExampleUiBinder extends UiBinder<DockLayoutPanel, FeatureClickedExample> {
 
@@ -70,6 +79,9 @@ public class FeatureClickedExample implements SamplePanel {
 
 	private static final FeatureSelectedExampleUiBinder UIBINDER = GWT.create(FeatureSelectedExampleUiBinder.class);
 
+	/**
+	 * Default constructor.
+	 */
 	public FeatureClickedExample() {
 		rootElement = UIBINDER.createAndBindUi(this);
 
@@ -94,6 +106,24 @@ public class FeatureClickedExample implements SamplePanel {
 		// add feature clicked listener.
 		FeatureClickedListener mapListener = new FeatureClickedListener();
 		mapPresenter.addMapListener(mapListener);
+
+		///////////////////////////////////////////////////////////////////////////////////////////
+		// Create the tooltip for our showcase and keep track of the mouse pointer position.
+		///////////////////////////////////////////////////////////////////////////////////////////
+
+		toolTip = new ToolTip();
+
+		// Get the current position of the mouse pointer.
+		RootPanel.get().addDomHandler(new MouseMoveHandler() {
+
+			@Override
+			public void onMouseMove(MouseMoveEvent event) {
+				clientX = event.getX();
+				clientY = event.getY();
+			}
+
+		}, MouseMoveEvent.getType());
+
 	}
 
 	/**
@@ -105,6 +135,29 @@ public class FeatureClickedExample implements SamplePanel {
 		public void onFeatureClicked(FeatureClickedEvent event) {
 
 			List<Feature> features = event.getFeatures();
+
+			///////////////////////////////////////////////////////////////////////////////////////////
+			// Show the tooltip when there are features found.
+			///////////////////////////////////////////////////////////////////////////////////////////
+
+			if (!features.isEmpty()) {
+
+				toolTip.clearContent();
+
+				List<String> content = new ArrayList<String>();
+
+				for (Feature feature : features) {
+					content.add(feature.getLabel());
+				}
+
+				toolTip.addContentAndShow(content, clientX, clientY, false);
+
+			}
+
+			///////////////////////////////////////////////////////////////////////////////////////////
+			// Log all FeatureClicked events in our showcase example, even when there are non found.
+			///////////////////////////////////////////////////////////////////////////////////////////
+
 			layerEventLayout.add(new Label("### " + features.size() + " feature(s) clicked"));
 			for (Feature feature : features) {
 				layerEventLayout.add(new Label("-- feature label => " + feature.getLabel()));
@@ -113,6 +166,7 @@ public class FeatureClickedExample implements SamplePanel {
 			layerEventLayout.add(new Label(""));
 
 			scrollPanel.scrollToBottom();
+
 		}
 
 	}

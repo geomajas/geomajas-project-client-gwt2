@@ -1,0 +1,16 @@
+@external .toolTip;
+.toolTip {
+	border: 1px solid #000000;
+	background-color: whitesmoke;
+	padding: 4px 6px;
+}
+
+@external .toolTipLine;
+.toolTipLine {
+	font-size: 13px;
+}
+
+@external .toolTipCloseButton;
+.toolTipCloseButton {
+	font-size: 13px;
+}
