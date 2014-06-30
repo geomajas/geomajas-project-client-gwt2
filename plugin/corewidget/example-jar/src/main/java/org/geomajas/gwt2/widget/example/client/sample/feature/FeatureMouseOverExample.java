@@ -11,8 +11,6 @@
 package org.geomajas.gwt2.widget.example.client.sample.feature;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
@@ -22,6 +20,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.controller.FeatureMouseOverListener;
@@ -49,11 +48,9 @@ public class FeatureMouseOverExample implements SamplePanel {
 
 	private MapPresenter mapPresenter;
 
+	private final MapLayoutPanel layout;
+
 	private ToolTip toolTip;
-
-	private int clientX;
-
-	private int clientY;
 
 	@UiField
 	protected ResizeLayoutPanel mapPanel;
@@ -94,7 +91,7 @@ public class FeatureMouseOverExample implements SamplePanel {
 
 		// Define the layout:
 		ResizeLayoutPanel resizeLayoutPanel = new ResizeLayoutPanel();
-		final MapLayoutPanel layout = new MapLayoutPanel();
+		layout = new MapLayoutPanel();
 		resizeLayoutPanel.setWidget(layout);
 		resizeLayoutPanel.setSize("100%", "100%");
 		layout.setPresenter(mapPresenter);
@@ -123,17 +120,6 @@ public class FeatureMouseOverExample implements SamplePanel {
 
 		toolTip = new ToolTip();
 
-		// Get the current position of the mouse pointer.
-		RootPanel.get().addDomHandler(new MouseMoveHandler() {
-
-			@Override
-			public void onMouseMove(MouseMoveEvent event) {
-				clientX = event.getX();
-				clientY = event.getY();
-			}
-
-		}, MouseMoveEvent.getType());
-
 	}
 
 	/**
@@ -143,6 +129,16 @@ public class FeatureMouseOverExample implements SamplePanel {
 
 		@Override
 		public void onFeatureMouseOver(FeatureMouseOverEvent event) {
+
+			///////////////////////////////////////////////////////////////////////////////////////////
+			// Hide the tooltip when we receive a null value.
+			// This means that the mouse is not hovering over a feature.
+			///////////////////////////////////////////////////////////////////////////////////////////
+
+			if (event.getFeatures() == null) {
+				toolTip.hide();
+				return;
+			}
 
 			List<Feature> features = event.getFeatures();
 
@@ -154,13 +150,24 @@ public class FeatureMouseOverExample implements SamplePanel {
 
 				toolTip.clearContent();
 
-				List<String> content = new ArrayList<String>();
+				List<Label> content = new ArrayList<Label>();
 
 				for (Feature feature : features) {
-					content.add(feature.getLabel());
+					final Label label = new Label(feature.getLabel());
+					content.add(label);
 				}
 
-				toolTip.addContentAndShow(content, clientX, clientY, true);
+				// Calculate a position for where to show the tooltip.
+				int left = RootPanel.get().getAbsoluteLeft() + layout.getAbsoluteLeft();
+				int top = RootPanel.get().getAbsoluteTop() + layout.getAbsoluteTop();
+
+				// Add some extra pixels to the tooltip so we can still drag the map.
+				toolTip.addContentAndShow(
+						content,
+						left + (int) event.getCoordinate().getX() + 5,
+						top + (int) event.getCoordinate().getY() + 5,
+						false
+				);
 
 			}
 
@@ -168,12 +175,15 @@ public class FeatureMouseOverExample implements SamplePanel {
 			// Log all FeatureMouseOver events in our showcase example, even when there are non found.
 			///////////////////////////////////////////////////////////////////////////////////////////
 
-			layerEventLayout.add(new Label("### " + features.size() + " feature(s) hovered"));
+			layerEventLayout.add(new Label("On FeatureMouseOverEvent: ( " + features.size()  + " feature(s) found. )"));
 			for (Feature feature : features) {
-				layerEventLayout.add(new Label("-- feature label => " + feature.getLabel()));
-				layerEventLayout.add(new Label("-- layer title => " + feature.getLayer().getTitle()));
+				Coordinate coordinate = feature.getGeometry().getCoordinates()[0];
+				layerEventLayout.add(new Label("# Feature => " + feature.getLabel()));
+				layerEventLayout.add(new Label("- Coordinate x  => " + coordinate.getX()));
+				layerEventLayout.add(new Label("- Coordinate y  => " + coordinate.getY()));
+				layerEventLayout.add(new Label("- layer title => " + feature.getLayer().getTitle()));
 			}
-			layerEventLayout.add(new Label(""));
+			layerEventLayout.add(new Label("-------------------------------------------------"));
 
 			scrollPanel.scrollToBottom();
 

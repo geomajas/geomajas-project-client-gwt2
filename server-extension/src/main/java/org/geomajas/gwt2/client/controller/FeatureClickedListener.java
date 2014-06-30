@@ -11,10 +11,13 @@
 
 package org.geomajas.gwt2.client.controller;
 
+import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseDownEvent;
+import com.google.gwt.event.dom.client.MouseUpEvent;
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.geometry.service.MathService;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.event.FeatureClickedEvent;
@@ -48,6 +51,8 @@ public class FeatureClickedListener extends AbstractMapController {
 
 	private int pixelBuffer = 10;
 
+	private double clickDelta = 2;
+
 	protected Coordinate clickedPosition;
 
 	/**
@@ -79,20 +84,30 @@ public class FeatureClickedListener extends AbstractMapController {
 	}
 
 	@Override
+	public void onMouseUp(MouseUpEvent event) {
+
+		if (isDownPosition(event)) {
+
+			Geometry point = new Geometry(Geometry.POINT, 0, -1);
+			Coordinate coordinate = getLocation(event, RenderSpace.WORLD);
+			point.setCoordinates(new Coordinate[] { coordinate });
+
+			GeomajasServerExtension
+					.getInstance()
+					.getServerFeatureService()
+					.search(mapPresenter, point, calculateBufferFromPixelTolerance(),
+							ServerFeatureService.QueryType.INTERSECTS,
+							ServerFeatureService.SearchLayerType.SEARCH_ALL_LAYERS, -1, new SelectionCallback()
+					);
+
+		}
+
+	}
+
+	@Override
 	public void onMouseDown(MouseDownEvent event) {
 
-		clickedPosition = getLocation(event, RenderSpace.WORLD);
-
-		Geometry point = new Geometry(Geometry.POINT, 0, -1);
-		point.setCoordinates(new Coordinate[] { clickedPosition });
-
-		GeomajasServerExtension
-			.getInstance()
-			.getServerFeatureService()
-			.search(mapPresenter, point, calculateBufferFromPixelTolerance(),
-					ServerFeatureService.QueryType.INTERSECTS,
-					ServerFeatureService.SearchLayerType.SEARCH_ALL_LAYERS, -1, new SelectionCallback()
-			);
+		clickedPosition = getLocation(event, RenderSpace.SCREEN);
 
 	}
 
@@ -102,13 +117,6 @@ public class FeatureClickedListener extends AbstractMapController {
 	 * @author David Debuck
 	 */
 	private class SelectionCallback implements FeatureMapFunction {
-
-		/**
-		 * Default constructor.
-		 */
-		public SelectionCallback() {
-			//
-		}
 
 		@Override
 		public void execute(Map<FeaturesSupported, List<Feature>> featureMap) {
@@ -148,6 +156,22 @@ public class FeatureClickedListener extends AbstractMapController {
 				.transform(new Coordinate(pixelBuffer, 0), RenderSpace.SCREEN, RenderSpace.WORLD);
 		return c1.distance(c2);
 
+	}
+
+	/**
+	 * Is the event at the same location as the "down" event?
+	 *
+	 * @param event The event to check.
+	 * @return true or false.
+	 */
+	private boolean isDownPosition(HumanInputEvent<?> event) {
+		if (clickedPosition != null) {
+			Coordinate location = getLocation(event, RenderSpace.SCREEN);
+			if (MathService.distance(clickedPosition, location) < clickDelta) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

@@ -15,8 +15,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -38,10 +36,6 @@ public class ToolTip implements IsWidget {
 	private ToolTipMessages msg = GWT.create(ToolTipMessages.class);
 
 	private PopupPanel toolTip;
-
-	private Timer timer;
-
-	private int delay = 1500; // 1.5s
 
 	@UiField
 	protected VerticalPanel contentPanel;
@@ -77,45 +71,30 @@ public class ToolTip implements IsWidget {
 	/**
 	 * Add content to the tooltip and show it with the given parameters.
 	 *
-	 * @param content a list of Strings
+	 * @param content a list of Labels
 	 * @param left the left position of the tooltip
 	 * @param top the top position of the tooltip
-	 * @param autoHide hide the tooltip automatically after a certain time.
 	 */
-	public void addContentAndShow(List<String> content, int left, int top, boolean autoHide) {
+	public void addContentAndShow(List<Label> content, int left, int top, boolean showCloseButton) {
 
-		for (String s : content) {
-			Label label = new Label(s);
-			label.addStyleName(ToolTipResource.INSTANCE.css().toolTipLine());
-			contentPanel.add(label);
+		// Add a closeButton when showCloseButton is true.
+		if (showCloseButton) {
+			Label closeButtonLabel = new Label(" X ");
+			closeButtonLabel.addStyleName(ToolTipResource.INSTANCE.css().toolTipCloseButton());
+			contentPanel.add(closeButtonLabel);
+
+			closeButtonLabel.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					hide();
+				}
+			});
 		}
 
-		// Create a timer for hiding the tooltip when autoHide is true.
-		if (autoHide) {
-
-			if (timer == null) {
-				timer = new Timer() {
-
-					public void run() {
-
-						toolTip.hide();
-
-					}
-				};
-				timer.schedule(delay);
-
-			} else {
-				timer.cancel();
-				// extend the timer when this is run within the time of another.
-				timer.schedule(delay);
-			}
-
-		} else {
-
-			contentPanel.add(
-					getCloseButton()
-			);
-
+		// Add the content to the panel.
+		for (Label l : content) {
+			l.addStyleName(ToolTipResource.INSTANCE.css().toolTipLine());
+			contentPanel.add(l);
 		}
 
 		// Finally set position of the tooltip and show it.
@@ -129,39 +108,6 @@ public class ToolTip implements IsWidget {
 	 */
 	public void clearContent() {
 		contentPanel.clear();
-	}
-
-	/**
-	 * Set the delay for hiding the tooltip.
-	 * The default is 1500 milliseconds.
-	 *
-	 * @param delay the time in milliseconds.
-	 */
-	public void setDelay(int delay) {
-		this.delay = delay;
-	}
-
-	/**
-	 * Create the closeButton for the tooltip.
-	 *
-	 * @return the closeButton
-	 */
-	private Button getCloseButton() {
-
-		Button closeButton = new Button(msg.toolTipCloseButtonTitle());
-		closeButton.addStyleName(ToolTipResource.INSTANCE.css().toolTipCloseButton());
-
-		closeButton.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-
-				toolTip.hide();
-
-			}
-		});
-
-		return closeButton;
-
 	}
 
 	@Override

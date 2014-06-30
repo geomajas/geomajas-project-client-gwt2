@@ -51,13 +51,15 @@ public class FeatureMouseOverListener extends AbstractMapController {
 
 	private Timer timer;
 
-	protected Coordinate clickedPosition;
+	private Coordinate hoverPosition;
+
+	private Coordinate worldCoordinate;
 
 	/**
 	 * Default constructor.
 	 */
 	public FeatureMouseOverListener() {
-		super(true);
+		super(false);
 	}
 
 	/**
@@ -66,7 +68,7 @@ public class FeatureMouseOverListener extends AbstractMapController {
 	 * @param delay how long to wait for another search on the position.
 	 */
 	public FeatureMouseOverListener(int delay) {
-		super(true);
+		super(false);
 		this.delay = delay;
 	}
 
@@ -77,7 +79,7 @@ public class FeatureMouseOverListener extends AbstractMapController {
 	 * @param pixelBuffer buffer in pixels.
 	 */
 	public FeatureMouseOverListener(int delay, int pixelBuffer) {
-		super(true);
+		super(false);
 		this.delay = delay;
 		this.pixelBuffer = pixelBuffer;
 	}
@@ -96,34 +98,44 @@ public class FeatureMouseOverListener extends AbstractMapController {
 	@Override
 	public void onMouseMove(MouseMoveEvent event) {
 
-		clickedPosition = getLocation(event, RenderSpace.WORLD);
+		hoverPosition = getLocation(event, RenderSpace.SCREEN);
 
-		// Only execute a search after a certain time.
-		// Save some server power here.
-		if (timer == null) {
-			timer = new Timer() {
+		mapPresenter.getEventBus().fireEvent(
+				new FeatureMouseOverEvent(hoverPosition, null));
 
-				public void run() {
+		if (!isDragging()) {
 
-					Geometry point = new Geometry(Geometry.POINT, 0, -1);
-					point.setCoordinates(new Coordinate[] { clickedPosition });
+			worldCoordinate = getLocation(event, RenderSpace.WORLD);
 
-					GeomajasServerExtension
-							.getInstance()
-							.getServerFeatureService()
-							.search(mapPresenter, point, calculateBufferFromPixelTolerance(),
-									ServerFeatureService.QueryType.INTERSECTS,
-									ServerFeatureService.SearchLayerType.SEARCH_ALL_LAYERS, -1, new SelectionCallback()
-							);
+			// Only execute a search after a certain time.
+			// Save some server power here.
+			if (timer == null) {
+				timer = new Timer() {
+
+					public void run() {
+
+						Geometry point = new Geometry(Geometry.POINT, 0, -1);
+						point.setCoordinates(new Coordinate[] { worldCoordinate });
+
+						GeomajasServerExtension
+								.getInstance()
+								.getServerFeatureService()
+								.search(mapPresenter, point, calculateBufferFromPixelTolerance(),
+										ServerFeatureService.QueryType.INTERSECTS,
+										ServerFeatureService.SearchLayerType.SEARCH_ALL_LAYERS, -1,
+										new SelectionCallback()
+								);
 
 
-				}
-			};
-			timer.schedule(delay);
+					}
+				};
+				timer.schedule(delay);
 
-		} else {
-			timer.cancel();
-			timer.schedule(delay);
+			} else {
+				timer.cancel();
+				timer.schedule(delay);
+			}
+
 		}
 
 	}
@@ -134,13 +146,6 @@ public class FeatureMouseOverListener extends AbstractMapController {
 	 * @author David Debuck
 	 */
 	private class SelectionCallback implements FeatureMapFunction {
-
-		/**
-		 * Default constructor.
-		 */
-		public SelectionCallback() {
-			//
-		}
 
 		@Override
 		public void execute(Map<FeaturesSupported, List<Feature>> featureMap) {
@@ -161,7 +166,7 @@ public class FeatureMouseOverListener extends AbstractMapController {
 			}
 
 			mapPresenter.getEventBus().fireEvent(
-					new FeatureMouseOverEvent(clickedPosition, new ArrayList<Feature>(clickedFeatures.values())));
+					new FeatureMouseOverEvent(hoverPosition, new ArrayList<Feature>(clickedFeatures.values())));
 
 		}
 
