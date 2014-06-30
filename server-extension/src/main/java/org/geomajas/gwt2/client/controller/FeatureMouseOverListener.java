@@ -63,25 +63,23 @@ public class FeatureMouseOverListener extends AbstractMapController {
 	}
 
 	/**
-	 * Constructor with parameter for the delay.
+	 * Set a buffer in pixels. Default is 10 pixels.
+	 * This is to include all features within this range on the map.
 	 *
-	 * @param delay how long to wait for another search on the position.
+	 * @param pixelBuffer buffer in pixels.
 	 */
-	public FeatureMouseOverListener(int delay) {
-		super(false);
-		this.delay = delay;
+	private void setPixelBuffer(int pixelBuffer) {
+		this.pixelBuffer = pixelBuffer;
 	}
 
 	/**
-	 * Constructor with parameter for the delay and buffer.
+	 * Set the the delay for searching features on the current position.
+	 * Default is 250 milliseconds.
 	 *
 	 * @param delay how long to wait for another search on the position.
-	 * @param pixelBuffer buffer in pixels.
 	 */
-	public FeatureMouseOverListener(int delay, int pixelBuffer) {
-		super(false);
+	private void setDelay(int delay) {
 		this.delay = delay;
-		this.pixelBuffer = pixelBuffer;
 	}
 
 	@Override
@@ -100,6 +98,7 @@ public class FeatureMouseOverListener extends AbstractMapController {
 
 		hoverPosition = getLocation(event, RenderSpace.SCREEN);
 
+		// This will make sure that even when we are dragging we get some feedback.
 		mapPresenter.getEventBus().fireEvent(
 				new FeatureMouseOverEvent(hoverPosition, null));
 

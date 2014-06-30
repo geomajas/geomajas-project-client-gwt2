@@ -63,12 +63,12 @@ public class FeatureClickedListener extends AbstractMapController {
 	}
 
 	/**
-	 * Constructor with parameter for the buffer.
+	 * Set a buffer in pixels. Default is 10 pixels.
+	 * This is to include all features within this range on the map.
 	 *
 	 * @param pixelBuffer buffer in pixels.
 	 */
-	public FeatureClickedListener(int pixelBuffer) {
-		super(false);
+	private void setPixelBuffer(int pixelBuffer) {
 		this.pixelBuffer = pixelBuffer;
 	}
 

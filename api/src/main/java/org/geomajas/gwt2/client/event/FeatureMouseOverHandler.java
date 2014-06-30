@@ -32,6 +32,13 @@ public interface FeatureMouseOverHandler extends EventHandler {
 	/**
 	 * Called when feature is found where the mouse is hovering.
 	 *
+	 * This event returns a coordinate with all features on the position.
+	 * There are 3 return reslts possible from getFeatures:
+	 * features == null => with this we get an instant result response while moving our mouse.
+	 *                     This is returned while dragging and moving our mouse.
+	 * features == 0    => the coordinate doesn't have any features available.
+	 * features == > 0  => the coordinate has 1 or more features available.
+	 *
 	 * @param event {@link org.geomajas.gwt2.client.event.FeatureMouseOverEvent}
 	 */
 	void onFeatureMouseOver(FeatureMouseOverEvent event);
