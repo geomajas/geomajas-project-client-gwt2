@@ -118,8 +118,8 @@ public final class WmsServerExtension {
 	 * @param tileHeight The tile height in pixels.
 	 * @return A new WMS layer.
 	 */
-	public FeaturesSupportedWmsLayer createLayer(MapConfiguration mapConfig, String baseUrl, WmsService.WmsVersion version,
-			WmsLayerInfo layerInfo, ViewPort viewPort, int tileWidth, int tileHeight) {
+	public FeaturesSupportedWmsLayer createLayer(MapConfiguration mapConfig, String baseUrl,
+			WmsService.WmsVersion version, WmsLayerInfo layerInfo, ViewPort viewPort, int tileWidth, int tileHeight) {
 		TileConfiguration tileConf = WmsClient.getInstance().createTileConfig(layerInfo, viewPort, tileWidth,
 				tileHeight);
 		WmsLayerConfiguration layerConf = WmsClient.getInstance().createLayerConfig(layerInfo, baseUrl, version);
