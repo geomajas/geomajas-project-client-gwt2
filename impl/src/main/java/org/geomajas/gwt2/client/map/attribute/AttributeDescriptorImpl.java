@@ -27,6 +27,10 @@ public class AttributeDescriptorImpl implements AttributeDescriptor {
 	public AttributeDescriptorImpl() {
 	}
 
+	public AttributeDescriptorImpl(AttributeType type, String name) {
+		this(type, name, "");
+	}
+
 	public AttributeDescriptorImpl(AttributeType type, String name, String label) {
 		this.type = type;
 		this.name = name;
