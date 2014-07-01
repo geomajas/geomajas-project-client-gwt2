@@ -18,7 +18,6 @@ import org.geomajas.gwt2.example.base.client.sample.SamplePanelRegistry;
 import org.geomajas.gwt2.example.base.client.sample.ShowcaseSampleDefinition;
 import org.geomajas.gwt2.example.client.i18n.SampleMessages;
 import org.geomajas.gwt2.example.client.sample.feature.FeatureSelectionPanel;
-import org.geomajas.gwt2.example.client.sample.featureinfo.FeatureInfoPanel;
 import org.geomajas.gwt2.example.client.sample.general.AlternativeControlsPanel;
 import org.geomajas.gwt2.example.client.sample.general.MapFillPanel;
 import org.geomajas.gwt2.example.client.sample.general.NavigationOptionPanel;
@@ -232,28 +231,28 @@ public class ExampleJar implements EntryPoint {
 				return "serverexception";
 			}
 		});
-//		SamplePanelRegistry.registerFactory(CATEGORY_GENERAL, new ShowcaseSampleDefinition() {
-//
-//			public SamplePanel create() {
-//				return new MapTraceNavigationPanel();
-//			}
-//
-//			public String getTitle() {
-//				return MESSAGES.generalTraceNavigationTitle();
-//			}
-//
-//			public String getShortDescription() {
-//				return MESSAGES.generalTraceNavigationShort();
-//			}
-//
-//			public String getDescription() {
-//				return MESSAGES.generalTraceNavigationDescription();
-//			}
-//
-//			public String getCategory() {
-//				return CATEGORY_GENERAL;
-//			}
-//		});
+		//		SamplePanelRegistry.registerFactory(CATEGORY_GENERAL, new ShowcaseSampleDefinition() {
+		//
+		//			public SamplePanel create() {
+		//				return new MapTraceNavigationPanel();
+		//			}
+		//
+		//			public String getTitle() {
+		//				return MESSAGES.generalTraceNavigationTitle();
+		//			}
+		//
+		//			public String getShortDescription() {
+		//				return MESSAGES.generalTraceNavigationShort();
+		//			}
+		//
+		//			public String getDescription() {
+		//				return MESSAGES.generalTraceNavigationDescription();
+		//			}
+		//
+		//			public String getCategory() {
+		//				return CATEGORY_GENERAL;
+		//			}
+		//		});
 	}
 
 	private void registerLayerSamples() {
@@ -424,37 +423,6 @@ public class ExampleJar implements EntryPoint {
 				return "featureselection";
 			}
 		});
-        SamplePanelRegistry.registerFactory(CATEGORY_FEATURE, new ShowcaseSampleDefinition() {
-            @Override
-            public SamplePanel create() {
-                return new FeatureInfoPanel();
-            }
-
-            @Override
-            public String getTitle() {
-                return MESSAGES.featureInfoTitle();
-            }
-
-            @Override
-            public String getShortDescription() {
-                return MESSAGES.featureInfoShort();
-            }
-
-            @Override
-            public String getDescription() {
-                return MESSAGES.featureInfoDescription();
-            }
-
-            @Override
-            public String getCategory() {
-                return CATEGORY_FEATURE;
-            }
-
-            @Override
-            public String getKey() {
-                return "featureinfo";
-            }
-        });
 	}
 
 	private void registerRenderingSamples() {

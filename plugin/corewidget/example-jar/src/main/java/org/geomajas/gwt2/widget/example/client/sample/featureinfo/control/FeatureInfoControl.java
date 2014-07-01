@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.example.client.sample.featureinfo.control;
+package org.geomajas.gwt2.widget.example.client.sample.featureinfo.control;
 
 import com.google.gwt.core.client.GWT;
 
@@ -20,25 +20,25 @@ import com.google.gwt.core.client.GWT;
  */
 public class FeatureInfoControl {
 
-    private static FeatureInfoControl instance;
+	private static FeatureInfoControl instance;
 
-    private FeatureInfoControlViewFactory viewFactory;
+	private FeatureInfoControlViewFactory viewFactory;
 
-    private FeatureInfoControl() {
-    }
+	private FeatureInfoControl() {
+	}
 
-    public FeatureInfoControlViewFactory getViewFactory() {
-        if (viewFactory == null) {
-            viewFactory = GWT.create(FeatureInfoControlViewFactory.class);
-        }
-        return viewFactory;
-    }
+	public FeatureInfoControlViewFactory getViewFactory() {
+		if (viewFactory == null) {
+			viewFactory = GWT.create(FeatureInfoControlViewFactory.class);
+		}
+		return viewFactory;
+	}
 
-    public static FeatureInfoControl getInstance() {
-        if (instance == null) {
-            instance = new FeatureInfoControl();
-        }
-        return instance;
-    }
+	public static FeatureInfoControl getInstance() {
+		if (instance == null) {
+			instance = new FeatureInfoControl();
+		}
+		return instance;
+	}
 
 }

@@ -9,17 +9,17 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.example.client.sample.featureinfo.control;
+package org.geomajas.gwt2.widget.example.client.sample.featureinfo.control;
 
 /**
- * View factory for the {@link org.geomajas.gwt2.example.client.sample.featureinfo.control.FeatureInfoControl}.
+ * View factory for the {@link org.geomajas.gwt2.widget.example.client.sample.featureinfo.control.FeatureInfoControl}.
  *
  * @author Youri Flement
  */
 public class FeatureInfoControlViewFactory {
 
-    public FeatureInfoControlView createFeatureInfoControlView() {
-        return new FeatureInfoControlViewImpl();
-    }
+	public FeatureInfoControlView createFeatureInfoControlView() {
+		return new FeatureInfoControlViewImpl();
+	}
 
 }

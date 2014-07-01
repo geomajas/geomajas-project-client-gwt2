@@ -21,30 +21,31 @@ import org.geomajas.gwt2.client.map.feature.Feature;
  * with the feature information.
  *
  * @author Youri Flement
+ * @since 2.1.0
  */
 @Api(allMethods = true)
 public interface FeatureInfoView extends IsWidget {
 
-    /**
-     * Set the feature to be displayed.
-     *
-     * @param feature the feature.
-     */
-    void setFeature(Feature feature);
+	/**
+	 * Set the feature to be displayed.
+	 *
+	 * @param feature the feature.
+	 */
+	void setFeature(Feature feature);
 
-    /**
-     * Set the presenter of the view.
-     *
-     * @param presenter the presenter.
-     */
-    void setPresenter(FeatureInfoPresenter presenter);
+	/**
+	 * Set the presenter of the view.
+	 *
+	 * @param presenter the presenter.
+	 */
+	void setPresenter(FeatureInfoPresenter presenter);
 
-    /**
-     * Show or hide options of the feature info widget.
-     *
-     * @param show <code>true</code> if the options (e.g. "Zoom to object")
-     *             should be shown and <code>false</code> otherwise.
-     */
-    void showOptions(boolean show);
+	/**
+	 * Show or hide options of the feature info widget.
+	 *
+	 * @param show <code>true</code> if the options (e.g. "Zoom to object")
+	 *             should be shown and <code>false</code> otherwise.
+	 */
+	void showOptions(boolean show);
 
 }

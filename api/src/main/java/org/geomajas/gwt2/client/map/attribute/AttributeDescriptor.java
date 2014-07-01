@@ -37,4 +37,11 @@ public interface AttributeDescriptor extends Serializable {
 	 * @return The attribute name.
 	 */
 	String getName();
+
+	/**
+	 * Get the label for this attribute.
+	 *
+	 * @return The attribute label.
+	 */
+	String getLabel();
 }

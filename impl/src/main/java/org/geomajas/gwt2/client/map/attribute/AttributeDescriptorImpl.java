@@ -22,12 +22,15 @@ public class AttributeDescriptorImpl implements AttributeDescriptor {
 
 	private String name;
 
+	private String label;
+
 	public AttributeDescriptorImpl() {
 	}
 
-	public AttributeDescriptorImpl(AttributeType type, String name) {
+	public AttributeDescriptorImpl(AttributeType type, String name, String label) {
 		this.type = type;
 		this.name = name;
+		this.label = label;
 	}
 
 	@Override
@@ -47,5 +50,14 @@ public class AttributeDescriptorImpl implements AttributeDescriptor {
 
 	public String getName() {
 		return name;
+	}
+
+	@Override
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
 	}
 }

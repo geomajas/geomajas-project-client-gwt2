@@ -25,46 +25,47 @@ import org.geomajas.gwt2.widget.client.featureinfo.resource.FeatureInfoResource;
  * as zooming to the feature. The options can be hidden if needed.
  *
  * @author Youri Flement
+ * @since 2.1.0
  */
 @Api(allMethods = true)
 public class FeatureInfoWidget implements IsWidget {
 
-    private FeatureInfoPresenter presenter;
+	private FeatureInfoPresenter presenter;
 
-    private FeatureInfoView view;
+	private FeatureInfoView view;
 
-    public FeatureInfoWidget(MapPresenter mapPresenter) {
-        this(CoreWidget.getInstance().getClientBundleFactory().createFeatureInfoResource(), mapPresenter);
-    }
+	public FeatureInfoWidget(MapPresenter mapPresenter) {
+		this(CoreWidget.getInstance().getClientBundleFactory().createFeatureInfoResource(), mapPresenter);
+	}
 
-    public FeatureInfoWidget(FeatureInfoResource resource, MapPresenter mapPresenter) {
-        view = CoreWidget.getInstance().getViewFactory().createFeatureInfoView(resource);
-        presenter = new FeatureInfoPresenterImpl(view);
-        presenter.setMapPresenter(mapPresenter);
-        view.setPresenter(presenter);
-    }
+	public FeatureInfoWidget(FeatureInfoResource resource, MapPresenter mapPresenter) {
+		view = CoreWidget.getInstance().getViewFactory().createFeatureInfoView(resource);
+		presenter = new FeatureInfoPresenterImpl(view);
+		presenter.setMapPresenter(mapPresenter);
+		view.setPresenter(presenter);
+	}
 
-    /**
-     * Set the feature to display.
-     *
-     * @param feature the feature.
-     */
-    public void setFeature(Feature feature) {
-        presenter.setFeature(feature);
-    }
+	/**
+	 * Set the feature to display.
+	 *
+	 * @param feature the feature.
+	 */
+	public void setFeature(Feature feature) {
+		presenter.setFeature(feature);
+	}
 
-    /**
-     * Hide or show the options to interact with the feature (information).
-     *
-     * @param show <code>true</code> if the options should be shown,
-     *             <code>false</code> otherwise.
-     */
-    public void showOptions(boolean show) {
-        presenter.showOptions(show);
-    }
+	/**
+	 * Hide or show the options to interact with the feature (information).
+	 *
+	 * @param show <code>true</code> if the options should be shown,
+	 *             <code>false</code> otherwise.
+	 */
+	public void showOptions(boolean show) {
+		presenter.showOptions(show);
+	}
 
-    @Override
-    public Widget asWidget() {
-        return view.asWidget();
-    }
+	@Override
+	public Widget asWidget() {
+		return view.asWidget();
+	}
 }

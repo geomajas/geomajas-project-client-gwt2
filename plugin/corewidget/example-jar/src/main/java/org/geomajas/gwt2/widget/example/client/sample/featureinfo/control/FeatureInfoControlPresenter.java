@@ -9,12 +9,12 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.example.client.sample.featureinfo.control;
+package org.geomajas.gwt2.widget.example.client.sample.featureinfo.control;
 
 import org.geomajas.gwt2.client.map.MapPresenter;
 
 /**
- * Presenter interface for the {@link org.geomajas.gwt2.example.client.sample.featureinfo.control.FeatureInfoControl}.
+ * Presenter interface for the {@link org.geomajas.gwt2.widget.example.client.sample.featureinfo.control.FeatureInfoControl}.
  * The presenter allows to disable/enable the displaying of feature info, e.g. the underlying control can be a
  * toggle button.
  *
@@ -22,15 +22,15 @@ import org.geomajas.gwt2.client.map.MapPresenter;
  */
 public interface FeatureInfoControlPresenter {
 
-    void setMapPresenter(MapPresenter mapPresenter);
+	void setMapPresenter(MapPresenter mapPresenter);
 
-    /**
-     * Enable showing feature info when a feature is clicked.
-     */
-    void enableFeatureInfo();
+	/**
+	 * Enable showing feature info when a feature is clicked.
+	 */
+	void enableFeatureInfo();
 
-    /**
-     * Disable showing feature info when a feature is clicked.
-     */
-    void disableFeatureInfo();
+	/**
+	 * Disable showing feature info when a feature is clicked.
+	 */
+	void disableFeatureInfo();
 }

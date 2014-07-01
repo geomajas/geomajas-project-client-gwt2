@@ -26,31 +26,51 @@ public interface SampleMessages extends Messages {
 	// ------------------------------------------------------------------------
 
 	String closeableDialogTitle();
+
 	String closeableDialogDescrShort();
+
 	String closeableDialogDescription();
+
 	String closeableDialogButShow();
 
 	String messageBoxTitle();
+
 	String messageBoxDescrShort();
+
 	String messageBoxDescription();
+
 	String messageBoxInfoMessageBtn();
+
 	String messageBoxWarnMessageBtn();
+
 	String messageBoxErrorMessageBtn();
+
 	String messageBoxHelpMessageBtn();
+
 	String messageBoxYesNoBtn();
+
 	String messageBoxYesNoCancelBtn();
+
 	String messageBoxMessage();
+
 	String messageBoxResponseYes();
+
 	String messageBoxResponseNo();
+
 	String messageBoxResponseCancel();
+
 	SafeHtml messageBoxMessageLong();
 
 	String featureSelectedTitle();
+
 	String featureSelectedDescrShort();
+
 	String featureSelectedDescription();
 
 	String featureMouseOverTitle();
+
 	String featureMouseOverDescrShort();
+
 	String featureMouseOverDescription();
 
 	// ------------------------------------------------------------------------
@@ -102,4 +122,10 @@ public interface SampleMessages extends Messages {
 	String itemSelectThirdItem();
 
 	String itemSelectYouSelected(String item);
+
+	String featureInfoTitle();
+
+	String featureInfoShort();
+
+	String featureInfoDescription();
 }

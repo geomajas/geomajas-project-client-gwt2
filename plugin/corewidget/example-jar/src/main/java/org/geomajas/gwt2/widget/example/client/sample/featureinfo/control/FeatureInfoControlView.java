@@ -9,23 +9,23 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.example.client.sample.featureinfo.control;
+package org.geomajas.gwt2.widget.example.client.sample.featureinfo.control;
 
 import com.google.gwt.user.client.ui.IsWidget;
 
 /**
- * View interface of {@link org.geomajas.gwt2.example.client.sample.featureinfo.control.FeatureInfoControl}.
+ * View interface of {@link org.geomajas.gwt2.widget.example.client.sample.featureinfo.control.FeatureInfoControl}.
  * The view has only methods for setting the presenter.
  *
  * @author Youri Flement
  */
 public interface FeatureInfoControlView extends IsWidget {
 
-    /**
-     * Set the presenter that will handle the events when the control is clicked.
-     *
-     * @param presenter the presenter.
-     */
-    void setPresenter(FeatureInfoControlPresenter presenter);
+	/**
+	 * Set the presenter that will handle the events when the control is clicked.
+	 *
+	 * @param presenter the presenter.
+	 */
+	void setPresenter(FeatureInfoControlPresenter presenter);
 
 }

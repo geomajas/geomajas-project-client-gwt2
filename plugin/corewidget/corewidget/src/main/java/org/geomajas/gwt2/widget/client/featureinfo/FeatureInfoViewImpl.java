@@ -22,12 +22,8 @@ import com.google.gwt.user.client.ui.HTMLTable.CellFormatter;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import org.geomajas.configuration.AbstractAttributeInfo;
-import org.geomajas.configuration.AbstractReadOnlyAttributeInfo;
-import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
 import org.geomajas.gwt2.client.map.feature.Feature;
-import org.geomajas.gwt2.client.map.layer.VectorServerLayer;
 import org.geomajas.gwt2.widget.client.featureinfo.resource.FeatureInfoResource;
 import org.geomajas.gwt2.widget.client.i18n.WidgetCoreInternationalization;
 
@@ -87,18 +83,9 @@ public class FeatureInfoViewImpl implements FeatureInfoView {
         CellFormatter formatter = grid.getCellFormatter();
         int i = 0;
         for (AttributeDescriptor descriptor : feature.getLayer().getAttributeDescriptors()) {
-            // Put the label in the first column, first try to get a meaningful label:
-            if (feature.getLayer() instanceof VectorServerLayer) {
-                FeatureInfo info = ((VectorServerLayer) feature.getLayer()).getLayerInfo().getFeatureInfo();
-                AbstractAttributeInfo attributeInfo = info.getAttributesMap().get(descriptor.getName());
-                if (attributeInfo instanceof AbstractReadOnlyAttributeInfo) {
-                    grid.setText(i, 0, ((AbstractReadOnlyAttributeInfo) attributeInfo).getLabel());
-                }
-            } else {
-                // No luck, print the descriptor label instead:
-                grid.setText(i, 0, descriptor.getName());
-            }
-            formatter.getElement(i, 0).addClassName(resource.css().attributeLabel());
+			// Put the label in the first column:
+			grid.setText(i, 0, descriptor.getLabel());
+			formatter.getElement(i, 0).addClassName(resource.css().attributeLabel());
 
             // Put a delimiter in the second column:
             grid.setText(i, 1, ": ");

@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.example.client.sample.featureinfo.control;
+package org.geomajas.gwt2.widget.example.client.sample.featureinfo.control;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
@@ -22,19 +22,19 @@ import org.geomajas.gwt2.client.map.MapPresenter;
  */
 public class FeatureInfoControlWidget implements IsWidget {
 
-    private FeatureInfoControlView view;
+	private FeatureInfoControlView view;
 
-    private FeatureInfoControlPresenter presenter;
+	private FeatureInfoControlPresenter presenter;
 
-    public FeatureInfoControlWidget(MapPresenter mapPresenter) {
-        view = FeatureInfoControl.getInstance().getViewFactory().createFeatureInfoControlView();
-        presenter = new FeatureInfoControlPresenterImpl();
-        presenter.setMapPresenter(mapPresenter);
-        view.setPresenter(presenter);
-    }
+	public FeatureInfoControlWidget(MapPresenter mapPresenter) {
+		view = FeatureInfoControl.getInstance().getViewFactory().createFeatureInfoControlView();
+		presenter = new FeatureInfoControlPresenterImpl();
+		presenter.setMapPresenter(mapPresenter);
+		view.setPresenter(presenter);
+	}
 
-    @Override
-    public Widget asWidget() {
-        return view.asWidget();
-    }
+	@Override
+	public Widget asWidget() {
+		return view.asWidget();
+	}
 }

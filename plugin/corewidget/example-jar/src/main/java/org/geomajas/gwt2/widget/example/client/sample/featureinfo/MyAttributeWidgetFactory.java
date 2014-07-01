@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.example.client.sample.featureinfo;
+package org.geomajas.gwt2.widget.example.client.sample.featureinfo;
 
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -30,31 +30,31 @@ import org.geomajas.layer.feature.attribute.DoubleAttribute;
  */
 public class MyAttributeWidgetFactory extends FeatureAttributeWidgetFactory {
 
-    @Override
-    public Widget createFeatureAttributeWidget(Feature feature, AttributeDescriptor descriptor) {
-        Attribute<?> attributeValue = feature.getAttributes().get(descriptor.getName());
+	@Override
+	public Widget createFeatureAttributeWidget(Feature feature, AttributeDescriptor descriptor) {
+		Attribute<?> attributeValue = feature.getAttributes().get(descriptor.getName());
 
-        Widget widget;
-        if (attributeValue.getValue() instanceof DoubleAttribute) {
-            widget = createDoubleWidget((DoubleAttribute) attributeValue.getValue());
-        } else {
-            widget = super.createFeatureAttributeWidget(feature, descriptor);
-        }
+		Widget widget;
+		if (attributeValue.getValue() instanceof DoubleAttribute) {
+			widget = createDoubleWidget((DoubleAttribute) attributeValue.getValue());
+		} else {
+			widget = super.createFeatureAttributeWidget(feature, descriptor);
+		}
 
-        return widget;
-    }
+		return widget;
+	}
 
-    /**
-     * Create a custom widget for attributes of type {@link Double}. Simply applies a number
-     * formatter on the attribute value and puts it in a panel.
-     *
-     * @param attributeValue the value of the attribute.
-     * @return the custom widget.
-     */
-    private Widget createDoubleWidget(DoubleAttribute attributeValue) {
-        VerticalPanel panel = new VerticalPanel();
-        String formattedNumber = NumberFormat.getDecimalFormat().format(attributeValue.getValue());
-        panel.getElement().setInnerText(formattedNumber);
-        return panel;
-    }
+	/**
+	 * Create a custom widget for attributes of type {@link Double}. Simply applies a number
+	 * formatter on the attribute value and puts it in a panel.
+	 *
+	 * @param attributeValue the value of the attribute.
+	 * @return the custom widget.
+	 */
+	private Widget createDoubleWidget(DoubleAttribute attributeValue) {
+		VerticalPanel panel = new VerticalPanel();
+		String formattedNumber = NumberFormat.getDecimalFormat().format(attributeValue.getValue());
+		panel.getElement().setInnerText(formattedNumber);
+		return panel;
+	}
 }
