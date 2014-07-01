@@ -40,12 +40,4 @@ public interface FeatureInfoView extends IsWidget {
 	 */
 	void setPresenter(FeatureInfoPresenter presenter);
 
-	/**
-	 * Show or hide options of the feature info widget.
-	 *
-	 * @param show <code>true</code> if the options (e.g. "Zoom to object")
-	 *             should be shown and <code>false</code> otherwise.
-	 */
-	void showOptions(boolean show);
-
 }

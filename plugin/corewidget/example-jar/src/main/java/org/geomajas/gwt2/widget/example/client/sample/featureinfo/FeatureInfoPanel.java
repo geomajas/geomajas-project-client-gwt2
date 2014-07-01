@@ -99,10 +99,14 @@ public class FeatureInfoPanel implements SamplePanel, FeatureClickedHandler {
 	public void onFeatureClicked(FeatureClickedEvent event) {
 		// Create feature info widget if this is the first time displaying a feature:
 		if (featureInfoWidget == null) {
+			// Create info widget
 			featureInfoWidget = new FeatureInfoWidget(mapPresenter);
-			// We can hide the options ("Zoom to button", ...)
-			featureInfoWidget.showOptions(false);
 			leftPanel.add(featureInfoWidget);
+
+			// Also create some actions for the feature info widget
+			ZoomToObjectAction action = new ZoomToObjectAction(mapPresenter);
+			featureInfoWidget.addFeatureAction(action);
+			leftPanel.add(action);
 		}
 
 		// (Over)write the feature of the widget:

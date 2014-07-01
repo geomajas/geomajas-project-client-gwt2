@@ -39,11 +39,6 @@ public interface FeatureInfoPresenter {
 	 */
 	void setFeature(Feature feature);
 
-	/**
-	 * Hide or show the options to interact with the feature information.
-	 *
-	 * @param show <code>true</code> if the options should be shown,
-	 *             <code>false</code> otherwise.
-	 */
-	void showOptions(boolean show);
+	Feature getFeature();
+
 }

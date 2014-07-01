@@ -19,6 +19,9 @@ import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.widget.client.CoreWidget;
 import org.geomajas.gwt2.widget.client.featureinfo.resource.FeatureInfoResource;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * Widget to display feature information of a {@link Feature}. By default, the widget displays
  * the attributes of the feature and provides some options to interact with the feature such
@@ -33,6 +36,8 @@ public class FeatureInfoWidget implements IsWidget {
 	private FeatureInfoPresenter presenter;
 
 	private FeatureInfoView view;
+
+	private Collection<FeatureAction> actions;
 
 	/**
 	 * Create a new feature info widget with the default resources.
@@ -55,6 +60,7 @@ public class FeatureInfoWidget implements IsWidget {
 		presenter = new FeatureInfoPresenterImpl(view);
 		presenter.setMapPresenter(mapPresenter);
 		view.setPresenter(presenter);
+		actions = new ArrayList<FeatureAction>();
 	}
 
 	/**
@@ -63,17 +69,31 @@ public class FeatureInfoWidget implements IsWidget {
 	 * @param feature the feature.
 	 */
 	public void setFeature(Feature feature) {
+		for (FeatureAction action : actions) {
+			action.setFeature(feature);
+		}
 		presenter.setFeature(feature);
 	}
 
 	/**
-	 * Hide or show the options to interact with the feature (information).
+	 * Add an action for this feature to the widget. When the displayed feature
+	 * changes, the feature associated with the action is automatically updated.
 	 *
-	 * @param show <code>true</code> if the options should be shown,
-	 *             <code>false</code> otherwise.
+	 * @param action    The action to add.
 	 */
-	public void showOptions(boolean show) {
-		presenter.showOptions(show);
+	public void addFeatureAction(FeatureAction action) {
+		actions.add(action);
+		action.setFeature(presenter.getFeature());
+	}
+
+	/**
+	 * Remove an action associated with this widget. If the displayed feature changes,
+	 * the feature associated with the action will not be updated anymore.
+	 *
+	 * @param action The action to remove.
+	 */
+	public void removeFeatureAction(FeatureAction action) {
+		actions.remove(action);
 	}
 
 	@Override

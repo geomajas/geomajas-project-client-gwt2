@@ -1,13 +1,6 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
-    <ui:with field='showcaseResource' type='org.geomajas.gwt2.example.base.client.resource.ShowcaseResource'/>
-
-    <g:VerticalPanel spacing="4" ui:field="contentPanel">
-        <g:VerticalPanel ui:field="optionsPanel">
-            <g:Button ui:field="zoomToObjectButton"/>
-        </g:VerticalPanel>
-        <g:ScrollPanel ui:field="infoPanel"/>
-    </g:VerticalPanel>
+    <g:ScrollPanel ui:field="contentPanel"/>
 
 </ui:UiBinder>

@@ -30,6 +30,8 @@ public class FeatureInfoPresenterImpl implements FeatureInfoPresenter {
 
 	private MapPresenter mapPresenter;
 
+	private Feature feature;
+
 	public FeatureInfoPresenterImpl(FeatureInfoView view) {
 		this.view = view;
 	}
@@ -57,11 +59,12 @@ public class FeatureInfoPresenterImpl implements FeatureInfoPresenter {
 
 	@Override
 	public void setFeature(Feature feature) {
+		this.feature = feature;
 		view.setFeature(feature);
 	}
 
-	@Override
-	public void showOptions(boolean show) {
-		view.showOptions(show);
+	public Feature getFeature() {
+		return feature;
 	}
+
 }

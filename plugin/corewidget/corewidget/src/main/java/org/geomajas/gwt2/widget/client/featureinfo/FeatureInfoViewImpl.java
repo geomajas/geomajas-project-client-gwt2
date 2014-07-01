@@ -12,20 +12,15 @@
 package org.geomajas.gwt2.widget.client.featureinfo;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTMLTable.CellFormatter;
 import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
 import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.widget.client.featureinfo.resource.FeatureInfoResource;
-import org.geomajas.gwt2.widget.client.i18n.WidgetCoreInternationalization;
 
 /**
  * View implementation of the {@link org.geomajas.gwt2.widget.client.featureinfo.FeatureInfoWidget}.
@@ -34,8 +29,6 @@ import org.geomajas.gwt2.widget.client.i18n.WidgetCoreInternationalization;
  */
 public class FeatureInfoViewImpl implements FeatureInfoView {
 
-	private static final WidgetCoreInternationalization MSG = GWT.create(WidgetCoreInternationalization.class);
-
 	private static final FeatureAttributeWidgetFactory ATTRIBUTE_FACTORY =
 			GWT.create(FeatureAttributeWidgetFactory.class);
 
@@ -43,31 +36,17 @@ public class FeatureInfoViewImpl implements FeatureInfoView {
 
 	private FeatureInfoResource resource;
 
-	/**
-	 * The selected feature or <code>null</code> if there is none selected.
-	 */
-	private Feature selectedFeature;
-
 	@UiField
-	protected VerticalPanel contentPanel;
+	protected ScrollPanel contentPanel;
 
-	@UiField
-	protected VerticalPanel optionsPanel;
-
-	@UiField
-	protected ScrollPanel infoPanel;
-
-	@UiField
-	protected Button zoomToObjectButton;
-
-	private static final FeatureInfoUiBinder UI_BINDER = GWT.create(FeatureInfoUiBinder.class);
+	private static final FeatureInfoViewImplUiBinder UI_BINDER = GWT.create(FeatureInfoViewImplUiBinder.class);
 
 	/**
 	 * {@link UiBinder} for this class.
 	 *
 	 * @author Youri Flement
 	 */
-	interface FeatureInfoUiBinder extends UiBinder<Widget, FeatureInfoViewImpl> {
+	interface FeatureInfoViewImplUiBinder extends UiBinder<ScrollPanel, FeatureInfoViewImpl> {
 
 	}
 
@@ -75,14 +54,12 @@ public class FeatureInfoViewImpl implements FeatureInfoView {
 		this.resource = resource;
 		this.resource.css().ensureInjected();
 		UI_BINDER.createAndBindUi(this);
-		zoomToObjectButton.setText(MSG.zoomToObjectButton());
 	}
 
 	@Override
 	public void setFeature(Feature feature) {
-		// Set the selected feature and clear the current panel:
-		selectedFeature = feature;
-		infoPanel.clear();
+		// Clear the current panel:
+		contentPanel.clear();
 
 		// Layout the attributes of the feature in a grid:
 		Grid grid = new Grid(feature.getAttributes().size(), 3);
@@ -102,17 +79,7 @@ public class FeatureInfoViewImpl implements FeatureInfoView {
 			i++;
 		}
 
-		infoPanel.add(grid);
-	}
-
-	@UiHandler("zoomToObjectButton")
-	public void handleClick(ClickEvent event) {
-		presenter.zoomToObject(selectedFeature);
-	}
-
-	@Override
-	public void showOptions(boolean show) {
-		optionsPanel.setVisible(show);
+		contentPanel.add(grid);
 	}
 
 	@Override
