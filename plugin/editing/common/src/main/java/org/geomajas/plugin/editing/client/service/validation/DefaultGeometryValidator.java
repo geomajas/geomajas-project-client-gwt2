@@ -83,7 +83,12 @@ public class DefaultGeometryValidator implements GeometryValidator {
 					return GeometryValidationState.VALID;
 				}
 			} else {
-				return indexService.validate(geometry, index);
+				try {
+					return indexService.validate(geometry, index);
+				} catch (Exception e) {
+					// should never happen, must return something here
+					return GeometryValidationState.VALID;
+				}
 			}
 		}
 	}
