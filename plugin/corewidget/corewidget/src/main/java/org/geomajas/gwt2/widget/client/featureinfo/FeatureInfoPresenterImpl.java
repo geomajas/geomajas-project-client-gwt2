@@ -26,42 +26,42 @@ import org.geomajas.gwt2.client.map.feature.Feature;
  */
 public class FeatureInfoPresenterImpl implements FeatureInfoPresenter {
 
-    private FeatureInfoView view;
+	private FeatureInfoView view;
 
-    private MapPresenter mapPresenter;
+	private MapPresenter mapPresenter;
 
-    public FeatureInfoPresenterImpl(FeatureInfoView view) {
-        this.view = view;
-    }
+	public FeatureInfoPresenterImpl(FeatureInfoView view) {
+		this.view = view;
+	}
 
-    /**
-     * Zoom to the feature on the map (and select it).
-     *
-     * @param feature the feature to zoom to.
-     */
-    @Override
-    public void zoomToObject(Feature feature) {
-        // Make sure it's only selected once:
-        if (!feature.getLayer().isFeatureSelected(feature.getId())) {
-            feature.getLayer().selectFeature(feature);
-        }
+	/**
+	 * Zoom to the feature on the map (and select it).
+	 *
+	 * @param feature the feature to zoom to.
+	 */
+	@Override
+	public void zoomToObject(Feature feature) {
+		// Make sure it's only selected once:
+		if (!feature.getLayer().isFeatureSelected(feature.getId())) {
+			feature.getLayer().selectFeature(feature);
+		}
 
-        Bbox bounds = GeometryService.getBounds(feature.getGeometry());
-        mapPresenter.getViewPort().applyBounds(bounds, ZoomOption.LEVEL_FIT);
-    }
+		Bbox bounds = GeometryService.getBounds(feature.getGeometry());
+		mapPresenter.getViewPort().applyBounds(bounds, ZoomOption.LEVEL_FIT);
+	}
 
-    @Override
-    public void setMapPresenter(MapPresenter mapPresenter) {
-        this.mapPresenter = mapPresenter;
-    }
+	@Override
+	public void setMapPresenter(MapPresenter mapPresenter) {
+		this.mapPresenter = mapPresenter;
+	}
 
-    @Override
-    public void setFeature(Feature feature) {
-        view.setFeature(feature);
-    }
+	@Override
+	public void setFeature(Feature feature) {
+		view.setFeature(feature);
+	}
 
-    @Override
-    public void showOptions(boolean show) {
-        view.showOptions(show);
-    }
+	@Override
+	public void showOptions(boolean show) {
+		view.showOptions(show);
+	}
 }

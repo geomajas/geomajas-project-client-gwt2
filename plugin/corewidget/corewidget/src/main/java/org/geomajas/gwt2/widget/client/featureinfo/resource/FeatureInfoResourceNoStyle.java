@@ -21,6 +21,6 @@ import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.Feature
  */
 public interface FeatureInfoResourceNoStyle extends FeatureSelectBoxResource {
 
-    @Source("featureInfo-nostyle.css")
-    FeatureSelectBoxCssResource css();
+	@Source("featureInfo-nostyle.css")
+	FeatureSelectBoxCssResource css();
 }

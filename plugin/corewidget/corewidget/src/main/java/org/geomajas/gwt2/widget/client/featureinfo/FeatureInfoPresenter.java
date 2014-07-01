@@ -23,27 +23,27 @@ import org.geomajas.gwt2.client.map.feature.Feature;
  */
 public interface FeatureInfoPresenter {
 
-    void setMapPresenter(MapPresenter mapPresenter);
+	void setMapPresenter(MapPresenter mapPresenter);
 
-    /**
-     * Zoom to a specific feature on the map.
-     *
-     * @param feature the feature to zoom to.
-     */
-    void zoomToObject(Feature feature);
+	/**
+	 * Zoom to a specific feature on the map.
+	 *
+	 * @param feature the feature to zoom to.
+	 */
+	void zoomToObject(Feature feature);
 
-    /**
-     * Set the feature to be displayed.
-     *
-     * @param feature the feature to display.
-     */
-    void setFeature(Feature feature);
+	/**
+	 * Set the feature to be displayed.
+	 *
+	 * @param feature the feature to display.
+	 */
+	void setFeature(Feature feature);
 
-    /**
-     * Hide or show the options to interact with the feature information.
-     *
-     * @param show <code>true</code> if the options should be shown,
-     *             <code>false</code> otherwise.
-     */
-    void showOptions(boolean show);
+	/**
+	 * Hide or show the options to interact with the feature information.
+	 *
+	 * @param show <code>true</code> if the options should be shown,
+	 *             <code>false</code> otherwise.
+	 */
+	void showOptions(boolean show);
 }

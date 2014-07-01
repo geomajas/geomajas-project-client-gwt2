@@ -17,15 +17,16 @@ import com.google.gwt.user.client.ui.Widget;
  * Interface for an attribute widget builder. A widget builder should be able to build
  * a widget for a specific attribute of a {@link org.geomajas.gwt2.client.map.feature.Feature}.
  *
+ * @param <ATTRIBUTE_TYPE> The type of the attribute (StringAttribute, DoubleAttribute, ...)
  * @author Youri Flement
  */
 public interface AttributeWidgetBuilder<ATTRIBUTE_TYPE> {
 
-    /**
-     * Build a custom widget for a specific attribute.
-     *
-     * @param attributeValue the value of the attribute.
-     * @return the custom widget.
-     */
-    Widget buildAttributeWidget(ATTRIBUTE_TYPE attributeValue);
+	/**
+	 * Build a custom widget for a specific attribute.
+	 *
+	 * @param attributeValue the value of the attribute.
+	 * @return the custom widget.
+	 */
+	Widget buildAttributeWidget(ATTRIBUTE_TYPE attributeValue);
 }

@@ -23,11 +23,11 @@ import org.geomajas.layer.feature.attribute.StringAttribute;
  */
 public class UrlAttributeWidgetBuilder implements AttributeWidgetBuilder<StringAttribute> {
 
-    @Override
-    public Widget buildAttributeWidget(StringAttribute url) {
-        VerticalPanel widget = new VerticalPanel();
-        Anchor link = new Anchor(url.getValue());
-        widget.add(link);
-        return widget;
-    }
+	@Override
+	public Widget buildAttributeWidget(StringAttribute url) {
+		VerticalPanel widget = new VerticalPanel();
+		Anchor link = new Anchor(url.getValue());
+		widget.add(link);
+		return widget;
+	}
 }

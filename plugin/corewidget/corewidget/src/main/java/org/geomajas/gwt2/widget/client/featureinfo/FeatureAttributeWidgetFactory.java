@@ -41,7 +41,8 @@ import java.util.Map;
 @Api(allMethods = true)
 public class FeatureAttributeWidgetFactory {
 
-	private static Map<Class<?>, AttributeWidgetBuilder<?>> builders = new HashMap<Class<?>, AttributeWidgetBuilder<?>>();
+	private static Map<Class<?>, AttributeWidgetBuilder<?>> builders
+			= new HashMap<Class<?>, AttributeWidgetBuilder<?>>();
 
 	static {
 		builders.put(DoubleAttribute.class, new DoubleAttributeWidgetBuilder());

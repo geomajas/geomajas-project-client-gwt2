@@ -34,10 +34,22 @@ public class FeatureInfoWidget implements IsWidget {
 
 	private FeatureInfoView view;
 
+	/**
+	 * Create a new feature info widget with the default resources.
+	 *
+	 * @param mapPresenter the map presenter.
+	 */
 	public FeatureInfoWidget(MapPresenter mapPresenter) {
 		this(CoreWidget.getInstance().getClientBundleFactory().createFeatureInfoResource(), mapPresenter);
 	}
 
+	/**
+	 * Create a new feature info widget with the given map presenter
+	 * and resource.
+	 *
+	 * @param resource     the feature info widget resource.
+	 * @param mapPresenter the map presenter.
+	 */
 	public FeatureInfoWidget(FeatureInfoResource resource, MapPresenter mapPresenter) {
 		view = CoreWidget.getInstance().getViewFactory().createFeatureInfoView(resource);
 		presenter = new FeatureInfoPresenterImpl(view);

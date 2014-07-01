@@ -14,7 +14,7 @@ package org.geomajas.gwt2.widget.example.client.sample.featureinfo.control;
 import org.geomajas.gwt2.client.map.MapPresenter;
 
 /**
- * Presenter interface for the {@link org.geomajas.gwt2.widget.example.client.sample.featureinfo.control.FeatureInfoControl}.
+ * Presenter interface for the {@link FeatureInfoControl}.
  * The presenter allows to disable/enable the displaying of feature info, e.g. the underlying control can be a
  * toggle button.
  *

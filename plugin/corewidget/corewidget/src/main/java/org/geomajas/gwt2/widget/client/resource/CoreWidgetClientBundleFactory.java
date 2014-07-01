@@ -23,22 +23,22 @@ import org.geomajas.gwt2.widget.client.featureinfo.resource.FeatureInfoResource;
  */
 public class CoreWidgetClientBundleFactory {
 
-    /**
-     * Create a new resource bundle for the
-     * {@link org.geomajas.gwt2.widget.client.FeatureSelectBox.FeatureSelectListener} widget.
-     *
-     * @return A new resource bundle.
-     */
-    public FeatureSelectBoxResource createFeatureSelectBoxResource() {
-        return GWT.create(FeatureSelectBoxResource.class);
-    }
+	/**
+	 * Create a new resource bundle for the
+	 * {@link org.geomajas.gwt2.widget.client.FeatureSelectBox.FeatureSelectListener} widget.
+	 *
+	 * @return A new resource bundle.
+	 */
+	public FeatureSelectBoxResource createFeatureSelectBoxResource() {
+		return GWT.create(FeatureSelectBoxResource.class);
+	}
 
-    /**
-     * Create a new resource bundle for the {@link org.geomajas.gwt2.widget.client.featureinfo.FeatureInfoWidget}.
-     *
-     * @return A new resource bundle.
-     */
-    public FeatureInfoResource createFeatureInfoResource() {
-        return GWT.create(FeatureInfoResource.class);
-    }
+	/**
+	 * Create a new resource bundle for the {@link org.geomajas.gwt2.widget.client.featureinfo.FeatureInfoWidget}.
+	 *
+	 * @return A new resource bundle.
+	 */
+	public FeatureInfoResource createFeatureInfoResource() {
+		return GWT.create(FeatureInfoResource.class);
+	}
 }

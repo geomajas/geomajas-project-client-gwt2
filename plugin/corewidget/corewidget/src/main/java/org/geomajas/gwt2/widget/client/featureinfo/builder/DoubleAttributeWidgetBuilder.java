@@ -22,10 +22,10 @@ import org.geomajas.layer.feature.attribute.DoubleAttribute;
  */
 public class DoubleAttributeWidgetBuilder implements AttributeWidgetBuilder<DoubleAttribute> {
 
-    @Override
-    public Widget buildAttributeWidget(DoubleAttribute attributeValue) {
-        VerticalPanel widget = new VerticalPanel();
-        widget.getElement().setInnerText(attributeValue.getValue() + "");
-        return widget;
-    }
+	@Override
+	public Widget buildAttributeWidget(DoubleAttribute attributeValue) {
+		VerticalPanel widget = new VerticalPanel();
+		widget.getElement().setInnerText(attributeValue.getValue() + "");
+		return widget;
+	}
 }

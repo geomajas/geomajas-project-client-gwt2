@@ -56,6 +56,11 @@ public class FeatureInfoPanel implements SamplePanel, FeatureClickedHandler {
 	 */
 	private FeatureInfoWidget featureInfoWidget;
 
+	/**
+	 * {@link UiBinder} for this class.
+	 *
+	 * @author Youri Flement
+	 */
 	interface FeatureInfoPanelUiBinder extends UiBinder<DockLayoutPanel, FeatureInfoPanel> {
 
 	}
@@ -112,6 +117,11 @@ public class FeatureInfoPanel implements SamplePanel, FeatureClickedHandler {
 		return rootPanel;
 	}
 
+	/**
+	 * {@link MapInitializationHandler} for this sample.
+	 *
+	 * @author Youri Flement
+	 */
 	private class MyMapInitializationHandler implements MapInitializationHandler {
 
 		public void onMapInitialized(MapInitializationEvent event) {

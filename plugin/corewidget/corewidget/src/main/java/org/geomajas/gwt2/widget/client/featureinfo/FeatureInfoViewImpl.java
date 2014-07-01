@@ -34,89 +34,95 @@ import org.geomajas.gwt2.widget.client.i18n.WidgetCoreInternationalization;
  */
 public class FeatureInfoViewImpl implements FeatureInfoView {
 
-    private static final WidgetCoreInternationalization MSG = GWT.create(WidgetCoreInternationalization.class);
+	private static final WidgetCoreInternationalization MSG = GWT.create(WidgetCoreInternationalization.class);
 
-    private static final FeatureAttributeWidgetFactory ATTRIBUTE_FACTORY = GWT.create(FeatureAttributeWidgetFactory.class);
+	private static final FeatureAttributeWidgetFactory ATTRIBUTE_FACTORY =
+			GWT.create(FeatureAttributeWidgetFactory.class);
 
-    private FeatureInfoPresenter presenter;
+	private FeatureInfoPresenter presenter;
 
-    private FeatureInfoResource resource;
+	private FeatureInfoResource resource;
 
-    /**
-     * The selected feature or <code>null</code> if there is none selected.
-     */
-    private Feature selectedFeature;
+	/**
+	 * The selected feature or <code>null</code> if there is none selected.
+	 */
+	private Feature selectedFeature;
 
-    @UiField
-    protected VerticalPanel contentPanel;
+	@UiField
+	protected VerticalPanel contentPanel;
 
-    @UiField
-    protected VerticalPanel optionsPanel;
+	@UiField
+	protected VerticalPanel optionsPanel;
 
-    @UiField
-    protected ScrollPanel infoPanel;
+	@UiField
+	protected ScrollPanel infoPanel;
 
-    @UiField
-    protected Button zoomToObjectButton;
+	@UiField
+	protected Button zoomToObjectButton;
 
-    private static final FeatureInfoUiBinder UI_BINDER = GWT.create(FeatureInfoUiBinder.class);
+	private static final FeatureInfoUiBinder UI_BINDER = GWT.create(FeatureInfoUiBinder.class);
 
-    interface FeatureInfoUiBinder extends UiBinder<Widget, FeatureInfoViewImpl> {
+	/**
+	 * {@link UiBinder} for this class.
+	 *
+	 * @author Youri Flement
+	 */
+	interface FeatureInfoUiBinder extends UiBinder<Widget, FeatureInfoViewImpl> {
 
-    }
+	}
 
-    public FeatureInfoViewImpl(FeatureInfoResource resource) {
-        this.resource = resource;
-        this.resource.css().ensureInjected();
-        UI_BINDER.createAndBindUi(this);
-        zoomToObjectButton.setText(MSG.zoomToObjectButton());
-    }
+	public FeatureInfoViewImpl(FeatureInfoResource resource) {
+		this.resource = resource;
+		this.resource.css().ensureInjected();
+		UI_BINDER.createAndBindUi(this);
+		zoomToObjectButton.setText(MSG.zoomToObjectButton());
+	}
 
-    @Override
-    public void setFeature(Feature feature) {
-        // Set the selected feature and clear the current panel:
-        selectedFeature = feature;
-        infoPanel.clear();
+	@Override
+	public void setFeature(Feature feature) {
+		// Set the selected feature and clear the current panel:
+		selectedFeature = feature;
+		infoPanel.clear();
 
-        // Layout the attributes of the feature in a grid:
-        Grid grid = new Grid(feature.getAttributes().size(), 3);
-        CellFormatter formatter = grid.getCellFormatter();
-        int i = 0;
-        for (AttributeDescriptor descriptor : feature.getLayer().getAttributeDescriptors()) {
+		// Layout the attributes of the feature in a grid:
+		Grid grid = new Grid(feature.getAttributes().size(), 3);
+		CellFormatter formatter = grid.getCellFormatter();
+		int i = 0;
+		for (AttributeDescriptor descriptor : feature.getLayer().getAttributeDescriptors()) {
 			// Put the label in the first column:
 			grid.setText(i, 0, descriptor.getLabel());
 			formatter.getElement(i, 0).addClassName(resource.css().attributeLabel());
 
-            // Put a delimiter in the second column:
-            grid.setText(i, 1, ": ");
+			// Put a delimiter in the second column:
+			grid.setText(i, 1, ": ");
 
-            // Create a widget for the attribute value and put it in the last column:
-            grid.setWidget(i, 2, ATTRIBUTE_FACTORY.createFeatureAttributeWidget(feature, descriptor));
+			// Create a widget for the attribute value and put it in the last column:
+			grid.setWidget(i, 2, ATTRIBUTE_FACTORY.createFeatureAttributeWidget(feature, descriptor));
 
-            i++;
-        }
+			i++;
+		}
 
-        infoPanel.add(grid);
-    }
+		infoPanel.add(grid);
+	}
 
-    @UiHandler("zoomToObjectButton")
-    public void handleClick(ClickEvent event) {
-        presenter.zoomToObject(selectedFeature);
-    }
+	@UiHandler("zoomToObjectButton")
+	public void handleClick(ClickEvent event) {
+		presenter.zoomToObject(selectedFeature);
+	}
 
-    @Override
-    public void showOptions(boolean show) {
-        optionsPanel.setVisible(show);
-    }
+	@Override
+	public void showOptions(boolean show) {
+		optionsPanel.setVisible(show);
+	}
 
-    @Override
-    public void setPresenter(FeatureInfoPresenter presenter) {
-        this.presenter = presenter;
-    }
+	@Override
+	public void setPresenter(FeatureInfoPresenter presenter) {
+		this.presenter = presenter;
+	}
 
-    @Override
-    public Widget asWidget() {
-        return contentPanel;
-    }
+	@Override
+	public Widget asWidget() {
+		return contentPanel;
+	}
 
 }

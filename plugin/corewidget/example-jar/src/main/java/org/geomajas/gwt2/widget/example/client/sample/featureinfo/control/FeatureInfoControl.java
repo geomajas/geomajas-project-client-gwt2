@@ -18,7 +18,7 @@ import com.google.gwt.core.client.GWT;
  *
  * @author Youri Flement
  */
-public class FeatureInfoControl {
+public final class FeatureInfoControl {
 
 	private static FeatureInfoControl instance;
 

@@ -21,10 +21,10 @@ import org.geomajas.gwt2.widget.client.CoreWidget;
  */
 public interface FeatureInfoResource extends ClientBundle {
 
-    FeatureInfoResource INSTANCE = CoreWidget.getInstance().getClientBundleFactory()
-            .createFeatureInfoResource();
+	FeatureInfoResource INSTANCE = CoreWidget.getInstance().getClientBundleFactory()
+			.createFeatureInfoResource();
 
-    @Source("featureInfo.css")
-    FeatureInfoCssResource css();
+	@Source("featureInfo.css")
+	FeatureInfoCssResource css();
 
 }

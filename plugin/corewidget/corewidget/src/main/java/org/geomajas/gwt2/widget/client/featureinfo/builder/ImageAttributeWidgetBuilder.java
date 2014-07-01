@@ -23,11 +23,11 @@ import org.geomajas.layer.feature.attribute.StringAttribute;
  */
 public class ImageAttributeWidgetBuilder implements AttributeWidgetBuilder<StringAttribute> {
 
-    @Override
-    public Widget buildAttributeWidget(StringAttribute imagePath) {
-        VerticalPanel widget = new VerticalPanel();
-        Image image = new Image(imagePath.getValue());
-        widget.add(image);
-        return widget;
-    }
+	@Override
+	public Widget buildAttributeWidget(StringAttribute imagePath) {
+		VerticalPanel widget = new VerticalPanel();
+		Image image = new Image(imagePath.getValue());
+		widget.add(image);
+		return widget;
+	}
 }

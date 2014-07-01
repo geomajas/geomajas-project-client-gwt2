@@ -25,18 +25,18 @@ import org.geomajas.layer.feature.attribute.BooleanAttribute;
  */
 public class BooleanAttributeWidgetBuilder implements AttributeWidgetBuilder<BooleanAttribute> {
 
-    private WidgetCoreInternationalization MSG = GWT.create(WidgetCoreInternationalization.class);
+	private static final WidgetCoreInternationalization MSG = GWT.create(WidgetCoreInternationalization.class);
 
-    @Override
-    public Widget buildAttributeWidget(BooleanAttribute attributeValue) {
-        VerticalPanel widget = new VerticalPanel();
+	@Override
+	public Widget buildAttributeWidget(BooleanAttribute attributeValue) {
+		VerticalPanel widget = new VerticalPanel();
 
-        // Simply put "yes" or "no" instead of 1 and 0.
-        if (attributeValue.getValue()) {
-            widget.getElement().setInnerText(MSG.yes());
-        } else {
-            widget.getElement().setInnerText(MSG.no());
-        }
-        return widget;
-    }
+		// Simply put "yes" or "no" instead of 1 and 0.
+		if (attributeValue.getValue()) {
+			widget.getElement().setInnerText(MSG.yes());
+		} else {
+			widget.getElement().setInnerText(MSG.no());
+		}
+		return widget;
+	}
 }

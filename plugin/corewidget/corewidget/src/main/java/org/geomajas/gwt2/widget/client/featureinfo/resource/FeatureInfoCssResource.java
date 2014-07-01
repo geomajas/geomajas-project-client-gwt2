@@ -20,7 +20,7 @@ import com.google.gwt.resources.client.CssResource;
  */
 public interface FeatureInfoCssResource extends CssResource {
 
-    @ClassName("gm-attributeLabel")
-    String attributeLabel();
+	@ClassName("gm-attributeLabel")
+	String attributeLabel();
 
 }

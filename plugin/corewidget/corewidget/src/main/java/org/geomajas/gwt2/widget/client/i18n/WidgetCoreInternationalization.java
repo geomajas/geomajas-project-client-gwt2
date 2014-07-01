@@ -21,25 +21,25 @@ import com.google.gwt.i18n.client.Messages;
  */
 public interface WidgetCoreInternationalization extends Messages {
 
-    /*	Legend widget messages */
-    String legendButName();
+	/*	Legend widget messages */
+	String legendButName();
 
 
-    /*	Message box widget messages */
-    String messageBoxBtnYes();
+	/*	Message box widget messages */
+	String messageBoxBtnYes();
 
-    String messageBoxBtnNo();
+	String messageBoxBtnNo();
 
-    String messageBoxBtnCancel();
+	String messageBoxBtnCancel();
 
-    String messageBoxBtnClose();
+	String messageBoxBtnClose();
 
-    /* Feature info widget messages */
-    String featureDetailTitle();
+	/* Feature info widget messages */
+	String featureDetailTitle();
 
-    String zoomToObjectButton();
+	String zoomToObjectButton();
 
-    String yes();
+	String yes();
 
-    String no();
+	String no();
 }

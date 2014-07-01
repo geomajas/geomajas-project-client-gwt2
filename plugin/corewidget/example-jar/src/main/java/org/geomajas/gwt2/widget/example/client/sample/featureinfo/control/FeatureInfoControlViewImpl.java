@@ -23,7 +23,7 @@ import com.google.gwt.user.client.ui.ToggleButton;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * View implementation of the {@link org.geomajas.gwt2.widget.example.client.sample.featureinfo.control.FeatureInfoControl}.
+ * View implementation of the {@link FeatureInfoControl}.
  * The view consists of a simple togglebutton on a panel.
  *
  * @author Youri Flement
@@ -38,8 +38,14 @@ public class FeatureInfoControlViewImpl implements FeatureInfoControlView {
 	@UiField
 	protected ToggleButton button;
 
-	private FeatureInfoControlViewUiBinder UI_BINDER = GWT.create(FeatureInfoControlViewUiBinder.class);
+	private static final FeatureInfoControlViewUiBinder UI_BINDER
+			= GWT.create(FeatureInfoControlViewUiBinder.class);
 
+	/**
+	 * {@link UiBinder} for this class.
+	 *
+	 * @author Youri Flement
+	 */
 	interface FeatureInfoControlViewUiBinder extends UiBinder<HTMLPanel, FeatureInfoControlViewImpl> {
 
 	}

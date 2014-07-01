@@ -21,10 +21,10 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class DefaultAttributeWidgetBuilder implements AttributeWidgetBuilder<Object> {
 
-    @Override
-    public Widget buildAttributeWidget(Object attributeValue) {
-        VerticalPanel widget = new VerticalPanel();
-        widget.getElement().setInnerText(attributeValue.toString());
-        return widget;
-    }
+	@Override
+	public Widget buildAttributeWidget(Object attributeValue) {
+		VerticalPanel widget = new VerticalPanel();
+		widget.getElement().setInnerText(attributeValue.toString());
+		return widget;
+	}
 }

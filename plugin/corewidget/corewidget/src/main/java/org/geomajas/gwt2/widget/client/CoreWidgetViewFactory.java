@@ -24,22 +24,22 @@ import org.geomajas.gwt2.widget.client.featureinfo.resource.FeatureInfoResource;
  */
 public class CoreWidgetViewFactory {
 
-    /**
-     * Create a new {@link FeatureSelectBoxView}.
-     *
-     * @return the view
-     */
-    public FeatureSelectBoxView createFeatureSelectBox(FeatureSelectBoxResource resource) {
-        return new FeatureSelectBoxViewImpl(resource);
-    }
+	/**
+	 * Create a new {@link FeatureSelectBoxView}.
+	 *
+	 * @return the view
+	 */
+	public FeatureSelectBoxView createFeatureSelectBox(FeatureSelectBoxResource resource) {
+		return new FeatureSelectBoxViewImpl(resource);
+	}
 
-    /**
-     * Create a new {@link org.geomajas.gwt2.widget.client.featureinfo.FeatureInfoView}.
-     *
-     * @param resource the resource to use.
-     * @return a new feature info view.
-     */
-    public FeatureInfoView createFeatureInfoView(FeatureInfoResource resource) {
-        return new FeatureInfoViewImpl(resource);
-    }
+	/**
+	 * Create a new {@link org.geomajas.gwt2.widget.client.featureinfo.FeatureInfoView}.
+	 *
+	 * @param resource the resource to use.
+	 * @return a new feature info view.
+	 */
+	public FeatureInfoView createFeatureInfoView(FeatureInfoResource resource) {
+		return new FeatureInfoViewImpl(resource);
+	}
 }

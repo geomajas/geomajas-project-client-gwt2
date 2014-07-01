@@ -21,8 +21,8 @@ import org.geomajas.gwt2.widget.client.feature.event.FeatureClickedHandler;
 import org.geomajas.gwt2.widget.client.featureinfo.FeatureInfoWidget;
 
 /**
- * Presenter implementation for the {@link org.geomajas.gwt2.widget.example.client.sample.featureinfo.control.FeatureInfoControl}.
- * The presenter listens to {@link org.geomajas.gwt2.widget.client.feature.event.FeatureClickedEvent}s and
+ * Presenter implementation for the {@link FeatureInfoControl}.
+ * The presenter listens to {@link FeatureClickedEvent}s and
  * displays the features in a dialog box.
  *
  * @author Youri Flement
