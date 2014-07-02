@@ -15,6 +15,10 @@ import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.Feature
 import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.FeatureSelectBoxResourceNoStyle;
 
 import com.google.gwt.core.client.GWT;
+import org.geomajas.gwt2.widget.client.layercontrolpanel.resource.LayerControlPanelResource;
+import org.geomajas.gwt2.widget.client.layercontrolpanel.resource.LayerControlPanelResourceNoStyle;
+import org.geomajas.gwt2.widget.client.mapcontrolpanel.resource.MapControlPanelResource;
+import org.geomajas.gwt2.widget.client.mapcontrolpanel.resource.MapControlPanelResourceNoStyle;
 
 /**
  * No style factory for client bundles defined within this artifact. This factory wipes out all css.
@@ -25,12 +29,34 @@ public class CoreWidgetClientBundleFactoryNoStyle extends CoreWidgetClientBundle
 
 	/**
 	 * Create an empty resource bundle for the
-	 * {@link org.geomajas.gwt2.widget.client.FeatureSelectBox.FeatureSelectListener} widget.
+	 * {@link org.geomajas.gwt2.widget.client.feature.featureselectbox.FeatureSelectBox} widget.
 	 * 
 	 * @return A new resource bundle.
 	 */
 	public FeatureSelectBoxResource createFeatureSelectBoxResource() {
 		return GWT.create(FeatureSelectBoxResourceNoStyle.class);
 	}
+
+
+	/**
+	 * Create a new resource bundle for the
+	 * {@link org.geomajas.gwt2.widget.client.layercontrolpanel.LayerControlPanel} widget.
+	 *
+	 * @return A new resource bundle.
+	 */
+	public LayerControlPanelResource createLayerControlPanelResource() {
+		return GWT.create(LayerControlPanelResourceNoStyle.class);
+	}
+
+	/**
+	 * Create a new resource bundle for the
+	 * {@link org.geomajas.gwt2.widget.client.mapcontrolpanel.MapControlPanel} widget.
+	 *
+	 * @return A new resource bundle.
+	 */
+	public MapControlPanelResource createMapControlPanelResource() {
+		return GWT.create(MapControlPanelResourceNoStyle.class);
+	}
+
 
 }
