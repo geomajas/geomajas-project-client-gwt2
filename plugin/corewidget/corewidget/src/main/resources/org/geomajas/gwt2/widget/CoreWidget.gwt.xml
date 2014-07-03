@@ -11,6 +11,7 @@
 
 <module>
     <inherits name="org.geomajas.gwt2.GeomajasClientImpl"/>
+    <inherits name="org.geomajas.gwt2.GeomajasClientServerExtension"/>
 
     <source path="client">
         <exclude name="*Test*.java"/>
