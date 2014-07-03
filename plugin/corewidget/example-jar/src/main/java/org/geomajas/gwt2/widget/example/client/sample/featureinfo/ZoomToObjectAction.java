@@ -46,11 +46,6 @@ public class ZoomToObjectAction extends Button implements HasFeature, ClickHandl
 	@Override
 	public void onClick(ClickEvent event) {
 		if (feature != null) {
-			// Make sure it's only selected once:
-			if (!feature.getLayer().isFeatureSelected(feature.getId())) {
-				feature.getLayer().selectFeature(feature);
-			}
-
 			// Get bounds and zoom:
 			Bbox bounds = GeometryService.getBounds(feature.getGeometry());
 			mapPresenter.getViewPort().applyBounds(bounds, ZoomOption.LEVEL_FIT);
