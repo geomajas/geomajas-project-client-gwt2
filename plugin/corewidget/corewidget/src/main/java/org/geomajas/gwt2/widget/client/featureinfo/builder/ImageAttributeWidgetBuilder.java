@@ -12,7 +12,6 @@
 package org.geomajas.gwt2.widget.client.featureinfo.builder;
 
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.layer.feature.attribute.StringAttribute;
 
@@ -25,9 +24,6 @@ public class ImageAttributeWidgetBuilder implements AttributeWidgetBuilder<Strin
 
 	@Override
 	public Widget buildAttributeWidget(StringAttribute imagePath) {
-		VerticalPanel widget = new VerticalPanel();
-		Image image = new Image(imagePath.getValue());
-		widget.add(image);
-		return widget;
+		return new Image(imagePath.getValue());
 	}
 }

@@ -12,7 +12,6 @@
 package org.geomajas.gwt2.widget.client.featureinfo.builder;
 
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.layer.feature.attribute.StringAttribute;
 
@@ -25,9 +24,6 @@ public class UrlAttributeWidgetBuilder implements AttributeWidgetBuilder<StringA
 
 	@Override
 	public Widget buildAttributeWidget(StringAttribute url) {
-		VerticalPanel widget = new VerticalPanel();
-		Anchor link = new Anchor(url.getValue());
-		widget.add(link);
-		return widget;
+		return new Anchor(url.getValue());
 	}
 }

@@ -12,7 +12,7 @@
 package org.geomajas.gwt2.widget.client.featureinfo.builder;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.gwt2.widget.client.i18n.WidgetCoreInternationalization;
 import org.geomajas.layer.feature.attribute.BooleanAttribute;
@@ -29,14 +29,14 @@ public class BooleanAttributeWidgetBuilder implements AttributeWidgetBuilder<Boo
 
 	@Override
 	public Widget buildAttributeWidget(BooleanAttribute attributeValue) {
-		VerticalPanel widget = new VerticalPanel();
+		Label label = new Label();
 
 		// Simply put "yes" or "no" instead of 1 and 0.
 		if (attributeValue.getValue()) {
-			widget.getElement().setInnerText(MSG.yes());
+			label.getElement().setInnerText(MSG.yes());
 		} else {
-			widget.getElement().setInnerText(MSG.no());
+			label.getElement().setInnerText(MSG.no());
 		}
-		return widget;
+		return label;
 	}
 }

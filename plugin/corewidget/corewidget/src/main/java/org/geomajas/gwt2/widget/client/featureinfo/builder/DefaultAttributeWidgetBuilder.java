@@ -11,7 +11,7 @@
 
 package org.geomajas.gwt2.widget.client.featureinfo.builder;
 
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -23,8 +23,6 @@ public class DefaultAttributeWidgetBuilder implements AttributeWidgetBuilder<Obj
 
 	@Override
 	public Widget buildAttributeWidget(Object attributeValue) {
-		VerticalPanel widget = new VerticalPanel();
-		widget.getElement().setInnerText(attributeValue.toString());
-		return widget;
+		return new Label(attributeValue.toString());
 	}
 }

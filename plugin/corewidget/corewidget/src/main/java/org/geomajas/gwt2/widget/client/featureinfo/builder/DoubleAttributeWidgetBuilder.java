@@ -11,7 +11,7 @@
 
 package org.geomajas.gwt2.widget.client.featureinfo.builder;
 
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.layer.feature.attribute.DoubleAttribute;
 
@@ -24,8 +24,6 @@ public class DoubleAttributeWidgetBuilder implements AttributeWidgetBuilder<Doub
 
 	@Override
 	public Widget buildAttributeWidget(DoubleAttribute attributeValue) {
-		VerticalPanel widget = new VerticalPanel();
-		widget.getElement().setInnerText(attributeValue.getValue() + "");
-		return widget;
+		return new Label(attributeValue.getValue() + "");
 	}
 }
