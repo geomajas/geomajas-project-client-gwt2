@@ -31,14 +31,14 @@ import org.geomajas.layer.feature.attribute.DoubleAttribute;
 public class MyAttributeWidgetFactory extends AttributeWidgetFactory {
 
 	@Override
-	public Widget createFeatureAttributeWidget(Feature feature, AttributeDescriptor descriptor) {
+	public Widget createAttributeWidget(Feature feature, AttributeDescriptor descriptor) {
 		Attribute<?> attributeValue = feature.getAttributes().get(descriptor.getName());
 
 		Widget widget;
 		if (attributeValue.getValue() instanceof DoubleAttribute) {
 			widget = createDoubleWidget((DoubleAttribute) attributeValue.getValue());
 		} else {
-			widget = super.createFeatureAttributeWidget(feature, descriptor);
+			widget = super.createAttributeWidget(feature, descriptor);
 		}
 
 		return widget;

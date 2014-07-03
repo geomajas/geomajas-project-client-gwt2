@@ -53,7 +53,7 @@ public class AttributeWidgetFactory {
 	 * @param descriptor the descriptor of the attribute of the feature.
 	 * @return the (possible custom) widget for a feature attribute.
 	 */
-	public Widget createFeatureAttributeWidget(Feature feature, AttributeDescriptor descriptor) {
+	public Widget createAttributeWidget(Feature feature, AttributeDescriptor descriptor) {
 		Attribute<?> attribute = feature.getAttributes().get(descriptor.getName());
 
 		// Get a builder for the attribute

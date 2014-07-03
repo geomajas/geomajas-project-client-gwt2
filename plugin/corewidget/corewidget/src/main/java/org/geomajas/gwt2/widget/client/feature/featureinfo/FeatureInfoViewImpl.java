@@ -75,8 +75,9 @@ public class FeatureInfoViewImpl implements FeatureInfoView {
 			grid.setText(i, 1, getDelimiter());
 
 			// Create a widget for the attribute value and put it in the last column:
-			grid.setWidget(i, 2, ATTRIBUTE_FACTORY.createFeatureAttributeWidget(feature, descriptor));
-			formatter.getElement(i, 2).addClassName(resource.css().attributeValue());
+			Widget attributeWidget = ATTRIBUTE_FACTORY.createAttributeWidget(feature, descriptor);
+			attributeWidget.getElement().addClassName(resource.css().attributeValue());
+			grid.setWidget(i, 2, attributeWidget);
 
 			i++;
 		}
