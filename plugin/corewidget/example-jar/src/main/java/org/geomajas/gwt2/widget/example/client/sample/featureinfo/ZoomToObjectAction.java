@@ -30,7 +30,7 @@ public class ZoomToObjectAction extends Button implements HasFeature, ClickHandl
 
 	protected Feature feature;
 
-	private MapPresenter mapPresenter;
+	protected MapPresenter mapPresenter;
 
 	public ZoomToObjectAction(MapPresenter mapPresenter) {
 		setText("Zoom to object");
