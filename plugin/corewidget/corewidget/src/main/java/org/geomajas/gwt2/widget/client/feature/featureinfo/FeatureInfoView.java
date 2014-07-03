@@ -24,7 +24,7 @@ import org.geomajas.gwt2.client.map.feature.Feature;
  * @since 2.1.0
  */
 @Api(allMethods = true)
-public interface FeatureInfoView extends IsWidget {
+public interface FeatureInfoView extends IsWidget, HasFeature {
 
 	/**
 	 * Set the feature to be displayed.

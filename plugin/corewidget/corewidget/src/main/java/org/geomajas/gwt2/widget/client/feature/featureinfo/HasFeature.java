@@ -24,7 +24,7 @@ import org.geomajas.gwt2.client.map.feature.Feature;
  * @since 2.1.0
  */
 @Api(allMethods = true)
-public interface FeatureAction {
+public interface HasFeature {
 
 	/**
 	 * Set the feature associated with the action.

@@ -21,16 +21,14 @@ import org.geomajas.gwt2.client.map.feature.Feature;
  *
  * @author Youri Flement
  */
-public interface FeatureInfoPresenter {
-
-	void setMapPresenter(MapPresenter mapPresenter);
+public interface FeatureInfoPresenter extends HasFeature {
 
 	/**
-	 * Zoom to a specific feature on the map.
+	 * Set the map presenter.
 	 *
-	 * @param feature the feature to zoom to.
+	 * @param mapPresenter The map presenter.
 	 */
-	void zoomToObject(Feature feature);
+	void setMapPresenter(MapPresenter mapPresenter);
 
 	/**
 	 * Set the feature to be displayed.
@@ -39,6 +37,11 @@ public interface FeatureInfoPresenter {
 	 */
 	void setFeature(Feature feature);
 
+	/**
+	 * Get the displayed feature.
+	 *
+	 * @return The displayed feature.
+	 */
 	Feature getFeature();
 
 }

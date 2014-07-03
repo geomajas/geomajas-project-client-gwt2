@@ -31,13 +31,13 @@ import java.util.Collection;
  * @since 2.1.0
  */
 @Api(allMethods = true)
-public class FeatureInfoWidget implements IsWidget {
+public class FeatureInfoWidget implements IsWidget, HasFeature {
 
 	private FeatureInfoPresenter presenter;
 
 	private FeatureInfoView view;
 
-	private Collection<FeatureAction> actions;
+	private Collection<HasFeature> actions;
 
 	/**
 	 * Create a new feature info widget with the default resources.
@@ -60,7 +60,7 @@ public class FeatureInfoWidget implements IsWidget {
 		presenter = new FeatureInfoPresenterImpl(view);
 		presenter.setMapPresenter(mapPresenter);
 		view.setPresenter(presenter);
-		actions = new ArrayList<FeatureAction>();
+		actions = new ArrayList<HasFeature>();
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class FeatureInfoWidget implements IsWidget {
 	 * @param feature the feature.
 	 */
 	public void setFeature(Feature feature) {
-		for (FeatureAction action : actions) {
+		for (HasFeature action : actions) {
 			action.setFeature(feature);
 		}
 		presenter.setFeature(feature);
@@ -81,7 +81,7 @@ public class FeatureInfoWidget implements IsWidget {
 	 *
 	 * @param action The action to add.
 	 */
-	public void addFeatureAction(FeatureAction action) {
+	public void addFeatureAction(HasFeature action) {
 		actions.add(action);
 		action.setFeature(presenter.getFeature());
 	}
@@ -92,7 +92,7 @@ public class FeatureInfoWidget implements IsWidget {
 	 *
 	 * @param action The action to remove.
 	 */
-	public void removeFeatureAction(FeatureAction action) {
+	public void removeFeatureAction(HasFeature action) {
 		actions.remove(action);
 	}
 

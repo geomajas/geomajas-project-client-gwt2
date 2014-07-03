@@ -11,10 +11,7 @@
 
 package org.geomajas.gwt2.widget.client.feature.featureinfo;
 
-import org.geomajas.geometry.Bbox;
-import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.gwt2.client.map.MapPresenter;
-import org.geomajas.gwt2.client.map.ZoomOption;
 import org.geomajas.gwt2.client.map.feature.Feature;
 
 /**
@@ -36,22 +33,6 @@ public class FeatureInfoPresenterImpl implements FeatureInfoPresenter {
 		this.view = view;
 	}
 
-	/**
-	 * Zoom to the feature on the map (and select it).
-	 *
-	 * @param feature the feature to zoom to.
-	 */
-	@Override
-	public void zoomToObject(Feature feature) {
-		// Make sure it's only selected once:
-		if (!feature.getLayer().isFeatureSelected(feature.getId())) {
-			feature.getLayer().selectFeature(feature);
-		}
-
-		Bbox bounds = GeometryService.getBounds(feature.getGeometry());
-		mapPresenter.getViewPort().applyBounds(bounds, ZoomOption.LEVEL_FIT);
-	}
-
 	@Override
 	public void setMapPresenter(MapPresenter mapPresenter) {
 		this.mapPresenter = mapPresenter;
@@ -63,6 +44,7 @@ public class FeatureInfoPresenterImpl implements FeatureInfoPresenter {
 		view.setFeature(feature);
 	}
 
+	@Override
 	public Feature getFeature() {
 		return feature;
 	}

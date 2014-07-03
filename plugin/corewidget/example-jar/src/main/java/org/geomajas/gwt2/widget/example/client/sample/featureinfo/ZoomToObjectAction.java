@@ -19,14 +19,14 @@ import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.ZoomOption;
 import org.geomajas.gwt2.client.map.feature.Feature;
-import org.geomajas.gwt2.widget.client.feature.featureinfo.FeatureAction;
+import org.geomajas.gwt2.widget.client.feature.featureinfo.HasFeature;
 
 /**
- * Implementation of a {@link FeatureAction} to zoom to a feature on the map.
+ * Implementation of a {@link org.geomajas.gwt2.widget.client.feature.featureinfo.HasFeature} to zoom to a feature on the map.
  *
  * @author Youri Flement
  */
-public class ZoomToObjectAction extends Button implements FeatureAction, ClickHandler {
+public class ZoomToObjectAction extends Button implements HasFeature, ClickHandler {
 
 	protected Feature feature;
 
