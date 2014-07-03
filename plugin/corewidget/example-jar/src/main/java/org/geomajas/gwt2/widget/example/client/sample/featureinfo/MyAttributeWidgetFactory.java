@@ -17,18 +17,18 @@ import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.gwt2.client.map.attribute.Attribute;
 import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
 import org.geomajas.gwt2.client.map.feature.Feature;
-import org.geomajas.gwt2.widget.client.featureinfo.FeatureAttributeWidgetFactory;
+import org.geomajas.gwt2.widget.client.featureinfo.builder.AttributeWidgetFactory;
 import org.geomajas.layer.feature.attribute.DoubleAttribute;
 
 /**
  * Factory to create attribute widgets. Overwrites the default attribute factory
- * {@link FeatureAttributeWidgetFactory}. Requests for building attributes with a
+ * {@link org.geomajas.gwt2.widget.client.featureinfo.builder.AttributeWidgetFactory}. Requests for building attributes with a
  * value of {@link Double} are intercepted and a custom widget for these attributes is build.
  * Other attributes are delegated to the default factory.
  *
  * @author Youri Flement
  */
-public class MyAttributeWidgetFactory extends FeatureAttributeWidgetFactory {
+public class MyAttributeWidgetFactory extends AttributeWidgetFactory {
 
 	@Override
 	public Widget createFeatureAttributeWidget(Feature feature, AttributeDescriptor descriptor) {

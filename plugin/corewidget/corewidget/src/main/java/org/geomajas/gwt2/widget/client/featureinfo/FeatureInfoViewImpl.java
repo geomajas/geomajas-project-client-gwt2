@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
 import org.geomajas.gwt2.client.map.feature.Feature;
+import org.geomajas.gwt2.widget.client.featureinfo.builder.AttributeWidgetFactory;
 import org.geomajas.gwt2.widget.client.featureinfo.resource.FeatureInfoResource;
 
 /**
@@ -29,8 +30,8 @@ import org.geomajas.gwt2.widget.client.featureinfo.resource.FeatureInfoResource;
  */
 public class FeatureInfoViewImpl implements FeatureInfoView {
 
-	private static final FeatureAttributeWidgetFactory ATTRIBUTE_FACTORY =
-			GWT.create(FeatureAttributeWidgetFactory.class);
+	private static final AttributeWidgetFactory ATTRIBUTE_FACTORY =
+			GWT.create(AttributeWidgetFactory.class);
 
 	private FeatureInfoPresenter presenter;
 

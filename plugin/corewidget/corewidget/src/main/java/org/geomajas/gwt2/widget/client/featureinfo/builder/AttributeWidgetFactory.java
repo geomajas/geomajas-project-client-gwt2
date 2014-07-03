@@ -9,19 +9,13 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.client.featureinfo;
+package org.geomajas.gwt2.widget.client.featureinfo.builder;
 
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.client.map.attribute.Attribute;
 import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
 import org.geomajas.gwt2.client.map.feature.Feature;
-import org.geomajas.gwt2.widget.client.featureinfo.builder.AttributeWidgetBuilder;
-import org.geomajas.gwt2.widget.client.featureinfo.builder.BooleanAttributeWidgetBuilder;
-import org.geomajas.gwt2.widget.client.featureinfo.builder.DefaultAttributeWidgetBuilder;
-import org.geomajas.gwt2.widget.client.featureinfo.builder.DoubleAttributeWidgetBuilder;
-import org.geomajas.gwt2.widget.client.featureinfo.builder.ImageAttributeWidgetBuilder;
-import org.geomajas.gwt2.widget.client.featureinfo.builder.UrlAttributeWidgetBuilder;
 import org.geomajas.layer.feature.attribute.BooleanAttribute;
 import org.geomajas.layer.feature.attribute.DoubleAttribute;
 import org.geomajas.layer.feature.attribute.ImageUrlAttribute;
@@ -39,7 +33,7 @@ import java.util.Map;
  * @since 2.1.0
  */
 @Api(allMethods = true)
-public class FeatureAttributeWidgetFactory {
+public class AttributeWidgetFactory {
 
 	private static Map<Class<?>, AttributeWidgetBuilder<?>> builders
 			= new HashMap<Class<?>, AttributeWidgetBuilder<?>>();

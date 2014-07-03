@@ -19,6 +19,6 @@
     <source path='client'/>
 
     <replace-with class="org.geomajas.gwt2.widget.example.client.sample.featureinfo.MyAttributeWidgetFactory">
-        <when-type-is class="org.geomajas.gwt2.widget.client.featureinfo.FeatureAttributeWidgetFactory"/>
+        <when-type-is class="org.geomajas.gwt2.widget.client.featureinfo.builder.AttributeWidgetFactory"/>
     </replace-with>
 </module>
