@@ -9,12 +9,12 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.client.featureinfo.resource;
+package org.geomajas.gwt2.widget.client.feature.featureinfo.resource;
 
 import com.google.gwt.resources.client.CssResource;
 
 /**
- * CSS resource for the {@link org.geomajas.gwt2.widget.client.featureinfo.FeatureInfoWidget}.
+ * CSS resource for the {@link org.geomajas.gwt2.widget.client.feature.featureinfo.FeatureInfoWidget}.
  *
  * @author Youri Flement
  */

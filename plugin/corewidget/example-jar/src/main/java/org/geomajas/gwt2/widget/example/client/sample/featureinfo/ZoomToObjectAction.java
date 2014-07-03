@@ -19,7 +19,7 @@ import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.ZoomOption;
 import org.geomajas.gwt2.client.map.feature.Feature;
-import org.geomajas.gwt2.widget.client.featureinfo.FeatureAction;
+import org.geomajas.gwt2.widget.client.feature.featureinfo.FeatureAction;
 
 /**
  * Implementation of a {@link FeatureAction} to zoom to a feature on the map.

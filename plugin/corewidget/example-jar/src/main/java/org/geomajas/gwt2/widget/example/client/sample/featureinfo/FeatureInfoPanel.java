@@ -29,7 +29,7 @@ import org.geomajas.gwt2.example.base.client.ExampleBase;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.gwt2.widget.client.feature.event.FeatureClickedEvent;
 import org.geomajas.gwt2.widget.client.feature.event.FeatureClickedHandler;
-import org.geomajas.gwt2.widget.client.featureinfo.FeatureInfoWidget;
+import org.geomajas.gwt2.widget.client.feature.featureinfo.FeatureInfoWidget;
 import org.geomajas.gwt2.widget.example.client.sample.featureinfo.control.FeatureInfoControlWidget;
 
 /**

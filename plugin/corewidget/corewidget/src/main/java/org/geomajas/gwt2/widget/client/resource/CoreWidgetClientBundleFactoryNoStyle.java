@@ -12,10 +12,10 @@
 package org.geomajas.gwt2.widget.client.resource;
 
 import com.google.gwt.core.client.GWT;
+import org.geomajas.gwt2.widget.client.feature.featureinfo.resource.FeatureInfoResource;
+import org.geomajas.gwt2.widget.client.feature.featureinfo.resource.FeatureInfoResourceNoStyle;
 import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.FeatureSelectBoxResource;
 import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.FeatureSelectBoxResourceNoStyle;
-import org.geomajas.gwt2.widget.client.featureinfo.resource.FeatureInfoResource;
-import org.geomajas.gwt2.widget.client.featureinfo.resource.FeatureInfoResourceNoStyle;
 
 /**
  * No style factory for client bundles defined within this artifact. This factory wipes out all css.
@@ -35,7 +35,7 @@ public class CoreWidgetClientBundleFactoryNoStyle extends CoreWidgetClientBundle
 	}
 
 	/**
-	 * Create an empty resource bundle for the {@link org.geomajas.gwt2.widget.client.featureinfo.FeatureInfoWidget}.
+	 * Create an empty resource bundle for the {@link org.geomajas.gwt2.widget.client.feature.featureinfo.FeatureInfoWidget}.
 	 *
 	 * @return A new resource bundle.
 	 */

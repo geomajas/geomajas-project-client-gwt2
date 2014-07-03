@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.client.featureinfo;
+package org.geomajas.gwt2.widget.client.feature.featureinfo;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.service.GeometryService;
@@ -18,7 +18,7 @@ import org.geomajas.gwt2.client.map.ZoomOption;
 import org.geomajas.gwt2.client.map.feature.Feature;
 
 /**
- * Presenter implementation for the {@link org.geomajas.gwt2.widget.client.featureinfo.FeatureInfoWidget}.
+ * Presenter implementation for the {@link org.geomajas.gwt2.widget.client.feature.featureinfo.FeatureInfoWidget}.
  * The presenter can make the view show features and hide or show options. It can also zoom to a feature
  * on the map.
  *

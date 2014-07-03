@@ -9,21 +9,21 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.client.featureinfo.builder;
+package org.geomajas.gwt2.widget.client.feature.featureinfo.builder;
 
-import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.layer.feature.attribute.StringAttribute;
 
 /**
- * Widget builder for an attribute whose values is an <code>URL</code>.
+ * Widget builder for attributes whose value are a path to an image.
  *
  * @author Youri Flement
  */
-public class UrlAttributeWidgetBuilder implements AttributeWidgetBuilder<StringAttribute> {
+public class ImageAttributeWidgetBuilder implements AttributeWidgetBuilder<StringAttribute> {
 
 	@Override
-	public Widget buildAttributeWidget(StringAttribute url) {
-		return new Anchor(url.getValue());
+	public Widget buildAttributeWidget(StringAttribute imagePath) {
+		return new Image(imagePath.getValue());
 	}
 }

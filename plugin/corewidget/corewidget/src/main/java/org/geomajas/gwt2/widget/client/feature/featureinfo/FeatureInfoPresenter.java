@@ -9,13 +9,13 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.client.featureinfo;
+package org.geomajas.gwt2.widget.client.feature.featureinfo;
 
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.feature.Feature;
 
 /**
- * Presenter interface for the {@link org.geomajas.gwt2.widget.client.featureinfo.FeatureInfoWidget}.
+ * Presenter interface for the {@link org.geomajas.gwt2.widget.client.feature.featureinfo.FeatureInfoWidget}.
  * The presenter should be able to show a feature, change the visibility of options and zoom
  * to a specific feature on the map.
  *

@@ -9,13 +9,13 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.client.featureinfo.resource;
+package org.geomajas.gwt2.widget.client.feature.featureinfo.resource;
 
 import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.FeatureSelectBoxCssResource;
 import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.FeatureSelectBoxResource;
 
 /**
- * CSS resource to remove style of the {@link org.geomajas.gwt2.widget.client.featureinfo.FeatureInfoWidget}.
+ * CSS resource to remove style of the {@link org.geomajas.gwt2.widget.client.feature.featureinfo.FeatureInfoWidget}.
  *
  * @author Youri Flement
  */

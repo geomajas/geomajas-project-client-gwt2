@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.client.featureinfo;
+package org.geomajas.gwt2.widget.client.feature.featureinfo;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
@@ -17,7 +17,7 @@ import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.widget.client.CoreWidget;
-import org.geomajas.gwt2.widget.client.featureinfo.resource.FeatureInfoResource;
+import org.geomajas.gwt2.widget.client.feature.featureinfo.resource.FeatureInfoResource;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -79,7 +79,7 @@ public class FeatureInfoWidget implements IsWidget {
 	 * Add an action for this feature to the widget. When the displayed feature
 	 * changes, the feature associated with the action is automatically updated.
 	 *
-	 * @param action    The action to add.
+	 * @param action The action to add.
 	 */
 	public void addFeatureAction(FeatureAction action) {
 		actions.add(action);

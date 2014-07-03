@@ -10,12 +10,12 @@
  */
 package org.geomajas.gwt2.widget.client;
 
+import org.geomajas.gwt2.widget.client.feature.featureinfo.FeatureInfoView;
+import org.geomajas.gwt2.widget.client.feature.featureinfo.FeatureInfoViewImpl;
+import org.geomajas.gwt2.widget.client.feature.featureinfo.resource.FeatureInfoResource;
 import org.geomajas.gwt2.widget.client.feature.featureselectbox.FeatureSelectBoxView;
 import org.geomajas.gwt2.widget.client.feature.featureselectbox.FeatureSelectBoxViewImpl;
 import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.FeatureSelectBoxResource;
-import org.geomajas.gwt2.widget.client.featureinfo.FeatureInfoView;
-import org.geomajas.gwt2.widget.client.featureinfo.FeatureInfoViewImpl;
-import org.geomajas.gwt2.widget.client.featureinfo.resource.FeatureInfoResource;
 
 /**
  * MVP view factory for this plugin.
@@ -34,7 +34,7 @@ public class CoreWidgetViewFactory {
 	}
 
 	/**
-	 * Create a new {@link org.geomajas.gwt2.widget.client.featureinfo.FeatureInfoView}.
+	 * Create a new {@link org.geomajas.gwt2.widget.client.feature.featureinfo.FeatureInfoView}.
 	 *
 	 * @param resource the resource to use.
 	 * @return a new feature info view.

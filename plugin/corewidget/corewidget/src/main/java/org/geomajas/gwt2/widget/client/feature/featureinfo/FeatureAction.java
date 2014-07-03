@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.client.featureinfo;
+package org.geomajas.gwt2.widget.client.feature.featureinfo;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.client.map.feature.Feature;

@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.client.featureinfo.builder;
+package org.geomajas.gwt2.widget.client.feature.featureinfo.builder;
 
 import com.google.gwt.user.client.ui.Widget;
 

@@ -9,14 +9,14 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.client.featureinfo;
+package org.geomajas.gwt2.widget.client.feature.featureinfo;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.client.map.feature.Feature;
 
 /**
- * Interface for the {@link org.geomajas.gwt2.widget.client.featureinfo.FeatureInfoWidget}. The view should
+ * Interface for the {@link org.geomajas.gwt2.widget.client.feature.featureinfo.FeatureInfoWidget}. The view should
  * be able to display a feature and should provide options to hide or show options to interact
  * with the feature information.
  *

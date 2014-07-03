@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.client.featureinfo;
+package org.geomajas.gwt2.widget.client.feature.featureinfo;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -20,11 +20,11 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
 import org.geomajas.gwt2.client.map.feature.Feature;
-import org.geomajas.gwt2.widget.client.featureinfo.builder.AttributeWidgetFactory;
-import org.geomajas.gwt2.widget.client.featureinfo.resource.FeatureInfoResource;
+import org.geomajas.gwt2.widget.client.feature.featureinfo.builder.AttributeWidgetFactory;
+import org.geomajas.gwt2.widget.client.feature.featureinfo.resource.FeatureInfoResource;
 
 /**
- * View implementation of the {@link org.geomajas.gwt2.widget.client.featureinfo.FeatureInfoWidget}.
+ * View implementation of the {@link org.geomajas.gwt2.widget.client.feature.featureinfo.FeatureInfoWidget}.
  *
  * @author Youri Flement
  */

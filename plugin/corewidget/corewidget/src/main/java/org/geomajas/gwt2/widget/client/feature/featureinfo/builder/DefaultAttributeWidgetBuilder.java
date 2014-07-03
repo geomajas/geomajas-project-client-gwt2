@@ -9,21 +9,20 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.client.featureinfo.builder;
+package org.geomajas.gwt2.widget.client.feature.featureinfo.builder;
 
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
-import org.geomajas.layer.feature.attribute.DoubleAttribute;
 
 /**
- * Widget builder for {@link Double} attributes.
+ * Default Widget builder.
  *
  * @author Youri Flement
  */
-public class DoubleAttributeWidgetBuilder implements AttributeWidgetBuilder<DoubleAttribute> {
+public class DefaultAttributeWidgetBuilder implements AttributeWidgetBuilder<Object> {
 
 	@Override
-	public Widget buildAttributeWidget(DoubleAttribute attributeValue) {
-		return new Label(attributeValue.getValue() + "");
+	public Widget buildAttributeWidget(Object attributeValue) {
+		return new Label(attributeValue.toString());
 	}
 }

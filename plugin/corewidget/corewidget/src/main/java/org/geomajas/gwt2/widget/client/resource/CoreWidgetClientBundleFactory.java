@@ -12,8 +12,8 @@
 package org.geomajas.gwt2.widget.client.resource;
 
 import com.google.gwt.core.client.GWT;
+import org.geomajas.gwt2.widget.client.feature.featureinfo.resource.FeatureInfoResource;
 import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.FeatureSelectBoxResource;
-import org.geomajas.gwt2.widget.client.featureinfo.resource.FeatureInfoResource;
 
 /**
  * Default factory for client bundles defined within this artifact. By using such a factory, it is possible to easily
@@ -34,7 +34,7 @@ public class CoreWidgetClientBundleFactory {
 	}
 
 	/**
-	 * Create a new resource bundle for the {@link org.geomajas.gwt2.widget.client.featureinfo.FeatureInfoWidget}.
+	 * Create a new resource bundle for the {@link org.geomajas.gwt2.widget.client.feature.featureinfo.FeatureInfoWidget}.
 	 *
 	 * @return A new resource bundle.
 	 */

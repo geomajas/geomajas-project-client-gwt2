@@ -14,7 +14,7 @@ package org.geomajas.gwt2.widget.example.client.sample.featureinfo.control;
 import com.google.gwt.core.client.GWT;
 
 /**
- * Control widget for displaying {@link org.geomajas.gwt2.widget.client.featureinfo.FeatureInfoWidget}s.
+ * Control widget for displaying {@link org.geomajas.gwt2.widget.client.feature.featureinfo.FeatureInfoWidget}s.
  *
  * @author Youri Flement
  */
