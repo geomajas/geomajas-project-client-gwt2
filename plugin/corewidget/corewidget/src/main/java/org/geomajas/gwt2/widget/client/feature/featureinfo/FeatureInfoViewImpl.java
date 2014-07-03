@@ -67,8 +67,8 @@ public class FeatureInfoViewImpl implements FeatureInfoView {
 		CellFormatter formatter = grid.getCellFormatter();
 		int i = 0;
 		for (AttributeDescriptor descriptor : feature.getLayer().getAttributeDescriptors()) {
-			// Put the label in the first column:
-			grid.setText(i, 0, descriptor.getLabel());
+			// Put the attribute label in the first column:
+			grid.setText(i, 0, getAttributeLabel(feature, descriptor));
 			formatter.getElement(i, 0).addClassName(resource.css().attributeLabel());
 
 			// Put a delimiter in the second column:
@@ -76,11 +76,24 @@ public class FeatureInfoViewImpl implements FeatureInfoView {
 
 			// Create a widget for the attribute value and put it in the last column:
 			grid.setWidget(i, 2, ATTRIBUTE_FACTORY.createFeatureAttributeWidget(feature, descriptor));
+			formatter.getElement(i, 2).addClassName(resource.css().attributeValue());
 
 			i++;
 		}
 
 		contentPanel.add(grid);
+	}
+
+	/**
+	 * Give developers some way to easily overwrite the default label of an attribute
+	 * but still keep the general layout of the widget.
+	 *
+	 * @param feature    The feature.
+	 * @param descriptor The attribute descriptor.
+	 * @return A label for the attribute.
+	 */
+	protected String getAttributeLabel(Feature feature, AttributeDescriptor descriptor) {
+		return descriptor.getName();
 	}
 
 	@Override

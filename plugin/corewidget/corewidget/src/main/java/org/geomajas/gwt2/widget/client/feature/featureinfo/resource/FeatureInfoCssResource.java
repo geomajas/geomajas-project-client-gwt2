@@ -23,4 +23,6 @@ public interface FeatureInfoCssResource extends CssResource {
 	@ClassName("gm-attributeLabel")
 	String attributeLabel();
 
+	@ClassName("gm-attributeValue")
+	String attributeValue();
 }

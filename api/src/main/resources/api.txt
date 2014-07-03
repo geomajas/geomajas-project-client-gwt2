@@ -332,7 +332,6 @@ org.geomajas.gwt2.client.map.attribute.Attribute:VALUE_TYPE getValue():2.0.0
 org.geomajas.gwt2.client.map.attribute.AttributeDescriptor::2.0.0
 org.geomajas.gwt2.client.map.attribute.AttributeDescriptor:AttributeType getType():2.0.0
 org.geomajas.gwt2.client.map.attribute.AttributeDescriptor:String getName():2.0.0
-org.geomajas.gwt2.client.map.attribute.AttributeDescriptor:String getLabel():2.1.0
 org.geomajas.gwt2.client.map.attribute.AttributeType::2.0.0
 org.geomajas.gwt2.client.map.attribute.AttributeType:Class<?> getBinding():2.0.0
 org.geomajas.gwt2.client.map.attribute.AttributeType:String getName():2.0.0

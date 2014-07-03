@@ -258,7 +258,7 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 					type = new PrimitiveAttributeTypeImpl(PrimitiveType.STRING);
 					break;
 			}
-			return new AttributeDescriptorImpl(type, pai.getName(), attrInfo.getLabel());
+			return new AttributeDescriptorImpl(type, pai.getName());
 		}
 		return null;
 	}
