@@ -27,7 +27,7 @@ public interface HasFeature {
 	/**
 	 * Set the feature associated with the action.
 	 *
-	 * @param feature
+	 * @param feature    The feature.
 	 */
 	void setFeature(Feature feature);
 
