@@ -18,7 +18,7 @@
     <entry-point class="org.geomajas.gwt2.widget.example.client.ExampleJar"/>
     <source path='client'/>
 
-    <replace-with class="org.geomajas.gwt2.widget.example.client.sample.featureinfo.MyAttributeWidgetFactory">
+    <replace-with class="org.geomajas.gwt2.widget.example.client.sample.feature.featureinfo.MyAttributeWidgetFactory">
         <when-type-is class="org.geomajas.gwt2.widget.client.feature.featureinfo.builder.AttributeWidgetFactory"/>
     </replace-with>
 </module>

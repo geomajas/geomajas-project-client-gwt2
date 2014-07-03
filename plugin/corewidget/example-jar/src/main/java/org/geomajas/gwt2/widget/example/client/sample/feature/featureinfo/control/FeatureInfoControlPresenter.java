@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.example.client.sample.featureinfo.control;
+package org.geomajas.gwt2.widget.example.client.sample.feature.featureinfo.control;
 
 import org.geomajas.gwt2.client.map.MapPresenter;
 

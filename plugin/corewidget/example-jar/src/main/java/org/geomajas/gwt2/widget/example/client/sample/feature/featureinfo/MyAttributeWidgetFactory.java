@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.example.client.sample.featureinfo;
+package org.geomajas.gwt2.widget.example.client.sample.feature.featureinfo;
 
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.VerticalPanel;

@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.example.client.sample.featureinfo.control;
+package org.geomajas.gwt2.widget.example.client.sample.feature.featureinfo.control;
 
 import com.google.gwt.dom.client.Style.Unit;
 import org.geomajas.gwt2.client.map.MapPresenter;
@@ -19,7 +19,7 @@ import org.geomajas.gwt2.widget.client.feature.controller.FeatureClickedListener
 import org.geomajas.gwt2.widget.client.feature.event.FeatureClickedEvent;
 import org.geomajas.gwt2.widget.client.feature.event.FeatureClickedHandler;
 import org.geomajas.gwt2.widget.client.feature.featureinfo.FeatureInfoWidget;
-import org.geomajas.gwt2.widget.example.client.sample.featureinfo.FeatureInfoWidgetFactory;
+import org.geomajas.gwt2.widget.example.client.sample.feature.featureinfo.FeatureInfoWidgetFactory;
 
 /**
  * Presenter implementation for the {@link FeatureInfoControl}.

@@ -21,7 +21,7 @@ import org.geomajas.gwt2.widget.example.client.resource.ExampleWidgetResource;
 import org.geomajas.gwt2.widget.example.client.sample.dialog.CloseableDialogExample;
 import org.geomajas.gwt2.widget.example.client.sample.dialog.MessageBoxExample;
 import org.geomajas.gwt2.widget.example.client.sample.feature.FeatureClickedExample;
-import org.geomajas.gwt2.widget.example.client.sample.featureinfo.FeatureInfoPanel;
+import org.geomajas.gwt2.widget.example.client.sample.feature.featureinfo.FeatureInfoPanel;
 import org.geomajas.gwt2.widget.example.client.sample.map.LegendAddRemoveSample;
 import org.geomajas.gwt2.widget.example.client.sample.map.LegendOrderSample;
 import org.geomajas.gwt2.widget.example.client.sample.map.MapLegendDropDownSample;

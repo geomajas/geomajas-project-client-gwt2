@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.example.client.sample.featureinfo;
+package org.geomajas.gwt2.widget.example.client.sample.feature.featureinfo;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -29,7 +29,7 @@ import org.geomajas.gwt2.example.base.client.ExampleBase;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.gwt2.widget.client.feature.event.FeatureClickedEvent;
 import org.geomajas.gwt2.widget.client.feature.event.FeatureClickedHandler;
-import org.geomajas.gwt2.widget.example.client.sample.featureinfo.control.FeatureInfoControlWidget;
+import org.geomajas.gwt2.widget.example.client.sample.feature.featureinfo.control.FeatureInfoControlWidget;
 
 /**
  * Panel for the feature info sample.

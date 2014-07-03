@@ -9,10 +9,10 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.example.client.sample.featureinfo.control;
+package org.geomajas.gwt2.widget.example.client.sample.feature.featureinfo.control;
 
 /**
- * View factory for the {@link org.geomajas.gwt2.widget.example.client.sample.featureinfo.control.FeatureInfoControl}.
+ * View factory for the {@link org.geomajas.gwt2.widget.example.client.sample.feature.featureinfo.control.FeatureInfoControl}.
  *
  * @author Youri Flement
  */

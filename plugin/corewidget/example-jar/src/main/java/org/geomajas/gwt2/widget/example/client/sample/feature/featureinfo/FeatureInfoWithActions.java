@@ -11,7 +11,7 @@
  *
  */
 
-package org.geomajas.gwt2.widget.example.client.sample.featureinfo;
+package org.geomajas.gwt2.widget.example.client.sample.feature.featureinfo;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.VerticalPanel;
