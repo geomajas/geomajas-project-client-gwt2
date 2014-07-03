@@ -22,7 +22,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class DefaultAttributeWidgetBuilder implements AttributeWidgetBuilder<Object> {
 
 	@Override
-	public Widget buildAttributeWidget(Object attributeValue) {
-		return new Label(attributeValue.toString());
+	public Widget buildAttributeWidget(Object attribute) {
+		return new Label(attribute.toString());
 	}
 }

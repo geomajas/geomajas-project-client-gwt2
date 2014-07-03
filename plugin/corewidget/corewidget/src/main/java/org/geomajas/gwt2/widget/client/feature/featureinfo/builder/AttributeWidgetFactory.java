@@ -54,17 +54,17 @@ public class AttributeWidgetFactory {
 	 * @return the (possible custom) widget for a feature attribute.
 	 */
 	public Widget createFeatureAttributeWidget(Feature feature, AttributeDescriptor descriptor) {
-		// The value of the attribute: (e.g. StringAttribute, DoubleAttribute, ...)
-		Attribute<?> attributeValue = feature.getAttributes().get(descriptor.getName());
+		Attribute<?> attribute = feature.getAttributes().get(descriptor.getName());
 
-		// Get a builder for the attribute:
-		AttributeWidgetBuilder builder = builders.get(attributeValue.getValue().getClass());
+		// Get a builder for the attribute
+		// attribute.getValue is e.g. StringAttribute, ImageURLAttribute, ...
+		AttributeWidgetBuilder builder = builders.get(attribute.getValue().getClass());
 		if (builder == null) {
 			builder = new DefaultAttributeWidgetBuilder();
 		}
 
 		// Build the widget and return it:
-		return builder.buildAttributeWidget(attributeValue.getValue());
+		return builder.buildAttributeWidget(attribute.getValue());
 	}
 
 	/**

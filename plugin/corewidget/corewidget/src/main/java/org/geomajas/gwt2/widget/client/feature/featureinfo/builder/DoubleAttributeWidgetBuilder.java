@@ -23,7 +23,7 @@ import org.geomajas.layer.feature.attribute.DoubleAttribute;
 public class DoubleAttributeWidgetBuilder implements AttributeWidgetBuilder<DoubleAttribute> {
 
 	@Override
-	public Widget buildAttributeWidget(DoubleAttribute attributeValue) {
-		return new Label(attributeValue.getValue() + "");
+	public Widget buildAttributeWidget(DoubleAttribute attribute) {
+		return new Label(attribute.getValue() + "");
 	}
 }

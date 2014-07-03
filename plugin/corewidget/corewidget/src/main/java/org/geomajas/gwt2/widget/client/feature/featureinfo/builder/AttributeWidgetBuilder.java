@@ -25,8 +25,8 @@ public interface AttributeWidgetBuilder<ATTRIBUTE_TYPE> {
 	/**
 	 * Build a custom widget for a specific attribute.
 	 *
-	 * @param attributeValue the value of the attribute.
+	 * @param attribute the value of the attribute.
 	 * @return the custom widget.
 	 */
-	Widget buildAttributeWidget(ATTRIBUTE_TYPE attributeValue);
+	Widget buildAttributeWidget(ATTRIBUTE_TYPE attribute);
 }

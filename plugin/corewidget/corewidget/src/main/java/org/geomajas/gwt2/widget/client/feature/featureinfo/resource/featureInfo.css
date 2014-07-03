@@ -6,4 +6,6 @@
 @external gm-attributeValue;
 .gm-attributeValue {
     text-decoration: none;
+    font-weight: normal;
+    line-height: normal;
 }

@@ -28,11 +28,11 @@ public class BooleanAttributeWidgetBuilder implements AttributeWidgetBuilder<Boo
 	private static final WidgetCoreInternationalization MSG = GWT.create(WidgetCoreInternationalization.class);
 
 	@Override
-	public Widget buildAttributeWidget(BooleanAttribute attributeValue) {
+	public Widget buildAttributeWidget(BooleanAttribute attribute) {
 		Label label = new Label();
 
 		// Simply put "yes" or "no" instead of 1 and 0.
-		if (attributeValue.getValue()) {
+		if (attribute.getValue()) {
 			label.getElement().setInnerText(MSG.yes());
 		} else {
 			label.getElement().setInnerText(MSG.no());
