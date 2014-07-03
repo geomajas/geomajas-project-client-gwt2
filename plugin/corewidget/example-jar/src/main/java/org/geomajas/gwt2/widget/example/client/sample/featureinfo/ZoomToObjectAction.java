@@ -22,7 +22,7 @@ import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.widget.client.feature.featureinfo.HasFeature;
 
 /**
- * Implementation of a {@link org.geomajas.gwt2.widget.client.feature.featureinfo.HasFeature} to zoom to a feature on the map.
+ * Implementation of a {@link HasFeature} to zoom to a feature on the map.
  *
  * @author Youri Flement
  */

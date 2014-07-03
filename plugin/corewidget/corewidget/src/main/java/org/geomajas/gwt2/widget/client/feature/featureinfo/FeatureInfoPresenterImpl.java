@@ -11,13 +11,10 @@
 
 package org.geomajas.gwt2.widget.client.feature.featureinfo;
 
-import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.feature.Feature;
 
 /**
  * Presenter implementation for the {@link org.geomajas.gwt2.widget.client.feature.featureinfo.FeatureInfoWidget}.
- * The presenter can make the view show features and hide or show options. It can also zoom to a feature
- * on the map.
  *
  * @author Youri Flement
  */
@@ -25,17 +22,10 @@ public class FeatureInfoPresenterImpl implements FeatureInfoPresenter {
 
 	private FeatureInfoView view;
 
-	private MapPresenter mapPresenter;
-
 	private Feature feature;
 
 	public FeatureInfoPresenterImpl(FeatureInfoView view) {
 		this.view = view;
-	}
-
-	@Override
-	public void setMapPresenter(MapPresenter mapPresenter) {
-		this.mapPresenter = mapPresenter;
 	}
 
 	@Override

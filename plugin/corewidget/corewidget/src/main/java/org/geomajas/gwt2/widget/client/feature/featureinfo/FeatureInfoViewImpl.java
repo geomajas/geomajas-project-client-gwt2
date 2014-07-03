@@ -72,7 +72,7 @@ public class FeatureInfoViewImpl implements FeatureInfoView {
 			formatter.getElement(i, 0).addClassName(resource.css().attributeLabel());
 
 			// Put a delimiter in the second column:
-			grid.setText(i, 1, ": ");
+			grid.setText(i, 1, getDelimiter());
 
 			// Create a widget for the attribute value and put it in the last column:
 			grid.setWidget(i, 2, ATTRIBUTE_FACTORY.createFeatureAttributeWidget(feature, descriptor));
@@ -86,7 +86,7 @@ public class FeatureInfoViewImpl implements FeatureInfoView {
 
 	/**
 	 * Give developers some way to easily overwrite the default label of an attribute
-	 * but still keep the general layout of the widget.
+	 * and still keep the general layout of the widget.
 	 *
 	 * @param feature    The feature.
 	 * @param descriptor The attribute descriptor.
@@ -94,6 +94,16 @@ public class FeatureInfoViewImpl implements FeatureInfoView {
 	 */
 	protected String getAttributeLabel(Feature feature, AttributeDescriptor descriptor) {
 		return descriptor.getName();
+	}
+
+	/**
+	 * Give developers an easy way to overwrite the default delimiter and still keep the general
+	 * layout of the widget.
+	 *
+	 * @return The delimiter.
+	 */
+	protected String getDelimiter() {
+		return ": ";
 	}
 
 	@Override

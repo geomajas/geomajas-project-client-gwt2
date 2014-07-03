@@ -14,7 +14,6 @@ package org.geomajas.gwt2.widget.client.feature.featureinfo;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.annotation.Api;
-import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.widget.client.CoreWidget;
 import org.geomajas.gwt2.widget.client.feature.featureinfo.resource.FeatureInfoResource;
@@ -41,24 +40,20 @@ public class FeatureInfoWidget implements IsWidget, HasFeature {
 
 	/**
 	 * Create a new feature info widget with the default resources.
-	 *
-	 * @param mapPresenter the map presenter.
 	 */
-	public FeatureInfoWidget(MapPresenter mapPresenter) {
-		this(CoreWidget.getInstance().getClientBundleFactory().createFeatureInfoResource(), mapPresenter);
+	public FeatureInfoWidget() {
+		this(CoreWidget.getInstance().getClientBundleFactory().createFeatureInfoResource());
 	}
 
 	/**
 	 * Create a new feature info widget with the given map presenter
 	 * and resource.
 	 *
-	 * @param resource     the feature info widget resource.
-	 * @param mapPresenter the map presenter.
+	 * @param resource The feature info widget resource.
 	 */
-	public FeatureInfoWidget(FeatureInfoResource resource, MapPresenter mapPresenter) {
+	public FeatureInfoWidget(FeatureInfoResource resource) {
 		view = CoreWidget.getInstance().getViewFactory().createFeatureInfoView(resource);
 		presenter = new FeatureInfoPresenterImpl(view);
-		presenter.setMapPresenter(mapPresenter);
 		view.setPresenter(presenter);
 		actions = new ArrayList<HasFeature>();
 	}
@@ -66,8 +61,9 @@ public class FeatureInfoWidget implements IsWidget, HasFeature {
 	/**
 	 * Set the feature to display.
 	 *
-	 * @param feature the feature.
+	 * @param feature The feature.
 	 */
+	@Override
 	public void setFeature(Feature feature) {
 		for (HasFeature action : actions) {
 			action.setFeature(feature);
@@ -76,23 +72,23 @@ public class FeatureInfoWidget implements IsWidget, HasFeature {
 	}
 
 	/**
-	 * Add an action for this feature to the widget. When the displayed feature
-	 * changes, the feature associated with the action is automatically updated.
+	 * Add an object for this feature to the widget. When the displayed feature
+	 * changes, the feature associated with the object is automatically updated.
 	 *
 	 * @param action The action to add.
 	 */
-	public void addFeatureAction(HasFeature action) {
+	public void addHasFeature(HasFeature action) {
 		actions.add(action);
 		action.setFeature(presenter.getFeature());
 	}
 
 	/**
-	 * Remove an action associated with this widget. If the displayed feature changes,
-	 * the feature associated with the action will not be updated anymore.
+	 * Remove an object associated with this widget. If the displayed feature changes,
+	 * the feature associated with the object will not be updated anymore.
 	 *
 	 * @param action The action to remove.
 	 */
-	public void removeFeatureAction(HasFeature action) {
+	public void removeHasFeature(HasFeature action) {
 		actions.remove(action);
 	}
 

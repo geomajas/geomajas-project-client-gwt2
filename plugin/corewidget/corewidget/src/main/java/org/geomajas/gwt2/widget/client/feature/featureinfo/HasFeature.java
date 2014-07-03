@@ -15,10 +15,8 @@ import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.client.map.feature.Feature;
 
 /**
- * Interface for a feature action. A feature action can be added to a {@link FeatureInfoWidget} to automatically
- * synchronize the underlying {@link Feature} of the action to the selected {@link Feature}.
- *
- * Because the interface contains only a method to set the feature, a feature action could be a widget, logger, ...
+ * Interface for a class that has a {@link Feature}.
+ * <p/>
  *
  * @author Youri Flement
  * @since 2.1.0

@@ -29,7 +29,6 @@ import org.geomajas.gwt2.example.base.client.ExampleBase;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.gwt2.widget.client.feature.event.FeatureClickedEvent;
 import org.geomajas.gwt2.widget.client.feature.event.FeatureClickedHandler;
-import org.geomajas.gwt2.widget.client.feature.featureinfo.FeatureInfoWidget;
 import org.geomajas.gwt2.widget.example.client.sample.featureinfo.control.FeatureInfoControlWidget;
 
 /**
@@ -52,9 +51,9 @@ public class FeatureInfoPanel implements SamplePanel, FeatureClickedHandler {
 	private static final FeatureInfoPanelUiBinder UI_BINDER = GWT.create(FeatureInfoPanelUiBinder.class);
 
 	/**
-	 * The Feature Info Widget we will display in the left panel.
+	 * The Feature Info Widget (with actions) we will display in the left panel.
 	 */
-	private FeatureInfoWidget featureInfoWidget;
+	private FeatureInfoWithActions featureInfoWidget;
 
 	/**
 	 * {@link UiBinder} for this class.
@@ -99,14 +98,10 @@ public class FeatureInfoPanel implements SamplePanel, FeatureClickedHandler {
 	public void onFeatureClicked(FeatureClickedEvent event) {
 		// Create feature info widget if this is the first time displaying a feature:
 		if (featureInfoWidget == null) {
-			// Create info widget
-			featureInfoWidget = new FeatureInfoWidget(mapPresenter);
+			// Create info widget with some actions:
+			FeatureInfoWidgetFactory factory = new FeatureInfoWidgetFactory();
+			featureInfoWidget = factory.getFeatureInfoWidgetWithActions(mapPresenter);
 			leftPanel.add(featureInfoWidget);
-
-			// Also create some actions for the feature info widget
-			ZoomToObjectAction action = new ZoomToObjectAction(mapPresenter);
-			featureInfoWidget.addFeatureAction(action);
-			leftPanel.add(action);
 		}
 
 		// (Over)write the feature of the widget:

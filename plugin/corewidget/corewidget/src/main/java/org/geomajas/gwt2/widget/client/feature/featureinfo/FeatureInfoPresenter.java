@@ -11,7 +11,6 @@
 
 package org.geomajas.gwt2.widget.client.feature.featureinfo;
 
-import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.feature.Feature;
 
 /**
@@ -22,13 +21,6 @@ import org.geomajas.gwt2.client.map.feature.Feature;
  * @author Youri Flement
  */
 public interface FeatureInfoPresenter extends HasFeature {
-
-	/**
-	 * Set the map presenter.
-	 *
-	 * @param mapPresenter The map presenter.
-	 */
-	void setMapPresenter(MapPresenter mapPresenter);
 
 	/**
 	 * Set the feature to be displayed.
