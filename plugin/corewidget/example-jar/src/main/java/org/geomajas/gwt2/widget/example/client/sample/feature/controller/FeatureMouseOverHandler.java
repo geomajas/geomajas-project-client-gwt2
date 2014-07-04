@@ -8,21 +8,17 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.client.event;
+package org.geomajas.gwt2.widget.example.client.sample.feature.controller;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.web.bindery.event.shared.Event;
-import org.geomajas.annotation.Api;
-import org.geomajas.annotation.UserImplemented;
 
 /**
- * Interface for handling {@link org.geomajas.gwt2.client.event.FeatureMouseOverEvent}s.
+ * Interface for handling {@link FeatureMouseOverEvent}s.
  *
  * @author David Debuck
  * @since 2.1.0
  */
-@Api(allMethods = true)
-@UserImplemented
 public interface FeatureMouseOverHandler extends EventHandler {
 	/**
 	 * The type of the handler.
@@ -39,7 +35,7 @@ public interface FeatureMouseOverHandler extends EventHandler {
 	 * features == 0    => the coordinate doesn't have any features available.
 	 * features == > 0  => the coordinate has 1 or more features available.
 	 *
-	 * @param event {@link org.geomajas.gwt2.client.event.FeatureMouseOverEvent}
+	 * @param event {@link FeatureMouseOverEvent}
 	 */
 	void onFeatureMouseOver(FeatureMouseOverEvent event);
 

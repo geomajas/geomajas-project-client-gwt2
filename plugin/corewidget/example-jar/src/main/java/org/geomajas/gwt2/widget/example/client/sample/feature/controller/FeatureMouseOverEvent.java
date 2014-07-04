@@ -8,10 +8,9 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.client.event;
+package org.geomajas.gwt2.widget.example.client.sample.feature.controller;
 
 import com.google.web.bindery.event.shared.Event;
-import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.map.feature.Feature;
 
@@ -24,7 +23,6 @@ import java.util.List;
  * @author David Debuck
  * @since 2.1.0
  */
-@Api(allMethods = true)
 public class FeatureMouseOverEvent extends Event<FeatureMouseOverHandler> {
 
 	private Coordinate coordinate;

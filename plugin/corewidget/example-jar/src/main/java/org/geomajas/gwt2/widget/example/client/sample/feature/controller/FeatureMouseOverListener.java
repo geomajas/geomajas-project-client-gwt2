@@ -9,16 +9,15 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.client.controller;
+package org.geomajas.gwt2.widget.example.client.sample.feature.controller;
 
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.user.client.Timer;
-import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
-import org.geomajas.gwt2.client.event.FeatureMouseOverEvent;
+import org.geomajas.gwt2.client.controller.AbstractMapController;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.client.map.feature.FeatureMapFunction;
@@ -33,14 +32,13 @@ import java.util.Map;
 /**
  * Controller that provides a feature based on a location clicked on the map. When multiple features are found on the
  * location, a drop down box is presented from where a single feature can be selected. The controller fires
- * {@link org.geomajas.gwt2.client.event.FeatureClickedEvent}s.
+ * {@link org.geomajas.gwt2.widget.example.client.sample.feature.controller.FeatureClickedEvent}s.
  *
  * @author Dosi Bingov
  * @author David Debuck
  * @since 2.1.0
  *
  */
-@Api(allMethods = true)
 public class FeatureMouseOverListener extends AbstractMapController {
 
 	private Map<String, Feature> clickedFeatures = new HashMap<String, Feature>();
