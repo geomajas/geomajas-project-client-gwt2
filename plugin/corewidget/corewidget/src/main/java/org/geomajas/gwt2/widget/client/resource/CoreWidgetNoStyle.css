@@ -11,3 +11,30 @@
 
 .gm-featureSelectBoxCell:hover {
 }
+
+/*===========================================================================*/
+/*====                        LayerControlPanel                          ====*/
+/*===========================================================================*/
+
+@external .gm-layerControlPanel;
+.gm-layerControlPanel {
+}
+
+@external .gm-layerControlPanelTitle;
+.gm-layerControlPanel-title {
+}
+
+@external .gm-layerControlPanelToggle;
+.gm-layerControlPanelToggle {
+
+}
+
+/*===========================================================================*/
+/*====                        MapControlPanel                            ====*/
+/*===========================================================================*/
+@external .gm-mapControlPanel;
+
+.gm-mapControlPanel {
+
+}
+
