@@ -24,6 +24,9 @@
                 </p>
                 <h3>Available layers:</h3>
                 <g:VerticalPanel ui:field="layerList"/>
+                <p/>
+                <h3>Supported requests:</h3>
+                <g:VerticalPanel ui:field="requestList"/>
             </g:HTMLPanel>
         </g:west>
 
