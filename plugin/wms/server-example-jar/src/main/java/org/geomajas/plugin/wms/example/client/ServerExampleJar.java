@@ -16,20 +16,19 @@ import com.google.gwt.core.client.GWT;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanelRegistry;
 import org.geomajas.gwt2.example.base.client.sample.ShowcaseSampleDefinition;
-import org.geomajas.plugin.wms.example.client.i18n.SampleMessages;
-import org.geomajas.plugin.wms.example.client.sample.CapabilitiesPanel;
-import org.geomajas.plugin.wms.example.client.sample.SelectStylePanel;
-import org.geomajas.plugin.wms.example.client.sample.WmsLayerLegendPanel;
-import org.geomajas.plugin.wms.example.client.sample.WmsLayerPanel;
+import org.geomajas.plugin.wms.example.client.i18n.ServerSampleMessages;
+import org.geomajas.plugin.wms.example.client.sample.IsFeaturesSupportedPanel;
+import org.geomajas.plugin.wms.example.client.sample.WmsFeatureInfoPanel;
+import org.geomajas.plugin.wms.example.client.sample.WmsSearchByLocationPanel;
 
 /**
  * Entry point and main class for the GWT client example application.
  *
  * @author Pieter De Graef
  */
-public class ExampleJar implements EntryPoint {
+public class ServerExampleJar implements EntryPoint {
 
-	private static final SampleMessages MESSAGES = GWT.create(SampleMessages.class);
+	private static final ServerSampleMessages MESSAGES = GWT.create(ServerSampleMessages.class);
 
 	public static final String CATEGORY_WMS = "WMS Plugin";
 
@@ -45,19 +44,19 @@ public class ExampleJar implements EntryPoint {
 		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
 
 			public SamplePanel create() {
-				return new WmsLayerPanel();
+				return new WmsFeatureInfoPanel();
 			}
 
 			public String getTitle() {
-				return MESSAGES.wmsLayerTitle();
+				return MESSAGES.wmsGetFeatureInfoTitle();
 			}
 
 			public String getShortDescription() {
-				return MESSAGES.wmsLayerShort();
+				return MESSAGES.wmsGetFeatureInfoShort();
 			}
 
 			public String getDescription() {
-				return MESSAGES.wmsLayerDescription();
+				return MESSAGES.wmsGetFeatureInfoDescription();
 			}
 
 			public String getCategory() {
@@ -66,25 +65,25 @@ public class ExampleJar implements EntryPoint {
 
 			@Override
 			public String getKey() {
-				return "basicwmslayer";
+				return "wmsgetfeatureinfo";
 			}
 		});
 		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
 
 			public SamplePanel create() {
-				return new CapabilitiesPanel();
+				return new IsFeaturesSupportedPanel();
 			}
 
 			public String getTitle() {
-				return MESSAGES.capabilitiesTitle();
+				return MESSAGES.isFeaturesSupportedTitle();
 			}
 
 			public String getShortDescription() {
-				return MESSAGES.capabilitiesShort();
+				return MESSAGES.isFeaturesSupportedShort();
 			}
 
 			public String getDescription() {
-				return MESSAGES.capabilitiesDescription();
+				return MESSAGES.isFeaturesSupportedDescription();
 			}
 
 			public String getCategory() {
@@ -93,25 +92,25 @@ public class ExampleJar implements EntryPoint {
 
 			@Override
 			public String getKey() {
-				return "wmsgetcapabilities";
+				return "isfeaturessupported";
 			}
 		});
 		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
 
 			public SamplePanel create() {
-				return new SelectStylePanel();
+				return new WmsSearchByLocationPanel();
 			}
 
 			public String getTitle() {
-				return MESSAGES.selectStyleTitle();
+				return MESSAGES.wmsSearchByLocationTitle();
 			}
 
 			public String getShortDescription() {
-				return MESSAGES.selectStyleShort();
+				return MESSAGES.wmsSearchByLocationShort();
 			}
 
 			public String getDescription() {
-				return MESSAGES.selectStyleDescription();
+				return MESSAGES.wmsSearchByLocationDescription();
 			}
 
 			public String getCategory() {
@@ -120,34 +119,7 @@ public class ExampleJar implements EntryPoint {
 
 			@Override
 			public String getKey() {
-				return "selectstyle";
-			}
-		});
-		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
-
-			public SamplePanel create() {
-				return new WmsLayerLegendPanel();
-			}
-
-			public String getTitle() {
-				return MESSAGES.wmsLayerLegendTitle();
-			}
-
-			public String getShortDescription() {
-				return MESSAGES.wmsLayerLegendShort();
-			}
-
-			public String getDescription() {
-				return MESSAGES.wmsLayerLegendDescription();
-			}
-
-			public String getCategory() {
-				return CATEGORY_WMS;
-			}
-
-			@Override
-			public String getKey() {
-				return "wmslayerlegend";
+				return "wmssearchbylocation";
 			}
 		});
 	}

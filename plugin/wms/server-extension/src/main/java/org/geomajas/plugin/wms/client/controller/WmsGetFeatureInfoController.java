@@ -11,10 +11,8 @@
 
 package org.geomajas.plugin.wms.client.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.geomajas.annotation.Api;
+import com.google.gwt.core.client.Callback;
+import com.google.gwt.event.dom.client.MouseUpEvent;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt2.client.controller.AbstractMapController;
@@ -22,16 +20,14 @@ import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.plugin.wms.client.layer.FeaturesSupportedWmsLayer;
 import org.geomajas.plugin.wms.client.service.WmsService.GetFeatureInfoFormat;
 
-import com.google.gwt.core.client.Callback;
-import com.google.gwt.event.dom.client.MouseUpEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Default map controller that executes WMS GetFeatureInfo requests on the registered layers.
  *
  * @author Pieter De Graef
- * @since 2.0.0
  */
-@Api(allMethods = true)
 public class WmsGetFeatureInfoController extends AbstractMapController {
 
 	private final List<FeaturesSupportedWmsLayer> layers;
@@ -40,7 +36,7 @@ public class WmsGetFeatureInfoController extends AbstractMapController {
 
 	private Callback<Object, String> htmlCallback;
 
-	private GetFeatureInfoFormat format = GetFeatureInfoFormat.GML2;
+	private String format = GetFeatureInfoFormat.GML2.toString();
 
 	private int maxCoordsPerFeature = -1;
 
@@ -84,19 +80,17 @@ public class WmsGetFeatureInfoController extends AbstractMapController {
 
 		// Now execute the GetFeatureInfo for each layer:
 		for (FeaturesSupportedWmsLayer layer : layers) {
-			switch (format) {
-				case GML2:
-				case GML3:
-					if (gmlCallback == null) {
-						throw new IllegalStateException("No callback has been set on the WmsGetFeatureInfoController");
-					}
-					layer.getFeatureInfo(worldLocation, gmlCallback);
-					break;
-				default:
-					if (htmlCallback == null) {
-						throw new IllegalStateException("No callback has been set on the WmsGetFeatureInfoController");
-					}
-					layer.getFeatureInfo(worldLocation, format, htmlCallback);
+			if (GetFeatureInfoFormat.GML2.toString().equalsIgnoreCase(format)
+					|| GetFeatureInfoFormat.GML3.toString().equalsIgnoreCase(format)) {
+				if (gmlCallback == null) {
+					throw new IllegalStateException("No callback has been set on the WmsGetFeatureInfoController");
+				}
+				layer.getFeatureInfo(worldLocation, gmlCallback);
+			} else {
+				if (htmlCallback == null) {
+					throw new IllegalStateException("No callback has been set on the WmsGetFeatureInfoController");
+				}
+				layer.getFeatureInfo(worldLocation, format, htmlCallback);
 			}
 		}
 	}
@@ -111,7 +105,7 @@ public class WmsGetFeatureInfoController extends AbstractMapController {
 	}
 
 	/**
-	 * Remove a layer for which a GetFeatureInfoRequest should no longer be fired on click.
+	 * Remove a layer for which a WmsGetFeatureInfoRequest should no longer be fired on click.
 	 *
 	 * @param layer The layer to remove again.
 	 */
@@ -124,16 +118,16 @@ public class WmsGetFeatureInfoController extends AbstractMapController {
 	 *
 	 * @return the GetFeatureInfoFormat used.
 	 */
-	public GetFeatureInfoFormat getFormat() {
+	public String getFormat() {
 		return format;
 	}
 
 	/**
-	 * Set a new GetFeatureInfoFormat to use in the GetFeatureInfoRequest.
+	 * Set a new GetFeatureInfoFormat to use in the WmsGetFeatureInfoRequest.
 	 *
 	 * @param format The new GetFeatureInfoFormat.
 	 */
-	public void setFormat(GetFeatureInfoFormat format) {
+	public void setFormat(String format) {
 		this.format = format;
 	}
 

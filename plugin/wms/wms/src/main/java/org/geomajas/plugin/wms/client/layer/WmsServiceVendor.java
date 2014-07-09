@@ -18,7 +18,7 @@ import org.geomajas.annotation.Api;
  * legend_options=fontName:... in case of Geoserver WMS getLegend request
  * 
  * @author An Buyle
- * @since 2.0.0
+ * @since 2.1.0
  */
 @Api
 public enum WmsServiceVendor {

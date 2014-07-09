@@ -44,7 +44,7 @@ import java.util.HashMap;
  */
 public class FeatureConverter {
 
-	private final Logger log = LoggerFactory.getLogger(GetFeatureInfoCommand.class);
+	private final Logger log = LoggerFactory.getLogger(WmsGetFeatureInfoCommand.class);
 
 	@SuppressWarnings("rawtypes")
 	public Feature toDto(SimpleFeature feature, int maxCoordsPerFeature) throws IllegalArgumentException {

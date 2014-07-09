@@ -25,7 +25,6 @@ import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
 import org.geomajas.plugin.wms.client.WmsServerExtension;
 import org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo;
-import org.geomajas.plugin.wms.client.service.WmsService.GetFeatureInfoFormat;
 import org.geomajas.plugin.wms.server.command.dto.WfsDescribeLayerRequest;
 import org.geomajas.plugin.wms.server.command.dto.WfsDescribeLayerResponse;
 import org.geomajas.plugin.wms.server.command.dto.WfsGetFeaturesRequest;
@@ -116,7 +115,7 @@ public class FeaturesSupportedWmsLayerImpl extends WmsLayerImpl implements Featu
 	}
 
 	@Override
-	public void getFeatureInfo(Coordinate location, GetFeatureInfoFormat format, Callback<Object, String> callback) {
+	public void getFeatureInfo(Coordinate location, String format, Callback<Object, String> callback) {
 		WmsServerExtension.getInstance().getFeatureService().getFeatureInfo(viewPort, this, location, format, callback);
 	}
 

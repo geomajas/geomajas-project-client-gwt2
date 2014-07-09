@@ -22,7 +22,7 @@ import java.util.List;
  * @author Pieter De Graef
  * @author An Buyle
  */
-public class GetFeatureInfoResponse extends CommandResponse {
+public class WmsGetFeatureInfoResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 1L;
 
@@ -30,10 +30,10 @@ public class GetFeatureInfoResponse extends CommandResponse {
 
 	private String wmsResponse;
 
-	public GetFeatureInfoResponse() {
+	public WmsGetFeatureInfoResponse() {
 	}
 
-	public GetFeatureInfoResponse(List<Feature> features) {
+	public WmsGetFeatureInfoResponse(List<Feature> features) {
 		this.features = features;
 	}
 

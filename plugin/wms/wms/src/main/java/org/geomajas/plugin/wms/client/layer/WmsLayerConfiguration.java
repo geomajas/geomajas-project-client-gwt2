@@ -26,7 +26,7 @@ import java.io.Serializable;
  *
  * @author Pieter De Graef
  * @author An Buyle
- * @since 2.0.0
+ * @since 2.1.0
  */
 @Api(allMethods = true)
 public class WmsLayerConfiguration implements Serializable {
@@ -275,6 +275,25 @@ public class WmsLayerConfiguration implements Serializable {
 	}
 
 	/**
+	 * Set the coordinate reference system for this layer. This should be the same as the map you want to add this laye
+	 * to.
+	 *
+	 * @param crs The coordinate reference system for this layer.
+	 */
+	public void setCrs(String crs) {
+		this.crs = crs;
+	}
+
+	/**
+	 * Get the coordinate reference system for this layer.
+	 *
+	 * @return The coordinate reference system for this layer.
+	 */
+	public String getCrs() {
+		return crs;
+	}
+
+	/**
 	 * Should GetMap calls based upon this configuration object use inverted XY axis or not? If you're not sure, don't
 	 * use this method. If you leave this untouched, Geomajas will attempt to figure it out for you, which should
 	 * usually work just fine.
@@ -306,10 +325,6 @@ public class WmsLayerConfiguration implements Serializable {
 	protected void setParentLayer(MapEventBus eventBus, WmsLayer parentLayer) {
 		this.eventBus = eventBus;
 		this.parentLayer = parentLayer;
-	}
-
-	protected void setCrs(String crs) {
-		this.crs = crs;
 	}
 
 	protected boolean useInvertedAxis() {

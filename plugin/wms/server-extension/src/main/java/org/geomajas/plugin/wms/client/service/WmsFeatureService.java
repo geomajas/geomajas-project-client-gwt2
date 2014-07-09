@@ -13,8 +13,8 @@ package org.geomajas.plugin.wms.client.service;
 
 import com.google.gwt.core.client.Callback;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.client.map.ViewPort;
+import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.plugin.wms.client.layer.FeaturesSupportedWmsLayer;
 
 import java.util.List;
@@ -57,5 +57,5 @@ public interface WmsFeatureService extends WmsService {
 	 *                 returned, otherwise, the result will be a string containing the HTTP body.
 	 */
 	void getFeatureInfo(ViewPort viewPort, FeaturesSupportedWmsLayer layer, Coordinate location,
-			GetFeatureInfoFormat format, Callback<Object, String> cb);
+			String format, Callback<Object, String> cb);
 }

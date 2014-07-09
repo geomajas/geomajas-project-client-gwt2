@@ -12,13 +12,10 @@
 package org.geomajas.plugin.wms.client.layer;
 
 import com.google.gwt.core.client.Callback;
-import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
 import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
-import org.geomajas.plugin.wms.client.service.WmsService.GetFeatureInfoFormat;
 
 import java.util.List;
 
@@ -31,17 +28,8 @@ import java.util.List;
  *
  * @author Pieter De Graef
  * @author An Buyle
- * @since 2.0.0
  */
-@Api(allMethods = true)
 public interface FeaturesSupportedWmsLayer extends WmsLayer, FeaturesSupported {
-
-	/**
-	 * Get an ordered list of attribute descriptors that describe the attributes of features that belong to this layer.
-	 *
-	 * @return The list of attribute descriptors that describe this layer.
-	 */
-	List<AttributeDescriptor> getAttributeDescriptors();
 
 	/**
 	 * Execute a WMS GetFeatureInfo request.
@@ -56,12 +44,12 @@ public interface FeaturesSupportedWmsLayer extends WmsLayer, FeaturesSupported {
 	 * Execute a WMS GetFeatureInfo request.
 	 *
 	 * @param location The location in world space to get information for.
-	 * @param format   The format for the response.
+	 * @param format   The GetFeatureInfo format for the response.
 	 * @param callback The callback that is executed when the response returns. If features are found at the requested
 	 *                 location, they will be returned here. Note that the callback returns a string on success. It is
 	 *                 up to you to parse this.
 	 */
-	void getFeatureInfo(Coordinate location, GetFeatureInfoFormat format, Callback<Object, String> callback);
+	void getFeatureInfo(Coordinate location, String format, Callback<Object, String> callback);
 
 	/**
 	 * Search for features at the given location.

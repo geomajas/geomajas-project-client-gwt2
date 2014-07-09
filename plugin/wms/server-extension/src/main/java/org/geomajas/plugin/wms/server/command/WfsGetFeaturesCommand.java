@@ -37,7 +37,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Command that executes a WFS GetFeatureInfo request.
+ * Command that executes a WFS GetFeatures request.<p/> This command is not part of the API and shouldn't be used
+ * directly.
  *
  * @author Pieter De Graef
  * @author An Buyle
