@@ -191,7 +191,7 @@ public class IsFeaturesSupportedPanel implements SamplePanel {
 		// Then add the new WMS layer to the map:
 		if (featuresSupported) {
 			final FeaturesSupportedWmsLayer layer = WmsServerExtension.getInstance().createLayer(layerInfo.getTitle(),
-					mapPresenter.getConfiguration(), tileConfig, layerConfig, layerInfo,
+					mapPresenter.getViewPort().getCrs(), tileConfig, layerConfig, layerInfo,
 					new Callback<List<AttributeDescriptor>, String>() {
 
 						@Override
@@ -210,7 +210,7 @@ public class IsFeaturesSupportedPanel implements SamplePanel {
 			mapPresenter.getLayersModel().addLayer(layer);
 		} else {
 			mapPresenter.getLayersModel().addLayer(
-					WmsClient.getInstance().createLayer(layerInfo.getTitle(), mapPresenter.getConfiguration(),
+					WmsClient.getInstance().createLayer(layerInfo.getTitle(), mapPresenter.getViewPort().getCrs(),
 							tileConfig, layerConfig, layerInfo));
 			attributePanel.add(new HTML("This layer does not support features..."));
 		}

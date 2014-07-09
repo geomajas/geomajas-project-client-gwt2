@@ -103,8 +103,8 @@ public class WmsLayerPanel implements SamplePanel {
 		layerConfig.setMaximumResolution(Double.MAX_VALUE);
 		layerConfig.setMinimumResolution(2.1457672119140625E-5);
 
-		final WmsLayer wmsLayer = WmsClient.getInstance().createLayer("Blue Marble", mapPresenter.getConfiguration(),
-				tileConfig, layerConfig, null);
+		final WmsLayer wmsLayer = WmsClient.getInstance().createLayer("Blue Marble",
+				mapPresenter.getViewPort().getCrs(), tileConfig, layerConfig, null);
 		wmsLayer.setMaxBounds(new Bbox(-180, -90, 360, 360));
 		mapPresenter.getLayersModel().addLayer(wmsLayer);
 
