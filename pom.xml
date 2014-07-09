@@ -200,11 +200,6 @@
 				<artifactId>geomajas-client-gwt2-plugin-graphicsediting-example-jar</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-client-gwt2-plugin-graphicsediting-example-jar</artifactId>
-				<version>${project.version}</version>
-			</dependency>
 
 			<!-- Print plugin -->
 			<!-- in stead of org.geomajas.plugin:geomajas-client-gwt2-plugin-print-common,

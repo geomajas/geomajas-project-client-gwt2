@@ -11,7 +11,6 @@
 
 package org.geomajas.gwt2.client.map.layer;
 
-import org.geomajas.gwt2.client.map.MapConfiguration;
 import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.layer.tile.TileBasedLayer;
 import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
@@ -36,17 +35,14 @@ public abstract class AbstractTileBasedLayer extends AbstractLayer implements Ti
 
 	protected LayerRenderer renderer;
 
-	private MapConfiguration mapConfiguration;
-
 	/**
 	 * Create a new layer that belongs to the given map model, using the given meta-data.
 	 *
 	 * @param id The unique ID for this layer.
 	 */
-	public AbstractTileBasedLayer(String id, MapConfiguration mapConfiguration, TileConfiguration tileConfiguration) {
+	public AbstractTileBasedLayer(String id, TileConfiguration tileConfiguration) {
 		super(id);
 		this.tileConfiguration = tileConfiguration;
-		this.mapConfiguration = mapConfiguration;
 	}
 
 	// ------------------------------------------------------------------------
