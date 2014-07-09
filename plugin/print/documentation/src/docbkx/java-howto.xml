@@ -116,7 +116,7 @@ widget.setPrintRequestHandler(customHandler);</programlisting>
     <title>Print Widget without css (no style)</title>
 
     <para>The print widget can be loaded with empty css classes. This can be achieved by
-	setting the resource bundle factory <emphase>before</emphase> creating the widget:</para>
+	setting the resource bundle factory <emphasis>before</emphasis> creating the widget:</para>
 
 	  <programlisting>Print.getInstance().setBundleFactory(new PrintClientBundleFactoryNoStyle());
 // create the widget</programlisting>
