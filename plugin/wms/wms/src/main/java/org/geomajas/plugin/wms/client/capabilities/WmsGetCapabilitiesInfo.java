@@ -20,7 +20,7 @@ import org.geomajas.annotation.Api;
  * Generic WMS GetCapabilities definition.
  *
  * @author Pieter De Graef
- * @since 2.0.0
+ * @since 2.1.0
  */
 @Api(allMethods = true)
 public interface WmsGetCapabilitiesInfo extends Serializable {

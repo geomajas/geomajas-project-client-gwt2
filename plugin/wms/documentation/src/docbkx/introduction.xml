@@ -19,7 +19,7 @@
   client-side layer definition. </para>
 
   <note>
-    <para>The Geomajas server project there is also a WMS layer plugin that
+    <para>In the Geomajas server project there is also a WMS layer plugin that
     provides a server-side WMS layer. This plugin however provides a
     client-side WMS layer.</para>
   </note>
@@ -51,13 +51,13 @@
         contains a WmsLayer and support for GetCapabilities, GetMap and
         GetLegendGraphic.</para>
       </listitem>
-
+<!--
       <listitem>
         <para><emphasis>server-extension</emphasis>: Extension of the base WMS
         functionality. It provides GetFeatureInfo support. It does this by
         making use of the Geomajas server project.</para>
       </listitem>
-
+-->
       <listitem>
         <para><emphasis>example-jar</emphasis>: Jar that contains showcase
         examples.</para>
@@ -71,12 +71,12 @@
 
   <section>
     <title>Dependencies</title>
-
+<!--
     <para>This plugin contains multiple artifacts. It provides a basic set of
     functionalities that do not require the Geomajas server project, and an
     extension that does require a dependency to the Geomajas server project.
     These are their respective Maven definitions:</para>
-
+-->
     <para>Basic WMS client artifact:</para>
 
     <programlisting>&lt;dependency&gt;
@@ -84,14 +84,14 @@
     &lt;artifactId&gt;geomajas-client-gwt2-plugin-wms&lt;/artifactId&gt;
     &lt;version&gt;<?eval ${project.version}?>&lt;/version&gt;
 &lt;/dependency&gt;</programlisting>
-
+<!--
     <para>Extension that does depend on the Geomajas server project:</para>
 
     <programlisting>&lt;dependency&gt;
     &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
     &lt;artifactId&gt;geomajas-client-gwt2-plugin-wms-server-extension&lt;/artifactId&gt;
     &lt;version&gt;<?eval ${project.version}?>&lt;/version&gt;
-&lt;/dependency&gt;</programlisting>
+&lt;/dependency&gt;</programlisting>-->
   </section>
 
   <section>
