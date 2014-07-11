@@ -11,11 +11,7 @@
 
 package org.geomajas.plugin.wms.client.layer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.geomajas.geometry.Bbox;
-import org.geomajas.gwt2.client.map.MapConfiguration;
 import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.AbstractTileBasedLayer;
@@ -27,6 +23,9 @@ import org.geomajas.gwt2.client.map.render.TileRenderer;
 import org.geomajas.gwt2.client.service.TileService;
 import org.geomajas.plugin.wms.client.WmsClient;
 import org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Default implementation of a {@link WmsLayer}.
@@ -46,16 +45,16 @@ public class WmsLayerImpl extends AbstractTileBasedLayer implements WmsLayer {
 
 	private double opacity = 1.0;
 
-	public WmsLayerImpl(String title, MapConfiguration mapConfig, WmsLayerConfiguration wmsConfig,
-			TileConfiguration tileConfig, WmsLayerInfo layerCapabilities) {
-		super(wmsConfig.getLayers(), mapConfig, tileConfig);
+	public WmsLayerImpl(String title, String crs, WmsLayerConfiguration wmsConfig,
+						TileConfiguration tileConfig, WmsLayerInfo layerCapabilities) {
+		super(wmsConfig.getLayers(), tileConfig);
 
 		this.title = title;
 		this.wmsConfig = wmsConfig;
 		this.tileConfig = tileConfig;
 		this.layerCapabilities = layerCapabilities;
 		if (layerCapabilities != null) {
-			Bbox maxBounds = layerCapabilities.getBoundingBox(mapConfig.getCrs());
+			Bbox maxBounds = layerCapabilities.getBoundingBox(crs);
 			// we could transform if maxBounds = null, but that probably means the WMS is not configured correctly
 			if (maxBounds != null) {
 				setMaxBounds(maxBounds);
@@ -142,8 +141,7 @@ public class WmsLayerImpl extends AbstractTileBasedLayer implements WmsLayer {
 		}
 		return false;
 	}
-	
-	
+
 
 	// ------------------------------------------------------------------------
 	// AbstractTileBasedLayer implementation:
@@ -153,7 +151,7 @@ public class WmsLayerImpl extends AbstractTileBasedLayer implements WmsLayer {
 	public TileRenderer getTileRenderer() {
 		return tileRenderer;
 	}
-	
+
 	// ------------------------------------------------------------------------
 	// HasMapScalesRenderer implementation:
 	// ------------------------------------------------------------------------

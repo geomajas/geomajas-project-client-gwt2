@@ -1,7 +1,7 @@
 org.geomajas.plugin.wms.client.WmsClient::2.1.0
 org.geomajas.plugin.wms.client.WmsClient:TileConfiguration createTileConfig(WmsLayerInfo, ViewPort, int, int, ):2.1.0
-org.geomajas.plugin.wms.client.WmsClient:WmsLayer createLayer(MapConfiguration, String, WmsVersion, WmsLayerInfo, ViewPort, int, int, ):2.1.0
-org.geomajas.plugin.wms.client.WmsClient:WmsLayer createLayer(String, MapConfiguration, TileConfiguration, WmsLayerConfiguration, WmsLayerInfo, ):2.1.0
+org.geomajas.plugin.wms.client.WmsClient:WmsLayer createLayer(String, WmsVersion, WmsLayerInfo, ViewPort, int, int, ):2.1.0
+org.geomajas.plugin.wms.client.WmsClient:WmsLayer createLayer(String, String, TileConfiguration, WmsLayerConfiguration, WmsLayerInfo, ):2.1.0
 org.geomajas.plugin.wms.client.WmsClient:WmsLayerConfiguration createLayerConfig(WmsLayerInfo, String, WmsVersion, ):2.1.0
 org.geomajas.plugin.wms.client.WmsClient:WmsService getWmsService():2.1.0
 org.geomajas.plugin.wms.client.WmsClient:static WmsClient getInstance():2.1.0

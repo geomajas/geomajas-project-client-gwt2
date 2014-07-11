@@ -123,7 +123,7 @@ public class CapabilitiesPanel implements SamplePanel {
 								WmsLayerConfiguration layerConfig = WmsClient.getInstance().createLayerConfig(
 										layerInfo, WMS_BASE_URL, getWmsVersion());
 								final WmsLayer layer = WmsClient.getInstance().createLayer(layerInfo.getTitle(),
-										mapPresenter.getConfiguration(), tileConfig, layerConfig, layerInfo);
+										mapPresenter.getViewPort().getCrs(), tileConfig, layerConfig, layerInfo);
 
 								CheckBox layerBox = new CheckBox(layer.getTitle());
 								layerBox.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
