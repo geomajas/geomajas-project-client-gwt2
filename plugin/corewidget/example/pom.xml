@@ -77,6 +77,24 @@
 	</dependencies>
 
 	<build>
+
+		<resources>
+			<resource>
+				<directory>${basedir}/src/main/resources/</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/cacheLocation.xml</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>${basedir}/src/main/resources/</directory>
+				<filtering>false</filtering>
+				<excludes>
+					<exclude>**/cacheLocation.xml</exclude>
+				</excludes>
+			</resource>
+		</resources>
+
 		<plugins>
 
 			<!-- Run the application using "mvn jetty:run" -->

@@ -36,12 +36,13 @@
     <listitem>
       <para>FeatureClickedListener: a listeners that sends an
       <code>FeatureClickedEvent</code> when the user clicks on a feature
-      (including disambiguation in case of multiple features)</para>
+      </para>
     </listitem>
 
     <listitem>
-      <para>MouseOverListener: a listeners that shows a tooltip when hovering
-      over a feature</para>
+      <para>MouseOverListener: a listeners that that sends an
+	      <code>FeatureMouseOverEvent</code> when the user hovers over a feature
+      </para>
     </listitem>
   </itemizedlist>
 </chapter>

@@ -10,43 +10,47 @@
  */
 package org.geomajas.gwt2.widget.example.client.sample.feature;
 
-import java.util.List;
-
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ResizeLayoutPanel;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
+import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
+import org.geomajas.gwt2.widget.example.client.sample.feature.controller.FeatureClickedListener;
+import org.geomajas.gwt2.widget.example.client.sample.feature.controller.FeatureClickedEvent;
+import org.geomajas.gwt2.widget.example.client.sample.feature.controller.FeatureClickedHandler;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.client.widget.MapLayoutPanel;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
-import org.geomajas.gwt2.widget.client.feature.controller.FeatureClickedListener;
-import org.geomajas.gwt2.widget.client.feature.event.FeatureClickedEvent;
-import org.geomajas.gwt2.widget.client.feature.event.FeatureClickedHandler;
-import org.geomajas.gwt2.widget.client.feature.event.FeaturesClickedEvent;
-import org.geomajas.gwt2.widget.client.feature.event.FeaturesClickedHandler;
+import org.geomajas.gwt2.widget.example.client.sample.feature.tooltip.ToolTip;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.HeadingElement;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ResizeLayoutPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Widget;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Class description.
- * 
- * @author Dosi Bingov
- * @author Jan De Moerloose
+ * FeatureClicked showcase example.
+ *
+ * @author David Debuck
  */
 public class FeatureClickedExample implements SamplePanel {
 
 	protected DockLayoutPanel rootElement;
 
+	private final MapLayoutPanel layout;
+
 	private MapPresenter mapPresenter;
+
+	private ToolTip toolTip;
 
 	@UiField
 	protected ResizeLayoutPanel mapPanel;
@@ -55,24 +59,17 @@ public class FeatureClickedExample implements SamplePanel {
 	protected VerticalPanel layerEventLayout;
 
 	@UiField
-	protected HeadingElement title;
+	protected ScrollPanel scrollPanel;
 
 	@Override
 	public Widget asWidget() {
-		// return root layout element
 		return rootElement;
-	}
-
-	@UiHandler("multiCheck")
-	public void onMulti(ValueChangeEvent<Boolean> value) {
-		mapListener.setSingleFeature(!value.getValue());
-		title.setInnerText("Feature" + (value.getValue() ? "s" : "") + "ClickedEvent");
 	}
 
 	/**
 	 * UI binder interface.
-	 * 
-	 * @author Dosi Bingov
+	 *
+	 * @author David Debuck
 	 */
 	interface FeatureSelectedExampleUiBinder extends UiBinder<DockLayoutPanel, FeatureClickedExample> {
 
@@ -80,8 +77,9 @@ public class FeatureClickedExample implements SamplePanel {
 
 	private static final FeatureSelectedExampleUiBinder UIBINDER = GWT.create(FeatureSelectedExampleUiBinder.class);
 
-	private FeatureClickedListener mapListener;
-
+	/**
+	 * Default constructor.
+	 */
 	public FeatureClickedExample() {
 		rootElement = UIBINDER.createAndBindUi(this);
 
@@ -90,11 +88,10 @@ public class FeatureClickedExample implements SamplePanel {
 
 		// add FeatureClickedHandler where we handle FeaturesClickedEvent
 		mapPresenter.getEventBus().addHandler(FeatureClickedHandler.TYPE, new MyFeatureClickedHandler());
-		mapPresenter.getEventBus().addHandler(FeaturesClickedHandler.TYPE, new MyFeatureClickedHandler());
 
 		// Define the layout:
 		ResizeLayoutPanel resizeLayoutPanel = new ResizeLayoutPanel();
-		final MapLayoutPanel layout = new MapLayoutPanel();
+		layout = new MapLayoutPanel();
 		resizeLayoutPanel.setWidget(layout);
 		resizeLayoutPanel.setSize("100%", "100%");
 		layout.setPresenter(mapPresenter);
@@ -104,31 +101,83 @@ public class FeatureClickedExample implements SamplePanel {
 		// Initialize the map
 		GeomajasServerExtension.getInstance().initializeMap(mapPresenter, "appCoreWidget", "mapCoreWidget");
 
-		mapListener = new FeatureClickedListener();
+		// add feature clicked listener.
+		FeatureClickedListener mapListener = new FeatureClickedListener();
 		mapPresenter.addMapListener(mapListener);
+
+		// Create the tooltip.
+		toolTip = new ToolTip();
+
 	}
 
 	/**
-	 * Handler that handles FeaturesClickedEvent.
+	 * Handler that handles FeatureClickedEvent.
 	 */
-	private class MyFeatureClickedHandler implements FeatureClickedHandler, FeaturesClickedHandler {
+	private class MyFeatureClickedHandler implements FeatureClickedHandler {
 
 		@Override
 		public void onFeatureClicked(FeatureClickedEvent event) {
-			Feature feature = event.getFeature();
-			layerEventLayout.add(new Label("feature label => " + feature.getLabel()));
-			layerEventLayout.add(new Label("layer title => " + feature.getLayer().getTitle()));
-		}
 
-		@Override
-		public void onFeaturesClicked(FeaturesClickedEvent event) {
 			List<Feature> features = event.getFeatures();
-			layerEventLayout.add(new Label(features.size() + " features clicked"));
-			for (Feature feature : features) {
-				layerEventLayout.add(new Label("feature label => " + feature.getLabel()));
-				layerEventLayout.add(new Label("layer title => " + feature.getLayer().getTitle()));
+
+			///////////////////////////////////////////////////////////////////////////////////////////
+			// Show the tooltip when there are features found.
+			///////////////////////////////////////////////////////////////////////////////////////////
+
+			if (!features.isEmpty()) {
+
+				toolTip.clearContent();
+
+				List<Label> content = new ArrayList<Label>();
+
+				for (Feature feature : features) {
+					final Label label = new Label(feature.getLabel());
+					label.addClickHandler(new ClickHandler() {
+						@Override
+						public void onClick(ClickEvent event) {
+
+							layerEventLayout.add(new Label("# Feature => " + label.getText() + " selected!"));
+							layerEventLayout.add(new Label("-------------------------------------------------"));
+							scrollPanel.scrollToBottom();
+
+						}
+					});
+					content.add(label);
+				}
+
+				// Calculate a position for where to show the tooltip.
+				int left = RootPanel.get().getAbsoluteLeft() + layout.getAbsoluteLeft();
+				int top = RootPanel.get().getAbsoluteTop() + layout.getAbsoluteTop();
+
+				toolTip.addContentAndShow(
+						content,
+						left + (int) event.getCoordinate().getX(),
+						top + (int) event.getCoordinate().getY(),
+						true
+				);
+
+			} else {
+
+				toolTip.hide();
+
 			}
-			layerEventLayout.add(new Label(""));
+
+			///////////////////////////////////////////////////////////////////////////////////////////
+			// Log all FeatureClicked events in our showcase example, even when there are non found.
+			///////////////////////////////////////////////////////////////////////////////////////////
+
+			layerEventLayout.add(new Label("On FeatureClickedEvent: ( " + features.size()  + " feature(s) found. )"));
+			for (Feature feature : features) {
+				Coordinate coordinate = feature.getGeometry().getCoordinates()[0];
+				layerEventLayout.add(new Label("# Feature => " + feature.getLabel()));
+				layerEventLayout.add(new Label("- Coordinate x  => " + coordinate.getX()));
+				layerEventLayout.add(new Label("- Coordinate y  => " + coordinate.getY()));
+				layerEventLayout.add(new Label("- layer title => " + feature.getLayer().getTitle()));
+			}
+			layerEventLayout.add(new Label("-------------------------------------------------"));
+
+			scrollPanel.scrollToBottom();
+
 		}
 
 	}

@@ -4,11 +4,22 @@
 	<ui:with field='messages' type='org.geomajas.gwt2.widget.example.client.i18n.SampleMessages' />
 
 	<g:DockLayoutPanel unit="PX" width="100%" height="100%">
-		<g:west size="300">
-			<g:HTMLPanel addStyleNames="{resource.css.sampleLeftLayout}">
-				<g:Button ui:field="button" text="{messages.closeableDialogButShow}" />
-			</g:HTMLPanel>
+		<g:west size="350">
+			<g:ScrollPanel ui:field="scrollPanel">
+				<g:HTMLPanel addStyleNames="{resource.css.sampleLeftLayout}">
+					<h2 ui:field="title">
+						<g:InlineLabel text="{messages.closeableDialogBoxHandlerTitle}" />
+					</h2>
+					<g:VerticalPanel ui:field="layerEventLayout" width="97%"/>
+				</g:HTMLPanel>
+			</g:ScrollPanel>
 		</g:west>
+
+		<g:center>
+			<g:SimplePanel addStyleNames="{resource.css.sampleContentLayout}">
+				<g:Button ui:field="button" text="{messages.closeableDialogButShow}" />
+			</g:SimplePanel>
+		</g:center>
 	</g:DockLayoutPanel>
 
 </ui:UiBinder>

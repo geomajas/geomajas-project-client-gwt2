@@ -25,11 +25,4 @@ public interface WidgetCoreInternationalization extends Messages {
 	/*	Legend widget messages */
 	String legendButName();
 
-
-	/*	Message box widget messages */
-	String messageBoxBtnYes();
-	String messageBoxBtnNo();
-	String messageBoxBtnCancel();
-	String messageBoxBtnClose();
-
 }

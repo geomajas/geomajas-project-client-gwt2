@@ -11,10 +11,6 @@
 
 package org.geomajas.gwt2.widget.client.resource;
 
-import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.FeatureSelectBoxResource;
-
-import com.google.gwt.core.client.GWT;
-
 /**
  * Default factory for client bundles defined within this artifact. By using such a factory, it is possible to easily
  * override the default client bundles using deferred binding.
@@ -23,14 +19,6 @@ import com.google.gwt.core.client.GWT;
  */
 public class CoreWidgetClientBundleFactory {
 
-	/**
-	 * Create a new resource bundle for the
-	 * {@link org.geomajas.gwt2.widget.client.FeatureSelectBox.FeatureSelectListener} widget.
-	 * 
-	 * @return A new resource bundle.
-	 */
-	public FeatureSelectBoxResource createFeatureSelectBoxResource() {
-		return GWT.create(FeatureSelectBoxResource.class);
-	}
+
 
 }
