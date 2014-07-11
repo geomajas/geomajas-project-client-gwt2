@@ -17,7 +17,8 @@ import java.io.Serializable;
 
 /**
  * Definition of a single tile-map within the TMS service. Such a tile-map can be represented by a single layer on the
- * map.
+ * map. This info object is part of a {@link org.geomajas.plugin.tms.client.configuration.TileMapServiceInfo} and points
+ * (see {@link #getHref()} URL) to a {@link org.geomajas.plugin.tms.client.configuration.TileMapInfo}
  *
  * @author Pieter De Graef
  * @since 2.1.0
