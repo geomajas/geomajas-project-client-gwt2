@@ -180,7 +180,7 @@ public class WmsFeatureInfoPanel implements SamplePanel {
 		layerConfig.setMaximumResolution(Double.MAX_VALUE);
 		layerConfig.setMinimumResolution(2.1457672119140625E-5);
 		FeaturesSupportedWmsLayer wmsLayer = WmsServerExtension.getInstance().createLayer("Countries",
-				mapPresenter.getConfiguration(), tileConfig, layerConfig, null);
+				mapPresenter.getViewPort().getCrs(), tileConfig, layerConfig, null);
 		wmsLayer.setMaxBounds(new Bbox(-180, -90, 360, 360));
 		mapPresenter.getLayersModel().addLayer(wmsLayer);
 		controller.addLayer(wmsLayer);

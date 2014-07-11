@@ -22,6 +22,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DecoratorPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -34,6 +35,7 @@ import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.plugin.wms.client.WmsClient;
 import org.geomajas.plugin.wms.client.capabilities.WmsGetCapabilitiesInfo;
 import org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo;
+import org.geomajas.plugin.wms.client.capabilities.WmsRequestInfo;
 import org.geomajas.plugin.wms.client.layer.WmsLayer;
 import org.geomajas.plugin.wms.client.layer.WmsLayerConfiguration;
 import org.geomajas.plugin.wms.client.service.WmsService.WmsRequest;
@@ -66,6 +68,9 @@ public class CapabilitiesPanel implements SamplePanel {
 
 	@UiField
 	protected VerticalPanel layerList;
+
+	@UiField
+	protected VerticalPanel requestList;
 
 	@UiField
 	protected ListBox wmsVersionBox;
@@ -110,6 +115,7 @@ public class CapabilitiesPanel implements SamplePanel {
 		// First clear the panel and the map:
 		mapPresenter.getLayersModel().clear();
 		layerList.clear();
+		requestList.clear();
 
 		WmsClient.getInstance().getWmsService()
 				.getCapabilities(WMS_BASE_URL, getWmsVersion(), new Callback<WmsGetCapabilitiesInfo, String>() {
@@ -123,7 +129,7 @@ public class CapabilitiesPanel implements SamplePanel {
 								WmsLayerConfiguration layerConfig = WmsClient.getInstance().createLayerConfig(
 										layerInfo, WMS_BASE_URL, getWmsVersion());
 								final WmsLayer layer = WmsClient.getInstance().createLayer(layerInfo.getTitle(),
-										mapPresenter.getConfiguration(), tileConfig, layerConfig, layerInfo);
+										mapPresenter.getViewPort().getCrs(), tileConfig, layerConfig, layerInfo);
 
 								CheckBox layerBox = new CheckBox(layer.getTitle());
 								layerBox.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
@@ -140,6 +146,11 @@ public class CapabilitiesPanel implements SamplePanel {
 								});
 
 								layerList.add(layerBox);
+							}
+						}
+						if (result.getRequests() != null) {
+							for (WmsRequestInfo requestInfo : result.getRequests()) {
+								requestList.add(new Label(requestInfo.getRequestType().toString()));
 							}
 						}
 					}

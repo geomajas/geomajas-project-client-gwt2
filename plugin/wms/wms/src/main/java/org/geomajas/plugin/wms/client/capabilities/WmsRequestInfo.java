@@ -11,31 +11,33 @@
 
 package org.geomajas.plugin.wms.client.capabilities;
 
+import org.geomajas.annotation.Api;
+import org.geomajas.plugin.wms.client.service.WmsService;
+
 import java.io.Serializable;
 import java.util.List;
 
-import org.geomajas.annotation.Api;
-
 /**
- * Generic WMS GetCapabilities definition.
+ * Definition of a supported request from the WMS Capabilities file. It contains a list of format that are supported
+ * for this particular request.
  *
  * @author Pieter De Graef
- * @since 2.0.0
+ * @since 2.1.0
  */
 @Api(allMethods = true)
-public interface WmsGetCapabilitiesInfo extends Serializable {
+public interface WmsRequestInfo extends Serializable {
 
 	/**
-	 * Retrieve the list of supported request types for this WMS server.
+	 * The request type represented by this object.
 	 *
-	 * @return The list of supported requests.
+	 * @return The request type.
 	 */
-	List<WmsRequestInfo> getRequests();
+	WmsService.WmsRequest getRequestType();
 
 	/**
-	 * Retrieve the list of layers defined in the capabilities file.
+	 * Retrieve the list of formats supported for this particular WMS request.
 	 *
 	 * @return The full list of layers.
 	 */
-	List<WmsLayerInfo> getLayers();
+	List<String> getFormats();
 }

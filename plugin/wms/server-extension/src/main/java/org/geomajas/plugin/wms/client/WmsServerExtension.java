@@ -12,13 +12,11 @@
 package org.geomajas.plugin.wms.client;
 
 import com.google.gwt.core.client.Callback;
-
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt2.client.map.Hint;
-import org.geomajas.gwt2.client.map.MapConfiguration;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
 import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
@@ -118,12 +116,12 @@ public final class WmsServerExtension {
 	 * @param tileHeight The tile height in pixels.
 	 * @return A new WMS layer.
 	 */
-	public FeaturesSupportedWmsLayer createLayer(MapConfiguration mapConfig, String baseUrl,
+	public FeaturesSupportedWmsLayer createLayer(String baseUrl,
 			WmsService.WmsVersion version, WmsLayerInfo layerInfo, ViewPort viewPort, int tileWidth, int tileHeight) {
 		TileConfiguration tileConf = WmsClient.getInstance().createTileConfig(layerInfo, viewPort, tileWidth,
 				tileHeight);
 		WmsLayerConfiguration layerConf = WmsClient.getInstance().createLayerConfig(layerInfo, baseUrl, version);
-		return createLayer(layerInfo.getTitle(), mapConfig, tileConf, layerConf, layerInfo);
+		return createLayer(layerInfo.getTitle(), viewPort.getCrs(), tileConf, layerConf, layerInfo);
 	}
 
 	/**
@@ -131,14 +129,15 @@ public final class WmsServerExtension {
 	 * supporting GetFeatureInfo calls.
 	 *
 	 * @param title       The layer title.
+	 * @param crs         The CRS for this layer.
 	 * @param tileConfig  The tile configuration object.
 	 * @param layerConfig The layer configuration object.
 	 * @param layerInfo   The layer info object. Acquired from a WMS GetCapabilities. This is optional.
 	 * @return A new WMS layer.
 	 */
-	public FeaturesSupportedWmsLayer createLayer(String title, MapConfiguration mapConfig,
+	public FeaturesSupportedWmsLayer createLayer(String title, String crs,
 			TileConfiguration tileConfig, WmsLayerConfiguration layerConfig, WmsLayerInfo layerInfo) {
-		return new FeaturesSupportedWmsLayerImpl(title, mapConfig, layerConfig, tileConfig, layerInfo);
+		return new FeaturesSupportedWmsLayerImpl(title, crs, layerConfig, tileConfig, layerInfo);
 	}
 
 	/**
@@ -146,16 +145,17 @@ public final class WmsServerExtension {
 	 * supporting GetFeatureInfo calls.
 	 *
 	 * @param title         The layer title.
+	 * @param crs         The CRS for this layer.
 	 * @param tileConfig    The tile configuration object.
 	 * @param layerConfig   The layer configuration object.
 	 * @param layerInfo     The layer info object. Acquired from a WMS GetCapabilities. This is optional.
 	 * @param onInitialized Callback that is called when the layer has been initialized.
 	 * @return A new WMS layer.
 	 */
-	public FeaturesSupportedWmsLayer createLayer(String title, MapConfiguration mapConfig,
+	public FeaturesSupportedWmsLayer createLayer(String title, String crs,
 			TileConfiguration tileConfig, WmsLayerConfiguration layerConfig, WmsLayerInfo layerInfo,
 			Callback<List<AttributeDescriptor>, String> onInitialized) {
-		return new FeaturesSupportedWmsLayerImpl(title, mapConfig, layerConfig, tileConfig, layerInfo, onInitialized);
+		return new FeaturesSupportedWmsLayerImpl(title, crs, layerConfig, tileConfig, layerInfo, onInitialized);
 	}
 
 	/**
