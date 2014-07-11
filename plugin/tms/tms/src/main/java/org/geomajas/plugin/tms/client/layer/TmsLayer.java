@@ -45,7 +45,21 @@ public class TmsLayer extends AbstractTileBasedLayer {
 	 * @param id The unique ID for this layer.
 	 */
 	public TmsLayer(String id, TileConfiguration tileConfiguration, TmsLayerConfiguration layerConfiguration) {
+		this(id, id, tileConfiguration, layerConfiguration);
+	}
+
+	/**
+	 * Create a new layer that belongs to the given map model, using the given meta-data.
+	 *
+	 * @param id The unique ID for this layer.
+	 * @param title The visible title for this layer. The title is used as a label and may differ from the ID.
+	 * @param tileConfiguration The tile configuration object for this layer.
+	 * @param layerConfiguration The layer configuration object for this layer.
+	 */
+	public TmsLayer(String id, String title, TileConfiguration tileConfiguration,
+			TmsLayerConfiguration layerConfiguration) {
 		super(id, tileConfiguration);
+		this.title = title;
 		this.layerConfiguration = layerConfiguration;
 		this.tileRenderer = new TmsTileRenderer(layerConfiguration);
 	}
@@ -56,8 +70,19 @@ public class TmsLayer extends AbstractTileBasedLayer {
 	 * @param tileMapInfo The configuration object to create a layer for.
 	 */
 	public TmsLayer(TileMapInfo tileMapInfo) {
+		this(tileMapInfo, tileMapInfo.getTitle());
+	}
+
+	/**
+	 * Create a new layer using a TileMapInfo object.
+	 *
+	 * @param tileMapInfo The configuration object to create a layer for.
+	 * @param title The visible title for this layer. The title is used as a label and may differ from the ID.
+	 */
+	public TmsLayer(TileMapInfo tileMapInfo, String title) {
 		super(tileMapInfo.getTitle(), new TileConfiguration(tileMapInfo.getTileFormat().getWidth(),
 				tileMapInfo.getTileFormat().getHeight(), tileMapInfo.getOrigin(), new ArrayList<Double>()));
+		this.title = title;
 		this.layerConfiguration = new TmsLayerConfiguration();
 		this.layerConfiguration.setBaseUrl(tileMapInfo.getHref());
 		this.layerConfiguration.setFileExtension(tileMapInfo.getTileFormat().getExtension());
@@ -69,7 +94,6 @@ public class TmsLayer extends AbstractTileBasedLayer {
 		}
 		getTileConfiguration().setResolutions(resolutions);
 	}
-
 	// ------------------------------------------------------------------------
 	// AbstractTileBasedLayer implementation:
 	// ------------------------------------------------------------------------
