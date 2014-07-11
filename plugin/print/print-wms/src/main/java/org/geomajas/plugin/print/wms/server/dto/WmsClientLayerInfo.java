@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.wmsclient.printing.server.dto;
+package org.geomajas.plugin.print.wms.server.dto;
 
 import java.util.List;
 
@@ -37,7 +37,7 @@ public class WmsClientLayerInfo extends ClientLayerInfo {
 	private double scale;
 
 	/**
-	 * @see #setTiles(List)
+	 * @see #setTiles(java.util.List)
 	 * @return
 	 */
 	public List<RasterTile> getTiles() {
