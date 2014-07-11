@@ -18,12 +18,9 @@ import org.geomajas.gwt2.example.base.client.sample.SamplePanelRegistry;
 import org.geomajas.gwt2.example.base.client.sample.ShowcaseSampleDefinition;
 import org.geomajas.plugin.wms.example.client.i18n.SampleMessages;
 import org.geomajas.plugin.wms.example.client.sample.CapabilitiesPanel;
-import org.geomajas.plugin.wms.example.client.sample.IsFeaturesSupportedPanel;
 import org.geomajas.plugin.wms.example.client.sample.SelectStylePanel;
-import org.geomajas.plugin.wms.example.client.sample.WmsFeatureInfoPanel;
 import org.geomajas.plugin.wms.example.client.sample.WmsLayerLegendPanel;
 import org.geomajas.plugin.wms.example.client.sample.WmsLayerPanel;
-import org.geomajas.plugin.wms.example.client.sample.WmsSearchByLocationPanel;
 
 /**
  * Entry point and main class for the GWT client example application.
@@ -97,87 +94,6 @@ public class ExampleJar implements EntryPoint {
 			@Override
 			public String getKey() {
 				return "wmsgetcapabilities";
-			}
-		});
-		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
-
-			public SamplePanel create() {
-				return new WmsFeatureInfoPanel();
-			}
-
-			public String getTitle() {
-				return MESSAGES.wmsGetFeatureInfoTitle();
-			}
-
-			public String getShortDescription() {
-				return MESSAGES.wmsGetFeatureInfoShort();
-			}
-
-			public String getDescription() {
-				return MESSAGES.wmsGetFeatureInfoDescription();
-			}
-
-			public String getCategory() {
-				return CATEGORY_WMS;
-			}
-
-			@Override
-			public String getKey() {
-				return "wmsgetfeatureinfo";
-			}
-		});
-		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
-
-			public SamplePanel create() {
-				return new IsFeaturesSupportedPanel();
-			}
-
-			public String getTitle() {
-				return MESSAGES.isFeaturesSupportedTitle();
-			}
-
-			public String getShortDescription() {
-				return MESSAGES.isFeaturesSupportedShort();
-			}
-
-			public String getDescription() {
-				return MESSAGES.isFeaturesSupportedDescription();
-			}
-
-			public String getCategory() {
-				return CATEGORY_WMS;
-			}
-
-			@Override
-			public String getKey() {
-				return "isfeaturessupported";
-			}
-		});
-		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
-
-			public SamplePanel create() {
-				return new WmsSearchByLocationPanel();
-			}
-
-			public String getTitle() {
-				return MESSAGES.wmsSearchByLocationTitle();
-			}
-
-			public String getShortDescription() {
-				return MESSAGES.wmsSearchByLocationShort();
-			}
-
-			public String getDescription() {
-				return MESSAGES.wmsSearchByLocationDescription();
-			}
-
-			public String getCategory() {
-				return CATEGORY_WMS;
-			}
-
-			@Override
-			public String getKey() {
-				return "wmssearchbylocation";
 			}
 		});
 		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {

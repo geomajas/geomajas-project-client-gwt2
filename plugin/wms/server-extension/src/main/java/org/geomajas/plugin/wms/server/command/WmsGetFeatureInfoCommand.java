@@ -14,8 +14,8 @@ package org.geomajas.plugin.wms.server.command;
 import org.geomajas.command.Command;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.plugin.wms.client.service.WmsService.GetFeatureInfoFormat;
-import org.geomajas.plugin.wms.server.command.dto.GetFeatureInfoRequest;
-import org.geomajas.plugin.wms.server.command.dto.GetFeatureInfoResponse;
+import org.geomajas.plugin.wms.server.command.dto.WmsGetFeatureInfoRequest;
+import org.geomajas.plugin.wms.server.command.dto.WmsGetFeatureInfoResponse;
 import org.geotools.GML;
 import org.geotools.GML.Version;
 import org.geotools.feature.FeatureCollection;
@@ -36,19 +36,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Command that executes a WMS GetFeatureInfo request.
+ * Command that executes a WMS GetFeatureInfo request. <p/> This command is not part of the API and shouldn't be used
+ * directly.
  *
  * @author Pieter De Graef
  * @author An Buyle
  */
 @Component
-public class GetFeatureInfoCommand implements Command<GetFeatureInfoRequest, GetFeatureInfoResponse> {
+public class WmsGetFeatureInfoCommand implements Command<WmsGetFeatureInfoRequest, WmsGetFeatureInfoResponse> {
 
-	private final Logger log = LoggerFactory.getLogger(GetFeatureInfoCommand.class);
+	private final Logger log = LoggerFactory.getLogger(WmsGetFeatureInfoCommand.class);
 
 	private static final String PARAM_FORMAT = "info_format";
 
-	public void execute(GetFeatureInfoRequest request, GetFeatureInfoResponse response) throws Exception {
+	public void execute(WmsGetFeatureInfoRequest request, WmsGetFeatureInfoResponse response) throws Exception {
 		URL url = new URL(request.getUrl());
 		GML gml;
 
@@ -68,8 +69,8 @@ public class GetFeatureInfoCommand implements Command<GetFeatureInfoRequest, Get
 		}
 	}
 
-	public GetFeatureInfoResponse getEmptyCommandResponse() {
-		return new GetFeatureInfoResponse();
+	public WmsGetFeatureInfoResponse getEmptyCommandResponse() {
+		return new WmsGetFeatureInfoResponse();
 	}
 
 	private List<Feature> getFeaturesFromUrl(URL url, GML gml, int maxCoordsPerFeature) throws IOException,

@@ -25,19 +25,20 @@
 
 	<modules>
 		<module>wms</module>
-		<module>print</module>
 		<module>example-jar</module>
-		<module>server-extension</module>
+        <module>documentation</module>
 	</modules>
 
     <profiles>
         <profile>
             <id>full-build</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <activeByDefault>false</activeByDefault>
             </activation>
             <modules>
-                <module>documentation</module>
+                <module>server-extension</module>
+                <module>server-example-jar</module>
+                <module>print</module>
             </modules>
         </profile>
     </profiles>

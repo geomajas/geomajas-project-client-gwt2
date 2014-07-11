@@ -19,7 +19,7 @@ import org.geomajas.annotation.Api;
  * Metadata information for a layer in a WMS Capabilities.
  * 
  * @author Pieter De Graef
- * @since 2.0.0
+ * @since 2.1.0
  */
 @Api(allMethods = true)
 public interface WmsLayerMetadataUrlInfo extends Serializable {

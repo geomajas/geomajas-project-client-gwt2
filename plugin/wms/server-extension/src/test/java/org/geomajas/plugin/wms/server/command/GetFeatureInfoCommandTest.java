@@ -14,9 +14,8 @@ package org.geomajas.plugin.wms.server.command;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.plugin.wms.client.service.WmsService.GetFeatureInfoFormat;
 import org.geomajas.plugin.wms.client.service.WmsService.WmsVersion;
-import org.geomajas.plugin.wms.server.command.GetFeatureInfoCommand;
-import org.geomajas.plugin.wms.server.command.dto.GetFeatureInfoRequest;
-import org.geomajas.plugin.wms.server.command.dto.GetFeatureInfoResponse;
+import org.geomajas.plugin.wms.server.command.dto.WmsGetFeatureInfoRequest;
+import org.geomajas.plugin.wms.server.command.dto.WmsGetFeatureInfoResponse;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,14 +33,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class GetFeatureInfoCommandTest {
 
 	@Autowired
-	private GetFeatureInfoCommand command;
+	private WmsGetFeatureInfoCommand command;
 
 	@Test
 	public void testTextHtml111() throws Exception {
-		GetFeatureInfoResponse response = command.getEmptyCommandResponse();
+		WmsGetFeatureInfoResponse response = command.getEmptyCommandResponse();
 		Assert.assertNotNull(response);
 
-		GetFeatureInfoRequest request = new GetFeatureInfoRequest(getFeatureInfoUrl(WmsVersion.V1_1_1,
+		WmsGetFeatureInfoRequest request = new WmsGetFeatureInfoRequest(getFeatureInfoUrl(WmsVersion.V1_1_1,
 				GetFeatureInfoFormat.HTML));
 		command.execute(request, response);
 		Assert.assertNotNull(response.getWmsResponse());
@@ -50,10 +49,10 @@ public class GetFeatureInfoCommandTest {
 
 	@Test
 	public void testTextHtml130() throws Exception {
-		GetFeatureInfoResponse response = command.getEmptyCommandResponse();
+		WmsGetFeatureInfoResponse response = command.getEmptyCommandResponse();
 		Assert.assertNotNull(response);
 
-		GetFeatureInfoRequest request = new GetFeatureInfoRequest(getFeatureInfoUrl(WmsVersion.V1_3_0,
+		WmsGetFeatureInfoRequest request = new WmsGetFeatureInfoRequest(getFeatureInfoUrl(WmsVersion.V1_3_0,
 				GetFeatureInfoFormat.HTML));
 		command.execute(request, response);
 		Assert.assertNotNull(response.getWmsResponse());
@@ -62,10 +61,10 @@ public class GetFeatureInfoCommandTest {
 
 	@Test
 	public void testTextGml2Wms111() throws Exception {
-		GetFeatureInfoResponse response = command.getEmptyCommandResponse();
+		WmsGetFeatureInfoResponse response = command.getEmptyCommandResponse();
 		Assert.assertNotNull(response);
 
-		GetFeatureInfoRequest request = new GetFeatureInfoRequest(getFeatureInfoUrl(WmsVersion.V1_1_1,
+		WmsGetFeatureInfoRequest request = new WmsGetFeatureInfoRequest(getFeatureInfoUrl(WmsVersion.V1_1_1,
 				GetFeatureInfoFormat.GML2));
 		command.execute(request, response);
 		Assert.assertNull(response.getWmsResponse());
@@ -76,10 +75,10 @@ public class GetFeatureInfoCommandTest {
 
 	@Test
 	public void testTextGml3Wms130() throws Exception {
-		GetFeatureInfoResponse response = command.getEmptyCommandResponse();
+		WmsGetFeatureInfoResponse response = command.getEmptyCommandResponse();
 		Assert.assertNotNull(response);
 
-		GetFeatureInfoRequest request = new GetFeatureInfoRequest(getFeatureInfoUrl(WmsVersion.V1_3_0,
+		WmsGetFeatureInfoRequest request = new WmsGetFeatureInfoRequest(getFeatureInfoUrl(WmsVersion.V1_3_0,
 				GetFeatureInfoFormat.GML3));
 		command.execute(request, response);
 		Assert.assertNull(response.getWmsResponse());
@@ -90,10 +89,10 @@ public class GetFeatureInfoCommandTest {
 
 	@Test
 	public void testTextGml3Wms111() throws Exception {
-		GetFeatureInfoResponse response = command.getEmptyCommandResponse();
+		WmsGetFeatureInfoResponse response = command.getEmptyCommandResponse();
 		Assert.assertNotNull(response);
 
-		GetFeatureInfoRequest request = new GetFeatureInfoRequest(getFeatureInfoUrl(WmsVersion.V1_1_1,
+		WmsGetFeatureInfoRequest request = new WmsGetFeatureInfoRequest(getFeatureInfoUrl(WmsVersion.V1_1_1,
 				GetFeatureInfoFormat.GML3));
 		command.execute(request, response);
 		Assert.assertNull(response.getWmsResponse());
@@ -104,10 +103,10 @@ public class GetFeatureInfoCommandTest {
 
 	@Test
 	public void testTextGml2Wms130() throws Exception {
-		GetFeatureInfoResponse response = command.getEmptyCommandResponse();
+		WmsGetFeatureInfoResponse response = command.getEmptyCommandResponse();
 		Assert.assertNotNull(response);
 
-		GetFeatureInfoRequest request = new GetFeatureInfoRequest(getFeatureInfoUrl(WmsVersion.V1_3_0,
+		WmsGetFeatureInfoRequest request = new WmsGetFeatureInfoRequest(getFeatureInfoUrl(WmsVersion.V1_3_0,
 				GetFeatureInfoFormat.GML2));
 		command.execute(request, response);
 		Assert.assertNull(response.getWmsResponse());

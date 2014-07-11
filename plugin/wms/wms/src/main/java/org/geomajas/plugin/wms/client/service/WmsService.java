@@ -24,7 +24,7 @@ import com.google.gwt.core.client.Callback;
  *
  * @author Pieter De Graef
  * @author An Buyle (getLegendGraphicUrl)
- * @since 2.0.0
+ * @since 2.1.0
  */
 @Api(allMethods = true)
 public interface WmsService {
@@ -140,13 +140,12 @@ public interface WmsService {
 	 * Get the URL that retrieves the requested bounds for the requested layer through a GetMap request.
 	 *
 	 * @param wmsConfig   The configuration object that points to some WMS layer.
-	 * @param crs         The preferred coordinate reference system.
 	 * @param worldBounds The bounds to retrieve through the GetMap request.
 	 * @param imageWidth  The image width.
 	 * @param imageHeight The image height.
 	 * @return URL to the image.
 	 */
-	String getMapUrl(WmsLayerConfiguration wmsConfig, String crs, Bbox worldBounds, int imageWidth, int imageHeight);
+	String getMapUrl(WmsLayerConfiguration wmsConfig, Bbox worldBounds, int imageWidth, int imageHeight);
 
 	// ------------------------------------------------------------------------
 	// WMS GetLegendGraphic methods:

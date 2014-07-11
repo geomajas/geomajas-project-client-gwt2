@@ -18,24 +18,24 @@ import org.geomajas.command.CommandRequest;
  *
  * @author Pieter De Graef
  */
-public class GetFeatureInfoRequest implements CommandRequest {
+public class WmsGetFeatureInfoRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 100L;
 
-	public static final String COMMAND_NAME = "command.GetFeatureInfo";
+	public static final String COMMAND_NAME = "command.WmsGetFeatureInfo";
 
 	private String url;
 
 	private int maxCoordsPerFeature = -1;
 
-	public GetFeatureInfoRequest() {
+	public WmsGetFeatureInfoRequest() {
 	}
 
-	public GetFeatureInfoRequest(String url) {
+	public WmsGetFeatureInfoRequest(String url) {
 		this.url = url;
 	}
 
-	public GetFeatureInfoRequest(String url, int maxCoordsPerFeature) {
+	public WmsGetFeatureInfoRequest(String url, int maxCoordsPerFeature) {
 		this.url = url;
 		this.maxCoordsPerFeature = maxCoordsPerFeature;
 	}

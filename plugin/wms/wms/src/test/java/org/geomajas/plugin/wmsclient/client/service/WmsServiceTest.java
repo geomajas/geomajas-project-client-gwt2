@@ -68,7 +68,7 @@ public class WmsServiceTest /*extends GWTTestCase*/ {
 	public void testGetMapUrl() {
 		initialize(); // No Spring in a GWT unit test.
 		Bbox bounds = new Bbox(0, 1, 100, 100);
-		String getMapUrl = wmsService.getMapUrl(wmsConfig, VALUE_CRS2, bounds, VALUE_SIZE, VALUE_SIZE);
+		String getMapUrl = wmsService.getMapUrl(wmsConfig, bounds, VALUE_SIZE, VALUE_SIZE);
 
 		Assert.equals(VALUE_URL, getMapUrl.substring(0, getMapUrl.indexOf('?')));
 //		assertTrue(hasParameter(getMapUrl, "service", "WMS"));
@@ -88,7 +88,7 @@ public class WmsServiceTest /*extends GWTTestCase*/ {
 	public void testGetMapUrlInvertedAxis() {
 		initialize(); // No Spring in a GWT unit test.
 		Bbox bounds = new Bbox(0, 1, 100, 100);
-		String getMapUrl = wmsService.getMapUrl(wmsConfig, VALUE_CRS, bounds, VALUE_SIZE, VALUE_SIZE);
+		String getMapUrl = wmsService.getMapUrl(wmsConfig, bounds, VALUE_SIZE, VALUE_SIZE);
 
 //		assertEquals(VALUE_URL, getMapUrl.substring(0, getMapUrl.indexOf('?')));
 //		assertTrue(hasParameter(getMapUrl, "service", "WMS"));
@@ -137,7 +137,7 @@ public class WmsServiceTest /*extends GWTTestCase*/ {
 
 		wmsService.setWmsUrlTransformer(toHelloWorld);
 		Bbox bounds = new Bbox(0, 1, 100, 100);
-		String getMapUrl = wmsService.getMapUrl(wmsConfig, VALUE_CRS2, bounds, VALUE_SIZE, VALUE_SIZE);
+		String getMapUrl = wmsService.getMapUrl(wmsConfig, bounds, VALUE_SIZE, VALUE_SIZE);
 //		assertEquals(URL.encode(HELLOWORLD), getMapUrl);
 	}
 
@@ -164,6 +164,7 @@ public class WmsServiceTest /*extends GWTTestCase*/ {
 		wmsConfig.setBaseUrl(VALUE_URL);
 		wmsConfig.setLayers(VALUE_LAYER);
 		wmsConfig.setStyles(VALUE_STYLE);
+		wmsConfig.setCrs(VALUE_CRS2);
 	}
 
 	private boolean hasParameter(String url, String parameter, String value) {
