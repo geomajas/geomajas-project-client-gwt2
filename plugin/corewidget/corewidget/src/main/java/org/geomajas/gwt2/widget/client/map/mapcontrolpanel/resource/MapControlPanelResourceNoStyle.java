@@ -9,21 +9,22 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.client.layercontrolpanel.resource;
+package org.geomajas.gwt2.widget.client.map.mapcontrolpanel.resource;
 
 import com.google.gwt.resources.client.ClientBundle;
+import org.geomajas.gwt2.widget.client.map.layercontrolpanel.resource.LayerControlPanelCssResource;
 
 /**
  * Client resource bundle interface with empty css classes.
  * 
  * @author Dosi Bingov
  */
-public interface LayerControlPanelResourceNoStyle extends LayerControlPanelCssResource {
+public interface MapControlPanelResourceNoStyle extends LayerControlPanelCssResource {
 
 	/**
 	 * Get the css resource.
 	 * @return the css resource
 	 */
 	@ClientBundle.Source("org/geomajas/gwt2/widget/client/resource/CoreWidgetNoStyle.css")
-	LayerControlPanelCssResource css();
+	MapControlPanelCssResource css();
 }

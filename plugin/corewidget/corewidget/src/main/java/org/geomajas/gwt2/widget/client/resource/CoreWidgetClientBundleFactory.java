@@ -14,8 +14,8 @@ package org.geomajas.gwt2.widget.client.resource;
 import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.FeatureSelectBoxResource;
 
 import com.google.gwt.core.client.GWT;
-import org.geomajas.gwt2.widget.client.layercontrolpanel.resource.LayerControlPanelResource;
-import org.geomajas.gwt2.widget.client.mapcontrolpanel.resource.MapControlPanelResource;
+import org.geomajas.gwt2.widget.client.map.layercontrolpanel.resource.LayerControlPanelResource;
+import org.geomajas.gwt2.widget.client.map.mapcontrolpanel.resource.MapControlPanelResource;
 
 /**
  * Default factory for client bundles defined within this artifact. By using such a factory, it is possible to easily
@@ -37,7 +37,7 @@ public class CoreWidgetClientBundleFactory {
 
 	/**
 	 * Create a new resource bundle for the
-	 * {@link org.geomajas.gwt2.widget.client.layercontrolpanel.LayerControlPanel} widget.
+	 * {@link org.geomajas.gwt2.widget.client.map.layercontrolpanel.LayerControlPanel} widget.
 	 *
 	 * @return A new resource bundle.
 	 */
@@ -48,7 +48,7 @@ public class CoreWidgetClientBundleFactory {
 
 	/**
 	 * Create a new resource bundle for the
-	 * {@link org.geomajas.gwt2.widget.client.mapcontrolpanel.MapControlPanel} widget.
+	 * {@link org.geomajas.gwt2.widget.client.map.mapcontrolpanel.MapControlPanel} widget.
 	 *
 	 * @return A new resource bundle.
 	 */

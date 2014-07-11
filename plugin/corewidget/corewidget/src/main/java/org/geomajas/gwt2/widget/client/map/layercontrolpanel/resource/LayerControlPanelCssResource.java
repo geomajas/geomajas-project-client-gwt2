@@ -9,12 +9,12 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.client.layercontrolpanel.resource;
+package org.geomajas.gwt2.widget.client.map.layercontrolpanel.resource;
 
 import com.google.gwt.resources.client.CssResource;
 
 /**
- * Client resource bundle interface for {@link org.geomajas.gwt2.widget.client.layercontrolpanel.LayerControlPanel}.
+ * Client resource bundle interface for {@link org.geomajas.gwt2.widget.client.map.layercontrolpanel.LayerControlPanel}.
  *
  * @author Dosi Bingov
  */

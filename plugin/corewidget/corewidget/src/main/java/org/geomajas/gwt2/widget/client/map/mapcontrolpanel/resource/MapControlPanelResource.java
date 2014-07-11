@@ -8,13 +8,13 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.client.mapcontrolpanel.resource;
+package org.geomajas.gwt2.widget.client.map.mapcontrolpanel.resource;
 
 import com.google.gwt.resources.client.ClientBundle;
 import org.geomajas.gwt2.widget.client.CoreWidget;
 
 /**
- * Client resource bundle interface for {@link org.geomajas.gwt2.widget.client.layercontrolpanel.LayerControlPanel}.
+ * Client resource bundle interface for {@link org.geomajas.gwt2.widget.client.map.layercontrolpanel.LayerControlPanel}.
  * 
  * @author Dosi Bingov
  * 

@@ -8,14 +8,14 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.client.mapcontrolpanel;
+package org.geomajas.gwt2.widget.client.map.mapcontrolpanel;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.annotation.Api;
 
 /**
- * MVP view for {@link org.geomajas.gwt2.widget.client.layercontrolpanel.LayerControlPanel}.
+ * MVP view for {@link MapControlPanel}.
  *
  * @author Dosi Bingov
  *

@@ -8,7 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.client.layercontrolpanel;
+package org.geomajas.gwt2.widget.client.map.layercontrolpanel;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -16,12 +16,11 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
-import org.geomajas.gwt2.widget.client.layercontrolpanel.resource.LayerControlPanelResource;
+import org.geomajas.gwt2.client.map.layer.Layer;
+import org.geomajas.gwt2.widget.client.map.layercontrolpanel.resource.LayerControlPanelResource;
 
 import java.util.logging.Logger;
 
@@ -36,6 +35,8 @@ public class LayerControlPanelViewImpl implements LayerControlPanelView {
 
 	private LayerControlPanelPresenter presenter;
 
+	private Layer layer;
+
 	private HorizontalPanel widget;
 
 	@UiField
@@ -43,9 +44,6 @@ public class LayerControlPanelViewImpl implements LayerControlPanelView {
 
 	@UiField
 	protected Label title;
-
-	@UiField
-	protected FlexTable legendTable;
 
 	private LayerControlPanelResource resource;
 
@@ -79,11 +77,14 @@ public class LayerControlPanelViewImpl implements LayerControlPanelView {
 		return widget;
 	}
 
-	public void setLegendUrl(String url) {
-		Image image = new Image(url);
-		final int row = legendTable.insertRow(legendTable.getRowCount());
-		legendTable.addCell(row);
-		legendTable.setWidget(row, 0, image);
+	@Override
+	public Layer getLayer() {
+		return this.layer;
+	}
+
+	@Override
+	public void setLayer(Layer layer) {
+		this.layer = layer;
 	}
 
 	@Override

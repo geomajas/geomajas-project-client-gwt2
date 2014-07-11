@@ -13,10 +13,7 @@
 
 	<g:HorizontalPanel>
 		<g:CheckBox ui:field="visibilityToggle"/>
-		<g:VerticalPanel>
-			<g:Label ui:field="title" />
-			<g:FlexTable ui:field="legendTable" />
-		</g:VerticalPanel>
+		<g:Label ui:field="title" />
 	</g:HorizontalPanel>
 
 </ui:UiBinder>

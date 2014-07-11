@@ -8,13 +8,14 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.client.layercontrolpanel;
+package org.geomajas.gwt2.widget.client.map.layercontrolpanel;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import org.geomajas.annotation.Api;
+import org.geomajas.gwt2.client.map.layer.Layer;
 
 /**
- * MVP view for {@link org.geomajas.gwt2.widget.client.layercontrolpanel.LayerControlPanel}.
+ * MVP view for {@link LayerControlPanel}.
  *
  * @author Dosi Bingov
  *
@@ -23,11 +24,24 @@ import org.geomajas.annotation.Api;
 @Api(allMethods = true)
 public interface LayerControlPanelView extends IsWidget {
 
+	/**
+	 * Set layer that belongs to this view.
+	 *
+	 * @return
+	 */
+	Layer getLayer();
+
+	/**
+	 * Get the layer  that belongs to this view.
+	 *
+	 * @param layer {@link Layer}
+	 */
+	void setLayer(Layer layer);
 
 	/**
 	 * Set the presenter for callback.
 	 *
-	 * @param presenter
+	 * @param presenter {@link LayerControlPanelPresenter}.
 	 */
 	void setPresenter(LayerControlPanelPresenter presenter);
 
@@ -52,11 +66,5 @@ public interface LayerControlPanelView extends IsWidget {
 	 * @param title layer title
 	 */
 	void setLayerTitle(String title);
-
-	/**
-	 * Set url of legend URL.
-	 * @param url of legend image
-	 */
-	void setLegendUrl(String url);
 
 }

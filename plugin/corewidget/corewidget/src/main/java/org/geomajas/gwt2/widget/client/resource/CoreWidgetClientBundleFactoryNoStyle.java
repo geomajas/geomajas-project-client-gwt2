@@ -15,10 +15,10 @@ import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.Feature
 import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.FeatureSelectBoxResourceNoStyle;
 
 import com.google.gwt.core.client.GWT;
-import org.geomajas.gwt2.widget.client.layercontrolpanel.resource.LayerControlPanelResource;
-import org.geomajas.gwt2.widget.client.layercontrolpanel.resource.LayerControlPanelResourceNoStyle;
-import org.geomajas.gwt2.widget.client.mapcontrolpanel.resource.MapControlPanelResource;
-import org.geomajas.gwt2.widget.client.mapcontrolpanel.resource.MapControlPanelResourceNoStyle;
+import org.geomajas.gwt2.widget.client.map.layercontrolpanel.resource.LayerControlPanelResource;
+import org.geomajas.gwt2.widget.client.map.layercontrolpanel.resource.LayerControlPanelResourceNoStyle;
+import org.geomajas.gwt2.widget.client.map.mapcontrolpanel.resource.MapControlPanelResource;
+import org.geomajas.gwt2.widget.client.map.mapcontrolpanel.resource.MapControlPanelResourceNoStyle;
 
 /**
  * No style factory for client bundles defined within this artifact. This factory wipes out all css.
@@ -40,7 +40,7 @@ public class CoreWidgetClientBundleFactoryNoStyle extends CoreWidgetClientBundle
 
 	/**
 	 * Create a new resource bundle for the
-	 * {@link org.geomajas.gwt2.widget.client.layercontrolpanel.LayerControlPanel} widget.
+	 * {@link org.geomajas.gwt2.widget.client.map.layercontrolpanel.LayerControlPanel} widget.
 	 *
 	 * @return A new resource bundle.
 	 */
@@ -50,7 +50,7 @@ public class CoreWidgetClientBundleFactoryNoStyle extends CoreWidgetClientBundle
 
 	/**
 	 * Create a new resource bundle for the
-	 * {@link org.geomajas.gwt2.widget.client.mapcontrolpanel.MapControlPanel} widget.
+	 * {@link org.geomajas.gwt2.widget.client.map.mapcontrolpanel.MapControlPanel} widget.
 	 *
 	 * @return A new resource bundle.
 	 */

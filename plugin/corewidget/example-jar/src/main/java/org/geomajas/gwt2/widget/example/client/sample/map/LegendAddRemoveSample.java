@@ -19,7 +19,7 @@ import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.example.base.client.ExampleBase;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
-import org.geomajas.gwt2.widget.client.mapcontrolpanel.MapControlPanel;
+import org.geomajas.gwt2.widget.client.map.mapcontrolpanel.MapControlPanel;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;

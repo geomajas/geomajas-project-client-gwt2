@@ -9,13 +9,13 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.client.mapcontrolpanel.resource;
+package org.geomajas.gwt2.widget.client.map.mapcontrolpanel.resource;
 
 
 import com.google.gwt.resources.client.CssResource;
 
 /**
- * CSS resource bundle for {@link org.geomajas.gwt2.widget.client.mapcontrolpanel.MapControlPanel}.
+ * CSS resource bundle for {@link org.geomajas.gwt2.widget.client.map.mapcontrolpanel.MapControlPanel}.
  *
  * @author Dosi Bingov
  */

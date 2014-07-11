@@ -19,7 +19,7 @@ import org.geomajas.gwt2.client.event.MapInitializationHandler;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
-import org.geomajas.gwt2.widget.client.mapcontrolpanel.MapControlPanel;
+import org.geomajas.gwt2.widget.client.map.mapcontrolpanel.MapControlPanel;
 
 import com.allen_sauer.gwt.dnd.client.DragEndEvent;
 import com.allen_sauer.gwt.dnd.client.DragHandler;
@@ -85,7 +85,10 @@ public class LegendOrderSample implements SamplePanel {
 		mapPresenter.getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 
 		// Add the MapLegendPanel to the layout:
-		legendPanel.add(new MapControlPanel(mapPresenter));
+		MapControlPanel mapControlPanel = new MapControlPanel(mapPresenter);
+		//mapControlPanel.setDisableToggleOutOfRange(false);
+
+		legendPanel.add(mapControlPanel);
 
 		// Define the whole layout:
 		DecoratorPanel mapDecorator = new DecoratorPanel();

@@ -13,12 +13,12 @@ package org.geomajas.gwt2.widget.client;
 import org.geomajas.gwt2.widget.client.feature.featureselectbox.FeatureSelectBoxView;
 import org.geomajas.gwt2.widget.client.feature.featureselectbox.FeatureSelectBoxViewImpl;
 import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.FeatureSelectBoxResource;
-import org.geomajas.gwt2.widget.client.layercontrolpanel.LayerControlPanelView;
-import org.geomajas.gwt2.widget.client.layercontrolpanel.LayerControlPanelViewImpl;
-import org.geomajas.gwt2.widget.client.layercontrolpanel.resource.LayerControlPanelResource;
-import org.geomajas.gwt2.widget.client.mapcontrolpanel.MapControlPanelView;
-import org.geomajas.gwt2.widget.client.mapcontrolpanel.MapControlPanelViewImpl;
-import org.geomajas.gwt2.widget.client.mapcontrolpanel.resource.MapControlPanelResource;
+import org.geomajas.gwt2.widget.client.map.layercontrolpanel.LayerControlPanelView;
+import org.geomajas.gwt2.widget.client.map.layercontrolpanel.LayerControlPanelViewImpl;
+import org.geomajas.gwt2.widget.client.map.layercontrolpanel.resource.LayerControlPanelResource;
+import org.geomajas.gwt2.widget.client.map.mapcontrolpanel.MapControlPanelView;
+import org.geomajas.gwt2.widget.client.map.mapcontrolpanel.MapControlPanelViewImpl;
+import org.geomajas.gwt2.widget.client.map.mapcontrolpanel.resource.MapControlPanelResource;
 
 /**
  * MVP view factory for this plugin.

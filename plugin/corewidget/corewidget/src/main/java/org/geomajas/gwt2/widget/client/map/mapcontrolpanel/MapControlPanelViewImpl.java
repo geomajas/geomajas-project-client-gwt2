@@ -8,18 +8,18 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.client.mapcontrolpanel;
+package org.geomajas.gwt2.widget.client.map.mapcontrolpanel;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import org.geomajas.gwt2.widget.client.mapcontrolpanel.resource.MapControlPanelResource;
+import org.geomajas.gwt2.widget.client.map.mapcontrolpanel.resource.MapControlPanelResource;
 
 import java.util.logging.Logger;
 
 /**
- * Default implementation of {@link org.geomajas.gwt2.widget.client.mapcontrolpanel.MapControlPanelView}.
+ * Default implementation of {@link MapControlPanelView}.
  *
  * @author Dosi Bingov
  */

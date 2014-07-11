@@ -8,17 +8,21 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.client.layercontrolpanel;
+package org.geomajas.gwt2.widget.client.map.layercontrolpanel;
 
 
 import org.geomajas.gwt2.client.event.LayerHideEvent;
 import org.geomajas.gwt2.client.event.LayerShowEvent;
 import org.geomajas.gwt2.client.event.LayerVisibilityHandler;
 import org.geomajas.gwt2.client.event.LayerVisibilityMarkedEvent;
-import org.geomajas.gwt2.client.map.MapEventBus;
+import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
+import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
+import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.client.map.ViewPort;
+import org.geomajas.gwt2.client.map.layer.AbstractServerLayer;
 import org.geomajas.gwt2.client.map.layer.Layer;
-import org.geomajas.gwt2.client.map.layer.LegendUrlSupported;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -33,61 +37,84 @@ public class LayerControlPanelPresenterImpl implements LayerControlPanelPresente
 
 	private LayerControlPanelView view;
 
+	private boolean disableToggleOutOfRange;
+
 	private Layer layer;
 
-	public LayerControlPanelPresenterImpl(LayerControlPanelView view, Layer layer, MapEventBus eventBus) {
+	public LayerControlPanelPresenterImpl(LayerControlPanelView view, Layer layer, MapPresenter mapPresenter,
+										  boolean disableToggleOutOfRange) {
 		this.view = view;
 		this.layer = layer;
-		init(eventBus);
+		log.log(Level.INFO, "disableToggleOutOfRange => " + disableToggleOutOfRange);
+
+		this.disableToggleOutOfRange = disableToggleOutOfRange;
+		init(mapPresenter);
 	}
 
 	// ------------------------------------------------------------------------
 	// Public methods:
 	// ------------------------------------------------------------------------
-	@Override
-	public Layer getLayer() {
-		return layer;
-	}
 
 	@Override
 	public void toggleLayerVisibility() {
+		log.log(Level.INFO, "toggleLayerVisibility()");
 		layer.setMarkedAsVisible(!layer.isMarkedAsVisible());
 	}
 
 	// ------------------------------------------------------------------------
 	// Private methods:
 	// ------------------------------------------------------------------------
-	private void init(MapEventBus eventBus) {
+	private void init(final MapPresenter mapPresenter) {
 		view.setLayerTitle(layer.getTitle());
 		view.setLayerVisible(layer.isMarkedAsVisible());
 
+		if (disableToggleOutOfRange) {
+			view.enableVisibilityToggle(isLayerVisible(mapPresenter.getViewPort(), layer));
+		}
+
+		mapPresenter.getEventBus().addViewPortChangedHandler(new ViewPortChangedHandler() {
+			@Override
+			public void onViewPortChanged(ViewPortChangedEvent event) {
+
+				if (disableToggleOutOfRange) {
+					view.enableVisibilityToggle(isLayerVisible(mapPresenter.getViewPort(), layer));
+				}
+
+			}
+		});
+
 		// React to layer visibility events:
-		eventBus.addLayerVisibilityHandler(new LayerVisibilityHandler() {
+		mapPresenter.getEventBus().addLayerVisibilityHandler(new LayerVisibilityHandler() {
 
 			public void onShow(LayerShowEvent event) {
-				view.enableVisibilityToggle(true);
 			}
 
 			public void onHide(LayerHideEvent event) {
-				// If a layer hides while it is marked as visible, it means it has gone beyond it's allowed scale range.
-				// If so, disable the CheckBox. It's no use to try to mark the layer as visible anyway:
-				if (layer.isMarkedAsVisible()) {
-					view.enableVisibilityToggle(false);
-				}
 			}
 
 			public void onVisibilityMarked(LayerVisibilityMarkedEvent event) {
-				//visibilityToggle.setValue(layer.isMarkedAsVisible());
 				view.setLayerVisible(layer.isMarkedAsVisible());
 
 			}
 		}, this.layer);
+	}
 
+	private boolean isLayerVisible(ViewPort viewPort, Layer layer) {
 
-		// Add the legend if supported
-		if (layer instanceof LegendUrlSupported) {
-			view.setLegendUrl(((LegendUrlSupported) layer).getLegendImageUrl());
+		if (layer instanceof AbstractServerLayer) {
+			AbstractServerLayer serverLayer = (AbstractServerLayer) layer;
+
+			double maxResolution = 1 / serverLayer.getLayerInfo().getMinimumScale().getPixelPerUnit();
+			double minResolution = 1 / serverLayer.getLayerInfo().getMaximumScale().getPixelPerUnit();
+
+			if (viewPort.getResolution() >= minResolution && viewPort.getResolution() <= maxResolution) {
+				return true;
+			}
+
+			return false;
 		}
+
+		return layer.isShowing();
 	}
 
 }

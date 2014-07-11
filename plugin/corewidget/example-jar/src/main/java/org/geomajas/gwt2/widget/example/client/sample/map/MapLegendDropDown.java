@@ -23,7 +23,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 import com.google.gwt.user.client.ui.Widget;
-import org.geomajas.gwt2.widget.client.mapcontrolpanel.MapControlPanel;
+import org.geomajas.gwt2.widget.client.map.mapcontrolpanel.MapControlPanel;
 
 /**
  * Drop down button that displays the {@link MapControlPanel}. When this widget is added to a MapPresenter's widget

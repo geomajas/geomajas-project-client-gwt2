@@ -8,24 +8,15 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.client.layercontrolpanel;
-
-import org.geomajas.gwt2.client.map.layer.Layer;
+package org.geomajas.gwt2.widget.client.map.layercontrolpanel;
 
 /**
- * MVP presenter for {@link org.geomajas.gwt2.widget.client.layercontrolpanel.LayerControlPanel}.
+ * MVP presenter for {@link LayerControlPanel}.
  * 
  * @author Dosi Bingov
  * 
  */
 public interface LayerControlPanelPresenter {
-
-	/**
-	 * Return the target layer for this legend panel.
-	 *
-	 * @return The layer who's styles are displayed within this panel.
-	 */
-	Layer getLayer();
 
 	/**
 	 * Toggle layer visibility.

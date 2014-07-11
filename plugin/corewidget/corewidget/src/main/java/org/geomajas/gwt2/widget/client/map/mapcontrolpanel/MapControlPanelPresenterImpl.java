@@ -8,23 +8,22 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.widget.client.mapcontrolpanel;
+package org.geomajas.gwt2.widget.client.map.mapcontrolpanel;
 
 import org.geomajas.gwt2.client.event.LayerAddedEvent;
 import org.geomajas.gwt2.client.event.LayerOrderChangedEvent;
 import org.geomajas.gwt2.client.event.LayerOrderChangedHandler;
 import org.geomajas.gwt2.client.event.LayerRemovedEvent;
 import org.geomajas.gwt2.client.event.MapCompositionHandler;
-import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.layer.Layer;
-import org.geomajas.gwt2.widget.client.layercontrolpanel.LayerControlPanel;
+import org.geomajas.gwt2.widget.client.map.layercontrolpanel.LayerControlPanel;
 
 
 import java.util.logging.Logger;
 
 /**
- * Default implementation of {@link org.geomajas.gwt2.widget.client.layercontrolpanel.LayerControlPanelPresenter}.
+ * Default implementation of {@link org.geomajas.gwt2.widget.client.map.layercontrolpanel.LayerControlPanelPresenter}.
  *
  * @author Dosi Bingov
  *
@@ -35,12 +34,15 @@ public class MapControlPanelPresenterImpl implements MapControlPanelPresenter {
 
 	private MapControlPanelView view;
 
-	private MapEventBus eventBus;
+	private boolean disableToggleOutOfRange;
+
+	private  MapPresenter mapPresenter;
 
 	public MapControlPanelPresenterImpl(MapControlPanelView view, MapPresenter mapPresenter) {
 		this.view = view;
-		this.eventBus = mapPresenter.getEventBus();
-		init(mapPresenter);
+		this.mapPresenter = mapPresenter;
+		this.disableToggleOutOfRange = true; //default it is true
+		init();
 	}
 
 	// ------------------------------------------------------------------------
@@ -61,8 +63,7 @@ public class MapControlPanelPresenterImpl implements MapControlPanelPresenter {
 	protected boolean addLayer(Layer layer) {
 		int index = getLayerIndex(layer);
 		if (index < 0) {
-			//contentPanel.add(new LayerLegendPanel(eventBus, layer));
-			view.add(new LayerControlPanel(eventBus, layer));
+			view.add(new LayerControlPanel(mapPresenter, layer, disableToggleOutOfRange));
 
 			return true;
 		}
@@ -101,7 +102,7 @@ public class MapControlPanelPresenterImpl implements MapControlPanelPresenter {
 		return -1;
 	}
 
-	private void init(final MapPresenter mapPresenter) {
+	private void init() {
 
 		// Add all layers (if there are any):
 		for (int i = mapPresenter.getLayersModel().getLayerCount() - 1 ; i >= 0 ; i--) {
@@ -130,5 +131,9 @@ public class MapControlPanelPresenterImpl implements MapControlPanelPresenter {
 
 	}
 
+	@Override
+	public void setDisableToggleOutOfRange(boolean disable) {
+		this.disableToggleOutOfRange = disable;
+	}
 }
 
