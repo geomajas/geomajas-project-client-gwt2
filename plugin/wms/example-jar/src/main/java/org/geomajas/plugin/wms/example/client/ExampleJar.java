@@ -123,7 +123,7 @@ public class ExampleJar implements EntryPoint {
 				return "selectstyle";
 			}
 		});
-		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
+/*		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
 
 			public SamplePanel create() {
 				return new WmsLayerLegendPanel();
@@ -149,6 +149,6 @@ public class ExampleJar implements EntryPoint {
 			public String getKey() {
 				return "wmslayerlegend";
 			}
-		});
+		});*/
 	}
 }
