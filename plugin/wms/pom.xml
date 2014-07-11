@@ -38,7 +38,6 @@
             <modules>
                 <module>server-extension</module>
                 <module>server-example-jar</module>
-                <module>print</module>
             </modules>
         </profile>
     </profiles>

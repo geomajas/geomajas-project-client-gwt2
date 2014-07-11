@@ -8,26 +8,26 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.wmsclient.printing.server.layer;
+package org.geomajas.plugin.print.wms.server.layer;
+
+import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.global.GeomajasException;
+import org.geomajas.layer.tile.RasterTile;
+import org.geomajas.plugin.print.wms.server.dto.WmsClientLayerInfo;
+import org.geomajas.plugin.rasterizing.api.LayerFactory;
+import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
+import org.geomajas.plugin.rasterizing.layer.RasterDirectLayer;
+import org.geomajas.service.DispatcherUrlService;
+import org.geotools.map.Layer;
+import org.geotools.map.MapContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.geomajas.configuration.client.ClientLayerInfo;
-import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.tile.RasterTile;
-import org.geomajas.plugin.rasterizing.api.LayerFactory;
-import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
-import org.geomajas.plugin.rasterizing.layer.RasterDirectLayer;
-import org.geomajas.plugin.wmsclient.printing.server.dto.WmsClientLayerInfo;
-import org.geomajas.service.DispatcherUrlService;
-import org.geotools.map.Layer;
-import org.geotools.map.MapContext;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /**
  * This factory creates a GeoTools layer that is capable of rendering WMS layers.
@@ -37,6 +37,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class WmsLayerFactory implements LayerFactory {
+
 	@Autowired
 	private DispatcherUrlService dispatcherUrlService;
 
@@ -61,7 +62,6 @@ public class WmsLayerFactory implements LayerFactory {
 			}
 		}
 
-		
 		RasterDirectLayer rasterLayer = new RasterDirectLayer(tiles, rasterInfo.getTileHeight(),
 				rasterInfo.getTileWidth(), rasterInfo.getScale(), extraInfo.getCssStyle());
 		rasterLayer.setTitle(clientLayerInfo.getLabel());
@@ -79,7 +79,6 @@ public class WmsLayerFactory implements LayerFactory {
 	}
 	
 	private String calculateUrl(String urlAsString) {
-		
 		URL absoluteUrl = null;
 
 		if (!urlAsString.startsWith("http:") && !urlAsString.startsWith("https:")) {
@@ -107,5 +106,4 @@ public class WmsLayerFactory implements LayerFactory {
 		
 		return absoluteUrl.toExternalForm();
 	}
-
 }

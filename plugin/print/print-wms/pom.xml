@@ -14,9 +14,9 @@
 		<version>2.1.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>geomajas-client-gwt2-plugin-wms-print</artifactId>
-	<name>Geomajas GWT2 client: Plugin WMS - Print extension</name>
-	<description>Geomajas GWT2 client: Plugin WMS - Print extension</description>
+	<artifactId>geomajas-client-gwt2-plugin-print-wms</artifactId>
+    <name>Geomajas GWT2 client: Plugin Print - WMS layers</name>
+    <description>Geomajas GWT2 client: Plugin Print - WMS layer support</description>
 
 	<dependencies>
 		<dependency>
