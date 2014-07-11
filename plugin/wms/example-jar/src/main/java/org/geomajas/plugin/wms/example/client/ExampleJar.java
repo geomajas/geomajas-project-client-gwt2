@@ -19,7 +19,6 @@ import org.geomajas.gwt2.example.base.client.sample.ShowcaseSampleDefinition;
 import org.geomajas.plugin.wms.example.client.i18n.SampleMessages;
 import org.geomajas.plugin.wms.example.client.sample.CapabilitiesPanel;
 import org.geomajas.plugin.wms.example.client.sample.SelectStylePanel;
-import org.geomajas.plugin.wms.example.client.sample.WmsLayerLegendPanel;
 import org.geomajas.plugin.wms.example.client.sample.WmsLayerPanel;
 
 /**
