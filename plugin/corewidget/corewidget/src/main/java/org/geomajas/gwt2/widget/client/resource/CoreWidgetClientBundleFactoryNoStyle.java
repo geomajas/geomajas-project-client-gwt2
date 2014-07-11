@@ -11,26 +11,12 @@
 
 package org.geomajas.gwt2.widget.client.resource;
 
-import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.FeatureSelectBoxResource;
-import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.FeatureSelectBoxResourceNoStyle;
-
-import com.google.gwt.core.client.GWT;
-
 /**
  * No style factory for client bundles defined within this artifact. This factory wipes out all css.
- * 
+ *
  * @author Jan De Moerloose
  */
 public class CoreWidgetClientBundleFactoryNoStyle extends CoreWidgetClientBundleFactory {
 
-	/**
-	 * Create an empty resource bundle for the
-	 * {@link org.geomajas.gwt2.widget.client.FeatureSelectBox.FeatureSelectListener} widget.
-	 * 
-	 * @return A new resource bundle.
-	 */
-	public FeatureSelectBoxResource createFeatureSelectBoxResource() {
-		return GWT.create(FeatureSelectBoxResourceNoStyle.class);
-	}
 
 }

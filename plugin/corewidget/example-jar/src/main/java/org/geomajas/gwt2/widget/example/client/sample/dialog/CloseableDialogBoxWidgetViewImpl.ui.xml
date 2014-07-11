@@ -1,0 +1,33 @@
+<!--
+	This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+
+	Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
+
+	The program is available in open source according to the GNU Affero
+	General Public License. All contributions in this program are covered
+	by the Geomajas Contributors License Agreement. For full licensing
+	details, see LICENSE.txt in the project root.
+-->
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:cdc="urn:import:org.geomajas.gwt2.widget.example.client.sample.dialog.caption">
+
+	<ui:with field="resource" type="org.geomajas.gwt2.widget.example.client.sample.dialog.resource.CloseableDialogBoxWidgetResource" />
+
+	<g:DialogBox styleName="{resource.css.closeableDialogBox}">
+
+		<g:customCaption>
+
+			<cdc:CloseableDialogBoxCaption ui:field="customCaption" />
+
+		</g:customCaption>
+
+		<g:ScrollPanel ui:field="contentScrollPanel">
+
+			<!-- Content will be added here by using widget.addContent(Widget widget) -->
+
+		</g:ScrollPanel>
+
+	</g:DialogBox>
+
+</ui:UiBinder>

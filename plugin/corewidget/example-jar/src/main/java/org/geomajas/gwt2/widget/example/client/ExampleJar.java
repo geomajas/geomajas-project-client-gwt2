@@ -22,14 +22,14 @@ import org.geomajas.gwt2.widget.example.client.sample.feature.FeatureClickedExam
 import org.geomajas.gwt2.widget.example.client.sample.map.LegendAddRemoveSample;
 import org.geomajas.gwt2.widget.example.client.sample.map.LegendOrderSample;
 import org.geomajas.gwt2.widget.example.client.sample.map.MapLegendDropDownSample;
-import org.geomajas.gwt2.widget.example.client.sample.mouseover.FeatureMouseOverExample;
+import org.geomajas.gwt2.widget.example.client.sample.feature.FeatureMouseOverExample;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 
 /**
  * Entry point and main class for the widget core example application.
- * 
+ *
  * @author Pieter De Graef
  */
 public class ExampleJar implements EntryPoint {
@@ -247,10 +247,10 @@ public class ExampleJar implements EntryPoint {
 				return CATEGORY_WIDGET;
 			}
 
-					@Override
-					public String getKey() {
-						return "FeatureMouseOver";
-					}
-				});
+			@Override
+			public String getKey() {
+				return "FeatureMouseOver";
+			}
+		});
 	}
 }

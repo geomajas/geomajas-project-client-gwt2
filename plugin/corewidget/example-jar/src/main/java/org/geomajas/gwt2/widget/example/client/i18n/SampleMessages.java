@@ -25,10 +25,19 @@ public interface SampleMessages extends Messages {
 	// Widget core examples: general UI examples
 	// ------------------------------------------------------------------------
 
+	String loremIpsum();
+
 	String closeableDialogTitle();
+	String closeableDialogBoxHandlerTitle();
+	String closeableDialogBoxHandlerMessage();
 	String closeableDialogDescrShort();
 	String closeableDialogDescription();
 	String closeableDialogButShow();
+	String closeableDialogBoxExampleButton();
+	String closeableDialogBoxExampleButtonClear();
+	String closeableDialogBoxExampleLabel();
+	String closeableDialogBoxExampleButtonMessage();
+	String closeableDialogBoxExampleButtonClearMessage();
 
 	String messageBoxTitle();
 	String messageBoxDescrShort();
