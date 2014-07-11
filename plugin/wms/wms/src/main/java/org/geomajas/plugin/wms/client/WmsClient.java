@@ -14,7 +14,6 @@ package org.geomajas.plugin.wms.client;
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt2.client.map.MapConfiguration;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
 import org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo;
@@ -63,7 +62,6 @@ public final class WmsClient {
 	 * have just acquired.</p> <p>This layer does not support a GetFeatureInfo call! If you need that, you'll have to
 	 * use the server extension of this plug-in.</p>
 	 *
-	 * @param mapConfig  The map configuration
 	 * @param baseUrl    The WMS base URL. This is the same URL you fed the GetCapabilities call. See {@link
 	 *                   WmsService#getCapabilities(String, WmsVersion, com.google.gwt.core.client.Callback)}.
 	 * @param version    The WMS version.
@@ -73,11 +71,11 @@ public final class WmsClient {
 	 * @param tileHeight The tile height in pixels.
 	 * @return A new WMS layer.
 	 */
-	public WmsLayer createLayer(MapConfiguration mapConfig, String baseUrl, WmsVersion version, WmsLayerInfo layerInfo,
-			ViewPort viewPort, int tileWidth, int tileHeight) {
+	public WmsLayer createLayer(String baseUrl, WmsVersion version, WmsLayerInfo layerInfo,
+								ViewPort viewPort, int tileWidth, int tileHeight) {
 		TileConfiguration tileConf = createTileConfig(layerInfo, viewPort, tileWidth, tileHeight);
 		WmsLayerConfiguration layerConf = createLayerConfig(layerInfo, baseUrl, version);
-		return createLayer(layerInfo.getTitle(), mapConfig, tileConf, layerConf, layerInfo);
+		return createLayer(layerInfo.getTitle(), viewPort.getCrs(), tileConf, layerConf, layerInfo);
 	}
 
 	/**
@@ -85,15 +83,15 @@ public final class WmsClient {
 	 * the server extension of this plug-in.
 	 *
 	 * @param title       The layer title.
-	 * @param mapConfig  The map configuration
+	 * @param crs         The CRS for this layer.
 	 * @param tileConfig  The tile configuration object.
 	 * @param layerConfig The layer configuration object.
 	 * @param layerInfo   The layer info object. Acquired from a WMS GetCapabilities. This object is optional.
 	 * @return A new WMS layer.
 	 */
-	public WmsLayer createLayer(String title, MapConfiguration mapConfig, TileConfiguration tileConfig,
-			WmsLayerConfiguration layerConfig, WmsLayerInfo layerInfo) {
-		return new WmsLayerImpl(title, mapConfig, layerConfig, tileConfig, layerInfo);
+	public WmsLayer createLayer(String title, String crs, TileConfiguration tileConfig,
+								WmsLayerConfiguration layerConfig, WmsLayerInfo layerInfo) {
+		return new WmsLayerImpl(title, crs, layerConfig, tileConfig, layerInfo);
 	}
 
 	/**

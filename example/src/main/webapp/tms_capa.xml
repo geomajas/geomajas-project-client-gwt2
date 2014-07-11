@@ -1,0 +1,9 @@
+<TileMapService version="1.0.0" services="http://apps.geomajas.org/geoserver/gwc">
+    <Title>Tile Map Service</Title>
+    <Abstract>A Tile Map Service for the Geomajas Showcase</Abstract>
+    <TileMaps>
+        <TileMap title="Countries" srs="EPSG:4326" profile="global-geodetic" href="http://apps.geomajas.org/geoserver/gwc/service/tms/1.0.0/demo_world%3Asimplified_country_borders@EPSG%3A4326@png"/>
+        <TileMap title="A sample ArcGrid file" srs="EPSG:4326" profile="global-geodetic" href="http://apps.geomajas.org/geoserver/gwc/service/tms/1.0.0/nurc%3AArc_Sample@EPSG%3A4326@jpeg"/>
+        <TileMap title="African Climate Belts" srs="EPSG:4326" profile="global-geodetic" href="http://apps.geomajas.org/geoserver/gwc/service/tms/1.0.0/geosparc%3Abelt@EPSG%3A4326@png"/>
+    </TileMaps>
+</TileMapService>

@@ -47,7 +47,7 @@ public abstract class AbstractServerLayer<T extends ClientLayerInfo> extends Abs
 	 */
 	public AbstractServerLayer(MapConfiguration mapConfig, T layerInfo, TileConfiguration tileConfig,
 			ViewPort viewPort, MapEventBus eventBus) {
-		super(layerInfo.getId(), mapConfig, tileConfig);
+		super(layerInfo.getId(), tileConfig);
 		this.mapInfo = mapConfig.getHintValue(GeomajasServerExtension.MAPINFO);
 		this.layerInfo = layerInfo;
 		this.markedAsVisible = layerInfo.isVisible();
@@ -85,5 +85,4 @@ public abstract class AbstractServerLayer<T extends ClientLayerInfo> extends Abs
 		}
 		return false;
 	}
-
 }

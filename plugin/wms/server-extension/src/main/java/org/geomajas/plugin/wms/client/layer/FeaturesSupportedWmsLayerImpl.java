@@ -12,7 +12,6 @@
 package org.geomajas.plugin.wms.client.layer;
 
 import com.google.gwt.core.client.Callback;
-
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
@@ -21,7 +20,6 @@ import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.event.FeatureDeselectedEvent;
 import org.geomajas.gwt2.client.event.FeatureSelectedEvent;
-import org.geomajas.gwt2.client.map.MapConfiguration;
 import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
 import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
@@ -53,15 +51,15 @@ public class FeaturesSupportedWmsLayerImpl extends WmsLayerImpl implements Featu
 
 	private final Callback<List<AttributeDescriptor>, String> onInitialized;
 
-	public FeaturesSupportedWmsLayerImpl(String title, MapConfiguration mapConfig, WmsLayerConfiguration wmsLayerConfig,
+	public FeaturesSupportedWmsLayerImpl(String title, String crs, WmsLayerConfiguration wmsLayerConfig,
 			TileConfiguration wmsTileConfig, WmsLayerInfo layerInfo) {
-		this(title, mapConfig, wmsLayerConfig, wmsTileConfig, layerInfo, null);
+		this(title, crs, wmsLayerConfig, wmsTileConfig, layerInfo, null);
 	}
 
-	public FeaturesSupportedWmsLayerImpl(String title, MapConfiguration mapConfig, WmsLayerConfiguration wmsLayerConfig,
+	public FeaturesSupportedWmsLayerImpl(String title, String crs, WmsLayerConfiguration wmsLayerConfig,
 			TileConfiguration wmsTileConfig, WmsLayerInfo layerInfo, Callback<List<AttributeDescriptor>,
 			String> onInitialized) {
-		super(title, mapConfig, wmsLayerConfig, wmsTileConfig, layerInfo);
+		super(title, crs, wmsLayerConfig, wmsTileConfig, layerInfo);
 		this.onInitialized = onInitialized;
 		wfsDescribeLayer();
 	}

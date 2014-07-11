@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<chapter id="chapter-configuration">
+  <title>Configuration</title>
+
+  <section>
+    <title>Getting started</title>
+
+    <para>As most Geomajas plugins, the TMS client plugin too has a single
+    class that provides a starting point for most functionalities the plugin
+    supports. This starting point is the <code>TmsClient</code> class:</para>
+
+    <programlisting>org.geomajas.plugin.tms.client.TmsClient</programlisting>
+
+    <para>From here on it is possible to create new TMS layers or parse
+    TileMapService XML capabilities files, or ....</para>
+  </section>
+
+  <section>
+    <title>WMS layers</title>
+
+    <section>
+      <title>Configuration objects</title>
+
+      <para>Before we go into the actual creating of a TMS layer, let us first
+      cover the required configuration objects.</para>
+
+      <para>The first is the
+      <code>org.geomajas.gwt2.client.map.layer.tile.TileConfiguration</code>.
+      It provides the point of origin and the size of the tiles in
+      pixels:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>tileOrigin</emphasis>: The origin for the layer
+          (coordinate that provides the minimum X and Y values). If you're
+          unsure, it's best to take a margin.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>tileWidth</emphasis>: The width in pixels for an
+          individual tile.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>tileHeight</emphasis>: The height in pixels for an
+          individual tile.</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>The other is the
+      <code>org.geomajas.plugin.tms.client.layer.TmsLayerConfiguration</code>
+      object. It provides all the required parameters used in creating the
+      correct tile URLs. These are the following:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>baseUrl</emphasis>: The base URL to the WMS server
+          (without any WMS params!)</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>fileExtension</emphasis>: The actual file extension
+          for the images (".png", ".jpg", ...).</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+
+    <section>
+      <title>Creating a TMS layer</title>
+
+      <para>Once you have your configuration objects (TileConfiguration and
+      TmsLayerConfiguration) it's easy to create a new layer:</para>
+
+      <programlisting>// Defining a TMS configuration object:
+TmsLayerConfiguration layerConfig = new TmsLayerConfiguration();
+layerConfig.setFileExtension(".png");
+layerConfig.setBaseUrl("http://apps.geomajas.org/geoserver/gwc/service/tms/1.0.0/demo_world%3Asimplified_country_borders@EPSG%3A4326@png");
+
+// Then we define a Tile Configuration object:
+Coordinate tileOrigin = new Coordinate(-360,-180);
+TileConfiguration tileConfig = new TileConfiguration(256, 256, tileOrigin);
+
+// Now create the layer:
+TmsLayer tmsLayer = TmsClient.getInstance().createLayer("Countries", tileConfig, layerConfig);</programlisting>
+
+      <para>Once you have your layer, it is possible to add it to the
+      map:</para>
+
+      <programlisting>mapPresenter.getLayersModel().addLayer(tmsLayer);</programlisting>
+
+      <para>Et voila! A newly created client-side TMS layer has been added to
+      the map!</para>
+    </section>
+
+    <section>
+      <title>Changing the TMS layer configuration</title>
+
+      <para>As mentioned earlier, the TMS layer is build using a
+      TmsLayerConfiguration object, which is used internally to build the
+      correct URLs to the TileMap tiles. Should you change any of the
+      parameters in this configuration object, it's effects will take place
+      the next time tiles are fetched (or by refreshing the layer).</para>
+
+      <para>You can acquire the layer configuration objects from the layer
+      itself. The following example takes this configuration to change the
+      base URL to the layer, having it point to another TileMap:</para>
+
+      <programlisting>TmsLayerConfiguration layerConfig = tmsLayer.getConfiguration();
+layerConfig.setBaseUrl("something else...");</programlisting>
+    </section>
+
+    <section>
+      <title>Using the TileMapService</title>
+
+      <para>Ofcourse one does not always know beforehand which TMS layers to
+      add. Sometimes we need to ask a TileMapService for it's available
+      layers, and present the user with a choice. This can be achieved through
+      the TmsClient service, the result of which can than be used to create
+      TMS layers.</para>
+
+      <para>Parsing a TileMapService XML file will result in an object of the
+      type
+      <code>org.geomajas.plugin.tms.client.configuration.TileMapServiceInfo</code>.
+      This object contains a list of available TileMaps within the service.
+      Each TileMap can be used to create a TmsLayer:</para>
+
+      <programlisting>String tmsBaseUrl = "/proxy?url=http://apps.geomajas.org/geoserver/gwc/service/tms/1.0.0";
+TmsClient.getInstance().getTileMapService(TMS_BASE_URL, new Callback&lt;TileMapServiceInfo, String&gt;() {
+
+    @Override
+    public void onSuccess(TileMapServiceInfo result) {
+        for (final ListTileMapInfo listTileMapInfo : result.getTileMaps()) {
+            // Do something with the list of ListTileMapInfo objects...
+        }
+    }
+
+    @Override
+    public void onFailure(String reason) {
+        Window.alert("We're very sorry, but something went wrong: " + reason);
+    }
+});</programlisting>
+
+      <para>Parsing a TileMapService URL will result in a list of
+      <code>org.geomajas.plugin.tms.client.configuration.ListTileMapInfo</code>
+      objects. Each of these objects in turn points to another URL that
+      describes the actual TileMap. In order to acquire the details regarding
+      such a TileMap, we must again fetch and parse the XML file at the target
+      URL. This time in order to acquire a
+      <code>org.geomajas.plugin.tms.client.configuration.TileMapInfo</code>
+      object.</para>
+
+      <para>When the <code>TileMapInfo</code> object is retrieved, this too
+      can be used to create a new <code>TmsLayer</code>. The following
+      examples will fetch the <code>TileMapInfo</code> object and immediately
+      create a layer from it:</para>
+
+      <programlisting>String tileMapUrl = "/proxy?url=" + listTileMapInfo.getHref();
+TmsClient.getInstance().getTileMap(tileMapUrl, new Callback&lt;TileMapInfo, String&gt;() {
+
+    @Override
+    public void onSuccess(TileMapInfo result) {
+        TmsLayer layer = TmsClient.getInstance().createLayer(result);
+        mapPresenter.getLayersModel().addLayer(layer);
+    }
+
+    @Override
+    public void onFailure(String reason) {
+        Window.alert("We're very sorry, but something went wrong: " + reason);
+    }
+});</programlisting>
+    </section>
+  </section>
+</chapter>

@@ -57,7 +57,6 @@ public class TileConfiguration implements Serializable {
 	 * @param tileHeight  The height in pixels for image tiles.
 	 * @param tileOrigin  The position in world space where tile (0,0) begins.
 	 * @param resolutions The list of resolutions for this configuration object. Each should represent a tile level.
-	 * @param maxBounds   The maximum bounds of the tile configuration (same for each tile level).
 	 */
 	public TileConfiguration(int tileWidth, int tileHeight, Coordinate tileOrigin, List<Double> resolutions) {
 		this.tileWidth = tileWidth;
@@ -248,5 +247,4 @@ public class TileConfiguration implements Serializable {
 		}
 		return resolutions.get(resolutions.size() - 1);
 	}
-		
 }

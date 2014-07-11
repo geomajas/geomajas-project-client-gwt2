@@ -1,7 +1,7 @@
 org.geomajas.plugin.wms.client.WmsServerExtension::2.1.0
-org.geomajas.plugin.wms.client.WmsServerExtension:FeaturesSupportedWmsLayer createLayer(MapConfiguration, String, ., WmsLayerInfo, ViewPort, int, int, ):2.1.0
-org.geomajas.plugin.wms.client.WmsServerExtension:FeaturesSupportedWmsLayer createLayer(String, MapConfiguration, TileConfiguration, WmsLayerConfiguration, WmsLayerInfo, ):2.1.0
-org.geomajas.plugin.wms.client.WmsServerExtension:FeaturesSupportedWmsLayer createLayer(String, MapConfiguration, TileConfiguration, WmsLayerConfiguration, WmsLayerInfo, Callback<List<AttributeDescriptor>,String>, ):2.1.0
+org.geomajas.plugin.wms.client.WmsServerExtension:FeaturesSupportedWmsLayer createLayer(String, ., WmsLayerInfo, ViewPort, int, int, ):2.1.0
+org.geomajas.plugin.wms.client.WmsServerExtension:FeaturesSupportedWmsLayer createLayer(String, String, TileConfiguration, WmsLayerConfiguration, WmsLayerInfo, ):2.1.0
+org.geomajas.plugin.wms.client.WmsServerExtension:FeaturesSupportedWmsLayer createLayer(String, String, TileConfiguration, WmsLayerConfiguration, WmsLayerInfo, Callback<List<AttributeDescriptor>,String>, ):2.1.0
 org.geomajas.plugin.wms.client.WmsServerExtension:T getHintValue(Hint<T>, ):2.1.0
 org.geomajas.plugin.wms.client.WmsServerExtension:WmsFeatureService getFeatureService():2.1.0
 org.geomajas.plugin.wms.client.WmsServerExtension:static WmsServerExtension getInstance():2.1.0
