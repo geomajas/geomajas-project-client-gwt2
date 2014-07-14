@@ -83,7 +83,7 @@ public class WmsLayerBuilder implements PrintableLayersModelBuilder {
 				Tile tile = new Tile(getScreenBounds(actualResolution, bounds));
 				tile.setCode(code);
 				tile.setUrl(WmsClient.getInstance().getWmsService().getMapUrl(wmsLayer.getConfiguration(),
-						crs, bounds, tileConfig.getTileWidth(), tileConfig.getTileHeight()));
+						bounds, tileConfig.getTileWidth(), tileConfig.getTileHeight()));
 				tiles.add(tile);
 			}
 		}
