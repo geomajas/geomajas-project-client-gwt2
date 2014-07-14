@@ -12,17 +12,23 @@ package org.geomajas.plugin.print.wms.server.layer;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.layer.RasterLayer;
+import org.geomajas.layer.common.proxy.LayerHttpService;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.plugin.print.wms.server.dto.WmsClientLayerInfo;
 import org.geomajas.plugin.rasterizing.api.LayerFactory;
 import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
 import org.geomajas.plugin.rasterizing.layer.RasterDirectLayer;
+import org.geomajas.plugin.rasterizing.layer.RasterDirectLayer.UrlDownLoader;
+import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DispatcherUrlService;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -39,7 +45,13 @@ import java.util.Map;
 public class WmsLayerFactory implements LayerFactory {
 
 	@Autowired
+	private ConfigurationService configurationService;
+
+	@Autowired
 	private DispatcherUrlService dispatcherUrlService;
+
+	@Autowired
+	private LayerHttpService httpService;
 
 
 	public boolean canCreateLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) {
@@ -62,8 +74,15 @@ public class WmsLayerFactory implements LayerFactory {
 			}
 		}
 
-		RasterDirectLayer rasterLayer = new RasterDirectLayer(tiles, rasterInfo.getTileHeight(),
-				rasterInfo.getTileWidth(), rasterInfo.getScale(), extraInfo.getCssStyle());
+		final RasterLayer layer = configurationService.getRasterLayer(clientLayerInfo.getServerLayerId());
+		RasterDirectLayer rasterLayer = new RasterDirectLayer(new UrlDownLoader() {
+
+			@Override
+			public InputStream getStream(String url) throws IOException {
+				return httpService.getStream(url, layer);
+			}
+		}, tiles, rasterInfo.getTileHeight(), rasterInfo.getTileWidth(), rasterInfo.getScale(),
+		extraInfo.getCssStyle());
 		rasterLayer.setTitle(clientLayerInfo.getLabel());
 		rasterLayer.getUserData().put(USERDATA_KEY_LAYER_ID, rasterInfo.getId());
 		rasterLayer.getUserData().put(USERDATA_KEY_SHOWING, extraInfo.isShowing());

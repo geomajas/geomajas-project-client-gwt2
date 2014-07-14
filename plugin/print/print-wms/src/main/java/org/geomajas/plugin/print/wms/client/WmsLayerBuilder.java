@@ -42,7 +42,7 @@ public class WmsLayerBuilder implements PrintableLayersModelBuilder {
 
 		WmsClientLayerInfo info = new WmsClientLayerInfo();
 		List<RasterTile> tiles = new ArrayList<RasterTile>();
-		for (Tile tile : getTiles(wmsLayer, resolution, worldBounds)) {
+		for (Tile tile : getTiles(wmsLayer, mapPresenter.getViewPort().getCrs(), resolution, worldBounds)) {
 			tiles.add(toRasterTile(tile));
 		}
 		info.setTiles(tiles);
@@ -71,7 +71,7 @@ public class WmsLayerBuilder implements PrintableLayersModelBuilder {
 		return rTile;
 	}
 
-	private List<Tile> getTiles(WmsLayer wmsLayer, double resolution, Bbox worldBounds) {
+	private List<Tile> getTiles(WmsLayer wmsLayer, String crs, double resolution, Bbox worldBounds) {
 		TileConfiguration tileConfig = wmsLayer.getTileConfiguration();
 		List<org.geomajas.gwt2.client.map.render.TileCode> codes = TileService.getTileCodesForBounds(tileConfig,
 				worldBounds, resolution);
@@ -83,7 +83,7 @@ public class WmsLayerBuilder implements PrintableLayersModelBuilder {
 				Tile tile = new Tile(getScreenBounds(actualResolution, bounds));
 				tile.setCode(code);
 				tile.setUrl(WmsClient.getInstance().getWmsService().getMapUrl(wmsLayer.getConfiguration(),
-						bounds, tileConfig.getTileWidth(), tileConfig.getTileHeight()));
+						crs, bounds, tileConfig.getTileWidth(), tileConfig.getTileHeight()));
 				tiles.add(tile);
 			}
 		}
