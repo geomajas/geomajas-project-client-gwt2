@@ -132,14 +132,17 @@ public class LayerControlPanelLegendViewImpl implements LayerControlPanelView {
 			String legendUrl = GeomajasServerExtension.getInstance().getEndPointService().getLegendServiceUrl();
 
 			NamedStyleInfo styleInfo = serverLayer.getLayerInfo().getNamedStyleInfo();
+			String name = serverLayer.getLayerInfo().getNamedStyleInfo().getName();
+
 			int i = 0;
 
 			for (FeatureTypeStyleInfo sfi : styleInfo.getUserStyle().getFeatureTypeStyleList()) {
 				for (RuleInfo rInfo : sfi.getRuleList()) {
 					UrlBuilder url = new UrlBuilder(legendUrl);
 					url.addPath(serverLayer.getServerLayerId());
-					url.addPath(styleInfo.getName());
+					url.addPath(name);
 					url.addPath(i + ".png");
+					i++;
 
 					addLayerLegendWidget(new LayerLegendWidget(url.toString(), rInfo.getName()));
 				}
