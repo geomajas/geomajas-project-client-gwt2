@@ -30,6 +30,7 @@
     <modules>
         <module>editing</module>
         <module>tms</module>
+        <module>geocoder</module>
     </modules>
 
 </project>

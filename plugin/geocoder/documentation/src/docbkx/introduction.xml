@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<chapter id="chapter-introduction">
+  <title>Introduction</title>
+
+  <sect1>
+    <title>What does this plugin do?</title>
+
+    <para>This plugin enables searching a location on the map.</para>
+	  <screenshot>
+		  <screeninfo>Default Geocoder widget: position in top left of map</screeninfo>
+
+		  <mediaobject>
+			  <imageobject>
+				  <imagedata align="center" fileref="images/DefaultGeocoder_PositionOnMap.png" />
+			  </imageobject>
+		  </mediaobject>
+	  </screenshot>
+
+    <para>The default widget allows the user to type (part of) a location in a text box.
+		When striking the enter key or clicking the magnifying glass, the input is passed to one
+	or more server-configured geocoder services. If they return one result, the full name is displayed
+	and the map is zoomed to that location.</para>
+
+	  <screenshot>
+		  <screeninfo>Default Geocoder widget: single result for search 'Gent'</screeninfo>
+
+		  <mediaobject>
+			  <imageobject>
+				  <imagedata align="center" fileref="images/DefaultGeocoder_ResultForGent.png" width="100%"/>
+			  </imageobject>
+		  </mediaobject>
+	  </screenshot>
+
+	  <para>When more than one possible location is returned, the default widget shows the list
+		  in a separat window. The user can select the location of choice by clicking. Again,
+	  the map is zoomed to the chosen location.</para>
+
+	  <screenshot>
+		  <screeninfo>Default Geocoder widget: multiple results</screeninfo>
+
+		  <mediaobject>
+			  <imageobject>
+				  <imagedata align="center" fileref="images/DefaultGeocoder_MultipleResult.png"
+							 width="100%"/>
+			  </imageobject>
+		  </mediaobject>
+	  </screenshot>
+
+	  <para>When no location is found, the default widget will show a warning message.</para>
+
+    <screenshot>
+      <screeninfo>Default Geocoder widget: no result</screeninfo>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center" fileref="images/DefaultGeocoder_NoResult.png" width="100%"/>
+        </imageobject>
+      </mediaobject>
+    </screenshot>
+  </sect1>
+
+  <sect1>
+    <title>Maven configuration</title>
+
+    <para>In order to use this plug-in in combination with the client GWT2, the
+    following Maven dependency is required:</para>
+
+    <programlisting>&lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-client-gwt2-plugin-geocoder&lt;/artifactId&gt;
+    &lt;version&gt;<?eval ${project.version}?>&lt;/version&gt;
+&lt;/dependency&gt;</programlisting>
+    <para>This in turn includes a dependency on the Geomajas server
+    project (i.e. geomajas-plugin-geocoder).</para>
+  </sect1>
+</chapter>
