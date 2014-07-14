@@ -1,0 +1,17 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+			 xmlns:g="urn:import:com.google.gwt.user.client.ui"
+			 xmlns:geocoder="urn:import:org.geomajas.plugin.geocoder.client.widget">
+
+	<ui:with field="resource" type="org.geomajas.plugin.geocoder.client.widget.GeocoderWidgetResource" />
+	<ui:with field="messages" type="org.geomajas.plugin.geocoder.client.i18n.GeocoderMessages" />
+
+	<g:FlowPanel ui:field="flowPanel" styleName="{resource.css.geocoderGadget}">
+		<geocoder:GeocoderTextBox ui:field="textBox" styleName="{resource.css.geocoderGadgetTextBox}"
+								  addStyleNames="{resource.css.geocoderGadgetTip}">
+			<ui:text from="{messages.findPlaceOnMap}" />
+		</geocoder:GeocoderTextBox>
+		<g:Button ui:field="glass" styleName="{resource.css.geocoderGadgetGlass}"/>
+	</g:FlowPanel>
+
+</ui:UiBinder> 
