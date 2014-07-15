@@ -114,8 +114,8 @@ public class GeometrySplitService {
 
 		splitLine = new Geometry(Geometry.LINE_STRING, 0, 0);
 		service.start(splitLine);
-		service.setInsertIndex(service.getIndexService().create(GeometryIndexType.TYPE_VERTEX, 0));
 		service.setEditingState(GeometryEditState.INSERTING);
+		service.setInsertIndex(service.getIndexService().create(GeometryIndexType.TYPE_VERTEX, 0));
 
 		started = true;
 		eventBus.fireEvent(new GeometrySplitStartEvent(geometry));
