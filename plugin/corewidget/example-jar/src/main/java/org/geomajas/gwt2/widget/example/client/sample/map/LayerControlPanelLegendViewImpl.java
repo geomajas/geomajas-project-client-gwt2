@@ -154,10 +154,7 @@ public class LayerControlPanelLegendViewImpl implements LayerControlPanelView {
 			String legendUrl = GeomajasServerExtension.getInstance().getEndPointService().getLegendServiceUrl();
 			UrlBuilder url = new UrlBuilder(legendUrl);
 			url.addPath(serverLayer.getServerLayerId() + ".png");
-			// TODO: maybe show some name instead of layer opacity
-			String layerOpacity = "Layer opacity : " + serverLayer.getLayerInfo().getStyle();
-
-			addLayerLegendWidget(new LayerLegendWidget(url.toString(), layerOpacity));
+			addLayerLegendWidget(new LayerLegendWidget(url.toString(), ""));
 		}
 	}
 
