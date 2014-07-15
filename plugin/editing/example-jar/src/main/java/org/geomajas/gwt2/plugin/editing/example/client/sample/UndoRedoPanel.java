@@ -115,6 +115,7 @@ public class UndoRedoPanel implements SamplePanel {
 				stopBtn.setEnabled(true);
 
 				addRingBtn.setVisible(true);
+				updateUndoRedoButtons();
 			}
 		});
 		editService.addGeometryEditStopHandler(new GeometryEditStopHandler() {
@@ -124,7 +125,9 @@ public class UndoRedoPanel implements SamplePanel {
 				createBtn.setEnabled(true);
 				editBtn.setEnabled(true);
 				stopBtn.setEnabled(false);
+
 				addRingBtn.setVisible(false);
+				updateUndoRedoButtons();
 			}
 		});
 		editService.addGeometryEditChangeStateHandler(new GeometryEditChangeStateHandler() {
@@ -239,7 +242,7 @@ public class UndoRedoPanel implements SamplePanel {
 	}
 
 	private void updateUndoRedoButtons() {
-		undoBtn.setEnabled(editService.canUndo() && editService.getEditingState() == GeometryEditState.IDLE);
-		redoBtn.setEnabled(editService.canRedo() && editService.getEditingState() == GeometryEditState.IDLE);
+		undoBtn.setEnabled(editService.canUndo());
+		redoBtn.setEnabled(editService.canRedo());
 	}
 }
