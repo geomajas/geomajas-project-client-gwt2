@@ -19,8 +19,7 @@ import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.example.base.client.ExampleBase;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
-import org.geomajas.gwt2.widget.client.map.MapLegendPanel;
-
+import org.geomajas.gwt2.widget.client.map.mapcontrolpanel.MapControlPanel;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -73,7 +72,7 @@ public class LegendAddRemoveSample implements SamplePanel {
 		mapPresenter = GeomajasImpl.getInstance().createMapPresenter();
 		mapPresenter.setSize(480, 480);
 		mapPresenter.getEventBus().addMapCompositionHandler(new MyMapCompositionHandler());
-		legendPanel.add(new MapLegendPanel(mapPresenter));
+		legendPanel.add(new MapControlPanel(mapPresenter));
 
 		DecoratorPanel mapDecorator = new DecoratorPanel();
 		mapDecorator.add(mapPresenter.asWidget());

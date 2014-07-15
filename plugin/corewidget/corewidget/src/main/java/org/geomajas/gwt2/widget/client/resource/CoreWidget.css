@@ -1,0 +1,47 @@
+@external .gm-featureSelectBox;
+
+.gm-featureSelectBox {
+	
+}
+
+@external .gm-featureSelectBoxCell;
+.gm-featureSelectBoxCell {
+	text-align: left;
+	cursor: pointer;
+}
+
+
+.gm-featureSelectBoxCell:hover {
+	color: #f56c22;
+}
+
+/*===========================================================================*/
+/*====                        LayerControlPanel                          ====*/
+/*===========================================================================*/
+
+@external .gm-layerControlPanel;
+.gm-layerControlPanel {
+    padding: 3px 5px;
+}
+
+@external .gm-layerControlPanelTitle;
+.gm-layerControlPanelTitle {
+    font-weight: bold;
+    padding: 2px;
+    vertical-align: center;
+}
+
+
+@external .gm-layerControlPanelToggle;
+.gm-layerControlPanelToggle {
+
+}
+
+/*===========================================================================*/
+/*====                        MapControlPanel                            ====*/
+/*===========================================================================*/
+@external .gm-mapControlPanel;
+
+.gm-mapControlPanel {
+
+}

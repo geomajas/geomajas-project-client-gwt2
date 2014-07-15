@@ -9,23 +9,18 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.client.map;
+package org.geomajas.gwt2.widget.client.map.mapcontrolpanel.resource;
 
 
 import com.google.gwt.resources.client.CssResource;
 
 /**
- * CSS resource bundle that contains styles for map related widgets.
+ * CSS resource bundle for {@link org.geomajas.gwt2.widget.client.map.mapcontrolpanel.MapControlPanel}.
  *
- * @author Pieter De Graef
+ * @author Dosi Bingov
  */
-public interface WidgetMapCssResource extends CssResource {
+public interface MapControlPanelCssResource extends CssResource {
 
-	/** Style used in the {@link LayerLegendPanel} for the outer DIV. */
-	@ClassName("gm-LayerLegendPanel")
-	String layerLegendPanel();
-
-	/** Style used in the {@link LayerLegendPanel} for the title text. */
-	@ClassName("gm-LayerLegendPanel-title")
-	String layerLegendPanelTitle();
+	@ClassName("gm-mapControlPanel")
+	String mapControlPanel();
 }

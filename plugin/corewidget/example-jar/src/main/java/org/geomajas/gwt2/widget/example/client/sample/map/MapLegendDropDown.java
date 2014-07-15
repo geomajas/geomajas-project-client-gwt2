@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.widget.client.map;
+package org.geomajas.gwt2.widget.example.client.sample.map;
 
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.widget.client.i18n.WidgetCoreInternationalization;
@@ -23,10 +23,11 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 import com.google.gwt.user.client.ui.Widget;
+import org.geomajas.gwt2.widget.client.map.mapcontrolpanel.MapControlPanel;
 
 /**
- * Drop down button that displays the {@link LegendPopupPanel}. When this widget is added to a MapPresenter's widget
- * panel, it will automatically try to keep the {@link LegendPopupPanel} within the map bounds.
+ * Drop down button that displays the {@link MapControlPanel}. When this widget is added to a MapPresenter's widget
+ * panel, it will automatically try to keep the {@link MapControlPanel} within the map bounds.
  *
  * @author Pieter De Graef
  */
@@ -40,7 +41,7 @@ public class MapLegendDropDown extends Button {
 	private Timer timer;
 
 	/**
-	 * Create a drop down button that displays a {@link MapLegendPanel} in a popup.
+	 * Create a drop down button that displays a {@link MapControlPanel} in a popup.
 	 *
 	 * @param mapPresenter
 	 *            The map to display a legend widget for.
@@ -55,7 +56,7 @@ public class MapLegendDropDown extends Button {
 					popup = new PopupPanel();
 					popup.setAutoHideEnabled(true);
 					popup.setAutoHideOnHistoryEventsEnabled(true);
-					popup.setWidget(new MapLegendPanel(mapPresenter));
+					popup.setWidget(new MapControlPanel(mapPresenter));
 					popup.addAutoHidePartner(MapLegendDropDown.this.getElement());
 					showPopup();
 				} else if (popup.isShowing()) {
