@@ -24,6 +24,10 @@ import org.geomajas.annotation.Api;
 @Api(allMethods = true)
 public interface MapControlPanelCssResource extends CssResource {
 
+	/**
+	 * The general style for the MapControlPanel widget.
+	 * @return The general style for the MapControlPanel widget.
+	 */
 	@ClassName("gm-mapControlPanel")
 	String mapControlPanel();
 }

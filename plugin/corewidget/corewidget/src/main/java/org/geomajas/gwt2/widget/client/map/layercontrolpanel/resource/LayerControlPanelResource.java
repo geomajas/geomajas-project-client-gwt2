@@ -13,7 +13,6 @@ package org.geomajas.gwt2.widget.client.map.layercontrolpanel.resource;
 
 import com.google.gwt.resources.client.ClientBundle;
 import org.geomajas.annotation.Api;
-import org.geomajas.gwt2.widget.client.CoreWidget;
 
 /**
  * Client resource bundle interface for {@link org.geomajas.gwt2.widget.client.map.layercontrolpanel.LayerControlPanel}.

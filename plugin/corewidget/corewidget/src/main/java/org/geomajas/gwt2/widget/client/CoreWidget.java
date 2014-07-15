@@ -11,9 +11,8 @@
 
 package org.geomajas.gwt2.widget.client;
 
-import org.geomajas.gwt2.widget.client.resource.CoreWidgetClientBundleFactory;
-
 import com.google.gwt.core.client.GWT;
+import org.geomajas.gwt2.widget.client.resource.CoreWidgetClientBundleFactory;
 
 /**
  * Provides factories for widget implementations. As it is only used within widget implementations, this class is not
