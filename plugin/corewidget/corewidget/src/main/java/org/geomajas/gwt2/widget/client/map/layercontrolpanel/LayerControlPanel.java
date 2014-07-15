@@ -46,10 +46,9 @@ public class LayerControlPanel extends Composite {
 	/**
 	 *  Create {@link LayerControlPanel} widget.
 	 *
-	 * @param mapPresenter {@link MapPresenter}
-	 * @param mapPresenter {@link MapPresenter}
-	 * @param layer {@link Layer}
-	 * @param disableToggleOutOfRange when false layer visibility toggle control (e.g. chekcbox) stays enabled even if
+	 * @param mapPresenter The {@link MapPresenter} that holds the layer.
+	 * @param layer {@link Layer} The layer to display.
+	 * @param disableToggleOutOfRange when false layer visibility toggle control (e.g. checkbox) stays enabled even if
 	 *                                   the layer is out of range.
 	 */
 	public LayerControlPanel(MapPresenter mapPresenter, Layer layer, boolean disableToggleOutOfRange) {
@@ -76,7 +75,6 @@ public class LayerControlPanel extends Composite {
 		initWidget(view.asWidget());
 	}
 
-
 	/**
 	 * Return the target layer of the widget.
 	 *
@@ -85,5 +83,4 @@ public class LayerControlPanel extends Composite {
 	public Layer getLayer() {
 		return view.getLayer();
 	}
-
 }

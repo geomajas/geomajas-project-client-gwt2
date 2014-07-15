@@ -66,5 +66,4 @@ public interface MapControlPanelView extends IsWidget {
 	 * @return
 	 */
 	Widget getWidgetAt(int index);
-
 }

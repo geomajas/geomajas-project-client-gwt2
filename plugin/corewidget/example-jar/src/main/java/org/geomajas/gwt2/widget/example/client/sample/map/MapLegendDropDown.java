@@ -48,7 +48,7 @@ public class MapLegendDropDown extends Button {
 	 */
 	public MapLegendDropDown(final MapPresenter mapPresenter) {
 		this.mapPresenter = mapPresenter;
-		setHTML(MSG.legendButName());
+		setHTML(MSG.legend());
 		addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {

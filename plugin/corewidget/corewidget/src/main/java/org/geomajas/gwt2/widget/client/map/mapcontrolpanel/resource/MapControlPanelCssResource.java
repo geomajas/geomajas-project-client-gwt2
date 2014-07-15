@@ -13,12 +13,15 @@ package org.geomajas.gwt2.widget.client.map.mapcontrolpanel.resource;
 
 
 import com.google.gwt.resources.client.CssResource;
+import org.geomajas.annotation.Api;
 
 /**
  * CSS resource bundle for {@link org.geomajas.gwt2.widget.client.map.mapcontrolpanel.MapControlPanel}.
  *
  * @author Dosi Bingov
+ * @since 2.1.0
  */
+@Api(allMethods = true)
 public interface MapControlPanelCssResource extends CssResource {
 
 	@ClassName("gm-mapControlPanel")

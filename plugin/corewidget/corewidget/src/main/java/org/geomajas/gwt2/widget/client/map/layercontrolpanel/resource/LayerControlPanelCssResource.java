@@ -12,12 +12,15 @@
 package org.geomajas.gwt2.widget.client.map.layercontrolpanel.resource;
 
 import com.google.gwt.resources.client.CssResource;
+import org.geomajas.annotation.Api;
 
 /**
  * Client resource bundle interface for {@link org.geomajas.gwt2.widget.client.map.layercontrolpanel.LayerControlPanel}.
  *
  * @author Dosi Bingov
+ * @since 2.1.0
  */
+@Api(allMethods = true)
 public interface LayerControlPanelCssResource extends CssResource {
 
 	/**
@@ -28,7 +31,6 @@ public interface LayerControlPanelCssResource extends CssResource {
 	@ClassName("gm-layerControlPanel")
 	String layerControlPanel();
 
-
 	/**
 	 * Get a CSS style class.
 	 *
@@ -36,7 +38,6 @@ public interface LayerControlPanelCssResource extends CssResource {
 	 */
 	@ClassName("gm-layerControlPanelTitle")
 	String layerControlPanelTitle();
-
 
 	/**
 	 * Get a CSS style class.

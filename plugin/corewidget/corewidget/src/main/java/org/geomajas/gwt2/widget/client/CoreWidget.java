@@ -16,7 +16,8 @@ import org.geomajas.gwt2.widget.client.resource.CoreWidgetClientBundleFactory;
 import com.google.gwt.core.client.GWT;
 
 /**
- * Starting point for the core widget plugin.
+ * Provides factories for widget implementations. As it is only used within widget implementations, this class is not
+ * API.
  *
  * @author Jan De Moerloose
  */

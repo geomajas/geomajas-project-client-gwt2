@@ -12,13 +12,16 @@
 package org.geomajas.gwt2.widget.client.map.mapcontrolpanel.resource;
 
 import com.google.gwt.resources.client.ClientBundle;
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.widget.client.map.layercontrolpanel.resource.LayerControlPanelCssResource;
 
 /**
  * Client resource bundle interface with empty css classes.
- * 
+ *
  * @author Dosi Bingov
+ * @since 2.1.0
  */
+@Api(allMethods = true)
 public interface MapControlPanelResourceNoStyle extends LayerControlPanelCssResource {
 
 	/**

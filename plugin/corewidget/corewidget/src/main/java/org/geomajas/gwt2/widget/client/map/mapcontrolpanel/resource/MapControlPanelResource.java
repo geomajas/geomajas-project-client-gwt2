@@ -11,21 +11,17 @@
 package org.geomajas.gwt2.widget.client.map.mapcontrolpanel.resource;
 
 import com.google.gwt.resources.client.ClientBundle;
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.widget.client.CoreWidget;
 
 /**
  * Client resource bundle interface for {@link org.geomajas.gwt2.widget.client.map.layercontrolpanel.LayerControlPanel}.
  * 
  * @author Dosi Bingov
- * 
+ * @since 2.1.0
  */
+@Api(allMethods = true)
 public interface MapControlPanelResource extends ClientBundle {
-	
-	/**
-	 * Instance for use outside UIBinder.
-	 */
-	MapControlPanelResource INSTANCE = CoreWidget.getInstance().getClientBundleFactory().
-			createMapControlPanelResource();
 
 	/**
 	 * Get the css resource.
@@ -33,5 +29,4 @@ public interface MapControlPanelResource extends ClientBundle {
 	 */
 	@Source("org/geomajas/gwt2/widget/client/resource/CoreWidget.css")
 	MapControlPanelCssResource css();
-	
 }

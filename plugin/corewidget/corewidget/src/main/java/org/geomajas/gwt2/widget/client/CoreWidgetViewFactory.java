@@ -11,6 +11,7 @@
 
 package org.geomajas.gwt2.widget.client;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.widget.client.map.layercontrolpanel.LayerControlPanelView;
 import org.geomajas.gwt2.widget.client.map.layercontrolpanel.LayerControlPanelViewImpl;
 import org.geomajas.gwt2.widget.client.map.layercontrolpanel.resource.LayerControlPanelResource;
@@ -22,7 +23,9 @@ import org.geomajas.gwt2.widget.client.map.mapcontrolpanel.resource.MapControlPa
  * MVP view factory for this plugin.
  *
  * @author Jan De Moerloose
+ * @since 2.1.0
  */
+@Api(allMethods = true)
 public class CoreWidgetViewFactory {
 
 	/**

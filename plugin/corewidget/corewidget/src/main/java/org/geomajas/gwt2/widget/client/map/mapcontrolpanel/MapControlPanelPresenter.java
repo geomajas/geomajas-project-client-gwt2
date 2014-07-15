@@ -8,14 +8,18 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.gwt2.widget.client.map.mapcontrolpanel;
+
+import org.geomajas.annotation.Api;
 
 /**
  * MVP presenter for {@link org.geomajas.gwt2.widget.client.map.layercontrolpanel.LayerControlPanel}.
- * 
+ *
  * @author Dosi Bingov
- * 
+ * @since 2.1.0
  */
+@Api(allMethods = true)
 public interface MapControlPanelPresenter {
 
 	/**
@@ -25,5 +29,5 @@ public interface MapControlPanelPresenter {
 	 * @param disable when false visibility toggle control (e.g. chekcbox) stays enabled even if the layer is out
 	 *                   of range.
 	 */
-	 void setDisableToggleOutOfRange(boolean disable);
+	void setDisableToggleOutOfRange(boolean disable);
 }

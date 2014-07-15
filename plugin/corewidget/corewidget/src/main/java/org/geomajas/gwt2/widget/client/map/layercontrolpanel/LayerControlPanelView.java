@@ -27,7 +27,7 @@ public interface LayerControlPanelView extends IsWidget {
 	/**
 	 * Set layer that belongs to this view.
 	 *
-	 * @return
+	 * @return The layer that belongs to this view.
 	 */
 	Layer getLayer();
 
@@ -52,7 +52,6 @@ public interface LayerControlPanelView extends IsWidget {
 	 */
 	void setLayerVisible(boolean visible);
 
-
 	/**
 	 * Make possible to toggle visibility of the layer.
 	 *
@@ -66,5 +65,4 @@ public interface LayerControlPanelView extends IsWidget {
 	 * @param title layer title
 	 */
 	void setLayerTitle(String title);
-
 }

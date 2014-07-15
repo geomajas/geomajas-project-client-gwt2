@@ -12,6 +12,7 @@
 package org.geomajas.gwt2.widget.client.resource;
 
 import com.google.gwt.core.client.GWT;
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.widget.client.map.layercontrolpanel.resource.LayerControlPanelResource;
 import org.geomajas.gwt2.widget.client.map.mapcontrolpanel.resource.MapControlPanelResource;
 
@@ -20,7 +21,9 @@ import org.geomajas.gwt2.widget.client.map.mapcontrolpanel.resource.MapControlPa
  * override the default client bundles using deferred binding.
  *
  * @author Jan De Moerloose
+ * @since 2.1.0
  */
+@Api(allMethods = true)
 public class CoreWidgetClientBundleFactory {
 
 	/**

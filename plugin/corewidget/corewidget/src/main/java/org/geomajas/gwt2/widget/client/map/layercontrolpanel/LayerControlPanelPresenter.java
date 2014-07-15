@@ -8,19 +8,22 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.gwt2.widget.client.map.layercontrolpanel;
+
+import org.geomajas.annotation.Api;
 
 /**
  * MVP presenter for {@link LayerControlPanel}.
- * 
+ *
  * @author Dosi Bingov
- * 
+ * @since 2.1.0
  */
+@Api(allMethods = true)
 public interface LayerControlPanelPresenter {
 
 	/**
 	 * Toggle layer visibility.
 	 */
 	void toggleLayerVisibility();
-
 }
