@@ -42,7 +42,7 @@ public class WmsTileRenderer implements TileRenderer {
 	@Override
 	public String getUrl(TileCode tileCode) {
 		Bbox bounds = TileService.getWorldBoundsForTile(tileConfiguration, tileCode);
-		return WmsClient.getInstance().getWmsService().getMapUrl(layerConfiguration, crs, bounds,
+		return WmsClient.getInstance().getWmsService().getMapUrl(layerConfiguration, bounds,
 				tileConfiguration.getTileWidth(), tileConfiguration.getTileHeight());
 	}
 }

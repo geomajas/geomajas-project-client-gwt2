@@ -23,11 +23,13 @@
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-client-gwt2-plugin-wms</artifactId>
 		</dependency>
+<!--
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-client-gwt2-plugin-wms-server-extension</artifactId>
 		</dependency>
-		
+-->
+
 		<!-- Example base library -->
 		<dependency>
 			<groupId>org.geomajas</groupId>

@@ -29,8 +29,8 @@ import org.geomajas.gwt2.client.service.TileService;
 import org.geomajas.plugin.wms.client.WmsServerExtension;
 import org.geomajas.plugin.wms.client.layer.FeaturesSupportedWmsLayer;
 import org.geomajas.plugin.wms.client.layer.WmsLayer;
-import org.geomajas.plugin.wms.server.command.dto.GetFeatureInfoRequest;
-import org.geomajas.plugin.wms.server.command.dto.GetFeatureInfoResponse;
+import org.geomajas.plugin.wms.server.command.dto.WmsGetFeatureInfoRequest;
+import org.geomajas.plugin.wms.server.command.dto.WmsGetFeatureInfoResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,17 +54,17 @@ public class WmsFeatureServiceImpl extends WmsServiceImpl implements WmsFeatureS
 	@Override
 	public void getFeatureInfo(ViewPort viewPort, final FeaturesSupportedWmsLayer layer, Coordinate location,
 			final Callback<List<Feature>, String> callback) {
-		final String url = getFeatureInfoUrl(viewPort, layer, location, GetFeatureInfoFormat.GML2,
+		final String url = getFeatureInfoUrl(viewPort, layer, location, GetFeatureInfoFormat.GML2.toString(),
 				DEFAULT_PIXEL_TOLERANCE, DEFAULT_MAX_FEATURES);
 
 		Integer max = WmsServerExtension.getInstance().getHintValue(WmsServerExtension.GET_FEATUREINFO_MAX_COORDS);
 
-		GwtCommand command = new GwtCommand(GetFeatureInfoRequest.COMMAND_NAME);
-		command.setCommandRequest(new GetFeatureInfoRequest(url, max));
-		GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback<GetFeatureInfoResponse>() {
+		GwtCommand command = new GwtCommand(WmsGetFeatureInfoRequest.COMMAND_NAME);
+		command.setCommandRequest(new WmsGetFeatureInfoRequest(url, max));
+		GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback<WmsGetFeatureInfoResponse>() {
 
 			@Override
-			public void execute(GetFeatureInfoResponse response) {
+			public void execute(WmsGetFeatureInfoResponse response) {
 				List<Feature> features = new ArrayList<Feature>();
 				for (org.geomajas.layer.feature.Feature feature : response.getFeatures()) {
 					Feature newFeature = GeomajasServerExtension.getInstance().getServerFeatureService()
@@ -95,14 +95,14 @@ public class WmsFeatureServiceImpl extends WmsServiceImpl implements WmsFeatureS
 
 	@Override
 	public void getFeatureInfo(ViewPort viewPort, FeaturesSupportedWmsLayer layer, Coordinate location,
-			GetFeatureInfoFormat format, final Callback<Object, String> callback) {
+			String format, final Callback<Object, String> callback) {
 		String url = getFeatureInfoUrl(viewPort, layer, location, format, DEFAULT_PIXEL_TOLERANCE,
 				DEFAULT_MAX_FEATURES);
-		GwtCommand command = new GwtCommand(GetFeatureInfoRequest.COMMAND_NAME);
-		command.setCommandRequest(new GetFeatureInfoRequest(url));
-		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback<GetFeatureInfoResponse>() {
+		GwtCommand command = new GwtCommand(WmsGetFeatureInfoRequest.COMMAND_NAME);
+		command.setCommandRequest(new WmsGetFeatureInfoRequest(url));
+		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback<WmsGetFeatureInfoResponse>() {
 
-			public void execute(GetFeatureInfoResponse response) {
+			public void execute(WmsGetFeatureInfoResponse response) {
 				if (response.getFeatures() != null) {
 					callback.onSuccess(response.getFeatures());
 				} else {
@@ -117,7 +117,7 @@ public class WmsFeatureServiceImpl extends WmsServiceImpl implements WmsFeatureS
 	// ------------------------------------------------------------------------
 
 	private String getFeatureInfoUrl(ViewPort viewPort, WmsLayer layer, Coordinate location,
-			GetFeatureInfoFormat format, double tolerance, int maxFeatures) {
+			String format, double tolerance, int maxFeatures) {
 		StringBuilder url = getBaseUrlBuilder(layer.getConfiguration());
 
 		// Calculate the denominator for tile height and width adaptation to reflect the specified tolerance in pixels
@@ -139,7 +139,7 @@ public class WmsFeatureServiceImpl extends WmsServiceImpl implements WmsFeatureS
 				.transform(location, RenderSpace.WORLD, RenderSpace.SCREEN);
 
 		// Add the base parameters needed for getMap:
-		addBaseParameters(url, layer.getConfiguration(), viewPort.getCrs(), worldBounds, layer.getTileConfiguration().
+		addBaseParameters(url, layer.getConfiguration(), worldBounds, layer.getTileConfiguration().
 				getTileWidth() / toleranceCorrection, layer.getTileConfiguration().getTileHeight() /
 				toleranceCorrection);
 

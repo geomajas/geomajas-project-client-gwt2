@@ -21,7 +21,7 @@ import org.geomajas.geometry.Bbox;
  * Layer definition within a WMS GetCapabilities.
  * 
  * @author Pieter De Graef
- * @since 2.0.0
+ * @since 2.1.0
  */
 @Api(allMethods = true)
 public interface WmsLayerInfo extends Serializable {

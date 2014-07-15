@@ -43,7 +43,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Command that executes a WFS Describe Layer request. It sends back the attribute descriptors to the client.
+ * Command that executes a WFS Describe Layer request. It sends back the attribute descriptors to the client.<p/> This
+ * command is not part of the API and shouldn't be used directly.
  *
  * @author Pieter De Graef
  */
@@ -85,7 +86,7 @@ public class WfsDescribeLayerCommand implements Command<WfsDescribeLayerRequest,
 	}
 
 	private org.geomajas.gwt2.client.map.attribute.AttributeDescriptor createDescriptor(AttributeDescriptor
-			attributeDescriptor) throws IOException {
+					attributeDescriptor) throws IOException {
 		Class<?> binding = attributeDescriptor.getType().getBinding();
 		if (binding == null) {
 			log.warn("No attribute binding found from GeoTools AttributeDescriptor.");

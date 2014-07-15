@@ -12,7 +12,6 @@
 package org.geomajas.plugin.wms.client;
 
 import com.google.gwt.core.client.Callback;
-import org.geomajas.annotation.Api;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
@@ -38,9 +37,7 @@ import java.util.Map;
  * Starting point for the WMS server extension. It provides additional functionality on top of the normal WMS client.
  *
  * @author Pieter De Graef
- * @since 2.1.0
  */
-@Api(allMethods = true)
 public final class WmsServerExtension {
 
 	/**
@@ -116,8 +113,8 @@ public final class WmsServerExtension {
 	 * @param tileHeight The tile height in pixels.
 	 * @return A new WMS layer.
 	 */
-	public FeaturesSupportedWmsLayer createLayer(String baseUrl,
-			WmsService.WmsVersion version, WmsLayerInfo layerInfo, ViewPort viewPort, int tileWidth, int tileHeight) {
+	public FeaturesSupportedWmsLayer createLayer(String baseUrl, WmsService.WmsVersion version, WmsLayerInfo layerInfo,
+			ViewPort viewPort, int tileWidth, int tileHeight) {
 		TileConfiguration tileConf = WmsClient.getInstance().createTileConfig(layerInfo, viewPort, tileWidth,
 				tileHeight);
 		WmsLayerConfiguration layerConf = WmsClient.getInstance().createLayerConfig(layerInfo, baseUrl, version);
@@ -145,7 +142,7 @@ public final class WmsServerExtension {
 	 * supporting GetFeatureInfo calls.
 	 *
 	 * @param title         The layer title.
-	 * @param crs         The CRS for this layer.
+	 * @param crs           The CRS for this layer.
 	 * @param tileConfig    The tile configuration object.
 	 * @param layerConfig   The layer configuration object.
 	 * @param layerInfo     The layer info object. Acquired from a WMS GetCapabilities. This is optional.

@@ -12,20 +12,18 @@
 package org.geomajas.plugin.wms.client.widget;
 
 import com.google.gwt.user.client.ui.Image;
-import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.client.event.LayerStyleChangedEvent;
 import org.geomajas.gwt2.client.event.LayerStyleChangedHandler;
 import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.plugin.wms.client.layer.WmsLayer;
 
 /**
- * Legend widget that displays an image of the WMS GetLegendGraphic URL for a specific {@link WmsLayer}. This widget
+ * <p>Legend widget that displays an image of the WMS GetLegendGraphic URL for a specific {@link WmsLayer}. This widget
  * will update it's content when the layer changes style, making sure it always shows the correct styles in the legend.
+ * </p><p>For more advanced legend widgets, please have a look at the Core Widgets plugin.</p>
  *
  * @author Pieter De Graef
- * @since 2.0.0
  */
-@Api(allMethods = true)
 public class WmsLayerLegend extends Image {
 
 	private final WmsLayer layer;

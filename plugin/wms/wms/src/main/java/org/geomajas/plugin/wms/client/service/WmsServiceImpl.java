@@ -11,14 +11,6 @@
 
 package org.geomajas.plugin.wms.client.service;
 
-import org.geomajas.geometry.Bbox;
-import org.geomajas.gwt2.client.map.layer.LegendConfig;
-import org.geomajas.plugin.wms.client.capabilities.WmsGetCapabilitiesInfo;
-import org.geomajas.plugin.wms.client.capabilities.v1_1_1.WmsGetCapabilitiesInfo111;
-import org.geomajas.plugin.wms.client.capabilities.v1_3_0.WmsGetCapabilitiesInfo130;
-import org.geomajas.plugin.wms.client.layer.WmsLayerConfiguration;
-import org.geomajas.plugin.wms.client.layer.WmsServiceVendor;
-
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
@@ -29,10 +21,17 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
+import org.geomajas.geometry.Bbox;
+import org.geomajas.gwt2.client.map.layer.LegendConfig;
+import org.geomajas.plugin.wms.client.capabilities.WmsGetCapabilitiesInfo;
+import org.geomajas.plugin.wms.client.capabilities.v1_1_1.WmsGetCapabilitiesInfo111;
+import org.geomajas.plugin.wms.client.capabilities.v1_3_0.WmsGetCapabilitiesInfo130;
+import org.geomajas.plugin.wms.client.layer.WmsLayerConfiguration;
+import org.geomajas.plugin.wms.client.layer.WmsServiceVendor;
 
 /**
  * Default implementation of the {@link WmsService}.
- * 
+ *
  * @author Pieter De Graef
  * @author An Buyle
  */
@@ -52,7 +51,7 @@ public class WmsServiceImpl implements WmsService {
 
 	@Override
 	public void getCapabilities(String baseUrl, final WmsVersion version,
-			final Callback<WmsGetCapabilitiesInfo, String> callback) {
+								final Callback<WmsGetCapabilitiesInfo, String> callback) {
 		String url = getCapabilitiesUrl(baseUrl, version);
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
 		builder.setHeader("Cache-Control", "no-cache");
@@ -92,12 +91,11 @@ public class WmsServiceImpl implements WmsService {
 	}
 
 	@Override
-	public String getMapUrl(WmsLayerConfiguration wmsConfig, String crs, Bbox worldBounds, int imageWidth,
-			int imageHeight) {
+	public String getMapUrl(WmsLayerConfiguration wmsConfig, Bbox worldBounds, int imageWidth, int imageHeight) {
 		StringBuilder url = getBaseUrlBuilder(wmsConfig);
 
 		// Add the base parameters needed for getMap:
-		addBaseParameters(url, wmsConfig, crs, worldBounds, imageWidth, imageHeight);
+		addBaseParameters(url, wmsConfig, worldBounds, imageWidth, imageHeight);
 
 		// Parameter: request type
 		url.append("&request=GetMap");
@@ -218,8 +216,8 @@ public class WmsServiceImpl implements WmsService {
 		return URL.encode(url);
 	}
 
-	protected StringBuilder addBaseParameters(StringBuilder url, WmsLayerConfiguration config, String crs,
-			Bbox worldBounds, int imageWidth, int imageHeight) {
+	protected StringBuilder addBaseParameters(StringBuilder url, WmsLayerConfiguration config,
+												Bbox worldBounds, int imageWidth, int imageHeight) {
 		// Parameter: service
 		int pos = url.lastIndexOf("?");
 		if (pos > 0) {
@@ -279,7 +277,7 @@ public class WmsServiceImpl implements WmsService {
 				url.append("&crs=");
 				break;
 		}
-		url.append(crs); // No URL.encode here, performed in finishUrl
+		url.append(config.getCrs()); // No URL.encode here, performed in finishUrl
 
 		// Parameter: styles
 		url.append("&styles=");

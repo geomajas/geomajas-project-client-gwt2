@@ -17,6 +17,8 @@ import com.google.gwt.xml.client.NodeList;
 import org.geomajas.gwt2.client.service.AbstractXmlNodeWrapper;
 import org.geomajas.plugin.wms.client.capabilities.WmsGetCapabilitiesInfo;
 import org.geomajas.plugin.wms.client.capabilities.WmsLayerInfo;
+import org.geomajas.plugin.wms.client.capabilities.WmsRequestInfo;
+import org.geomajas.plugin.wms.client.capabilities.v1_1_1.WmsRequestInfo111;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,10 +32,19 @@ public class WmsGetCapabilitiesInfo130 extends AbstractXmlNodeWrapper implements
 
 	private static final long serialVersionUID = 100L;
 
+	private List<WmsRequestInfo> requests;
+
 	private List<WmsLayerInfo> layers;
 
 	public WmsGetCapabilitiesInfo130(Node node) {
 		super(node);
+	}
+
+	public List<WmsRequestInfo> getRequests() {
+		if (requests == null) {
+			parse(getNode());
+		}
+		return requests;
 	}
 
 	public List<WmsLayerInfo> getLayers() {
@@ -46,8 +57,19 @@ public class WmsGetCapabilitiesInfo130 extends AbstractXmlNodeWrapper implements
 	protected void parse(Node node) {
 		if (node instanceof Element) {
 			Element element = (Element) node;
-			NodeList layerNodes = element.getElementsByTagName("Layer");
 
+			requests = new ArrayList<WmsRequestInfo>(5);
+			NodeList requestParentNode = element.getElementsByTagName("Request");
+			NodeList requestNodes = requestParentNode.item(0).getChildNodes();
+			for (int i = 0; i < requestNodes.getLength(); i++) {
+				Node requestNode = requestNodes.item(i);
+				WmsRequestInfo111 requestInfo = new WmsRequestInfo130(requestNode);
+				if (requestInfo.getRequestType() != null) {
+					requests.add(requestInfo);
+				}
+			}
+
+			NodeList layerNodes = element.getElementsByTagName("Layer");
 			layers = new ArrayList<WmsLayerInfo>();
 			for (int i = 0; i < layerNodes.getLength(); i++) {
 				Node layerNode = layerNodes.item(i);

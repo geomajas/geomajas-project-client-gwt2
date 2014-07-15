@@ -314,7 +314,7 @@ WmsClient.getInstance().getWmsService()
     });</programlisting>
     </section>
   </section>
-
+<!--
   <section>
     <title>WMS Server extension</title>
 
@@ -460,5 +460,5 @@ controller.setHtmlCallback(new Callback&lt;Object, String&gt;() {
         <para>Do not forget both examples use a different callback.</para>
       </note>
     </section>
-  </section>
+  </section>-->
 </chapter>

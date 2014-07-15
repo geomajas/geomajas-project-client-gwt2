@@ -21,21 +21,21 @@ import com.google.gwt.core.client.Callback;
 
 /**
  * Client service that assists in performing requests to the WMS server.
- * 
+ *
  * @author Pieter De Graef
  * @author An Buyle (getLegendGraphicUrl)
- * @since 2.0.0
+ * @since 2.1.0
  */
 @Api(allMethods = true)
 public interface WmsService {
 
 	/**
 	 * Supported format for the WMS GetFeatureInfo request.
-	 * 
+	 *
 	 * @author Pieter De Graef
 	 */
 	public enum GetFeatureInfoFormat {
-		GML2("application/vnd.ogc.gml"), GML3("application/vnd.ogc.gml/3.1.1"), HTML("text/html"), TEXT("text/plain"), 
+		GML2("application/vnd.ogc.gml"), GML3("application/vnd.ogc.gml/3.1.1"), HTML("text/html"), TEXT("text/plain"),
 		JSON("application/json");
 
 		private String format;
@@ -51,7 +51,7 @@ public interface WmsService {
 
 	/**
 	 * WMS version enumeration.
-	 * 
+	 *
 	 * @author Pieter De Graef
 	 */
 	public enum WmsVersion {
@@ -70,12 +70,12 @@ public interface WmsService {
 
 	/**
 	 * Supported WMS requests.
-	 * 
+	 *
 	 * @author Pieter De Graef
 	 */
 	public enum WmsRequest {
 		GETMAP("GetMap"), GETCAPABILITIES("GetCapabilities"), GETFEATUREINFO("GetFeatureInfo"), GETLEGENDGRAPHIC(
-				"GetLegendGraphic");
+				"GetLegendGraphic"), DESCRIBELAYER("DescribeLayer");
 
 		private String request;
 
@@ -86,24 +86,33 @@ public interface WmsService {
 		public String toString() {
 			return request;
 		}
+
+		public static WmsRequest fromString(String text) {
+			if (text != null) {
+				for (WmsRequest wmsRequest : WmsRequest.values()) {
+					if (text.equalsIgnoreCase(wmsRequest.request)) {
+						return wmsRequest;
+					}
+				}
+			}
+			return null;
+		}
 	}
 
 	/**
 	 * Transforms the given URL. This interface can, for example, be used to make sure requests make use of a proxy
 	 * servlet. A possible implementation could be: <code>return "/proxy?url=" + url;</code>
-	 * 
+	 *
 	 * @author Pieter De Graef
 	 */
 	public interface WmsUrlTransformer {
 
 		/**
 		 * Transform the given URL.
-		 * 
-		 * @param request
-		 *            The WMS request that is used in the URL. It may be that you wish to add a proxy servlet to the URL
-		 *            for some requests but not all.
-		 * @param url
-		 *            The URL to transform.
+		 *
+		 * @param request The WMS request that is used in the URL. It may be that you wish to add a proxy servlet to the
+		 *                URL for some requests but not all.
+		 * @param url     The URL to transform.
 		 * @return Returns the transformed URL.
 		 */
 		String transform(WmsRequest request, String url);
@@ -115,14 +124,11 @@ public interface WmsService {
 
 	/**
 	 * Get the capabilities information of a WMS service.
-	 * 
-	 * @param baseUrl
-	 *            The WMS base URL (without any WMS parameters).
-	 * @param version
-	 *            The preferred WMS version.
-	 * @param callback
-	 *            Callback that returns a {@link WmsGetCapabilitiesInfo} instance on success. From here, you can extract
-	 *            all the information or layers defined in the capabilities file.
+	 *
+	 * @param baseUrl  The WMS base URL (without any WMS parameters).
+	 * @param version  The preferred WMS version.
+	 * @param callback Callback that returns a {@link WmsGetCapabilitiesInfo} instance on success. From here, you can
+	 *                 extract all the information or layers defined in the capabilities file.
 	 */
 	void getCapabilities(String baseUrl, WmsVersion version, Callback<WmsGetCapabilitiesInfo, String> callback);
 
@@ -132,20 +138,14 @@ public interface WmsService {
 
 	/**
 	 * Get the URL that retrieves the requested bounds for the requested layer through a GetMap request.
-	 * 
-	 * @param wmsConfig
-	 *            The configuration object that points to some WMS layer.
-	 * @param crs
-	 *            The preferred coordinate reference system.
-	 * @param worldBounds
-	 *            The bounds to retrieve through the GetMap request.
-	 * @param imageWidth
-	 *            The image width.
-	 * @param imageHeight
-	 *            The image height.
+	 *
+	 * @param wmsConfig   The configuration object that points to some WMS layer.
+	 * @param worldBounds The bounds to retrieve through the GetMap request.
+	 * @param imageWidth  The image width.
+	 * @param imageHeight The image height.
 	 * @return URL to the image.
 	 */
-	String getMapUrl(WmsLayerConfiguration wmsConfig, String crs, Bbox worldBounds, int imageWidth, int imageHeight);
+	String getMapUrl(WmsLayerConfiguration wmsConfig, Bbox worldBounds, int imageWidth, int imageHeight);
 
 	// ------------------------------------------------------------------------
 	// WMS GetLegendGraphic methods:
@@ -153,10 +153,8 @@ public interface WmsService {
 
 	/**
 	 * Get the URL that points to the legend graphic of a WMS layer. (Usually through a WMS GetLegendGraphic request)
-	 * 
-	 * @param wmsConfig
-	 *            The configuration object that points to some WMS layer.
-	 * 
+	 *
+	 * @param wmsConfig The configuration object that points to some WMS layer.
 	 * @return Returns the URL that points to the legend image.
 	 */
 
@@ -164,15 +162,13 @@ public interface WmsService {
 
 	/**
 	 * Get the URL that points to the legend graphic of a WMS layer. (usually through a WMS GetLegendGraphic request)
-	 * 
-	 * @param wmsConfig
-	 *            The configuration object that points to some WMS layer.
-	 ** @param legendConfig
-	 *            Specific legend configuration that overrides the default legend configuration from within the
-	 *            wmsConfig object. Note that by default WMS does not support these options, although some vendors have
-	 *            added extra options to allows for this configuration (such as GeoServer, see
-	 *            {@link org.geomajas.plugin.wms.client.layer.WmsServiceVendor}).
-	 * 
+	 *
+	 * @param wmsConfig The configuration object that points to some WMS layer.
+	 *                  * @param legendConfig
+	 *                  Specific legend configuration that overrides the default legend configuration from within the
+	 *                  wmsConfig object. Note that by default WMS does not support these options, although some vendors
+	 *                  have added extra options to allows for this configuration (such as GeoServer, see
+	 *                  {@link org.geomajas.plugin.wms.client.layer.WmsServiceVendor}).
 	 * @return Returns the URL that points to the legend image.
 	 */
 	String getLegendGraphicUrl(WmsLayerConfiguration wmsConfig, LegendConfig legendConfig);
@@ -184,15 +180,14 @@ public interface WmsService {
 	/**
 	 * Apply a transformer to transform any URL that is generated within this service. This transformer can, for
 	 * example, be used to add a proxy servlet to any URL.
-	 * 
-	 * @param urlTransformer
-	 *            The URL transformer to use.
+	 *
+	 * @param urlTransformer The URL transformer to use.
 	 */
 	void setWmsUrlTransformer(WmsUrlTransformer urlTransformer);
 
 	/**
 	 * Return the current URL transformer, or null if no transformer has been set yet.
-	 * 
+	 *
 	 * @return The current WMS URL transformer.
 	 */
 	WmsUrlTransformer getWmsUrlTransformer();
