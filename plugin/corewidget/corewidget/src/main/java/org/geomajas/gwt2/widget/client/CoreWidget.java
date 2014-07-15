@@ -8,6 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.gwt2.widget.client;
 
 import org.geomajas.gwt2.widget.client.resource.CoreWidgetClientBundleFactory;
@@ -16,7 +17,7 @@ import com.google.gwt.core.client.GWT;
 
 /**
  * Starting point for the core widget plugin.
- * 
+ *
  * @author Jan De Moerloose
  */
 public final class CoreWidget {
@@ -24,7 +25,7 @@ public final class CoreWidget {
 	private static CoreWidget instance;
 
 	private CoreWidgetViewFactory viewFactory;
-	
+
 	private CoreWidgetClientBundleFactory bundleFactory;
 
 	private CoreWidget() {
@@ -32,7 +33,7 @@ public final class CoreWidget {
 
 	/**
 	 * Get a singleton instance.
-	 * 
+	 *
 	 * @return Return CoreWidget!
 	 */
 	public static CoreWidget getInstance() {
@@ -41,7 +42,7 @@ public final class CoreWidget {
 		}
 		return instance;
 	}
-	
+
 	/**
 	 * Override the {@link CoreWidget} instance for mocking.
 	 *
@@ -54,7 +55,7 @@ public final class CoreWidget {
 
 	/**
 	 * Get the MVP view factory for the widgets of this plugin.
-	 * 
+	 *
 	 * @return the factory
 	 */
 	public CoreWidgetViewFactory getViewFactory() {
@@ -63,13 +64,12 @@ public final class CoreWidget {
 		}
 		return viewFactory;
 	}
-	
+
 	/**
 	 * Get a factory for creating resource bundles for this artifact. All widgets make use of this factory. If you want
 	 * to override the default styles, then override this factory through deferred binding.
 	 *
 	 * @return A factory for creating resource bundles for this artifact.
-	 * @since 2.1.0
 	 */
 	public CoreWidgetClientBundleFactory getClientBundleFactory() {
 		if (bundleFactory == null) {
@@ -77,6 +77,4 @@ public final class CoreWidget {
 		}
 		return bundleFactory;
 	}
-
-
 }

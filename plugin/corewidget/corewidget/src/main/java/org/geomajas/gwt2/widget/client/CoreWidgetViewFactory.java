@@ -8,11 +8,9 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.gwt2.widget.client;
 
-import org.geomajas.gwt2.widget.client.feature.featureselectbox.FeatureSelectBoxView;
-import org.geomajas.gwt2.widget.client.feature.featureselectbox.FeatureSelectBoxViewImpl;
-import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.FeatureSelectBoxResource;
 import org.geomajas.gwt2.widget.client.map.layercontrolpanel.LayerControlPanelView;
 import org.geomajas.gwt2.widget.client.map.layercontrolpanel.LayerControlPanelViewImpl;
 import org.geomajas.gwt2.widget.client.map.layercontrolpanel.resource.LayerControlPanelResource;
@@ -22,20 +20,10 @@ import org.geomajas.gwt2.widget.client.map.mapcontrolpanel.resource.MapControlPa
 
 /**
  * MVP view factory for this plugin.
- * 
+ *
  * @author Jan De Moerloose
-  * 
  */
 public class CoreWidgetViewFactory {
-
-	/**
-	 * Create a new {@link FeatureSelectBoxView}.
-	 * 
-	 * @return the view
-	 */
-	public FeatureSelectBoxView createFeatureSelectBox(FeatureSelectBoxResource resource) {
-		return new FeatureSelectBoxViewImpl(resource);
-	}
 
 	/**
 	 * Create a new {@link LayerControlPanelView}.

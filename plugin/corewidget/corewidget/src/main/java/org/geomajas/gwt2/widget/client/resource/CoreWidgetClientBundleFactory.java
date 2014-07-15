@@ -11,8 +11,6 @@
 
 package org.geomajas.gwt2.widget.client.resource;
 
-import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.FeatureSelectBoxResource;
-
 import com.google.gwt.core.client.GWT;
 import org.geomajas.gwt2.widget.client.map.layercontrolpanel.resource.LayerControlPanelResource;
 import org.geomajas.gwt2.widget.client.map.mapcontrolpanel.resource.MapControlPanelResource;
@@ -27,16 +25,6 @@ public class CoreWidgetClientBundleFactory {
 
 	/**
 	 * Create a new resource bundle for the
-	 * {@link org.geomajas.gwt2.widget.client.feature.featureselectbox.FeatureSelectBox} widget.
-	 * 
-	 * @return A new resource bundle.
-	 */
-	public FeatureSelectBoxResource createFeatureSelectBoxResource() {
-		return GWT.create(FeatureSelectBoxResource.class);
-	}
-
-	/**
-	 * Create a new resource bundle for the
 	 * {@link org.geomajas.gwt2.widget.client.map.layercontrolpanel.LayerControlPanel} widget.
 	 *
 	 * @return A new resource bundle.
@@ -44,7 +32,6 @@ public class CoreWidgetClientBundleFactory {
 	public LayerControlPanelResource createLayerControlPanelResource() {
 		return GWT.create(LayerControlPanelResource.class);
 	}
-
 
 	/**
 	 * Create a new resource bundle for the
@@ -55,5 +42,4 @@ public class CoreWidgetClientBundleFactory {
 	public MapControlPanelResource createMapControlPanelResource() {
 		return GWT.create(MapControlPanelResource.class);
 	}
-
 }
