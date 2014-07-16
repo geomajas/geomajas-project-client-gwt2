@@ -17,7 +17,7 @@
     <!--<inherits name="org.geomajas.gwt2.GeomajasClientImplNoStyle" />-->
 
     <!-- Include plugins: -->
-	<inherits name='org.geomajas.plugin.wms.example.ExampleJar' />
+	<inherits name='org.geomajas.gwt2.plugin.wms.example.ExampleJar' />
 	<inherits name='org.geomajas.gwt2.plugin.editing.example.ExampleJar' />
     <inherits name='org.geomajas.gwt2.widget.example.ExampleJar' />
 	<inherits name='org.geomajas.plugin.print.example.ExampleJar' />
