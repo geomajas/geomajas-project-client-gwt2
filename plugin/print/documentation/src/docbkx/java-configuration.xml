@@ -21,7 +21,7 @@
     that provides access to all the configurable functional classes within the
     plugin. In this case:</para>
 
-    <programlisting>org.geomajas.plugin.print.client.Print</programlisting>
+    <programlisting>org.geomajas.gwt2.plugin.print.client.Print</programlisting>
 
 	   <para>This class provides access to the client bundle factory and view factory that are used
 		   in the creation of the Print Widget. Both factories can be overwritten by customized classes.</para>
