@@ -19,7 +19,7 @@
   <section>
     <title>Default Geocoder Widget</title>
 
-    <para>The default Geocoder widget is class <code>org.geomajas.plugin.geocoder.client.widget.GeocoderWidget</code>.
+    <para>The default Geocoder widget is class <code>org.geomajas.gwt2.plugin.geocoder.client.widget.GeocoderWidget</code>.
 		The following code creates the Geocoder Widget and
 		defines the position of the widget on the map:</para>
 
