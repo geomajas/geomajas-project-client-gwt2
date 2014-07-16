@@ -19,7 +19,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver"></bean>
 
 	<!--  scan for controllers and views -->
-	<context:component-scan base-package="org.geomajas.plugin.print.mvc" />
+	<context:component-scan base-package="org.geomajas.gwt2.plugin.print.mvc" />
 
 
 </beans>

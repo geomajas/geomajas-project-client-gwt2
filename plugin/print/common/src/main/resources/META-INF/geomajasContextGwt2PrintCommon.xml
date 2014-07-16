@@ -88,7 +88,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			<util:constant static-field="com.thoughtworks.xstream.XStream.NO_REFERENCES" />
 		</property>
 		<property name="streamDriver">
-			<bean class="org.geomajas.plugin.print.parser.PrettyPrintDriver" />
+			<bean class="org.geomajas.gwt2.plugin.print.parser.PrettyPrintDriver" />
 		</property>
 		<property name="autodetectAnnotations" value="true" />
 	</bean>

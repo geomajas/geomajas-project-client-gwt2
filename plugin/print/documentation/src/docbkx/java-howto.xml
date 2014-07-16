@@ -19,7 +19,7 @@
   <section>
     <title>Default Print Widget</title>
 
-    <para>The default Print widget is class <code>org.geomajas.plugin.print.client.widget.PrintWidget</code>.
+    <para>The default Print widget is class <code>org.geomajas.gwt2.plugin.print.client.widget.PrintWidget</code>.
 		The following code creates the Print Widget. Map and application specifications are required beforehand.</para>
 
     <programlisting>// MapPresenter mapPresenter : defines the specific map
