@@ -1,0 +1,10 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+	<ui:with field="resource" type="org.geomajas.gwt2.plugin.geocoder.client.widget.GeocoderWidgetResource" />
+
+	<g:PopupPanel ui:field="popup" styleName="{resource.css.geocoderGadgetAltPanel}">
+		<g:VerticalPanel ui:field="alternativesPanel"/>
+	</g:PopupPanel>
+
+</ui:UiBinder> 
