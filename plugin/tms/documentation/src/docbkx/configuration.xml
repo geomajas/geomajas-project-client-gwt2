@@ -21,7 +21,7 @@
     class that provides a starting point for most functionalities the plugin
     supports. This starting point is the <code>TmsClient</code> class:</para>
 
-    <programlisting>org.geomajas.plugin.tms.client.TmsClient</programlisting>
+    <programlisting>org.geomajas.gwt2.plugin.tms.client.TmsClient</programlisting>
 
     <para>From here on it is possible to create new TMS layers or parse
     TileMapService XML capabilities files, or ....</para>
@@ -60,7 +60,7 @@
       </itemizedlist>
 
       <para>The other is the
-      <code>org.geomajas.plugin.tms.client.layer.TmsLayerConfiguration</code>
+      <code>org.geomajas.gwt2.plugin.tms.client.layer.TmsLayerConfiguration</code>
       object. It provides all the required parameters used in creating the
       correct tile URLs. These are the following:</para>
 
@@ -132,7 +132,7 @@ layerConfig.setBaseUrl("something else...");</programlisting>
 
       <para>Parsing a TileMapService XML file will result in an object of the
       type
-      <code>org.geomajas.plugin.tms.client.configuration.TileMapServiceInfo</code>.
+      <code>org.geomajas.gwt2.plugin.tms.client.configuration.TileMapServiceInfo</code>.
       This object contains a list of available TileMaps within the service.
       Each TileMap can be used to create a TmsLayer:</para>
 
@@ -153,12 +153,12 @@ TmsClient.getInstance().getTileMapService(TMS_BASE_URL, new Callback&lt;TileMapS
 });</programlisting>
 
       <para>Parsing a TileMapService URL will result in a list of
-      <code>org.geomajas.plugin.tms.client.configuration.ListTileMapInfo</code>
+      <code>org.geomajas.gwt2.plugin.tms.client.configuration.ListTileMapInfo</code>
       objects. Each of these objects in turn points to another URL that
       describes the actual TileMap. In order to acquire the details regarding
       such a TileMap, we must again fetch and parse the XML file at the target
       URL. This time in order to acquire a
-      <code>org.geomajas.plugin.tms.client.configuration.TileMapInfo</code>
+      <code>org.geomajas.gwt2.plugin.tms.client.configuration.TileMapInfo</code>
       object.</para>
 
       <para>When the <code>TileMapInfo</code> object is retrieved, this too

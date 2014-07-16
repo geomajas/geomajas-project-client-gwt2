@@ -21,7 +21,7 @@
 	<inherits name='org.geomajas.gwt2.plugin.editing.example.ExampleJar' />
     <inherits name='org.geomajas.gwt2.widget.example.ExampleJar' />
 	<inherits name='org.geomajas.plugin.print.example.ExampleJar' />
-    <inherits name='org.geomajas.plugin.tms.example.ExampleJar' />
+    <inherits name='org.geomajas.gwt2.plugin.tms.example.ExampleJar' />
 	<inherits name='org.geomajas.plugin.graphicsediting.gwt2.example.GraphicsEditingGwt2ExampleJar' />
 
     <entry-point class="org.geomajas.gwt2.example.client.Example" />
