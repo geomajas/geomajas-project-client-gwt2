@@ -23,8 +23,8 @@
 	<artifactId>geomajas-client-gwt2-plugin-geocoder-example</artifactId>
 	<packaging>war</packaging>
 
-	<name>Geomajas Plugin Geocoder GWT2 Client: Example Application</name>
-	<description>Geomajas Plugin Geocoder GWT2 Client: Example Application</description>
+	<name>Geomajas GWT2 client: Plugin Geocoder - Example Application</name>
+	<description>Geomajas GWT2 client: Plugin Geocoder - Example Application</description>
 	<url>http://www.geomajas.org/</url>
 
 	<dependencies>

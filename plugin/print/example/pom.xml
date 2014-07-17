@@ -22,8 +22,8 @@
 	<artifactId>geomajas-client-gwt2-plugin-print-example</artifactId>
 	<packaging>war</packaging>
 
-	<name>Geomajas GWT2 client: Plugin Print - Standalone sample application</name>
-	<description>Geomajas GWT2 client: Plugin Print - Standalone sample application</description>
+	<name>Geomajas GWT2 client: Plugin Print - Example Application</name>
+	<description>Geomajas GWT2 client: Plugin Print - Example Application</description>
 	
 	<properties>
 		<gwt-version>2.5.0</gwt-version>

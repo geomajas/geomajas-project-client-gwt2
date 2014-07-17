@@ -301,6 +301,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-client-gwt2-plugin-wms-server-example-jar</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-client-gwt2-plugin-wms-example-jar</artifactId>
 				<version>${project.version}</version>
 			</dependency>

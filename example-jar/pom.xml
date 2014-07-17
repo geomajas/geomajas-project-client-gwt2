@@ -20,8 +20,8 @@
 
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-client-gwt2-example-jar</artifactId>
-	<name>Geomajas GWT2 client: Main - Showcase samples</name>
-	<description>Geomajas GWT2 client: Main - Showcase samples</description>
+	<name>Geomajas GWT2 client: Main - Examples</name>
+	<description>Geomajas GWT2 client: Main - Examples</description>
 
 	<dependencies>
 		<!-- Google dependencies -->

@@ -15,8 +15,8 @@
 	</parent>
 
 	<artifactId>geomajas-client-gwt2-plugin-wms-server-example-jar</artifactId>
-	<name>Geomajas GWT2 client: Plugin WMS - Examples</name>
-	<description>Geomajas GWT2 client: Plugin WMS - Examples</description>
+	<name>Geomajas GWT2 client: Plugin WMS - Server Extension Examples</name>
+	<description>Geomajas GWT2 client: Plugin WMS - Server Extension Examples</description>
 
 	<dependencies>
 		<dependency>

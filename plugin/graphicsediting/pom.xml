@@ -38,15 +38,24 @@
 	</modules>
 
     <profiles>
-        <profile>
-            <id>full-build</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <modules>
-                <module>example</module>
-            </modules>
-        </profile>
+		<profile>
+			<id>full-build</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<module>documentation</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>plugin-example</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<module>example</module>
+			</modules>
+		</profile>
     </profiles>
 
 
