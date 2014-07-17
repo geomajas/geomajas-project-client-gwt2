@@ -11,10 +11,13 @@
 
 package org.geomajas.plugin.editing.client.handler;
 
-import java.util.Collections;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import com.google.gwt.event.dom.client.HumanInputEvent;
+import com.google.gwt.event.dom.client.MouseMoveEvent;
+import com.google.gwt.event.dom.client.MouseMoveHandler;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.handler.MapDownHandler;
@@ -24,13 +27,9 @@ import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 
-import com.google.gwt.event.dom.client.HumanInputEvent;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.event.dom.client.MouseMoveHandler;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseOutHandler;
-import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.event.dom.client.MouseOverHandler;
+import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * <p>
@@ -42,12 +41,12 @@ import com.google.gwt.event.dom.client.MouseOverHandler;
  * If the service is busy inserting (state = INSERTING), and a point is recognized for highlighting, this handler will
  * also snap to it.
  * </p>
- * 
+ *
  * @author Pieter De Graef
  */
 public class GeometryIndexStopInsertingHandler extends AbstractGeometryIndexMapHandler implements MapDownHandler,
 		MouseOverHandler, MouseOutHandler, MouseMoveHandler {
-	
+
 	private static Logger logger = Logger.getLogger(GeometryIndexSnapToDeleteHandler.class.getName());
 
 	public void onDown(HumanInputEvent<?> event) {
@@ -101,7 +100,11 @@ public class GeometryIndexStopInsertingHandler extends AbstractGeometryIndexMapH
 				GeometryIndex temp = service.getIndexService().getPreviousVertex(service.getInsertIndex());
 				return temp.equals(index);
 			} else if (Geometry.LINEAR_RING.equals(geomType)) {
-				return 0 == service.getIndexService().getValue(index);
+				if (service.getTentativeMoveOrigin().equals(service.getTentativeMoveLocation())) {
+					return true;
+				} else {
+					return 0 == service.getIndexService().getValue(index);
+				}
 			}
 		} catch (GeometryIndexNotFoundException e) {
 			throw new IllegalStateException(e);

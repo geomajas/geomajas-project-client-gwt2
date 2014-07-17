@@ -29,6 +29,7 @@
         <module>server-extension</module>
 		<module>example-jar</module>
         <module>documentation</module>
+		<!--<module>example</module>-->
 	</modules>
 
     <profiles>
