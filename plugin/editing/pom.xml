@@ -28,19 +28,19 @@
 		<module>impl</module>
         <module>server-extension</module>
 		<module>example-jar</module>
-        <module>documentation</module>
+		<module>documentation</module>
 	</modules>
 
     <profiles>
         <profile>
             <id>full-build</id>
             <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <modules>
-                <module>example</module>
-            </modules>
-        </profile>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<modules>
+				<module>example</module>
+			</modules>
+		</profile>
     </profiles>
 
 </project>

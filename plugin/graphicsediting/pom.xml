@@ -35,18 +35,19 @@
 	<modules>
 		<module>impl</module>
 		<module>example-jar</module>
+		<module>documentation</module>
 	</modules>
 
     <profiles>
-        <profile>
-            <id>full-build</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <modules>
-                <module>example</module>
-            </modules>
-        </profile>
+		<profile>
+			<id>full-build</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<modules>
+				<module>example</module>
+			</modules>
+		</profile>
     </profiles>
 
 

@@ -28,7 +28,7 @@
 		<module>impl</module>
         <module>print-wms</module>
 		<module>example-jar</module>
-        <module>documentation</module>
+		<module>documentation</module>
 	</modules>
 
 	<profiles>

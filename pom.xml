@@ -40,6 +40,7 @@
 		<module>example-jar</module>
   		<module>plugin</module>
 		<module>example</module>
+		<module>documentation</module>
 	</modules>
 
 	<properties>
@@ -301,6 +302,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-client-gwt2-plugin-wms-server-example-jar</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-client-gwt2-plugin-wms-example-jar</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -419,15 +425,6 @@
 	</dependencyManagement>
 
 	<profiles>
-		<profile>
-			<id>full-build</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<modules>
-				<module>documentation</module>
-			</modules>
-		</profile>
 		<profile>
 			<id>skipDocs</id>
 			<activation>

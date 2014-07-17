@@ -26,7 +26,7 @@
     <modules>
         <module>corewidget</module>
         <module>example-jar</module>
-        <module>documentation</module>
+		<module>documentation</module>
     </modules>
 
     <profiles>
@@ -36,7 +36,7 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <modules>
-                <module>example</module>
+				<module>example</module>
             </modules>
         </profile>
     </profiles>

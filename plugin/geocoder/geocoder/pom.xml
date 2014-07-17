@@ -21,8 +21,8 @@
 	</parent>
 
 	<artifactId>geomajas-client-gwt2-plugin-geocoder</artifactId>
-	<name>Geomajas GWT2 client: Plugin Geocoder - Library</name>
-	<description>Geomajas GWT2 client: Plugin Geocoder - Library</description>
+	<name>Geomajas GWT2 client: Plugin Geocoder - Implementation</name>
+	<description>Geomajas GWT2 client: Plugin Geocoder - Implementation</description>
 
 	<dependencies>
 	
