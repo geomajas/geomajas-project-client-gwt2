@@ -11,17 +11,20 @@
 
 package org.geomajas.gwt2.client.map.render;
 
+import com.google.gwt.user.client.ui.IsWidget;
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.client.animation.Trajectory;
+import org.geomajas.gwt2.client.map.Hint;
 import org.geomajas.gwt2.client.map.View;
 
-import com.google.gwt.user.client.ui.IsWidget;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * General information object for the {@link BasicRenderer}s to do their thing. It provides both essential and optional
  * parameters for a {@link BasicRenderer} to make use of. In the end, it is up to the {@link BasicRenderer} to decide
  * what to use and what not.
- * 
+ *
  * @author Pieter De Graef
  * @since 2.0.0
  */
@@ -34,24 +37,24 @@ public class RenderingInfo {
 
 	private final Trajectory trajectory;
 
+	private Map<Hint<?>, Object> hintValues;
+
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
 
 	/**
 	 * Create a new instance and immediately supply all required fields.
-	 * 
-	 * @param widget
-	 *            The widget onto which the {@link BasicRenderer} is supposed to add it's rendering.
-	 * @param view
-	 *            The view on the map that needs to be displayed.
-	 * @param trajectory
-	 *            The expected trajectory, or null.
+	 *
+	 * @param widget     The widget onto which the {@link BasicRenderer} is supposed to add it's rendering.
+	 * @param view       The view on the map that needs to be displayed.
+	 * @param trajectory The expected trajectory, or null.
 	 */
 	public RenderingInfo(final IsWidget widget, final View view, final Trajectory trajectory) {
 		this.widget = widget;
 		this.view = view;
 		this.trajectory = trajectory;
+		this.hintValues = new HashMap<Hint<?>, Object>();
 	}
 
 	// ------------------------------------------------------------------------
@@ -60,7 +63,7 @@ public class RenderingInfo {
 
 	/**
 	 * Get the widget onto which the {@link BasicRenderer} is supposed to add it's rendering.
-	 * 
+	 *
 	 * @return The target widget. This can be a {@link org.geomajas.gwt2.client.gfx.HtmlContainer} or a Canvas, or....
 	 */
 	public IsWidget getWidget() {
@@ -70,7 +73,7 @@ public class RenderingInfo {
 	/**
 	 * Get the view on the map that needs to be displayed. The {@link BasicRenderer} will usually follow the position of
 	 * the {@link org.geomajas.gwt2.client.map.ViewPort} and visualize it.
-	 * 
+	 *
 	 * @return The view to visualize.
 	 */
 	public View getView() {
@@ -81,11 +84,38 @@ public class RenderingInfo {
 	 * If the request to render is part of a navigation animation, then this method will return the expected trajectory.
 	 * Using this trajectory a {@link BasicRenderer} may try to prepare the views to come in order to provide a more
 	 * smooth rendering.
-	 * 
+	 *
 	 * @return The expected trajectory. This object may be null if the request to render is not part of a navigation
-	 *         animation.
+	 * animation.
 	 */
 	public Trajectory getTrajectory() {
 		return trajectory;
 	}
+
+	/**
+	 * Get the value for a specific rendering hint. If there is no such hint, returns <code>null</code>.
+	 *
+	 * @param hint The hint to retrieve the current value for.
+	 * @return The hint value.
+	 * @since 2.1.0
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> T getHintValue(Hint<T> hint) {
+		return (T) hintValues.get(hint);
+	}
+
+	/**
+	 * Apply a new value for a specific rendering hint.
+	 *
+	 * @param hint  The hint to change the value for.
+	 * @param value The new actual value. If the value is null, an IllegalArgumentException is thrown.
+	 * @since 2.1.0
+	 */
+	public <T> void setHintValue(Hint<T> hint, T value) {
+		if (value == null) {
+			throw new IllegalArgumentException("Null value passed.");
+		}
+		hintValues.put(hint, value);
+	}
+
 }
