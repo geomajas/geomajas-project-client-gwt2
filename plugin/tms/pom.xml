@@ -27,7 +27,7 @@
 	<modules>
 		<module>tms</module>
 		<module>example-jar</module>
-		<module>documentation</module>
+        <module>documentation</module>
 	</modules>
 
 </project>
