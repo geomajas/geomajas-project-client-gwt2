@@ -21,8 +21,8 @@
 	</parent>
 
 	<artifactId>geomajas-client-gwt2-plugin-corewidget</artifactId>
-	<name>Geomajas GWT2 client: Plugin Core Widget - Library</name>
-	<description>Geomajas GWT2 client: Plugin Core Widget - Library</description>
+	<name>Geomajas GWT2 client: Plugin Core Widget - Implementation</name>
+	<description>Geomajas GWT2 client: Plugin Core Widget - Implementation</description>
 
 	<dependencies>
 		<dependency>

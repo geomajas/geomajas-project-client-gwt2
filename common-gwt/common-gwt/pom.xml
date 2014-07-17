@@ -21,8 +21,8 @@
 	</parent>
 
 	<artifactId>geomajas-client-common-gwt</artifactId>
-	<name>Geomajas GWT2 client: Commons - Library</name>
-	<description>Geomajas GWT2 client: Commons - Library</description>
+	<name>Geomajas GWT2 client: Commons - Implementation</name>
+	<description>Geomajas GWT2 client: Commons - Implementation</description>
 
 	<dependencies>
 		<!-- Other Geomajas projects -->

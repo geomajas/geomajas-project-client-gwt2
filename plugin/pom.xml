@@ -30,10 +30,10 @@
 		<module>corewidget</module>
 		<module>editing</module>
 		<module>geocoder</module>
+		<module>graphicsediting</module>
 		<module>print</module>
         <module>tms</module>
 		<module>wms</module>
-		<module>graphicsediting</module>
 	</modules>
 	
 </project>

@@ -20,8 +20,8 @@
 	</parent>
 
 	<artifactId>geomajas-client-gwt2-plugin-tms</artifactId>
-	<name>Geomajas GWT2 client: Plugin TMS - Library</name>
-	<description>Geomajas GWT2 client: Plugin TMS - Library</description>
+	<name>Geomajas GWT2 client: Plugin TMS - Implementation</name>
+	<description>Geomajas GWT2 client: Plugin TMS - Implementation</description>
 
 	<dependencies>
 		<dependency>
