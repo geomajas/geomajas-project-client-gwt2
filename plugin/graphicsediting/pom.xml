@@ -35,6 +35,7 @@
 	<modules>
 		<module>impl</module>
 		<module>example-jar</module>
+		<module>documentation</module>
 	</modules>
 
     <profiles>
