@@ -99,7 +99,7 @@ public class LayerControlPanelPresenterImpl implements LayerControlPanelPresente
 		}, this.layer);
 	}
 
-	private boolean isLayerVisible(ViewPort viewPort, Layer layer) {
+	protected boolean isLayerVisible(ViewPort viewPort, Layer layer) {
 
 		if (layer instanceof AbstractServerLayer) {
 			AbstractServerLayer serverLayer = (AbstractServerLayer) layer;
@@ -114,7 +114,8 @@ public class LayerControlPanelPresenterImpl implements LayerControlPanelPresente
 			return false;
 		}
 
-		return layer.isShowing();
+		//TODO: implement this for layers other than AbstractServerLayer
+		return true;
 	}
 
 }

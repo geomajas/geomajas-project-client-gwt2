@@ -43,18 +43,36 @@ public class MapControlPanel implements IsWidget {
 	 * @param mapPresenter {@link MapPresenter}.
 	 */
 	public MapControlPanel(MapPresenter mapPresenter) {
-		this(CoreWidget.getInstance().getClientBundleFactory().createMapControlPanelResource(), mapPresenter);
+		this(CoreWidget.getInstance().getClientBundleFactory().createMapControlPanelResource(), mapPresenter, true);
 	}
+
+	/**
+	 * Create {@link MapControlPanel} widget.
+	 *
+	 * @param mapPresenter {@link MapPresenter}.
+	 * @param disableToggleOutOfRange  Should layer visibility toggle control stay enabled when its layer is out
+	 *                                    of range. Default when the layer is out of range visibility toggle control is
+	 *                                    disabled.
+	 */
+	public MapControlPanel(MapPresenter mapPresenter, boolean disableToggleOutOfRange) {
+		this(CoreWidget.getInstance().getClientBundleFactory().createMapControlPanelResource(), mapPresenter,
+				disableToggleOutOfRange);
+	}
+
 
 	/**
 	 * Create {@link MapControlPanel} widget.
 	 *
 	 * @param resource GWT client resource bundle {@link MapControlPanelResource}.
 	 * @param mapPresenter {@link MapPresenter}.
+	 * @param disableToggleOutOfRange  Should layer visibility toggle control stay enabled when its layer is out
+	 *                                    of range. Default when the layer is out of range visibility toggle control is
+	 *                                    disabled.
 	 */
-	public MapControlPanel(MapControlPanelResource resource, MapPresenter mapPresenter) {
+	public MapControlPanel(MapControlPanelResource resource, MapPresenter mapPresenter,
+						   boolean disableToggleOutOfRange) {
 		view = CoreWidget.getInstance().getViewFactory().createMapControlPanel(resource);
-		presenter = new MapControlPanelPresenterImpl(view, mapPresenter);
+		presenter = new MapControlPanelPresenterImpl(view, mapPresenter, disableToggleOutOfRange);
 		view.setPresenter(presenter);
 	}
 
@@ -66,15 +84,5 @@ public class MapControlPanel implements IsWidget {
 	@Override
 	public Widget asWidget() {
 		return view.asWidget();
-	}
-
-	/**
-	 * Should layer visibility toggle control stay enabled when its layer is out of range. Default when the layer is out
-	 * of range visibility toggle control is disabled.
-	 *
-	 * @param disable when false toggle control stays enabled even if the layer is out of range.
-	 */
-	public void setDisableToggleOutOfRange(boolean disable) {
-		presenter.setDisableToggleOutOfRange(disable);
 	}
 }
