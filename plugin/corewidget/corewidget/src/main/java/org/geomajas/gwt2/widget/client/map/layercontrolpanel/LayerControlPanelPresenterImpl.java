@@ -69,7 +69,7 @@ public class LayerControlPanelPresenterImpl implements LayerControlPanelPresente
 		view.setLayerVisible(layer.isMarkedAsVisible());
 
 		if (disableToggleOutOfRange) {
-			view.enableVisibilityToggle(isLayerVisible(mapPresenter.getViewPort(), layer));
+			view.enableVisibilityToggle(isLayerOutOfRange(mapPresenter.getViewPort(), layer));
 		}
 
 		mapPresenter.getEventBus().addViewPortChangedHandler(new ViewPortChangedHandler() {
@@ -77,7 +77,7 @@ public class LayerControlPanelPresenterImpl implements LayerControlPanelPresente
 			public void onViewPortChanged(ViewPortChangedEvent event) {
 
 				if (disableToggleOutOfRange) {
-					view.enableVisibilityToggle(isLayerVisible(mapPresenter.getViewPort(), layer));
+					view.enableVisibilityToggle(isLayerOutOfRange(mapPresenter.getViewPort(), layer));
 				}
 
 			}
@@ -99,7 +99,7 @@ public class LayerControlPanelPresenterImpl implements LayerControlPanelPresente
 		}, this.layer);
 	}
 
-	private boolean isLayerVisible(ViewPort viewPort, Layer layer) {
+	protected boolean isLayerOutOfRange(ViewPort viewPort, Layer layer) {
 
 		if (layer instanceof AbstractServerLayer) {
 			AbstractServerLayer serverLayer = (AbstractServerLayer) layer;
@@ -114,7 +114,8 @@ public class LayerControlPanelPresenterImpl implements LayerControlPanelPresente
 			return false;
 		}
 
-		return layer.isShowing();
+		//TODO: implement this for layers other than AbstractServerLayer
+		return true;
 	}
 
 }

@@ -38,10 +38,11 @@ public class MapControlPanelPresenterImpl implements MapControlPanelPresenter {
 
 	private  MapPresenter mapPresenter;
 
-	public MapControlPanelPresenterImpl(MapControlPanelView view, MapPresenter mapPresenter) {
+	public MapControlPanelPresenterImpl(MapControlPanelView view, MapPresenter mapPresenter,
+										boolean disableToggleOutOfRange) {
 		this.view = view;
 		this.mapPresenter = mapPresenter;
-		this.disableToggleOutOfRange = true; //default it is true
+		this.disableToggleOutOfRange = disableToggleOutOfRange;
 		init();
 	}
 
