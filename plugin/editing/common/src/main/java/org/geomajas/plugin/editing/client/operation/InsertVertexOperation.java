@@ -13,6 +13,8 @@ package org.geomajas.plugin.editing.client.operation;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.plugin.editing.client.service.GeometryEditService;
+import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
 import org.geomajas.plugin.editing.client.service.GeometryIndexService;
@@ -39,15 +41,19 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 
 	private GeometryIndex index;
 
+	private GeometryEditService geometryEditService;
+
 	/**
 	 * Initialize this operation with an indexing service.
 	 * 
 	 * @param service
 	 *            geometry index service.
 	 */
-	public InsertVertexOperation(GeometryIndexService service, Coordinate coordinate) {
+	public InsertVertexOperation(GeometryIndexService service, Coordinate coordinate,
+								 GeometryEditService geometryEditService) {
 		this.service = service;
 		this.coordinate = coordinate;
+		this.geometryEditService = geometryEditService;
 	}
 
 	@Override
@@ -59,6 +65,7 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 		}
 		try {
 			insert(geometry, index, coordinate);
+			updateGeometryEditServiceProperties(geometry, index, coordinate);
 			return geometry;
 		} catch (GeometryIndexNotFoundException e) {
 			throw new GeometryOperationFailedException(e);
@@ -67,7 +74,7 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 
 	@Override
 	public GeometryIndexOperation getInverseOperation() {
-		return new DeleteVertexOperation(service);
+		return new DeleteVertexOperation(service, geometryEditService);
 	}
 
 	@Override
@@ -180,6 +187,24 @@ public class InsertVertexOperation implements GeometryIndexOperation {
 			}
 		} else {
 			throw new GeometryIndexNotFoundException("Could not match index with given geometry.");
+		}
+	}
+
+	private void updateGeometryEditServiceProperties(Geometry geometry, GeometryIndex index, Coordinate coordinate) {
+		if (geometryEditService.getEditingState().equals(GeometryEditState.INSERTING)) {
+			Coordinate tentativeMoveOrigin = null;
+			GeometryIndex nextIndex = null;
+			if (geometry.getGeometryType().equals(Geometry.POINT)) {
+				// If the case of a single point, no more inserting:
+				geometryEditService.setEditingState(GeometryEditState.IDLE);
+			} else if (geometry.getGeometryType().equals(Geometry.MULTI_POINT)) {
+				nextIndex = service.create(GeometryIndexType.TYPE_VERTEX, index.getValue() + 1, 0);
+			} else {
+				tentativeMoveOrigin = coordinate;
+				nextIndex = geometryEditService.getIndexService().getNextVertex(getGeometryIndex());
+			}
+			geometryEditService.setTentativeMoveOrigin(tentativeMoveOrigin);
+			geometryEditService.setInsertIndex(nextIndex);
 		}
 	}
 }

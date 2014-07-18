@@ -11,10 +11,9 @@
 
 package org.geomajas.plugin.editing.client.controller;
 
-import java.util.Collections;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import com.google.gwt.event.dom.client.DoubleClickEvent;
+import com.google.gwt.event.dom.client.HumanInputEvent;
+import com.google.gwt.event.dom.client.MouseMoveEvent;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.controller.MapEventParser;
@@ -25,9 +24,9 @@ import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.snap.SnapService;
 
-import com.google.gwt.event.dom.client.DoubleClickEvent;
-import com.google.gwt.event.dom.client.HumanInputEvent;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
+import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Controller that inserts vertices by clicking/tapping on the map.
@@ -58,13 +57,9 @@ public class GeometryIndexInsertController extends AbstractGeometryIndexControll
 				Coordinate location = getSnappedLocationWithinMaxBounds(event);
 				service.insert(Collections.singletonList(insertIndex),
 						Collections.singletonList(Collections.singletonList(location)));
-				service.setTentativeMoveOrigin(location);
 
-				// Update the insert index (if allowed):
-				if (!service.getGeometry().getGeometryType().equals(Geometry.POINT)
-						&& !service.getGeometry().getGeometryType().equals(Geometry.MULTI_POINT)) {
-					service.setInsertIndex(service.getIndexService().getNextVertex(insertIndex));
-				} else {
+				String geometryType = service.getGeometry().getGeometryType();
+				if (geometryType.equals(Geometry.POINT) || geometryType.equals(Geometry.MULTI_POINT)) {
 					// If the case of a point, no more inserting:
 					service.setEditingState(GeometryEditState.IDLE);
 				}
