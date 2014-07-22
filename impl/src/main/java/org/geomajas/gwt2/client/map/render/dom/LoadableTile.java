@@ -27,9 +27,25 @@ public interface LoadableTile {
 	 */
 	void load();
 
+	/**
+	 * Returns the unique code for this tile. Consider this it's unique identifier within a raster layer.
+	 *
+	 * @return Tile code.
+	 */
 	TileCode getCode();
 
+	/**
+	 * Return the URL to the actual image for this raster tile. It is that image that will really display the rendered
+	 * tile.
+	 *
+	 * @return URL for the raster image.
+	 */
 	String getUrl();
 
+	/**
+	 * Returns the bounds for the image on the client side.
+	 *
+	 * @return Tile bounding box.
+	 */
 	Bbox getBounds();
 }

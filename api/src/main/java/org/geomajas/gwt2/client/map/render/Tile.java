@@ -50,7 +50,8 @@ public class Tile implements Serializable {
 	/**
 	 * Constructor setting the tile's unique ID and bounds.
 	 *
-	 * @param bounds Bounds for the image on the client side.
+	 * @param bounds
+	 *            Bounds for the image on the client side.
 	 */
 	public Tile(Bbox bounds) {
 		this.bounds = bounds;
@@ -59,8 +60,10 @@ public class Tile implements Serializable {
 	/**
 	 * Constructor setting the tile's unique ID and bounds.
 	 *
-	 * @param tileCode The tile's code.
-	 * @param bounds   Bounds for the image on the client side.
+	 * @param tileCode
+	 *            The tile's code.
+	 * @param bounds
+	 *            Bounds for the image on the client side.
 	 */
 	public Tile(TileCode tileCode, Bbox bounds) {
 		this.code = tileCode;
@@ -100,7 +103,8 @@ public class Tile implements Serializable {
 	/**
 	 * Set the unique code for this tile. Consider this it's unique identifier within a raster layer.
 	 *
-	 * @param code The tile's code.
+	 * @param code
+	 *            The tile's code.
 	 */
 	public void setCode(TileCode code) {
 		this.code = code;
@@ -118,7 +122,8 @@ public class Tile implements Serializable {
 	/**
 	 * Sets the bounds for the image on the client side.
 	 *
-	 * @param bounds The image bounds.
+	 * @param bounds
+	 *            The image bounds.
 	 */
 	public void setBounds(Bbox bounds) {
 		this.bounds = bounds;
@@ -138,10 +143,10 @@ public class Tile implements Serializable {
 	 * Set the URL to the actual image for this raster tile. It is that image that will really display the rendered
 	 * tile.
 	 *
-	 * @param url The location of the actual image.
+	 * @param url
+	 *            The location of the actual image.
 	 */
 	public void setUrl(String url) {
 		this.url = url;
 	}
-
 }
