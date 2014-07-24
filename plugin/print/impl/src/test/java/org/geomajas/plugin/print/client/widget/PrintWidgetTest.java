@@ -11,9 +11,11 @@
 
 package org.geomajas.plugin.print.client.widget;
 
-import com.google.gwt.user.client.ui.Widget;
-import com.google.gwtmockito.GwtMockitoTestRunner;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.stub;
 import junit.framework.Assert;
+
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.plugin.print.client.Print;
 import org.geomajas.plugin.print.client.PrintViewFactory;
@@ -23,9 +25,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.stub;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwtmockito.GwtMockitoTestRunner;
 
 /**
  * Test class for {@link org.geomajas.plugin.print.client.widget.PrintWidgetPresenterImpl}.

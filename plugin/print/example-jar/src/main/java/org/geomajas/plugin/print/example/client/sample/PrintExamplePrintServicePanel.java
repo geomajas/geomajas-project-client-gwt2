@@ -11,15 +11,6 @@
 
 package org.geomajas.plugin.print.example.client.sample;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.ResizeLayoutPanel;
-import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.MapPresenter;
@@ -30,13 +21,23 @@ import org.geomajas.plugin.print.client.event.DefaultPrintRequestHandler;
 import org.geomajas.plugin.print.client.event.PrintRequestFinishedEvent;
 import org.geomajas.plugin.print.client.event.PrintRequestInfo;
 import org.geomajas.plugin.print.client.event.PrintRequestStartedEvent;
-import org.geomajas.plugin.print.client.template.impl.DefaultTemplateBuilder;
 import org.geomajas.plugin.print.client.template.PageSize;
 import org.geomajas.plugin.print.client.template.TemplateBuilderDataProvider;
+import org.geomajas.plugin.print.client.template.impl.DefaultTemplateBuilder;
 import org.geomajas.plugin.print.client.util.PrintConfiguration;
-import org.geomajas.plugin.print.command.dto.PrintTemplateInfo;
 import org.geomajas.plugin.print.example.client.i18n.SampleMessages;
 import org.geomajas.plugin.print.example.client.resources.PrintPluginExampleResource;
+import org.geomajas.plugin.printing.command.dto.PrintTemplateInfo;
+
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.ResizeLayoutPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Panel for example: calling {@link org.geomajas.plugin.print.client.PrintService}.

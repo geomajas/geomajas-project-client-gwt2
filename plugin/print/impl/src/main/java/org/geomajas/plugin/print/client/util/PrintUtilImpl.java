@@ -10,13 +10,14 @@
  */
 package org.geomajas.plugin.print.client.util;
 
-import com.google.gwt.core.client.GWT;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.plugin.print.client.i18n.PrintMessages;
 import org.geomajas.plugin.print.client.template.PageSize;
 import org.geomajas.plugin.print.client.template.TemplateBuilder;
 import org.geomajas.plugin.print.client.template.TemplateBuilderDataProvider;
-import org.geomajas.plugin.print.command.dto.PrintTemplateInfo;
+import org.geomajas.plugin.printing.command.dto.PrintTemplateInfo;
+
+import com.google.gwt.core.client.GWT;
 
 /**
  * Default implementation of {@link PrintUtil}.

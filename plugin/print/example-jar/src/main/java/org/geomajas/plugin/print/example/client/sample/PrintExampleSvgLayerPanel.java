@@ -11,7 +11,6 @@
 
 package org.geomajas.plugin.print.example.client.sample;
 
-import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.gwt2.client.event.MapInitializationEvent;
 import org.geomajas.gwt2.client.event.MapInitializationHandler;
 import org.geomajas.gwt2.client.gfx.VectorContainer;
@@ -19,6 +18,8 @@ import org.geomajas.plugin.print.client.layerbuilder.SvgClientLayerBuilder;
 import org.geomajas.plugin.print.client.widget.PrintWidget;
 import org.vaadin.gwtgraphics.client.shape.Circle;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
+
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Extension of {@link PrintExamplePanel} for custom view.

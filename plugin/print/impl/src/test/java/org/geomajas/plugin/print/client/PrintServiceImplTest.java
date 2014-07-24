@@ -11,49 +11,32 @@
 
 package org.geomajas.plugin.print.client;
 
-import com.google.gwt.core.client.Callback;
-import com.google.gwtmockito.GwtMock;
-import com.google.gwtmockito.GwtMockitoTestRunner;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.stub;
+import static org.mockito.Mockito.verify;
 import junit.framework.Assert;
-import org.geomajas.configuration.client.ClientMapInfo;
-import org.geomajas.geometry.Bbox;
+
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
-import org.geomajas.gwt2.client.map.MapConfiguration;
-import org.geomajas.gwt2.client.map.MapPresenter;
-import org.geomajas.gwt2.client.map.ViewPort;
-import org.geomajas.gwt2.client.map.layer.LayersModel;
 import org.geomajas.gwt2.client.service.CommandService;
 import org.geomajas.plugin.print.client.event.PrintFinishedInfo;
 import org.geomajas.plugin.print.client.event.PrintRequestInfo;
-import org.geomajas.plugin.print.client.template.PageSize;
 import org.geomajas.plugin.print.client.template.TemplateBuilder;
 import org.geomajas.plugin.print.client.template.TemplateBuilderDataProvider;
 import org.geomajas.plugin.print.client.widget.PrintWidgetMockStart;
-import org.geomajas.plugin.print.client.widget.PrintWidgetView;
-import org.geomajas.plugin.print.command.dto.PrintGetTemplateRequest;
-import org.geomajas.plugin.print.command.dto.PrintTemplateInfo;
-import org.geomajas.plugin.print.component.dto.ImageComponentInfo;
-import org.geomajas.plugin.print.component.dto.LayoutConstraintInfo;
-import org.geomajas.plugin.print.component.dto.MapComponentInfo;
-import org.geomajas.plugin.print.component.dto.PageComponentInfo;
-import org.geomajas.plugin.print.component.dto.PrintComponentInfo;
-import org.geomajas.plugin.print.component.dto.ScaleBarComponentInfo;
+import org.geomajas.plugin.printing.command.dto.PrintGetTemplateRequest;
+import org.geomajas.plugin.printing.command.dto.PrintTemplateInfo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
-import javax.validation.constraints.AssertTrue;
-import java.util.List;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.stub;
-import static org.mockito.Mockito.verify;
+import com.google.gwt.core.client.Callback;
+import com.google.gwtmockito.GwtMock;
+import com.google.gwtmockito.GwtMockitoTestRunner;
 
 /**
  * Test class for {@link org.geomajas.plugin.print.client.widget.PrintWidgetPresenterImpl}.

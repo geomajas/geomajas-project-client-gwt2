@@ -11,6 +11,9 @@
 
 package org.geomajas.plugin.print.client.template.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
@@ -26,24 +29,21 @@ import org.geomajas.gwt2.client.map.layer.VectorServerLayer;
 import org.geomajas.plugin.print.client.template.PrintableMapBuilder;
 import org.geomajas.plugin.print.client.template.TemplateBuilder;
 import org.geomajas.plugin.print.client.util.PrintLayout;
-import org.geomajas.plugin.print.command.dto.PrintTemplateInfo;
-import org.geomajas.plugin.print.component.dto.ImageComponentInfo;
-import org.geomajas.plugin.print.component.dto.LabelComponentInfo;
-import org.geomajas.plugin.print.component.dto.LayoutConstraintInfo;
-import org.geomajas.plugin.print.component.dto.LegendComponentInfo;
-import org.geomajas.plugin.print.component.dto.LegendGraphicComponentInfo;
-import org.geomajas.plugin.print.component.dto.LegendIconComponentInfo;
-import org.geomajas.plugin.print.component.dto.LegendItemComponentInfo;
-import org.geomajas.plugin.print.component.dto.MapComponentInfo;
-import org.geomajas.plugin.print.component.dto.PageComponentInfo;
-import org.geomajas.plugin.print.component.dto.PrintComponentInfo;
-import org.geomajas.plugin.print.component.dto.RasterizedLayersComponentInfo;
-import org.geomajas.plugin.print.component.dto.ScaleBarComponentInfo;
+import org.geomajas.plugin.printing.command.dto.PrintTemplateInfo;
+import org.geomajas.plugin.printing.component.dto.ImageComponentInfo;
+import org.geomajas.plugin.printing.component.dto.LabelComponentInfo;
+import org.geomajas.plugin.printing.component.dto.LayoutConstraintInfo;
+import org.geomajas.plugin.printing.component.dto.LegendComponentInfo;
+import org.geomajas.plugin.printing.component.dto.LegendGraphicComponentInfo;
+import org.geomajas.plugin.printing.component.dto.LegendIconComponentInfo;
+import org.geomajas.plugin.printing.component.dto.LegendItemComponentInfo;
+import org.geomajas.plugin.printing.component.dto.MapComponentInfo;
+import org.geomajas.plugin.printing.component.dto.PageComponentInfo;
+import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
+import org.geomajas.plugin.printing.component.dto.RasterizedLayersComponentInfo;
+import org.geomajas.plugin.printing.component.dto.ScaleBarComponentInfo;
 import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.RuleInfo;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Default print template builder, parameters include title, size, raster DPI, orientation, etc...

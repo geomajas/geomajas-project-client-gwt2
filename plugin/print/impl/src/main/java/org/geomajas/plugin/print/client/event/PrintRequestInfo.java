@@ -12,7 +12,7 @@ package org.geomajas.plugin.print.client.event;
 
 
 import org.geomajas.plugin.print.client.util.PrintConfiguration;
-import org.geomajas.plugin.print.command.dto.PrintTemplateInfo;
+import org.geomajas.plugin.printing.command.dto.PrintTemplateInfo;
 
 /**
  * Info object, containing info of the print request.

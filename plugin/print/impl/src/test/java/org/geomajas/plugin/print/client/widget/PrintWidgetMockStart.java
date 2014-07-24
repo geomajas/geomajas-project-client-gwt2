@@ -11,10 +11,14 @@
 
 package org.geomajas.plugin.print.client.widget;
 
-import com.google.gwt.core.client.Callback;
-import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwtmockito.GwtMockitoTestRunner;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.stub;
+import static org.mockito.Mockito.verify;
+
+import java.util.List;
+
 import junit.framework.Assert;
+
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
@@ -27,24 +31,22 @@ import org.geomajas.plugin.print.client.PrintService;
 import org.geomajas.plugin.print.client.ViewMockData;
 import org.geomajas.plugin.print.client.event.PrintRequestInfo;
 import org.geomajas.plugin.print.client.template.PageSize;
-import org.geomajas.plugin.print.command.dto.PrintTemplateInfo;
-import org.geomajas.plugin.print.component.dto.ImageComponentInfo;
-import org.geomajas.plugin.print.component.dto.LayoutConstraintInfo;
-import org.geomajas.plugin.print.component.dto.MapComponentInfo;
-import org.geomajas.plugin.print.component.dto.PageComponentInfo;
-import org.geomajas.plugin.print.component.dto.PrintComponentInfo;
-import org.geomajas.plugin.print.component.dto.ScaleBarComponentInfo;
+import org.geomajas.plugin.printing.command.dto.PrintTemplateInfo;
+import org.geomajas.plugin.printing.component.dto.ImageComponentInfo;
+import org.geomajas.plugin.printing.component.dto.LayoutConstraintInfo;
+import org.geomajas.plugin.printing.component.dto.MapComponentInfo;
+import org.geomajas.plugin.printing.component.dto.PageComponentInfo;
+import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
+import org.geomajas.plugin.printing.component.dto.ScaleBarComponentInfo;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.List;
-
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.stub;
-import static org.mockito.Mockito.verify;
+import com.google.gwt.core.client.Callback;
+import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwtmockito.GwtMockitoTestRunner;
 
 /**
  * Test class for {@link org.geomajas.plugin.print.client.widget.PrintWidgetPresenterImpl}.

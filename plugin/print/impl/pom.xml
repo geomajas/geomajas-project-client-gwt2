@@ -28,7 +28,7 @@
 
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-client-gwt2-plugin-print-common</artifactId>
+			<artifactId>geomajas-plugin-print</artifactId>
 		</dependency>
 
 		<dependency>

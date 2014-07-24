@@ -11,7 +11,6 @@
 package org.geomajas.plugin.print.client;
 
 
-import com.google.gwt.core.client.Callback;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
@@ -21,8 +20,10 @@ import org.geomajas.plugin.print.client.event.PrintRequestHandler;
 import org.geomajas.plugin.print.client.event.PrintRequestInfo;
 import org.geomajas.plugin.print.client.event.PrintRequestStartedEvent;
 import org.geomajas.plugin.print.client.util.PrintConfiguration;
-import org.geomajas.plugin.print.command.dto.PrintGetTemplateRequest;
-import org.geomajas.plugin.print.command.dto.PrintGetTemplateResponse;
+import org.geomajas.plugin.printing.command.dto.PrintGetTemplateRequest;
+import org.geomajas.plugin.printing.command.dto.PrintGetTemplateResponse;
+
+import com.google.gwt.core.client.Callback;
 
 /**
  * Default implementation of {@link PrintService}.

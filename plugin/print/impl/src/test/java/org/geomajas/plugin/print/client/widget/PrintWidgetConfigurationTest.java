@@ -11,14 +11,19 @@
 
 package org.geomajas.plugin.print.client.widget;
 
-import com.google.gwt.core.client.Callback;
-import com.google.gwtmockito.GwtMockitoTestRunner;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyDouble;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.stub;
+import static org.mockito.Mockito.verify;
 import junit.framework.Assert;
+
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.client.map.layer.Layer;
+import org.geomajas.plugin.print.client.event.PrintFinishedInfo;
 import org.geomajas.plugin.print.client.event.PrintRequestFinishedEvent;
 import org.geomajas.plugin.print.client.event.PrintRequestHandler;
-import org.geomajas.plugin.print.client.event.PrintFinishedInfo;
 import org.geomajas.plugin.print.client.event.PrintRequestInfo;
 import org.geomajas.plugin.print.client.event.PrintRequestStartedEvent;
 import org.geomajas.plugin.print.client.layerbuilder.PrintableLayersModelBuilder;
@@ -31,12 +36,8 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 
-import static org.mockito.Matchers.anyDouble;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.stub;
-import static org.mockito.Mockito.verify;
+import com.google.gwt.core.client.Callback;
+import com.google.gwtmockito.GwtMockitoTestRunner;
 
 /**
  * Testse custom configuration of the {@link org.geomajas.plugin.print.client.widget.PrintWidget}.

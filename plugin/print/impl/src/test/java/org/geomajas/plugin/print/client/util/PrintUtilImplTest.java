@@ -11,33 +11,21 @@
 
 package org.geomajas.plugin.print.client.util;
 
-import com.google.gwt.core.client.Callback;
-import com.google.gwtmockito.GwtMock;
-import com.google.gwtmockito.GwtMockitoTestRunner;
+import static org.mockito.Mockito.stub;
+import static org.mockito.Mockito.verify;
 import junit.framework.Assert;
-import org.geomajas.gwt.client.command.CommandCallback;
-import org.geomajas.gwt.client.command.GwtCommand;
-import org.geomajas.gwt2.client.GeomajasServerExtension;
-import org.geomajas.gwt2.client.service.CommandService;
-import org.geomajas.plugin.print.client.PrintServiceImpl;
-import org.geomajas.plugin.print.client.event.PrintFinishedInfo;
-import org.geomajas.plugin.print.client.event.PrintRequestInfo;
+
 import org.geomajas.plugin.print.client.template.PageSize;
 import org.geomajas.plugin.print.client.template.TemplateBuilder;
 import org.geomajas.plugin.print.client.template.TemplateBuilderDataProvider;
 import org.geomajas.plugin.print.client.widget.PrintWidgetMockStart;
-import org.geomajas.plugin.print.command.dto.PrintGetTemplateRequest;
-import org.geomajas.plugin.print.command.dto.PrintTemplateInfo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.stub;
-import static org.mockito.Mockito.verify;
+import com.google.gwtmockito.GwtMockitoTestRunner;
 
 /**
  * Test class for {@link org.geomajas.plugin.print.client.widget.PrintWidgetPresenterImpl}.
