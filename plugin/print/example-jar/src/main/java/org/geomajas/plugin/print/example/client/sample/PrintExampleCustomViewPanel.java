@@ -11,12 +11,13 @@
 
 package org.geomajas.plugin.print.example.client.sample;
 
-import com.google.gwt.core.client.GWT;
 import org.geomajas.plugin.print.client.template.PageSize;
 import org.geomajas.plugin.print.client.util.PrintConfiguration;
 import org.geomajas.plugin.print.client.widget.OptionsPrintPanel;
 import org.geomajas.plugin.print.client.widget.PrintWidget;
 import org.geomajas.plugin.print.example.client.i18n.SampleMessages;
+
+import com.google.gwt.core.client.GWT;
 
 /**
  * Extension of {@link PrintExamplePanel} for custom view.

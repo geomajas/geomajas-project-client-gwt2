@@ -11,8 +11,9 @@
 
 package org.geomajas.plugin.print.client.template.impl;
 
-import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.Widget;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
@@ -30,8 +31,8 @@ import org.geomajas.plugin.print.client.template.PrintableMapBuilder;
 import org.geomajas.plugin.rasterizing.command.dto.LegendRasterizingInfo;
 import org.geomajas.plugin.rasterizing.command.dto.MapRasterizingInfo;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Default implementation of {@link PrintableMapBuilder}.

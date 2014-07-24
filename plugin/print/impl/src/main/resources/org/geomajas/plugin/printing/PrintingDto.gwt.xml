@@ -9,5 +9,10 @@
   ~ details, see LICENSE.txt in the project root.
   -->
 <module>
+    <inherits name="org.geomajas.plugin.rasterizing.RasterizingDto" />
+
+	<!-- server side sources -->
+	<source path="component/dto" />
 	<source path="command/dto" />
+
 </module>

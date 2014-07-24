@@ -15,7 +15,7 @@ import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.plugin.print.client.template.TemplateBuilder;
 import org.geomajas.plugin.print.client.template.TemplateBuilderDataProvider;
-import org.geomajas.plugin.print.command.dto.PrintTemplateInfo;
+import org.geomajas.plugin.printing.command.dto.PrintTemplateInfo;
 
 /**
  * Presenter for print method.

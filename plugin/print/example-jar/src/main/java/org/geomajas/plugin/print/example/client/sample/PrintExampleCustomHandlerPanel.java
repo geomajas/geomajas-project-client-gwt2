@@ -11,12 +11,6 @@
 
 package org.geomajas.plugin.print.example.client.sample;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.plugin.print.client.Print;
 import org.geomajas.plugin.print.client.event.PrintRequestFinishedEvent;
 import org.geomajas.plugin.print.client.event.PrintRequestHandler;
@@ -24,6 +18,13 @@ import org.geomajas.plugin.print.client.event.PrintRequestStartedEvent;
 import org.geomajas.plugin.print.client.widget.OptionsPrintPanel;
 import org.geomajas.plugin.print.client.widget.PrintWidget;
 import org.geomajas.plugin.print.example.client.i18n.SampleMessages;
+
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Extension of {@link org.geomajas.plugin.print.example.client.sample.PrintExamplePanel} for custom view.

@@ -12,7 +12,7 @@
 package org.geomajas.plugin.print.client.template;
 
 import org.geomajas.gwt2.client.map.MapPresenter;
-import org.geomajas.plugin.print.command.dto.PrintTemplateInfo;
+import org.geomajas.plugin.printing.command.dto.PrintTemplateInfo;
 
 /**
  * Interface for the build pattern of building a {@link PrintTemplateInfo}.

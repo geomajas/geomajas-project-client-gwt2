@@ -14,14 +14,14 @@ package org.geomajas.plugin.print.client.template.impl;
 import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.plugin.print.client.util.PrintLayout;
-import org.geomajas.plugin.print.command.dto.PrintTemplateInfo;
-import org.geomajas.plugin.print.component.dto.ImageComponentInfo;
-import org.geomajas.plugin.print.component.dto.LabelComponentInfo;
-import org.geomajas.plugin.print.component.dto.LayoutConstraintInfo;
-import org.geomajas.plugin.print.component.dto.LegendComponentInfo;
-import org.geomajas.plugin.print.component.dto.MapComponentInfo;
-import org.geomajas.plugin.print.component.dto.PageComponentInfo;
-import org.geomajas.plugin.print.component.dto.ScaleBarComponentInfo;
+import org.geomajas.plugin.printing.command.dto.PrintTemplateInfo;
+import org.geomajas.plugin.printing.component.dto.ImageComponentInfo;
+import org.geomajas.plugin.printing.component.dto.LabelComponentInfo;
+import org.geomajas.plugin.printing.component.dto.LayoutConstraintInfo;
+import org.geomajas.plugin.printing.component.dto.LegendComponentInfo;
+import org.geomajas.plugin.printing.component.dto.MapComponentInfo;
+import org.geomajas.plugin.printing.component.dto.PageComponentInfo;
+import org.geomajas.plugin.printing.component.dto.ScaleBarComponentInfo;
 
 /**
  * Builder pattern for templates.

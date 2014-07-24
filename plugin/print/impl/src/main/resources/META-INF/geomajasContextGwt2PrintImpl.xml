@@ -28,20 +28,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			</bean>
 		</property>
 		<property name="backendVersion" value="${version-geomajas-backend}" />
-		<property name="dependencies">
-			<list>
-
-				<bean class="org.geomajas.global.PluginVersionInfo">
-					<property name="name" value="Simple print" />
-					<property name="version" value="${project.version}" />
-				</bean>
-
-				<bean class="org.geomajas.global.PluginVersionInfo">
-					<property name="name" value="GWT2 Client impl" />
-					<property name="version" value="${project.version}"/>
-				</bean>
-			</list>
-		</property>
 		<property name="copyrightInfo">
 			<list>
 				<bean class="org.geomajas.global.CopyrightInfo">

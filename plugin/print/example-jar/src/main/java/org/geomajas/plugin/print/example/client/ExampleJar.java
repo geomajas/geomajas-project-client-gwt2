@@ -18,11 +18,11 @@ import org.geomajas.plugin.print.example.client.i18n.SampleMessages;
 import org.geomajas.plugin.print.example.client.sample.PrintExampleCustomHandlerPanel;
 import org.geomajas.plugin.print.example.client.sample.PrintExampleCustomViewPanel;
 import org.geomajas.plugin.print.example.client.sample.PrintExamplePanel;
+import org.geomajas.plugin.print.example.client.sample.PrintExamplePrintServicePanel;
+import org.geomajas.plugin.print.example.client.sample.PrintExampleSvgLayerPanel;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import org.geomajas.plugin.print.example.client.sample.PrintExamplePrintServicePanel;
-import org.geomajas.plugin.print.example.client.sample.PrintExampleSvgLayerPanel;
 
 /**
  * Entry point and main class for the GWT client example application.

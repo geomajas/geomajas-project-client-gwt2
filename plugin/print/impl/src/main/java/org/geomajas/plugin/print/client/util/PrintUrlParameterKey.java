@@ -20,7 +20,7 @@ package org.geomajas.plugin.print.client.util;
  */
 public interface PrintUrlParameterKey {
 
-	String URL_PATH = "d/print";
+	String URL_PATH = "d/printing";
 
 	String URL_DOCUMENT_ID = "documentId";
 

@@ -11,16 +11,14 @@
 
 package org.geomajas.plugin.print.client.widget;
 
-import com.google.gwtmockito.GwtMockitoTestRunner;
+import static org.mockito.Mockito.verify;
+
 import org.geomajas.plugin.print.client.template.PageSize;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.eq;
-import static org.mockito.Mockito.any;
+import com.google.gwtmockito.GwtMockitoTestRunner;
 
 /**
  * Test class for {@link PrintWidgetPresenterImpl}.

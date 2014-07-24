@@ -8,12 +8,8 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
+<module>
 
-<configuration>
-
-
-	<root>
-		<level value="DEBUG"/>
-	</root>
-
-</configuration>
+	<!-- server side sources -->
+	<source path="command/dto" />
+</module>

@@ -24,9 +24,8 @@
 	<description>Geomajas GWT2 client: Plugin Print - Parent</description>
 
 	<modules>
-		<module>common</module>
 		<module>impl</module>
-        <module>print-wms</module>
+		<module>print-wms</module>
 		<module>example-jar</module>
         <module>documentation</module>
 	</modules>
