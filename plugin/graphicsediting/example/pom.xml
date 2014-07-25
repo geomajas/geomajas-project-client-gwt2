@@ -117,7 +117,7 @@
 					<draftCompile>true</draftCompile>
 					<optimizationLevel>0</optimizationLevel>
 					<extraJvmArgs>-Xmx1024M -Xss1024k</extraJvmArgs>
-					<module>org.geomajas.plugin.graphicsediting.gwt2.example.GraphicsEditingGwt2Example</module>
+					<module>org.geomajas.gwt2.plugin.graphicsediting.example.GraphicsEditingGwt2Example</module>
 					<runTarget>index.html</runTarget>
 					<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
 					<copyWebapp>true</copyWebapp>

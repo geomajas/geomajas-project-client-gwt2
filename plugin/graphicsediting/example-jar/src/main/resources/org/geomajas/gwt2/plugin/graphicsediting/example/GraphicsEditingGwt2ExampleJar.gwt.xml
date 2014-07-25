@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--
   ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
   ~
@@ -9,17 +10,9 @@
   ~ details, see LICENSE.txt in the project root.
   -->
 
-<configuration debug="true">
-
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-        </encoder>
-    </appender>
-
-    <root>
-        <level value="INFO"/>
-        <appender-ref ref="CONSOLE"/>
-    </root>
-
-</configuration>
+<module>
+	<inherits name='org.geomajas.gwt2.example.base.ExampleBase' />
+	<inherits name="org.geomajas.gwt2.plugin.graphicsediting.GraphicsEditingGwt2"/>
+	<entry-point class="org.geomajas.gwt2.plugin.graphicsediting.example.client.GraphicsEditingExampleJar"/>
+	<source path='client'/>
+</module>
