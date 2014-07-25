@@ -9,10 +9,13 @@
   ~ details, see LICENSE.txt in the project root.
   -->
 <module>
-    <inherits name="org.geomajas.gwt2.plugin.wms.GeomajasClientPluginWms"/>
-    <inherits name="org.geomajas.plugin.rasterizing.RasterizingDto"/>
+	<inherits name="com.google.gwt.http.HTTP" />
+	<inherits name="com.google.gwt.xml.XML" />
+    <inherits name="org.geomajas.gwt2.GeomajasClientImpl"/>
 
     <!-- Source for this plug-in -->
     <source path="client" />
-    <source path="server/dto" />
+    <source path="server/command/dto" />
+
+    <servlet path="/GetCapabilities" class="org.geomajas.gwt2.plugin.wms.server.GetCapabilitiesServlet" />
 </module>

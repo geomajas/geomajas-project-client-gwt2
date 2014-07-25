@@ -21,7 +21,7 @@
     class that provides a starting point for most functionalities the plugin
     supports. This starting point is the <code>WmsClient</code> class:</para>
 
-    <programlisting>org.geomajas.plugin.wms.client.WmsClient</programlisting>
+    <programlisting>org.geomajas.gwt2.plugin.wms.client.WmsClient</programlisting>
 
     <para>From here on it is possible to create new WMS layers or execute WMS
     GetCapabilities requests, or ...</para>
@@ -32,7 +32,7 @@
       <para>Before we explain how to create a client-side WMS layer, let us
       first delve into the inner workings of the WMS client plugin. It
       provides a client WMS service definition that supports WMS requests:
-      <code>org.geomajas.plugin.wmsclient.client.service.WmsService</code></para>
+      <code>org.geomajas.gwt2.plugin.wms.client.service.WmsService</code></para>
 
       <para><code>This WmsService provides support for the following WMS
       requests:</code></para>
@@ -346,7 +346,7 @@ WmsClient.getInstance().getWmsService()
       functionalities, such as creating this new layer type. It is called the
       <code>WmsServerExtension</code>:</para>
 
-      <programlisting>org.geomajas.plugin.wms.client.WmsServerExtension</programlisting>
+      <programlisting>org.geomajas.gwt2.plugin.wms.client.WmsServerExtension</programlisting>
 
       <para>From here, it is possible to create a new layer that supports
       features:</para>

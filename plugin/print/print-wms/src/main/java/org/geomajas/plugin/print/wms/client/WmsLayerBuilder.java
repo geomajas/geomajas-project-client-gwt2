@@ -23,8 +23,8 @@ import org.geomajas.layer.tile.TileCode;
 import org.geomajas.plugin.print.client.layerbuilder.PrintableLayersModelBuilder;
 import org.geomajas.plugin.print.wms.server.dto.WmsClientLayerInfo;
 import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
-import org.geomajas.plugin.wms.client.WmsClient;
-import org.geomajas.plugin.wms.client.layer.WmsLayer;
+import org.geomajas.gwt2.plugin.wms.client.WmsClient;
+import org.geomajas.gwt2.plugin.wms.client.layer.WmsLayer;
 
 import java.util.ArrayList;
 import java.util.List;
