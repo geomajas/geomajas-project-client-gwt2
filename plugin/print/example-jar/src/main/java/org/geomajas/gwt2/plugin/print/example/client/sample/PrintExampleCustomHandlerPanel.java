@@ -9,15 +9,15 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.print.example.client.sample;
+package org.geomajas.gwt2.plugin.print.example.client.sample;
 
-import org.geomajas.plugin.print.client.Print;
-import org.geomajas.plugin.print.client.event.PrintRequestFinishedEvent;
-import org.geomajas.plugin.print.client.event.PrintRequestHandler;
-import org.geomajas.plugin.print.client.event.PrintRequestStartedEvent;
-import org.geomajas.plugin.print.client.widget.OptionsPrintPanel;
-import org.geomajas.plugin.print.client.widget.PrintWidget;
-import org.geomajas.plugin.print.example.client.i18n.SampleMessages;
+import org.geomajas.gwt2.plugin.print.client.Print;
+import org.geomajas.gwt2.plugin.print.client.event.PrintRequestFinishedEvent;
+import org.geomajas.gwt2.plugin.print.client.event.PrintRequestHandler;
+import org.geomajas.gwt2.plugin.print.client.event.PrintRequestStartedEvent;
+import org.geomajas.gwt2.plugin.print.client.widget.OptionsPrintPanel;
+import org.geomajas.gwt2.plugin.print.client.widget.PrintWidget;
+import org.geomajas.gwt2.plugin.print.example.client.i18n.SampleMessages;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Anchor;
@@ -27,11 +27,11 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Extension of {@link org.geomajas.plugin.print.example.client.sample.PrintExamplePanel} for custom view.
+ * Extension of {@link org.geomajas.gwt2.plugin.print.example.client.sample.PrintExamplePanel} for custom view.
  *
  * @author Jan Venstermans
  */
-public class PrintExampleCustomHandlerPanel extends PrintExamplePanel  {
+public class PrintExampleCustomHandlerPanel extends PrintExamplePanel {
 
 	private static final SampleMessages MESSAGES = GWT.create(SampleMessages.class);
 

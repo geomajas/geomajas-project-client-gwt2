@@ -9,13 +9,13 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.print.example.client.sample;
+package org.geomajas.gwt2.plugin.print.example.client.sample;
 
-import org.geomajas.plugin.print.client.template.PageSize;
-import org.geomajas.plugin.print.client.util.PrintConfiguration;
-import org.geomajas.plugin.print.client.widget.OptionsPrintPanel;
-import org.geomajas.plugin.print.client.widget.PrintWidget;
-import org.geomajas.plugin.print.example.client.i18n.SampleMessages;
+import org.geomajas.gwt2.plugin.print.client.template.PageSize;
+import org.geomajas.gwt2.plugin.print.client.util.PrintConfiguration;
+import org.geomajas.gwt2.plugin.print.client.widget.OptionsPrintPanel;
+import org.geomajas.gwt2.plugin.print.client.widget.PrintWidget;
+import org.geomajas.gwt2.plugin.print.example.client.i18n.SampleMessages;
 
 import com.google.gwt.core.client.GWT;
 

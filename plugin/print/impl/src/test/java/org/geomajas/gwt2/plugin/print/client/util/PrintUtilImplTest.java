@@ -9,16 +9,16 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.print.client.util;
+package org.geomajas.gwt2.plugin.print.client.util;
 
 import static org.mockito.Mockito.stub;
 import static org.mockito.Mockito.verify;
 import junit.framework.Assert;
 
-import org.geomajas.plugin.print.client.template.PageSize;
-import org.geomajas.plugin.print.client.template.TemplateBuilder;
-import org.geomajas.plugin.print.client.template.TemplateBuilderDataProvider;
-import org.geomajas.plugin.print.client.widget.PrintWidgetMockStart;
+import org.geomajas.gwt2.plugin.print.client.template.PageSize;
+import org.geomajas.gwt2.plugin.print.client.template.TemplateBuilder;
+import org.geomajas.gwt2.plugin.print.client.template.TemplateBuilderDataProvider;
+import org.geomajas.gwt2.plugin.print.client.widget.PrintWidgetMockStart;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,7 +28,7 @@ import org.mockito.Mock;
 import com.google.gwtmockito.GwtMockitoTestRunner;
 
 /**
- * Test class for {@link org.geomajas.plugin.print.client.widget.PrintWidgetPresenterImpl}.
+ * Test class for {@link PrintUtilImpl}.
  *
  * @author Jan Venstermans
  */

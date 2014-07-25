@@ -8,18 +8,17 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.plugin.print.client.template.impl;
-
-import org.geomajas.plugin.print.client.i18n.PrintMessages;
-import org.geomajas.plugin.print.client.template.DefaultPrintRequestDataProvider;
-import org.geomajas.plugin.print.client.template.PageSize;
-import org.geomajas.plugin.print.client.template.TemplateBuilderDataProvider;
-import org.geomajas.plugin.print.client.util.PrintConfiguration;
+package org.geomajas.gwt2.plugin.print.client.template.impl;
 
 import com.google.gwt.core.client.GWT;
+import org.geomajas.gwt2.plugin.print.client.i18n.PrintMessages;
+import org.geomajas.gwt2.plugin.print.client.template.DefaultPrintRequestDataProvider;
+import org.geomajas.gwt2.plugin.print.client.template.PageSize;
+import org.geomajas.gwt2.plugin.print.client.template.TemplateBuilderDataProvider;
+import org.geomajas.gwt2.plugin.print.client.util.PrintConfiguration;
 
 /**
- * Default implementation of {@link org.geomajas.plugin.print.client.template.DefaultPrintRequestDataProvider}.
+ * Default implementation of {@link DefaultPrintRequestDataProvider}.
  * It is a DTO-like container for the default values.
  *
  * @author Jan Venstermans

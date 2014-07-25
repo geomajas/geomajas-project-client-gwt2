@@ -9,11 +9,11 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.print.client.widget;
+package org.geomajas.gwt2.plugin.print.client.widget;
 
 import static org.mockito.Mockito.verify;
 
-import org.geomajas.plugin.print.client.template.PageSize;
+import org.geomajas.gwt2.plugin.print.client.template.PageSize;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -26,7 +26,6 @@ import org.geomajas.gwt2.plugin.print.client.template.PageSize;
 import org.geomajas.gwt2.plugin.print.client.template.TemplateBuilderDataProvider;
 import org.geomajas.gwt2.plugin.print.client.util.PrintConfiguration;
 import org.geomajas.gwt2.plugin.print.example.client.i18n.SampleMessages;
-import org.geomajas.gwt2.plugin.print.command.dto.PrintTemplateInfo;
 import org.geomajas.gwt2.plugin.print.example.client.resources.PrintPluginExampleResource;
 import org.geomajas.plugin.printing.command.dto.PrintTemplateInfo;
 
