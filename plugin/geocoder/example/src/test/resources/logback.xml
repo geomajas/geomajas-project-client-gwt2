@@ -17,12 +17,6 @@
         </encoder>
     </appender>
 
-	<!--
-    <logger name="org.geomajas.puregwt">
-        <level value="DEBUG"/>
-    </logger>
-    -->
-
     <root>
         <level value="DEBUG"/>
         <appender-ref ref="CONSOLE"/>

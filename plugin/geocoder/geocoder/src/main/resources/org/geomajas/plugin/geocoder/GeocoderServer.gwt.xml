@@ -9,18 +9,8 @@
   ~ details, see LICENSE.txt in the project root.
   -->
 
-<configuration debug="true">
+<module>
+	<!-- server side section-->
+	<source path="command/dto" />
 
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-        </encoder>
-    </appender>
-
-
-    <root>
-        <level value="INFO"/>
-        <appender-ref ref="CONSOLE"/>
-    </root>
-
-</configuration>
+</module>
