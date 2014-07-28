@@ -24,7 +24,7 @@
     <inherits name='org.geomajas.gwt2.plugin.tms.example.ExampleJar' />
 	<inherits name='org.geomajas.gwt2.plugin.graphicsediting.example.GraphicsEditingGwt2ExampleJar' />
 	<inherits name='org.geomajas.gwt2.plugin.geocoder.example.GeoCoderExampleJar' />
-	<inherits name='org.geomajas.plugin.wms.example.WmsServerExampleJar' />
+	<inherits name='org.geomajas.gwt2.plugin.wms.example.ServerExampleJar' />
 
     <entry-point class="org.geomajas.gwt2.example.client.Example" />
 	<!-- set target browser to compile for, use this to limit to the browser used for testing -->
