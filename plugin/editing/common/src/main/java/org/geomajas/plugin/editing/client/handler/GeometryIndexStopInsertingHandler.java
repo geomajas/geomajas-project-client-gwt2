@@ -50,7 +50,7 @@ public class GeometryIndexStopInsertingHandler extends AbstractGeometryIndexMapH
 	private static Logger logger = Logger.getLogger(GeometryIndexSnapToDeleteHandler.class.getName());
 
 	public void onDown(HumanInputEvent<?> event) {
-		if (service.getEditingState() == GeometryEditState.INSERTING && isCorrectVertex()) {
+		if (service.getEditingState() == GeometryEditState.INSERTING && isCorrectVertexForMouseDown()) {
 			try {
 				service.finish(service.getInsertIndex());
 			} catch (GeometryOperationFailedException e) {
@@ -94,6 +94,21 @@ public class GeometryIndexStopInsertingHandler extends AbstractGeometryIndexMapH
 	// ------------------------------------------------------------------------
 
 	private boolean isCorrectVertex() {
+		try {
+			String geomType = service.getIndexService().getGeometryType(service.getGeometry(), index);
+			if (Geometry.LINE_STRING.equals(geomType)) {
+				GeometryIndex temp = service.getIndexService().getPreviousVertex(service.getInsertIndex());;
+				return temp.equals(index);
+			} else if (Geometry.LINEAR_RING.equals(geomType)) {
+				return 0 == service.getIndexService().getValue(index);
+			}
+		} catch (GeometryIndexNotFoundException e) {
+			throw new IllegalStateException(e);
+		}
+		return false;
+	}
+
+	private boolean isCorrectVertexForMouseDown() {
 		try {
 			String geomType = service.getIndexService().getGeometryType(service.getGeometry(), index);
 			if (Geometry.LINE_STRING.equals(geomType)) {
