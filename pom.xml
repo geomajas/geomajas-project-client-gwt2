@@ -47,7 +47,7 @@
 		<version-geomajas-backend>1.16.1</version-geomajas-backend>
 		<version-geomajas-graphics>1.0.0-M3</version-geomajas-graphics>
 		<version-vaadin-graphics>1.0.0.TX11</version-vaadin-graphics>
-		<version-gwt>2.5.0</version-gwt>
+		<version-gwt>2.5.1</version-gwt>
 		<spring-version>3.0.5.RELEASE</spring-version>
 		<version-geomajas-build-tools>2.0.0</version-geomajas-build-tools>
 		<gwt-exporter-version>2.4.0</gwt-exporter-version>
