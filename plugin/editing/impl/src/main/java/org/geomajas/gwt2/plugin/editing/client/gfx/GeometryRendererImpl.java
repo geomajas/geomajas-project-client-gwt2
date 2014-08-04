@@ -11,10 +11,6 @@
 
 package org.geomajas.gwt2.plugin.editing.client.gfx;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
@@ -70,6 +66,10 @@ import org.vaadin.gwtgraphics.client.VectorObject;
 import org.vaadin.gwtgraphics.client.shape.Path;
 import org.vaadin.gwtgraphics.client.shape.path.LineTo;
 import org.vaadin.gwtgraphics.client.shape.path.MoveTo;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Renderer for geometries during the editing process.
@@ -209,7 +209,7 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 		container = null;
 		shapes.clear();
 	}
-	
+
 	@Override
 	public void onGeometryEditSuspend(GeometryEditSuspendEvent event) {
 		if (container != null) {
@@ -542,7 +542,8 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 		if (geometry.getCoordinates() != null) {
 			int max = geometry.getCoordinates().length - 1;
 
-			// If we are inserting in this particular LinearRing, display one less edge/vertex to make it look closable:
+			// If we are inserting in this particular LinearRing, don't display the closing edge/vertex or it 
+			// looks like the ring is already closed
 			GeometryIndex insertIndex = editService.getInsertIndex();
 			if (insertIndex != null && editService.getEditingState().equals(GeometryEditState.INSERTING)
 					&& editService.getIndexService().isChildOf(parentIndex, insertIndex)) {
@@ -630,7 +631,7 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 				GeomajasImpl.getInstance().getGfxUtil().applyController(shape, controller);
 			}
 		}
-		
+
 		container.add(shape);
 		if (index == null) {
 			nullShape = shape;
