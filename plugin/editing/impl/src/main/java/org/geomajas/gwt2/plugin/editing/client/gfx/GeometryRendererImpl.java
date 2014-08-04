@@ -58,6 +58,7 @@ import org.geomajas.plugin.editing.client.gfx.GeometryRenderer;
 import org.geomajas.plugin.editing.client.handler.EdgeMapHandlerFactory;
 import org.geomajas.plugin.editing.client.handler.VertexMapHandlerFactory;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
+import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
@@ -541,6 +542,13 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 		if (geometry.getCoordinates() != null) {
 			int max = geometry.getCoordinates().length - 1;
 
+			// If we are inserting in this particular LinearRing, don't display the closing edge/vertex or it 
+			// looks like the ring is already closed
+			GeometryIndex insertIndex = editService.getInsertIndex();
+			if (insertIndex != null && editService.getEditingState().equals(GeometryEditState.INSERTING)
+					&& editService.getIndexService().isChildOf(parentIndex, insertIndex)) {
+				max--;
+			}
 			// limit to maximum 50 visible indices if max > 50
 			if (max > 50) {
 				max = 50;

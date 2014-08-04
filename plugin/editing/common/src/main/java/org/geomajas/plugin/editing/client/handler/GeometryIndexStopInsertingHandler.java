@@ -11,13 +11,10 @@
 
 package org.geomajas.plugin.editing.client.handler;
 
-import com.google.gwt.event.dom.client.HumanInputEvent;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.event.dom.client.MouseMoveHandler;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseOutHandler;
-import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.event.dom.client.MouseOverHandler;
+import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.handler.MapDownHandler;
@@ -27,9 +24,13 @@ import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
 
-import java.util.Collections;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.google.gwt.event.dom.client.HumanInputEvent;
+import com.google.gwt.event.dom.client.MouseMoveEvent;
+import com.google.gwt.event.dom.client.MouseMoveHandler;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 
 /**
  * <p>
@@ -41,16 +42,16 @@ import java.util.logging.Logger;
  * If the service is busy inserting (state = INSERTING), and a point is recognized for highlighting, this handler will
  * also snap to it.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 public class GeometryIndexStopInsertingHandler extends AbstractGeometryIndexMapHandler implements MapDownHandler,
 		MouseOverHandler, MouseOutHandler, MouseMoveHandler {
-
+	
 	private static Logger logger = Logger.getLogger(GeometryIndexSnapToDeleteHandler.class.getName());
 
 	public void onDown(HumanInputEvent<?> event) {
-		if (service.getEditingState() == GeometryEditState.INSERTING && isCorrectVertexForMouseDown()) {
+		if (service.getEditingState() == GeometryEditState.INSERTING && isCorrectVertex()) {
 			try {
 				service.finish(service.getInsertIndex());
 			} catch (GeometryOperationFailedException e) {
@@ -93,33 +94,20 @@ public class GeometryIndexStopInsertingHandler extends AbstractGeometryIndexMapH
 	// Private methods:
 	// ------------------------------------------------------------------------
 
+	/**
+	 * Stop when clicking on the last vertex for line strings or the first one for linear rings (closing action).
+	 * Double-clicking is now handled in the GeometryIndexInsertcontroller.
+	 * 
+	 * @return
+	 */
 	private boolean isCorrectVertex() {
-		try {
-			String geomType = service.getIndexService().getGeometryType(service.getGeometry(), index);
-			if (Geometry.LINE_STRING.equals(geomType)) {
-				GeometryIndex temp = service.getIndexService().getPreviousVertex(service.getInsertIndex());;
-				return temp.equals(index);
-			} else if (Geometry.LINEAR_RING.equals(geomType)) {
-				return 0 == service.getIndexService().getValue(index);
-			}
-		} catch (GeometryIndexNotFoundException e) {
-			throw new IllegalStateException(e);
-		}
-		return false;
-	}
-
-	private boolean isCorrectVertexForMouseDown() {
 		try {
 			String geomType = service.getIndexService().getGeometryType(service.getGeometry(), index);
 			if (Geometry.LINE_STRING.equals(geomType)) {
 				GeometryIndex temp = service.getIndexService().getPreviousVertex(service.getInsertIndex());
 				return temp.equals(index);
 			} else if (Geometry.LINEAR_RING.equals(geomType)) {
-				if (service.getTentativeMoveOrigin().equals(service.getTentativeMoveLocation())) {
-					return true;
-				} else {
-					return 0 == service.getIndexService().getValue(index);
-				}
+				return 0 == service.getIndexService().getValue(index);
 			}
 		} catch (GeometryIndexNotFoundException e) {
 			throw new IllegalStateException(e);
