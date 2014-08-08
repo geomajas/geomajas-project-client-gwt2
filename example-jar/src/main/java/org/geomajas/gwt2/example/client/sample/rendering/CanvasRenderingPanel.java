@@ -62,7 +62,9 @@ public class CanvasRenderingPanel implements SamplePanel {
 
 	private MapPresenter mapPresenter;
 
-	private CanvasContainer container;
+	private CanvasContainer polygonContainer;
+
+	private CanvasContainer rectangleContainer;
 
 	@UiField
 	protected ResizeLayoutPanel mapPanel;
@@ -111,8 +113,8 @@ public class CanvasRenderingPanel implements SamplePanel {
 
 	@UiHandler("polyBtn")
 	public void onPolyBtnClicked(ClickEvent event) {
-		if (container != null) {
-			container.clear();
+		if (polygonContainer != null) {
+			polygonContainer.clear();
 			List<CanvasShape> shapes = new ArrayList<CanvasShape>();
 			double factor = Math.pow(count, -0.5);
 			for (int i = 0; i < count; i++) {
@@ -133,15 +135,15 @@ public class CanvasRenderingPanel implements SamplePanel {
 				path.setStrokeStyle(getRandomRGB(1));
 				shapes.add(path);
 			}
-			container.addAll(shapes);
-			container.repaint();
+			polygonContainer.addAll(shapes);
+			polygonContainer.repaint();
 		}
 	}
 
 	@UiHandler("rectBtn")
 	public void onRectangleBtnClicked(ClickEvent event) {
-		if (container != null) {
-			container.clear();
+		if (rectangleContainer != null) {
+			rectangleContainer.clear();
 			List<CanvasShape> shapes = new ArrayList<CanvasShape>();
 			double factor = Math.pow(count, -0.5);
 			for (int i = 0; i < count; i++) {
@@ -154,8 +156,8 @@ public class CanvasRenderingPanel implements SamplePanel {
 				rect.setStrokeStyle(getRandomRGB(1));
 				shapes.add(rect);
 			}
-			container.addAll(shapes);
-			container.repaint();
+			rectangleContainer.addAll(shapes);
+			rectangleContainer.repaint();
 		}
 	}
 
@@ -176,7 +178,8 @@ public class CanvasRenderingPanel implements SamplePanel {
 
 		public void onMapInitialized(MapInitializationEvent event) {
 			if (Canvas.isSupported()) {
-				container = mapPresenter.getContainerManager().addWorldCanvasContainer();
+				polygonContainer = mapPresenter.getContainerManager().addWorldCanvasContainer();
+				rectangleContainer = mapPresenter.getContainerManager().addWorldCanvasContainer();
 			} else {
 				label.setText(ExampleJar.getMessages().renderingMissingCanvas());
 				label.setVisible(true);

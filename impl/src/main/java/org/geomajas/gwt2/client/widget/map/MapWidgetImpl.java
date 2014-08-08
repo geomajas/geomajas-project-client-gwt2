@@ -199,7 +199,7 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	@Override
 	public CanvasContainer getNewWorldCanvas() {
 		CanvasContainer container = new CanvasContainerImpl(getWidth(), getHeight());
-		canvasPanel.add(container);
+		canvasPanel.add(container, 0, 0);
 		worldCanvases.add(container);
 		worldTransformables.add(container);
 		return container;
