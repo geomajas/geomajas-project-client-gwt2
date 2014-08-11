@@ -112,14 +112,14 @@ public class GeometryIndexInsertController extends AbstractGeometryIndexControll
 	private boolean isDoubleClick(HumanInputEvent<?> event) {
 		Coordinate clickPosition = getLocation(event, RenderSpace.SCREEN);
 		boolean doubleClicked = false;
-		if(lastClickedPosition != null) {
+		if (lastClickedPosition != null) {
 			int distance = (int) Math.hypot(clickPosition.getX() - lastClickedPosition.getX(), clickPosition.getY()
 					- lastClickedPosition.getY());
-			if(distance < MIN_DOUBLECLICK_DISTANCE) {
+			if (distance < MIN_DOUBLECLICK_DISTANCE) {
 				doubleClicked = true;
 			} 
 		} 
-		if(doubleClicked) {
+		if (doubleClicked) {
 			lastClickedPosition = null;
 			return true;
 		} else {
