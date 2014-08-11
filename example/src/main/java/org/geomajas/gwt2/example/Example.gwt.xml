@@ -17,7 +17,7 @@
     <!--<inherits name="org.geomajas.gwt2.GeomajasClientImplNoStyle" />-->
 
     <!-- Include plugins: -->
-	<inherits name='org.geomajas.gwt2.plugin.wms.example.ExampleJar' />
+ 	<inherits name='org.geomajas.gwt2.plugin.wms.example.ExampleJar' />
 	<inherits name='org.geomajas.gwt2.plugin.editing.example.ExampleJar' />
     <inherits name='org.geomajas.gwt2.widget.example.ExampleJar' />
 	<inherits name='org.geomajas.gwt2.plugin.print.example.ExampleJar' />
@@ -25,7 +25,7 @@
 	<inherits name='org.geomajas.gwt2.plugin.graphicsediting.example.GraphicsEditingGwt2ExampleJar' />
 	<inherits name='org.geomajas.gwt2.plugin.geocoder.example.GeoCoderExampleJar' />
 	<inherits name='org.geomajas.gwt2.plugin.wms.example.ServerExampleJar' />
-
+ 
     <entry-point class="org.geomajas.gwt2.example.client.Example" />
 	<!-- set target browser to compile for, use this to limit to the browser used for testing -->
 	<!-- where value = "ie6/opera/gecko1_8/safari/gecko" , "gecko1_8" is FireFox 3 -->

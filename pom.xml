@@ -372,10 +372,10 @@
 			</dependency>
 
 			<!-- External GWT libraries -->
- 			<dependency>
-				<groupId>com.google.code.gwt-dnd</groupId>
+			 <dependency>
+				<groupId>com.allen-sauer.gwt.dnd</groupId>
 				<artifactId>gwt-dnd</artifactId>
-				<version>3.1.0</version>
+				<version>3.2.3</version>
 			</dependency>
 
 			<dependency>

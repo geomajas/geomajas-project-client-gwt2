@@ -58,7 +58,7 @@
 
 		<!-- External GWT libraries -->
 		<dependency>
-			<groupId>com.google.code.gwt-dnd</groupId>
+			<groupId>com.allen-sauer.gwt.dnd</groupId>
 			<artifactId>gwt-dnd</artifactId>
 		</dependency>
 	</dependencies>
