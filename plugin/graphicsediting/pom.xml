@@ -24,7 +24,7 @@
 	<name>Geomajas GWT2 client: Plugin GraphicsEditing - Parent</name>
 	<description>
 		Geomajas Graphics Editing plugin. The graphics editing plugin defines a set of interfaces and controllers for editing graphical objects in maps based on gwt-graphics.
-		It can be used as a basis for annotations (based on SVG/VML elements) as well as to extend 
+		It can be used as a basis for annotations (based on SVG/VML elements) as well as to extend
 		editing with operations like dragging/resizing.
 
 		Geomajas is a component framework for building rich Internet applications (RIA) with sophisticated capabilities
@@ -35,20 +35,20 @@
 	<modules>
 		<module>impl</module>
 		<module>example-jar</module>
+		<module>example</module>
 		<module>documentation</module>
+		<module>javadoc</module>
 	</modules>
 
-    <profiles>
-        <profile>
-            <id>full-build</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <modules>
-                <module>example</module>
-            </modules>
-        </profile>
-    </profiles>
-
+	<profiles>
+		<profile>
+			<id>m2e</id>
+			<activation>
+				<property>
+					<name>m2e.version</name>
+				</property>
+			</activation>
+		</profile>
+	</profiles>
 
 </project>

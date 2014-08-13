@@ -28,6 +28,18 @@
 		<module>tms</module>
 		<module>example-jar</module>
         <module>documentation</module>
+		<module>javadoc</module>
 	</modules>
+
+	<profiles>
+		<profile>
+			<id>m2e</id>
+			<activation>
+				<property>
+					<name>m2e.version</name>
+				</property>
+			</activation>
+		</profile>
+	</profiles>
 
 </project>
