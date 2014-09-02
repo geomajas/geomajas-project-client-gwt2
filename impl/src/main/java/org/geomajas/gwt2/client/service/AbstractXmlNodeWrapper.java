@@ -76,6 +76,7 @@ public abstract class AbstractXmlNodeWrapper {
 		String value = getValueRecursive(node);
 		if (value != null) {
 			try {
+				value = value.replace(",", ".");
 				return Double.parseDouble(value);
 			} catch (Exception e) {
 			}
@@ -87,6 +88,11 @@ public abstract class AbstractXmlNodeWrapper {
 		String value = getValueRecursive(node);
 		if (value != null) {
 			try {
+				value = value.replace(",", ".");
+				int pos = value.indexOf(".");
+				if (pos > 0) {
+					value = value.substring(0, pos);
+				}
 				return Integer.parseInt(value);
 			} catch (Exception e) {
 			}

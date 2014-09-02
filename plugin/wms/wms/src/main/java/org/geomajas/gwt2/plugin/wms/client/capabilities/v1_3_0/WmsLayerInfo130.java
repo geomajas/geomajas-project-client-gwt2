@@ -54,9 +54,9 @@ public class WmsLayerInfo130 extends AbstractXmlNodeWrapper implements WmsLayerI
 
 	private List<WmsLayerStyleInfo> styleInfo = new ArrayList<WmsLayerStyleInfo>();
 
-	private int minScaleDenominator = -1;
+	private double minScaleDenominator = -1;
 
-	private int maxScaleDenominator = -1;
+	private double maxScaleDenominator = -1;
 
 	private boolean queryable;
 
@@ -158,14 +158,14 @@ public class WmsLayerInfo130 extends AbstractXmlNodeWrapper implements WmsLayerI
 		return styleInfo;
 	}
 
-	public int getMinScaleDenominator() {
+	public double getMinScaleDenominator() {
 		if (name == null) {
 			parse(getNode());
 		}
 		return minScaleDenominator;
 	}
 
-	public int getMaxScaleDenominator() {
+	public double getMaxScaleDenominator() {
 		if (name == null) {
 			parse(getNode());
 		}
@@ -203,9 +203,9 @@ public class WmsLayerInfo130 extends AbstractXmlNodeWrapper implements WmsLayerI
 			} else if ("Style".equalsIgnoreCase(nodeName)) {
 				styleInfo.add(new WmsLayerStyleInfo130(child));
 			} else if ("MinScaleDenominator".equalsIgnoreCase(nodeName)) {
-				minScaleDenominator = getValueRecursiveAsInteger(child);
+				minScaleDenominator = getValueRecursiveAsDouble(child);
 			} else if ("MaxScaleDenominator".equalsIgnoreCase(nodeName)) {
-				maxScaleDenominator = getValueRecursiveAsInteger(child);
+				maxScaleDenominator = getValueRecursiveAsDouble(child);
 			}
 		}
 	}

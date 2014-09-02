@@ -116,12 +116,12 @@ public interface WmsLayerInfo extends Serializable {
 	 * 
 	 * @return Returns the minimum scale denominator, or -1 if it is not provided.
 	 */
-	int getMinScaleDenominator();
+	double getMinScaleDenominator();
 
 	/**
 	 * Get the maximum scale denominator for this layer.
 	 * 
 	 * @return Returns the maximum scale denominator, or -1 if it is not provided.
 	 */
-	int getMaxScaleDenominator();
+	double getMaxScaleDenominator();
 }
