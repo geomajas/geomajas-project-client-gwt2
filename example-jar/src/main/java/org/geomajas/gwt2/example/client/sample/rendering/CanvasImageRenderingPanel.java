@@ -61,6 +61,9 @@ public class CanvasImageRenderingPanel implements SamplePanel {
 
 	private CanvasContainer container;
 
+	private final int defaultRows = 8;
+	private final int defaultColumns = 10;
+
 	@UiField
 	protected ResizeLayoutPanel mapPanel;
 
@@ -81,6 +84,12 @@ public class CanvasImageRenderingPanel implements SamplePanel {
 
 	@UiField
 	protected TextBox imageUrlTextBox;
+
+	@UiField
+	protected TextBox drawMultipleRowsTextBox;
+
+	@UiField
+	protected TextBox drawMultipleColumnsTextBox;
 
 	public Widget asWidget() {
 		Widget layout = UI_BINDER.createAndBindUi(this);
@@ -149,6 +158,84 @@ public class CanvasImageRenderingPanel implements SamplePanel {
 		}
 	}
 
+	@UiHandler("drawMultipleButton")
+	public void onDrawMultipleBtnClicked(ClickEvent event) {
+		if (container != null) {
+			String url = null;
+			if (internalImageRadioButton.getValue()) {
+				ExampleClientBundle exampleClientBundle = GWT.create(ExampleClientBundle.class);
+				url = exampleClientBundle.imageTuxTest().getSafeUri().asString();
+			} else if (remoteImageRadioButton.getValue()) {
+				url = imageUrlTextBox.getText();
+				// fallback value
+				if (url == null || url.isEmpty()) {
+					url = "http://tuxpaint.org/stamps/stamps/animals/birds/cartoon/tux.png";
+				}
+			}
+
+			// rows
+			int rows = -1;
+			try {
+				rows = Integer.parseInt(drawMultipleRowsTextBox.getValue());
+			} catch (Exception ex) {
+				// do nothing
+			}
+			if (rows < 1) {
+				rows = defaultRows;
+			}
+
+			//columns
+			int columns = -1;
+			try {
+				columns = Integer.parseInt(drawMultipleColumnsTextBox.getValue());
+			} catch (Exception ex) {
+				// do nothing
+			}
+			if (columns < 1) {
+				columns = defaultColumns;
+			}
+
+			for (int row = 0; row < rows; row++) {
+				for (int column = 0; column < columns; column++) {
+					drawImageFromUrl(url, getBoundsOfRowColumns(row, column, rows, columns), container);
+				}
+			}
+		}
+	}
+
+	@UiHandler("drawMultipleRectanglesButton")
+	public void onDrawMultipleRectanglesBtnClicked(ClickEvent event) {
+		if (container != null) {
+			// rows
+			int rows = -1;
+			try {
+				rows = Integer.parseInt(drawMultipleRowsTextBox.getValue());
+			} catch (Exception ex) {
+				// do nothing
+			}
+			if (rows < 1) {
+				rows = defaultRows;
+			}
+
+			//columns
+			int columns = -1;
+			try {
+				columns = Integer.parseInt(drawMultipleColumnsTextBox.getValue());
+			} catch (Exception ex) {
+				// do nothing
+			}
+			if (columns < 1) {
+				columns = defaultColumns;
+			}
+
+			for (int row = 0; row < rows; row++) {
+				for (int column = 0; column < columns; column++) {
+					drawRedRectangle(getBoundsOfRowColumns(row, column, rows, columns), container);
+				}
+			}
+		}
+	}
+
 	/* private methods */
 
 	private void drawElements(Bbox bounds, String url) {
@@ -165,6 +252,15 @@ public class CanvasImageRenderingPanel implements SamplePanel {
 		double width = bbox.getWidth() / 4;
 		double height = bbox.getHeight() / 4;
 		return new Bbox(centerX - width / 2, centerY - height / 2, width, height);
+	}
+
+	private Bbox getBoundsOfRowColumns(int row, int column, int rows, int columns) {
+		Bbox bbox = mapPresenter.getViewPort().getBounds();
+		double width = bbox.getWidth() / columns;
+		double height = bbox.getHeight() / rows;
+		double x = bbox.getX() + width * column;
+		double y = bbox.getY() + height * row;
+		return new Bbox(x, y, width, height);
 	}
 
 	private void drawRedRectangle(Bbox bounds, CanvasContainer canvasContainer) {

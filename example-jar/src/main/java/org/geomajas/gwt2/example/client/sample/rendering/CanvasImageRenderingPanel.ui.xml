@@ -6,10 +6,12 @@
 
 	<g:DockLayoutPanel unit="PX" width="100%" height="100%">
 		<g:west size="250">
+			<g:ScrollPanel>
 			<g:HTMLPanel addStyleNames="{resource.css.sampleLeftLayout}">
 				<h2><ui:text from="{messages.renderingCanvasImageDrawingOptionsLabel}" /></h2>
-				<h4><ui:text from="{messages.renderingCanvasImageSourceLabel}" /></h4>
+				<g:Label ui:field="label" width="180px"/>
 				<g:VerticalPanel spacing="10">
+					<g:Label text="{messages.renderingCanvasImageSourceLabel}"/>
 					<g:RadioButton  ui:field="internalImageRadioButton" name="imageSource">
 						<ui:text from="{messages.renderingCanvasImageLocalImageRadio}" /></g:RadioButton>
 					<g:RadioButton ui:field="remoteImageRadioButton" name="imageSource">
@@ -19,19 +21,40 @@
 						<g:TextBox ui:field="imageUrlTextBox" width="97%" title="{messages.renderingCanvasImageRemoteImageUrlTooltip}"/>
 					</g:VerticalPanel>
 				</g:VerticalPanel>
-				<h4><ui:text from="{messages.renderingCanvasImageLocationLabel}" /></h4>
 				<g:VerticalPanel spacing="10">
+					<g:Label text="{messages.renderingCanvasImageLocationLabel}"/>
 					<g:RadioButton  ui:field="locationCenterButton" name="imageLocation">
 						<ui:text from="{messages.renderingCanvasImageLocationCenterLabel}" /></g:RadioButton>
 					<g:RadioButton  ui:field="locationCustomButton" name="imageLocation">
 						<ui:text from="{messages.renderingCanvasImageLocationCustomLabel}" /></g:RadioButton>
-					<g:Label ui:field="label" width="180px"/>
 					<g:Button ui:field="drawButton" width="180px">
 						<ui:text from="{messages.renderingCanvasImageDrawButton}" /></g:Button>
+				</g:VerticalPanel>
+				<g:VerticalPanel spacing="10">
+					<g:Label text="{messages.renderingCanvasImageMultipleLabel}"/>
+					<g:HTMLPanel>
+						<table>
+							<tr>
+								<td><g:Label text="{messages.renderingCanvasImageDrawMultipleRowsLabel}"/></td>
+								<td><g:TextBox ui:field="drawMultipleRowsTextBox" width="30px"/></td>
+							</tr>
+							<tr>
+								<td><g:Label text="{messages.renderingCanvasImageDrawMultipleColumnsLabel}"/></td>
+								<td><g:TextBox ui:field="drawMultipleColumnsTextBox" width="30px"/></td>
+							</tr>
+						</table>
+					</g:HTMLPanel>
+					<g:Button ui:field="drawMultipleButton" width="180px" title="{messages.renderingCanvasImageDrawMultipleButtonTooltip}">
+						<ui:text from="{messages.renderingCanvasImageDrawMultipleButton}" /></g:Button>
+					<g:Button ui:field="drawMultipleRectanglesButton" width="180px" title="{messages.renderingCanvasRectangleDrawMultipleButtonTooltip}">
+						<ui:text from="{messages.renderingCanvasRectangleDrawMultipleButton}" /></g:Button>
+				</g:VerticalPanel>
+				<g:VerticalPanel spacing="10">
 					<g:Button ui:field="clearCanvas" width="180px">
 						<ui:text from="{messages.renderingCanvasImageClearLabel}" /></g:Button>
 				</g:VerticalPanel>
 			</g:HTMLPanel>
+			</g:ScrollPanel>
 		</g:west>
 		<g:center>
 			<g:SimplePanel addStyleNames="{resource.css.sampleContentLayout}">

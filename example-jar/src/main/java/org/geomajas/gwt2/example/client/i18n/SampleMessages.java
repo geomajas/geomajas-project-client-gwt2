@@ -180,5 +180,12 @@ public interface SampleMessages extends Messages {
 	String renderingCanvasImageLocationCenterLabel();
 	String renderingCanvasImageLocationCustomLabel();
 	String renderingCanvasImageDrawButton();
+	String renderingCanvasImageMultipleLabel();
+	String renderingCanvasImageDrawMultipleRowsLabel();
+	String renderingCanvasImageDrawMultipleColumnsLabel();
+	String renderingCanvasImageDrawMultipleButton();
+	String renderingCanvasImageDrawMultipleButtonTooltip();
+	String renderingCanvasRectangleDrawMultipleButton();
+	String renderingCanvasRectangleDrawMultipleButtonTooltip();
 	String renderingCanvasImageClearLabel();
 }
