@@ -72,12 +72,37 @@ public final class TmsClient {
 	}
 
 	/**
+	 * Create a new TMS layer instance.
+	 *
+	 * @param id                 The unique layer ID.
+	 * @param title              The title for this layer. It's the title that is usually used in the GUI as label.
+	 * @param tileConfiguration  The tile configuration object.
+	 * @param layerConfiguration The layer configuration object.
+	 * @return A new TMS layer.
+	 */
+	public TmsLayer createLayer(String id, String title, TileConfiguration tileConfiguration, TmsLayerConfiguration
+			layerConfiguration) {
+		return new TmsLayer(id, title, tileConfiguration, layerConfiguration);
+	}
+
+	/**
 	 * Create a new TMS layer from a tile map info object.
 	 *
 	 * @param tileMapInfo The tile map object that is the result from parsing a TMS service XML.
 	 * @return A new TMS layer.
 	 */
 	public TmsLayer createLayer(TileMapInfo tileMapInfo) {
+		return new TmsLayer(tileMapInfo);
+	}
+
+	/**
+	 * Create a new TMS layer from a tile map info object.
+	 *
+	 * @param id The unique layer ID.
+	 * @param tileMapInfo The tile map object that is the result from parsing a TMS service XML.
+	 * @return A new TMS layer.
+	 */
+	public TmsLayer createLayer(String id, TileMapInfo tileMapInfo) {
 		return new TmsLayer(tileMapInfo);
 	}
 

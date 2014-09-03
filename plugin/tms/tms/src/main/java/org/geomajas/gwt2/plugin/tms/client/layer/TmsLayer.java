@@ -43,9 +43,25 @@ public class TmsLayer extends AbstractTileBasedLayer {
 	 * Create a new layer that belongs to the given map model, using the given meta-data.
 	 *
 	 * @param id The unique ID for this layer.
+	 * @param tileConfiguration The configuration object defining the tile structure.
+	 * @param layerConfiguration The general TMS layer configuration object.
 	 */
 	public TmsLayer(String id, TileConfiguration tileConfiguration, TmsLayerConfiguration layerConfiguration) {
+		this(id, id, tileConfiguration, layerConfiguration);
+	}
+
+	/**
+	 * Create a new layer that belongs to the given map model, using the given meta-data.
+	 *
+	 * @param id The unique ID for this layer.
+	 * @param title The title for this layer. It's the title that is usually used in the GUI as label.
+	 * @param tileConfiguration The configuration object defining the tile structure.
+	 * @param layerConfiguration The general TMS layer configuration object.
+	 */
+	public TmsLayer(String id, String title, TileConfiguration tileConfiguration, TmsLayerConfiguration
+			layerConfiguration) {
 		super(id, tileConfiguration);
+		this.title = title;
 		this.layerConfiguration = layerConfiguration;
 		this.tileRenderer = new TmsTileRenderer(layerConfiguration);
 	}
@@ -53,9 +69,21 @@ public class TmsLayer extends AbstractTileBasedLayer {
 	/**
 	 * Create a new layer using a TileMapInfo object.
 	 *
-	 * @param tileMapInfo The configuration object to create a layer for.
+	 * @param tileMapInfo The configuration object to create a layer for. Both the ID and title will be taken from this
+	 *                    configuration object.
 	 */
 	public TmsLayer(TileMapInfo tileMapInfo) {
+		this(tileMapInfo.getTitle(), tileMapInfo);
+	}
+
+	/**
+	 * Create a new layer using a TileMapInfo object.
+	 *
+	 * @param id The unique ID for this layer.
+	 * @param tileMapInfo The configuration object to create a layer for. The layer title will be taken from this
+	 *                    configuration object.
+	 */
+	public TmsLayer(String id, TileMapInfo tileMapInfo) {
 		super(tileMapInfo.getTitle(), new TileConfiguration(tileMapInfo.getTileFormat().getWidth(),
 				tileMapInfo.getTileFormat().getHeight(), tileMapInfo.getOrigin(), new ArrayList<Double>()));
 		this.layerConfiguration = new TmsLayerConfiguration();
