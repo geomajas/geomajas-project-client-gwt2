@@ -63,7 +63,7 @@ public abstract class AbstractXmlNodeWrapper {
 	protected String getValueRecursive(Node node) {
 		if (node != null) {
 			if (node.getNodeValue() != null) {
-				return node.getNodeValue();
+				return node.getNodeValue().trim();
 			}
 			if (node.getFirstChild() != null) {
 				return getValueRecursive(node.getFirstChild());
