@@ -116,7 +116,10 @@ public class NavigationController extends AbstractMapController {
 	@Override
 	public void onUp(HumanInputEvent<?> event) {
 		if (zooming) {
-			zoomToRectangleController.onUp(event);
+			Coordinate coordinate = getLocation(event, RenderSpace.WORLD);
+			if (!coordinate.equals(lastClickPosition)) {
+				zoomToRectangleController.onUp(event);
+			}
 			zooming = false;
 		} else if (dragging) {
 			stopPanning(event);
