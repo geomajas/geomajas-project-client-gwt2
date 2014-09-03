@@ -102,7 +102,7 @@ public interface WmsLayerInfo extends Serializable {
 	 * 
 	 * @return The metadata information.
 	 */
-	WmsLayerMetadataUrlInfo getMetadataUrl();
+	List<WmsLayerMetadataUrlInfo> getMetadataUrls();
 
 	/**
 	 * Get a list of supported styles for this layer.

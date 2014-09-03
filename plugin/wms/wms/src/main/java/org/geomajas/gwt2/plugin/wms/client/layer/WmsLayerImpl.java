@@ -39,9 +39,27 @@ public class WmsLayerImpl extends AbstractTileBasedLayer implements WmsLayer {
 
 	private double opacity = 1.0;
 
+	// ------------------------------------------------------------------------
+	// Constructors:
+	// ------------------------------------------------------------------------
+
+	/**
+	 * This constructor will use the "layers" parameter from the WMS configuration object as layer ID.
+	 *
+	 * @param title
+	 * @param crs
+	 * @param wmsConfig
+	 * @param tileConfig
+	 * @param layerCapabilities
+	 */
 	public WmsLayerImpl(String title, String crs, WmsLayerConfiguration wmsConfig,
 						TileConfiguration tileConfig, WmsLayerInfo layerCapabilities) {
-		super(wmsConfig.getLayers(), tileConfig);
+		this(wmsConfig.getLayers(), title, crs, wmsConfig, tileConfig, layerCapabilities);
+	}
+
+	public WmsLayerImpl(String id, String title, String crs, WmsLayerConfiguration wmsConfig,
+			TileConfiguration tileConfig, WmsLayerInfo layerCapabilities) {
+		super(id, tileConfig);
 
 		this.title = title;
 		this.wmsConfig = wmsConfig;
@@ -55,6 +73,10 @@ public class WmsLayerImpl extends AbstractTileBasedLayer implements WmsLayer {
 			}
 		}
 	}
+
+	// ------------------------------------------------------------------------
+	// Protected methods:
+	// ------------------------------------------------------------------------
 
 	@Override
 	protected void setEventBus(MapEventBus eventBus) {

@@ -50,7 +50,7 @@ public class WmsLayerInfo130 extends AbstractXmlNodeWrapper implements WmsLayerI
 
 	private final Map<String, Bbox> boundingBoxes = new HashMap<String, Bbox>(); // key = boundingBoxCrs
 
-	private WmsLayerMetadataUrlInfo metadataUrl;
+	private List<WmsLayerMetadataUrlInfo> metadataUrls = new ArrayList<WmsLayerMetadataUrlInfo>();
 
 	private List<WmsLayerStyleInfo> styleInfo = new ArrayList<WmsLayerStyleInfo>();
 
@@ -144,11 +144,11 @@ public class WmsLayerInfo130 extends AbstractXmlNodeWrapper implements WmsLayerI
 		return latlonBoundingBox;
 	}
 
-	public WmsLayerMetadataUrlInfo getMetadataUrl() {
+	public List<WmsLayerMetadataUrlInfo> getMetadataUrls() {
 		if (name == null) {
 			parse(getNode());
 		}
-		return metadataUrl;
+		return metadataUrls;
 	}
 
 	public List<WmsLayerStyleInfo> getStyleInfo() {
@@ -199,7 +199,7 @@ public class WmsLayerInfo130 extends AbstractXmlNodeWrapper implements WmsLayerI
 			} else if ("BoundingBox".equalsIgnoreCase(nodeName)) {
 				addBoundingBox(child);
 			} else if ("MetadataURL".equalsIgnoreCase(nodeName)) {
-				metadataUrl = new WmsLayerMetadataUrlInfo130(child);
+				metadataUrls.add(new WmsLayerMetadataUrlInfo130(child));
 			} else if ("Style".equalsIgnoreCase(nodeName)) {
 				styleInfo.add(new WmsLayerStyleInfo130(child));
 			} else if ("MinScaleDenominator".equalsIgnoreCase(nodeName)) {

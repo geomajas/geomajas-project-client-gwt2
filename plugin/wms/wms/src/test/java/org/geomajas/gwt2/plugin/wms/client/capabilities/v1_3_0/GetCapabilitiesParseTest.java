@@ -144,17 +144,19 @@ public class GetCapabilitiesParseTest extends GWTTestCase {
 		assertEquals(0.0, bounds.getY());
 		assertEquals(200000.0, bounds.getMaxY());
 
-		checkMetadataUrl(layer.getMetadataUrl());
+		checkMetadataUrl(layer.getMetadataUrls());
 		List<WmsLayerStyleInfo> styles = layer.getStyleInfo();
 		assertNotNull(styles);
 		assertEquals(1, styles.size());
 		checkLayerStyle(index, styles.get(0));
 	}
 
-	private void checkMetadataUrl(WmsLayerMetadataUrlInfo info) {
-		assertEquals("ISO19115:2003", info.getType());
-		assertEquals("application/xml", info.getFormat());
-		checkOnlineResource(info.getOnlineResource());
+	private void checkMetadataUrl(List<WmsLayerMetadataUrlInfo> info) {
+		assertNotNull(info);
+		assertTrue(info.size() > 0);
+		assertEquals("ISO19115:2003", info.get(0).getType());
+		assertEquals("application/xml", info.get(0).getFormat());
+		checkOnlineResource(info.get(0).getOnlineResource());
 	}
 
 	private void checkOnlineResource(WmsOnlineResourceInfo info) {
