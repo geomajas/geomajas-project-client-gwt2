@@ -5,6 +5,9 @@ before_install:
 jdk:
   - openjdk7
   - oraclejdk7
+cache:
+  directories:
+  - ~/.m2
 before_install: "git clone https://github.com/geomajas/geomajas-build-tools target/geomajas-build-tools"
 install: "travis_retry mvn install -DskipTests=true -B -V --settings target/geomajas-build-tools/settings.xml"
 script: "travis_retry mvn verify -B -V --settings target/geomajas-build-tools/settings.xml"
