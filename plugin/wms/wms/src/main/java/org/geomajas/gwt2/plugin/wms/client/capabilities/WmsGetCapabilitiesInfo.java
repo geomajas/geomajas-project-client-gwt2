@@ -11,10 +11,10 @@
 
 package org.geomajas.gwt2.plugin.wms.client.capabilities;
 
+import org.geomajas.annotation.Api;
+
 import java.io.Serializable;
 import java.util.List;
-
-import org.geomajas.annotation.Api;
 
 /**
  * Generic WMS GetCapabilities definition.
@@ -22,7 +22,7 @@ import org.geomajas.annotation.Api;
  * @author Pieter De Graef
  * @since 2.1.0
  */
-@Api(allMethods = true)
+@Api
 public interface WmsGetCapabilitiesInfo extends Serializable {
 
 	/**

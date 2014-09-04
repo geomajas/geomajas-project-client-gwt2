@@ -11,36 +11,36 @@
 
 package org.geomajas.gwt2.plugin.wms.client.capabilities;
 
-import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
+
+import java.io.Serializable;
 
 /**
  * Definition of an online resource, used within a WMS GetCapabilities file.
- * 
+ *
  * @author Pieter De Graef
  * @since 2.1.0
  */
-@Api(allMethods = true)
+@Api
 public interface WmsOnlineResourceInfo extends Serializable {
 
 	/**
 	 * Get the online resource type.
-	 * 
+	 *
 	 * @return The online resource type.
 	 */
 	String getType();
 
 	/**
 	 * Get the XLink.
-	 * 
+	 *
 	 * @return The XLink.
 	 */
 	String getXLink();
 
 	/**
 	 * Get the actual URL to the online resource.
-	 * 
+	 *
 	 * @return The URL to the resource.
 	 */
 	String getHref();

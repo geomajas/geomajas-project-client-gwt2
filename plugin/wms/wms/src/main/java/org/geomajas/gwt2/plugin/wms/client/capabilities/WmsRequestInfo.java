@@ -24,7 +24,7 @@ import java.util.List;
  * @author Pieter De Graef
  * @since 2.1.0
  */
-@Api(allMethods = true)
+@Api
 public interface WmsRequestInfo extends Serializable {
 
 	/**

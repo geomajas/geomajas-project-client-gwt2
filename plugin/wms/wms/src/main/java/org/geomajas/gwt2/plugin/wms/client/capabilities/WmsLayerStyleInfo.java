@@ -11,43 +11,43 @@
 
 package org.geomajas.gwt2.plugin.wms.client.capabilities;
 
-import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
+
+import java.io.Serializable;
 
 /**
  * Style information for a layer in a WMS GetCapabilities file.
- * 
+ *
  * @author Pieter De Graef
  * @since 2.1.0
  */
-@Api(allMethods = true)
+@Api
 public interface WmsLayerStyleInfo extends Serializable {
 
 	/**
 	 * Get the style name. This name can be used in WMS GetMap requests.
-	 * 
+	 *
 	 * @return The style name.
 	 */
 	String getName();
 
 	/**
 	 * Get a human readable title for the style.
-	 * 
+	 *
 	 * @return The style title.
 	 */
 	String getTitle();
 
 	/**
 	 * Get a description for this style.
-	 * 
+	 *
 	 * @return A style description.
 	 */
 	String getAbstract();
 
 	/**
 	 * Get the default LegendGraphic information for this style.
-	 * 
+	 *
 	 * @return The default legend information for this style.
 	 */
 	WmsLayerLegendUrlInfo getLegendUrl();

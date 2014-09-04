@@ -11,36 +11,36 @@
 
 package org.geomajas.gwt2.plugin.wms.client.capabilities;
 
-import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
+
+import java.io.Serializable;
 
 /**
  * Metadata information for a layer in a WMS Capabilities.
- * 
+ *
  * @author Pieter De Graef
  * @since 2.1.0
  */
-@Api(allMethods = true)
+@Api
 public interface WmsLayerMetadataUrlInfo extends Serializable {
 
 	/**
 	 * Get the type of metadata.
-	 * 
+	 *
 	 * @return The metadata type.
 	 */
 	String getType();
 
 	/**
 	 * Get the format that expresses the metadata.
-	 * 
+	 *
 	 * @return The metadata format.
 	 */
 	String getFormat();
 
 	/**
 	 * Get the online resource where the metadata is located.
-	 * 
+	 *
 	 * @return The online metadata resource.
 	 */
 	WmsOnlineResourceInfo getOnlineResource();

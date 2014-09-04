@@ -11,43 +11,43 @@
 
 package org.geomajas.gwt2.plugin.wms.client.capabilities;
 
-import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
+
+import java.io.Serializable;
 
 /**
  * Legend information for a layer in the WMS Capabilities.
- * 
+ *
  * @author Pieter De Graef
  * @since 2.1.0
  */
-@Api(allMethods = true)
+@Api
 public interface WmsLayerLegendUrlInfo extends Serializable {
 
 	/**
 	 * Get the width in pixels for the style icons in the default LegendGraphic.
-	 * 
+	 *
 	 * @return The style width in pixels.
 	 */
 	int getWidth();
 
 	/**
 	 * Get the height in pixels for the style icons in the default LegendGraphic.
-	 * 
+	 *
 	 * @return The style height in pixels.
 	 */
 	int getHeight();
 
 	/**
 	 * Get the preferred format for the LegendGraphic.
-	 * 
+	 *
 	 * @return The image format.
 	 */
 	String getFormat();
 
 	/**
 	 * Get the default LegendGraphic URL.
-	 * 
+	 *
 	 * @return The default LegendGraphic URL.
 	 */
 	WmsOnlineResourceInfo getOnlineResource();
