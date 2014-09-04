@@ -3,6 +3,6 @@ jdk:
   - openjdk7
   - oraclejdk7
 before_install: "git clone https://github.com/geomajas/geomajas-build-tools target/geomajas-build-tools"
-install: "travis_retry mvn install -DskipTests=true -B -V"
+install: "travis_retry mvn install -DskipTests=true -B -V --settings target/geomajas-build-tools/settings.xml"
 script: "travis_retry mvn verify -B -V --settings target/geomajas-build-tools/settings.xml"
 env: MAVEN_OPTS="-XX:MaxPermSize=256m"
