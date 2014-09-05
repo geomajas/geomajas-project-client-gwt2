@@ -51,7 +51,7 @@ public class WmsServiceImpl implements WmsService {
 
 	@Override
 	public void getCapabilities(String baseUrl, final WmsVersion version,
-								final Callback<WmsGetCapabilitiesInfo, String> callback) {
+			final Callback<WmsGetCapabilitiesInfo, String> callback) {
 		String url = getCapabilitiesUrl(baseUrl, version);
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
 		builder.setHeader("Cache-Control", "no-cache");
@@ -65,20 +65,24 @@ public class WmsServiceImpl implements WmsService {
 
 				public void onResponseReceived(Request request, Response response) {
 					if (200 == response.getStatusCode()) {
-						Document messageDom = XMLParser.parse(response.getText());
-						WmsGetCapabilitiesInfo capabilities;
-						switch (version) {
-							case V1_1_1:
-								capabilities = new WmsGetCapabilitiesInfo111(messageDom.getDocumentElement());
-								break;
-							case V1_3_0:
-								capabilities = new WmsGetCapabilitiesInfo130(messageDom.getDocumentElement());
-								break;
-							default:
-								callback.onFailure("Unsupported version");
-								return;
+						try {
+							Document messageDom = XMLParser.parse(response.getText());
+							WmsGetCapabilitiesInfo capabilities;
+							switch (version) {
+								case V1_1_1:
+									capabilities = new WmsGetCapabilitiesInfo111(messageDom.getDocumentElement());
+									break;
+								case V1_3_0:
+									capabilities = new WmsGetCapabilitiesInfo130(messageDom.getDocumentElement());
+									break;
+								default:
+									callback.onFailure("Unsupported version");
+									return;
+							}
+							callback.onSuccess(capabilities);
+						} catch (Throwable t) {
+							callback.onFailure(t.getMessage());
 						}
-						callback.onSuccess(capabilities);
 					} else {
 						callback.onFailure(response.getText());
 					}
@@ -217,7 +221,7 @@ public class WmsServiceImpl implements WmsService {
 	}
 
 	protected StringBuilder addBaseParameters(StringBuilder url, WmsLayerConfiguration config,
-												Bbox worldBounds, int imageWidth, int imageHeight) {
+			Bbox worldBounds, int imageWidth, int imageHeight) {
 		// Parameter: service
 		int pos = url.lastIndexOf("?");
 		if (pos > 0) {
