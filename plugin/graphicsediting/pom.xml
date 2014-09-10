@@ -35,7 +35,6 @@
 	<modules>
 		<module>impl</module>
 		<module>example-jar</module>
-		<module>example</module>
 		<module>documentation</module>
 		<module>javadoc</module>
 	</modules>
