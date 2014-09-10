@@ -21,9 +21,6 @@ import org.geomajas.gwt2.widget.client.map.mapcontrolpanel.resource.MapControlPa
 import org.geomajas.gwt2.widget.client.feature.featureinfo.FeatureInfoView;
 import org.geomajas.gwt2.widget.client.feature.featureinfo.FeatureInfoViewImpl;
 import org.geomajas.gwt2.widget.client.feature.featureinfo.resource.FeatureInfoResource;
-import org.geomajas.gwt2.widget.client.feature.featureselectbox.FeatureSelectBoxView;
-import org.geomajas.gwt2.widget.client.feature.featureselectbox.FeatureSelectBoxViewImpl;
-import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.FeatureSelectBoxResource;
 
 /**
  * MVP view factory for this plugin.

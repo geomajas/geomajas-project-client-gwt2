@@ -232,28 +232,28 @@ public class ExampleJar implements EntryPoint {
 				return "serverexception";
 			}
 		});
-		//		SamplePanelRegistry.registerFactory(CATEGORY_GENERAL, new ShowcaseSampleDefinition() {
-		//
-		//			public SamplePanel create() {
-		//				return new MapTraceNavigationPanel();
-		//			}
-		//
-		//			public String getTitle() {
-		//				return MESSAGES.generalTraceNavigationTitle();
-		//			}
-		//
-		//			public String getShortDescription() {
-		//				return MESSAGES.generalTraceNavigationShort();
-		//			}
-		//
-		//			public String getDescription() {
-		//				return MESSAGES.generalTraceNavigationDescription();
-		//			}
-		//
-		//			public String getCategory() {
-		//				return CATEGORY_GENERAL;
-		//			}
-		//		});
+//		SamplePanelRegistry.registerFactory(CATEGORY_GENERAL, new ShowcaseSampleDefinition() {
+//
+//			public SamplePanel create() {
+//				return new MapTraceNavigationPanel();
+//			}
+//
+//			public String getTitle() {
+//				return MESSAGES.generalTraceNavigationTitle();
+//			}
+//
+//			public String getShortDescription() {
+//				return MESSAGES.generalTraceNavigationShort();
+//			}
+//
+//			public String getDescription() {
+//				return MESSAGES.generalTraceNavigationDescription();
+//			}
+//
+//			public String getCategory() {
+//				return CATEGORY_GENERAL;
+//			}
+//		});
 	}
 
 	private void registerLayerSamples() {

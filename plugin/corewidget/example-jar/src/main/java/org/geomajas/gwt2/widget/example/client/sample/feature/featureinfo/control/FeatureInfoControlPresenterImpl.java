@@ -15,11 +15,13 @@ import com.google.gwt.dom.client.Style.Unit;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.example.base.client.widget.ShowcaseDialogBox;
-import org.geomajas.gwt2.widget.client.feature.controller.FeatureClickedListener;
-import org.geomajas.gwt2.widget.client.feature.event.FeatureClickedEvent;
-import org.geomajas.gwt2.widget.client.feature.event.FeatureClickedHandler;
 import org.geomajas.gwt2.widget.client.feature.featureinfo.FeatureInfoWidget;
+import org.geomajas.gwt2.widget.example.client.sample.feature.controller.FeatureClickedEvent;
+import org.geomajas.gwt2.widget.example.client.sample.feature.controller.FeatureClickedHandler;
+import org.geomajas.gwt2.widget.example.client.sample.feature.controller.FeatureClickedListener;
 import org.geomajas.gwt2.widget.example.client.sample.feature.featureinfo.FeatureInfoWidgetFactory;
+
+import java.util.List;
 
 /**
  * Presenter implementation for the {@link FeatureInfoControl}.
@@ -58,8 +60,9 @@ public class FeatureInfoControlPresenterImpl implements FeatureInfoControlPresen
 	@Override
 	public void onFeatureClicked(FeatureClickedEvent event) {
 		if (enabled) {
-			Feature feature = event.getFeature();
-			if (feature != null) {
+			List<Feature> featureList = event.getFeatures();
+			if (featureList != null && featureList.size() == 1 && featureList.get(0) != null) {
+				Feature feature = featureList.get(0);
 				// Create a default feature info widget:
 				FeatureInfoWidgetFactory factory = new FeatureInfoWidgetFactory();
 				FeatureInfoWidget featureInfo = factory.getDefaultFeatureInfoWidget();

@@ -11,16 +11,16 @@
 
 package org.geomajas.gwt2.widget.client.feature.featureinfo.resource;
 
-import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.FeatureSelectBoxCssResource;
-import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.FeatureSelectBoxResource;
+
+import com.google.gwt.resources.client.ClientBundle;
 
 /**
  * CSS resource to remove style of the {@link org.geomajas.gwt2.widget.client.feature.featureinfo.FeatureInfoWidget}.
  *
  * @author Youri Flement
  */
-public interface FeatureInfoResourceNoStyle extends FeatureSelectBoxResource {
+public interface FeatureInfoResourceNoStyle extends ClientBundle {
 
 	@Source("featureInfo-nostyle.css")
-	FeatureSelectBoxCssResource css();
+	FeatureInfoCssResource css();
 }

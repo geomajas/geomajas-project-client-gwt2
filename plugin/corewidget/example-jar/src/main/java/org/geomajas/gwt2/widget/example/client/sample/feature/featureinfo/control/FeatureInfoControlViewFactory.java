@@ -12,7 +12,8 @@
 package org.geomajas.gwt2.widget.example.client.sample.feature.featureinfo.control;
 
 /**
- * View factory for the {@link org.geomajas.gwt2.widget.example.client.sample.feature.featureinfo.control.FeatureInfoControl}.
+ * View factory for the
+ * {@link org.geomajas.gwt2.widget.example.client.sample.feature.featureinfo.control.FeatureInfoControl}.
  *
  * @author Youri Flement
  */

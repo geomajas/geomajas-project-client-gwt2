@@ -14,7 +14,8 @@ package org.geomajas.gwt2.widget.example.client.sample.feature.featureinfo.contr
 import com.google.gwt.user.client.ui.IsWidget;
 
 /**
- * View interface of {@link org.geomajas.gwt2.widget.example.client.sample.feature.featureinfo.control.FeatureInfoControl}.
+ * View interface of
+ * {@link org.geomajas.gwt2.widget.example.client.sample.feature.featureinfo.control.FeatureInfoControl}.
  * The view has only methods for setting the presenter.
  *
  * @author Youri Flement

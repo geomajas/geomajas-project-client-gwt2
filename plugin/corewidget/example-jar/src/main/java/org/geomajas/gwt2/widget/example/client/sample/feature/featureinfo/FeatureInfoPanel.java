@@ -27,9 +27,11 @@ import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.example.base.client.ExampleBase;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
-import org.geomajas.gwt2.widget.client.feature.event.FeatureClickedEvent;
-import org.geomajas.gwt2.widget.client.feature.event.FeatureClickedHandler;
+import org.geomajas.gwt2.widget.example.client.sample.feature.controller.FeatureClickedEvent;
+import org.geomajas.gwt2.widget.example.client.sample.feature.controller.FeatureClickedHandler;
 import org.geomajas.gwt2.widget.example.client.sample.feature.featureinfo.control.FeatureInfoControlWidget;
+
+import java.util.List;
 
 /**
  * Panel for the feature info sample.
@@ -105,9 +107,9 @@ public class FeatureInfoPanel implements SamplePanel, FeatureClickedHandler {
 		}
 
 		// (Over)write the feature of the widget:
-		Feature feature = event.getFeature();
-		if (feature != null) {
-			featureInfoWidget.setFeature(event.getFeature());
+		List<Feature> featureList = event.getFeatures();
+		if (featureList != null && featureList.size() == 1 && featureList.get(0) != null) {
+			featureInfoWidget.setFeature(featureList.get(0));
 		}
 	}
 

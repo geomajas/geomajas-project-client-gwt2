@@ -22,7 +22,8 @@ import org.geomajas.layer.feature.attribute.DoubleAttribute;
 
 /**
  * Factory to create attribute widgets. Overwrites the default attribute factory
- * {@link org.geomajas.gwt2.widget.client.feature.featureinfo.builder.AttributeWidgetFactory}. Requests for building attributes with a
+ * {@link org.geomajas.gwt2.widget.client.feature.featureinfo.builder.AttributeWidgetFactory}.
+ * Requests for building attributes with a
  * value of {@link Double} are intercepted and a custom widget for these attributes is build.
  * Other attributes are delegated to the default factory.
  *
