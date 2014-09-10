@@ -30,7 +30,7 @@
 		<developerConnection>scm:git:git@github.com:geomajas/geomajas-project-client-gwt2.git</developerConnection>
 		<url>https://github.com/geomajas/geomajas-project-client-gwt2.git</url>
 	</scm>
-	
+
 	<modules>
 		<module>common-gwt</module>
 		<module>api</module>
@@ -41,6 +41,7 @@
   		<module>plugin</module>
 		<module>example</module>
 		<module>documentation</module>
+		<module>javadoc</module>
 	</modules>
 
 	<properties>
@@ -55,7 +56,7 @@
 
 	<dependencyManagement>
 		<dependencies>
-		
+
 			<!-- Artifacts within this project -->
 			<dependency>
 				<groupId>org.geomajas</groupId>
@@ -73,7 +74,7 @@
 				<artifactId>geomajas-client-gwt2-api</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-client-gwt2-impl</artifactId>
@@ -103,7 +104,7 @@
 				<artifactId>geomajas-client-gwt2-example-jar</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			
+
 			<!-- Corewidget plugin -->
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
@@ -137,7 +138,7 @@
 				<artifactId>geomajas-client-gwt2-plugin-editing-example-jar</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			
+
 			<!-- Geocoder plugin -->
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
@@ -179,7 +180,7 @@
 				<artifactId>geonames-ws</artifactId>
 				<version>1.0.4</version>
 			</dependency>
-			
+
 			<!-- Print plugin -->
  			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
@@ -302,7 +303,7 @@
 				<groupId>org.apache.httpcomponents</groupId>
 				<artifactId>httpclient</artifactId>
 				<version>4.2.1</version>
-			</dependency>			
+			</dependency>
 			<dependency>
 				<groupId>org.apache.httpcomponents</groupId>
 				<artifactId>httpmime</artifactId>
@@ -402,7 +403,7 @@
 				<artifactId>gwtmockito</artifactId>
 				<version>1.1.2</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.mockito</groupId>
 				<artifactId>mockito-all</artifactId>

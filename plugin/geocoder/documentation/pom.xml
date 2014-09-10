@@ -26,8 +26,9 @@
 
 	<name>Geomajas GWT2 client: Plugin Geocoder - Documentation</name>
 	<description>Geomajas GWT2 client: Plugin Geocoder - Documentation</description>
-	
+
 	<properties>
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
 	</properties>
+
 </project>
