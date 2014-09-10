@@ -12,7 +12,6 @@
 package org.geomajas.gwt2.client.map.render;
 
 import com.google.web.bindery.event.shared.HandlerRegistration;
-
 import org.geomajas.gwt2.client.event.TileLevelRenderedHandler;
 import org.geomajas.gwt2.client.map.View;
 
@@ -37,8 +36,9 @@ public interface TileLevelRenderer {
 	 * renderer will make sure the requested view will be rendered (but in it's own resolution).
 	 *
 	 * @param view The view to visualize.
+	 * @param info General info for the rendering.
 	 */
-	void render(View view);
+	void render(RenderingInfo info, View view);
 
 	/**
 	 * Cancel rendering. If there are any requests underway to the server, these can all be canceled.
@@ -55,7 +55,7 @@ public interface TileLevelRenderer {
 	boolean isRendered(View view);
 
 	/**
-	 * Add a handler for catching {@link TileLevelRenderedEvent}s.
+	 * Add a handler for catching {@link org.geomajas.gwt2.client.event.TileLevelRenderedEvent}s.
 	 *
 	 * @param handler The handler to catch the events.
 	 * @return A registration to the handler.

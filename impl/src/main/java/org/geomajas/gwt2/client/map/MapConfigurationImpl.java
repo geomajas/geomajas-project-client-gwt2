@@ -20,7 +20,7 @@ import java.util.Map;
 
 /**
  * Default map configuration implementation.
- * 
+ *
  * @author Pieter De Graef
  */
 public class MapConfigurationImpl implements MapConfiguration {
@@ -31,7 +31,9 @@ public class MapConfigurationImpl implements MapConfiguration {
 
 	public static final Boolean DEFAULT_ANIMATION_CANCEL_SUPPORT = false;
 
-	/** This default DPI value equals the default as proposed in the WMS specification. */
+	/**
+	 * This default DPI value equals the default as proposed in the WMS specification.
+	 */
 	public static final Double DEFAULT_DPI = 90.714285714;
 
 	public static final String DEFAULT_CRS = "EPSG:4326";

@@ -11,12 +11,7 @@
 
 package org.geomajas.gwt2.client.map.render.dom;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import com.google.gwt.user.client.ui.IsWidget;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Matrix;
 import org.geomajas.gwt2.client.event.LayerAddedEvent;
@@ -33,6 +28,7 @@ import org.geomajas.gwt2.client.event.MapCompositionHandler;
 import org.geomajas.gwt2.client.event.TileLevelRenderedEvent;
 import org.geomajas.gwt2.client.event.TileLevelRenderedHandler;
 import org.geomajas.gwt2.client.map.MapEventBus;
+import org.geomajas.gwt2.client.map.MapPresenterImpl;
 import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.Layer;
@@ -40,15 +36,20 @@ import org.geomajas.gwt2.client.map.layer.tile.TileBasedLayer;
 import org.geomajas.gwt2.client.map.render.LayerRenderer;
 import org.geomajas.gwt2.client.map.render.RenderingInfo;
 import org.geomajas.gwt2.client.map.render.TileLevelRenderer;
+import org.geomajas.gwt2.client.map.render.TileQueue;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlGroup;
 import org.geomajas.gwt2.client.service.DomService;
 
-import com.google.gwt.user.client.ui.IsWidget;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Layer renderer implementation for layers that use renderers at fixed scales.
- * 
+ *
  * @author Pieter De Graef
  */
 public abstract class DomTileLevelLayerRenderer implements LayerRenderer {
@@ -68,6 +69,8 @@ public abstract class DomTileLevelLayerRenderer implements LayerRenderer {
 	private TileLevelRenderer currentRenderer;
 
 	private TileLevelRenderer targetRenderer;
+
+	private TileQueue queue;
 
 	private int cacheSize = 3;
 
@@ -115,7 +118,9 @@ public abstract class DomTileLevelLayerRenderer implements LayerRenderer {
 			public void onShow(LayerShowEvent event) {
 				if (container != null) {
 					container.setVisible(true);
-					render(new RenderingInfo(container, viewPort.getView(), null));
+					RenderingInfo info = new RenderingInfo(container, viewPort.getView(), null);
+					info.setHintValue(MapPresenterImpl.QUEUE, queue);
+					render(info);
 				}
 			}
 
@@ -149,6 +154,7 @@ public abstract class DomTileLevelLayerRenderer implements LayerRenderer {
 	@Override
 	public void render(RenderingInfo renderingInfo) {
 		logger.log(Level.INFO, "Rendering " + renderingInfo.getView().getResolution());
+		this.queue = renderingInfo.getHintValue(MapPresenterImpl.QUEUE);
 		if (!(renderingInfo.getWidget() instanceof HtmlContainer)) {
 			throw new IllegalArgumentException("This implementation requires HtmlContainers to render.");
 		}
@@ -163,14 +169,14 @@ public abstract class DomTileLevelLayerRenderer implements LayerRenderer {
 			targetView = renderingInfo.getTrajectory().getView(1.0);
 		}
 		try {
-			prepareView(container, targetView);
+			prepareView(container, targetView, queue);
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, "could not prepare view", e);
 		}
 
 		// Now render the current view:
 		try {
-			TileLevelRenderer renderer = getRendererForView(renderingInfo.getView());
+			TileLevelRenderer renderer = getRendererForView(renderingInfo.getView(), queue);
 			renderTileLevel(renderer, renderingInfo.getView().getResolution());
 			cleanupCache();
 		} catch (Exception e) {
@@ -196,7 +202,7 @@ public abstract class DomTileLevelLayerRenderer implements LayerRenderer {
 
 	/**
 	 * Create a renderer for a certain fixed tile level.
-	 * 
+	 *
 	 * @param tileLevel The tile level to create a new renderer for.
 	 * @param view The view that will be initially visible on the tile level.
 	 * @param container The container that has been created for the tile renderer to render in.
@@ -233,27 +239,29 @@ public abstract class DomTileLevelLayerRenderer implements LayerRenderer {
 		return viewPort.getResolutionCount();
 	}
 
-	protected TileLevelRenderer getRendererForView(View view) throws IllegalStateException {
+	protected TileLevelRenderer getRendererForView(View view, TileQueue queue) throws IllegalStateException {
 		int tileLevel = getResolutionIndex(view.getResolution());
 
 		// Do we have a renderer at the tileLevel that is rendered?
-		TileLevelRenderer renderer = getOrCreateTileLevelRenderer(tileLevel, view);
+		TileLevelRenderer renderer = getOrCreateTileLevelRenderer(tileLevel, view, queue);
 		if (currentRenderer == null || renderer.isRendered(view)) {
 			return renderer;
 		}
 		return currentRenderer;
 	}
 
-	protected void prepareView(IsWidget widget, View targetView) {
+	protected void prepareView(IsWidget widget, View targetView, TileQueue queue) {
 		// Given a trajectory, try to fetch the target tiles before rendering.
 		int tileLevel = getResolutionIndex(targetView.getResolution());
 		if (tileLevel < getResolutionCount()) {
-			targetRenderer = getOrCreateTileLevelRenderer(tileLevel, targetView);
-			targetRenderer.render(targetView);
+			targetRenderer = getOrCreateTileLevelRenderer(tileLevel, targetView, queue);
+			RenderingInfo info = new RenderingInfo(widget, targetView, null);
+			info.setHintValue(MapPresenterImpl.QUEUE, queue);
+			targetRenderer.render(info, targetView);
 		}
 	}
 
-	protected TileLevelRenderer getOrCreateTileLevelRenderer(int tileLevel, View view) {
+	protected TileLevelRenderer getOrCreateTileLevelRenderer(int tileLevel, View view, final TileQueue queue) {
 		// Can we find it?
 		if (tileLevelRenderers.containsKey(tileLevel)) {
 			return tileLevelRenderers.get(tileLevel);
@@ -282,7 +290,7 @@ public abstract class DomTileLevelLayerRenderer implements LayerRenderer {
 				if (renderer.getTileLevel() == viewPortTileLevel) {
 					if (!renderer.isRendered(viewPort.getView())) {
 						// TODO are we sure about this? Why else did we prepare this view?
-						prepareView(tileLevelContainers.get(viewPortTileLevel), viewPort.getView());
+						prepareView(tileLevelContainers.get(viewPortTileLevel), viewPort.getView(), queue);
 					}
 
 					// Render this tile level:
@@ -343,7 +351,9 @@ public abstract class DomTileLevelLayerRenderer implements LayerRenderer {
 
 	protected void refresh() {
 		clear();
-		render(new RenderingInfo(container, viewPort.getView(), null));
+		RenderingInfo info = new RenderingInfo(container, viewPort.getView(), null);
+		info.setHintValue(MapPresenterImpl.QUEUE, queue);
+		render(info);
 	}
 
 	private void clear() {

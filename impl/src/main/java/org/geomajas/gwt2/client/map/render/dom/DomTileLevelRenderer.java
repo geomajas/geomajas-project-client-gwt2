@@ -11,30 +11,30 @@
 
 package org.geomajas.gwt2.client.map.render.dom;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
-
+import com.google.gwt.core.client.Callback;
+import com.google.web.bindery.event.shared.HandlerRegistration;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.service.BboxService;
 import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.event.TileLevelRenderedEvent;
 import org.geomajas.gwt2.client.event.TileLevelRenderedHandler;
+import org.geomajas.gwt2.client.map.MapPresenterImpl;
 import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.tile.TileBasedLayer;
+import org.geomajas.gwt2.client.map.render.RenderingInfo;
 import org.geomajas.gwt2.client.map.render.Tile;
 import org.geomajas.gwt2.client.map.render.TileCode;
 import org.geomajas.gwt2.client.map.render.TileLevelRenderer;
 import org.geomajas.gwt2.client.map.render.TileRenderer;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
-import org.geomajas.gwt2.client.map.render.dom.container.HtmlImageImpl;
 
-import com.google.gwt.core.client.Callback;
-import com.google.web.bindery.event.shared.HandlerRegistration;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * Definition for a renderer for WMS layers.
@@ -63,6 +63,8 @@ public class DomTileLevelRenderer implements TileLevelRenderer {
 
 	private int nrLoadingTiles;
 
+	private Map<TileCode, Boolean> addedTiles;
+
 	public DomTileLevelRenderer(TileBasedLayer layer, int tileLevel, ViewPort viewPort, HtmlContainer container,
 			TileRenderer tileRenderer) {
 		this.layer = layer;
@@ -72,6 +74,7 @@ public class DomTileLevelRenderer implements TileLevelRenderer {
 		this.tileRenderer = tileRenderer;
 		this.tiles = new HashMap<TileCode, Tile>();
 		this.resolution = layer.getTileConfiguration().getResolution(tileLevel);
+		this.addedTiles = new HashMap<TileCode, Boolean>();
 	}
 
 	// ------------------------------------------------------------------------
@@ -84,18 +87,20 @@ public class DomTileLevelRenderer implements TileLevelRenderer {
 	}
 
 	@Override
-	public void render(View view) {
+	public void render(RenderingInfo info, View view) {
 		if (layer.isShowing()) {
+			// Get the tiles in the current view and add them to the queue if they were not yet added:
 			List<TileCode> tilesForBounds = getTileCodesForView(view);
-			for (TileCode tileCode : tilesForBounds) {
-				if (!tiles.containsKey(tileCode)) {
-					Tile tile = createTile(tileCode);
-
-					// Add the tile to the list and render it:
-					tiles.put(tileCode, tile);
-					nrLoadingTiles++;
-					renderTile(tile, new ImageCounter());
+			boolean added = false;
+			for (TileCode code : tilesForBounds) {
+				if (!addedTiles.containsKey(code)) {
+					info.getHintValue(MapPresenterImpl.QUEUE).add(createTile(code));
+					added = true;
 				}
+			}
+			// Throw an event if tiles were added:
+			if (added) {
+				GeomajasImpl.getInstance().getEventBus().fireEvent(new TilesAddedEvent(view, info.getTrajectory()));
 			}
 		}
 	}
@@ -125,15 +130,18 @@ public class DomTileLevelRenderer implements TileLevelRenderer {
 		return BboxService.scale(bounds, deltaScale);
 	}
 
-	protected void renderTile(Tile tile, Callback<String, String> callback) {
-		container.add(new HtmlImageImpl(tile.getUrl(), tile.getBounds(), callback));
-	}
-
-	private Tile createTile(TileCode tileCode) {
+	private LoadableTile createTile(TileCode tileCode) {
 		Bbox worldBounds = getWorldBounds(tileCode);
-		Tile tile = new Tile(tileCode, getScreenBounds(worldBounds));
+
+		// Create a dom tile - this is a tile with an image that can be loaded later:
+		DomTile tile = new DomTile(new ImageCounter(), tileCode, getScreenBounds(worldBounds));
 		tile.setCode(tileCode);
 		tile.setUrl(tileRenderer.getUrl(tileCode));
+
+		// Add the image to the container:
+		nrLoadingTiles++;
+		container.add(tile.getImage());
+		addedTiles.put(tileCode, true);
 		return tile;
 	}
 

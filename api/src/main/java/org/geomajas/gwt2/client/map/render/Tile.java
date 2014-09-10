@@ -11,10 +11,10 @@
 
 package org.geomajas.gwt2.client.map.render;
 
-import java.io.Serializable;
-
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
+
+import java.io.Serializable;
 
 /**
  * <p>
@@ -22,7 +22,7 @@ import org.geomajas.geometry.Bbox;
  * expressed in application coordinates, the indices are expressed in view coordinates (this means that the y-axis is
  * flipped)
  * </p>
- * 
+ *
  * @author Jan De Moerloose
  * @since 2.0.0
  */
@@ -31,11 +31,11 @@ public class Tile implements Serializable {
 
 	private static final long serialVersionUID = 151L;
 
-	private TileCode code;
+	protected TileCode code;
 
-	private String url;
+	protected String url;
 
-	private Bbox bounds;
+	protected Bbox bounds;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -49,7 +49,7 @@ public class Tile implements Serializable {
 
 	/**
 	 * Constructor setting the tile's unique ID and bounds.
-	 * 
+	 *
 	 * @param bounds
 	 *            Bounds for the image on the client side.
 	 */
@@ -59,7 +59,7 @@ public class Tile implements Serializable {
 
 	/**
 	 * Constructor setting the tile's unique ID and bounds.
-	 * 
+	 *
 	 * @param tileCode
 	 *            The tile's code.
 	 * @param bounds
@@ -102,7 +102,7 @@ public class Tile implements Serializable {
 
 	/**
 	 * Set the unique code for this tile. Consider this it's unique identifier within a raster layer.
-	 * 
+	 *
 	 * @param code
 	 *            The tile's code.
 	 */
@@ -121,7 +121,7 @@ public class Tile implements Serializable {
 
 	/**
 	 * Sets the bounds for the image on the client side.
-	 * 
+	 *
 	 * @param bounds
 	 *            The image bounds.
 	 */
@@ -142,7 +142,7 @@ public class Tile implements Serializable {
 	/**
 	 * Set the URL to the actual image for this raster tile. It is that image that will really display the rendered
 	 * tile.
-	 * 
+	 *
 	 * @param url
 	 *            The location of the actual image.
 	 */

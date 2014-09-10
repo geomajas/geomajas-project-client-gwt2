@@ -22,12 +22,14 @@ import org.geomajas.gwt2.client.event.NavigationStopEvent;
 import org.geomajas.gwt2.client.event.NavigationStopHandler;
 import org.geomajas.gwt2.client.map.MapConfiguration;
 import org.geomajas.gwt2.client.map.MapEventBus;
+import org.geomajas.gwt2.client.map.MapPresenterImpl;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.client.map.layer.LayersModel;
 import org.geomajas.gwt2.client.map.render.LayerRenderer;
 import org.geomajas.gwt2.client.map.render.LayersModelRenderer;
 import org.geomajas.gwt2.client.map.render.RenderingInfo;
+import org.geomajas.gwt2.client.map.render.TileQueue;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlGroup;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlObject;
@@ -65,7 +67,8 @@ public class DomLayersModelRenderer implements LayersModelRenderer {
 	// Constructor:
 	// ------------------------------------------------------------------------
 
-	public DomLayersModelRenderer(LayersModel layersModel, ViewPort viewPort, MapEventBus eventBus) {
+	public DomLayersModelRenderer(LayersModel layersModel, ViewPort viewPort, MapEventBus eventBus,
+			final TileQueue queue) {
 		this.layersModel = layersModel;
 		this.viewPort = viewPort;
 		this.layerRenderers = new HashMap<Layer, LayerRenderer>();
@@ -94,8 +97,10 @@ public class DomLayersModelRenderer implements LayersModelRenderer {
 				LayerRenderer layerRenderer = event.getLayer().getRenderer();
 				if (layerRenderer != null) {
 					registerLayerRenderer(event.getLayer(), layerRenderer);
-					layerRenderer.render(new RenderingInfo(getOrCreateLayerContainer(event.getLayer()),
-							DomLayersModelRenderer.this.viewPort.getView(), null));
+					RenderingInfo layerInfo = new RenderingInfo(getOrCreateLayerContainer(event.getLayer()),
+							DomLayersModelRenderer.this.viewPort.getView(), null);
+					layerInfo.setHintValue(MapPresenterImpl.QUEUE, queue);
+					layerRenderer.render(layerInfo);
 				}
 			}
 		});
@@ -129,8 +134,10 @@ public class DomLayersModelRenderer implements LayersModelRenderer {
 						// This layer is not animated, hide it before the navigation starts:
 						HtmlContainer layerContainer = getOrCreateLayerContainer(layer);
 						LayerRenderer layerRenderer = layerRenderers.get(layer);
-						layerRenderer.render(new RenderingInfo(layerContainer, event.getTrajectory().getView(0.0),
-								event.getTrajectory()));
+						RenderingInfo layerInfo = new RenderingInfo(layerContainer, event.getTrajectory().getView(0.0),
+								event.getTrajectory());
+						layerInfo.setHintValue(MapPresenterImpl.QUEUE, queue);
+						layerRenderer.render(layerInfo);
 						DomService.applyTransition(layerContainer.asWidget().getElement(), new String[] { "opacity" },
 								new Integer[] { 0 });
 						layerContainer.asWidget().getElement().getStyle().setOpacity(0.0f);
@@ -150,7 +157,9 @@ public class DomLayersModelRenderer implements LayersModelRenderer {
 						// This layer is not animated, hide it before the navigation starts:
 						HtmlContainer layerContainer = getOrCreateLayerContainer(layer);
 						LayerRenderer layerRenderer = layerRenderers.get(layer);
-						layerRenderer.render(new RenderingInfo(layerContainer, event.getView(), null));
+						RenderingInfo layerInfo = new RenderingInfo(layerContainer, event.getView(), null);
+						layerInfo.setHintValue(MapPresenterImpl.QUEUE, queue);
+						layerRenderer.render(layerInfo);
 						if (DomLayersModelRenderer.this.configuration != null) {
 							DomService.applyTransition(layerContainer.asWidget().getElement(),
 									new String[] { "opacity" },
@@ -211,6 +220,7 @@ public class DomLayersModelRenderer implements LayersModelRenderer {
 			// Adjust the rendering info, to use a layer specific container widget:
 			RenderingInfo layerInfo = new RenderingInfo(getOrCreateLayerContainer(layer), renderingInfo.getView(),
 					renderingInfo.getTrajectory());
+			layerInfo.setHintValue(MapPresenterImpl.QUEUE, renderingInfo.getHintValue(MapPresenterImpl.QUEUE));
 			LayerRenderer layerRenderer = layerRenderers.get(layer);
 			layerRenderer.render(layerInfo);
 		}

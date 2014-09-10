@@ -30,11 +30,12 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.RequiresResize;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.EventBus;
-
 import org.geomajas.geometry.Matrix;
 import org.geomajas.gwt.client.controller.MapEventParser;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt.client.util.Dom;
+import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.animation.Trajectory;
 import org.geomajas.gwt2.client.controller.MapController;
 import org.geomajas.gwt2.client.controller.MapEventParserImpl;
 import org.geomajas.gwt2.client.controller.NavigationController;
@@ -53,16 +54,19 @@ import org.geomajas.gwt2.client.map.layer.LayersModel;
 import org.geomajas.gwt2.client.map.layer.LayersModelImpl;
 import org.geomajas.gwt2.client.map.render.LayersModelRenderer;
 import org.geomajas.gwt2.client.map.render.RenderingInfo;
+import org.geomajas.gwt2.client.map.render.TileQueue;
 import org.geomajas.gwt2.client.map.render.dom.DomLayersModelRenderer;
+import org.geomajas.gwt2.client.map.render.dom.TilesAddedEvent;
+import org.geomajas.gwt2.client.map.render.dom.TilesAddedHandler;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
 import org.geomajas.gwt2.client.widget.DefaultMapWidget;
-import org.geomajas.gwt2.client.widget.map.MapWidgetImpl;
 import org.geomajas.gwt2.client.widget.control.pan.PanControl;
 import org.geomajas.gwt2.client.widget.control.scalebar.Scalebar;
 import org.geomajas.gwt2.client.widget.control.watermark.Watermark;
 import org.geomajas.gwt2.client.widget.control.zoom.ZoomControl;
 import org.geomajas.gwt2.client.widget.control.zoom.ZoomStepControl;
 import org.geomajas.gwt2.client.widget.control.zoomtorect.ZoomToRectangleControl;
+import org.geomajas.gwt2.client.widget.map.MapWidgetImpl;
 import org.vaadin.gwtgraphics.client.Transformable;
 
 import java.util.ArrayList;
@@ -206,6 +210,12 @@ public final class MapPresenterImpl implements MapPresenter {
 
 	private boolean isTouchSupported;
 
+	private TileQueue tilequeue;
+
+	private static final int MAX_LOADING_TILES = 5;
+
+	public static final Hint<TileQueue> QUEUE = new Hint<TileQueue>("tile_queue");
+
 	// ------------------------------------------------------------------------
 	// Constructor:
 	// ------------------------------------------------------------------------
@@ -218,7 +228,8 @@ public final class MapPresenterImpl implements MapPresenter {
 		this.viewPort = new ViewPortImpl(this.eventBus);
 		this.layersModel = new LayersModelImpl(this.viewPort, this.eventBus);
 		this.mapEventParser = new MapEventParserImpl(this);
-		this.renderer = new DomLayersModelRenderer(layersModel, viewPort, this.eventBus);
+		this.tilequeue = new TileQueueImpl<String>(new TilePriorityFunctionImpl(), new TileKeyProviderImpl());
+		this.renderer = new DomLayersModelRenderer(layersModel, viewPort, this.eventBus, tilequeue);
 		this.containerManager = new ContainerManagerImpl(display, viewPort);
 		this.isTouchSupported = Dom.isTouchSupported();
 
@@ -226,7 +237,7 @@ public final class MapPresenterImpl implements MapPresenter {
 
 			@Override
 			public void onViewPortChanged(ViewPortChangedEvent event) {
-				renderer.render(new RenderingInfo(display.getMapHtmlContainer(), event.getTo(), event.getTrajectory()));
+				renderFrame(event.getTo(), event.getTrajectory());
 			}
 		});
 		this.eventBus.addMapCompositionHandler(new MapCompositionHandler() {
@@ -240,6 +251,15 @@ public final class MapPresenterImpl implements MapPresenter {
 				if (layersModel.getLayerCount() == 1) {
 					renderer.setAnimated(event.getLayer(), true);
 				}
+			}
+		});
+
+		// Listen when new tiles are added
+		GeomajasImpl.getInstance().getEventBus().addHandler(TilesAddedHandler.TYPE, new TilesAddedHandler() {
+			@Override
+			public void onTilesAdded(TilesAddedEvent event) {
+				// Re-render the frame when tiles were added
+				renderFrame(event.getView(), event.getTrajectory());
 			}
 		});
 
@@ -261,7 +281,7 @@ public final class MapPresenterImpl implements MapPresenter {
 	public void initialize(MapConfiguration configuration, DefaultMapWidget... mapWidgets) {
 		initialize(configuration, true, mapWidgets);
 	}
-	
+
 	public void initialize(MapConfiguration configuration, boolean fireEvent, DefaultMapWidget... mapWidgets) {
 		this.configuration = configuration;
 
@@ -276,7 +296,7 @@ public final class MapPresenterImpl implements MapPresenter {
 
 		// Immediately zoom to the initial bounds as configured:
 		viewPort.applyBounds(configuration.getHintValue(MapConfiguration.INITIAL_BOUNDS), ZoomOption.LEVEL_CLOSEST);
-		renderer.render(new RenderingInfo(display.getMapHtmlContainer(), viewPort.getView(), null));
+		renderFrame(viewPort.getView(), null);
 
 		// Adding the default map control widgets:
 		if (getWidgetPane() != null) {
@@ -304,6 +324,36 @@ public final class MapPresenterImpl implements MapPresenter {
 		// Fire initialization event
 		if (fireEvent) {
 			eventBus.fireEvent(new MapInitializationEvent(this));
+		}
+	}
+
+	/**
+	 * Render a frame of the view. Let all renderers add tiles to the queue and then prioritize the queue.
+	 * When the queue is prioritized, empty the queue with a maximum of {@link #MAX_LOADING_TILES} tiles and render
+	 * these tiles.
+	 *
+	 * @param view       The view to render.
+	 * @param trajectory The trajectory.
+	 */
+	public void renderFrame(View view, Trajectory trajectory) {
+		// Let all layers add tiles to the queue:
+		RenderingInfo info = new RenderingInfo(display.getMapHtmlContainer(), view, trajectory);
+		info.setHintValue(QUEUE, tilequeue);
+		renderer.render(info);
+
+		// Prioritize tiles in the queue:
+		double resolution = viewPort.getResolution();
+		tilequeue.prioritize(viewPort.getResolutionIndex(resolution), resolution, viewPort.getPosition());
+
+		// Get tiles and load them:
+		int size = Math.min(MAX_LOADING_TILES, tilequeue.size());
+		for (int i = 0; i < size; i++) {
+			tilequeue.poll().load();
+		}
+
+		// Keep loading tiles if the queue isn't empty:
+		if (tilequeue.size() > 0) {
+			renderFrame(view, trajectory);
 		}
 	}
 
