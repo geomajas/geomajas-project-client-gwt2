@@ -22,7 +22,6 @@
     <inherits name='org.geomajas.gwt2.widget.example.ExampleJar' />
 	<inherits name='org.geomajas.gwt2.plugin.print.example.ExampleJar' />
     <inherits name='org.geomajas.gwt2.plugin.tms.example.ExampleJar' />
-	<inherits name='org.geomajas.gwt2.plugin.graphicsediting.example.GraphicsEditingGwt2ExampleJar' />
 	<inherits name='org.geomajas.gwt2.plugin.geocoder.example.GeoCoderExampleJar' />
 	<inherits name='org.geomajas.gwt2.plugin.wms.example.ServerExampleJar' />
  

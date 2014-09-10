@@ -180,28 +180,6 @@
 				<version>1.0.4</version>
 			</dependency>
 			
-			<!-- Graphics Editing plugin -->
-			<dependency>
-				<groupId>org.geomajas.project</groupId>
-				<artifactId>geomajas-project-graphics</artifactId>
-				<version>${version-geomajas-graphics}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-client-gwt2-plugin-graphicsediting-parent</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-client-gwt2-plugin-graphicsediting-impl</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-client-gwt2-plugin-graphicsediting-example-jar</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-
 			<!-- Print plugin -->
  			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
