@@ -39,15 +39,6 @@
 				</property>
 			</activation>
 		</profile>
-        <profile>
-            <id>full-build</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <modules>
-                <module>example</module>
-            </modules>
-        </profile>
     </profiles>
 
 </project>
