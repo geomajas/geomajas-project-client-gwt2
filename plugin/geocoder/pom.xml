@@ -27,11 +27,13 @@
 	<modules>
 		<module>geocoder</module>
 		<module>example-jar</module>
+		<module>example</module>
         <module>documentation</module>
+		<module>javadoc</module>
 	</modules>
 
-    <profiles>
-        <profile>
+	<profiles>
+		<profile>
 			<id>m2e</id>
 			<activation>
 				<property>
@@ -39,7 +41,6 @@
 				</property>
 			</activation>
 		</profile>
-    </profiles>
-
+	</profiles>
 
 </project>

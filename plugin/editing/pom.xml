@@ -28,10 +28,12 @@
 		<module>impl</module>
         <module>server-extension</module>
 		<module>example-jar</module>
+		<module>example</module>
         <module>documentation</module>
+		<module>javadoc</module>
 	</modules>
 
-    <profiles>
+	<profiles>
 		<profile>
 			<id>m2e</id>
 			<activation>
@@ -40,6 +42,6 @@
 				</property>
 			</activation>
 		</profile>
-    </profiles>
+	</profiles>
 
 </project>

@@ -26,8 +26,9 @@
 
 	<name>Geomajas GWT2 client: Plugin Print - Documentation</name>
 	<description>Geomajas GWT2 client: Plugin Print - Documentation</description>
-	
+
 	<properties>
 		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
 	</properties>
+
 </project>
