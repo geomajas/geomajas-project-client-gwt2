@@ -27,7 +27,6 @@
 		<module>impl</module>
 		<module>print-wms</module>
 		<module>example-jar</module>
-		<module>example</module>
         <module>documentation</module>
 		<module>javadoc</module>
 	</modules>
@@ -40,6 +39,15 @@
 					<name>m2e.version</name>
 				</property>
 			</activation>
+		</profile>
+		<profile>
+			<id>full-build</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<modules>
+				<module>example</module>
+			</modules>
 		</profile>
 	</profiles>
 
