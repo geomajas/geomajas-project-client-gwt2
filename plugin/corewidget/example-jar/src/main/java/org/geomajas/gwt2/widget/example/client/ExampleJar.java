@@ -11,6 +11,8 @@
 
 package org.geomajas.gwt2.widget.example.client;
 
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanelRegistry;
 import org.geomajas.gwt2.example.base.client.sample.ShowcaseSampleDefinition;
@@ -19,13 +21,11 @@ import org.geomajas.gwt2.widget.example.client.resource.ExampleWidgetResource;
 import org.geomajas.gwt2.widget.example.client.sample.dialog.CloseableDialogExample;
 import org.geomajas.gwt2.widget.example.client.sample.dialog.MessageBoxExample;
 import org.geomajas.gwt2.widget.example.client.sample.feature.FeatureClickedExample;
+import org.geomajas.gwt2.widget.example.client.sample.feature.featureinfo.FeatureInfoPanel;
 import org.geomajas.gwt2.widget.example.client.sample.map.LegendAddRemoveSample;
 import org.geomajas.gwt2.widget.example.client.sample.map.LegendOrderSample;
 import org.geomajas.gwt2.widget.example.client.sample.map.MapLegendDropDownSample;
 import org.geomajas.gwt2.widget.example.client.sample.feature.FeatureMouseOverExample;
-
-import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
 
 /**
  * Entry point and main class for the widget core example application.
@@ -252,5 +252,38 @@ public class ExampleJar implements EntryPoint {
 				return "FeatureMouseOver";
 			}
 		});
+
+		SamplePanelRegistry.registerFactory(CATEGORY_WIDGET, new ShowcaseSampleDefinition() {
+			@Override
+			public SamplePanel create() {
+				return new FeatureInfoPanel();
+			}
+
+			@Override
+			public String getTitle() {
+				return MESSAGES.featureInfoTitle();
+			}
+
+			@Override
+			public String getShortDescription() {
+				return MESSAGES.featureInfoShort();
+			}
+
+			@Override
+			public String getDescription() {
+				return MESSAGES.featureInfoDescription();
+			}
+
+			@Override
+			public String getCategory() {
+				return CATEGORY_WIDGET;
+			}
+
+			@Override
+			public String getKey() {
+				return "featureinfo";
+			}
+		});
+
 	}
 }

@@ -15,7 +15,7 @@ import com.google.gwt.i18n.client.Messages;
 
 /**
  * Specific messages for the many samples.
- * 
+ *
  * @author Pieter De Graef
  */
 public interface SampleMessages extends Messages {

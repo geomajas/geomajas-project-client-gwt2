@@ -1,0 +1,12 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+    <ui:with field='resource' type='org.geomajas.gwt2.example.base.client.resource.ShowcaseResource'/>
+
+    <g:HTMLPanel ui:field="panel">
+        <g:ToggleButton ui:field="button">
+            Info
+        </g:ToggleButton>
+    </g:HTMLPanel>
+
+</ui:UiBinder>

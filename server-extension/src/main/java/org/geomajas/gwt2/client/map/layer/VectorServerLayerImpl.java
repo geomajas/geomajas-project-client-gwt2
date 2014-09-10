@@ -11,12 +11,6 @@
 
 package org.geomajas.gwt2.client.map.layer;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.geomajas.command.dto.RegisterNamedStyleInfoRequest;
 import org.geomajas.command.dto.RegisterNamedStyleInfoResponse;
 import org.geomajas.configuration.AttributeInfo;
@@ -49,9 +43,15 @@ import org.geomajas.gwt2.client.map.render.TileRenderer;
 import org.geomajas.sld.FeatureTypeStyleInfo;
 import org.geomajas.sld.RuleInfo;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Vector layer representation.
- * 
+ *
  * @author Pieter De Graef
  * @author Jan De Moerloose
  */
@@ -92,10 +92,10 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 	@Override
 	public TileRenderer getTileRenderer() {
 		if (tileRenderer == null) {
-			 String layerId = layerInfo.getServerLayerId();
-			 String dispatcher = GeomajasServerExtension.getInstance().getEndPointService().getDispatcherUrl();
-			 String baseUrl = dispatcher + RASTERIZING_PREFIX + layerId + "@" + mapInfo.getCrs() + "/"
-			 + layerInfo.getNamedStyleInfo().getName() + "/";
+			String layerId = layerInfo.getServerLayerId();
+			String dispatcher = GeomajasServerExtension.getInstance().getEndPointService().getDispatcherUrl();
+			String baseUrl = dispatcher + RASTERIZING_PREFIX + layerId + "@" + mapInfo.getCrs() + "/"
+					+ layerInfo.getNamedStyleInfo().getName() + "/";
 			tileRenderer = new VectorServerTileRenderer(tileConfiguration, baseUrl, ".png");
 		}
 		return tileRenderer;

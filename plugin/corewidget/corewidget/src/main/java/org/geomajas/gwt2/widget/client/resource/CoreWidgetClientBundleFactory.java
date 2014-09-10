@@ -12,6 +12,10 @@
 package org.geomajas.gwt2.widget.client.resource;
 
 import com.google.gwt.core.client.GWT;
+import org.geomajas.gwt2.widget.client.feature.featureinfo.resource.FeatureInfoResource;
+import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.FeatureSelectBoxResource;
+
+import com.google.gwt.core.client.GWT;
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.widget.client.map.layercontrolpanel.resource.LayerControlPanelResource;
 import org.geomajas.gwt2.widget.client.map.mapcontrolpanel.resource.MapControlPanelResource;
@@ -44,5 +48,13 @@ public class CoreWidgetClientBundleFactory {
 	 */
 	public MapControlPanelResource createMapControlPanelResource() {
 		return GWT.create(MapControlPanelResource.class);
+	}
+	/**
+	 * Create a new resource bundle for the {@link org.geomajas.gwt2.widget.client.feature.featureinfo.FeatureInfoWidget}.
+	 *
+	 * @return A new resource bundle.
+	 */
+	public FeatureInfoResource createFeatureInfoResource() {
+		return GWT.create(FeatureInfoResource.class);
 	}
 }

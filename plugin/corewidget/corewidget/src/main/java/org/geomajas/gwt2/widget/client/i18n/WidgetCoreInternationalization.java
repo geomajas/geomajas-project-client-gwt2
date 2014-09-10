@@ -15,6 +15,7 @@ import com.google.gwt.i18n.client.Messages;
 
 /**
  * Localization constants for the GWT client widgets.
+ * <p/>
  *
  * @author Dosi Bingov
  */
@@ -22,4 +23,24 @@ public interface WidgetCoreInternationalization extends Messages {
 
 	/*	Legend widget messages */
 	String legend();
+	String legendButName();
+
+
+	/*	Message box widget messages */
+	String messageBoxBtnYes();
+
+	String messageBoxBtnNo();
+
+	String messageBoxBtnCancel();
+
+	String messageBoxBtnClose();
+
+	/* Feature info widget messages */
+	String featureDetailTitle();
+
+	String zoomToObjectButton();
+
+	String yes();
+
+	String no();
 }

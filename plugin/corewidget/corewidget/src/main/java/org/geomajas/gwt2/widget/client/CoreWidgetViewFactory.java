@@ -18,6 +18,12 @@ import org.geomajas.gwt2.widget.client.map.layercontrolpanel.resource.LayerContr
 import org.geomajas.gwt2.widget.client.map.mapcontrolpanel.MapControlPanelView;
 import org.geomajas.gwt2.widget.client.map.mapcontrolpanel.MapControlPanelViewImpl;
 import org.geomajas.gwt2.widget.client.map.mapcontrolpanel.resource.MapControlPanelResource;
+import org.geomajas.gwt2.widget.client.feature.featureinfo.FeatureInfoView;
+import org.geomajas.gwt2.widget.client.feature.featureinfo.FeatureInfoViewImpl;
+import org.geomajas.gwt2.widget.client.feature.featureinfo.resource.FeatureInfoResource;
+import org.geomajas.gwt2.widget.client.feature.featureselectbox.FeatureSelectBoxView;
+import org.geomajas.gwt2.widget.client.feature.featureselectbox.FeatureSelectBoxViewImpl;
+import org.geomajas.gwt2.widget.client.feature.featureselectbox.resource.FeatureSelectBoxResource;
 
 /**
  * MVP view factory for this plugin.
@@ -44,5 +50,15 @@ public class CoreWidgetViewFactory {
 	 */
 	public MapControlPanelView createMapControlPanel(MapControlPanelResource resource) {
 		return new MapControlPanelViewImpl(resource);
+	}
+
+	/**
+	 * Create a new {@link org.geomajas.gwt2.widget.client.feature.featureinfo.FeatureInfoView}.
+	 *
+	 * @param resource the resource to use.
+	 * @return a new feature info view.
+	 */
+	public FeatureInfoView createFeatureInfoView(FeatureInfoResource resource) {
+		return new FeatureInfoViewImpl(resource);
 	}
 }

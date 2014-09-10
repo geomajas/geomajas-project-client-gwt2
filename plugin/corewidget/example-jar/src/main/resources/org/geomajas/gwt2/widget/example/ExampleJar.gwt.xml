@@ -12,8 +12,8 @@
   -->
 
 <module rename-to="widgetExamplejar">
-	<inherits name='org.geomajas.gwt2.example.base.ExampleBase' />
-	<inherits name='org.geomajas.gwt2.widget.CoreWidget' />
+    <inherits name='org.geomajas.gwt2.example.base.ExampleBase'/>
+    <inherits name='org.geomajas.gwt2.widget.CoreWidget'/>
     <inherits name='com.allen_sauer.gwt.dnd.gwt-dnd'/>
 
     <replace-with class="org.geomajas.gwt2.widget.example.client.factory.CoreWidgetExampleViewFactory">
@@ -21,5 +21,9 @@
     </replace-with>
 
     <entry-point class="org.geomajas.gwt2.widget.example.client.ExampleJar"/>
-	<source path='client'/>
+    <source path='client'/>
+
+    <replace-with class="org.geomajas.gwt2.widget.example.client.sample.feature.featureinfo.MyAttributeWidgetFactory">
+        <when-type-is class="org.geomajas.gwt2.widget.client.feature.featureinfo.builder.AttributeWidgetFactory"/>
+    </replace-with>
 </module>
