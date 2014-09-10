@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+        "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<chapter id="chapter-configuration">
+    <title>Configuration</title>
+
+    <section>
+        <title>Getting started</title>
+
+        <para>As most Geomajas plugins, the Tile Based Layer plugin has a single
+            class that provides a starting point for most functionalities the plugin
+            supports. This starting point is the
+            <code>TileBasedLayerClient</code>
+            class:
+        </para>
+
+        <programlisting>org.geomajas.gwt2.plugin.tilebasedlayer.client.TileBasedLayerClient</programlisting>
+
+        <para>From here on it is possible to create new tile based layers and OSM layers.</para>
+    </section>
+
+    <section>
+        <title>Tile based layers</title>
+
+        <section>
+            <title>Configuration objects</title>
+
+            <para>Before we go into the actual creating of a tile based layer, let us first
+                cover the required configuration objects.
+            </para>
+
+            <para>The first is the
+                <code>org.geomajas.gwt2.client.map.layer.tile.TileConfiguration</code>.
+                It provides the point of origin and the size of the tiles in
+                pixels:
+            </para>
+
+            <itemizedlist>
+                <listitem>
+                    <para><emphasis>tileOrigin</emphasis>: The origin for the layer
+                        (coordinate that provides the minimum X and Y values). If you're
+                        unsure, it's best to take a margin.
+                    </para>
+                </listitem>
+
+                <listitem>
+                    <para><emphasis>tileWidth</emphasis>: The width in pixels for an
+                        individual tile.
+                    </para>
+                </listitem>
+
+                <listitem>
+                    <para><emphasis>tileHeight</emphasis>: The height in pixels for an
+                        individual tile.
+                    </para>
+                </listitem>
+            </itemizedlist>
+
+            <para>
+                Then we have to provide URLs to the tile servers. You can provide one URL to a single tile server but if
+                you add
+                multiple URLs, Round-Robin will be performed to select URLs from the different tile servers.
+
+                These URLs should have the following placeholders:
+            </para>
+
+            <itemizedlist>
+                <listitem>
+                    <para><emphasis>{x}</emphasis>: The x-coordinate of the tile.
+                    </para>
+                    <para><emphasis>{y}</emphasis>: The y-coordinate of the tile.
+                    </para>
+                    <para><emphasis>{z}</emphasis>: The tile level.
+                    </para>
+                </listitem>
+            </itemizedlist>
+            <para>
+                The URLs should contain the file extension of the tiles. An URL to a tile server could look like this:
+                <code>http://a.tile.openstreetmap.org/{z}/{x}/{y}.png</code>
+            </para>
+            <para>
+                Note that for some maps such as OSM/Bing/... the Y-coordinate has to be inverted. To indicate that the
+                Y-coordinate
+                has to be inverted, put
+                <code>{-y}</code>
+                instead of
+                <code>{y}</code>
+                as a placeholder.
+            </para>
+
+        </section>
+
+        <section>
+            <title>Creating a tile based layer</title>
+
+            <para>Once you have your configuration object (TileConfiguration) and URLs set up, it's easy to create a new
+                layer:
+            </para>
+
+            <programlisting>
+            // Creating the URLs:
+            Collection&lt;String&gt; urls = new ArrayList&lt;String&gt;();
+            urls.add("http://a.tile.openstreetmap.org/{z}/{x}/{-y}.png");
+            urls.add("http://b.tile.openstreetmap.org/{z}/{x}/{-y}.png");
+            urls.add("http://c.tile.openstreetmap.org/{z}/{x}/{-y}.png");
+
+            // Then we define a Tile Configuration object:
+            Coordinate tileOrigin = new Coordinate(40075016.686 / 2, 40075016.686 / 2);
+            TileConfiguration tileConfig = new TileConfiguration(256, 256, tileOrigin);
+
+            // Now create the layer:
+            TileBasedLayer myLayer = TileBasedLayerClient.getInstance().createLayer("Countries", tileConfig,
+            layerConfig);
+            </programlisting>
+
+            <para>
+                Alternatively, if you want to create an OSM layer you can use the helper methods so you don't have to
+                invert the Y-coordinate:
+            </para>
+            <programlisting>
+            // ...
+            urls.add("http://a.tile.openstreetmap.org/{z}/{x}/{y}.png");
+            urls.add("http://b.tile.openstreetmap.org/{z}/{x}/{y}.png");
+            urls.add("http://c.tile.openstreetmap.org/{z}/{x}/{y}.png");
+
+            // ...
+            OsmLayer osmLayer = TileBasedLayerClient.getInstance().createOsmLayer("Countries", tileConfig,
+            layerConfig);
+            </programlisting>
+
+            <para>Once you have your layer, it is possible to add it to the map:</para>
+
+            <programlisting>mapPresenter.getLayersModel().addLayer(osmLayer);</programlisting>
+
+            <para>A newly created tile based layer has now been added to the map!</para>
+        </section>
+    </section>
+</chapter>

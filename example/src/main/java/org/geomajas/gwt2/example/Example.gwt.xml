@@ -24,7 +24,8 @@
     <inherits name='org.geomajas.gwt2.plugin.tms.example.ExampleJar' />
 	<inherits name='org.geomajas.gwt2.plugin.geocoder.example.GeoCoderExampleJar' />
 	<inherits name='org.geomajas.gwt2.plugin.wms.example.ServerExampleJar' />
- 
+    <inherits name='org.geomajas.gwt2.plugin.tilebasedlayer.example.ExampleJar' />
+
     <entry-point class="org.geomajas.gwt2.example.client.Example" />
 	<!-- set target browser to compile for, use this to limit to the browser used for testing -->
 	<!-- where value = "ie6/opera/gecko1_8/safari/gecko" , "gecko1_8" is FireFox 3 -->

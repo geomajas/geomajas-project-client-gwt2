@@ -265,6 +265,18 @@
 				<version>${gwt-exporter-version}</version>
 			</dependency>
 
+            <!-- Tile Based Layer plugin -->
+            <dependency>
+                <groupId>org.geomajas.plugin</groupId>
+                <artifactId>geomajas-client-gwt2-plugin-tilebasedlayer</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.geomajas.plugin</groupId>
+                <artifactId>geomajas-client-gwt2-plugin-tilebasedlayer-example-jar</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
 			<!-- WMS plugin -->
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
