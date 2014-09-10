@@ -32,13 +32,12 @@
 
 	<profiles>
 		<profile>
-			<id>full-build</id>
+			<id>m2e</id>
 			<activation>
-				<activeByDefault>false</activeByDefault>
+				<property>
+					<name>m2e.version</name>
+				</property>
 			</activation>
-			<modules>
-				<module>example</module>
-			</modules>
 		</profile>
 	</profiles>
 

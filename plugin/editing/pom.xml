@@ -29,19 +29,17 @@
         <module>server-extension</module>
 		<module>example-jar</module>
         <module>documentation</module>
-		<!--<module>example</module>-->
 	</modules>
 
     <profiles>
-        <profile>
-            <id>full-build</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <modules>
-                <module>example</module>
-            </modules>
-        </profile>
+		<profile>
+			<id>m2e</id>
+			<activation>
+				<property>
+					<name>m2e.version</name>
+				</property>
+			</activation>
+		</profile>
     </profiles>
 
 </project>
