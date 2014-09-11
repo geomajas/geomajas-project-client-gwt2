@@ -25,26 +25,12 @@
 	<description>Geomajas GWT2 client: Main - API</description>
 
 	<dependencies>
-		<!-- Overwrite the xerces version that comes with JTS to make sure it is compatible with GWT UiBinder. -->
-<!-- 		<dependency>
-			<groupId>xerces</groupId>
-			<artifactId>xercesImpl</artifactId>
-		</dependency>
- -->
-		<!-- Geomajas dependencies -->
-<!-- 		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-api</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>org.geomajas.plugin</groupId>
+            <artifactId>geomajas-layer-hibernate</artifactId>
+            <version>1.16.0</version>
+        </dependency>
 		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-command</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-common-servlet</artifactId>
-		</dependency>
- -->		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-client-common-gwt</artifactId>
 		</dependency>
