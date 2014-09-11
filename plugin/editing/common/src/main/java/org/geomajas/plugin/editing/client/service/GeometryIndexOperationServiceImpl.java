@@ -229,17 +229,18 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 			redoQueue.clear();
 		}
 		for (int i = 0; i < indices.size(); i++) {
-			switch (indexService.getType(indices.get(i))) {
+			GeometryIndex index = indices.get(i);
+			switch (indexService.getType(index)) {
 				case TYPE_GEOMETRY:
 					if (Geometry.MULTI_POLYGON.equals(geometry.getGeometryType())) {
 						Geometry child;
-						if (indices.get(i).hasChild()) {
+						if (index.hasChild()) {
 							child = new Geometry(Geometry.LINEAR_RING, 0, 0);
 						} else {
 							child = new Geometry(Geometry.POLYGON, 0, 0);
 						}
 						GeometryIndexOperation op = new InsertGeometryOperation(indexService, child);
-						executeOperation(op, indices.get(i));
+						executeOperation(op, index);
 						seq.addOperation(op);
 					} else {
 						throw new GeometryOperationFailedException("Cannot insert new geometries (yet).");
@@ -249,8 +250,9 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 					if (coordinates == null || coordinates.size() < indices.size()) {
 						throw new GeometryOperationFailedException("No coordinates passed to insert.");
 					}
-					GeometryIndexOperation op2 = new InsertVertexOperation(indexService, coordinates.get(i).get(0));
-					executeOperation(op2, indices.get(i));
+					GeometryIndexOperation op2 = new InsertVertexOperation(indexService, coordinates.get(i).get(0),
+							service);
+					executeOperation(op2, index);
 					seq.addOperation(op2);
 			}
 		}
@@ -284,7 +286,7 @@ public class GeometryIndexOperationServiceImpl implements GeometryIndexOperation
 					op = new DeleteGeometryOperation(indexService);
 					break;
 				default:
-					op = new DeleteVertexOperation(indexService);
+					op = new DeleteVertexOperation(indexService, service);
 			}
 			executeOperation(op, indices.get(i));
 			seq.addOperation(op);

@@ -45,7 +45,7 @@ public class TileLevelRenderedEvent extends GwtEvent<TileLevelRenderedHandler> {
 	/**
 	 * Create an event for the specified renderer.
 	 * 
-	 * @param resolution the resolution that was rendered
+	 * @param renderer the renderer that has just rendered.
 	 * @since 2.1.0
 	 */
 	public TileLevelRenderedEvent(TileLevelRenderer renderer) {

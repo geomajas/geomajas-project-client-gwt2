@@ -34,7 +34,7 @@
 		<module>print</module>
         <module>tms</module>
 		<module>wms</module>
-		<module>graphicsediting</module>
+        <module>tilebasedlayer</module>
 	</modules>
 	
 </project>

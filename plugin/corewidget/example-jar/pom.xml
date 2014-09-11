@@ -19,8 +19,8 @@
 	</parent>
 
 	<artifactId>geomajas-client-gwt2-plugin-corewidget-example-jar</artifactId>
-	<name>Geomajas GWT2 client: Plugin Core Widget - Samples</name>
-	<description>Geomajas GWT2 client: Plugin Core Widget - Samples</description>
+	<name>Geomajas GWT2 client: Plugin Core Widget - Examples</name>
+	<description>Geomajas GWT2 client: Plugin Core Widget - Examples</description>
 
 	<dependencies>
 		<!-- Google dependencies -->

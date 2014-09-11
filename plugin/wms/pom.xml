@@ -25,21 +25,22 @@
 
 	<modules>
 		<module>wms</module>
-		<module>print</module>
-		<module>example-jar</module>
 		<module>server-extension</module>
+		<module>example-jar</module>
+		<module>server-example-jar</module>
+		<module>documentation</module>
+		<module>javadoc</module>
 	</modules>
 
-    <profiles>
-        <profile>
-            <id>full-build</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <modules>
-                <module>documentation</module>
-            </modules>
-        </profile>
-    </profiles>
+	<profiles>
+		<profile>
+			<id>m2e</id>
+			<activation>
+				<property>
+					<name>m2e.version</name>
+				</property>
+			</activation>
+		</profile>
+	</profiles>
 
 </project>

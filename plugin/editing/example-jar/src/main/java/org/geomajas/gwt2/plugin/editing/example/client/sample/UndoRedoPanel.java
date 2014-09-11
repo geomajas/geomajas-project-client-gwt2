@@ -115,6 +115,7 @@ public class UndoRedoPanel implements SamplePanel {
 				stopBtn.setEnabled(true);
 
 				addRingBtn.setVisible(true);
+				updateUndoRedoButtons();
 			}
 		});
 		editService.addGeometryEditStopHandler(new GeometryEditStopHandler() {
@@ -124,7 +125,9 @@ public class UndoRedoPanel implements SamplePanel {
 				createBtn.setEnabled(true);
 				editBtn.setEnabled(true);
 				stopBtn.setEnabled(false);
+
 				addRingBtn.setVisible(false);
+				updateUndoRedoButtons();
 			}
 		});
 		editService.addGeometryEditChangeStateHandler(new GeometryEditChangeStateHandler() {
@@ -133,8 +136,7 @@ public class UndoRedoPanel implements SamplePanel {
 			public void onChangeEditingState(GeometryEditChangeStateEvent event) {
 				// Only enable the "add ring" button when the user is not busy creating a new polygon (state INSERTING).
 				addRingBtn.setEnabled(editService.getEditingState() == GeometryEditState.IDLE);
-				undoBtn.setEnabled(editService.getEditingState() == GeometryEditState.IDLE);
-				redoBtn.setEnabled(editService.getEditingState() == GeometryEditState.IDLE);
+				updateUndoRedoButtons();
 			}
 		});
 
@@ -143,8 +145,7 @@ public class UndoRedoPanel implements SamplePanel {
 
 			@Override
 			public void onGeometryShapeChanged(GeometryEditShapeChangedEvent event) {
-				undoBtn.setEnabled(editService.canUndo() && editService.getEditingState() == GeometryEditState.IDLE);
-				redoBtn.setEnabled(editService.canRedo() && editService.getEditingState() == GeometryEditState.IDLE);
+				updateUndoRedoButtons();
 			}
 		});
 
@@ -238,5 +239,10 @@ public class UndoRedoPanel implements SamplePanel {
 			editService.redo();
 		} catch (GeometryOperationFailedException e) {
 		}
+	}
+
+	private void updateUndoRedoButtons() {
+		undoBtn.setEnabled(editService.canUndo());
+		redoBtn.setEnabled(editService.canRedo());
 	}
 }

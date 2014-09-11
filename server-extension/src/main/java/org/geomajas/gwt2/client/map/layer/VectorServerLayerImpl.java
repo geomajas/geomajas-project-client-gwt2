@@ -51,7 +51,7 @@ import org.geomajas.sld.RuleInfo;
 
 /**
  * Vector layer representation.
- * 
+ *
  * @author Pieter De Graef
  * @author Jan De Moerloose
  */

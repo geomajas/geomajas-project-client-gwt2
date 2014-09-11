@@ -15,7 +15,7 @@
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-parent</artifactId>
-		<version>2.1.0</version>
+		<version>2.3.0</version>
 	</parent>
 
 	<groupId>org.geomajas.project</groupId>
@@ -40,21 +40,23 @@
 		<module>example-jar</module>
   		<module>plugin</module>
 		<module>example</module>
+		<module>documentation</module>
+		<module>javadoc</module>
 	</modules>
 
 	<properties>
-		<version-geomajas-backend>1.16.0</version-geomajas-backend>
+		<version-geomajas-backend>1.16.1</version-geomajas-backend>
 		<version-geomajas-graphics>1.0.0-M3</version-geomajas-graphics>
 		<version-vaadin-graphics>1.0.0.TX11</version-vaadin-graphics>
-		<version-gwt>2.5.0</version-gwt>
+		<version-gwt>2.5.1</version-gwt>
 		<spring-version>3.0.5.RELEASE</spring-version>
-		<version-geomajas-build-tools>2.0.0</version-geomajas-build-tools>
+		<version-geomajas-build-tools>2.3.0</version-geomajas-build-tools>
 		<gwt-exporter-version>2.4.0</gwt-exporter-version>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
-		
+
 			<!-- Artifacts within this project -->
 			<dependency>
 				<groupId>org.geomajas</groupId>
@@ -72,7 +74,7 @@
 				<artifactId>geomajas-client-gwt2-api</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-client-gwt2-impl</artifactId>
@@ -102,7 +104,7 @@
 				<artifactId>geomajas-client-gwt2-example-jar</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			
+
 			<!-- Corewidget plugin -->
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
@@ -136,7 +138,7 @@
 				<artifactId>geomajas-client-gwt2-plugin-editing-example-jar</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			
+
 			<!-- Geocoder plugin -->
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
@@ -178,36 +180,12 @@
 				<artifactId>geonames-ws</artifactId>
 				<version>1.0.4</version>
 			</dependency>
-			
-			<!-- Graphics Editing plugin -->
-			<dependency>
-				<groupId>org.geomajas.project</groupId>
-				<artifactId>geomajas-project-graphics</artifactId>
-				<version>${version-geomajas-graphics}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-client-gwt2-plugin-graphicsediting-parent</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-client-gwt2-plugin-graphicsediting-impl</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-client-gwt2-plugin-graphicsediting-example-jar</artifactId>
-				<version>${project.version}</version>
-			</dependency>
 
 			<!-- Print plugin -->
-			<!-- in stead of org.geomajas.plugin:geomajas-client-gwt2-plugin-print-common,
-			we would like to use org.geomajas.plugin:geomajas-plugin-print from server project -->
-			<dependency>
+ 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-client-gwt2-plugin-print-common</artifactId>
-				<version>${project.version}</version>
+				<artifactId>geomajas-plugin-print</artifactId>
+				<version>${version-geomajas-backend}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
@@ -219,6 +197,12 @@
 				<artifactId>geomajas-client-gwt2-plugin-print-example-jar</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-client-gwt2-plugin-print-wms</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
 			<dependency>
 				<groupId>com.thoughtworks.xstream</groupId>
 				<artifactId>xstream</artifactId>
@@ -282,6 +266,18 @@
 				<version>${gwt-exporter-version}</version>
 			</dependency>
 
+            <!-- Tile Based Layer plugin -->
+            <dependency>
+                <groupId>org.geomajas.plugin</groupId>
+                <artifactId>geomajas-client-gwt2-plugin-tilebasedlayer</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.geomajas.plugin</groupId>
+                <artifactId>geomajas-client-gwt2-plugin-tilebasedlayer-example-jar</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
 			<!-- WMS plugin -->
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
@@ -295,7 +291,7 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-client-gwt2-plugin-wms-print</artifactId>
+				<artifactId>geomajas-client-gwt2-plugin-wms-server-example-jar</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
@@ -307,7 +303,7 @@
 				<groupId>org.apache.httpcomponents</groupId>
 				<artifactId>httpclient</artifactId>
 				<version>4.2.1</version>
-			</dependency>			
+			</dependency>
 			<dependency>
 				<groupId>org.apache.httpcomponents</groupId>
 				<artifactId>httpmime</artifactId>
@@ -367,10 +363,10 @@
 			</dependency>
 
 			<!-- External GWT libraries -->
- 			<dependency>
-				<groupId>com.google.code.gwt-dnd</groupId>
+			 <dependency>
+				<groupId>com.allen-sauer.gwt.dnd</groupId>
 				<artifactId>gwt-dnd</artifactId>
-				<version>3.1.0</version>
+				<version>3.2.3</version>
 			</dependency>
 
 			<dependency>
@@ -407,7 +403,7 @@
 				<artifactId>gwtmockito</artifactId>
 				<version>1.1.2</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.mockito</groupId>
 				<artifactId>mockito-all</artifactId>
@@ -418,15 +414,6 @@
 	</dependencyManagement>
 
 	<profiles>
-		<profile>
-			<id>full-build</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<modules>
-				<module>documentation</module>
-			</modules>
-		</profile>
 		<profile>
 			<id>skipDocs</id>
 			<activation>

@@ -1,0 +1,11 @@
+@external gm-attributeLabel;
+.gm-attributeLabel {
+    text-align: right;
+}
+
+@external gm-attributeValue;
+.gm-attributeValue {
+    text-decoration: none;
+    font-weight: normal;
+    line-height: normal;
+}

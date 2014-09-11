@@ -22,8 +22,8 @@
 
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-client-gwt2-example</artifactId>
-	<name>Geomajas GWT2 client: Main - Showcase App</name>
-	<description>Geomajas GWT2 client: Main - Showcase App</description>
+	<name>Geomajas GWT2 client: Main - Showcase Application</name>
+	<description>Geomajas GWT2 client: Main - Showcase Application</description>
 
 	<dependencies>
 		
@@ -42,6 +42,7 @@
 		</dependency>
 		
 		<!-- Geomajas plugin examples -->
+		
         <dependency>
             <groupId>org.geomajas.plugin</groupId>
             <artifactId>geomajas-client-gwt2-plugin-tms-example-jar</artifactId>
@@ -52,19 +53,28 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-client-gwt2-plugin-editing-example-jar</artifactId>
+			<artifactId>geomajas-client-gwt2-plugin-wms-server-example-jar</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-client-gwt2-plugin-graphicsediting-example-jar</artifactId>
+			<artifactId>geomajas-client-gwt2-plugin-editing-example-jar</artifactId>
 		</dependency>
-		<dependency>
+		
+ 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-client-gwt2-plugin-print-example-jar</artifactId>
 		</dependency>
         <dependency>
             <groupId>org.geomajas.plugin</groupId>
             <artifactId>geomajas-client-gwt2-plugin-corewidget-example-jar</artifactId>
+        </dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-client-gwt2-plugin-geocoder-example-jar</artifactId>
+		</dependency>
+        <dependency>
+            <groupId>org.geomajas.plugin</groupId>
+            <artifactId>geomajas-client-gwt2-plugin-tilebasedlayer-example-jar</artifactId>
         </dependency>
 
 
@@ -187,17 +197,17 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
-				<version>2.5.0</version>
+				<version>${version-gwt}</version>
 				<dependencies>
 					<dependency>
 						<groupId>com.google.gwt</groupId>
 						<artifactId>gwt-user</artifactId>
-						<version>${gwt-version}</version>
+						<version>${version-gwt}</version>
 					</dependency>
 					<dependency>
 						<groupId>com.google.gwt</groupId>
 						<artifactId>gwt-dev</artifactId>
-						<version>${gwt-version}</version>
+						<version>${version-gwt}</version>
 					</dependency>
 				</dependencies>
 				<configuration>
@@ -287,7 +297,7 @@
 				<dependency>
 					<groupId>com.google.gwt</groupId>
 					<artifactId>gwt-dev</artifactId>
-					<version>${gwt-version}</version>
+					<version>${version-gwt}</version>
 					<scope>provided</scope>
 				</dependency>
 			</dependencies>
@@ -395,10 +405,5 @@
 			</build>
 		</profile>
 	</profiles>
-
-	<properties>
-		<gwt-version>2.5.0</gwt-version>
-		<gwt.compiler.skip>false</gwt.compiler.skip>
-	</properties>
 
 </project>

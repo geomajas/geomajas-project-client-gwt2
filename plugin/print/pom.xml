@@ -24,21 +24,21 @@
 	<description>Geomajas GWT2 client: Plugin Print - Parent</description>
 
 	<modules>
-		<module>common</module>
 		<module>impl</module>
+		<module>print-wms</module>
 		<module>example-jar</module>
+        <module>documentation</module>
+		<module>javadoc</module>
 	</modules>
 
 	<profiles>
 		<profile>
-			<id>full-build</id>
+			<id>m2e</id>
 			<activation>
-				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>m2e.version</name>
+				</property>
 			</activation>
-			<modules>
-				<module>example</module>
-				<module>documentation</module>
-			</modules>
 		</profile>
 	</profiles>
 

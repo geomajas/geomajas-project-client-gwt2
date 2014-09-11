@@ -57,10 +57,12 @@ public abstract class AbstractLayer implements Layer {
 	/**
 	 * Create a new layer that belongs to the given map model, using the given meta-data.
 	 *
-	 * @param id The unique ID for this layer.
+	 * @param id The unique ID for this layer. This constructor will also use the "id" value for the title. It's best
+	 *           to specifically set the title at a later time.
 	 */
 	public AbstractLayer(String id) {
 		this.id = id;
+		this.title = id;
 		markedAsVisible = true;
 	}
 

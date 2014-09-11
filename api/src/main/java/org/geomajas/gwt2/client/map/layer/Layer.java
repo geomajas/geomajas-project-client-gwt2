@@ -16,8 +16,7 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.client.map.render.LayerRenderer;
 
 /**
- * The basic definition of a layer within the GWT client.
- * TODO add minimum and maximum scale...
+ * The basic definition of a layer within the Geomajas GWT client.
  *
  * @author Pieter De Graef
  * @since 2.0.0

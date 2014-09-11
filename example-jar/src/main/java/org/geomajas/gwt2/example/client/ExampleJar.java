@@ -30,6 +30,7 @@ import org.geomajas.gwt2.example.client.sample.layer.LayerOrderPanel;
 import org.geomajas.gwt2.example.client.sample.layer.LayerRefreshPanel;
 import org.geomajas.gwt2.example.client.sample.layer.LayerVisibilityPanel;
 import org.geomajas.gwt2.example.client.sample.listener.ListenerPanel;
+import org.geomajas.gwt2.example.client.sample.rendering.CanvasImageRenderingPanel;
 import org.geomajas.gwt2.example.client.sample.rendering.CanvasRenderingPanel;
 import org.geomajas.gwt2.example.client.sample.rendering.DrawingInteractionPanel;
 import org.geomajas.gwt2.example.client.sample.rendering.FixedSizeWorldSpaceRenderingPanel;
@@ -587,6 +588,33 @@ public class ExampleJar implements EntryPoint {
 			@Override
 			public String getKey() {
 				return "canvasrendering";
+			}
+		});
+		SamplePanelRegistry.registerFactory(CATEGORY_RENDERING, new ShowcaseSampleDefinition() {
+
+			public SamplePanel create() {
+				return new CanvasImageRenderingPanel();
+			}
+
+			public String getTitle() {
+				return MESSAGES.renderingCanvasImageTitle();
+			}
+
+			public String getShortDescription() {
+				return MESSAGES.renderingCanvasImageShort();
+			}
+
+			public String getDescription() {
+				return MESSAGES.renderingCanvasImageDescription();
+			}
+
+			public String getCategory() {
+				return CATEGORY_RENDERING;
+			}
+
+			@Override
+			public String getKey() {
+				return "canvasrenderingimage";
 			}
 		});
 	}

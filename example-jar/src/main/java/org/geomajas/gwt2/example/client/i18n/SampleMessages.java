@@ -15,7 +15,7 @@ import com.google.gwt.i18n.client.Messages;
 
 /**
  * Specific messages for the many samples.
- * 
+ *
  * @author Pieter De Graef
  */
 public interface SampleMessages extends Messages {
@@ -163,4 +163,29 @@ public interface SampleMessages extends Messages {
 	String markerPanelShort();
 
 	String markerPanelDescription();
+
+	String renderingCanvasImageTitle();
+
+	String renderingCanvasImageShort();
+
+	String renderingCanvasImageDescription();
+
+	String renderingCanvasImageDrawingOptionsLabel();
+	String renderingCanvasImageSourceLabel();
+	String renderingCanvasImageLocalImageRadio();
+	String renderingCanvasImageRemoteImageRadio();
+	String renderingCanvasImageRemoteImageUrlLabel();
+	String renderingCanvasImageRemoteImageUrlTooltip();
+	String renderingCanvasImageLocationLabel();
+	String renderingCanvasImageLocationCenterLabel();
+	String renderingCanvasImageLocationCustomLabel();
+	String renderingCanvasImageDrawButton();
+	String renderingCanvasImageMultipleLabel();
+	String renderingCanvasImageDrawMultipleRowsLabel();
+	String renderingCanvasImageDrawMultipleColumnsLabel();
+	String renderingCanvasImageDrawMultipleButton();
+	String renderingCanvasImageDrawMultipleButtonTooltip();
+	String renderingCanvasRectangleDrawMultipleButton();
+	String renderingCanvasRectangleDrawMultipleButtonTooltip();
+	String renderingCanvasImageClearLabel();
 }

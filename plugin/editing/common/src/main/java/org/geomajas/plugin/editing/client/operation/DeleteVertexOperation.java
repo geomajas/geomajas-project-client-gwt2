@@ -13,6 +13,8 @@ package org.geomajas.plugin.editing.client.operation;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.plugin.editing.client.service.GeometryEditService;
+import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexNotFoundException;
 import org.geomajas.plugin.editing.client.service.GeometryIndexService;
@@ -28,9 +30,13 @@ public class DeleteVertexOperation implements GeometryIndexOperation {
 
 	private final GeometryIndexService service;
 
+	private final GeometryEditService geometryEditService;
+
 	private GeometryIndex index;
 
 	private Coordinate coordinate;
+
+	private Coordinate tentativeMoveOrigin;
 
 	/**
 	 * Initialize this operation with an indexing service.
@@ -38,8 +44,9 @@ public class DeleteVertexOperation implements GeometryIndexOperation {
 	 * @param service
 	 *            geometry index service.
 	 */
-	public DeleteVertexOperation(GeometryIndexService service) {
+	public DeleteVertexOperation(GeometryIndexService service, GeometryEditService geometryEditService) {
 		this.service = service;
+		this.geometryEditService = geometryEditService;
 	}
 
 	@Override
@@ -50,7 +57,9 @@ public class DeleteVertexOperation implements GeometryIndexOperation {
 		}
 		try {
 			coordinate = service.getVertex(geometry, index);
+			tentativeMoveOrigin = null;
 			delete(geometry, index);
+			updateGeometryEditServiceProperties(geometry);
 			return geometry;
 		} catch (GeometryIndexNotFoundException e) {
 			throw new GeometryOperationFailedException(e);
@@ -59,7 +68,7 @@ public class DeleteVertexOperation implements GeometryIndexOperation {
 
 	@Override
 	public GeometryIndexOperation getInverseOperation() {
-		return new InsertVertexOperation(service, coordinate);
+		return new InsertVertexOperation(service, coordinate, geometryEditService);
 	}
 
 	@Override
@@ -105,6 +114,7 @@ public class DeleteVertexOperation implements GeometryIndexOperation {
 					}
 				}
 				geom.setCoordinates(result);
+				tentativeMoveOrigin = result[result.length - 1];
 			}
 		} else if (Geometry.LINEAR_RING.equals(geom.getGeometryType())) {
 			if (index.getValue() < 0 || geom.getCoordinates() == null || geom.getCoordinates().length == 0
@@ -124,9 +134,21 @@ public class DeleteVertexOperation implements GeometryIndexOperation {
 				}
 				result[result.length - 1] = new Coordinate(result[0]);
 				geom.setCoordinates(result);
+				tentativeMoveOrigin = result[result.length - 2];
 			}
 		} else {
 			throw new GeometryIndexNotFoundException("Could not match index with given geometry");
+		}
+	}
+
+	private void updateGeometryEditServiceProperties(Geometry geometry) {
+		if (geometryEditService.getEditingState().equals(GeometryEditState.INSERTING)) {
+			if (geometry.getGeometryType().equals(Geometry.POINT)
+					|| geometry.getGeometryType().equals(Geometry.MULTI_POINT)) {
+				tentativeMoveOrigin = null; // to make sure; should be null already
+			}
+			geometryEditService.setTentativeMoveOrigin(tentativeMoveOrigin);
+			geometryEditService.setInsertIndex(getGeometryIndex());
 		}
 	}
 }

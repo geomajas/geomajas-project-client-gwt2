@@ -94,6 +94,12 @@ public class GeometryIndexStopInsertingHandler extends AbstractGeometryIndexMapH
 	// Private methods:
 	// ------------------------------------------------------------------------
 
+	/**
+	 * Stop when clicking on the last vertex for line strings or the first one for linear rings (closing action).
+	 * Double-clicking is now handled in the GeometryIndexInsertcontroller.
+	 * 
+	 * @return
+	 */
 	private boolean isCorrectVertex() {
 		try {
 			String geomType = service.getIndexService().getGeometryType(service.getGeometry(), index);

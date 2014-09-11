@@ -20,8 +20,8 @@
 
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-client-gwt2-example-jar</artifactId>
-	<name>Geomajas GWT2 client: Main - Showcase samples</name>
-	<description>Geomajas GWT2 client: Main - Showcase samples</description>
+	<name>Geomajas GWT2 client: Main - Examples</name>
+	<description>Geomajas GWT2 client: Main - Examples</description>
 
 	<dependencies>
 		<!-- Google dependencies -->
@@ -55,10 +55,14 @@
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-wms</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-client-gwt2-plugin-corewidget</artifactId>
+		</dependency>
 
 		<!-- External GWT libraries -->
 		<dependency>
-			<groupId>com.google.code.gwt-dnd</groupId>
+			<groupId>com.allen-sauer.gwt.dnd</groupId>
 			<artifactId>gwt-dnd</artifactId>
 		</dependency>
 	</dependencies>

@@ -41,7 +41,6 @@ public interface LayerRenderer extends BasicRenderer {
 	/**
 	 * Get the opacity of this renderer.
 	 * 
-	 * @param opacity the opacity
 	 * @since 2.1.0
 	 */
 	double getOpacity();

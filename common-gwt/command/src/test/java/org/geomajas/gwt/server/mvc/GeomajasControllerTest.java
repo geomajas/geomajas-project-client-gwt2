@@ -77,8 +77,8 @@ public class GeomajasControllerTest {
 		defaultController.doPost(request, response);
 		// expect the message of the out-dated 1.3 policy of GWT
 		Assert.assertTrue(response.getContentAsString().contains(
-				"Type 'org.geomajas.gwt.client.command.GwtCommand' was not assignable"
-						+ " to 'com.google.gwt.user.client.rpc.IsSerializable'"));
+				"Type \\x27org.geomajas.gwt.client.command.GwtCommand\\x27 was not assignable"
+						+ " to \\x27com.google.gwt.user.client.rpc.IsSerializable\\x27"));
 	}
 
 	@Test
@@ -100,7 +100,7 @@ public class GeomajasControllerTest {
 		customController.doPost(request, response);
 		// expect the message that the type is missing from our policy file
 		Assert.assertTrue(response.getContentAsString().contains(
-				"Type 'org.geomajas.gwt.client.command.GwtCommand' was not included in the set of types"));
+				"Type \\x27org.geomajas.gwt.client.command.GwtCommand\\x27 was not included in the set of types"));
 	}
 
 }
