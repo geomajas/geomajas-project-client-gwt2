@@ -5,31 +5,56 @@
 
     <g:DockLayoutPanel unit="PX" width="100%" height="100%">
         <g:west size="350">
+		<g:ScrollPanel>
             <g:HTMLPanel addStyleNames="{resource.css.sampleLeftLayout}">
                 <h3>Navigation time:</h3>
                 <p>Navigation animation time in milliseconds:</p>
-                <g:TextBox ui:field="millisBox" width="97%">400</g:TextBox>
-                <div style="text-align: right; padding-top: 10px;">
-                    <g:Button ui:field="millisBtn">Ok</g:Button>
-                </div>
+				<table width="100%">
+					<tr>
+						<td width="70%">
+							<g:TextBox ui:field="millisBox" width="100%">400</g:TextBox>
+						</td>
+						<td>
+							<div style="text-align: right; padding-top: 10px;">
+								<g:Button ui:field="millisBtn">Ok</g:Button>
+							</div></td>
+					</tr>
+				</table>
 
                 <h3>Fade in time:</h3>
                 <p>Layer or tile fade in time:</p>
-                <g:TextBox ui:field="fadeInBox" width="97%">250</g:TextBox>
-                <div style="text-align: right; padding-top: 10px;">
-                    <g:Button ui:field="fadeInBtn">Ok</g:Button>
-                </div>
+				<table width="100%">
+					<tr>
+						<td width="70%">
+							<g:TextBox ui:field="fadeInBox" width="100%">250</g:TextBox>
+						</td>
+						<td>
+							<div style="text-align: right; padding-top: 10px;">
+								<g:Button ui:field="fadeInBtn">Ok</g:Button>
+							</div></td>
+					</tr>
+				</table>
 
                 <h3>Navigation cancel support</h3>
                 <g:CheckBox ui:field="cancelAnimationSupport">Enable or disable interrupting animations.</g:CheckBox>
 
                 <h3 style="margin-top: 20px;">Enable or disable animation for specific layers:</h3>
                 <g:VerticalPanel ui:field="layerPanel" width="97%" />
-               <h3 style="margin-top: 20px;">Zoom to current location:</h3>
-                <div style="text-align: right; padding-top: 10px;">
-                    <g:Button ui:field="currentLocationBtn">Ok</g:Button>
-                </div>
-            </g:HTMLPanel>
+
+			   	<h3 style="margin-top: 20px;">Zoom to current location:</h3>
+				<div style="text-align: right; padding-top: 10px;">
+					<g:Button ui:field="currentLocationBtn">Ok</g:Button>
+				</div>
+
+				<h3 style="margin-top: 20px;">Apply bounds</h3>
+				<g:VerticalPanel spacing="10">
+					<g:Button ui:field="rectangleWideBtn" width="180px">Wide Rectangle</g:Button>
+					<g:Button ui:field="rectangleHighBtn" width="180px">High rectangle</g:Button>
+					<g:Button ui:field="africaBoundsBtn" width="180px">Initial bounds (Africa)</g:Button>
+					<g:Button ui:field="maxBoundsBtn" width="180px">Maximum Bounds</g:Button>
+				</g:VerticalPanel>
+				</g:HTMLPanel>
+			</g:ScrollPanel>
         </g:west>
         <g:center>
             <g:SimplePanel addStyleNames="{resource.css.sampleContentLayout}">
