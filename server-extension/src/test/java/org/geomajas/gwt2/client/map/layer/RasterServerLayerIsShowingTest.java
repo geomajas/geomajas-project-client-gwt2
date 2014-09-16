@@ -52,7 +52,7 @@ public class RasterServerLayerIsShowingTest {
 
 	private MapEventBus eventBus;
 
-	private ViewPort viewPort;
+	private ViewPort viewPortMock;
 
 	private MapConfiguration mapConfig;
 
@@ -66,8 +66,9 @@ public class RasterServerLayerIsShowingTest {
 	public void initialize() {
 		// Initialize main components:
 		eventBus = new MapEventBusImpl(this, GeomajasImpl.getInstance().getEventBus());
-		viewPort = TestConfigUtil.createViewPort(eventBus, mapInfo, 1000, 1000);
+		viewPortMock = Mockito.mock(ViewPort.class);
 		layerInfo = new ClientRasterLayerInfo();
+
 		RasterLayerInfo rasterLayerInfo = new RasterLayerInfo();
 		rasterLayerInfo.setTileHeight(256);
 		rasterLayerInfo.setTileWidth(256);
@@ -76,7 +77,7 @@ public class RasterServerLayerIsShowingTest {
 		layerInfo.setMaxExtent(rasterLayerInfo.getMaxExtent());
 		layerInfo.setMinimumScale(new ScaleInfo(1 / resolutionMax));
 		layerInfo.setMaximumScale(new ScaleInfo(1 / resolutionMin));
-		layerInfo.setVisible(true);
+
 		mapConfig = new MapConfigurationImpl();
 		mapConfig.setHintValue(GeomajasServerExtension.MAPINFO, mapInfo);
 	}
@@ -85,7 +86,7 @@ public class RasterServerLayerIsShowingTest {
 	public void testIsShowingOnInvisible() {
 		layerInfo.setVisible(false);
 
-		RasterServerLayerImpl layer = new RasterServerLayerImpl(mapConfig, layerInfo, viewPort, eventBus);
+		RasterServerLayerImpl layer = new RasterServerLayerImpl(mapConfig, layerInfo, viewPortMock, eventBus);
 
 		Assert.assertFalse(layer.isShowing());
 	}
@@ -93,7 +94,6 @@ public class RasterServerLayerIsShowingTest {
 	@Test
 	public void testIsShowingOnVisibleViewPortLargerThanMaxScale() {
 		layerInfo.setVisible(true);
-		ViewPort viewPortMock = Mockito.mock(ViewPort.class);
 		Mockito.when(viewPortMock.getResolution()).thenReturn(resolutionMin - 1);
 
 		RasterServerLayerImpl layer = new RasterServerLayerImpl(mapConfig, layerInfo, viewPortMock, eventBus);
@@ -104,7 +104,6 @@ public class RasterServerLayerIsShowingTest {
 	@Test
 	public void testIsShowingOnVisibleViewPortLowerThanMinScale() {
 		layerInfo.setVisible(true);
-		ViewPort viewPortMock = Mockito.mock(ViewPort.class);
 		Mockito.when(viewPortMock.getResolution()).thenReturn(resolutionMax + 1);
 
 		RasterServerLayerImpl layer = new RasterServerLayerImpl(mapConfig, layerInfo, viewPortMock, eventBus);
@@ -115,7 +114,6 @@ public class RasterServerLayerIsShowingTest {
 	@Test
 	public void testIsShowingOnVisibleViewPortMinScaleInclusive() {
 		layerInfo.setVisible(true);
-		ViewPort viewPortMock = Mockito.mock(ViewPort.class);
 		Mockito.when(viewPortMock.getResolution()).thenReturn(resolutionMax);
 
 		RasterServerLayerImpl layer = new RasterServerLayerImpl(mapConfig, layerInfo, viewPortMock, eventBus);
@@ -126,7 +124,6 @@ public class RasterServerLayerIsShowingTest {
 	@Test
 	public void testIsShowingOnVisibleViewPortMaxScaleExclusive() {
 		layerInfo.setVisible(true);
-		ViewPort viewPortMock = Mockito.mock(ViewPort.class);
 		Mockito.when(viewPortMock.getResolution()).thenReturn(resolutionMin);
 
 		RasterServerLayerImpl layer = new RasterServerLayerImpl(mapConfig, layerInfo, viewPortMock, eventBus);
@@ -137,7 +134,6 @@ public class RasterServerLayerIsShowingTest {
 	@Test
 	public void testIsShowingOnVisibleViewPortScaleBetweenMaxAndMin() {
 		layerInfo.setVisible(true);
-		ViewPort viewPortMock = Mockito.mock(ViewPort.class);
 		Mockito.when(viewPortMock.getResolution()).thenReturn(resolutionCenter);
 
 		RasterServerLayerImpl layer = new RasterServerLayerImpl(mapConfig, layerInfo, viewPortMock, eventBus);
