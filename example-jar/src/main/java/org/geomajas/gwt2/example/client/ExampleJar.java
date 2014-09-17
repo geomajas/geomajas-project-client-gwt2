@@ -18,6 +18,7 @@ import org.geomajas.gwt2.example.base.client.sample.SamplePanelRegistry;
 import org.geomajas.gwt2.example.base.client.sample.ShowcaseSampleDefinition;
 import org.geomajas.gwt2.example.client.i18n.SampleMessages;
 import org.geomajas.gwt2.example.client.sample.feature.FeatureSelectionPanel;
+import org.geomajas.gwt2.example.client.sample.feature.MultiLineStringFeatureSelectionPanel;
 import org.geomajas.gwt2.example.client.sample.general.AlternativeControlsPanel;
 import org.geomajas.gwt2.example.client.sample.general.MapFillPanel;
 import org.geomajas.gwt2.example.client.sample.general.NavigationOptionPanel;
@@ -422,6 +423,33 @@ public class ExampleJar implements EntryPoint {
 			@Override
 			public String getKey() {
 				return "featureselection";
+			}
+		});
+		SamplePanelRegistry.registerFactory(CATEGORY_FEATURE, new ShowcaseSampleDefinition() {
+
+			public SamplePanel create() {
+				return new MultiLineStringFeatureSelectionPanel();
+			}
+
+			public String getTitle() {
+				return MESSAGES.featureSelectionMultiLineStringTitle();
+			}
+
+			public String getShortDescription() {
+				return MESSAGES.featureSelectionMultiLineStringShort();
+			}
+
+			public String getDescription() {
+				return MESSAGES.featureSelectionMultiLineStringDescription();
+			}
+
+			public String getCategory() {
+				return CATEGORY_FEATURE;
+			}
+
+			@Override
+			public String getKey() {
+				return "featureselectionlinestring";
 			}
 		});
 	}

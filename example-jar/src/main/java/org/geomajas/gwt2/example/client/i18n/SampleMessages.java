@@ -122,6 +122,12 @@ public interface SampleMessages extends Messages {
 
 	String featureSelectionDescription();
 
+	String featureSelectionMultiLineStringTitle();
+
+	String featureSelectionMultiLineStringShort();
+
+	String featureSelectionMultiLineStringDescription();
+
 	// ------------------------------------------------------------------------
 	// Category: Rendering
 	// ------------------------------------------------------------------------
