@@ -62,18 +62,14 @@ public class GeometryPath extends Shape {
 	 */
 	public GeometryPath(Coordinate[] coordinates, boolean closed) {
 		super(0, 0);
-		this.closed = closed;
-		if (!closed) {
-			setFillOpacity(0);
-		}
+		setClosed(closed);
 		setCoordinates(coordinates);
 	}
 
 	/**
 	 * Create a path with this Geometry.
 	 * 
-	 * @param coordinates
-	 * @param closed if true, path is closed
+	 * @param geometry
 	 */
 	public GeometryPath(Geometry geometry) {
 		super(0, 0);
@@ -81,8 +77,10 @@ public class GeometryPath extends Shape {
 	}
 
 	public void setGeometry(Geometry geometry) {
-		closed = Geometry.POLYGON.equals(geometry.getGeometryType())
-				|| Geometry.MULTI_POLYGON.equals(geometry.getGeometryType());
+		setClosed(
+				Geometry.POLYGON.equals(geometry.getGeometryType())
+				|| Geometry.MULTI_POLYGON.equals(geometry.getGeometryType())
+				|| Geometry.LINEAR_RING.equals(geometry.getGeometryType()));
 		skipTransform = true;
 		try {
 			if (Geometry.LINE_STRING.equals(geometry.getGeometryType())) {
@@ -360,7 +358,7 @@ public class GeometryPath extends Shape {
 		Coordinate[] coordinates = linearRing.getCoordinates();
 		if (coordinates != null && coordinates.length > 1) {
 			Coordinate[] pathCoords = removeLastCoordinate(linearRing);
-			this.closed = true;
+			setClosed(true);
 			setCoordinates(pathCoords);
 		}
 	}
@@ -385,6 +383,13 @@ public class GeometryPath extends Shape {
 		Coordinate[] pathCoords = new Coordinate[coordinates.length - 1];
 		System.arraycopy(coordinates, 0, pathCoords, 0, coordinates.length - 1);
 		return pathCoords;
+	}
+
+	private void setClosed(boolean closed) {
+		this.closed = closed;
+		if (!closed) {
+			setFillOpacity(0);
+		}
 	}
 
 	/**

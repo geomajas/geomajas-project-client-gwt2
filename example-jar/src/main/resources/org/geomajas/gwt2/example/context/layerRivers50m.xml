@@ -35,11 +35,17 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 				<property name="width" value="80"/>
 				<property name="height" value="45"/>
 			</bean-->
+			<!--<bean class="org.geomajas.geometry.Bbox">-->
+				<!--<property name="x" value="-128.5"/>-->
+				<!--<property name="y" value="16"/>-->
+				<!--<property name="width" value="64.5"/>-->
+				<!--<property name="height" value="35"/>-->
+			<!--</bean>-->
 			<bean class="org.geomajas.geometry.Bbox">
-				<property name="x" value="-128.5"/>
-				<property name="y" value="16"/>
-				<property name="width" value="64.5"/>
-				<property name="height" value="35"/>
+				<property name="x" value="-181"/>
+				<property name="y" value="-91"/>
+				<property name="width" value="362"/>
+				<property name="height" value="181"/>
 			</bean>
 		</property>
 		<property name="featureInfo" ref="layerRivers50mFeatureInfo" />
@@ -95,9 +101,9 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
                     <property name="name" value="Rivers"/>
                     <property name="fillColor" value="#993333"/>
                     <property name="fillOpacity" value="0"/>
-                    <property name="strokeColor" value="#CCFFAA"/>
+                    <property name="strokeColor" value="#FFFF00"/>
                     <property name="strokeOpacity" value="0.8"/>
-                    <property name="strokeWidth" value="2"/>
+                    <property name="strokeWidth" value="3"/>
                 </bean>
 			</list>
 		</property>
