@@ -46,7 +46,7 @@ PrintTemplateInfo printTemplateInfo = Print.getInstance().getPrintUtil().createP
 // create a print request
 PrintRequestInfo printRequestInfo = new PrintRequestInfo();
 printRequestInfo.setFileName("customFileName");
-printRequestInfo.setPostPrintAction(PrintSettings.PostPrintAction.SAVE);
+printRequestInfo.setPostPrintAction(PrintConfiguration.PostPrintAction.SAVE);
 printRequestInfo.setPrintTemplateInfo(printTemplateInfo);
 // call the print method. The PrintRequestHandler can also be customized
 Print.getInstance().getPrintService().print(printRequestInfo, new DefaultPrintRequestHandler());</programlisting>
