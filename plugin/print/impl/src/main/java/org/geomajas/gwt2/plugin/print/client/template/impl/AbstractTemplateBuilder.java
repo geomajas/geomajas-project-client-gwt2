@@ -11,6 +11,7 @@
 
 package org.geomajas.gwt2.plugin.print.client.template.impl;
 
+import com.google.gwt.i18n.client.LocaleInfo;
 import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.plugin.print.client.util.PrintLayout;
@@ -38,6 +39,7 @@ public abstract class AbstractTemplateBuilder {
 
 	protected PageComponentInfo buildPage() {
 		PageComponentInfo page = new PageComponentInfo();
+		page.setLocale(LocaleInfo.getCurrentLocale().getLocaleName());
 		page.addChild(buildMap());
 		page.addChild(buildTitle());
 		page.setTag("page");
