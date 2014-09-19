@@ -24,45 +24,39 @@
 	<name>Geomajas GWT2 client: Main - Documentation</name>
 	<description>Geomajas GWT2 client: Main - Documentation</description>
 
-	<dependencies>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.geomajas.project</groupId>
+				<artifactId>geomajas-project-client-gwt2</artifactId>
+				<version>${project.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
+	<dependencies>
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-client-gwt2-api</artifactId>
-			<version>${project.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-client-common-gwt</artifactId>
-			<version>${project.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-client-common-gwt-command</artifactId>
-			<version>${project.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-client-gwt2-impl</artifactId>
-			<version>${project.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-client-gwt2-server-extension</artifactId>
-			<version>${project.version}</version>
 		</dependency>
-
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-user</artifactId>
-			<version>2.6.1</version>
-			<scope>provided</scope>
-		</dependency>
-
 	</dependencies>
 
 	<profiles>
