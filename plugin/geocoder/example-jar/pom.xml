@@ -48,13 +48,6 @@
 			<artifactId>geomajas-client-gwt2-example-jar</artifactId>
 		</dependency>
 
-		<!-- Geomajas Layer plugins: -->
-<!-- 		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-layer-geotools</artifactId>
-			<version>1.10.0</version>
-		</dependency>
- -->
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-wms</artifactId>
