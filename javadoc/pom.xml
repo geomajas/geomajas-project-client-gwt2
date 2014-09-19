@@ -19,7 +19,6 @@
 	</parent>
 
 	<artifactId>geomajas-client-gwt2-javadoc</artifactId>
-	<version>2.1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Geomajas GWT 2 client: Javadoc</name>
 	<description>Geomajas GWT 2 client: Javadoc</description>
