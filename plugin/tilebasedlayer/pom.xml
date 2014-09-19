@@ -28,6 +28,7 @@
         <module>impl</module>
         <module>example-jar</module>
         <module>documentation</module>
+        <module>javadoc</module>
     </modules>
 
 </project>
