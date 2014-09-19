@@ -19,7 +19,7 @@
 	</parent>
 
 	<artifactId>geomajas-client-gwt2-documentation</artifactId>
-	<version>2.1.0-SNAPSHOT</version>
+	<version>2.1.0</version>
 
 	<name>Geomajas GWT2 client: Main - Documentation</name>
 	<description>Geomajas GWT2 client: Main - Documentation</description>
@@ -122,21 +122,14 @@
 								<phase>compile</phase>
 								<configuration>
 									<target>
-										<javadoc packagenames="${geomajas.packages}"
-										         sourcepath="${project.build.directory}/javadoc-src"
-										         defaultexcludes="no"
-										         destdir="${project.build.directory}/apidocs/"
-										         version="true"
-										         use="true">
+										<javadoc packagenames="${geomajas.packages}" sourcepath="${project.build.directory}/javadoc-src" defaultexcludes="no" destdir="${project.build.directory}/apidocs/" version="true" use="true">
 											<doctitle>
 												<![CDATA[<h1>${geomajas.javadoc-title} - ${project.version}</h1>]]></doctitle>
 											<bottom>
 												<![CDATA[<i>Copyright &#169; ${copyright.year} Geosparc. All Rights Reserved.</i>]]></bottom>
-											<classpath refid="maven.dependency.classpath"/>
+											<classpath refid="maven.dependency.classpath" />
 										</javadoc>
-										<jar destfile="${project.build.directory}/${project.artifactId}-${project.version}-javadoc.jar"
-										     basedir="${project.build.directory}/apidocs/"
-										     includes="**/**" />
+										<jar destfile="${project.build.directory}/${project.artifactId}-${project.version}-javadoc.jar" basedir="${project.build.directory}/apidocs/" includes="**/**" />
 									</target>
 								</configuration>
 								<goals>
