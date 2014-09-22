@@ -11,80 +11,81 @@
 
 package org.geomajas.gwt2.client.map;
 
-import org.geomajas.geometry.Bbox;
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt2.client.map.render.TileCode;
-import org.geomajas.gwt2.client.map.render.TilePriorityFunction;
-import org.geomajas.gwt2.client.map.render.TileQueue;
-import org.geomajas.gwt2.client.map.render.dom.DomTile;
-import org.geomajas.gwt2.client.map.render.dom.LoadableTile;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
+import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.geometry.service.BboxService;
+import org.geomajas.gwt2.client.map.layer.AbstractLayer;
+import org.geomajas.gwt2.client.map.layer.tile.TileBasedLayer;
+import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
+import org.geomajas.gwt2.client.map.render.LayerRenderer;
+import org.geomajas.gwt2.client.map.render.TileCode;
+import org.geomajas.gwt2.client.map.render.TilePriorityFunction;
+import org.geomajas.gwt2.client.map.render.TileQueue;
+import org.geomajas.gwt2.client.map.render.dom.LoadableTile;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import com.google.gwt.core.client.Callback;
+
 /**
  * Test for the {@link TileQueue} implementation {@link TileQueueImpl}.
- *
+ * 
  * @author Youri Flement
  */
 public class TileQueueTest {
 
 	private TileQueue queue;
 
-	private static final TilePriorityFunction priorityFunction = new TilePriorityFunctionImpl();
+	private TilePriorityFunction priorityFunction = new TilePriorityFunctionImpl();
 
-	private static final TileKeyProviderImpl keyProvider = new TileKeyProviderImpl();
+	private TileKeyProviderImpl keyProvider = new TileKeyProviderImpl();
+	
+	private TestLayer layer;
 
 	@Before
 	public void setup() {
-		queue = new TileQueueImpl<String>(priorityFunction, keyProvider);
+		queue = new TileQueueImpl<String>(priorityFunction, keyProvider, null);
 	}
 
 	@Test
 	public void testPrioritize() {
-		Coordinate[] centers = new Coordinate[] {
-				new Coordinate(0, 0),
-				new Coordinate(100, 100),
-				new Coordinate(200, 0),
-				new Coordinate(0, 200),
-				new Coordinate(200, 200)
-		};
+		Coordinate[] centers = new Coordinate[] { new Coordinate(0, 0), new Coordinate(100, 100),
+				new Coordinate(200, 0), new Coordinate(0, 200), new Coordinate(200, 200) };
 
-		Double[] resolutionArray = new Double[] {
-				1.0,
-				2.0,
-				4.0,
-				8.0,
-		};
+		Double[] resolutionArray = new Double[] { 8.0, 4.0, 2.0, 1.0 };
 		List<Double> resolutions = Arrays.asList(resolutionArray);
+		layer = new TestLayer("test", resolutions);
 		int tileDimensions = 200;
 
 		for (int i = 0; i < resolutions.size(); i++) {
 			for (Coordinate center : centers) {
 				// add tiles
-				addTiles(queue, tileDimensions, 3);
+				addTiles(queue, tileDimensions, resolutions.size() - 1);
 
 				// prioritize
-				queue.prioritize(i + 1, resolutions.get(i), center);
+				queue.prioritize(new View(center, resolutions.get(i)));
 
 				// put ordered tiles in map
 				LoadableTile[] prioritizedTiles = getTilesInOrder(queue);
 
 				// get tiles from the zoom level
-				List<LoadableTile> tilesFromZoomLevel = tilesFromZoomLevel(prioritizedTiles, i + 1);
+				List<LoadableTile> tilesFromZoomLevel = tilesFromZoomLevel(prioritizedTiles, i);
 
 				// assert that the closest ones to the focus are prioritized within one zoom level
-				testDistanceToFocus(tilesFromZoomLevel, center);
+				testDistanceToFocus(tilesFromZoomLevel, center, new View(center, resolutions.get(i)));
 
 				// assert that tiles from levels higher than the current zoom level have lower priority
-				testHigherZoomLevels(i + 1, prioritizedTiles);
+				testHigherZoomLevels(i, prioritizedTiles, new View(center, resolutions.get(i)));
 			}
 		}
 	}
@@ -115,7 +116,7 @@ public class TileQueueTest {
 		return center.distance(coordinate);
 	}
 
-	private void testDistanceToFocus(List<LoadableTile> tiles, Coordinate center) {
+	private void testDistanceToFocus(List<LoadableTile> tiles, Coordinate center, View view) {
 		double previousDistance = 0.0;
 		for (LoadableTile tile : tiles) {
 			double distance = distanceToCenter(tile.getBounds(), center);
@@ -130,29 +131,22 @@ public class TileQueueTest {
 			double maxTiles = Math.pow(2, zoomLevel);
 			for (int x = 0; x < maxTiles; x++) {
 				for (int y = 0; y < maxTiles; y++) {
-					queue.add(makeTile(zoomLevel, x, y, tileDim / Math.pow(2, zoomLevel), tileDim / Math.pow(2, zoomLevel)));
+					queue.add(makeTile(zoomLevel, x, y, tileDim / Math.pow(2, zoomLevel),
+							tileDim / Math.pow(2, zoomLevel)));
 				}
 			}
 		}
 	}
 
-	private void testHigherZoomLevels(int zoomLevel, LoadableTile[] prioritizedTiles) {
-		Map<Integer, Integer> indices = new TreeMap<Integer, Integer>();
-		int i = 0;
-		for (LoadableTile tile : prioritizedTiles) {
-			int level = tile.getCode().getTileLevel();
-			if (!indices.containsKey(level)) {
-				indices.put(level, i);
-				i++;
+	private void testHigherZoomLevels(int zoomLevel, LoadableTile[] prioritizedTiles, View view) {
+		boolean startHigher = false;
+		for (int i = 0; i < prioritizedTiles.length; i++) {
+			if(prioritizedTiles[i].getCode().getTileLevel() > zoomLevel && !startHigher) {
+				startHigher = true;
 			}
-		}
-		if (indices.size() > 1) {
-			for (Entry<Integer, Integer> currentZoomLevel : indices.entrySet()) {
-				if (currentZoomLevel.getKey() > zoomLevel) {
-					int currentPriorityIndex = currentZoomLevel.getValue();
-					int zoomPriorityIndex = indices.get(zoomLevel);
-					Assert.assertTrue(zoomPriorityIndex < currentPriorityIndex);
-				}
+			if(startHigher) {
+				// after high zoom levels have started, they all should be higher
+				Assert.assertTrue(prioritizedTiles[i].getCode().getTileLevel() > zoomLevel);
 			}
 		}
 	}
@@ -226,6 +220,7 @@ public class TileQueueTest {
 
 	@Test
 	public void testPoll() {
+		layer = new TestLayer("test", Arrays.asList(2.0, 1.0));
 		LoadableTile topLeft = makeTile(1, 0, 0);
 		LoadableTile topRight = makeTile(1, 0, 1);
 		LoadableTile bottomLeft = makeTile(1, 1, 0);
@@ -235,7 +230,7 @@ public class TileQueueTest {
 		queue.add(bottomLeft);
 		queue.add(bottomRight);
 
-		queue.prioritize(1, 2.0, new Coordinate(0, 0));
+		queue.prioritize(new View(new Coordinate(0, 0), 1));
 
 		LoadableTile firstPriority = queue.poll();
 		LoadableTile secondPriority = queue.poll();
@@ -258,7 +253,93 @@ public class TileQueueTest {
 
 	private LoadableTile makeTile(int level, int x, int y, double width, double height) {
 		// make a new dom tile without callback and underlying image
-		return new DomTile(null, new TileCode(level, x, y), new Bbox(x * width, y * height, width, height), null);
+		return new TestTile(layer, new TileCode(level, x, y), new Bbox(x * width, y * height, width, height));
+	}
+
+	/**
+	 * Tile for testing without GWT.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	public class TestTile implements LoadableTile {
+
+		private TileCode tileCode;
+
+		private Bbox bbox;
+		
+		private TileBasedLayer layer;
+
+		public TestTile(TileBasedLayer layer, TileCode tileCode, Bbox bbox) {
+			this.layer = layer;
+			this.tileCode = tileCode;
+			this.bbox = bbox;
+		}
+
+		@Override
+		public void load(Callback<String, String> onLoadingDone) {
+		}
+
+		@Override
+		public TileCode getCode() {
+			return tileCode;
+		}
+
+		@Override
+		public String getUrl() {
+			return null;
+		}
+
+		@Override
+		public Bbox getBounds() {
+			return bbox;
+		}
+
+		@Override
+		public boolean isLoaded() {
+			return false;
+		}
+
+		@Override
+		public String getId() {
+			return tileCode.toString();
+		}
+
+		@Override
+		public TileBasedLayer getLayer() {
+			return layer;
+		}
+
+	}
+
+	public class TestLayer extends AbstractLayer implements TileBasedLayer {
+
+		TileConfiguration config;
+
+		public TestLayer(String id, List<Double> resolutions) {
+			super(id);
+			config = new TileConfiguration(256, 256, new Coordinate(0, 0), resolutions);
+		}
+
+		@Override
+		public TileConfiguration getTileConfiguration() {
+			return config;
+		}
+
+		@Override
+		public LayerRenderer getRenderer() {
+			return null;
+		}
+
+		@Override
+		public void setOpacity(double opacity) {
+		}
+
+		@Override
+		public double getOpacity() {
+			return 0;
+		}
+
 	}
 
 }

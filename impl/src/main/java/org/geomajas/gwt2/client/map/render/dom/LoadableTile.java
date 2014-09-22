@@ -11,21 +11,25 @@
 
 package org.geomajas.gwt2.client.map.render.dom;
 
+import com.google.gwt.core.client.Callback;
+
 import org.geomajas.geometry.Bbox;
+import org.geomajas.gwt2.client.map.layer.tile.TileBasedLayer;
 import org.geomajas.gwt2.client.map.render.TileCode;
 
 /**
  * Interface for a {@link org.geomajas.gwt2.client.map.render.Tile} that is loadable.
  *
  * @author Youri Flement
- * @since 2.1.0
+ * @author Jan De Moerloose
  */
 public interface LoadableTile {
 
 	/**
 	 * Load the tile.
+	 * @param onLoadingDone
 	 */
-	void load();
+	void load(Callback<String, String> onLoadingDone);
 
 	/**
 	 * Returns the unique code for this tile. Consider this it's unique identifier within a raster layer.
@@ -48,4 +52,22 @@ public interface LoadableTile {
 	 * @return Tile bounding box.
 	 */
 	Bbox getBounds();
+	
+	/**
+	 * Is the tile loaded ?
+	 * 
+	 * @return true if loaded
+	 */
+	boolean isLoaded();
+
+	/**
+	 * Get a unique id for this tile.
+	 */
+	String getId();
+	
+	/**
+	 * Get the layer associated with this tile.
+	 * @return
+	 */
+	TileBasedLayer getLayer();
 }

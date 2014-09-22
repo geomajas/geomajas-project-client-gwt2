@@ -18,10 +18,8 @@ import com.google.gwt.event.dom.client.LoadEvent;
 import com.google.gwt.event.dom.client.LoadHandler;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Image;
-import org.geomajas.geometry.Bbox;
-import org.geomajas.gwt.client.util.Dom;
 
-import java.io.Serializable;
+import org.geomajas.geometry.Bbox;
 
 /**
  * <p>
@@ -33,128 +31,71 @@ import java.io.Serializable;
  * image is done loading when it has either loaded successfully or when 5 attempts have failed. In any case, the
  * callback's execute method will be invoked, thereby indicating success or failure.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
-public class HtmlImageImpl extends AbstractHtmlObject
-		implements HtmlImage, LoadableImage<String, String>, Serializable {
+public class HtmlImageImpl extends AbstractHtmlObject implements HtmlImage {
+
+	private boolean loaded;
+
+	private String src;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
 
 	/**
-	 * Constructor for serialization.
-	 */
-	public HtmlImageImpl() {
-		super(new Image());
-	}
-
-	/**
 	 * Create an HtmlImage widget that represents an HTML IMG element.
-	 *
-	 * @param src  Pointer to the actual image.
+	 * 
+	 * @param src Pointer to the actual image.
 	 * @param bbox The bounding box of the image.
 	 */
 	public HtmlImageImpl(String src, Bbox bbox) {
-		this(src, bbox, null);
+		this(src, bbox, 0);
 	}
 
 	/**
 	 * Create an HtmlImage widget that represents an HTML IMG element.
-	 *
-	 * @param src           Pointer to the actual image.
-	 * @param bbox          The bounding box of the image.
-	 * @param onLoadingDone Call-back to be executed when the image finished loading,
-	 *                      or when an error occurs while loading.
+	 * 
+	 * @param src Pointer to the actual image.
+	 * @param bbox The bounding box of the image.
+	 * @param nrRetries Total number of retries should loading fail. Default is 0.
 	 */
-	public HtmlImageImpl(String src, Bbox bbox, Callback<String, String> onLoadingDone) {
-		this(src, bbox, onLoadingDone, 0);
+	public HtmlImageImpl(String src, Bbox bbox, int nrRetries) {
+		this(src, (int) bbox.getWidth(), (int) bbox.getHeight(), (int) bbox.getY(), (int) bbox.getX(), nrRetries);
 	}
 
 	/**
 	 * Create an HtmlImage widget that represents an HTML IMG element.
-	 *
-	 * @param src           Pointer to the actual image.
-	 * @param bbox          The bounding box of the image.
-	 * @param onLoadingDone Call-back to be executed when the image finished loading,
-	 *                      or when an error occurs while loading.
-	 * @param nrRetries     Total number of retries should loading fail. Default is 0.
-	 */
-	public HtmlImageImpl(String src, Bbox bbox, Callback<String, String> onLoadingDone, int nrRetries) {
-		this(src, (int) bbox.getWidth(), (int) bbox.getHeight(), (int) bbox.getY(), (int) bbox.getX(), onLoadingDone,
-				nrRetries);
-	}
-
-	/**
-	 * Create an HtmlImage widget that represents an HTML IMG element.
-	 *
-	 * @param src    Pointer to the actual image.
-	 * @param width  The width for this image, expressed in pixels.
+	 * 
+	 * @param src Pointer to the actual image.
+	 * @param width The width for this image, expressed in pixels.
 	 * @param height The height for this image, expressed in pixels.
-	 * @param top    How many pixels should this image be placed from the top (relative to the parent origin).
-	 * @param left   How many pixels should this image be placed from the left (relative to the parent origin).
+	 * @param top How many pixels should this image be placed from the top (relative to the parent origin).
+	 * @param left How many pixels should this image be placed from the left (relative to the parent origin).
 	 */
 	public HtmlImageImpl(String src, int width, int height, int top, int left) {
-		this(src, width, height, top, left, null);
+		this(src, width, height, top, left, 0);
 	}
 
 	/**
 	 * Create an HtmlImage widget that represents an HTML IMG element.
-	 *
-	 * @param src           Pointer to the actual image.
-	 * @param width         The width for this image, expressed in pixels.
-	 * @param height        The height for this image, expressed in pixels.
-	 * @param top           How many pixels should this image be placed from the top (relative to the parent origin).
-	 * @param left          How many pixels should this image be placed from the left (relative to the parent origin).
-	 * @param onLoadingDone Call-back to be executed when the image finished loading,
-	 *                      or when an error occurs while loading.
+	 * 
+	 * @param src Pointer to the actual image.
+	 * @param width The width for this image, expressed in pixels.
+	 * @param height The height for this image, expressed in pixels.
+	 * @param top How many pixels should this image be placed from the top (relative to the parent origin).
+	 * @param left How many pixels should this image be placed from the left (relative to the parent origin).
+	 * @param nrRetries Total number of retries should loading fail. Default is 0.
 	 */
-	public HtmlImageImpl(String src, int width, int height, int top, int left, Callback<String, String> onLoadingDone) {
-		this(src, width, height, top, left, onLoadingDone, 0);
-	}
-
-	/**
-	 * Create an HtmlImage widget that represents an HTML IMG element.
-	 *
-	 * @param src           Pointer to the actual image.
-	 * @param width         The width for this image, expressed in pixels.
-	 * @param height        The height for this image, expressed in pixels.
-	 * @param top           How many pixels should this image be placed from the top (relative to the parent origin).
-	 * @param left          How many pixels should this image be placed from the left (relative to the parent origin).
-	 * @param onLoadingDone Call-back to be executed when the image finished loading,
-	 *                      or when an error occurs while loading.
-	 * @param nrRetries     Total number of retries should loading fail. Default is 0.
-	 */
-	public HtmlImageImpl(String src, int width, int height, int top, int left, Callback<String, String> onLoadingDone,
-			int nrRetries) {
-		super(new Image(Dom.makeUrlAbsolute(src)));
-		initHtmlImage(width, height, top, left);
-		onLoadingDone(onLoadingDone, nrRetries);
-	}
-
-	/**
-	 * Create an HtmlImage widget that represents an HTML IMG element.
-	 *
-	 * @param bounds The bounding box of the image.
-	 */
-	public HtmlImageImpl(Bbox bounds) {
+	public HtmlImageImpl(String src, int width, int height, int top, int left, int nrRetries) {
 		super(new Image());
-
-		initHtmlImage((int) bounds.getWidth(), (int) bounds.getHeight(), (int) bounds.getY(), (int) bounds.getX());
-	}
-
-	// ------------------------------------------------------------------------
-	// HtmlImage implementation:
-	// ------------------------------------------------------------------------
-
-	private void initHtmlImage(int width, int height, int top, int left) {
+		this.src = src;
 		setWidth(width);
 		setHeight(height);
 		setTop(top);
 		setLeft(left);
 		DOM.setStyleAttribute(asWidget().getElement(), "border", "none");
-
 		// set visible when loaded !
 		asImage().getElement().getStyle().setOpacity(0.0);
 		String transition = "opacity .7s";
@@ -163,38 +104,52 @@ public class HtmlImageImpl extends AbstractHtmlObject
 		asImage().getElement().getStyle().setProperty("WebkitTransition", transition);
 	}
 
+	// ------------------------------------------------------------------------
+	// HtmlImage implementation:
+	// ------------------------------------------------------------------------
+
 	/**
 	 * Apply a call-back that is executed when the image is done loading. This image is done loading when it has either
 	 * loaded successfully or when 5 attempts have failed. In any case, the callback's execute method will be invoked,
 	 * thereby indicating success or failure.
-	 *
-	 * @param onLoadingDone The call-back to be executed when loading has finished.
-	 *                      The boolean value indicates whether or not it was successful while loading.
-	 *                      Both the success and failure type expect a String. This is used to pass along the image URL.
-	 * @param nrRetries     Total number of retries should loading fail. Default is 0.
+	 * 
+	 * @param onLoadingDone The call-back to be executed when loading has finished. The boolean value indicates whether
+	 *        or not it was successful while loading. Both the success and failure type expect a String. This is used to
+	 *        pass along the image URL.
+	 * @param nrRetries Total number of retries should loading fail. Default is 0.
 	 */
 	public void onLoadingDone(Callback<String, String> onLoadingDone, int nrRetries) {
 		ImageReloader reloader = new ImageReloader(getSrc(), onLoadingDone, nrRetries);
 		asImage().addLoadHandler(reloader);
 		asImage().addErrorHandler(reloader);
+		asImage().setUrl(src);
+	}
+
+	/**
+	 * Is the image loaded ?
+	 * 
+	 * @return true if loaded
+	 */
+	public boolean isLoaded() {
+		return loaded;
 	}
 
 	/**
 	 * Get the pointer to the actual image. In HTML this is represented by the 'src' attribute in an IMG element.
-	 *
+	 * 
 	 * @return The pointer to the actual image.
 	 */
 	public String getSrc() {
-		return asImage().getUrl();
+		return src;
 	}
 
 	/**
 	 * Set the pointer to the actual image. In HTML this is represented by the 'src' attribute in an IMG element.
-	 *
+	 * 
 	 * @param src The new image pointer.
 	 */
 	public void setSrc(String src) {
-		asImage().setUrl(src);
+		this.src = src;
 	}
 
 	protected Image asImage() {
@@ -202,26 +157,10 @@ public class HtmlImageImpl extends AbstractHtmlObject
 	}
 
 	/**
-	 * Load the image with the given url and call {@code onLoadingDone} when the image is loaded.
-	 *
-	 * @param url           The url to the image.
-	 * @param onLoadingDone Call-back to be executed when the image finished loading, or when an
-	 *                      error occurs while loading.
-	 * @param nrRetries     Total number of retries should loading fail.
-	 */
-	@Override
-	public void load(String url, Callback<String, String> onLoadingDone, int nrRetries) {
-		setSrc(url);
-		if (onLoadingDone != null) {
-			onLoadingDone(onLoadingDone, nrRetries);
-		}
-	}
-
-	/**
 	 * DOM event handler that attempts up to 5 times to reload the requested image. When the image is loaded (or the 5
 	 * attempts have failed), it notifies the given {@link Callback}, calling the execute method with true or false
 	 * indicating whether or not the image was really loaded.
-	 *
+	 * 
 	 * @author Pieter De Graef
 	 */
 	private class ImageReloader implements LoadHandler, ErrorHandler {
@@ -242,6 +181,7 @@ public class HtmlImageImpl extends AbstractHtmlObject
 			asImage().getElement().getStyle().setOpacity(1.0);
 			if (onDoneLoading != null) {
 				onDoneLoading.onSuccess(src);
+				loaded = true;
 			}
 		}
 
@@ -251,8 +191,12 @@ public class HtmlImageImpl extends AbstractHtmlObject
 				asImage().addLoadHandler(this);
 				asImage().addErrorHandler(this);
 				asImage().setUrl(src);
-			} else if (onDoneLoading != null) {
-				onDoneLoading.onFailure(src);
+			} else {
+				asImage().getElement().getStyle().setOpacity(1.0);
+				if (onDoneLoading != null) {
+					onDoneLoading.onFailure(src);
+					loaded = true;
+				}
 			}
 		}
 	}

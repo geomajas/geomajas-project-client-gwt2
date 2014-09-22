@@ -11,20 +11,18 @@
 
 package org.geomajas.gwt2.client.map.render.dom;
 
-import com.google.gwt.core.client.Callback;
 import com.google.web.bindery.event.shared.HandlerRegistration;
+
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.service.BboxService;
 import org.geomajas.gwt2.client.GeomajasImpl;
-import org.geomajas.gwt2.client.event.TileLevelRenderedEvent;
 import org.geomajas.gwt2.client.event.TileLevelRenderedHandler;
 import org.geomajas.gwt2.client.map.MapPresenterImpl;
 import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.tile.TileBasedLayer;
 import org.geomajas.gwt2.client.map.render.RenderingInfo;
-import org.geomajas.gwt2.client.map.render.Tile;
 import org.geomajas.gwt2.client.map.render.TileCode;
 import org.geomajas.gwt2.client.map.render.TileLevelRenderer;
 import org.geomajas.gwt2.client.map.render.TileRenderer;
@@ -40,6 +38,7 @@ import java.util.logging.Logger;
  * Definition for a renderer for WMS layers.
  *
  * @author Pieter De Graef
+ * @author Jan De Moerloose
  */
 public class DomTileLevelRenderer implements TileLevelRenderer {
 
@@ -53,17 +52,13 @@ public class DomTileLevelRenderer implements TileLevelRenderer {
 
 	private final double resolution;
 
-	private final Map<TileCode, Tile> tiles;
+	private final Map<TileCode, LoadableTile> tiles;
 
 	private final int tileLevel;
 
 	private final ViewPort viewPort;
 
 	private final TileRenderer tileRenderer;
-
-	private int nrLoadingTiles;
-
-	private Map<TileCode, Boolean> addedTiles;
 
 	public DomTileLevelRenderer(TileBasedLayer layer, int tileLevel, ViewPort viewPort, HtmlContainer container,
 			TileRenderer tileRenderer) {
@@ -72,9 +67,8 @@ public class DomTileLevelRenderer implements TileLevelRenderer {
 		this.viewPort = viewPort;
 		this.container = container;
 		this.tileRenderer = tileRenderer;
-		this.tiles = new HashMap<TileCode, Tile>();
+		this.tiles = new HashMap<TileCode, LoadableTile>();
 		this.resolution = layer.getTileConfiguration().getResolution(tileLevel);
-		this.addedTiles = new HashMap<TileCode, Boolean>();
 	}
 
 	// ------------------------------------------------------------------------
@@ -91,28 +85,29 @@ public class DomTileLevelRenderer implements TileLevelRenderer {
 		if (layer.isShowing()) {
 			// Get the tiles in the current view and add them to the queue if they were not yet added:
 			List<TileCode> tilesForBounds = getTileCodesForView(view);
-			boolean added = false;
 			for (TileCode code : tilesForBounds) {
-				if (!addedTiles.containsKey(code)) {
-					info.getHintValue(MapPresenterImpl.QUEUE).add(createTile(code));
-					added = true;
+				if (!tiles.containsKey(code)) {
+					LoadableTile tile = createTile(code);
+					info.getHintValue(MapPresenterImpl.QUEUE).add(tile);
 				}
-			}
-			// Throw an event if tiles were added:
-			if (added) {
-				GeomajasImpl.getInstance().getEventBus().fireEvent(new TilesAddedEvent(view, info.getTrajectory()));
 			}
 		}
 	}
 
 	@Override
 	public void cancel() {
-		nrLoadingTiles = 0;
+		// no longer relevant, the queue is loading the tles now !
 	}
 
 	@Override
 	public boolean isRendered(View view) {
-		return nrLoadingTiles == 0 && tiles.size() > 0;
+		// make this more precise by checking only tiles within the view ?
+		for (LoadableTile tile : tiles.values()) {
+			if (!tile.isLoaded()) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
@@ -133,15 +128,13 @@ public class DomTileLevelRenderer implements TileLevelRenderer {
 	private LoadableTile createTile(TileCode tileCode) {
 		Bbox worldBounds = getWorldBounds(tileCode);
 
-		// Create a dom tile - this is a tile with an image that can be loaded later:
-		DomTile tile = new DomTile(new ImageCounter(), tileCode, getScreenBounds(worldBounds));
-		tile.setCode(tileCode);
-		tile.setUrl(tileRenderer.getUrl(tileCode));
+		// Create a dom tile - this is a tile with an image that can be loaded later (by the queue):
+		DomTile tile = new DomTile(layer, tileCode, tileRenderer.getUrl(tileCode),
+				getScreenBounds(worldBounds));
+		tiles.put(tileCode, tile);
 
 		// Add the image to the container:
-		nrLoadingTiles++;
 		container.add(tile.getImage());
-		addedTiles.put(tileCode, true);
 		return tile;
 	}
 
@@ -165,7 +158,7 @@ public class DomTileLevelRenderer implements TileLevelRenderer {
 		// clip to maximum bounds
 		bounds = BboxService.intersection(bounds, layer.getMaxBounds());
 		List<TileCode> codes = new ArrayList<TileCode>();
-		if (bounds.getHeight() == 0 || bounds.getWidth() == 0) {
+		if (bounds == null || bounds.getHeight() == 0 || bounds.getWidth() == 0) {
 			return codes;
 		}
 
@@ -201,27 +194,4 @@ public class DomTileLevelRenderer implements TileLevelRenderer {
 		return codes;
 	}
 
-	/**
-	 * Counts the number of images that are still inbound. If all images are effectively rendered, we fire an event.
-	 *
-	 * @author Pieter De Graef
-	 */
-	private class ImageCounter implements Callback<String, String> {
-
-		// In case of failure, we can't just sit and wait. Instead we consider the resolution level rendered.
-		public void onFailure(String reason) {
-			GeomajasImpl.getInstance().getEventBus().fireEventFromSource(new TileLevelRenderedEvent(
-					DomTileLevelRenderer.this), DomTileLevelRenderer.this);
-		}
-
-		public void onSuccess(String result) {
-			if (nrLoadingTiles > 0) { // A cancel may have reset the number of loading tiles.
-				nrLoadingTiles--;
-				if (nrLoadingTiles == 0) {
-					GeomajasImpl.getInstance().getEventBus().fireEventFromSource(new TileLevelRenderedEvent(
-							DomTileLevelRenderer.this), DomTileLevelRenderer.this);
-				}
-			}
-		}
-	}
 }

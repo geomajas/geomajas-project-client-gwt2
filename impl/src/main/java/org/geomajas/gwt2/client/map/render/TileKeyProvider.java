@@ -11,7 +11,6 @@
 
 package org.geomajas.gwt2.client.map.render;
 
-import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.client.map.render.dom.LoadableTile;
 
 /**
@@ -19,9 +18,7 @@ import org.geomajas.gwt2.client.map.render.dom.LoadableTile;
  *
  * @param <T> The type of the key.
  * @author Youri Flement
- * @since 2.1.0
  */
-@Api(allMethods = true)
 public interface TileKeyProvider<T> {
 
 	/**

@@ -11,25 +11,19 @@
 
 package org.geomajas.gwt2.client.map;
 
-import org.geomajas.gwt2.client.map.render.TileCode;
 import org.geomajas.gwt2.client.map.render.TileKeyProvider;
 import org.geomajas.gwt2.client.map.render.dom.LoadableTile;
 
 /**
- * Implementation of a {@link TileKeyProvider}. The provider simply concatenates the fields of
- * the {@link TileCode} of the {@link LoadableTile}. If the tile is <code>null</code> returns an empty {@link String}.
+ * Implementation of a {@link TileKeyProvider}. The provider simply returns the id.
  *
  * @author Youri Flement
+ * @author Jan De Moerloose
  */
 public class TileKeyProviderImpl implements TileKeyProvider<String> {
 
 	@Override
 	public String getKey(LoadableTile tile) {
-		TileCode code = tile.getCode();
-		if (code == null) {
-			return "";
-		} else {
-			return code.getTileLevel() + "" + code.getX() + "" + code.getY();
-		}
+		return tile.getId();
 	}
 }

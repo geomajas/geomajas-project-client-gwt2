@@ -13,12 +13,14 @@ package org.geomajas.gwt2.client.map;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.service.BboxService;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt.client.util.Dom;
 import org.geomajas.gwt2.client.animation.NavigationAnimation;
+import org.geomajas.gwt2.client.animation.Trajectory;
 import org.geomajas.gwt2.client.event.NavigationStopEvent;
 import org.geomajas.gwt2.client.event.NavigationStopHandler;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
@@ -352,6 +354,11 @@ public final class ViewPortImpl implements ViewPort {
 	public ViewPortTransformationService getTransformationService() {
 		return transformationService;
 	}
+
+	public Trajectory getTrajectory() {
+		return currentAnimation;
+	}
+
 
 	// -------------------------------------------------------------------------
 	// Private functions:

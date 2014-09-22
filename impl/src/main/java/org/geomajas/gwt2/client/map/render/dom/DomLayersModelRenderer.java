@@ -28,6 +28,7 @@ import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.client.map.layer.LayersModel;
 import org.geomajas.gwt2.client.map.render.LayerRenderer;
 import org.geomajas.gwt2.client.map.render.LayersModelRenderer;
+import org.geomajas.gwt2.client.map.render.RenderMapEvent;
 import org.geomajas.gwt2.client.map.render.RenderingInfo;
 import org.geomajas.gwt2.client.map.render.TileQueue;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
@@ -44,12 +45,11 @@ import java.util.Map;
  * org.geomajas.gwt2.client.map.MapConfiguration} to see if layer should be animated or not before delegating.
  *
  * @author Pieter De Graef
+ * @author Jan De Moerloose
  */
 public class DomLayersModelRenderer implements LayersModelRenderer {
 
 	private final LayersModel layersModel;
-
-	private final ViewPort viewPort;
 
 	private final Map<Layer, LayerRenderer> layerRenderers;
 
@@ -67,10 +67,9 @@ public class DomLayersModelRenderer implements LayersModelRenderer {
 	// Constructor:
 	// ------------------------------------------------------------------------
 
-	public DomLayersModelRenderer(LayersModel layersModel, ViewPort viewPort, MapEventBus eventBus,
+	public DomLayersModelRenderer(LayersModel layersModel, ViewPort viewPort, final MapEventBus eventBus,
 			final TileQueue queue) {
 		this.layersModel = layersModel;
-		this.viewPort = viewPort;
 		this.layerRenderers = new HashMap<Layer, LayerRenderer>();
 		this.layerContainers = new HashMap<Layer, HtmlContainer>();
 		this.layerAnimation = new HashMap<Layer, Boolean>();
@@ -90,6 +89,7 @@ public class DomLayersModelRenderer implements LayersModelRenderer {
 				layersModelContainer.remove(getOrCreateLayerContainer(event.getLayer()));
 				layerRenderers.remove(event.getLayer());
 				layerContainers.remove(event.getLayer());
+				eventBus.fireEvent(new RenderMapEvent());
 			}
 
 			@Override
@@ -97,11 +97,8 @@ public class DomLayersModelRenderer implements LayersModelRenderer {
 				LayerRenderer layerRenderer = event.getLayer().getRenderer();
 				if (layerRenderer != null) {
 					registerLayerRenderer(event.getLayer(), layerRenderer);
-					RenderingInfo layerInfo = new RenderingInfo(getOrCreateLayerContainer(event.getLayer()),
-							DomLayersModelRenderer.this.viewPort.getView(), null);
-					layerInfo.setHintValue(MapPresenterImpl.QUEUE, queue);
-					layerRenderer.render(layerInfo);
 				}
+				eventBus.fireEvent(new RenderMapEvent());
 			}
 		});
 
@@ -118,6 +115,7 @@ public class DomLayersModelRenderer implements LayersModelRenderer {
 						layersModelContainer.remove(layerContainer);
 						layersModelContainer.insert(layerContainer, toIndex);
 					}
+					eventBus.fireEvent(new RenderMapEvent());
 				}
 			}
 		});
@@ -133,11 +131,6 @@ public class DomLayersModelRenderer implements LayersModelRenderer {
 					if (!isAnimated(layer)) {
 						// This layer is not animated, hide it before the navigation starts:
 						HtmlContainer layerContainer = getOrCreateLayerContainer(layer);
-						LayerRenderer layerRenderer = layerRenderers.get(layer);
-						RenderingInfo layerInfo = new RenderingInfo(layerContainer, event.getTrajectory().getView(0.0),
-								event.getTrajectory());
-						layerInfo.setHintValue(MapPresenterImpl.QUEUE, queue);
-						layerRenderer.render(layerInfo);
 						DomService.applyTransition(layerContainer.asWidget().getElement(), new String[] { "opacity" },
 								new Integer[] { 0 });
 						layerContainer.asWidget().getElement().getStyle().setOpacity(0.0f);
@@ -156,10 +149,6 @@ public class DomLayersModelRenderer implements LayersModelRenderer {
 					if (!isAnimated(layer)) {
 						// This layer is not animated, hide it before the navigation starts:
 						HtmlContainer layerContainer = getOrCreateLayerContainer(layer);
-						LayerRenderer layerRenderer = layerRenderers.get(layer);
-						RenderingInfo layerInfo = new RenderingInfo(layerContainer, event.getView(), null);
-						layerInfo.setHintValue(MapPresenterImpl.QUEUE, queue);
-						layerRenderer.render(layerInfo);
 						if (DomLayersModelRenderer.this.configuration != null) {
 							DomService.applyTransition(layerContainer.asWidget().getElement(),
 									new String[] { "opacity" },

@@ -11,29 +11,23 @@
 
 package org.geomajas.gwt2.client.map.render;
 
-import org.geomajas.annotation.Api;
-import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.render.dom.LoadableTile;
 
 /**
  * Interface for a priority function of a {@link LoadableTile}.
- *
+ * 
  * @author Youri Flement
- * @since 2.1.0
+ * @author Jan De Moerloose
  */
-@Api(allMethods = true)
 public interface TilePriorityFunction {
 
 	/**
-	 * Get a priority for a {@link LoadableTile} based on the current resolution index,
-	 * the resolution and the {@link Coordinate} to focus on, which is typically the center of the
-	 * {@link org.geomajas.gwt2.client.map.ViewPort}.
-	 *
-	 * @param tile            The tile to calculate a priority for.
-	 * @param resolutionIndex The current resolution index.
-	 * @param resolution      The resolution.
-	 * @param focus           The coordinate the focus on.
+	 * Get a priority for a {@link LoadableTile}. Higher priority value means lower priority.
+	 * 
+	 * @param tile The tile to calculate a priority for.
+	 * @param view The view to calculate a priority for.
 	 * @return A priority for the tile.
 	 */
-	Double getPriority(LoadableTile tile, int resolutionIndex, double resolution, Coordinate focus);
+	Double getPriority(LoadableTile tile, View view);
 }
