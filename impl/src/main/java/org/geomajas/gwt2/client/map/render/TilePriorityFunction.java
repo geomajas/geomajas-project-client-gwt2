@@ -29,5 +29,5 @@ public interface TilePriorityFunction {
 	 * @param view The view to calculate a priority for.
 	 * @return A priority for the tile.
 	 */
-	Double getPriority(LoadableTile tile, View view);
+	TilePriority getPriority(LoadableTile tile, View view);
 }

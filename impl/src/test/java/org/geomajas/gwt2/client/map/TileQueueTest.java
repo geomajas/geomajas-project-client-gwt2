@@ -46,7 +46,7 @@ public class TileQueueTest {
 
 	private TileQueue queue;
 
-	private TilePriorityFunction priorityFunction = new TilePriorityFunctionImpl();
+	private TilePriorityFunction priorityFunction = new TilePriorityFunctionImpl(null);
 
 	private TileKeyProviderImpl keyProvider = new TileKeyProviderImpl();
 	
@@ -308,6 +308,18 @@ public class TileQueueTest {
 		@Override
 		public TileBasedLayer getLayer() {
 			return layer;
+		}
+
+		@Override
+		public void cancel() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public boolean isCancelled() {
+			// TODO Auto-generated method stub
+			return false;
 		}
 
 	}

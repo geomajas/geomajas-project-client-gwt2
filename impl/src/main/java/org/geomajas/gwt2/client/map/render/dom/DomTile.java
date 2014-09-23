@@ -56,6 +56,18 @@ public class DomTile extends Tile implements LoadableTile {
 		image.onLoadingDone(onLoadingDone, NR_RETRIES);
 	}
 
+	@Override
+	public void cancel() {
+		image.cancel();
+	}
+	
+	
+
+	@Override
+	public boolean isCancelled() {
+		return image.isCancelled();
+	}
+
 	/**
 	 * Get the underlying image of the dom tile.
 	 *

@@ -36,7 +36,7 @@ import java.util.logging.Logger;
 
 /**
  * Definition for a renderer for WMS layers.
- *
+ * 
  * @author Pieter De Graef
  * @author Jan De Moerloose
  */
@@ -86,17 +86,12 @@ public class DomTileLevelRenderer implements TileLevelRenderer {
 			// Get the tiles in the current view and add them to the queue if they were not yet added:
 			List<TileCode> tilesForBounds = getTileCodesForView(view);
 			for (TileCode code : tilesForBounds) {
-				if (!tiles.containsKey(code)) {
+				if (!tiles.containsKey(code) || tiles.get(code).isCancelled()) {
 					LoadableTile tile = createTile(code);
 					info.getHintValue(MapPresenterImpl.QUEUE).add(tile);
 				}
 			}
 		}
-	}
-
-	@Override
-	public void cancel() {
-		// no longer relevant, the queue is loading the tles now !
 	}
 
 	@Override
@@ -126,11 +121,13 @@ public class DomTileLevelRenderer implements TileLevelRenderer {
 	}
 
 	private LoadableTile createTile(TileCode tileCode) {
+		if (tiles.containsKey(tileCode)) {
+			container.remove(((DomTile) tiles.get(tileCode)).getImage());
+		}
 		Bbox worldBounds = getWorldBounds(tileCode);
 
 		// Create a dom tile - this is a tile with an image that can be loaded later (by the queue):
-		DomTile tile = new DomTile(layer, tileCode, tileRenderer.getUrl(tileCode),
-				getScreenBounds(worldBounds));
+		DomTile tile = new DomTile(layer, tileCode, tileRenderer.getUrl(tileCode), getScreenBounds(worldBounds));
 		tiles.put(tileCode, tile);
 
 		// Add the image to the container:

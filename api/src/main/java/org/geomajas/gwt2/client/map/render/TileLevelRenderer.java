@@ -41,11 +41,6 @@ public interface TileLevelRenderer {
 	void render(RenderingInfo info, View view);
 
 	/**
-	 * Cancel rendering. If there are any requests underway to the server, these can all be canceled.
-	 */
-	void cancel();
-
-	/**
 	 * Is the requested view rendered or not?
 	 *
 	 * @param view The view to check. It may be that the view has a different resolution than what is rendered in this

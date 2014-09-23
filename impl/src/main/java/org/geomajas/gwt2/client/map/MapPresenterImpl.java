@@ -81,14 +81,14 @@ import java.util.Map;
 
 /**
  * Default implementation of the map presenter interface. In other words this is the default GWT map object.
- *
+ * 
  * @author Pieter De Graef
  */
 public final class MapPresenterImpl implements MapPresenter {
 
 	/**
 	 * Map view definition.
-	 *
+	 * 
 	 * @author Pieter De Graef
 	 */
 	public interface MapWidget extends HasMouseDownHandlers, HasMouseUpHandlers, HasMouseOutHandlers,
@@ -99,42 +99,42 @@ public final class MapPresenterImpl implements MapPresenter {
 		/**
 		 * Returns the HTML container of the map. This is a normal HTML container that contains the images of rasterized
 		 * tiles (both vector and raster layers).
-		 *
+		 * 
 		 * @return the container
 		 */
 		HtmlContainer getMapHtmlContainer();
 
 		/**
 		 * Returns the list of user-defined containers (vector + canvas) for world-space objects.
-		 *
+		 * 
 		 * @return the container
 		 */
 		List<Transformable> getWorldTransformables();
 
 		/**
 		 * Returns a new user-defined container for screen space objects.
-		 *
+		 * 
 		 * @return the container
 		 */
 		VectorContainer getNewScreenContainer();
 
 		/**
 		 * Returns a new user-defined container for world space objects.
-		 *
+		 * 
 		 * @return the container
 		 */
 		VectorContainer getNewWorldContainer();
 
 		/**
 		 * Returns a new user-defined container for world space widgets.
-		 *
+		 * 
 		 * @return the container
 		 */
 		TransformableWidgetContainer getNewWorldWidgetContainer();
 
 		/**
 		 * Removes a user-defined container.
-		 *
+		 * 
 		 * @param container container
 		 * @return true if removed, false if unknown
 		 */
@@ -142,7 +142,7 @@ public final class MapPresenterImpl implements MapPresenter {
 
 		/**
 		 * Removes a user-defined container.
-		 *
+		 * 
 		 * @param container container
 		 * @return true if removed, false if unknown
 		 */
@@ -150,7 +150,7 @@ public final class MapPresenterImpl implements MapPresenter {
 
 		/**
 		 * Brings the user-defined container to the front (relative to its world-space or screen-space peers!).
-		 *
+		 * 
 		 * @param container container
 		 * @return true if successful
 		 */
@@ -158,29 +158,29 @@ public final class MapPresenterImpl implements MapPresenter {
 
 		/**
 		 * Returns a new user-defined container of map gadgets.
-		 *
+		 * 
 		 * @return the container
 		 */
 		HasWidgets getWidgetContainer();
 
 		/**
 		 * Get the total width of the view.
-		 *
+		 * 
 		 * @return width in pixels
 		 */
 		int getWidth();
 
 		/**
 		 * Get the total height of the view.
-		 *
+		 * 
 		 * @return height in pixels
 		 */
 		int getHeight();
 
 		/**
 		 * Set the total size of the view.
-		 *
-		 * @param width  width
+		 * 
+		 * @param width width
 		 * @param height height
 		 */
 		void setPixelSize(int width, int height);
@@ -234,7 +234,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		this.viewPort = new ViewPortImpl(this.eventBus);
 		this.layersModel = new LayersModelImpl(this.viewPort, this.eventBus);
 		this.mapEventParser = new MapEventParserImpl(this);
-		this.tilequeue = new TileQueueImpl<String>(new TilePriorityFunctionImpl(), new TileKeyProviderImpl(),
+		this.tilequeue = new TileQueueImpl<String>(new TilePriorityFunctionImpl(viewPort), new TileKeyProviderImpl(),
 				this.eventBus);
 		this.renderer = new DomLayersModelRenderer(layersModel, viewPort, this.eventBus, tilequeue);
 		this.containerManager = new ContainerManagerImpl(display, viewPort);
@@ -342,7 +342,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		// Make a consistent copy of the view port state
 		View view = viewPort.getView(); // creates a clone
 		Trajectory trajectory = viewPort.getTrajectory();
-		
+
 		RenderingInfo info = new RenderingInfo(display.getMapHtmlContainer(), view, trajectory);
 		info.setHintValue(QUEUE, tilequeue);
 		renderer.render(info);
@@ -350,7 +350,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		// Get tiles and load them:
 		if (tilequeue.getLoadingCount() < MAX_LOADING_TILES) {
 			// Prioritize tiles in the queue:
-			tilequeue.prioritize(view);
+			tilequeue.prioritize(trajectory != null ? trajectory.getView(1.0) : view);
 			// Less tiles when trajectory is active !
 			int tilesToLoad = (trajectory != null ? 2 : MAX_LOADING_TILES);
 			tilequeue.load(tilesToLoad, MAX_LOADING_TILES);
@@ -528,7 +528,7 @@ public final class MapPresenterImpl implements MapPresenter {
 
 	/**
 	 * Handler that redraws all world space objects whenever the view on the map changes.
-	 *
+	 * 
 	 * @author Pieter De Graef
 	 */
 	private class WorldTransformableRenderer implements ViewPortChangedHandler {

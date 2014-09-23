@@ -30,6 +30,17 @@ public interface LoadableTile {
 	 * @param onLoadingDone
 	 */
 	void load(Callback<String, String> onLoadingDone);
+	
+	/**
+	 * Cancels loading.
+	 */
+	void cancel();
+
+	/**
+	 * Is this tile canceled ?
+	 * @return
+	 */
+	boolean isCancelled();
 
 	/**
 	 * Returns the unique code for this tile. Consider this it's unique identifier within a raster layer.

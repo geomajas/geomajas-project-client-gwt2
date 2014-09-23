@@ -57,6 +57,10 @@ public class HtmlGroup extends AbstractHtmlObject implements HtmlContainer {
 		super(new DivPanel());
 		asWidget().setSize("100%", "100%");
 		asWidget().getElement().getStyle().setZIndex(0);
+		String transition = "opacity .7s";
+		asWidget().getElement().getStyle().setProperty("transition", transition);
+		asWidget().getElement().getStyle().setProperty("MozTransition", transition);
+		asWidget().getElement().getStyle().setProperty("WebkitTransition", transition);
 	}
 
 	/**

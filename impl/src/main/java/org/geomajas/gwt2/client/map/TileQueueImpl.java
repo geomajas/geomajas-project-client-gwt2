@@ -16,6 +16,7 @@ import com.google.gwt.core.client.Callback;
 import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.client.map.render.RenderMapEvent;
 import org.geomajas.gwt2.client.map.render.TileKeyProvider;
+import org.geomajas.gwt2.client.map.render.TilePriority;
 import org.geomajas.gwt2.client.map.render.TilePriorityFunction;
 import org.geomajas.gwt2.client.map.render.TileQueue;
 import org.geomajas.gwt2.client.map.render.dom.LoadableTile;
@@ -127,6 +128,17 @@ public class TileQueueImpl<T> implements TileQueue {
 	 * @param view The current view.
 	 */
 	public void sortByValue(final View view) {
+		// remove discarded tiles
+		List<T> l = new ArrayList<T>();
+		for (Entry<T, LoadableTile> entry : map.entrySet()) {
+			if (priorityFunction.getPriority(entry.getValue(), view) == TilePriority.DISCARD) {
+				l.add(entry.getKey());
+			}
+		}
+		for (T t : l) {
+			map.remove(t).cancel();
+		}
+		// sort the others
 		List<Entry<T, LoadableTile>> list = new LinkedList<Entry<T, LoadableTile>>(map.entrySet());
 
 		Collections.sort(list, new Comparator<Entry<T, LoadableTile>>() {
@@ -134,8 +146,8 @@ public class TileQueueImpl<T> implements TileQueue {
 			@Override
 			public int compare(Entry<T, LoadableTile> o1, Entry<T, LoadableTile> o2) {
 				// Get the priority of the first tile and the second tile and compare:
-				Double priorityA = priorityFunction.getPriority(o1.getValue(), view);
-				Double priorityB = priorityFunction.getPriority(o2.getValue(), view);
+				TilePriority priorityA = priorityFunction.getPriority(o1.getValue(), view);
+				TilePriority priorityB = priorityFunction.getPriority(o2.getValue(), view);
 				return priorityA.compareTo(priorityB);
 			}
 		});

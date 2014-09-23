@@ -40,6 +40,8 @@ public class HtmlImageImpl extends AbstractHtmlObject implements HtmlImage {
 
 	private String src;
 
+	private boolean canceled;
+
 	// ------------------------------------------------------------------------
 	// Constructors:
 	// ------------------------------------------------------------------------
@@ -51,31 +53,7 @@ public class HtmlImageImpl extends AbstractHtmlObject implements HtmlImage {
 	 * @param bbox The bounding box of the image.
 	 */
 	public HtmlImageImpl(String src, Bbox bbox) {
-		this(src, bbox, 0);
-	}
-
-	/**
-	 * Create an HtmlImage widget that represents an HTML IMG element.
-	 * 
-	 * @param src Pointer to the actual image.
-	 * @param bbox The bounding box of the image.
-	 * @param nrRetries Total number of retries should loading fail. Default is 0.
-	 */
-	public HtmlImageImpl(String src, Bbox bbox, int nrRetries) {
-		this(src, (int) bbox.getWidth(), (int) bbox.getHeight(), (int) bbox.getY(), (int) bbox.getX(), nrRetries);
-	}
-
-	/**
-	 * Create an HtmlImage widget that represents an HTML IMG element.
-	 * 
-	 * @param src Pointer to the actual image.
-	 * @param width The width for this image, expressed in pixels.
-	 * @param height The height for this image, expressed in pixels.
-	 * @param top How many pixels should this image be placed from the top (relative to the parent origin).
-	 * @param left How many pixels should this image be placed from the left (relative to the parent origin).
-	 */
-	public HtmlImageImpl(String src, int width, int height, int top, int left) {
-		this(src, width, height, top, left, 0);
+		this(src, (int) bbox.getWidth(), (int) bbox.getHeight(), (int) bbox.getY(), (int) bbox.getX(), 5);
 	}
 
 	/**
@@ -187,17 +165,24 @@ public class HtmlImageImpl extends AbstractHtmlObject implements HtmlImage {
 
 		public void onError(ErrorEvent event) {
 			nrAttempts--;
-			if (nrAttempts > 0) {
+			if (nrAttempts > 0 || canceled) {
 				asImage().addLoadHandler(this);
 				asImage().addErrorHandler(this);
 				asImage().setUrl(src);
 			} else {
-				asImage().getElement().getStyle().setOpacity(1.0);
 				if (onDoneLoading != null) {
 					onDoneLoading.onFailure(src);
 					loaded = true;
 				}
 			}
 		}
+	}
+
+	public void cancel() {
+		canceled = true;
+	}
+
+	public boolean isCancelled() {
+		return canceled;
 	}
 }

@@ -67,9 +67,9 @@ public abstract class DomTileLevelLayerRenderer implements LayerRenderer {
 
 	private TileQueue queue;
 
-	private TileLevelRenderer targetRenderer;
-	
-	private Trajectory trajectory;
+	private TileLevelRenderer currentRenderer;
+
+	private TileLevelRenderer startRenderer;
 
 	private MapEventBus eventBus;
 
@@ -97,7 +97,6 @@ public abstract class DomTileLevelLayerRenderer implements LayerRenderer {
 			@Override
 			public void onLayerRemoved(LayerRemovedEvent event) {
 				if (event.getLayer() == layer) {
-					clear();
 					refresh();
 				}
 			}
@@ -105,7 +104,7 @@ public abstract class DomTileLevelLayerRenderer implements LayerRenderer {
 			@Override
 			public void onLayerAdded(LayerAddedEvent event) {
 				if (event.getLayer() == layer) {
-					refresh();
+					eventBus.fireEvent(new RenderMapEvent());
 				}
 			}
 		});
@@ -122,7 +121,7 @@ public abstract class DomTileLevelLayerRenderer implements LayerRenderer {
 				if (container != null) {
 					container.setVisible(true);
 				}
-				refresh();
+				eventBus.fireEvent(new RenderMapEvent());
 			}
 
 			@Override
@@ -130,6 +129,7 @@ public abstract class DomTileLevelLayerRenderer implements LayerRenderer {
 				if (container != null) {
 					container.setVisible(false);
 				}
+				eventBus.fireEvent(new RenderMapEvent());
 			}
 		}, layer);
 
@@ -163,66 +163,32 @@ public abstract class DomTileLevelLayerRenderer implements LayerRenderer {
 		}
 		setContainer((HtmlContainer) renderingInfo.getWidget());
 
-		// We prepare the tiles that need to be loaded here. A tile level will only be rendered when all its tiles
-		// are loaded (this avoids that tiles are rendered doubly (= at 2 levels) for transparent layers).
-		// When a trajectory is busy, we render the closest level that is already loaded (normally the level
-		// we were at when the trajectory was started).
-		// TODO: make this simpler for the opaque case !!!
 		try {
-			// find the visible level
-			int visibleLevel = -1;
 			View view = renderingInfo.getView();
-			if (renderingInfo.getTrajectory() != null && trajectory == null) {
-				// we are entering a new trajectory, prepare the target view
-				trajectory = renderingInfo.getTrajectory();
-				targetRenderer = getRendererForView(trajectory.getView(1.0), queue);
+			if (renderingInfo.getTrajectory() != null) {
+				// we are in a trajectory, get the start view first
+				Trajectory trajectory = renderingInfo.getTrajectory();
+				View startView = trajectory.getView(0);
+				startRenderer = getRendererForView(startView, queue);
+				// prepare the target view
+				TileLevelRenderer targetRenderer = getRendererForView(trajectory.getView(1.0), queue);
 				// add the tiles
 				targetRenderer.render(renderingInfo, trajectory.getView(1.0));
-			}
-			if (trajectory != null) {
-				// we are in a trajectory
-				if (targetRenderer.isRendered(renderingInfo.getView())) {
-					// we have all tiles, transform and show the target level
-					transformView(targetRenderer, view.getResolution());
-					visibleLevel = targetRenderer.getTileLevel();
-					// make sure we never get back here !
-					trajectory = null;
-				} else {
-					// find the rendered level that is closest
-					View startView = trajectory.getView(0);
-					int startLevel = getResolutionIndex(startView.getResolution());
-					int tileLevel = getResolutionIndex(view.getResolution());
-					// make sure we have a different level
-					if (startLevel == tileLevel) {
-						startLevel = startLevel + (startView.getResolution() > view.getResolution() ? -1 : 1);
-					}
-					// find the closest rendered level
-					int step = (startLevel < tileLevel ? -1 : 1);
-					for (int i = (tileLevel + step); i != (startLevel + step); i += step) {
-						if (tileLevelRenderers.containsKey(i)) {
-							TileLevelRenderer tr = tileLevelRenderers.get(i);
-							if (tr.isRendered(startView)) {
-								// closest rendered level, render this level instead
-								// transform is sufficient, don't load any extra tiles
-								transformView(tr, view.getResolution());
-								visibleLevel = tr.getTileLevel();
-								break;
-							}
-						}
-					}
-				}
-			} 
-			if (visibleLevel < 0) {
-				// normal case, just try to render
-				TileLevelRenderer renderer = getRendererForView(view, queue);
+			} else {
+				// normal case, use the current renderer
+				currentRenderer = getRendererForView(view, queue);
 				// add the tiles
-				renderer.render(renderingInfo, view);
+				currentRenderer.render(renderingInfo, view);
 				// and transform
-				transformView(renderer, view.getResolution());
-				visibleLevel = renderer.getTileLevel();
+				transformView(currentRenderer, view.getResolution());
 			}
-			// show the level
-			setVisible(visibleLevel);
+			if (renderingInfo.getTrajectory() != null) {
+				transformView(startRenderer, view.getResolution());
+				setVisible(startRenderer.getTileLevel());
+			} else {
+				transformView(currentRenderer, view.getResolution());
+				setVisible(currentRenderer.getTileLevel());
+			}
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, "could not render view", e);
 		}
@@ -339,14 +305,13 @@ public abstract class DomTileLevelLayerRenderer implements LayerRenderer {
 					new Integer[] { 300 });
 		}
 	}
-	
+
 	protected void refresh() {
 		clear();
 		eventBus.fireEvent(new RenderMapEvent());
 	}
 
 	protected void clear() {
-		targetRenderer = null;
 		tileLevelRenderers.clear();
 		tileLevelContainers.clear();
 		if (container != null) {
@@ -355,12 +320,12 @@ public abstract class DomTileLevelLayerRenderer implements LayerRenderer {
 	}
 
 	protected void setVisible(int tileLevel) {
-		// First set the correct level to visible, so as to make sure the map never gets white:
-		tileLevelContainers.get(tileLevel).setVisible(true);
-
 		// Now go over all containers (we could leave out the correct one here...):
 		for (Entry<Integer, HtmlContainer> containerEntry : tileLevelContainers.entrySet()) {
-			containerEntry.getValue().setVisible(tileLevel == containerEntry.getKey());
+			containerEntry.getValue().setVisible(tileLevel == containerEntry.getKey() ? true : false);
+			containerEntry.getValue().setOpacity(tileLevel == containerEntry.getKey() ? 1 : 0);
 		}
+		// container.bringToFront(tileLevelContainers.get(tileLevel));
+
 	}
 }
