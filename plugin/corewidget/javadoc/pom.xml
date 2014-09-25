@@ -20,19 +20,13 @@
 
 	<artifactId>geomajas-client-gwt2-plugin-corewidget-javadoc</artifactId>
 	<packaging>jar</packaging>
-	<name>Geomajas GWT 2 client: Plugin Corewidget - Javadoc</name>
-	<description>Geomajas GWT 2 client: Plugin Corewidget - Javadoc</description>
+	<name>Geomajas GWT2 client: Plugin Corewidget - Javadoc</name>
+	<description>Geomajas GWT2 client: Plugin Corewidget - Javadoc</description>
 
 	<dependencies>
-
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-client-gwt2-plugin-corewidget</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-client-gwt2-plugin-corewidget</artifactId>
-			<classifier>sources</classifier>
 		</dependency>
 
 		<dependency>
@@ -40,12 +34,10 @@
 			<artifactId>gwt-user</artifactId>
 			<scope>provided</scope>
 		</dependency>
-
 	</dependencies>
 
 	<build>
 		<plugins>
-
 			<plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<executions>
@@ -65,8 +57,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
 		</plugins>
 	</build>
-
 </project>
