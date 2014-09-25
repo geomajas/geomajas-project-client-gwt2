@@ -20,8 +20,8 @@
     <para>To replace the default style, define another implementation for the
     client resource bundle factory through deferred binding:</para>
 
-    <programlisting>&lt;replace-with class="org.geomajas.gwt2.widget.client.resource.MyCoreWidgetClientBundleFactory"&gt;
-    &lt;when-type-is class="org.geomajas.gwt2.widget.client.resource.CoreWidgetClientBundleFactory" /&gt;
+    <programlisting>&lt;replace-with class="org.geomajas.gwt2.plugin.corewidget.client.resource.MyCoreWidgetClientBundleFactory"&gt;
+    &lt;when-type-is class="org.geomajas.gwt2.plugin.corewidget.client.resource.CoreWidgetClientBundleFactory" /&gt;
 &lt;/replace-with&gt;</programlisting>
 
     <para><code>MyCoreWidgetClientBundleFactory</code> should implement the
@@ -35,8 +35,8 @@
     implementation for the client resource bundle factory through deferred
     binding:</para>
 
-    <programlisting>&lt;replace-with class="org.geomajas.gwt2.widget.client.resource.CoreWidgetClientBundleFactoryNoStyle"&gt;
-    &lt;when-type-is class="org.geomajas.gwt2.widget.client.resource.CoreWidgetClientBundleFactory" /&gt;
+    <programlisting>&lt;replace-with class="org.geomajas.gwt2.plugin.corewidget.client.resource.CoreWidgetClientBundleFactoryNoStyle"&gt;
+    &lt;when-type-is class="org.geomajas.gwt2.plugin.corewidget.client.resource.CoreWidgetClientBundleFactory" /&gt;
 &lt;/replace-with&gt;</programlisting>
 
     <para>CoreWidgetClientBundleFactoryNoStyle is an implementation that
@@ -52,8 +52,8 @@
     <para>To replace the view completely, define another implementation for
     the view factory through deferred binding:</para>
 
-    <programlisting>&lt;replace-with class="org.geomajas.gwt2.widget.client.MyCoreWidgetViewFactory"&gt;
-    &lt;when-type-is class="org.geomajas.gwt2.widget.client.CoreWidgetViewFactory" /&gt;
+    <programlisting>&lt;replace-with class="org.geomajas.gwt2.plugin.corewidget.client.MyCoreWidgetViewFactory"&gt;
+    &lt;when-type-is class="org.geomajas.gwt2.plugin.corewidget.client.CoreWidgetViewFactory" /&gt;
 &lt;/replace-with&gt;</programlisting>
 
     <para>The factory has create methods for each widget's view, just replace
