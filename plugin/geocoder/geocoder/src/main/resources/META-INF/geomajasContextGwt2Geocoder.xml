@@ -27,7 +27,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<property name="version" value="${project.version}" />
 			</bean>
 		</property>
-		<property name="backendVersion" value="${version-geomajas-server}" />
+		<property name="backendVersion" value="${gwt2-client-version-geomajas-server}" />
 		<property name="dependencies">
 			<list>
 				<bean class="org.geomajas.global.PluginVersionInfo">
@@ -36,7 +36,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				</bean>
 				<bean class="org.geomajas.global.PluginVersionInfo">
 					<property name="name" value="geocoder" />
-					<property name="version" value="${version-geomajas-server}" />
+					<property name="version" value="${gwt2-client-version-geomajas-server}" />
 				</bean>
 			</list>
 		</property>

@@ -57,6 +57,7 @@
 
 			<plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${gwt2-client-version-maven-javadoc-plugin}</version>
 				<executions>
 					<execution>
 						<id>javadoc-jar</id>

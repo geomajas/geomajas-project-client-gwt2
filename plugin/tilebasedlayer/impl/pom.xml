@@ -80,7 +80,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.12</version>
+				<version>${gwt2-client-version-maven-surefire-plugin}</version>
                 <configuration>
                     <additionalClasspathElements>
                         <additionalClasspathElement>src/main/java</additionalClasspathElement>

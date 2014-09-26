@@ -45,13 +45,29 @@
 	</modules>
 
 	<properties>
-		<version-geomajas-server>1.16.2</version-geomajas-server>
-		<version-geomajas-graphics>1.0.0-M3</version-geomajas-graphics>
-		<version-vaadin-graphics>1.0.0.TX11</version-vaadin-graphics>
-		<version-gwt>2.5.1</version-gwt>
-		<spring-version>3.0.5.RELEASE</spring-version>
-		<version-geomajas-build-tools>2.4.0</version-geomajas-build-tools>
-		<gwt-exporter-version>2.4.0</gwt-exporter-version>
+		<!-- geomajas versions -->
+		<gwt2-client-version-geomajas-server>1.16.2</gwt2-client-version-geomajas-server>
+		<gwt2-client-version-geomajas-build-tools>2.4.0</gwt2-client-version-geomajas-build-tools>
+		<!-- gwt versions -->
+		<gwt2-client-version-gwt>2.5.1</gwt2-client-version-gwt>
+		<gwt2-client-version-gwt-maven-plugin>2.5.1</gwt2-client-version-gwt-maven-plugin>
+		<gwt2-client-version-gwt-exporter>2.4.0</gwt2-client-version-gwt-exporter>
+		<gwt2-client-version-allan-sauer-gwt-dnd>3.2.3</gwt2-client-version-allan-sauer-gwt-dnd>
+		<!-- maven plugins -->
+		<gwt2-client-version-maven-javadoc-plugin>2.9.1</gwt2-client-version-maven-javadoc-plugin>
+		<gwt2-client-version-maven-jetty-plugin>6.1.20</gwt2-client-version-maven-jetty-plugin>
+		<gwt2-client-version-maven-timestamp-plugin>1.0</gwt2-client-version-maven-timestamp-plugin>
+		<gwt2-client-version-maven-jar-plugin>2.2</gwt2-client-version-maven-jar-plugin>
+		<gwt2-client-version-maven-surefire-plugin>2.12</gwt2-client-version-maven-surefire-plugin>
+		<gwt2-client-version-cargo-maven2-plugin>1.2.1</gwt2-client-version-cargo-maven2-plugin>
+		<!-- other versions -->
+		<gwt2-client-version-spring>3.0.5.RELEASE</gwt2-client-version-spring>
+		<gwt2-client-version-vaadin-graphics>1.0.0.TX11</gwt2-client-version-vaadin-graphics>
+		<gwt2-client-version-geotools>9.5</gwt2-client-version-geotools>
+		<!-- test versions -->
+		<gwt2-client-version-selenium>2.39.0</gwt2-client-version-selenium>
+		<gwt2-client-version-gwtmockito>1.1.2</gwt2-client-version-gwtmockito>
+		<gwt2-client-version-mockito>1.9.5</gwt2-client-version-mockito>
 	</properties>
 
 	<dependencyManagement>
@@ -351,17 +367,12 @@
 			<dependency>
 				<groupId>org.geomajas.project</groupId>
 				<artifactId>geomajas-project-server</artifactId>
-				<version>${version-geomajas-server}</version>
+				<version>${gwt2-client-version-geomajas-server}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 
 			<!-- Other dependencies -->
-			<dependency>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.9.1</version>
-			</dependency>
 			<dependency>
 				<groupId>org.codehaus.jackson</groupId>
 				<artifactId>jackson-core-lgpl</artifactId>
@@ -391,17 +402,17 @@
 			<dependency>
 				<groupId>org.timepedia.exporter</groupId>
 				<artifactId>gwtexporter</artifactId>
-				<version>${gwt-exporter-version}</version>
+				<version>${gwt2-client-version-gwt-exporter}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-oxm</artifactId>
-				<version>${spring-version}</version>
+				<version>${gwt2-client-version-spring}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-orm</artifactId>
-				<version>${spring-version}</version>
+				<version>${gwt2-client-version-spring}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.lowagie</groupId>
@@ -447,7 +458,7 @@
 			<dependency>
 				<groupId>org.geotools</groupId>
 				<artifactId>gt-wms</artifactId>
-				<version>9.5</version>
+				<version>${gwt2-client-version-geotools}</version>
 			</dependency>
 
 			<!-- Other artifacts -->
@@ -460,57 +471,57 @@
 			<dependency>
 				<groupId>org.vaadin.addons</groupId>
 				<artifactId>gwt-graphics</artifactId>
-				<version>${version-vaadin-graphics}</version>
+				<version>${gwt2-client-version-vaadin-graphics}</version>
 			</dependency>
 
 			<!-- External GWT libraries -->
 			 <dependency>
 				<groupId>com.allen-sauer.gwt.dnd</groupId>
 				<artifactId>gwt-dnd</artifactId>
-				<version>3.2.3</version>
+				<version>${gwt2-client-version-allan-sauer-gwt-dnd}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-user</artifactId>
-				<version>${version-gwt}</version>
+				<version>${gwt2-client-version-gwt}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-servlet</artifactId>
-				<version>${version-gwt}</version>
+				<version>${gwt2-client-version-gwt}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-dev</artifactId>
-				<version>${version-gwt}</version>
+				<version>${gwt2-client-version-gwt}</version>
 			</dependency>
 
+			<!-- Test libraries -->
 			<dependency>
 				<groupId>org.seleniumhq.selenium</groupId>
 				<artifactId>selenium-java</artifactId>
-				<version>2.39.0</version>
+				<version>${gwt2-client-version-selenium}</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.seleniumhq.selenium</groupId>
 				<artifactId>selenium-server</artifactId>
-				<version>2.39.0</version>
+				<version>${gwt2-client-version-selenium}</version>
 				<scope>test</scope>
 			</dependency>
-
 			<dependency>
 				<groupId>com.google.gwt.gwtmockito</groupId>
 				<artifactId>gwtmockito</artifactId>
-				<version>1.1.2</version>
+				<version>${gwt2-client-version-gwtmockito}</version>
+				<scope>test</scope>
 			</dependency>
-
 			<dependency>
 				<groupId>org.mockito</groupId>
 				<artifactId>mockito-all</artifactId>
-				<version>1.9.5</version>
+				<version>${gwt2-client-version-mockito}</version>
+				<scope>test</scope>
 			</dependency>
-
 		</dependencies>
 	</dependencyManagement>
 

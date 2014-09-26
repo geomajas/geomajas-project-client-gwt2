@@ -71,7 +71,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.2</version>
+				<version>${gwt2-client-version-maven-jar-plugin}</version>
 				<executions>
 					<execution>
 						<goals>
