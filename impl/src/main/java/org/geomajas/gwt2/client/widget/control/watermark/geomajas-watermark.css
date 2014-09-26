@@ -6,10 +6,11 @@
 @sprite .gm-Watermark {
 	background-color: #F0F0F0;
 	gwt-image: "poweredByGeomajas";
-	bottom: 0px;
+    background-position: center;
+    bottom: 0px;
 	right: 0px;
-	height: 12px;
-	width: 125px;
+	height: 14px;
+	width: 120px;
 	position: absolute;
 	-webkit-border-top-left-radius: 3px;
 	-moz-border-radius-topleft: 3px;

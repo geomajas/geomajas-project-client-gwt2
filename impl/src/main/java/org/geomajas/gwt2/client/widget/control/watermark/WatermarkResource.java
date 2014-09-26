@@ -36,7 +36,7 @@ public interface WatermarkResource extends ClientBundle {
 	WatermarkCssResource css();
 
 	/** Background for the {@link Watermark}. */
-	@Source("image/powered_by_geomajas.gif")
+	@Source("image/powered_by_geomajas.png")
 	@ImageOptions(repeatStyle = RepeatStyle.None)
 	ImageResource poweredByGeomajas();
 }
