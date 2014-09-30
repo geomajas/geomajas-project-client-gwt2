@@ -59,7 +59,7 @@
 		<gwt2-client-version-maven-timestamp-plugin>1.0</gwt2-client-version-maven-timestamp-plugin>
 		<gwt2-client-version-maven-jar-plugin>2.2</gwt2-client-version-maven-jar-plugin>
 		<gwt2-client-version-maven-surefire-plugin>2.12</gwt2-client-version-maven-surefire-plugin>
-		<gwt2-client-version-cargo-maven2-plugin>1.2.1</gwt2-client-version-cargo-maven2-plugin>
+		<!--<gwt2-client-version-cargo-maven2-plugin>1.2.1</gwt2-client-version-cargo-maven2-plugin>-->
 		<!-- other versions -->
 		<gwt2-client-version-spring>3.0.5.RELEASE</gwt2-client-version-spring>
 		<gwt2-client-version-vaadin-graphics>1.0.0.TX11</gwt2-client-version-vaadin-graphics>
