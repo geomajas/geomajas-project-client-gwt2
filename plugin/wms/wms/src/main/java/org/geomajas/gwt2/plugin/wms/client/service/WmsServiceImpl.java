@@ -14,6 +14,7 @@ package org.geomajas.gwt2.plugin.wms.client.service;
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestBuilder.Method;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
@@ -21,6 +22,7 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
+
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.client.map.layer.LegendConfig;
 import org.geomajas.gwt2.plugin.wms.client.capabilities.WmsGetCapabilitiesInfo;
@@ -44,16 +46,30 @@ public class WmsServiceImpl implements WmsService {
 	private static final int LEGEND_DPI = 91;
 
 	protected WmsUrlTransformer urlTransformer;
+	
+	protected RequestBuilderFactory requestBuilderFactory;
+	
+	
 
 	// ------------------------------------------------------------------------
 	// WmsService implementation:
 	// ------------------------------------------------------------------------
 
+	public WmsServiceImpl() {
+		requestBuilderFactory = new RequestBuilderFactory() {
+			
+			@Override
+			public RequestBuilder create(Method method, String url) {
+				return new RequestBuilder(method, url);
+			}
+		};
+	}
+
 	@Override
 	public void getCapabilities(String baseUrl, final WmsVersion version,
 			final Callback<WmsGetCapabilitiesInfo, String> callback) {
 		String url = getCapabilitiesUrl(baseUrl, version);
-		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+		RequestBuilder builder = requestBuilderFactory.create(RequestBuilder.GET, url);
 		builder.setHeader("Cache-Control", "no-cache");
 		builder.setHeader("Pragma", "no-cache");
 		try {
@@ -207,10 +223,15 @@ public class WmsServiceImpl implements WmsService {
 	// ------------------------------------------------------------------------
 	// Private methods:
 	// ------------------------------------------------------------------------
-
+	
+	protected void setRequestBuilderFactory(RequestBuilderFactory requestBuilderFactory) {
+		this.requestBuilderFactory = requestBuilderFactory;
+	}
+	
 	protected StringBuilder getBaseUrlBuilder(WmsLayerConfiguration config) {
 		return new StringBuilder(config.getBaseUrl());
 	}
+
 
 	protected String finishUrl(WmsRequest request, StringBuilder builder) {
 		String url = builder.toString();

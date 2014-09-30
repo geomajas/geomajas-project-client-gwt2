@@ -66,7 +66,7 @@
 		<gwt2-client-version-geotools>9.5</gwt2-client-version-geotools>
 		<!-- test versions -->
 		<gwt2-client-version-selenium>2.39.0</gwt2-client-version-selenium>
-		<gwt2-client-version-gwtmockito>1.1.2</gwt2-client-version-gwtmockito>
+		<gwt2-client-version-gwtmockito>1.1.4</gwt2-client-version-gwtmockito>
 		<gwt2-client-version-mockito>1.9.5</gwt2-client-version-mockito>
 	</properties>
 
@@ -472,6 +472,12 @@
 				<groupId>org.vaadin.addons</groupId>
 				<artifactId>gwt-graphics</artifactId>
 				<version>${gwt2-client-version-vaadin-graphics}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.jvnet.ogc</groupId>
+				<artifactId>wms-v_1_3_0-schema</artifactId>
+				<version>1.1.0</version>
 			</dependency>
 
 			<!-- External GWT libraries -->

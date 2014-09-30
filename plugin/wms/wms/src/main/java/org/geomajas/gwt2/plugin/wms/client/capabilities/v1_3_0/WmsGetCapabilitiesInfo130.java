@@ -74,8 +74,8 @@ public class WmsGetCapabilitiesInfo130 extends AbstractXmlNodeWrapper implements
 			layers = new ArrayList<WmsLayerInfo>();
 			for (int i = 0; i < layerNodes.getLength(); i++) {
 				Node layerNode = layerNodes.item(i);
-				if (layerNode.hasAttributes()) {
-					WmsLayerInfo layer = new WmsLayerInfo130(layerNode);
+				WmsLayerInfo layer = new WmsLayerInfo130(layerNode);
+				if (layer.getName() != null) {
 					layers.add(layer);
 				}
 			}
