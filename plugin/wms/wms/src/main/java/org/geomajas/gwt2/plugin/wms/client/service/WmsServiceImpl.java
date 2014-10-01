@@ -33,7 +33,7 @@ import org.geomajas.gwt2.plugin.wms.client.layer.WmsServiceVendor;
 
 /**
  * Default implementation of the {@link WmsService}.
- *
+ * 
  * @author Pieter De Graef
  * @author An Buyle
  */
@@ -46,23 +46,39 @@ public class WmsServiceImpl implements WmsService {
 	private static final int LEGEND_DPI = 91;
 
 	protected WmsUrlTransformer urlTransformer;
-	
+
 	protected RequestBuilderFactory requestBuilderFactory;
-	
-	
+
+	protected CoordinateFormatter coordinateFormatter;
+
+	protected UrlEncoder urlEncoder;
 
 	// ------------------------------------------------------------------------
 	// WmsService implementation:
 	// ------------------------------------------------------------------------
 
 	public WmsServiceImpl() {
-		requestBuilderFactory = new RequestBuilderFactory() {
-			
+		setRequestBuilderFactory(new RequestBuilderFactory() {
+
 			@Override
 			public RequestBuilder create(Method method, String url) {
 				return new RequestBuilder(method, url);
 			}
-		};
+		});
+		setCoordinateFormatter(new CoordinateFormatter() {
+
+			@Override
+			public String format(double number) {
+				return NUMBERFORMAT.format(number);
+			}
+		});
+		setUrlEncoder(new UrlEncoder() {
+
+			@Override
+			public String encodeUrl(String url) {
+				return URL.encode(url);
+			}
+		});
 	}
 
 	@Override
@@ -97,6 +113,7 @@ public class WmsServiceImpl implements WmsService {
 							}
 							callback.onSuccess(capabilities);
 						} catch (Throwable t) {
+							t.printStackTrace();
 							callback.onFailure(t.getMessage());
 						}
 					} else {
@@ -223,26 +240,32 @@ public class WmsServiceImpl implements WmsService {
 	// ------------------------------------------------------------------------
 	// Private methods:
 	// ------------------------------------------------------------------------
-	
 	protected void setRequestBuilderFactory(RequestBuilderFactory requestBuilderFactory) {
 		this.requestBuilderFactory = requestBuilderFactory;
 	}
-	
+
+	protected void setCoordinateFormatter(CoordinateFormatter coordinateFormatter) {
+		this.coordinateFormatter = coordinateFormatter;
+	}
+
+	protected void setUrlEncoder(UrlEncoder urlEncoder) {
+		this.urlEncoder = urlEncoder;
+	}
+
 	protected StringBuilder getBaseUrlBuilder(WmsLayerConfiguration config) {
 		return new StringBuilder(config.getBaseUrl());
 	}
-
 
 	protected String finishUrl(WmsRequest request, StringBuilder builder) {
 		String url = builder.toString();
 		if (urlTransformer != null) {
 			url = urlTransformer.transform(request, url);
 		}
-		return URL.encode(url);
+		return urlEncoder.encodeUrl(url);
 	}
 
-	protected StringBuilder addBaseParameters(StringBuilder url, WmsLayerConfiguration config,
-			Bbox worldBounds, int imageWidth, int imageHeight) {
+	protected StringBuilder addBaseParameters(StringBuilder url, WmsLayerConfiguration config, Bbox worldBounds,
+			int imageWidth, int imageHeight) {
 		// Parameter: service
 		int pos = url.lastIndexOf("?");
 		if (pos > 0) {
@@ -318,8 +341,8 @@ public class WmsServiceImpl implements WmsService {
 		return url;
 	}
 
-	protected static String floatToStringWithDecimalPoint(double number) {
-		return NUMBERFORMAT.format(number).replace(",", ".");
+	protected String floatToStringWithDecimalPoint(double number) {
+		return coordinateFormatter.format(number).replace(",", ".");
 	}
 
 	protected String getCapabilitiesUrl(String baseUrl, WmsVersion version) {
@@ -342,4 +365,44 @@ public class WmsServiceImpl implements WmsService {
 
 		return finishUrl(WmsRequest.GETCAPABILITIES, url);
 	}
+
+	// ------------------------------------------------------------------------
+	// Dependencies for unit testing without GWT:
+	// ------------------------------------------------------------------------
+
+	/**
+	 * factory for {@link RequestBuilder}.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	public interface RequestBuilderFactory {
+
+		RequestBuilder create(Method method, String url);
+
+	}
+
+	/**
+	 * Coordinate formatter for bbox.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	public interface CoordinateFormatter {
+
+		String format(double number);
+
+	}
+
+	/**
+	 * URL encoder.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	public interface UrlEncoder {
+
+		String encodeUrl(String url);
+	}
+
 }
