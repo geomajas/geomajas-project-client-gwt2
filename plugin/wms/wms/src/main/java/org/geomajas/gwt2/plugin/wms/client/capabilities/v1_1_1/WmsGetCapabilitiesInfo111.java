@@ -14,9 +14,10 @@ package org.geomajas.gwt2.plugin.wms.client.capabilities.v1_1_1;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
+
 import org.geomajas.gwt2.client.service.AbstractXmlNodeWrapper;
-import org.geomajas.gwt2.plugin.wms.client.capabilities.WmsLayerInfo;
 import org.geomajas.gwt2.plugin.wms.client.capabilities.WmsGetCapabilitiesInfo;
+import org.geomajas.gwt2.plugin.wms.client.capabilities.WmsLayerInfo;
 import org.geomajas.gwt2.plugin.wms.client.capabilities.WmsRequestInfo;
 
 import java.util.ArrayList;
@@ -72,8 +73,8 @@ public class WmsGetCapabilitiesInfo111 extends AbstractXmlNodeWrapper implements
 			layers = new ArrayList<WmsLayerInfo>();
 			for (int i = 0; i < layerNodes.getLength(); i++) {
 				Node layerNode = layerNodes.item(i);
-				if (layerNode.hasAttributes()) {
-					WmsLayerInfo layer = new WmsLayerInfo111(layerNode);
+				WmsLayerInfo layer = new WmsLayerInfo111(layerNode);
+				if (layer.getName() != null) {
 					layers.add(layer);
 				}
 			}

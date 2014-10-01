@@ -14,6 +14,7 @@ package org.geomajas.gwt2.plugin.wms.client.service;
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestBuilder.Method;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
@@ -21,6 +22,7 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
+
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.client.map.layer.LegendConfig;
 import org.geomajas.gwt2.plugin.wms.client.capabilities.WmsGetCapabilitiesInfo;
@@ -31,7 +33,7 @@ import org.geomajas.gwt2.plugin.wms.client.layer.WmsServiceVendor;
 
 /**
  * Default implementation of the {@link WmsService}.
- *
+ * 
  * @author Pieter De Graef
  * @author An Buyle
  */
@@ -45,15 +47,45 @@ public class WmsServiceImpl implements WmsService {
 
 	protected WmsUrlTransformer urlTransformer;
 
+	protected RequestBuilderFactory requestBuilderFactory;
+
+	protected CoordinateFormatter coordinateFormatter;
+
+	protected UrlEncoder urlEncoder;
+
 	// ------------------------------------------------------------------------
 	// WmsService implementation:
 	// ------------------------------------------------------------------------
+
+	public WmsServiceImpl() {
+		setRequestBuilderFactory(new RequestBuilderFactory() {
+
+			@Override
+			public RequestBuilder create(Method method, String url) {
+				return new RequestBuilder(method, url);
+			}
+		});
+		setCoordinateFormatter(new CoordinateFormatter() {
+
+			@Override
+			public String format(double number) {
+				return NUMBERFORMAT.format(number);
+			}
+		});
+		setUrlEncoder(new UrlEncoder() {
+
+			@Override
+			public String encodeUrl(String url) {
+				return URL.encode(url);
+			}
+		});
+	}
 
 	@Override
 	public void getCapabilities(String baseUrl, final WmsVersion version,
 			final Callback<WmsGetCapabilitiesInfo, String> callback) {
 		String url = getCapabilitiesUrl(baseUrl, version);
-		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+		RequestBuilder builder = requestBuilderFactory.create(RequestBuilder.GET, url);
 		builder.setHeader("Cache-Control", "no-cache");
 		builder.setHeader("Pragma", "no-cache");
 		try {
@@ -81,6 +113,7 @@ public class WmsServiceImpl implements WmsService {
 							}
 							callback.onSuccess(capabilities);
 						} catch (Throwable t) {
+							t.printStackTrace();
 							callback.onFailure(t.getMessage());
 						}
 					} else {
@@ -207,6 +240,17 @@ public class WmsServiceImpl implements WmsService {
 	// ------------------------------------------------------------------------
 	// Private methods:
 	// ------------------------------------------------------------------------
+	protected void setRequestBuilderFactory(RequestBuilderFactory requestBuilderFactory) {
+		this.requestBuilderFactory = requestBuilderFactory;
+	}
+
+	protected void setCoordinateFormatter(CoordinateFormatter coordinateFormatter) {
+		this.coordinateFormatter = coordinateFormatter;
+	}
+
+	protected void setUrlEncoder(UrlEncoder urlEncoder) {
+		this.urlEncoder = urlEncoder;
+	}
 
 	protected StringBuilder getBaseUrlBuilder(WmsLayerConfiguration config) {
 		return new StringBuilder(config.getBaseUrl());
@@ -217,11 +261,11 @@ public class WmsServiceImpl implements WmsService {
 		if (urlTransformer != null) {
 			url = urlTransformer.transform(request, url);
 		}
-		return URL.encode(url);
+		return urlEncoder.encodeUrl(url);
 	}
 
-	protected StringBuilder addBaseParameters(StringBuilder url, WmsLayerConfiguration config,
-			Bbox worldBounds, int imageWidth, int imageHeight) {
+	protected StringBuilder addBaseParameters(StringBuilder url, WmsLayerConfiguration config, Bbox worldBounds,
+			int imageWidth, int imageHeight) {
 		// Parameter: service
 		int pos = url.lastIndexOf("?");
 		if (pos > 0) {
@@ -297,8 +341,8 @@ public class WmsServiceImpl implements WmsService {
 		return url;
 	}
 
-	protected static String floatToStringWithDecimalPoint(double number) {
-		return NUMBERFORMAT.format(number).replace(",", ".");
+	protected String floatToStringWithDecimalPoint(double number) {
+		return coordinateFormatter.format(number).replace(",", ".");
 	}
 
 	protected String getCapabilitiesUrl(String baseUrl, WmsVersion version) {
@@ -321,4 +365,44 @@ public class WmsServiceImpl implements WmsService {
 
 		return finishUrl(WmsRequest.GETCAPABILITIES, url);
 	}
+
+	// ------------------------------------------------------------------------
+	// Dependencies for unit testing without GWT:
+	// ------------------------------------------------------------------------
+
+	/**
+	 * factory for {@link RequestBuilder}.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	public interface RequestBuilderFactory {
+
+		RequestBuilder create(Method method, String url);
+
+	}
+
+	/**
+	 * Coordinate formatter for bbox.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	public interface CoordinateFormatter {
+
+		String format(double number);
+
+	}
+
+	/**
+	 * URL encoder.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	public interface UrlEncoder {
+
+		String encodeUrl(String url);
+	}
+
 }

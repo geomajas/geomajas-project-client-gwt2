@@ -11,20 +11,74 @@
 
 package org.geomajas.gwt2.plugin.wms.client.service;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import com.google.gwt.core.client.Callback;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.xml.client.Document;
+import com.google.gwt.xml.client.Element;
+import com.google.gwt.xml.client.NamedNodeMap;
+import com.google.gwt.xml.client.Node;
+import com.google.gwt.xml.client.NodeList;
+import com.google.gwt.xml.client.impl.XMLParserImpl;
+import com.google.gwtmockito.GwtMockitoTestRunner;
+
+import net.opengis.wms.v_1_3_0.BoundingBox;
+import net.opengis.wms.v_1_3_0.Layer;
+import net.opengis.wms.v_1_3_0.Style;
+import net.opengis.wms.v_1_3_0.WMSCapabilities;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.xerces.parsers.DOMParser;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.service.BboxService;
+import org.geomajas.gwt2.plugin.wms.client.capabilities.WmsGetCapabilitiesInfo;
+import org.geomajas.gwt2.plugin.wms.client.capabilities.WmsLayerInfo;
+import org.geomajas.gwt2.plugin.wms.client.capabilities.WmsLayerStyleInfo;
 import org.geomajas.gwt2.plugin.wms.client.layer.WmsLayerConfiguration;
 import org.geomajas.gwt2.plugin.wms.client.service.WmsService.WmsRequest;
 import org.geomajas.gwt2.plugin.wms.client.service.WmsService.WmsUrlTransformer;
+import org.geomajas.gwt2.plugin.wms.client.service.WmsService.WmsVersion;
+import org.geomajas.gwt2.plugin.wms.client.service.WmsServiceImpl.CoordinateFormatter;
+import org.geomajas.gwt2.plugin.wms.client.service.WmsServiceImpl.RequestBuilderFactory;
+import org.geomajas.gwt2.plugin.wms.client.service.WmsServiceImpl.UrlEncoder;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
-import com.vividsolutions.jts.util.Assert;
+import java.io.IOException;
+import java.io.StringReader;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
+
+import junit.framework.Assert;
 
 /**
  * Testcase for the {@link WmsService} interface.
  * 
  * @author Pieter De Graef
+ * @author Jan De Moerloose
  */
-public class WmsServiceTest /*extends GWTTestCase*/ {
+@RunWith(GwtMockitoTestRunner.class)
+public class WmsServiceTest extends AbstractWmsServiceTest {
 
 	private static final String VALUE_URL = "http://www.geomajas.org/";
 
@@ -40,129 +94,157 @@ public class WmsServiceTest /*extends GWTTestCase*/ {
 
 	private static final String HELLOWORLD = "Hello World";
 
-	private WmsService wmsService;
-
 	private WmsLayerConfiguration wmsConfig;
 
 	private WmsUrlTransformer toHelloWorld;
 
-	public WmsServiceTest() {
+	@Before
+	public void init() throws Exception {
+		super.init();
 		toHelloWorld = new WmsUrlTransformer() {
 
 			public String transform(WmsRequest request, String url) {
 				return HELLOWORLD;
 			}
 		};
-	}
-
-	public String getModuleName() {
-		return "org.geomajas.gwt2.plugin.wms.GeomajasWmsClientTest";
-	}
-	
-	@Test
-	public void doNothing(){}
-
-//	@Test
-	public void testGetMapUrl() {
-		initialize(); // No Spring in a GWT unit test.
-		Bbox bounds = new Bbox(0, 1, 100, 100);
-		String getMapUrl = wmsService.getMapUrl(wmsConfig, bounds, VALUE_SIZE, VALUE_SIZE);
-
-		Assert.equals(VALUE_URL, getMapUrl.substring(0, getMapUrl.indexOf('?')));
-//		assertTrue(hasParameter(getMapUrl, "service", "WMS"));
-//		assertTrue(hasParameter(getMapUrl, "layers", wmsConfig.getLayers()));
-//		assertTrue(hasParameter(getMapUrl, "width", VALUE_SIZE + ""));
-//		assertTrue(hasParameter(getMapUrl, "height", VALUE_SIZE + ""));
-//		assertTrue(hasParameter(getMapUrl, "bbox", "0.0,1.0,100.0,101.0"));
-//		assertTrue(hasParameter(getMapUrl, "format", wmsConfig.getFormat()));
-//		assertTrue(hasParameter(getMapUrl, "version", wmsConfig.getVersion().toString()));
-//		assertTrue(hasParameter(getMapUrl, "crs", VALUE_CRS2));
-//		assertTrue(hasParameter(getMapUrl, "styles", wmsConfig.getStyles()));
-//		assertTrue(hasParameter(getMapUrl, "transparent", wmsConfig.isTransparent() + ""));
-//		assertTrue(hasParameter(getMapUrl, "request", "GetMap"));
-	}
-
-//	@Test
-	public void testGetMapUrlInvertedAxis() {
-		initialize(); // No Spring in a GWT unit test.
-		Bbox bounds = new Bbox(0, 1, 100, 100);
-		String getMapUrl = wmsService.getMapUrl(wmsConfig, bounds, VALUE_SIZE, VALUE_SIZE);
-
-//		assertEquals(VALUE_URL, getMapUrl.substring(0, getMapUrl.indexOf('?')));
-//		assertTrue(hasParameter(getMapUrl, "service", "WMS"));
-//		assertTrue(hasParameter(getMapUrl, "layers", wmsConfig.getLayers()));
-//		assertTrue(hasParameter(getMapUrl, "width", VALUE_SIZE + ""));
-//		assertTrue(hasParameter(getMapUrl, "height", VALUE_SIZE + ""));
-//		assertTrue(hasParameter(getMapUrl, "bbox", "1.0,0.0,101.0,100.0"));
-//		assertTrue(hasParameter(getMapUrl, "format", wmsConfig.getFormat()));
-//		assertTrue(hasParameter(getMapUrl, "version", wmsConfig.getVersion().toString()));
-//		assertTrue(hasParameter(getMapUrl, "crs", VALUE_CRS));
-//		assertTrue(hasParameter(getMapUrl, "styles", wmsConfig.getStyles()));
-//		assertTrue(hasParameter(getMapUrl, "transparent", wmsConfig.isTransparent() + ""));
-//		assertTrue(hasParameter(getMapUrl, "request", "GetMap"));
-	}
-
-//	@Test
-	public void testGetLegendUrl() {
-		initialize(); // No Spring in a GWT unit test.
-		String getLegendUrl = wmsService.getLegendGraphicUrl(wmsConfig);
-
-//		assertEquals(VALUE_URL, getLegendUrl.substring(0, getLegendUrl.indexOf('?')));
-//		assertTrue(hasParameter(getLegendUrl, "service", "WMS"));
-//		assertTrue(hasParameter(getLegendUrl, "layer", wmsConfig.getLayers()));
-//		assertTrue(hasParameter(getLegendUrl, "request", "GetLegendGraphic"));
-//		assertTrue(hasParameter(getLegendUrl, "format", wmsConfig.getFormat()));
-//		assertTrue(hasParameter(getLegendUrl, "width", wmsConfig.getLegendConfig().getIconWidth() + ""));
-//		assertTrue(hasParameter(getLegendUrl, "height", wmsConfig.getLegendConfig().getIconHeight() + ""));
-	}
-
-//	@Test
-	public void testWmsUrlTransformer1() {
-		initialize(); // No Spring in a GWT unit test.
-//		assertNull(wmsService.getWmsUrlTransformer());
-		wmsService.setWmsUrlTransformer(toHelloWorld);
-//		assertEquals(toHelloWorld, wmsService.getWmsUrlTransformer());
-	}
-
-//	@Test
-	public void testWmsUrlTransformer4GetMap() {
-		initialize(); // No Spring in a GWT unit test.
-
-//		assertNull(wmsService.getWmsUrlTransformer());
-		String getLegendUrl = wmsService.getLegendGraphicUrl(wmsConfig);
-//		assertEquals(VALUE_URL, getLegendUrl.substring(0, getLegendUrl.indexOf('?')));
-//		assertTrue(hasParameter(getLegendUrl, "service", "WMS"));
-
-		wmsService.setWmsUrlTransformer(toHelloWorld);
-		Bbox bounds = new Bbox(0, 1, 100, 100);
-		String getMapUrl = wmsService.getMapUrl(wmsConfig, bounds, VALUE_SIZE, VALUE_SIZE);
-//		assertEquals(URL.encode(HELLOWORLD), getMapUrl);
-	}
-
-//	@Test
-	public void testWmsUrlTransformer4GetLegend() {
-		initialize(); // No Spring in a GWT unit test.
-
-		String getLegendUrl = wmsService.getLegendGraphicUrl(wmsConfig);
-//		assertEquals(VALUE_URL, getLegendUrl.substring(0, getLegendUrl.indexOf('?')));
-//		assertTrue(hasParameter(getLegendUrl, "service", "WMS"));
-
-		wmsService.setWmsUrlTransformer(toHelloWorld);
-		getLegendUrl = wmsService.getLegendGraphicUrl(wmsConfig);
-//		assertEquals(URL.encode(HELLOWORLD), getLegendUrl);
-	}
-
-	// ------------------------------------------------------------------------
-	// Private methods:
-	// ------------------------------------------------------------------------
-
-	private void initialize() {
-		wmsService = new WmsServiceImpl();
 		wmsConfig = new WmsLayerConfiguration();
 		wmsConfig.setBaseUrl(VALUE_URL);
 		wmsConfig.setLayers(VALUE_LAYER);
 		wmsConfig.setStyles(VALUE_STYLE);
 		wmsConfig.setCrs(VALUE_CRS2);
+	}
+
+	@Test
+	public void testGetCapabilities() throws Exception {
+		prepareResponse("capabilities_1_3_0.xml");
+		CaptureCallback callback = new CaptureCallback();
+		wmsService.getCapabilities("http://test", WmsVersion.V1_3_0, callback);
+		WmsGetCapabilitiesInfo info = callback.getResult();
+		Assert.assertNotNull(info);
+		Assert.assertEquals(8, info.getLayers().size());
+		Assert.assertEquals(3, info.getRequests().size());
+
+		// unmarshal with jaxb to compare
+		JAXBContext context = JAXBContext.newInstance("net.opengis.wms.v_1_3_0");
+		// Use the created JAXB context to construct an unmarshaller
+		Unmarshaller unmarshaller = context.createUnmarshaller();
+		// Unmarshal the given URL, retrieve WMSCapabilities element
+		WMSCapabilities wmsCapabilities = (WMSCapabilities) unmarshaller.unmarshal(new InputSource(new StringReader(
+				capabilitiesXml)));
+
+		// flatten layers
+		List<Layer> ll = new ArrayList<Layer>();
+		addRecursive(ll, wmsCapabilities.getCapability().getLayer());
+
+		// Iterate over layers, check all properties
+		for (int i = 0; i < ll.size(); i++) {
+			Layer l = ll.get(i);
+			WmsLayerInfo layerInfo = info.getLayers().get(i);
+			Assert.assertEquals(l.getName(), layerInfo.getName());
+			Assert.assertEquals(l.getAbstract(), layerInfo.getAbstract());
+			Assert.assertEquals(l.getTitle(), layerInfo.getTitle());
+			Assert.assertEquals(l.getMaxScaleDenominator(), layerInfo.getMaxScaleDenominator());
+			Assert.assertEquals(l.getMinScaleDenominator(), layerInfo.getMinScaleDenominator());
+			Assert.assertEquals(l.isQueryable(), layerInfo.isQueryable());
+			for (int j = 0; j < layerInfo.getStyleInfo().size(); j++) {
+				WmsLayerStyleInfo style = layerInfo.getStyleInfo().get(i);
+				Style s = l.getStyle().get(j);
+				Assert.assertEquals(s.getName(), style.getName());
+				Assert.assertEquals(s.getTitle(), style.getTitle());
+				Assert.assertEquals(s.getAbstract(), style.getAbstract());
+				Assert.assertEquals(s.getLegendURL().get(0).getFormat(), style.getLegendUrl().getFormat());
+			}
+			Assert.assertTrue(BboxService.equals(toBbox(l.getBoundingBox().get(0)), layerInfo.getBoundingBox(), 0.0001));
+		}
+
+	}
+
+	@Test
+	public void testGetMapUrl() {
+		Bbox bounds = new Bbox(0, 1, 100, 100);
+		String getMapUrl = wmsService.getMapUrl(wmsConfig, bounds, VALUE_SIZE, VALUE_SIZE);
+
+		Assert.assertEquals(VALUE_URL, getMapUrl.substring(0, getMapUrl.indexOf('?')));
+		Assert.assertTrue(hasParameter(getMapUrl, "service", "WMS"));
+		Assert.assertTrue(hasParameter(getMapUrl, "layers", wmsConfig.getLayers()));
+		Assert.assertTrue(hasParameter(getMapUrl, "width", VALUE_SIZE + ""));
+		Assert.assertTrue(hasParameter(getMapUrl, "height", VALUE_SIZE + ""));
+		Assert.assertTrue(hasParameter(getMapUrl, "bbox", "0.0,1.0,100.0,101.0"));
+		Assert.assertTrue(hasParameter(getMapUrl, "format", wmsConfig.getFormat()));
+		Assert.assertTrue(hasParameter(getMapUrl, "version", wmsConfig.getVersion().toString()));
+		Assert.assertTrue(hasParameter(getMapUrl, "crs", VALUE_CRS2));
+		Assert.assertTrue(hasParameter(getMapUrl, "styles", wmsConfig.getStyles()));
+		Assert.assertTrue(hasParameter(getMapUrl, "transparent", wmsConfig.isTransparent() + ""));
+		Assert.assertTrue(hasParameter(getMapUrl, "request", "GetMap"));
+	}
+
+	@Test
+	public void testGetMapUrlInvertedAxis() {
+		Bbox bounds = new Bbox(0, 1, 100, 100);
+		WmsLayerConfiguration wmsConfig = new WmsLayerConfiguration();
+		wmsConfig.setBaseUrl(VALUE_URL);
+		wmsConfig.setLayers(VALUE_LAYER);
+		wmsConfig.setStyles(VALUE_STYLE);
+		wmsConfig.setCrs(VALUE_CRS);
+		wmsConfig.setUseInvertedAxis(true);
+		String getMapUrl = wmsService.getMapUrl(wmsConfig, bounds, VALUE_SIZE, VALUE_SIZE);
+
+		Assert.assertEquals(VALUE_URL, getMapUrl.substring(0, getMapUrl.indexOf('?')));
+		Assert.assertTrue(hasParameter(getMapUrl, "service", "WMS"));
+		Assert.assertTrue(hasParameter(getMapUrl, "layers", wmsConfig.getLayers()));
+		Assert.assertTrue(hasParameter(getMapUrl, "width", VALUE_SIZE + ""));
+		Assert.assertTrue(hasParameter(getMapUrl, "height", VALUE_SIZE + ""));
+		Assert.assertTrue(hasParameter(getMapUrl, "bbox", "1.0,0.0,101.0,100.0"));
+		Assert.assertTrue(hasParameter(getMapUrl, "format", wmsConfig.getFormat()));
+		Assert.assertTrue(hasParameter(getMapUrl, "version", wmsConfig.getVersion().toString()));
+		Assert.assertTrue(hasParameter(getMapUrl, "crs", VALUE_CRS));
+		Assert.assertTrue(hasParameter(getMapUrl, "styles", wmsConfig.getStyles()));
+		Assert.assertTrue(hasParameter(getMapUrl, "transparent", wmsConfig.isTransparent() + ""));
+		Assert.assertTrue(hasParameter(getMapUrl, "request", "GetMap"));
+	}
+
+	@Test
+	public void testGetLegendUrl() {
+		String getLegendUrl = wmsService.getLegendGraphicUrl(wmsConfig);
+
+		Assert.assertEquals(VALUE_URL, getLegendUrl.substring(0, getLegendUrl.indexOf('?')));
+		Assert.assertTrue(hasParameter(getLegendUrl, "service", "WMS"));
+		Assert.assertTrue(hasParameter(getLegendUrl, "layer", wmsConfig.getLayers()));
+		Assert.assertTrue(hasParameter(getLegendUrl, "request", "GetLegendGraphic"));
+		Assert.assertTrue(hasParameter(getLegendUrl, "format", wmsConfig.getFormat()));
+		Assert.assertTrue(hasParameter(getLegendUrl, "width", wmsConfig.getLegendConfig().getIconWidth() + ""));
+		Assert.assertTrue(hasParameter(getLegendUrl, "height", wmsConfig.getLegendConfig().getIconHeight() + ""));
+	}
+
+	@Test
+	public void testWmsUrlTransformer1() {
+		Assert.assertNull(wmsService.getWmsUrlTransformer());
+		wmsService.setWmsUrlTransformer(toHelloWorld);
+		Assert.assertEquals(toHelloWorld, wmsService.getWmsUrlTransformer());
+	}
+
+	@Test
+	public void testWmsUrlTransformer4GetMap() {
+		Assert.assertNull(wmsService.getWmsUrlTransformer());
+		String getLegendUrl = wmsService.getLegendGraphicUrl(wmsConfig);
+		Assert.assertEquals(VALUE_URL, getLegendUrl.substring(0, getLegendUrl.indexOf('?')));
+		Assert.assertTrue(hasParameter(getLegendUrl, "service", "WMS"));
+
+		wmsService.setWmsUrlTransformer(toHelloWorld);
+		Bbox bounds = new Bbox(0, 1, 100, 100);
+		String getMapUrl = wmsService.getMapUrl(wmsConfig, bounds, VALUE_SIZE, VALUE_SIZE);
+		Assert.assertEquals(HELLOWORLD, getMapUrl);
+	}
+
+	@Test
+	public void testWmsUrlTransformer4GetLegend() {
+		String getLegendUrl = wmsService.getLegendGraphicUrl(wmsConfig);
+		Assert.assertEquals(VALUE_URL, getLegendUrl.substring(0, getLegendUrl.indexOf('?')));
+		Assert.assertTrue(hasParameter(getLegendUrl, "service", "WMS"));
+
+		wmsService.setWmsUrlTransformer(toHelloWorld);
+		getLegendUrl = wmsService.getLegendGraphicUrl(wmsConfig);
+		Assert.assertEquals(HELLOWORLD, getLegendUrl);
 	}
 
 	private boolean hasParameter(String url, String parameter, String value) {
@@ -178,4 +260,46 @@ public class WmsServiceTest /*extends GWTTestCase*/ {
 		}
 		return false;
 	}
+
+	private Bbox toBbox(BoundingBox boundingBox) {
+		return new Bbox(boundingBox.getMinx(), boundingBox.getMiny(), boundingBox.getMaxx() - boundingBox.getMinx(),
+				boundingBox.getMaxy() - boundingBox.getMiny());
+	}
+
+	private void addRecursive(List<Layer> layers, Layer layer) {
+		if (layer.getName() != null) {
+			layers.add(layer);
+			for (Layer child : layer.getLayer()) {
+				addRecursive(layers, child);
+			}
+		}
+
+	}
+
+	private final class CaptureCallback implements Callback<WmsGetCapabilitiesInfo, String> {
+
+		WmsGetCapabilitiesInfo result;
+
+		private String reason;
+
+		@Override
+		public void onSuccess(WmsGetCapabilitiesInfo result) {
+			this.result = result;
+		}
+
+		@Override
+		public void onFailure(String reason) {
+			this.reason = reason;
+		}
+
+		public WmsGetCapabilitiesInfo getResult() {
+			return result;
+		}
+
+		public String getReason() {
+			return reason;
+		}
+
+	}
+
 }
