@@ -14,7 +14,7 @@
 <module rename-to="examplejar">
 	<inherits name='org.geomajas.gwt2.example.base.ExampleBase' />
     <inherits name='com.allen_sauer.gwt.dnd.gwt-dnd'/>
-    <inherits name="org.geomajas.gwt2.widget.CoreWidget"/>
+    <inherits name="org.geomajas.gwt2.plugin.corewidget.CoreWidget"/>
     <entry-point class="org.geomajas.gwt2.example.client.ExampleJar"/>
 	<source path='client'/>
 

@@ -19,17 +19,19 @@
     <!-- Include plugins: -->
  	<inherits name='org.geomajas.gwt2.plugin.wms.example.ExampleJar' />
 	<inherits name='org.geomajas.gwt2.plugin.editing.example.ExampleJar' />
-    <inherits name='org.geomajas.gwt2.widget.example.ExampleJar' />
+    <inherits name='org.geomajas.gwt2.plugin.corewidget.example.ExampleJar' />
 	<inherits name='org.geomajas.gwt2.plugin.print.example.ExampleJar' />
     <inherits name='org.geomajas.gwt2.plugin.tms.example.ExampleJar' />
 	<inherits name='org.geomajas.gwt2.plugin.geocoder.example.GeoCoderExampleJar' />
 	<inherits name='org.geomajas.gwt2.plugin.wms.example.ServerExampleJar' />
     <inherits name='org.geomajas.gwt2.plugin.tilebasedlayer.example.ExampleJar' />
-    <inherits name="org.geomajas.gwt2.widget.CoreWidget"/>
+    <inherits name="org.geomajas.gwt2.plugin.corewidget.CoreWidget"/>
 
 	<extend-property name="locale" values="en"/>
 	<extend-property name="locale" values="nl"/>
 	<set-property-fallback name="locale" value="en"/>
+
+	<collapse-all-properties />
 
     <entry-point class="org.geomajas.gwt2.example.client.Example" />
 	<!-- set target browser to compile for, use this to limit to the browser used for testing -->
