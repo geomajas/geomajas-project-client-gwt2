@@ -20,48 +20,28 @@
 
 	<artifactId>geomajas-client-gwt2-javadoc</artifactId>
 	<packaging>jar</packaging>
-	<name>Geomajas GWT 2 client: Javadoc</name>
-	<description>Geomajas GWT 2 client: Javadoc</description>
+	<name>Geomajas GWT2 client: Javadoc</name>
+	<description>Geomajas GWT2 client: Javadoc</description>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-client-gwt2-api</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-client-gwt2-api</artifactId>
-			<classifier>sources</classifier>
-		</dependency>
 
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-client-common-gwt</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-client-common-gwt</artifactId>
-			<classifier>sources</classifier>
 		</dependency>
 
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-client-gwt2-impl</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-client-gwt2-impl</artifactId>
-			<classifier>sources</classifier>
-		</dependency>
 
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-client-gwt2-server-extension</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-client-gwt2-server-extension</artifactId>
-			<classifier>sources</classifier>
 		</dependency>
 
 		<dependency>
@@ -73,7 +53,6 @@
 
 	<build>
 		<plugins>
-
 			<plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>${gwt2-client-version-maven-javadoc-plugin}</version>
@@ -86,7 +65,6 @@
 						</goals>
 						<configuration>
 							<includeDependencySources>true</includeDependencySources>
-
 							<dependencySourceIncludes>
 								<dependencySourceInclude>org.geomajas:*</dependencySourceInclude>
 							</dependencySourceIncludes>
@@ -94,8 +72,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
 		</plugins>
 	</build>
-
 </project>
