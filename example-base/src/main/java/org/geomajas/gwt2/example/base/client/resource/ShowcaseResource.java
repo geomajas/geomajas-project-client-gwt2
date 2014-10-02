@@ -26,13 +26,13 @@ public interface ShowcaseResource extends ClientBundle {
 	@Source("showcase.css")
 	ShowcaseCssResource css();
 
-	@Source("image/geomajas_icon_small.png")
+	@Source("image/Geomajas-Icon-Small-100x100.png")
 	ImageResource geomajasIconSmall();
 
-	@Source("image/geomajas_logo.png")
+	@Source("image/Geomajas-Icon-Medium-195x200.png")
 	ImageResource geomajasLogo();
 
-	@Source("image/geomajas_logo_bg.png")
+	@Source("image/Geomajas-Logo-60x204.png")
 	ImageResource geomajasLogoBg();
 
 	@Source("image/sample_bg.png")

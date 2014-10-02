@@ -36,10 +36,6 @@
 			<w:Header />
 		</g:north>
 		
-		<g:south size="24">
-			<w:Footer />
-		</g:south>
-
         <!-- Page layout -->
         <g:center>
             <g:SimpleLayoutPanel addStyleNames='{style.contentPanel}'>
