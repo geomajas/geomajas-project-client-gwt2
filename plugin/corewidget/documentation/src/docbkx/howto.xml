@@ -43,7 +43,7 @@
     provides empty css classes for all the css used. By importing a css file
     at the web page level, the web developer can now define his or her own
     style for each of these classes. The default css can be found at
-    <code>org/geomajas/gwt2/widget/client/resource/CoreWidget.css.</code></para>
+    <code>org/geomajas/gwt2/plugin/corewidget/client/resource/CoreWidget.css.</code></para>
   </section>
 
   <section>

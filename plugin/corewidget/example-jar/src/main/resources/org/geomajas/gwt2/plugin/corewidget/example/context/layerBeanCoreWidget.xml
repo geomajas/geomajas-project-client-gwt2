@@ -141,7 +141,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<!-- SLD Style definition -->
 	<bean class="org.geomajas.configuration.NamedStyleInfo" name="layerBeanCoreWidgetStyleInfo">
-		<property name="sldLocation" value="classpath:org/geomajas/gwt2/widget/example/context/layerBeanCoreWidget.sld" />
+		<property name="sldLocation" value="classpath:org/geomajas/gwt2/plugin/corewidget/example/context/layerBeanCoreWidget.sld" />
 	</bean>
 
 </beans>
