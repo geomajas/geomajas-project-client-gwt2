@@ -172,11 +172,11 @@ public class WmsServiceTest extends AbstractWmsServiceTest {
 	
 	@Test
 	public void testDescribeLayerUrl() throws Exception {
-		String describeLayerUrl = wmsService.describeLayerUrl(VALUE_URL, "layer1,layer2", WmsVersion.V1_1_1);
+		String describeLayerUrl = wmsService.describeLayerUrl(VALUE_URL, VALUE_LAYER, WmsVersion.V1_1_1);
 		Assert.assertEquals(VALUE_URL, describeLayerUrl.substring(0, describeLayerUrl.indexOf('?')));
 		Assert.assertTrue(hasParameter(describeLayerUrl, "service", "WMS"));
 		Assert.assertTrue(hasParameter(describeLayerUrl, "layers", wmsConfig.getLayers()));
-		Assert.assertTrue(hasParameter(describeLayerUrl, "version", wmsConfig.getVersion().toString()));
+		Assert.assertTrue(hasParameter(describeLayerUrl, "version", WmsVersion.V1_1_1.toString()));
 		Assert.assertTrue(hasParameter(describeLayerUrl, "request", "DescribeLayer"));
 	}
 

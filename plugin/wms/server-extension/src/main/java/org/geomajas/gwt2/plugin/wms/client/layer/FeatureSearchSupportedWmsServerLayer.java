@@ -36,7 +36,7 @@ import org.geomajas.gwt2.plugin.wms.server.command.dto.WfsGetFeaturesResponse;
 import com.google.gwt.core.client.Callback;
 
 /**
- * Default implementation of the {@link FeaturesSupportedWmsLayer}.
+ * Server-based implementation of {@link FeatureSearchSupported} WMS layer.
  *
  * @author Jan De Moerloose
  */
