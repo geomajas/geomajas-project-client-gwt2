@@ -41,6 +41,7 @@ import org.geomajas.geometry.service.BboxService;
 import org.geomajas.gwt2.plugin.wms.client.capabilities.WmsGetCapabilitiesInfo;
 import org.geomajas.gwt2.plugin.wms.client.capabilities.WmsLayerInfo;
 import org.geomajas.gwt2.plugin.wms.client.capabilities.WmsLayerStyleInfo;
+import org.geomajas.gwt2.plugin.wms.client.describelayer.WmsDescribeLayerInfo;
 import org.geomajas.gwt2.plugin.wms.client.layer.WmsLayerConfiguration;
 import org.geomajas.gwt2.plugin.wms.client.service.WmsService.WmsRequest;
 import org.geomajas.gwt2.plugin.wms.client.service.WmsService.WmsUrlTransformer;
@@ -117,7 +118,7 @@ public class WmsServiceTest extends AbstractWmsServiceTest {
 	@Test
 	public void testGetCapabilities() throws Exception {
 		prepareResponse("capabilities_1_3_0.xml");
-		CaptureCallback callback = new CaptureCallback();
+		CapabilitiesCallback callback = new CapabilitiesCallback();
 		wmsService.getCapabilities("http://test", WmsVersion.V1_3_0, callback);
 		WmsGetCapabilitiesInfo info = callback.getResult();
 		Assert.assertNotNull(info);
@@ -157,6 +158,26 @@ public class WmsServiceTest extends AbstractWmsServiceTest {
 			Assert.assertTrue(BboxService.equals(toBbox(l.getBoundingBox().get(0)), layerInfo.getBoundingBox(), 0.0001));
 		}
 
+	}
+
+	@Test
+	public void testDescribeLayer() throws Exception {
+		prepareResponse("describeLayer_1_1_1.xml");
+		DescribeLayerCallback callback = new DescribeLayerCallback();
+		wmsService.describeLayer("http://test", "layers", WmsVersion.V1_3_0, callback);
+		WmsDescribeLayerInfo info = callback.getResult();
+		Assert.assertNotNull(info);
+		Assert.assertEquals(2, info.getLayerDescriptions().size());
+	}
+	
+	@Test
+	public void testDescribeLayerUrl() throws Exception {
+		String describeLayerUrl = wmsService.describeLayerUrl(VALUE_URL, "layer1,layer2", WmsVersion.V1_1_1);
+		Assert.assertEquals(VALUE_URL, describeLayerUrl.substring(0, describeLayerUrl.indexOf('?')));
+		Assert.assertTrue(hasParameter(describeLayerUrl, "service", "WMS"));
+		Assert.assertTrue(hasParameter(describeLayerUrl, "layers", wmsConfig.getLayers()));
+		Assert.assertTrue(hasParameter(describeLayerUrl, "version", wmsConfig.getVersion().toString()));
+		Assert.assertTrue(hasParameter(describeLayerUrl, "request", "DescribeLayer"));
 	}
 
 	@Test
@@ -272,32 +293,6 @@ public class WmsServiceTest extends AbstractWmsServiceTest {
 			for (Layer child : layer.getLayer()) {
 				addRecursive(layers, child);
 			}
-		}
-
-	}
-
-	private final class CaptureCallback implements Callback<WmsGetCapabilitiesInfo, String> {
-
-		WmsGetCapabilitiesInfo result;
-
-		private String reason;
-
-		@Override
-		public void onSuccess(WmsGetCapabilitiesInfo result) {
-			this.result = result;
-		}
-
-		@Override
-		public void onFailure(String reason) {
-			this.reason = reason;
-		}
-
-		public WmsGetCapabilitiesInfo getResult() {
-			return result;
-		}
-
-		public String getReason() {
-			return reason;
 		}
 
 	}

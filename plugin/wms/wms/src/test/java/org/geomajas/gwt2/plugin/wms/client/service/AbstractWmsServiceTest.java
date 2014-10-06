@@ -5,6 +5,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import com.google.gwt.core.client.Callback;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
@@ -15,6 +16,8 @@ import com.google.gwtmockito.GwtMockitoTestRunner;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.xerces.parsers.DOMParser;
+import org.geomajas.gwt2.plugin.wms.client.capabilities.WmsGetCapabilitiesInfo;
+import org.geomajas.gwt2.plugin.wms.client.describelayer.WmsDescribeLayerInfo;
 import org.geomajas.gwt2.plugin.wms.client.service.WmsServiceImpl.CoordinateFormatter;
 import org.geomajas.gwt2.plugin.wms.client.service.WmsServiceImpl.RequestBuilderFactory;
 import org.geomajas.gwt2.plugin.wms.client.service.WmsServiceImpl.UrlEncoder;
@@ -155,6 +158,58 @@ public abstract class AbstractWmsServiceTest {
 				matches.add(com.google.gwt.xml.client.Node.class);
 			}
 			return matches.toArray(new Class[0]);
+		}
+
+	}
+
+	class CapabilitiesCallback implements Callback<WmsGetCapabilitiesInfo, String> {
+
+		WmsGetCapabilitiesInfo result;
+
+		private String reason;
+
+		@Override
+		public void onSuccess(WmsGetCapabilitiesInfo result) {
+			this.result = result;
+		}
+
+		@Override
+		public void onFailure(String reason) {
+			this.reason = reason;
+		}
+
+		public WmsGetCapabilitiesInfo getResult() {
+			return result;
+		}
+
+		public String getReason() {
+			return reason;
+		}
+
+	}
+	
+	class DescribeLayerCallback implements Callback<WmsDescribeLayerInfo, String> {
+
+		WmsDescribeLayerInfo result;
+
+		private String reason;
+
+		@Override
+		public void onSuccess(WmsDescribeLayerInfo result) {
+			this.result = result;
+		}
+
+		@Override
+		public void onFailure(String reason) {
+			this.reason = reason;
+		}
+
+		public WmsDescribeLayerInfo getResult() {
+			return result;
+		}
+
+		public String getReason() {
+			return reason;
 		}
 
 	}

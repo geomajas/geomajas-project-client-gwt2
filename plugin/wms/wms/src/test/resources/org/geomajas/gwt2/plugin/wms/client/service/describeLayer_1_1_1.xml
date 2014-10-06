@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE WMS_DescribeLayerResponse SYSTEM "http://apps.geomajas.org:80/geoserver/schemas/wms/1.1.1/WMS_DescribeLayerResponse.dtd">
+<WMS_DescribeLayerResponse version="1.1.1">
+	<LayerDescription name="topp:states"
+		wfs="http://apps.geomajas.org:80/geoserver/wfs/WfsDispatcher?" owsURL="http://apps.geomajas.org:80/geoserver/wfs/WfsDispatcher?"
+		owsType="WFS">
+		<Query typeName="topp:states" />
+	</LayerDescription>
+	<LayerDescription name="geosparc:provincies"
+		wfs="http://apps.geomajas.org:80/geoserver/wfs/WfsDispatcher?" owsURL="http://apps.geomajas.org:80/geoserver/wfs/WfsDispatcher?"
+		owsType="WFS">
+		<Query typeName="geosparc:provincies" />
+	</LayerDescription>
+</WMS_DescribeLayerResponse>

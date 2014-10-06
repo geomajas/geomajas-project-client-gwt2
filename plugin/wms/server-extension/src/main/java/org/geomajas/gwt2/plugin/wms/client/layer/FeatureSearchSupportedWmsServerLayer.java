@@ -11,8 +11,12 @@
 
 package org.geomajas.gwt2.plugin.wms.client.layer;
 
-import com.google.gwt.core.client.Callback;
-import org.geomajas.geometry.Coordinate;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.geomajas.geometry.Geometry;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
@@ -22,45 +26,44 @@ import org.geomajas.gwt2.client.event.FeatureDeselectedEvent;
 import org.geomajas.gwt2.client.event.FeatureSelectedEvent;
 import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
 import org.geomajas.gwt2.client.map.feature.Feature;
+import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
 import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
 import org.geomajas.gwt2.plugin.wms.client.WmsServerExtension;
 import org.geomajas.gwt2.plugin.wms.client.capabilities.WmsLayerInfo;
-import org.geomajas.gwt2.plugin.wms.server.command.dto.WfsDescribeLayerRequest;
-import org.geomajas.gwt2.plugin.wms.server.command.dto.WfsDescribeLayerResponse;
 import org.geomajas.gwt2.plugin.wms.server.command.dto.WfsGetFeaturesRequest;
 import org.geomajas.gwt2.plugin.wms.server.command.dto.WfsGetFeaturesResponse;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.google.gwt.core.client.Callback;
 
 /**
  * Default implementation of the {@link FeaturesSupportedWmsLayer}.
  *
- * @author Pieter De Graef
- * @author An Buyle (getSelectedFeatures())
+ * @author Jan De Moerloose
  */
-public class FeaturesSupportedWmsLayerImpl extends WmsLayerImpl implements FeaturesSupportedWmsLayer {
+public class FeatureSearchSupportedWmsServerLayer extends FeatureInfoSupportedWmsServerLayer implements
+		FeaturesSupported, FeatureSearchSupported {
 
 	private final Map<String, Feature> selection = new HashMap<String, Feature>();
 
-	private final List<AttributeDescriptor> descriptors = new ArrayList<AttributeDescriptor>();
+	private final List<AttributeDescriptor> descriptors;
 
-	private final Callback<List<AttributeDescriptor>, String> onInitialized;
+	private final WfsLayerConfiguration wfsConfig;
 
-	public FeaturesSupportedWmsLayerImpl(String title, String crs, WmsLayerConfiguration wmsLayerConfig,
-			TileConfiguration wmsTileConfig, WmsLayerInfo layerInfo) {
-		this(title, crs, wmsLayerConfig, wmsTileConfig, layerInfo, null);
-	}
-
-	public FeaturesSupportedWmsLayerImpl(String title, String crs, WmsLayerConfiguration wmsLayerConfig,
-			TileConfiguration wmsTileConfig, WmsLayerInfo layerInfo, Callback<List<AttributeDescriptor>,
-			String> onInitialized) {
+	/**
+	 * Create a WMS layer with feature info support and a schema for the features.
+	 * 
+	 * @param title
+	 * @param crs
+	 * @param wmsLayerConfig
+	 * @param wmsTileConfig
+	 * @param layerInfo
+	 * @param descriptors
+	 */
+	public FeatureSearchSupportedWmsServerLayer(String title, String crs, WmsLayerConfiguration wmsLayerConfig,
+			TileConfiguration wmsTileConfig, WmsLayerInfo layerInfo, WfsLayerConfiguration wfsConfig) {
 		super(title, crs, wmsLayerConfig, wmsTileConfig, layerInfo);
-		this.onInitialized = onInitialized;
-		wfsDescribeLayer();
+		this.descriptors = wfsConfig.getDescriptors();
+		this.wfsConfig = wfsConfig;
 	}
 
 	// ------------------------------------------------------------------------
@@ -110,37 +113,12 @@ public class FeaturesSupportedWmsLayerImpl extends WmsLayerImpl implements Featu
 	}
 
 	@Override
-	public void getFeatureInfo(Coordinate location, Callback<List<Feature>, String> callback) {
-		WmsServerExtension.getInstance().getFeatureService().getFeatureInfo(viewPort, this, location, callback);
-	}
-
-	@Override
-	public void getFeatureInfo(Coordinate location, String format, Callback<Object, String> callback) {
-		WmsServerExtension.getInstance().getFeatureService().getFeatureInfo(viewPort, this, location, format, callback);
-	}
-
-	@Override
-	public void searchFeatures(Coordinate coordinate, double tolerance,
-			final Callback<List<Feature>, String> callback) {
-		WmsServerExtension.getInstance().getFeatureService().getFeatureInfo(viewPort, this, coordinate,
-				new Callback<List<Feature>, String>() {
-
-					public void onFailure(String reason) {
-						callback.onFailure(reason);
-					}
-
-					public void onSuccess(List<Feature> result) {
-						callback.onSuccess(result);
-					}
-				});
-	}
-
-	@Override
 	public void searchFeatures(Geometry geometry, final Callback<List<Feature>, String> callback) {
 		Integer maxC = WmsServerExtension.getInstance().getHintValue(WmsServerExtension.GET_FEATUREINFO_MAX_COORDS);
 		Integer maxF = WmsServerExtension.getInstance().getHintValue(WmsServerExtension.GET_FEATUREINFO_MAX_FEATURES);
 
-		WfsGetFeaturesRequest request = new WfsGetFeaturesRequest(wmsConfig.getBaseUrl(), id, geometry);
+		WfsGetFeaturesRequest request = new WfsGetFeaturesRequest(wfsConfig.getBaseUrl(), wfsConfig.getTypeName(),
+				geometry);
 		request.setMaxCoordsPerFeature(maxC);
 		request.setMaxNumOfFeatures(maxF);
 
@@ -153,7 +131,7 @@ public class FeaturesSupportedWmsLayerImpl extends WmsLayerImpl implements Featu
 				List<Feature> features = new ArrayList<Feature>();
 				for (org.geomajas.layer.feature.Feature feature : response.getFeatures()) {
 					Feature newFeature = GeomajasServerExtension.getInstance().getServerFeatureService()
-							.create(feature, FeaturesSupportedWmsLayerImpl.this);
+							.create(feature, FeatureSearchSupportedWmsServerLayer.this);
 					features.add(newFeature);
 				}
 				callback.onSuccess(features);
@@ -161,22 +139,4 @@ public class FeaturesSupportedWmsLayerImpl extends WmsLayerImpl implements Featu
 		});
 	}
 
-	// ------------------------------------------------------------------------
-	// Private methods:
-	// ------------------------------------------------------------------------
-
-	private void wfsDescribeLayer() {
-		GwtCommand command = new GwtCommand(WfsDescribeLayerRequest.COMMAND_NAME);
-		command.setCommandRequest(new WfsDescribeLayerRequest(wmsConfig.getBaseUrl(), id));
-		GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback<WfsDescribeLayerResponse>() {
-
-			@Override
-			public void execute(WfsDescribeLayerResponse response) {
-				descriptors.addAll(response.getAttributeDescriptors());
-				if (onInitialized != null) {
-					onInitialized.onSuccess(getAttributeDescriptors());
-				}
-			}
-		});
-	}
 }

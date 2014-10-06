@@ -11,29 +11,25 @@
 
 package org.geomajas.gwt2.plugin.wms.client.service;
 
-import com.google.gwt.core.client.Callback;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.command.CommandResponse;
-import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.global.ExceptionDto;
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
-import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
-import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.feature.Feature;
-import org.geomajas.gwt2.client.map.render.TileCode;
-import org.geomajas.gwt2.client.service.TileService;
+import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
 import org.geomajas.gwt2.plugin.wms.client.WmsServerExtension;
-import org.geomajas.gwt2.plugin.wms.client.layer.FeaturesSupportedWmsLayer;
 import org.geomajas.gwt2.plugin.wms.client.layer.WmsLayer;
 import org.geomajas.gwt2.plugin.wms.server.command.dto.WmsGetFeatureInfoRequest;
 import org.geomajas.gwt2.plugin.wms.server.command.dto.WmsGetFeatureInfoResponse;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.gwt.core.client.Callback;
 
 /**
  * Default implementation of the {@link WmsFeatureService}.
@@ -41,21 +37,12 @@ import java.util.List;
  * @author Pieter De Graef
  * @author An Buyle
  */
-public class WmsFeatureServiceImpl extends WmsServiceImpl implements WmsFeatureService {
-
-	private static final double DEFAULT_PIXEL_TOLERANCE = 0.0; // Default tolerance for the location
-
-	private static final int DEFAULT_MAX_FEATURES = 20; // Default maximum number of feats returned by GetFeatureInfo
-
-	// ------------------------------------------------------------------------
-	// WmsFeatureService implementation:
-	// ------------------------------------------------------------------------
+public class WmsFeatureServiceImpl extends WmsServiceImpl implements WmsService {
 
 	@Override
-	public void getFeatureInfo(ViewPort viewPort, final FeaturesSupportedWmsLayer layer, Coordinate location,
+	public void getFeatureInfo(ViewPort viewPort, final WmsLayer layer, Coordinate location, String format,
 			final Callback<List<Feature>, String> callback) {
-		final String url = getFeatureInfoUrl(viewPort, layer, location, GetFeatureInfoFormat.GML2.toString(),
-				DEFAULT_PIXEL_TOLERANCE, DEFAULT_MAX_FEATURES);
+		final String url = getFeatureInfoUrl(viewPort, layer, location, format);
 
 		Integer max = WmsServerExtension.getInstance().getHintValue(WmsServerExtension.GET_FEATUREINFO_MAX_COORDS);
 
@@ -68,7 +55,7 @@ public class WmsFeatureServiceImpl extends WmsServiceImpl implements WmsFeatureS
 				List<Feature> features = new ArrayList<Feature>();
 				for (org.geomajas.layer.feature.Feature feature : response.getFeatures()) {
 					Feature newFeature = GeomajasServerExtension.getInstance().getServerFeatureService()
-							.create(feature, layer);
+							.create(feature, (FeaturesSupported) layer);
 					features.add(newFeature);
 				}
 				callback.onSuccess(features);
@@ -93,82 +80,8 @@ public class WmsFeatureServiceImpl extends WmsServiceImpl implements WmsFeatureS
 		});
 	}
 
-	@Override
-	public void getFeatureInfo(ViewPort viewPort, FeaturesSupportedWmsLayer layer, Coordinate location,
-			String format, final Callback<Object, String> callback) {
-		String url = getFeatureInfoUrl(viewPort, layer, location, format, DEFAULT_PIXEL_TOLERANCE,
-				DEFAULT_MAX_FEATURES);
-		GwtCommand command = new GwtCommand(WmsGetFeatureInfoRequest.COMMAND_NAME);
-		command.setCommandRequest(new WmsGetFeatureInfoRequest(url));
-		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback<WmsGetFeatureInfoResponse>() {
-
-			public void execute(WmsGetFeatureInfoResponse response) {
-				if (response.getFeatures() != null) {
-					callback.onSuccess(response.getFeatures());
-				} else {
-					callback.onSuccess(response.getWmsResponse());
-				}
-			}
-		});
-	}
-
 	// ------------------------------------------------------------------------
 	// Private methods:
 	// ------------------------------------------------------------------------
 
-	private String getFeatureInfoUrl(ViewPort viewPort, WmsLayer layer, Coordinate location,
-			String format, double tolerance, int maxFeatures) {
-		StringBuilder url = getBaseUrlBuilder(layer.getConfiguration());
-
-		// Calculate the denominator for tile height and width adaptation to reflect the specified tolerance in pixels
-		int toleranceCorrection = (int) Math.round(tolerance * 2.0);
-		if (toleranceCorrection <= 0) {
-			toleranceCorrection = 1;
-		}
-		if (toleranceCorrection > 2.0) {
-			toleranceCorrection = 2; // limit because it seems sometimes not to work if > 2
-		}
-
-		TileCode tileCode = TileService.getTileCodeForLocation(layer.getTileConfiguration(), location,
-				viewPort.getResolution());
-		Bbox worldBounds = TileService.getWorldBoundsForTile(layer.getTileConfiguration(), tileCode);
-
-		Bbox screenBounds = viewPort.getTransformationService()
-				.transform(worldBounds, RenderSpace.WORLD, RenderSpace.SCREEN);
-		Coordinate screenLocation = viewPort.getTransformationService()
-				.transform(location, RenderSpace.WORLD, RenderSpace.SCREEN);
-
-		// Add the base parameters needed for getMap:
-		addBaseParameters(url, layer.getConfiguration(), worldBounds, layer.getTileConfiguration().
-				getTileWidth() / toleranceCorrection, layer.getTileConfiguration().getTileHeight() /
-				toleranceCorrection);
-
-		url.append("&QUERY_LAYERS=");
-		url.append(layer.getConfiguration().getLayers()); // No URL.encode here!
-		url.append("&request=GetFeatureInfo");
-		switch (layer.getConfiguration().getVersion()) {
-			case V1_3_0:
-				url.append("&I=");
-				url.append((int) Math.round((screenLocation.getX() - screenBounds.getX())
-						/ (double) toleranceCorrection));
-				url.append("&J=");
-				url.append((int) Math.round((screenLocation.getY() - screenBounds.getY())
-						/ (double) toleranceCorrection));
-				break;
-			case V1_1_1:
-			default:
-				url.append("&X=");
-				url.append((int) Math.round((screenLocation.getX() - screenBounds.getX())
-						/ (double) toleranceCorrection));
-				url.append("&Y=");
-				url.append((int) Math.round((screenLocation.getY() - screenBounds.getY())
-						/ (double) toleranceCorrection));
-		}
-		url.append("&FEATURE_COUNT=");
-		url.append(maxFeatures);
-		url.append("&INFO_FORMAT=");
-		url.append(format.toString());
-
-		return finishUrl(WmsRequest.GETFEATUREINFO, url);
-	}
 }

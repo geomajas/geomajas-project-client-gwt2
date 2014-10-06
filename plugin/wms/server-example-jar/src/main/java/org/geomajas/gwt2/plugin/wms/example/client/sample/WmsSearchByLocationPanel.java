@@ -11,19 +11,8 @@
 
 package org.geomajas.gwt2.plugin.wms.example.client.sample;
 
-import com.google.gwt.core.client.Callback;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.DecoratorPanel;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.RadioButton;
-import com.google.gwt.user.client.ui.ResizeLayoutPanel;
-import com.google.gwt.user.client.ui.Widget;
+import java.util.List;
+
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
@@ -39,12 +28,25 @@ import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.gwt2.plugin.wms.client.WmsServerExtension;
-import org.geomajas.gwt2.plugin.wms.client.layer.FeaturesSupportedWmsLayer;
+import org.geomajas.gwt2.plugin.wms.client.layer.FeatureSearchSupportedWmsServerLayer;
+import org.geomajas.gwt2.plugin.wms.client.layer.WfsLayerConfiguration;
 import org.geomajas.gwt2.plugin.wms.client.layer.WmsLayerConfiguration;
 import org.geomajas.gwt2.plugin.wms.client.service.WmsService.WmsVersion;
 import org.vaadin.gwtgraphics.client.VectorObject;
 
-import java.util.List;
+import com.google.gwt.core.client.Callback;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.DecoratorPanel;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.RadioButton;
+import com.google.gwt.user.client.ui.ResizeLayoutPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * ContentPanel that demonstrates rendering abilities in world space with a map that supports resizing.
@@ -71,7 +73,7 @@ public class WmsSearchByLocationPanel implements SamplePanel {
 
 	private VectorContainer selectionContainer;
 
-	private FeaturesSupportedWmsLayer wmsLayer;
+	private FeatureSearchSupportedWmsServerLayer wmsLayer;
 
 	@UiField
 	protected ResizeLayoutPanel mapPanel;
@@ -138,18 +140,30 @@ public class WmsSearchByLocationPanel implements SamplePanel {
 		selectionContainer.clear();
 
 		// Now create a WMS layer and add it to the map:
-		TileConfiguration tileConfig = new TileConfiguration(256, 256, new Coordinate(-180, -90),
+		final TileConfiguration tileConfig = new TileConfiguration(256, 256, new Coordinate(-180, -90),
 				mapPresenter.getViewPort());
-		WmsLayerConfiguration layerConfig = new WmsLayerConfiguration();
+		final WmsLayerConfiguration layerConfig = new WmsLayerConfiguration();
 		layerConfig.setBaseUrl(WMS_BASE_URL);
 		layerConfig.setFormat("image/png");
 		layerConfig.setVersion(getWmsVersion());
 		layerConfig.setLayers("demo_world:simplified_country_borders");
 		layerConfig.setMaximumResolution(Double.MAX_VALUE);
 		layerConfig.setMinimumResolution(2.1457672119140625E-5);
+		WmsServerExtension.getInstance().supportsFeatures(WMS_BASE_URL, getWmsVersion(), layerConfig.getLayers(),
+				new Callback<WfsLayerConfiguration, String>() {
 
-		wmsLayer = WmsServerExtension.getInstance().createLayer("Countries", mapPresenter.getViewPort().getCrs(),
-				tileConfig, layerConfig, null);
+					@Override
+					public void onFailure(String s) {
+						// ignore
+					}
+
+					@Override
+					public void onSuccess(final WfsLayerConfiguration wfsLayerConfiguration) {
+						wmsLayer = WmsServerExtension.getInstance().createLayer("Countries", mapPresenter.getViewPort().getCrs(),
+								tileConfig, layerConfig, null, wfsLayerConfiguration);
+					}
+				});
+
 		wmsLayer.setMaxBounds(new Bbox(-180, -90, 360, 360));
 		mapPresenter.getLayersModel().addLayer(wmsLayer);
 		mapPresenter.getViewPort().applyBounds(mapPresenter.getViewPort().getMaximumBounds());
