@@ -121,7 +121,7 @@ public class ExampleJar implements EntryPoint {
 
 			@Override
 			public String getKey() {
-				return "wmsservergetfeatureinfo";
+				return "wmsgetfeatureinfo";
 			}
 		});
 		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
