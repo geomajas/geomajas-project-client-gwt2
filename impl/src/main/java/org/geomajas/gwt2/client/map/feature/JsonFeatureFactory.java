@@ -35,7 +35,7 @@ public class JsonFeatureFactory {
 		String id = JsonService.getStringValue(jsonObject, "id");
 		JSONObject properties = JsonService.getChild(jsonObject, "properties");
 		Map<String, Attribute<?>> attributes = new HashMap<String, Attribute<?>>();
-		if (layer.getAttributeDescriptors().size() > 0) {
+		if (layer != null && layer.getAttributeDescriptors().size() > 0) {
 			for (AttributeDescriptor descr : layer.getAttributeDescriptors()) {
 				AttributeType type = descr.getType();
 				String name = descr.getName();

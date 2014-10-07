@@ -77,6 +77,7 @@ public class WmsServiceImpl implements WmsService {
 	// ------------------------------------------------------------------------
 
 	public WmsServiceImpl() {
+		jsonFeatureFactory = new JsonFeatureFactory();
 		setRequestBuilderFactory(new RequestBuilderFactory() {
 
 			@Override
@@ -154,8 +155,6 @@ public class WmsServiceImpl implements WmsService {
 		final WmsVersion localVersion = WmsVersion.V1_1_1;
 		String url = describeLayerUrl(baseUrl, layers, localVersion);
 		RequestBuilder builder = requestBuilderFactory.create(RequestBuilder.GET, url);
-		builder.setHeader("Cache-Control", "no-cache");
-		builder.setHeader("Pragma", "no-cache");
 		try {
 			builder.sendRequest(null, new RequestCallback() {
 
@@ -205,11 +204,9 @@ public class WmsServiceImpl implements WmsService {
 
 		// we can only handle json for now
 		if (!GetFeatureInfoFormat.JSON.toString().equals(format)) {
-			throw new IllegalArgumentException("Client does not support " + format + " format");
+			callback.onFailure("Client does not support " + format + " format");
 		}
 		RequestBuilder builder = requestBuilderFactory.create(RequestBuilder.GET, url);
-		builder.setHeader("Cache-Control", "no-cache");
-		builder.setHeader("Pragma", "no-cache");
 		try {
 			builder.sendRequest(null, new RequestCallback() {
 

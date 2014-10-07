@@ -40,6 +40,11 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -106,10 +111,27 @@ public class WmsServerFeatureInfoPanel implements SamplePanel {
 		controller.setHtmlCallback(new Callback<String, String>() {
 
 			@Override
-			public void onSuccess(String result) {
-				featureContainer.clear();
-				HTML html = new HTML((String) result);
-				featureInfoParent.setWidget(html);
+			public void onSuccess(String url) {
+				RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+				try {
+					builder.sendRequest(null, new RequestCallback() {
+
+						@Override
+						public void onResponseReceived(Request request, Response response) {
+							featureContainer.clear();
+							HTML html = new HTML(response.getText());
+							featureInfoParent.setWidget(html);
+						}
+
+						@Override
+						public void onError(Request request, Throwable exception) {
+							Window.alert("Something went wrong executing the WMS GetFeatureInfo request: "
+									+ exception.getMessage());
+						}
+					});
+				} catch (RequestException e) {
+					Window.alert("Something went wrong executing the WMS GetFeatureInfo request: " + e.getMessage());
+				}
 			}
 
 			@Override

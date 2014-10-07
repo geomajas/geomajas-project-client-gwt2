@@ -81,16 +81,29 @@ public class WmsGetFeatureInfoController extends AbstractMapController {
 
 		// Now execute the GetFeatureInfo for each layer:
 		for (FeatureInfoSupported layer : layers) {
-			if (GetFeatureInfoFormat.JSON.toString().equalsIgnoreCase(format)) {
-				if (featureCallback == null) {
-					throw new IllegalStateException("No callback has been set on the WmsGetFeatureInfoController");
+			GetFeatureInfoFormat f = GetFeatureInfoFormat.fromFormat(format);
+			if (f != null) {
+				switch (f) {
+					case GML2:
+					case GML3:
+					case JSON:
+						if (featureCallback == null) {
+							throw new IllegalStateException(
+									"No callback has been set on the WmsGetFeatureInfoController");
+						}
+						layer.getFeatureInfo(worldLocation, format, featureCallback);
+						break;
+					case HTML:
+					case TEXT:
+					default:
+						if (htmlCallback == null) {
+							throw new IllegalStateException(
+									"No callback has been set on the WmsGetFeatureInfoController");
+						}
+						htmlCallback.onSuccess(layer.getFeatureInfoUrl(worldLocation, format));
+						break;
+
 				}
-				layer.getFeatureInfo(worldLocation, featureCallback);
-			} else {
-				if (htmlCallback == null) {
-					throw new IllegalStateException("No callback has been set on the WmsGetFeatureInfoController");
-				}
-				htmlCallback.onSuccess(layer.getFeatureInfoUrl(worldLocation, GetFeatureInfoFormat.HTML.toString()));
 			}
 		}
 	}

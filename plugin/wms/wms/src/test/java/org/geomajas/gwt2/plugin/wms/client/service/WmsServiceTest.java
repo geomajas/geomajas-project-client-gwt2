@@ -116,7 +116,7 @@ public class WmsServiceTest extends AbstractWmsServiceTest {
 	}
 
 	@Test
-	public void testGetCapabilities() throws Exception {
+	public void testGetCapabilities130() throws Exception {
 		prepareResponse("capabilities_1_3_0.xml");
 		CapabilitiesCallback callback = new CapabilitiesCallback();
 		wmsService.getCapabilities("http://test", WmsVersion.V1_3_0, callback);
@@ -158,6 +158,23 @@ public class WmsServiceTest extends AbstractWmsServiceTest {
 			Assert.assertTrue(BboxService.equals(toBbox(l.getBoundingBox().get(0)), layerInfo.getBoundingBox(), 0.0001));
 		}
 
+	}
+
+	@Test
+	public void testGetCapabilities111() throws Exception {
+		prepareResponse("capabilities_1_1_1.xml");
+		CapabilitiesCallback callback = new CapabilitiesCallback();
+		wmsService.getCapabilities("http://test", WmsVersion.V1_1_1, callback);
+		WmsGetCapabilitiesInfo info = callback.getResult();
+		Assert.assertNotNull(info);
+		Assert.assertEquals(8, info.getLayers().size());
+		Assert.assertEquals(4, info.getRequests().size());
+		for (WmsLayerInfo layer : info.getLayers()) {
+			if(layer.getName().equals("ROADS_RIVERS")) {
+				Assert.assertEquals(layer.getMinScaleDenominator(), 4000, 0.00001);
+				Assert.assertEquals(layer.getMaxScaleDenominator(), 35000, 0.00001);
+			}
+		}
 	}
 
 	@Test

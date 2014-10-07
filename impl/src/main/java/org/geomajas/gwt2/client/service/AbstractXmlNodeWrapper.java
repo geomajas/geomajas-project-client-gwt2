@@ -100,6 +100,15 @@ public abstract class AbstractXmlNodeWrapper {
 		return 0;
 	}
 
+	protected boolean hasAttribute(Node node, String name) {
+		return node.hasAttributes() && node.getAttributes().getNamedItem(name) != null;
+	}
+	
+	protected double getAttributeAsDouble(Node node, String name) {
+		Node attr = node.getAttributes().getNamedItem(name);
+		return getValueRecursiveAsDouble(attr);
+	}
+
 	protected Bbox getBoundingBox(Node node) {
 		NamedNodeMap attributes = node.getAttributes();
 		Node minx = attributes.getNamedItem("minx");

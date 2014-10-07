@@ -12,21 +12,21 @@
 package org.geomajas.gwt2.plugin.wms.server.command;
 
 import org.geomajas.command.Command;
+import org.geomajas.gwt2.plugin.wms.client.service.WmsService.GetFeatureInfoFormat;
 import org.geomajas.gwt2.plugin.wms.server.command.dto.WmsGetFeatureInfoRequest;
 import org.geomajas.gwt2.plugin.wms.server.command.dto.WmsGetFeatureInfoResponse;
 import org.geomajas.layer.feature.Feature;
-import org.geomajas.gwt2.plugin.wms.client.service.WmsService.GetFeatureInfoFormat;
 import org.geotools.GML;
 import org.geotools.GML.Version;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
+import org.geotools.geojson.feature.FeatureJSON;
 import org.opengis.feature.simple.SimpleFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -35,12 +35,16 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 /**
- * Command that executes a WMS GetFeatureInfo request. <p/> This command is not part of the API and shouldn't be used
- * directly.
+ * Command that executes a WMS GetFeatureInfo request.
+ * <p/>
+ * This command is not part of the API and shouldn't be used directly.
  *
  * @author Pieter De Graef
  * @author An Buyle
+ * @author Jan De Moerloose
  */
 @Component
 public class WmsGetFeatureInfoCommand implements Command<WmsGetFeatureInfoRequest, WmsGetFeatureInfoResponse> {
@@ -63,6 +67,9 @@ public class WmsGetFeatureInfoCommand implements Command<WmsGetFeatureInfoReques
 				gml = new GML(Version.GML3);
 				response.setFeatures(getFeaturesFromUrl(url, gml, request.getMaxCoordsPerFeature()));
 				break;
+			case JSON:
+				response.setFeatures(getFeaturesFromJson(request, url, request.getMaxCoordsPerFeature()));
+				break;
 			default:
 				String content = readUrl(url);
 				response.setWmsResponse(content);
@@ -71,6 +78,23 @@ public class WmsGetFeatureInfoCommand implements Command<WmsGetFeatureInfoReques
 
 	public WmsGetFeatureInfoResponse getEmptyCommandResponse() {
 		return new WmsGetFeatureInfoResponse();
+	}
+
+	private List<Feature> getFeaturesFromJson(WmsGetFeatureInfoRequest request, URL url, int maxCoordsPerFeature)
+			throws IOException {
+		FeatureConverter converter = new FeatureConverter();
+		List<Feature> dtoFeatures = new ArrayList<Feature>();
+		FeatureIterator<SimpleFeature> it = new FeatureJSON().streamFeatureCollection(url.openStream());
+		while (it.hasNext()) {
+			SimpleFeature feature = it.next();
+			try {
+				dtoFeatures.add(converter.toDto(feature, maxCoordsPerFeature));
+			} catch (Exception e) {
+				log.error("Error parsing Feature information: " + e.getMessage());
+			}
+		}
+		it.close();
+		return dtoFeatures;
 	}
 
 	private List<Feature> getFeaturesFromUrl(URL url, GML gml, int maxCoordsPerFeature) throws IOException,

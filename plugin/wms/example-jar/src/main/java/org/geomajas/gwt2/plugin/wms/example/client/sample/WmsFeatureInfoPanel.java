@@ -11,7 +11,25 @@
 
 package org.geomajas.gwt2.plugin.wms.example.client.sample;
 
-import java.util.List;
+import com.google.gwt.core.client.Callback;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.ResizeLayoutPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.Widget;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
@@ -35,21 +53,7 @@ import org.geomajas.gwt2.plugin.wms.client.service.WmsService.GetFeatureInfoForm
 import org.geomajas.gwt2.plugin.wms.client.service.WmsService.WmsVersion;
 import org.vaadin.gwtgraphics.client.VectorObject;
 
-import com.google.gwt.core.client.Callback;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Frame;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.ResizeLayoutPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.Widget;
+import java.util.List;
 
 /**
  * ContentPanel that demonstrates rendering abilities in world space with a map that supports resizing.
@@ -108,10 +112,26 @@ public class WmsFeatureInfoPanel implements SamplePanel {
 
 			@Override
 			public void onSuccess(String url) {
-				featureContainer.clear();
-				Frame frame = new Frame();
-				frame.setUrl(url);
-				featureInfoParent.setWidget(frame);
+				RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+				try {
+					builder.sendRequest(null, new RequestCallback() {
+
+						@Override
+						public void onResponseReceived(Request request, Response response) {
+							featureContainer.clear();
+							HTML html = new HTML(response.getText());
+							featureInfoParent.setWidget(html);
+						}
+
+						@Override
+						public void onError(Request request, Throwable exception) {
+							Window.alert("Something went wrong executing the WMS GetFeatureInfo request: "
+									+ exception.getMessage());
+						}
+					});
+				} catch (RequestException e) {
+					Window.alert("Something went wrong executing the WMS GetFeatureInfo request: " + e.getMessage());
+				}
 			}
 
 			@Override
@@ -187,8 +207,8 @@ public class WmsFeatureInfoPanel implements SamplePanel {
 				mapPresenter.getViewPort().getCrs(), tileConfig, layerConfig, null);
 		wmsLayer.setMaxBounds(new Bbox(-180, -90, 360, 360));
 		mapPresenter.getLayersModel().addLayer(wmsLayer);
-		if(wmsLayer instanceof FeatureInfoSupported) {
-			controller.addLayer((FeatureInfoSupported)wmsLayer);
+		if (wmsLayer instanceof FeatureInfoSupported) {
+			controller.addLayer((FeatureInfoSupported) wmsLayer);
 		}
 	}
 

@@ -11,31 +11,28 @@
 
 package org.geomajas.gwt2.plugin.wms.client;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.google.gwt.core.client.Callback;
 
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt2.client.map.Hint;
 import org.geomajas.gwt2.client.map.ViewPort;
-import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
 import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
 import org.geomajas.gwt2.plugin.wms.client.capabilities.WmsLayerInfo;
 import org.geomajas.gwt2.plugin.wms.client.describelayer.WmsDescribeLayerInfo;
 import org.geomajas.gwt2.plugin.wms.client.describelayer.WmsLayerDescriptionInfo;
 import org.geomajas.gwt2.plugin.wms.client.layer.FeatureInfoSupportedWmsServerLayer;
-import org.geomajas.gwt2.plugin.wms.client.layer.FeatureSearchSupported;
 import org.geomajas.gwt2.plugin.wms.client.layer.FeatureSearchSupportedWmsServerLayer;
 import org.geomajas.gwt2.plugin.wms.client.layer.WfsLayerConfiguration;
 import org.geomajas.gwt2.plugin.wms.client.layer.WmsLayerConfiguration;
-import org.geomajas.gwt2.plugin.wms.client.service.WmsFeatureServiceImpl;
+import org.geomajas.gwt2.plugin.wms.client.service.WmsProxyServiceImpl;
 import org.geomajas.gwt2.plugin.wms.client.service.WmsService;
 import org.geomajas.gwt2.plugin.wms.server.command.dto.WfsDescribeLayerRequest;
 import org.geomajas.gwt2.plugin.wms.server.command.dto.WfsDescribeLayerResponse;
 
-import com.google.gwt.core.client.Callback;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Starting point for the WMS server extension. It provides additional functionality on top of the normal WMS client.
@@ -63,7 +60,7 @@ public final class WmsServerExtension {
 
 	private WmsServerExtension() {
 		this.hintValues = new HashMap<Hint<?>, Object>();
-		this.wmsService = new WmsFeatureServiceImpl();
+		this.wmsService = new WmsProxyServiceImpl();
 
 		// Set the default maximum number of coordinates the features of a GetFeatureInfo should contain:
 		setHintValue(GET_FEATUREINFO_MAX_COORDS, -1); // No maximum

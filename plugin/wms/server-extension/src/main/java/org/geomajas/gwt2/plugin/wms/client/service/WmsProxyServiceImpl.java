@@ -11,8 +11,7 @@
 
 package org.geomajas.gwt2.plugin.wms.client.service;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.gwt.core.client.Callback;
 
 import org.geomajas.command.CommandResponse;
 import org.geomajas.geometry.Coordinate;
@@ -29,15 +28,17 @@ import org.geomajas.gwt2.plugin.wms.client.layer.WmsLayer;
 import org.geomajas.gwt2.plugin.wms.server.command.dto.WmsGetFeatureInfoRequest;
 import org.geomajas.gwt2.plugin.wms.server.command.dto.WmsGetFeatureInfoResponse;
 
-import com.google.gwt.core.client.Callback;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Default implementation of the {@link WmsFeatureService}.
+ * Handles WMS server calls through the Geomajas backend.
  *
  * @author Pieter De Graef
  * @author An Buyle
+ * @author Jan De Moerloose
  */
-public class WmsFeatureServiceImpl extends WmsServiceImpl implements WmsService {
+public class WmsProxyServiceImpl extends WmsServiceImpl implements WmsService {
 
 	@Override
 	public void getFeatureInfo(ViewPort viewPort, final WmsLayer layer, Coordinate location, String format,
@@ -54,8 +55,9 @@ public class WmsFeatureServiceImpl extends WmsServiceImpl implements WmsService 
 			public void execute(WmsGetFeatureInfoResponse response) {
 				List<Feature> features = new ArrayList<Feature>();
 				for (org.geomajas.layer.feature.Feature feature : response.getFeatures()) {
+					FeaturesSupported fs = (layer instanceof FeaturesSupported ? (FeaturesSupported) layer : null);
 					Feature newFeature = GeomajasServerExtension.getInstance().getServerFeatureService()
-							.create(feature, (FeaturesSupported) layer);
+							.create(feature, fs);
 					features.add(newFeature);
 				}
 				callback.onSuccess(features);
@@ -78,7 +80,7 @@ public class WmsFeatureServiceImpl extends WmsServiceImpl implements WmsService 
 				super.onCommandException(response);
 			}
 		});
-	}
+	}	
 
 	// ------------------------------------------------------------------------
 	// Private methods:

@@ -93,7 +93,7 @@ public final class WmsClient {
 	 */
 	public WmsLayer createLayer(String title, String crs, TileConfiguration tileConfig,
 								WmsLayerConfiguration layerConfig, WmsLayerInfo layerInfo) {
-		if(layerInfo == null || layerInfo.isQueryable()) {
+		if (layerInfo == null || layerInfo.isQueryable()) {
 			return new FeatureInfoSupportedWmsLayer(title, crs, layerConfig, tileConfig, layerInfo);
 		} else {
 			return new WmsLayerImpl(title, crs, layerConfig, tileConfig, layerInfo);

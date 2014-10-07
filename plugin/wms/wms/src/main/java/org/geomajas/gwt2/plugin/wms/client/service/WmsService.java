@@ -19,13 +19,10 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.client.map.layer.LegendConfig;
-import org.geomajas.gwt2.client.map.render.TileCode;
-import org.geomajas.gwt2.client.service.TileService;
 import org.geomajas.gwt2.plugin.wms.client.capabilities.WmsGetCapabilitiesInfo;
 import org.geomajas.gwt2.plugin.wms.client.describelayer.WmsDescribeLayerInfo;
 import org.geomajas.gwt2.plugin.wms.client.layer.WmsLayer;
 import org.geomajas.gwt2.plugin.wms.client.layer.WmsLayerConfiguration;
-import org.geomajas.gwt2.plugin.wms.client.service.WmsService.GetFeatureInfoFormat;
 
 import java.util.List;
 
@@ -56,6 +53,15 @@ public interface WmsService {
 
 		public String toString() {
 			return format;
+		}
+		
+		public static GetFeatureInfoFormat fromFormat(String format) {
+			for (GetFeatureInfoFormat value : values()) {
+				if (value.toString().equalsIgnoreCase(format)) {
+					return value;
+				}
+			}
+			return null;
 		}
 	}
 

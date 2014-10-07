@@ -11,9 +11,26 @@
 
 package org.geomajas.gwt2.plugin.wms.example.client.sample;
 
+import com.google.gwt.core.client.Callback;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.RadioButton;
+import com.google.gwt.user.client.ui.ResizeLayoutPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
+
 import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
 import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
 import org.geomajas.gwt2.client.widget.MapLayoutPanel;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
@@ -27,21 +44,6 @@ import org.geomajas.gwt2.plugin.wms.client.layer.WmsLayerConfiguration;
 import org.geomajas.gwt2.plugin.wms.client.service.WmsService.WmsRequest;
 import org.geomajas.gwt2.plugin.wms.client.service.WmsService.WmsUrlTransformer;
 import org.geomajas.gwt2.plugin.wms.client.service.WmsService.WmsVersion;
-
-import com.google.gwt.core.client.Callback;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.RadioButton;
-import com.google.gwt.user.client.ui.ResizeLayoutPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Widget;
 
 /**
  * ContentPanel that demonstrates rendering abilities in world space with a map that supports resizing.
@@ -158,7 +160,13 @@ public class IsFeaturesSupportedPanel implements SamplePanel {
 
 					@Override
 					public void onFailure(String s) {
-						// Failure? We do not accept failure!
+						radioButton.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+
+							@Override
+							public void onValueChange(ValueChangeEvent<Boolean> booleanValueChangeEvent) {
+								installLayer(layerInfo, null);
+							}
+						});
 					}
 
 					@Override
@@ -188,10 +196,22 @@ public class IsFeaturesSupportedPanel implements SamplePanel {
 				getWmsVersion());
 
 		// Then add the new WMS layer to the map:
-		final FeatureSearchSupportedWmsServerLayer layer = WmsServerExtension.getInstance().createLayer(
-				layerInfo.getTitle(), mapPresenter.getViewPort().getCrs(), tileConfig, layerConfig, layerInfo,
-				wfsLayerConfiguration);
-		mapPresenter.getLayersModel().addLayer(layer);
+		if (wfsLayerConfiguration != null) {
+			final FeatureSearchSupportedWmsServerLayer layer = WmsServerExtension.getInstance().createLayer(
+					layerInfo.getTitle(), mapPresenter.getViewPort().getCrs(), tileConfig, layerConfig, layerInfo,
+					wfsLayerConfiguration);
+			// When this layer is initialized, we can write out it's attribute descriptors:
+			for (AttributeDescriptor descriptor : wfsLayerConfiguration.getDescriptors()) {
+				attributePanel.add(new HTML("Attribute: <b>" + descriptor.getName() + "</b> ("
+						+ descriptor.getType().getName() + ")"));
+			}
+			mapPresenter.getLayersModel().addLayer(layer);
+		} else {
+			mapPresenter.getLayersModel().addLayer(
+					WmsClient.getInstance().createLayer(layerInfo.getTitle(), mapPresenter.getViewPort().getCrs(),
+							tileConfig, layerConfig, layerInfo));
+			attributePanel.add(new HTML("This layer does not support features..."));
+		}
 
 	}
 }
