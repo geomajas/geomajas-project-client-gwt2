@@ -13,8 +13,7 @@ package org.geomajas.gwt2.client.map.feature;
 import org.geomajas.gwt2.client.map.attribute.Attribute;
 
 /**
- * Default implementation of a feature attribute. Copy of Geomajas implementation to expose constructor (to be
- * migrated).
+ * Default implementation of a feature attribute.
  * 
  * @author Jan De Moerloose
  * 

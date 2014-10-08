@@ -28,7 +28,7 @@ public class JsonFeatureFactoryTest {
 	private FeaturesSupported layer;
 
 	@Test
-	public void testCreateCollection() throws Exception {
+	public void testCreateFromCollection() throws Exception {
 		List<AttributeDescriptor> l = new ArrayList<AttributeDescriptor>();
 		l.add(new AttributeDescriptorImpl(new PrimitiveAttributeTypeImpl(PrimitiveType.INTEGER), "osm_id"));
 		l.add(new AttributeDescriptorImpl(new PrimitiveAttributeTypeImpl(PrimitiveType.DATE), "lastchange"));
@@ -69,4 +69,19 @@ public class JsonFeatureFactoryTest {
 		Assert.assertEquals("POINT (4.3487134 50.883392)", WktService.toWkt(f2.getGeometry()));
 	}
 
+	@Test
+	public void testCreateFromSingleFeature() throws Exception {
+		JsonFeatureFactory factory = new JsonFeatureFactory();
+		FeatureCollection c = factory
+				.createCollection(
+						JsonTestUtil
+								.parse("{ \"type\": \"Feature\",\n" + 
+										"        \"geometry\": {\"type\": \"Point\", \"coordinates\": [102.0, 0.5]},\n" + 
+										"        \"properties\": {\"prop0\": \"value0\"}\n" + 
+										"        }"), null);
+		Assert.assertEquals(1, c.getFeatures().size());
+		Feature f1 = c.getFeatures().get(0);
+		Assert.assertEquals("value0", f1.getAttributeValue("prop0"));
+		Assert.assertEquals("POINT (102.0 0.5)", WktService.toWkt(f1.getGeometry()));
+	}
 }
