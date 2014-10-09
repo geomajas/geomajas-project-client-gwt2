@@ -260,22 +260,8 @@
 							<cargo.remote.uri>${dev.deploy.uri}</cargo.remote.uri>
 						</properties>
 					</configuration>
-					<deployer>
-						<deployables>
-							<deployable>
-								<groupId>org.geomajas</groupId>
-								<artifactId>geomajas-client-gwt2-example</artifactId>
-								<type>war</type>
-								<properties>
-									<context>showcase-gwt2-trunk</context>
-								</properties>
-							</deployable>
-						</deployables>
-					</deployer>
-
 				</configuration>
 			</plugin>
-
 		</plugins>
 	</build>
 
