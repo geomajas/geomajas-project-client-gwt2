@@ -26,6 +26,7 @@ import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+
 import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.MapPresenter;
@@ -37,13 +38,12 @@ import org.geomajas.gwt2.plugin.wms.client.WmsClient;
 import org.geomajas.gwt2.plugin.wms.client.WmsServerExtension;
 import org.geomajas.gwt2.plugin.wms.client.capabilities.WmsGetCapabilitiesInfo;
 import org.geomajas.gwt2.plugin.wms.client.capabilities.WmsLayerInfo;
-import org.geomajas.gwt2.plugin.wms.client.layer.FeaturesSupportedWmsLayer;
+import org.geomajas.gwt2.plugin.wms.client.layer.FeatureSearchSupportedWmsServerLayer;
+import org.geomajas.gwt2.plugin.wms.client.layer.WfsLayerConfiguration;
 import org.geomajas.gwt2.plugin.wms.client.layer.WmsLayerConfiguration;
 import org.geomajas.gwt2.plugin.wms.client.service.WmsService.WmsRequest;
 import org.geomajas.gwt2.plugin.wms.client.service.WmsService.WmsUrlTransformer;
 import org.geomajas.gwt2.plugin.wms.client.service.WmsService.WmsVersion;
-
-import java.util.List;
 
 /**
  * ContentPanel that demonstrates rendering abilities in world space with a map that supports resizing.
@@ -155,27 +155,34 @@ public class IsFeaturesSupportedPanel implements SamplePanel {
 		layerList.add(radioButton);
 
 		// For every layer we check if it supports features or not:
-		WmsServerExtension.getInstance().supportsFeatures(WMS_BASE_URL, layerInfo.getName(),
-				new Callback<Boolean, String>() {
+		WmsServerExtension.getInstance().supportsFeatures(WMS_BASE_URL, getWmsVersion(), layerInfo.getName(),
+				new Callback<WfsLayerConfiguration, String>() {
 
 					@Override
 					public void onFailure(String s) {
-						// Failure? We do not accept failure!
+						radioButton.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+
+							@Override
+							public void onValueChange(ValueChangeEvent<Boolean> booleanValueChangeEvent) {
+								installLayer(layerInfo, null);
+							}
+						});
 					}
 
 					@Override
-					public void onSuccess(final Boolean thisLayerSupportsFeatures) {
+					public void onSuccess(final WfsLayerConfiguration wfsLayerConfiguration) {
 						radioButton.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+
 							@Override
 							public void onValueChange(ValueChangeEvent<Boolean> booleanValueChangeEvent) {
-								installLayer(layerInfo, thisLayerSupportsFeatures);
+								installLayer(layerInfo, wfsLayerConfiguration);
 							}
 						});
 					}
 				});
 	}
 
-	private void installLayer(WmsLayerInfo layerInfo, boolean featuresSupported) {
+	private void installLayer(WmsLayerInfo layerInfo, WfsLayerConfiguration wfsLayerConfiguration) {
 		// First remove all layers from the map:
 		mapPresenter.getLayersModel().clear();
 
@@ -185,28 +192,19 @@ public class IsFeaturesSupportedPanel implements SamplePanel {
 		// Prepare the layer configuration:
 		final TileConfiguration tileConfig = WmsClient.getInstance().createTileConfig(layerInfo,
 				mapPresenter.getViewPort(), 256, 256);
-		final WmsLayerConfiguration layerConfig = WmsClient.getInstance().createLayerConfig(
-				layerInfo, WMS_BASE_URL, getWmsVersion());
+		final WmsLayerConfiguration layerConfig = WmsClient.getInstance().createLayerConfig(layerInfo, WMS_BASE_URL,
+				getWmsVersion());
 
 		// Then add the new WMS layer to the map:
-		if (featuresSupported) {
-			final FeaturesSupportedWmsLayer layer = WmsServerExtension.getInstance().createLayer(layerInfo.getTitle(),
-					mapPresenter.getViewPort().getCrs(), tileConfig, layerConfig, layerInfo,
-					new Callback<List<AttributeDescriptor>, String>() {
-
-						@Override
-						public void onFailure(String s) {
-						}
-
-						@Override
-						public void onSuccess(List<AttributeDescriptor> descriptors) {
-							// When this layer is initialized, we can write out it's attribute descriptors:
-							for (AttributeDescriptor descriptor : descriptors) {
-								attributePanel.add(new HTML("Attribute: <b>" + descriptor.getName() + "</b> ("
-										+ descriptor.getType().getName() + ")"));
-							}
-						}
-					});
+		if (wfsLayerConfiguration != null) {
+			final FeatureSearchSupportedWmsServerLayer layer = WmsServerExtension.getInstance().createLayer(
+					layerInfo.getTitle(), mapPresenter.getViewPort().getCrs(), tileConfig, layerConfig, layerInfo,
+					wfsLayerConfiguration);
+			// When this layer is initialized, we can write out it's attribute descriptors:
+			for (AttributeDescriptor descriptor : wfsLayerConfiguration.getDescriptors()) {
+				attributePanel.add(new HTML("Attribute: <b>" + descriptor.getName() + "</b> ("
+						+ descriptor.getType().getName() + ")"));
+			}
 			mapPresenter.getLayersModel().addLayer(layer);
 		} else {
 			mapPresenter.getLayersModel().addLayer(
@@ -214,5 +212,6 @@ public class IsFeaturesSupportedPanel implements SamplePanel {
 							tileConfig, layerConfig, layerInfo));
 			attributePanel.add(new HTML("This layer does not support features..."));
 		}
+
 	}
 }

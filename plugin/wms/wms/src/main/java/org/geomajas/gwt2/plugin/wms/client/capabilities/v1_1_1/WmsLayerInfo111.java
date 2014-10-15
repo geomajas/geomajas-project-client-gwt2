@@ -200,10 +200,13 @@ public class WmsLayerInfo111 extends AbstractXmlNodeWrapper implements WmsLayerI
 				metadataUrls.add(new WmsLayerMetadataUrlInfo111(child));
 			} else if ("Style".equalsIgnoreCase(nodeName)) {
 				styleInfo.add(new WmsLayerStyleInfo111(child));
-			} else if ("MinScaleDenominator".equalsIgnoreCase(nodeName)) {
-				minScaleDenominator = getValueRecursiveAsDouble(child);
-			} else if ("MaxScaleDenominator".equalsIgnoreCase(nodeName)) {
-				maxScaleDenominator = getValueRecursiveAsDouble(child);
+			} else if ("ScaleHint".equalsIgnoreCase(nodeName)) {
+				if (hasAttribute(child, "min")) {
+					minScaleDenominator = getAttributeAsDouble(child, "min");
+				}
+				if (hasAttribute(child, "max")) {
+					maxScaleDenominator = getAttributeAsDouble(child, "max");
+				}
 			}
 		}
 	}

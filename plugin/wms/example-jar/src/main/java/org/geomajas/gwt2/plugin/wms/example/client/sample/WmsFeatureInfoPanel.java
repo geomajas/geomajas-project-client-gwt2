@@ -16,6 +16,11 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -25,6 +30,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
+
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.GeomajasImpl;
@@ -38,9 +44,10 @@ import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
 import org.geomajas.gwt2.client.widget.MapLayoutPanel;
 import org.geomajas.gwt2.example.base.client.ExampleBase;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
-import org.geomajas.gwt2.plugin.wms.client.WmsServerExtension;
+import org.geomajas.gwt2.plugin.wms.client.WmsClient;
 import org.geomajas.gwt2.plugin.wms.client.controller.WmsGetFeatureInfoController;
-import org.geomajas.gwt2.plugin.wms.client.layer.FeaturesSupportedWmsLayer;
+import org.geomajas.gwt2.plugin.wms.client.layer.FeatureInfoSupported;
+import org.geomajas.gwt2.plugin.wms.client.layer.WmsLayer;
 import org.geomajas.gwt2.plugin.wms.client.layer.WmsLayerConfiguration;
 import org.geomajas.gwt2.plugin.wms.client.service.WmsService.GetFeatureInfoFormat;
 import org.geomajas.gwt2.plugin.wms.client.service.WmsService.WmsVersion;
@@ -101,13 +108,30 @@ public class WmsFeatureInfoPanel implements SamplePanel {
 
 		controller = new WmsGetFeatureInfoController();
 		controller.setFormat(getRequestFormat().toString());
-		controller.setHtmlCallback(new Callback<Object, String>() {
+		controller.setHtmlCallback(new Callback<String, String>() {
 
 			@Override
-			public void onSuccess(Object result) {
-				featureContainer.clear();
-				HTML html = new HTML((String) result);
-				featureInfoParent.setWidget(html);
+			public void onSuccess(String url) {
+				RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
+				try {
+					builder.sendRequest(null, new RequestCallback() {
+
+						@Override
+						public void onResponseReceived(Request request, Response response) {
+							featureContainer.clear();
+							HTML html = new HTML(response.getText());
+							featureInfoParent.setWidget(html);
+						}
+
+						@Override
+						public void onError(Request request, Throwable exception) {
+							Window.alert("Something went wrong executing the WMS GetFeatureInfo request: "
+									+ exception.getMessage());
+						}
+					});
+				} catch (RequestException e) {
+					Window.alert("Something went wrong executing the WMS GetFeatureInfo request: " + e.getMessage());
+				}
 			}
 
 			@Override
@@ -115,7 +139,7 @@ public class WmsFeatureInfoPanel implements SamplePanel {
 				Window.alert("Something went wrong executing the WMS GetFeatureInfo request: " + reason);
 			}
 		});
-		controller.setGmlCallback(new Callback<List<Feature>, String>() {
+		controller.setFeatureCallback(new Callback<List<Feature>, String>() {
 
 			@Override
 			public void onFailure(String reason) {
@@ -163,7 +187,7 @@ public class WmsFeatureInfoPanel implements SamplePanel {
 	private void initialize() {
 		// Cleanup:
 		if (mapPresenter.getLayersModel().getLayerCount() > 0) {
-			controller.removeLayer((FeaturesSupportedWmsLayer) mapPresenter.getLayersModel().getLayer(0));
+			controller.removeLayer((FeatureInfoSupported) mapPresenter.getLayersModel().getLayer(0));
 		}
 		mapPresenter.getLayersModel().clear();
 		featureContainer.clear();
@@ -179,11 +203,13 @@ public class WmsFeatureInfoPanel implements SamplePanel {
 		layerConfig.setLayers("demo_world:simplified_country_borders");
 		layerConfig.setMaximumResolution(Double.MAX_VALUE);
 		layerConfig.setMinimumResolution(2.1457672119140625E-5);
-		FeaturesSupportedWmsLayer wmsLayer = WmsServerExtension.getInstance().createLayer("Countries",
+		final WmsLayer wmsLayer = WmsClient.getInstance().createLayer("Blue Marble",
 				mapPresenter.getViewPort().getCrs(), tileConfig, layerConfig, null);
 		wmsLayer.setMaxBounds(new Bbox(-180, -90, 360, 360));
 		mapPresenter.getLayersModel().addLayer(wmsLayer);
-		controller.addLayer(wmsLayer);
+		if (wmsLayer instanceof FeatureInfoSupported) {
+			controller.addLayer((FeatureInfoSupported) wmsLayer);
+		}
 	}
 
 	private WmsVersion getWmsVersion() {

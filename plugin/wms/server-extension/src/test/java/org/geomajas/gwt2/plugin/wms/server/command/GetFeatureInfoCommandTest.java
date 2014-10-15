@@ -115,6 +115,34 @@ public class GetFeatureInfoCommandTest {
 		Assert.assertEquals("states.15", feature.getId());
 	}
 
+	@Test
+	public void testTextJsonWms111() throws Exception {
+		WmsGetFeatureInfoResponse response = command.getEmptyCommandResponse();
+		Assert.assertNotNull(response);
+
+		WmsGetFeatureInfoRequest request = new WmsGetFeatureInfoRequest(getFeatureInfoUrl(WmsVersion.V1_1_1,
+				GetFeatureInfoFormat.JSON));
+		command.execute(request, response);
+		Assert.assertNull(response.getWmsResponse());
+		Assert.assertEquals(1, response.getFeatures().size());
+		Feature feature = response.getFeatures().get(0);
+		Assert.assertEquals("states.15", feature.getId());
+	}
+
+	@Test
+	public void testTextJsonWms130() throws Exception {
+		WmsGetFeatureInfoResponse response = command.getEmptyCommandResponse();
+		Assert.assertNotNull(response);
+
+		WmsGetFeatureInfoRequest request = new WmsGetFeatureInfoRequest(getFeatureInfoUrl(WmsVersion.V1_3_0,
+				GetFeatureInfoFormat.JSON));
+		command.execute(request, response);
+		Assert.assertNull(response.getWmsResponse());
+		Assert.assertEquals(1, response.getFeatures().size());
+		Feature feature = response.getFeatures().get(0);
+		Assert.assertEquals("states.15", feature.getId());
+	}
+
 	private String getFeatureInfoUrl(WmsVersion version, GetFeatureInfoFormat format) {
 		String crs = "crs";
 		String x = "i";

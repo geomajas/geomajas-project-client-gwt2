@@ -12,25 +12,26 @@
 package org.geomajas.gwt2.plugin.wms.client;
 
 import com.google.gwt.core.client.Callback;
+
 import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt2.client.map.Hint;
 import org.geomajas.gwt2.client.map.ViewPort;
-import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
 import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
-import org.geomajas.gwt2.plugin.wms.client.layer.FeaturesSupportedWmsLayerImpl;
 import org.geomajas.gwt2.plugin.wms.client.capabilities.WmsLayerInfo;
-import org.geomajas.gwt2.plugin.wms.client.layer.FeaturesSupportedWmsLayer;
+import org.geomajas.gwt2.plugin.wms.client.describelayer.WmsDescribeLayerInfo;
+import org.geomajas.gwt2.plugin.wms.client.describelayer.WmsLayerDescriptionInfo;
+import org.geomajas.gwt2.plugin.wms.client.layer.FeatureInfoSupportedWmsServerLayer;
+import org.geomajas.gwt2.plugin.wms.client.layer.FeatureSearchSupportedWmsServerLayer;
+import org.geomajas.gwt2.plugin.wms.client.layer.WfsLayerConfiguration;
 import org.geomajas.gwt2.plugin.wms.client.layer.WmsLayerConfiguration;
-import org.geomajas.gwt2.plugin.wms.client.service.WmsFeatureService;
-import org.geomajas.gwt2.plugin.wms.client.service.WmsFeatureServiceImpl;
+import org.geomajas.gwt2.plugin.wms.client.service.WmsProxyServiceImpl;
 import org.geomajas.gwt2.plugin.wms.client.service.WmsService;
 import org.geomajas.gwt2.plugin.wms.server.command.dto.WfsDescribeLayerRequest;
 import org.geomajas.gwt2.plugin.wms.server.command.dto.WfsDescribeLayerResponse;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -53,13 +54,13 @@ public final class WmsServerExtension {
 
 	private static WmsServerExtension instance;
 
-	private final WmsFeatureServiceImpl featureService;
+	private final WmsService wmsService;
 
 	private final Map<Hint<?>, Object> hintValues;
 
 	private WmsServerExtension() {
 		this.hintValues = new HashMap<Hint<?>, Object>();
-		this.featureService = new WmsFeatureServiceImpl();
+		this.wmsService = new WmsProxyServiceImpl();
 
 		// Set the default maximum number of coordinates the features of a GetFeatureInfo should contain:
 		setHintValue(GET_FEATUREINFO_MAX_COORDS, -1); // No maximum
@@ -79,42 +80,78 @@ public final class WmsServerExtension {
 	}
 
 	/**
-	 * Find out if a certain WMS layer has support for features.
+	 * Find out if a certain WMS layer has support for features through WFS. If successful the WFS configuration will be
+	 * returned.
 	 *
-	 * @param baseUrl  The base URL to the WMS service.
-	 * @param layerId  The name of the layer.
-	 * @param callback Callback that will be given the answer through a boolean value. If true, it supports features. In
-	 *                 that case, it's best to create a {@link FeaturesSupportedWmsLayer} for it. If it does not support
-	 *                 features, better stick to the default {@link org.geomajas .plugin.wms.client.layer.WmsLayer}.
+	 * @param baseUrl The base URL to the WMS service.
+	 * @param layerId The name of the layer.
+	 * @param callback Callback that will be given the answer through the associated layer configuration.
 	 */
-	public void supportsFeatures(String baseUrl, String layerId, final Callback<Boolean, String> callback) {
-		GwtCommand command = new GwtCommand(WfsDescribeLayerRequest.COMMAND_NAME);
-		command.setCommandRequest(new WfsDescribeLayerRequest(baseUrl, layerId));
-		GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback<WfsDescribeLayerResponse>() {
+	public void supportsFeatures(String baseUrl, WmsService.WmsVersion version, final String typeName,
+			final Callback<WfsLayerConfiguration, String> callback) {
+		wmsService.describeLayer(baseUrl, typeName, version, new Callback<WmsDescribeLayerInfo, String>() {
 
 			@Override
-			public void execute(WfsDescribeLayerResponse response) {
-				callback.onSuccess(response.getAttributeDescriptors() != null && response.getAttributeDescriptors()
-						.size() > 0);
+			public void onSuccess(WmsDescribeLayerInfo describeLayerInfo) {
+				String wfsUrl = null;
+				for (WmsLayerDescriptionInfo layerDescription : describeLayerInfo.getLayerDescriptions()) {
+					if (layerDescription.getWfs() != null) {
+						wfsUrl = layerDescription.getWfs();
+						break;
+					} else if (layerDescription.getOwsType() == WmsLayerDescriptionInfo.WFS) {
+						wfsUrl = layerDescription.getOwsUrl();
+						break;
+					}
+				}
+				if (wfsUrl != null) {
+					// we need an extra call for the schema !!!
+					final String wfsBaseUrl = wfsUrl;
+					GwtCommand command = new GwtCommand(WfsDescribeLayerRequest.COMMAND_NAME);
+					command.setCommandRequest(new WfsDescribeLayerRequest(wfsUrl, typeName));
+					GwtCommandDispatcher.getInstance().execute(command,
+							new AbstractCommandCallback<WfsDescribeLayerResponse>() {
+
+								@Override
+								public void execute(WfsDescribeLayerResponse response) {
+									WfsLayerConfiguration layerConfiguration = new WfsLayerConfiguration(wfsBaseUrl,
+											typeName);
+									layerConfiguration.getDescriptors().addAll(response.getAttributeDescriptors());
+									callback.onSuccess(layerConfiguration);
+								}
+
+							});
+				} else {
+					callback.onFailure("No WFS in layer description");
+				}
+			}
+
+			@Override
+			public void onFailure(String reason) {
+				callback.onFailure(reason);
 			}
 		});
 	}
 
 	/**
-	 * <p>Create a new WMS layer. Use this method if you want to create a WMS layer from a GetCapabilities object you
-	 * have just acquired.</p> <p>This layer does not support a GetFeatureInfo call! If you need that, you'll have to
-	 * use the server extension of this plug-in.</p>
+	 * <p>
+	 * Create a new WMS layer. Use this method if you want to create a WMS layer from a GetCapabilities object you have
+	 * just acquired.
+	 * </p>
+	 * <p>
+	 * This layer does not support a GetFeatureInfo call! If you need that, you'll have to use the server extension of
+	 * this plug-in.
+	 * </p>
 	 *
-	 * @param baseUrl    The WMS base URL. This is the same URL you fed the GetCapabilities call.
-	 * @param version    The WMS version.
-	 * @param layerInfo  The layer info object. Acquired from a WMS GetCapabilities.
-	 * @param viewPort   The ViewPort to take the CRS and fixed resolutions from.
-	 * @param tileWidth  The tile width in pixels.
+	 * @param baseUrl The WMS base URL. This is the same URL you fed the GetCapabilities call.
+	 * @param version The WMS version.
+	 * @param layerInfo The layer info object. Acquired from a WMS GetCapabilities.
+	 * @param viewPort The ViewPort to take the CRS and fixed resolutions from.
+	 * @param tileWidth The tile width in pixels.
 	 * @param tileHeight The tile height in pixels.
 	 * @return A new WMS layer.
 	 */
-	public FeaturesSupportedWmsLayer createLayer(String baseUrl, WmsService.WmsVersion version, WmsLayerInfo layerInfo,
-			ViewPort viewPort, int tileWidth, int tileHeight) {
+	public FeatureInfoSupportedWmsServerLayer createLayer(String baseUrl, WmsService.WmsVersion version,
+			WmsLayerInfo layerInfo, ViewPort viewPort, int tileWidth, int tileHeight) {
 		TileConfiguration tileConf = WmsClient.getInstance().createTileConfig(layerInfo, viewPort, tileWidth,
 				tileHeight);
 		WmsLayerConfiguration layerConf = WmsClient.getInstance().createLayerConfig(layerInfo, baseUrl, version);
@@ -122,37 +159,36 @@ public final class WmsServerExtension {
 	}
 
 	/**
-	 * Create a new WMS layer. This layer extends the default
-	 * {@link org.geomajas.gwt2.plugin.wms.client.layer.WmsLayer} by supporting GetFeatureInfo calls.
+	 * Create a new WMS layer. This layer extends the default {@link org.geomajas.gwt2.plugin.wms.client.layer.WmsLayer}
+	 * by supporting GetFeatureInfo calls.
 	 *
-	 * @param title       The layer title.
-	 * @param crs         The CRS for this layer.
-	 * @param tileConfig  The tile configuration object.
+	 * @param title The layer title.
+	 * @param crs The CRS for this layer.
+	 * @param tileConfig The tile configuration object.
 	 * @param layerConfig The layer configuration object.
-	 * @param layerInfo   The layer info object. Acquired from a WMS GetCapabilities. This is optional.
+	 * @param layerInfo The layer info object. Acquired from a WMS GetCapabilities. This is optional.
 	 * @return A new WMS layer.
 	 */
-	public FeaturesSupportedWmsLayer createLayer(String title, String crs,
-			TileConfiguration tileConfig, WmsLayerConfiguration layerConfig, WmsLayerInfo layerInfo) {
-		return new FeaturesSupportedWmsLayerImpl(title, crs, layerConfig, tileConfig, layerInfo);
+	public FeatureInfoSupportedWmsServerLayer createLayer(String title, String crs, TileConfiguration tileConfig,
+			WmsLayerConfiguration layerConfig, WmsLayerInfo layerInfo) {
+		return new FeatureInfoSupportedWmsServerLayer(title, crs, layerConfig, tileConfig, layerInfo);
 	}
 
 	/**
-	 * Create a new WMS layer. This layer extends the default
-	 * {@link org.geomajas.gwt2.plugin.wms.client.layer.WmsLayer} by supporting GetFeatureInfo calls.
+	 * Create a new WMS layer. This layer extends the default {@link org.geomajas.gwt2.plugin.wms.client.layer.WmsLayer}
+	 * by supporting GetFeatureInfo calls.
 	 *
-	 * @param title         The layer title.
-	 * @param crs           The CRS for this layer.
-	 * @param tileConfig    The tile configuration object.
-	 * @param layerConfig   The layer configuration object.
-	 * @param layerInfo     The layer info object. Acquired from a WMS GetCapabilities. This is optional.
-	 * @param onInitialized Callback that is called when the layer has been initialized.
+	 * @param title The layer title.
+	 * @param crs The CRS for this layer.
+	 * @param tileConfig The tile configuration object.
+	 * @param layerConfig The layer configuration object.
+	 * @param layerInfo The layer info object. Acquired from a WMS GetCapabilities. This is optional.
+	 * @param wfsConfig The WFS configuration.
 	 * @return A new WMS layer.
 	 */
-	public FeaturesSupportedWmsLayer createLayer(String title, String crs,
-			TileConfiguration tileConfig, WmsLayerConfiguration layerConfig, WmsLayerInfo layerInfo,
-			Callback<List<AttributeDescriptor>, String> onInitialized) {
-		return new FeaturesSupportedWmsLayerImpl(title, crs, layerConfig, tileConfig, layerInfo, onInitialized);
+	public FeatureSearchSupportedWmsServerLayer createLayer(String title, String crs, TileConfiguration tileConfig,
+			WmsLayerConfiguration layerConfig, WmsLayerInfo layerInfo, WfsLayerConfiguration wfsConfig) {
+		return new FeatureSearchSupportedWmsServerLayer(title, crs, layerConfig, tileConfig, layerInfo, wfsConfig);
 	}
 
 	/**
@@ -160,14 +196,14 @@ public final class WmsServerExtension {
 	 *
 	 * @return the service.
 	 */
-	public WmsFeatureService getFeatureService() {
-		return featureService;
+	public WmsService getWmsService() {
+		return wmsService;
 	}
 
 	/**
 	 * Apply a new value for a specific WMS hint.
 	 *
-	 * @param hint  The hint to change the value for.
+	 * @param hint The hint to change the value for.
 	 * @param value The new actual value. If the value is null, an IllegalArgumentException is thrown.
 	 */
 	public <T> void setHintValue(Hint<T> hint, T value) {

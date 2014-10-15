@@ -11,17 +11,18 @@
 
 package org.geomajas.gwt2.plugin.wms.client.controller;
 
-import com.google.gwt.core.client.Callback;
-import com.google.gwt.event.dom.client.MouseUpEvent;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt2.client.controller.AbstractMapController;
 import org.geomajas.gwt2.client.map.feature.Feature;
-import org.geomajas.gwt2.plugin.wms.client.layer.FeaturesSupportedWmsLayer;
+import org.geomajas.gwt2.plugin.wms.client.layer.FeatureInfoSupported;
 import org.geomajas.gwt2.plugin.wms.client.service.WmsService.GetFeatureInfoFormat;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.gwt.core.client.Callback;
+import com.google.gwt.event.dom.client.MouseUpEvent;
 
 /**
  * Default map controller that executes WMS GetFeatureInfo requests on the registered layers.
@@ -30,13 +31,13 @@ import java.util.List;
  */
 public class WmsGetFeatureInfoController extends AbstractMapController {
 
-	private final List<FeaturesSupportedWmsLayer> layers;
+	private final List<FeatureInfoSupported> layers;
 
-	private Callback<List<Feature>, String> gmlCallback;
+	private Callback<List<Feature>, String> featureCallback;
 
-	private Callback<Object, String> htmlCallback;
+	private Callback<String, String> htmlCallback;
 
-	private String format = GetFeatureInfoFormat.GML2.toString();
+	private String format = GetFeatureInfoFormat.JSON.toString();
 
 	private int maxCoordsPerFeature = -1;
 
@@ -56,9 +57,9 @@ public class WmsGetFeatureInfoController extends AbstractMapController {
 	 *
 	 * @param layer Immediately add a layer onto which to execute GetFeatureInfo requests.
 	 */
-	public WmsGetFeatureInfoController(FeaturesSupportedWmsLayer layer) {
+	public WmsGetFeatureInfoController(FeatureInfoSupported layer) {
 		super(false);
-		this.layers = new ArrayList<FeaturesSupportedWmsLayer>();
+		this.layers = new ArrayList<FeatureInfoSupported>();
 		if (layer != null) {
 			addLayer(layer);
 		}
@@ -79,18 +80,30 @@ public class WmsGetFeatureInfoController extends AbstractMapController {
 		Coordinate worldLocation = getLocation(event, RenderSpace.WORLD);
 
 		// Now execute the GetFeatureInfo for each layer:
-		for (FeaturesSupportedWmsLayer layer : layers) {
-			if (GetFeatureInfoFormat.GML2.toString().equalsIgnoreCase(format)
-					|| GetFeatureInfoFormat.GML3.toString().equalsIgnoreCase(format)) {
-				if (gmlCallback == null) {
-					throw new IllegalStateException("No callback has been set on the WmsGetFeatureInfoController");
+		for (FeatureInfoSupported layer : layers) {
+			GetFeatureInfoFormat f = GetFeatureInfoFormat.fromFormat(format);
+			if (f != null) {
+				switch (f) {
+					case GML2:
+					case GML3:
+					case JSON:
+						if (featureCallback == null) {
+							throw new IllegalStateException(
+									"No callback has been set on the WmsGetFeatureInfoController");
+						}
+						layer.getFeatureInfo(worldLocation, format, featureCallback);
+						break;
+					case HTML:
+					case TEXT:
+					default:
+						if (htmlCallback == null) {
+							throw new IllegalStateException(
+									"No callback has been set on the WmsGetFeatureInfoController");
+						}
+						htmlCallback.onSuccess(layer.getFeatureInfoUrl(worldLocation, format));
+						break;
+
 				}
-				layer.getFeatureInfo(worldLocation, gmlCallback);
-			} else {
-				if (htmlCallback == null) {
-					throw new IllegalStateException("No callback has been set on the WmsGetFeatureInfoController");
-				}
-				layer.getFeatureInfo(worldLocation, format, htmlCallback);
 			}
 		}
 	}
@@ -100,7 +113,7 @@ public class WmsGetFeatureInfoController extends AbstractMapController {
 	 *
 	 * @param layer The layer to add.
 	 */
-	public void addLayer(FeaturesSupportedWmsLayer layer) {
+	public void addLayer(FeatureInfoSupported layer) {
 		layers.add(layer);
 	}
 
@@ -109,7 +122,7 @@ public class WmsGetFeatureInfoController extends AbstractMapController {
 	 *
 	 * @param layer The layer to remove again.
 	 */
-	public void removeLayer(FeaturesSupportedWmsLayer layer) {
+	public void removeLayer(FeatureInfoSupported layer) {
 		layers.remove(layer);
 	}
 
@@ -137,8 +150,8 @@ public class WmsGetFeatureInfoController extends AbstractMapController {
 	 * @param gmlCallback The callback to execute when the response returns. This response already contains a list of
 	 *                    features, and should not be parsed anymore.
 	 */
-	public void setGmlCallback(Callback<List<Feature>, String> gmlCallback) {
-		this.gmlCallback = gmlCallback;
+	public void setFeatureCallback(Callback<List<Feature>, String> featureCallback) {
+		this.featureCallback = featureCallback;
 	}
 
 	/**
@@ -147,7 +160,7 @@ public class WmsGetFeatureInfoController extends AbstractMapController {
 	 * @param htmlCallback The callback to execute when the response returns. Note that the response is the bare boned
 	 *                     WMS. GetFeatureInfo. It is up to you to parse it.
 	 */
-	public void setHtmlCallback(Callback<Object, String> htmlCallback) {
+	public void setHtmlCallback(Callback<String, String> htmlCallback) {
 		this.htmlCallback = htmlCallback;
 	}
 

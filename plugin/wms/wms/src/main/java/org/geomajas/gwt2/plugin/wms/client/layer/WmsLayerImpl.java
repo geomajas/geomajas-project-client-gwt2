@@ -95,11 +95,11 @@ public class WmsLayerImpl extends AbstractTileBasedLayer implements WmsLayer {
 		if (layerCapabilities != null) {
 			double minSD = layerCapabilities.getMinScaleDenominator();
 			if (minSD > 0) {
-				maxResolution = viewPort.toResolution(minSD);
+				minResolution = viewPort.toResolution(minSD);
 			}
 			double maxSD = layerCapabilities.getMaxScaleDenominator();
 			if (maxSD > 0) {
-				minResolution = viewPort.toResolution(maxSD);
+				maxResolution = viewPort.toResolution(maxSD);
 			}
 		}
 		if (minResolution < 0) {

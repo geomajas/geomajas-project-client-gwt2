@@ -23,7 +23,6 @@ public class PrimitiveAttributeTypeImpl implements PrimitiveAttributeType {
 	private PrimitiveType type;
 
 	public PrimitiveAttributeTypeImpl() {
-		this.type = type;
 	}
 
 	public PrimitiveAttributeTypeImpl(PrimitiveType type) {
@@ -48,19 +47,19 @@ public class PrimitiveAttributeTypeImpl implements PrimitiveAttributeType {
 	public Class<?> getBinding() {
 		switch (type) {
 			case BOOLEAN:
-				return boolean.class;
+				return Boolean.class;
 			case DATE:
 				return Date.class;
 			case DOUBLE:
-				return double.class;
+				return Double.class;
 			case SHORT:
-				return short.class;
+				return Short.class;
 			case INTEGER:
-				return int.class;
+				return Integer.class;
 			case LONG:
-				return long.class;
+				return Long.class;
 			case FLOAT:
-				return float.class;
+				return Float.class;
 			case STRING:
 			default:
 				return String.class;

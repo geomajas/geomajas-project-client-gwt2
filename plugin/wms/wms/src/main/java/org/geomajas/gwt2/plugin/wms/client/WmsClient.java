@@ -17,6 +17,7 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
 import org.geomajas.gwt2.plugin.wms.client.capabilities.WmsLayerInfo;
+import org.geomajas.gwt2.plugin.wms.client.layer.FeatureInfoSupportedWmsLayer;
 import org.geomajas.gwt2.plugin.wms.client.layer.WmsLayer;
 import org.geomajas.gwt2.plugin.wms.client.layer.WmsLayerImpl;
 import org.geomajas.gwt2.plugin.wms.client.service.WmsService;
@@ -92,7 +93,11 @@ public final class WmsClient {
 	 */
 	public WmsLayer createLayer(String title, String crs, TileConfiguration tileConfig,
 								WmsLayerConfiguration layerConfig, WmsLayerInfo layerInfo) {
-		return new WmsLayerImpl(title, crs, layerConfig, tileConfig, layerInfo);
+		if (layerInfo == null || layerInfo.isQueryable()) {
+			return new FeatureInfoSupportedWmsLayer(title, crs, layerConfig, tileConfig, layerInfo);
+		} else {
+			return new WmsLayerImpl(title, crs, layerConfig, tileConfig, layerInfo);
+		}
 	}
 
 	/**

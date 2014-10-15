@@ -19,7 +19,7 @@ import org.geomajas.gwt2.example.base.client.sample.ShowcaseSampleDefinition;
 import org.geomajas.gwt2.plugin.wms.example.client.i18n.ServerSampleMessages;
 import org.geomajas.gwt2.plugin.wms.example.client.sample.WmsSearchByLocationPanel;
 import org.geomajas.gwt2.plugin.wms.example.client.sample.IsFeaturesSupportedPanel;
-import org.geomajas.gwt2.plugin.wms.example.client.sample.WmsFeatureInfoPanel;
+import org.geomajas.gwt2.plugin.wms.example.client.sample.WmsServerFeatureInfoPanel;
 
 /**
  * Entry point and main class for the GWT client example application.
@@ -44,7 +44,7 @@ public class ServerExampleJar implements EntryPoint {
 		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
 
 			public SamplePanel create() {
-				return new WmsFeatureInfoPanel();
+				return new WmsServerFeatureInfoPanel();
 			}
 
 			public String getTitle() {
@@ -65,7 +65,7 @@ public class ServerExampleJar implements EntryPoint {
 
 			@Override
 			public String getKey() {
-				return "wmsgetfeatureinfo";
+				return "wmsservergetfeatureinfo";
 			}
 		});
 		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {

@@ -11,6 +11,28 @@
 
 package org.geomajas.gwt2.plugin.wms.client.service;
 
+import java.util.List;
+
+import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt2.client.map.ViewPort;
+import org.geomajas.gwt2.client.map.feature.Feature;
+import org.geomajas.gwt2.client.map.feature.FeatureCollection;
+import org.geomajas.gwt2.client.map.feature.JsonFeatureFactory;
+import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
+import org.geomajas.gwt2.client.map.layer.LegendConfig;
+import org.geomajas.gwt2.client.map.render.TileCode;
+import org.geomajas.gwt2.client.service.JsonService;
+import org.geomajas.gwt2.client.service.TileService;
+import org.geomajas.gwt2.plugin.wms.client.capabilities.WmsGetCapabilitiesInfo;
+import org.geomajas.gwt2.plugin.wms.client.capabilities.v1_1_1.WmsGetCapabilitiesInfo111;
+import org.geomajas.gwt2.plugin.wms.client.capabilities.v1_3_0.WmsGetCapabilitiesInfo130;
+import org.geomajas.gwt2.plugin.wms.client.describelayer.WmsDescribeLayerInfo;
+import org.geomajas.gwt2.plugin.wms.client.describelayer.v1_1_1.WmsDescribeLayerInfo111;
+import org.geomajas.gwt2.plugin.wms.client.layer.WmsLayer;
+import org.geomajas.gwt2.plugin.wms.client.layer.WmsLayerConfiguration;
+import org.geomajas.gwt2.plugin.wms.client.layer.WmsServiceVendor;
+
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
@@ -20,16 +42,9 @@ import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.i18n.client.NumberFormat;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
-
-import org.geomajas.geometry.Bbox;
-import org.geomajas.gwt2.client.map.layer.LegendConfig;
-import org.geomajas.gwt2.plugin.wms.client.capabilities.WmsGetCapabilitiesInfo;
-import org.geomajas.gwt2.plugin.wms.client.capabilities.v1_1_1.WmsGetCapabilitiesInfo111;
-import org.geomajas.gwt2.plugin.wms.client.capabilities.v1_3_0.WmsGetCapabilitiesInfo130;
-import org.geomajas.gwt2.plugin.wms.client.layer.WmsLayerConfiguration;
-import org.geomajas.gwt2.plugin.wms.client.layer.WmsServiceVendor;
 
 /**
  * Default implementation of the {@link WmsService}.
@@ -45,6 +60,8 @@ public class WmsServiceImpl implements WmsService {
 
 	private static final int LEGEND_DPI = 91;
 
+	private static final int DEFAULT_MAX_FEATURES = 20; // Default maximum number of feats returned by GetFeatureInfo
+
 	protected WmsUrlTransformer urlTransformer;
 
 	protected RequestBuilderFactory requestBuilderFactory;
@@ -53,11 +70,14 @@ public class WmsServiceImpl implements WmsService {
 
 	protected UrlEncoder urlEncoder;
 
+	protected JsonFeatureFactory jsonFeatureFactory;
+
 	// ------------------------------------------------------------------------
 	// WmsService implementation:
 	// ------------------------------------------------------------------------
 
 	public WmsServiceImpl() {
+		jsonFeatureFactory = new JsonFeatureFactory();
 		setRequestBuilderFactory(new RequestBuilderFactory() {
 
 			@Override
@@ -128,6 +148,100 @@ public class WmsServiceImpl implements WmsService {
 	}
 
 	@Override
+	public void describeLayer(String baseUrl, String layers, final WmsVersion version,
+			final Callback<WmsDescribeLayerInfo, String> callback) {
+		// looks like geoserver fails for versions other than 1.1.1 ?
+		// force 1.1.1 until more info on https://jira.codehaus.org/browse/GEOS-5918
+		final WmsVersion localVersion = WmsVersion.V1_1_1;
+		String url = describeLayerUrl(baseUrl, layers, localVersion);
+		RequestBuilder builder = requestBuilderFactory.create(RequestBuilder.GET, url);
+		try {
+			builder.sendRequest(null, new RequestCallback() {
+
+				public void onError(Request request, Throwable e) {
+					callback.onFailure(e.getMessage());
+				}
+
+				public void onResponseReceived(Request request, Response response) {
+					if (200 == response.getStatusCode()) {
+						try {
+							Document messageDom = XMLParser.parse(response.getText());
+							WmsDescribeLayerInfo describeLayerInfo = null;
+							switch (localVersion) {
+								case V1_1_1:
+									describeLayerInfo = new WmsDescribeLayerInfo111(messageDom.getDocumentElement());
+									break;
+								case V1_3_0:
+								default:
+									callback.onFailure("Unsupported version");
+									return;
+							}
+							callback.onSuccess(describeLayerInfo);
+						} catch (Throwable t) {
+							callback.onFailure(t.getMessage());
+						}
+					} else {
+						callback.onFailure(response.getText());
+					}
+				}
+			});
+		} catch (RequestException e) {
+			// Couldn't connect to server
+			callback.onFailure(e.getMessage());
+		}
+	}
+
+	@Override
+	public void getFeatureInfo(ViewPort viewPort, WmsLayer wmsLayer, Coordinate location,
+			final Callback<List<Feature>, String> callback) {
+		getFeatureInfo(viewPort, wmsLayer, location, GetFeatureInfoFormat.JSON.toString(), callback);
+	}
+
+	@Override
+	public void getFeatureInfo(ViewPort viewPort, final WmsLayer wmsLayer, Coordinate location, String format,
+			final Callback<List<Feature>, String> callback) {
+		final String url = getFeatureInfoUrl(viewPort, wmsLayer, location, format.toString());
+
+		// we can only handle json for now
+		if (!GetFeatureInfoFormat.JSON.toString().equals(format)) {
+			callback.onFailure("Client does not support " + format + " format");
+		}
+		RequestBuilder builder = requestBuilderFactory.create(RequestBuilder.GET, url);
+		try {
+			builder.sendRequest(null, new RequestCallback() {
+
+				public void onError(Request request, Throwable e) {
+					callback.onFailure(e.getMessage());
+				}
+
+				public void onResponseReceived(Request request, Response response) {
+					if (200 == response.getStatusCode()) {
+						JSONValue jsonValue = JsonService.parse(response.getText());
+						FeatureCollection featureCollection;
+						if (jsonValue.isObject() != null) {
+							if (wmsLayer instanceof FeaturesSupported) {
+								FeaturesSupported featuresSupported = (FeaturesSupported) wmsLayer;
+								featureCollection = jsonFeatureFactory.createCollection(jsonValue.isObject(),
+										featuresSupported);
+							} else {
+								featureCollection = jsonFeatureFactory.createCollection(jsonValue.isObject(), null);
+							}
+							callback.onSuccess(featureCollection.getFeatures());
+						} else if (jsonValue.isNull() != null) {
+							callback.onFailure("Response was empty");
+						}
+					} else {
+						callback.onFailure(response.getText());
+					}
+				}
+			});
+		} catch (RequestException e) {
+			// Couldn't connect to server
+			callback.onFailure(e.getMessage());
+		}
+	}
+
+	@Override
 	public String getMapUrl(WmsLayerConfiguration wmsConfig, Bbox worldBounds, int imageWidth, int imageHeight) {
 		StringBuilder url = getBaseUrlBuilder(wmsConfig);
 
@@ -138,6 +252,53 @@ public class WmsServiceImpl implements WmsService {
 		url.append("&request=GetMap");
 
 		return finishUrl(WmsRequest.GETMAP, url);
+	}
+
+	@Override
+	public String getFeatureInfoUrl(WmsLayer layer, Coordinate location, Bbox worldBounds, double resolution,
+			String format, int maxFeatures) {
+		StringBuilder url = getBaseUrlBuilder(layer.getConfiguration());
+		int x = (int) (Math.round(location.getX() - worldBounds.getX()) / resolution);
+		int y = (int) (Math.round(worldBounds.getMaxY() - location.getY()) / resolution);
+		int width = (int) (Math.round(worldBounds.getWidth() / resolution));
+		int height = (int) (Math.round(worldBounds.getHeight() / resolution));
+
+		// Add the base parameters needed for getMap:
+		addBaseParameters(url, layer.getConfiguration(), worldBounds, width, height);
+
+		url.append("&QUERY_LAYERS=");
+		url.append(layer.getConfiguration().getLayers()); // No URL.encode here!
+		url.append("&request=GetFeatureInfo");
+		switch (layer.getConfiguration().getVersion()) {
+			case V1_3_0:
+				url.append("&I=");
+				url.append(x);
+				url.append("&J=");
+				url.append(y);
+				break;
+			case V1_1_1:
+			default:
+				url.append("&X=");
+				url.append(x);
+				url.append("&Y=");
+				url.append(y);
+		}
+		url.append("&FEATURE_COUNT=");
+		url.append(maxFeatures);
+		url.append("&INFO_FORMAT=");
+		url.append(format.toString());
+
+		return finishUrl(WmsRequest.GETFEATUREINFO, url);
+	}
+
+	public String getFeatureInfoUrl(ViewPort viewPort, final WmsLayer wmsLayer, Coordinate location, String format) {
+		TileCode tileCode = TileService.getTileCodeForLocation(wmsLayer.getTileConfiguration(), location,
+				viewPort.getResolution());
+		Bbox worldBounds = TileService.getWorldBoundsForTile(wmsLayer.getTileConfiguration(), tileCode);
+
+		final String url = getFeatureInfoUrl(wmsLayer, location, worldBounds, viewPort.getResolution(), format,
+				DEFAULT_MAX_FEATURES);
+		return url;
 	}
 
 	// ------------------------------------------------------------------------
@@ -364,6 +525,31 @@ public class WmsServiceImpl implements WmsService {
 		url.append("&request=GetCapabilities");
 
 		return finishUrl(WmsRequest.GETCAPABILITIES, url);
+	}
+
+	protected String describeLayerUrl(String baseUrl, String layers, WmsVersion version) {
+		StringBuilder url = new StringBuilder(baseUrl);
+
+		// Parameter: Service
+		int pos = url.lastIndexOf("?");
+		if (pos > 0) {
+			url.append("&service=WMS");
+		} else {
+			url.append("?service=WMS");
+		}
+
+		// Parameter: Version
+		url.append("&version=");
+		url.append(version.toString());
+
+		// Parameter: request type
+		url.append("&request=DescribeLayer");
+
+		// Parameter: layers
+		url.append("&layers=");
+		url.append(layers); // No URL.encode here, performed in finishUrl
+
+		return finishUrl(WmsRequest.DESCRIBELAYER, url);
 	}
 
 	// ------------------------------------------------------------------------
