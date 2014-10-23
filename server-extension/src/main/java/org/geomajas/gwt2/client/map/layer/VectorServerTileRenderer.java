@@ -12,6 +12,7 @@
 package org.geomajas.gwt2.client.map.layer;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
 import org.geomajas.gwt2.client.map.render.TileCode;
 import org.geomajas.gwt2.client.map.render.TileRenderer;
@@ -53,6 +54,10 @@ public class VectorServerTileRenderer implements TileRenderer {
 		urlBuilder.append("&tileOrigin=" + tileOrigin.getX() + "," + tileOrigin.getY());
 		urlBuilder.append("&tileWidth=" + tileWidth);
 		urlBuilder.append("&tileHeight=" + tileHeight);
+		if (GwtCommandDispatcher.getInstance().getUserToken() != null) {
+			urlBuilder.append("&userToken=");
+			urlBuilder.append(GwtCommandDispatcher.getInstance().getUserToken());
+		}
 		return urlBuilder.toString();
 	}
 
