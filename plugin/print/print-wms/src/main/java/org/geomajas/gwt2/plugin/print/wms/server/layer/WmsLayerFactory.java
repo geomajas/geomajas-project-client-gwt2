@@ -34,6 +34,10 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import javax.annotation.PreDestroy;
 
 /**
  * This factory creates a GeoTools layer that is capable of rendering WMS layers.
@@ -53,6 +57,14 @@ public class WmsLayerFactory implements LayerFactory {
 	@Autowired
 	private LayerHttpService httpService;
 
+	private ExecutorService imageThreadPool;
+
+	private static final int THREADS_PER_CORE = 15;
+
+	public WmsLayerFactory() {
+		int cpus = Runtime.getRuntime().availableProcessors();
+		imageThreadPool = Executors.newFixedThreadPool(cpus * THREADS_PER_CORE);
+	}
 
 	public boolean canCreateLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) {
 		return clientLayerInfo instanceof WmsClientLayerInfo;
@@ -67,22 +79,22 @@ public class WmsLayerFactory implements LayerFactory {
 		RasterLayerRasterizingInfo extraInfo = (RasterLayerRasterizingInfo) rasterInfo
 				.getWidgetInfo(RasterLayerRasterizingInfo.WIDGET_KEY);
 		List<RasterTile> tiles = rasterInfo.getTiles();
-		
+
 		for (RasterTile rasterTile : tiles) {
 			if (null != rasterTile.getUrl() && !rasterTile.getUrl().isEmpty()) {
-				rasterTile.setUrl(calculateUrl(rasterTile.getUrl()));				
+				rasterTile.setUrl(calculateUrl(rasterTile.getUrl()));
 			}
 		}
 
 		final RasterLayer layer = configurationService.getRasterLayer(clientLayerInfo.getServerLayerId());
-		RasterDirectLayer rasterLayer = new RasterDirectLayer(new UrlDownLoader() {
+		RasterDirectLayer rasterLayer = new RasterDirectLayer(imageThreadPool, new UrlDownLoader() {
 
-			@Override
-			public InputStream getStream(String url) throws IOException {
-				return httpService.getStream(url, layer);
-			}
-		}, tiles, rasterInfo.getTileHeight(), rasterInfo.getTileWidth(), rasterInfo.getScale(),
-		extraInfo.getCssStyle());
+				@Override
+				public InputStream getStream(String url) throws IOException {
+					return httpService.getStream(url, layer);
+				}
+			}, tiles,
+			rasterInfo.getTileHeight(), rasterInfo.getTileWidth(), rasterInfo.getScale(), extraInfo.getCssStyle());
 		rasterLayer.setTitle(clientLayerInfo.getLabel());
 		rasterLayer.getUserData().put(USERDATA_KEY_LAYER_ID, rasterInfo.getId());
 		rasterLayer.getUserData().put(USERDATA_KEY_SHOWING, extraInfo.isShowing());
@@ -96,7 +108,12 @@ public class WmsLayerFactory implements LayerFactory {
 		userData.put(USERDATA_KEY_SHOWING, extraInfo.isShowing());
 		return userData;
 	}
-	
+
+	@PreDestroy
+	public void preDestroy() {
+		imageThreadPool.shutdown();
+	}
+
 	private String calculateUrl(String urlAsString) {
 		URL absoluteUrl = null;
 
@@ -104,13 +121,13 @@ public class WmsLayerFactory implements LayerFactory {
 
 			try {
 				String baseUrlAsString = dispatcherUrlService.getLocalDispatcherUrl();
-				
+
 				URL baseUrl = new URL(baseUrlAsString);
 				absoluteUrl = new URL(baseUrl, "../" + urlAsString);
-				
+
 			} catch (MalformedURLException e) {
 				// Should never happen...
-				//log.error("Error converting URL " + legendImageServiceUrlAsString + " to absolute URL", e);
+				// log.error("Error converting URL " + legendImageServiceUrlAsString + " to absolute URL", e);
 				e.printStackTrace();
 			}
 		} else {
@@ -118,11 +135,11 @@ public class WmsLayerFactory implements LayerFactory {
 				absoluteUrl = new URL(urlAsString);
 			} catch (MalformedURLException e) {
 				// Should never happen...
-				//log.error("Error converting URL " + legendImageServiceUrlAsString + " to absolute URL", e);
+				// log.error("Error converting URL " + legendImageServiceUrlAsString + " to absolute URL", e);
 				e.printStackTrace();
 			}
 		}
-		
+
 		return absoluteUrl.toExternalForm();
 	}
 }
