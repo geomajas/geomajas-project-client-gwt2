@@ -37,6 +37,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 /**
@@ -59,11 +60,14 @@ public class WmsLayerFactory implements LayerFactory {
 
 	private ExecutorService imageThreadPool;
 
-	private static final int THREADS_PER_CORE = 15;
+	private int threadsPerCore = 30;
 
-	public WmsLayerFactory() {
-		int cpus = Runtime.getRuntime().availableProcessors();
-		imageThreadPool = Executors.newFixedThreadPool(cpus * THREADS_PER_CORE);
+	public int getThreadsPerCore() {
+		return threadsPerCore;
+	}
+	
+	public void setThreadsPerCore(int threadsPerCore) {
+		this.threadsPerCore = threadsPerCore;
 	}
 
 	public boolean canCreateLayer(MapContext mapContext, ClientLayerInfo clientLayerInfo) {
@@ -107,6 +111,12 @@ public class WmsLayerFactory implements LayerFactory {
 				.getWidgetInfo(RasterLayerRasterizingInfo.WIDGET_KEY);
 		userData.put(USERDATA_KEY_SHOWING, extraInfo.isShowing());
 		return userData;
+	}
+	
+	@PostConstruct
+	public void postConstruct() {
+		int cpus = Runtime.getRuntime().availableProcessors();
+		imageThreadPool = Executors.newFixedThreadPool(cpus * threadsPerCore);
 	}
 
 	@PreDestroy
