@@ -8,10 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonProcessingException;
-import org.codehaus.jackson.map.ObjectMapper;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONBoolean;
 import com.google.gwt.json.client.JSONNumber;
@@ -31,7 +30,7 @@ public class JsonTestUtil {
 	private static JSONValue toGoogle(JsonNode node) {
 		if (node.isObject()) {
 			TestJSONObject object = new TestJSONObject();
-			for (Iterator<String> it = node.getFieldNames(); it.hasNext();) {
+			for (Iterator<String> it = node.fieldNames(); it.hasNext();) {
 				String key = it.next();
 				object.put(key, toGoogle(node.get(key)));
 			}
@@ -43,13 +42,13 @@ public class JsonTestUtil {
 			}
 			return array;
 		} else if (node.isBoolean()) {
-			JSONBoolean b = JSONBoolean.getInstance(node.getBooleanValue());
+			JSONBoolean b = JSONBoolean.getInstance(node.booleanValue());
 			return b;
 		} else if (node.isNumber()) {
-			JSONNumber n = new JSONNumber(node.getDoubleValue());
+			JSONNumber n = new JSONNumber(node.doubleValue());
 			return n;
 		} else if (node.isTextual()) {
-			JSONString s = new JSONString(node.getTextValue());
+			JSONString s = new JSONString(node.textValue());
 			return s;
 		}
 		return null;
