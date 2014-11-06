@@ -52,6 +52,7 @@ public class PrintExampleCustomViewPanel extends PrintExamplePanel {
 		optionsPrintPanel.getOptionsToShowConfiguration().setShowRasterDpiOption(true);
 		optionsPrintPanel.getOptionsToShowConfiguration().setShowPostPrintActionOption(true);
 		optionsPrintPanel.getOptionsToShowConfiguration().setShowFileNameOption(true);
+		optionsPrintPanel.getOptionsToShowConfiguration().setShowSyncOption(true);
 		optionsPrintPanel.createViewBasedOnConfiguration();
 
 		return new PrintWidget(getMapPresenter(), APPLICATION_ID, optionsPrintPanel);

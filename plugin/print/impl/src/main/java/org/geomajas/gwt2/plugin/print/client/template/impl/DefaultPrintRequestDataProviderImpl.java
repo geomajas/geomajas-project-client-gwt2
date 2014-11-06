@@ -31,6 +31,7 @@ public final class DefaultPrintRequestDataProviderImpl implements DefaultPrintRe
 			= new DefaultTemplateBuilderDataProviderImpl();
 	private PrintConfiguration.PostPrintAction defaultPostPrintAction = PrintConfiguration.PostPrintAction.OPEN;
 	private String defaultFileName = MESSAGES.defaultPrintFileName();
+	private boolean defaultSync;
 
 	/* getters */
 	@Override
@@ -52,8 +53,14 @@ public final class DefaultPrintRequestDataProviderImpl implements DefaultPrintRe
 	public String getFileName() {
 		return defaultFileName;
 	}
+	
+	@Override
+	public boolean isSync() {
+		return defaultSync;
+	}
 
 	/* setters */
+
 
 	@Override
 	public void setFileName(String fileName) {
@@ -64,6 +71,12 @@ public final class DefaultPrintRequestDataProviderImpl implements DefaultPrintRe
 	public void setPostPrintAction(PrintConfiguration.PostPrintAction postPrintAction) {
 		this.defaultPostPrintAction = postPrintAction;
 	}
+	
+	@Override
+	public void setSync(boolean sync) {
+		this.defaultSync = sync;
+	}
+
 
 	/**
 	 * Private default implementation of {@link TemplateBuilderDataProvider}.
@@ -135,6 +148,7 @@ public final class DefaultPrintRequestDataProviderImpl implements DefaultPrintRe
 		@Override
 		public void setWithScaleBar(boolean withScaleBar) {
 			this.defaultWithScaleBar = withScaleBar;
-		}
+		}		
+		
 	}
 }

@@ -46,7 +46,7 @@
 
 	<properties>
 		<!-- geomajas versions -->
-		<gwt2-client-version-geomajas-server>1.16.2</gwt2-client-version-geomajas-server>
+		<gwt2-client-version-geomajas-server>1.17.0-SNAPSHOT</gwt2-client-version-geomajas-server>
 		<gwt2-client-version-geomajas-build-tools>2.4.0</gwt2-client-version-geomajas-build-tools>
 		<!-- gwt versions -->
 		<gwt2-client-version-gwt>2.5.1</gwt2-client-version-gwt>
@@ -68,6 +68,8 @@
 		<gwt2-client-version-selenium>2.39.0</gwt2-client-version-selenium>
 		<gwt2-client-version-gwtmockito>1.1.4</gwt2-client-version-gwtmockito>
 		<gwt2-client-version-mockito>1.9.5</gwt2-client-version-mockito>
+		<gwt2-client-version-gwt-jackson>0.6.2</gwt2-client-version-gwt-jackson>
+		<gwt2-client-version-jackson>2.4.3</gwt2-client-version-jackson>
 	</properties>
 
 	<dependencyManagement>
@@ -284,15 +286,21 @@
 
 			<!-- Other dependencies -->
 			<dependency>
-				<groupId>org.codehaus.jackson</groupId>
-				<artifactId>jackson-core-lgpl</artifactId>
-				<version>1.6.4</version>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-core</artifactId>
+				<version>${gwt2-client-version-jackson}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.codehaus.jackson</groupId>
-				<artifactId>jackson-mapper-lgpl</artifactId>
-				<version>1.6.4</version>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-annotations</artifactId>
+				<version>${gwt2-client-version-jackson}</version>
 			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${gwt2-client-version-jackson}</version>
+			</dependency>
+
 			<dependency>
 				<groupId>jdom</groupId>
 				<artifactId>jdom</artifactId>
@@ -382,6 +390,12 @@
 				<groupId>org.vaadin.addons</groupId>
 				<artifactId>gwt-graphics</artifactId>
 				<version>${gwt2-client-version-vaadin-graphics}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>com.github.nmorel.gwtjackson</groupId>
+				<artifactId>gwt-jackson</artifactId>
+				<version>${gwt2-client-version-gwt-jackson}</version>
 			</dependency>
 
 			<dependency>

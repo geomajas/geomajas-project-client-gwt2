@@ -80,6 +80,11 @@ public abstract class DefaultDataProviderPrintWidgetView implements PrintWidgetV
 	}
 
 	@Override
+	public boolean isSync() {
+		return defaultPrintRequestDataProvider.isSync();
+	}
+
+	@Override
 	public String getFileName() {
 		return defaultPrintRequestDataProvider.getFileName();
 	}

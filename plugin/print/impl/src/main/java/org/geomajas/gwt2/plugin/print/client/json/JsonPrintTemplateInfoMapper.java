@@ -8,28 +8,18 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.plugin.print.client.util;
+package org.geomajas.gwt2.plugin.print.client.json;
 
+import org.geomajas.plugin.printing.command.dto.PrintTemplateInfo;
+
+import com.github.nmorel.gwtjackson.client.ObjectMapper;
 
 /**
- * Url parameter keys for the print url buildup.
+ * GWT jackson mapper for the print template.
  * 
- * @author An Buyle
- * @author Jan Venstermans
- * 
+ * @author Jan De Moerloose
+ *
  */
-public interface PrintUrlParameterKey {
-
-	String URL_PATH = "printing";
-
-	String URL_DOCUMENT_ID = "documentId";
-
-	String URL_NAME = "name";
-
-	String URL_TOKEN = "userToken";
-
-	String URL_DOWNLOAD = "download";
-
-	String URL_TEMPLATE = "template";
+public interface JsonPrintTemplateInfoMapper extends ObjectMapper<PrintTemplateInfo> {
 
 }

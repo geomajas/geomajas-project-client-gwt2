@@ -41,4 +41,10 @@ public interface PrintRequestDataProvider {
 	 * @return
 	 */
 	String getFileName();
+	
+	/**
+	 * Is the service synchronous.
+	 * @return
+	 */
+	boolean isSync();
 }

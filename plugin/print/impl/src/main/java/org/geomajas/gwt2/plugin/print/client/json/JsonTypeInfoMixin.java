@@ -8,28 +8,19 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.plugin.print.client.util;
+package org.geomajas.gwt2.plugin.print.client.json;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
 /**
- * Url parameter keys for the print url buildup.
+ * Mixin to add type info to our DTO classes.
  * 
- * @author An Buyle
- * @author Jan Venstermans
- * 
+ * @author Jan De Moerloose
+ *
  */
-public interface PrintUrlParameterKey {
-
-	String URL_PATH = "printing";
-
-	String URL_DOCUMENT_ID = "documentId";
-
-	String URL_NAME = "name";
-
-	String URL_TOKEN = "userToken";
-
-	String URL_DOWNLOAD = "download";
-
-	String URL_TEMPLATE = "template";
+@JsonTypeInfo(use = Id.CLASS, include = As.PROPERTY, property = "class")
+public class JsonTypeInfoMixin {
 
 }

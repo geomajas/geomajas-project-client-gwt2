@@ -55,4 +55,7 @@ public interface PrintMessages extends Messages {
 	String printPrefsFileName();
 	String printPrefsFileNameTooltip();
 	String defaultPrintFileName();
+	
+	String printPrefsSync();	
+	String printPrefsSyncTooltip();
 }

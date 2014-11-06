@@ -178,6 +178,8 @@ public class PrintExamplePrintServicePanel implements SamplePanel {
 		public Integer getRasterDpi() {
 			return 200;
 		}
+		
+		
 	}
 
 }

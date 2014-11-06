@@ -39,6 +39,12 @@ public interface DefaultPrintRequestDataProvider extends PrintRequestDataProvide
 	 * @param postPrintAction
 	 */
 	void setPostPrintAction(PrintConfiguration.PostPrintAction postPrintAction);
+	
+	/**
+	 * Should the service be called synchronously (using JSON POST) or asynchronously ?
+	 * @param sync
+	 */
+	void setSync(boolean sync);
 
 	/**
 	 * Setter extension of {@link TemplateBuilderDataProvider}.
