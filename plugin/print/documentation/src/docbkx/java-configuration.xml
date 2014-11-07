@@ -23,23 +23,26 @@
 
     <programlisting>org.geomajas.gwt2.plugin.print.client.Print</programlisting>
 
-	   <para>This class provides access to the client bundle factory and view factory that are used
-		   in the creation of the Print Widget. Both factories can be overwritten by customized classes.</para>
+    <para>This class provides access to the client bundle factory and view
+    factory that are used in the creation of the Print Widget. Both factories
+    can be overwritten by customized classes.</para>
 
-	  <para>The <code>Print</code> class also provides access to a <code>PrintService</code>. This service allows
-	  to create a print request without the need for a widget of view.</para>
+    <para>The <code>Print</code> class also provides access to a
+    <code>PrintService</code>. This service allows to create a print request
+    without the need for a widget of view.</para>
 
-	  <para><code>Print</code> contains a <code>PrintUtil</code> reference.</para>
-
+    <para><code>Print</code> contains a <code>PrintUtil</code>
+    reference.</para>
   </section>
 
-	<section>
-		<title>Calling the PrintService without the PrintWidget.</title>
+  <section>
+    <title>Calling the PrintService without the PrintWidget.</title>
 
-		<para>It is possible to use the print plugin without the widget. The information that is necessary to build the pdf
-		can also be provided by encoding. A simple example can be found below:</para>
+    <para>It is possible to use the print plugin without the widget. The
+    information that is necessary to build the pdf can also be provided by
+    encoding. A simple example can be found below:</para>
 
-		<programlisting>// create a custom TemplateBuilderDataProvider. This is an object that provides for all the data necessary for a TemplatBuilder.
+    <programlisting>// create a custom TemplateBuilderDataProvider. This is an object that provides for all the data necessary for a TemplatBuilder.
 TemplateBuilderDataProvider customDataProvider = new CustomTemplateBuilderDataProvider();
 // create a PrintTemplateInfo object. TemplateBuilder can be customized, here we use DefaultTemplateBuilder
 PrintTemplateInfo printTemplateInfo = Print.getInstance().getPrintUtil().createPrintTemplateInfo(mapPresenter, applicationId, new DefaultTemplateBuilder(), customDataProvider);
@@ -48,9 +51,8 @@ PrintRequestInfo printRequestInfo = new PrintRequestInfo();
 printRequestInfo.setFileName("customFileName");
 printRequestInfo.setPostPrintAction(PrintConfiguration.PostPrintAction.SAVE);
 printRequestInfo.setPrintTemplateInfo(printTemplateInfo);
+printRequestInfo.setSync(true); // if true, a single HTTP POST request is issued and the print is completely stateless on the server side
 // call the print method. The PrintRequestHandler can also be customized
 Print.getInstance().getPrintService().print(printRequestInfo, new DefaultPrintRequestHandler());</programlisting>
-	</section>
-
-
+  </section>
 </chapter>
