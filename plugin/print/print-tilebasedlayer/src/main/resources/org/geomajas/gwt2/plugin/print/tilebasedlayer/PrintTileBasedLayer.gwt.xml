@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-
 <!--
   ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
   ~
@@ -10,11 +8,11 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
+<module>
+    <inherits name="org.geomajas.gwt2.plugin.wms.GeomajasClientPluginWms"/>
+    <inherits name="org.geomajas.plugin.rasterizing.RasterizingDto"/>
 
-<module rename-to="examplejar">
-	<inherits name='org.geomajas.gwt2.example.base.ExampleBase' />
-	<inherits name='org.geomajas.gwt2.plugin.print.PrintGwt2' />
-	<inherits name='org.geomajas.gwt2.plugin.print.tilebasedlayer.PrintTileBasedLayer' />
-    <entry-point class="org.geomajas.gwt2.plugin.print.example.client.ExampleJar"/>
-	<source path='client'/>
+    <!-- Source for this plug-in -->
+    <source path="client" />
+    <source path="server/dto" />
 </module>
