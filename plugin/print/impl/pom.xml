@@ -40,7 +40,6 @@
 		<dependency>
 			<groupId>com.github.nmorel.gwtjackson</groupId>
 			<artifactId>gwt-jackson</artifactId>
-			<scope>provided</scope>
 		</dependency>
 
 		<!-- Google dependencies -->
