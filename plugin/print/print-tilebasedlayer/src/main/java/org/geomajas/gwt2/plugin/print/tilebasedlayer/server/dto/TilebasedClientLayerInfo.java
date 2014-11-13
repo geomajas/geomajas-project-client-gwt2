@@ -10,15 +10,15 @@
  */
 package org.geomajas.gwt2.plugin.print.tilebasedlayer.server.dto;
 
-import org.geomajas.configuration.client.ClientLayerInfo;
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt2.client.map.layer.tile.TileBasedLayer;
-import org.geomajas.layer.tile.RasterTile;
-
 import java.util.List;
 
+import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.layer.tile.RasterTile;
+
 /**
- * {@link org.geomajas.configuration.client.ClientLayerInfo} for {@link TileBasedLayer} instances.
+ * {@link org.geomajas.configuration.client.ClientLayerInfo} for
+ * {@link org.geomajas.gwt2.client.map.layer.tile.TileBasedLayer} instances.
  * 
  * @author Jan De Moerloose
  * 

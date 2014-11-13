@@ -11,10 +11,13 @@
 package org.geomajas.gwt2.plugin.print.client;
 
 
-import com.google.gwt.core.client.GWT;
 import org.geomajas.annotation.Api;
+import org.geomajas.gwt2.plugin.print.client.layerbuilder.PrintableLayerBuilder;
+import org.geomajas.gwt2.plugin.print.client.template.impl.DefaultPrintableMapBuilder;
 import org.geomajas.gwt2.plugin.print.client.util.PrintUtil;
 import org.geomajas.gwt2.plugin.print.client.util.PrintUtilImpl;
+
+import com.google.gwt.core.client.GWT;
 
 /**
  * Start point class for the print plugin.
@@ -124,5 +127,14 @@ public final class Print {
 	 */
 	public void setPrintUtil(PrintUtil printUtil) {
 		this.printUtil = printUtil;
+	}
+	
+	/**
+	 * Register a default layer builder.
+	 * 
+	 * @param layerBuilder
+	 */
+	public void registerDefaultLayerBuilder(PrintableLayerBuilder<?> layerBuilder) {
+		DefaultPrintableMapBuilder.registerDefaultLayerBuilder(layerBuilder);
 	}
 }

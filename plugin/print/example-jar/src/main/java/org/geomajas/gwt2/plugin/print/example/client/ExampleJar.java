@@ -162,15 +162,15 @@ public class ExampleJar implements EntryPoint {
 			}
 
 			public String getTitle() {
-				return "tile";
+				return MESSAGES.printTileBasedLayerTitle();
 			}
 
 			public String getShortDescription() {
-				return "tile";
+				return MESSAGES.printTileBasedLayerShort();
 			}
 
 			public String getDescription() {
-				return "tile";
+				return MESSAGES.printTileBasedLayerDescription();
 			}
 
 			public String getCategory() {

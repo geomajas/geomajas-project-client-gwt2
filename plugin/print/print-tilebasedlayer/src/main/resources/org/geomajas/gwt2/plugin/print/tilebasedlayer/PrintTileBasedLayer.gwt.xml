@@ -9,8 +9,9 @@
   ~ details, see LICENSE.txt in the project root.
   -->
 <module>
-    <inherits name="org.geomajas.gwt2.plugin.wms.GeomajasClientPluginWms"/>
+    <inherits name="org.geomajas.gwt2.plugin.tilebasedlayer.GeomajasTileBasedLayerPlugin"/>
     <inherits name="org.geomajas.plugin.rasterizing.RasterizingDto"/>
+    <entry-point class="org.geomajas.gwt2.plugin.print.tilebasedlayer.client.PrintTileBasedLayer"/>
 
     <!-- Source for this plug-in -->
     <source path="client" />

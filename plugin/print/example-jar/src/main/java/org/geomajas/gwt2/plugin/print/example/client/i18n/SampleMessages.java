@@ -68,4 +68,10 @@ public interface SampleMessages extends Messages {
 	String printServiceExampleFixedFileName();
 
 	String printServiceExampleFixedPrintTitle();
+
+	String printTileBasedLayerTitle();
+
+	String printTileBasedLayerShort();
+
+	String printTileBasedLayerDescription();
 }

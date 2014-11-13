@@ -18,15 +18,13 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt2.client.event.MapInitializationEvent;
 import org.geomajas.gwt2.client.event.MapInitializationHandler;
 import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
-import org.geomajas.gwt2.plugin.print.client.widget.PrintWidget;
-import org.geomajas.gwt2.plugin.print.tilebasedlayer.client.TileBasedLayerBuilder;
 import org.geomajas.gwt2.plugin.tilebasedlayer.client.TileBasedLayerClient;
 import org.geomajas.gwt2.plugin.tilebasedlayer.client.layer.OsmLayer;
 
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Extension of {@link PrintExamplePanel} for custom view.
+ * Extension of {@link PrintExamplePanel} for tile based layer.
  * @author Jan De Moerloose
  */
 public class PrintExampleTileBasedLayerPanel extends PrintExamplePanel {
@@ -44,13 +42,6 @@ public class PrintExampleTileBasedLayerPanel extends PrintExamplePanel {
 		Widget widget = super.asWidget();
 		getMapPresenter().getEventBus().addMapInitializationHandler(new MyMapInitializationHandler());
 		return widget;
-	}
-
-	@Override
-	protected PrintWidget createPrintWidget() {
-		PrintWidget printWidget = super.createPrintWidget();
-		printWidget.registerLayerBuilder(new TileBasedLayerBuilder());
-		return printWidget;
 	}
 	
 	/**
@@ -74,7 +65,8 @@ public class PrintExampleTileBasedLayerPanel extends PrintExamplePanel {
 			for (int i = 0; i < MAX_ZOOM_LEVELS; i++) {
 				resolutions.add(EQUATOR_IN_METERS / (TILE_DIMENSION * Math.pow(2, i)));
 			}
-			TileConfiguration tileConfig = new TileConfiguration(TILE_DIMENSION, TILE_DIMENSION, tileOrigin, resolutions);
+			TileConfiguration tileConfig = new TileConfiguration(TILE_DIMENSION, TILE_DIMENSION, tileOrigin,
+					resolutions);
 			OsmLayer osmLayer = TileBasedLayerClient.getInstance().createOsmLayer("osmLayer", tileConfig, urls);
 			getMapPresenter().getLayersModel().clear();
 			getMapPresenter().getLayersModel().addLayer(osmLayer);
