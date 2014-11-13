@@ -24,6 +24,7 @@ public class PrintRequestInfo {
 	private PrintTemplateInfo printTemplateInfo;
 	private String fileName;
 	private PrintConfiguration.PostPrintAction postPrintAction;
+	private boolean sync;
 
 	public PrintTemplateInfo getPrintTemplateInfo() {
 		return printTemplateInfo;
@@ -48,4 +49,14 @@ public class PrintRequestInfo {
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
+	
+	public boolean isSync() {
+		return sync;
+	}
+	
+	public void setSync(boolean sync) {
+		this.sync = sync;
+	}
+	
+
 }

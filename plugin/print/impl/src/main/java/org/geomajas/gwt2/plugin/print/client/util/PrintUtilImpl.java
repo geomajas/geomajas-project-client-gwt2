@@ -10,6 +10,7 @@
  */
 package org.geomajas.gwt2.plugin.print.client.util;
 
+import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.plugin.print.client.i18n.PrintMessages;
 import org.geomajas.gwt2.plugin.print.client.template.PageSize;
@@ -54,7 +55,8 @@ public class PrintUtilImpl implements PrintUtil {
 	@Override
 	public String getPrintEncodeUrl(String documentId, String fileName, String userToken,
 									PrintConfiguration.PostPrintAction postPrintAction) {
-		UrlBuilder url = new UrlBuilder(GWT.getHostPageBaseURL());
+		GeomajasServerExtension server = GeomajasServerExtension.getInstance();		
+		UrlBuilder url = new UrlBuilder(server.getEndPointService().getDispatcherUrl());
 		url.addPath(PrintUrlParameterKey.URL_PATH);
 		url.addParameter(PrintUrlParameterKey.URL_DOCUMENT_ID, documentId);
 		if (fileName.lastIndexOf(".") < 0) {

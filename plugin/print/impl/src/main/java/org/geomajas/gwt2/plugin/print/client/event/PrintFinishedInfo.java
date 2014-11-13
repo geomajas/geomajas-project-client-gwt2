@@ -10,25 +10,89 @@
  */
 package org.geomajas.gwt2.plugin.print.client.event;
 
+import java.util.HashMap;
+import java.util.Map;
 
 import org.geomajas.gwt2.plugin.print.client.util.PrintConfiguration;
 
 /**
- * Info object, containing info of the successful end of a print request.
+ * Info object, containing info of the successful end of a print request. This info consists of the HTTP url and request
+ * parameters that should be called to actually download the print. In the case of a synchronous print service, the HTTP
+ * method is POST (and the parameters contain the jsonized template), in the case of an asynchronous print service the
+ * HTTP method is GET.
  * 
  * @author Jan Venstermans
+ * @author Jan De Moerloose
  * 
  */
 public class PrintFinishedInfo {
-	private String encodedUrl;
-	private PrintConfiguration.PostPrintAction postPrintAction;
 
-	public String getEncodedUrl() {
-		return encodedUrl;
+	/**
+	 * HTTP method for the url.
+	 * 
+	 * @author Jan De Moerloose
+	 *
+	 */
+	public enum HttpMethod {
+		GET, POST
 	}
 
-	public void setEncodedUrl(String encodedUrl) {
-		this.encodedUrl = encodedUrl;
+	private String url;
+
+	private HttpMethod method = HttpMethod.GET;
+
+	private PrintConfiguration.PostPrintAction postPrintAction;
+
+	/**
+	 * A map of POST parameters (NOT encoded yet !!!)
+	 */
+	private Map<String, String> postParams = new HashMap<String, String>();
+
+	/**
+	 * Get the encoded url.
+	 * 
+	 * @return the url
+	 * @deprecated renamed to {@link #getUrl()}
+	 */
+	@Deprecated
+	public String getEncodedUrl() {
+		return url;
+	}
+
+	/**
+	 * Set the encoded url.
+	 * 
+	 * @param the url
+	 * 
+	 * @deprecated renamed to {@link #setUrl(String)}
+	 */
+	@Deprecated
+	public void setEncodedUrl(String url) {
+		this.url = url;
+	}
+
+	public HttpMethod getMethod() {
+		return method;
+	}
+
+	public void setMethod(HttpMethod method) {
+		this.method = method;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public Map<String, String> getPostParams() {
+		return postParams;
+	}
+
+	public void addParam(String name, String value) {
+		postParams.put(name, value);
 	}
 
 	public PrintConfiguration.PostPrintAction getPostPrintAction() {

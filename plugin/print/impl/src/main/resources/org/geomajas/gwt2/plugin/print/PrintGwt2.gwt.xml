@@ -9,10 +9,13 @@
   ~ details, see LICENSE.txt in the project root.
   -->
 <module rename-to="PrintGwt2">
-    <inherits name="org.geomajas.gwt2.GeomajasClientImpl" />
+	<inherits name="org.geomajas.gwt2.GeomajasClientImpl" />
 	<inherits name="org.geomajas.plugin.printing.PrintingDto" />
+	<inherits name="com.github.nmorel.gwtjackson.GwtJackson" />
+	<extend-configuration-property name="gwtjackson.configuration.extension"
+		value="org.geomajas.gwt2.plugin.print.client.json.JsonConfiguration" />
 
 	<!-- client source code -->
-    <source path="client" />
+	<source path="client" />
 
 </module>

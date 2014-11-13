@@ -92,6 +92,11 @@
 					   title="{msg.printPrefsFileNameTooltip}"
 					   addStyleNames="{resource.css.textboxSuitableMargin}"	/> <!--  excl padding-left: 5px and padding-right: 2px -->
 		</g:VerticalPanel>
+		
+		<g:HorizontalPanel ui:field="syncSection" verticalAlignment="ALIGN_MIDDLE">
+			<g:Label><ui:text from='{msg.printPrefsSync}' /></g:Label>
+			<g:CheckBox ui:field="syncCheckBox" title="{msg.printPrefsSyncTooltip}"/>
+		</g:HorizontalPanel>
 
 		<g:FlowPanel addStyleNames="{resource.css.buttons}">
 			<g:Button ui:field="printButton"  styleName="{resource.css.printButton}">

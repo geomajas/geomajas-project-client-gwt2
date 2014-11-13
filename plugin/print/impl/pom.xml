@@ -20,6 +20,7 @@
 	<description>Geomajas GWT2 client: Plugin Print - Implementation</description>
 
 	<dependencies>
+	
 		<!-- Geomajas dependencies -->
 		<dependency>
 			<groupId>org.geomajas</groupId>
@@ -36,10 +37,10 @@
 		    <artifactId>geomajas-client-gwt2-server-extension</artifactId>
 		</dependency>
 
-		<!--<dependency>-->
-			<!--<groupId>org.geomajas.plugin</groupId>-->
-			<!--<artifactId>geomajas-plugin-rasterizing</artifactId>-->
-		<!--</dependency>-->
+		<dependency>
+			<groupId>com.github.nmorel.gwtjackson</groupId>
+			<artifactId>gwt-jackson</artifactId>
+		</dependency>
 
 		<!-- Google dependencies -->
 		<dependency>

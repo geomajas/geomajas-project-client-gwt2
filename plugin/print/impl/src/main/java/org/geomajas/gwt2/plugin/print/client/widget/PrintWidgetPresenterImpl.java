@@ -107,6 +107,7 @@ public class PrintWidgetPresenterImpl implements PrintWidgetPresenter {
 		if (mapPresenter != null) {
 			PrintRequestInfo printRequestInfo = new PrintRequestInfo();
 			printRequestInfo.setPostPrintAction(view.getPostPrintAction());
+			printRequestInfo.setSync(view.isSync());
 			printRequestInfo.setFileName(view.getFileName());
 			printRequestInfo.setPrintTemplateInfo(Print.getInstance().getPrintUtil().
 					createPrintTemplateInfo(mapPresenter, applicationId,

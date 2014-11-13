@@ -105,6 +105,11 @@ public class OptionsPrintPanel extends DefaultDataProviderPrintWidgetView {
 	@UiField
 	protected VerticalPanel fileNameSection;
 
+	@UiField
+	protected CheckBox syncCheckBox;
+	@UiField
+	protected HorizontalPanel syncSection;
+
 	private Map<PrintConfiguration.PostPrintAction, RadioButton> postPrintActionRadioButtonMap =
 			new HashMap<PrintConfiguration.PostPrintAction, RadioButton>();
 
@@ -233,6 +238,14 @@ public class OptionsPrintPanel extends DefaultDataProviderPrintWidgetView {
 		// return default value
 		return super.getFileName();
 	}
+	
+	@Override
+	public boolean isSync() {
+		if (optionsToShowConfiguration.isShowSyncOption())  {
+			return syncCheckBox.getValue();
+		}
+		return super.isSync();
+	}
 
 	@UiHandler("printButton")
 	public void onClick(ClickEvent event) {
@@ -283,6 +296,7 @@ public class OptionsPrintPanel extends DefaultDataProviderPrintWidgetView {
 		rasterDpiSection.setVisible(getOptionsToShowConfiguration().isShowRasterDpiOption());
 		postPrintActionSection.setVisible(getOptionsToShowConfiguration().isShowPostPrintActionOption());
 		fileNameSection.setVisible(getOptionsToShowConfiguration().isShowFileNameOption());
+		syncSection.setVisible(getOptionsToShowConfiguration().isShowSyncOption());
 	}
 
 	private String getDisplayOption(boolean visible) {
@@ -313,6 +327,8 @@ public class OptionsPrintPanel extends DefaultDataProviderPrintWidgetView {
 		private boolean showPostPrintActionOption;
 
 		private boolean showFileNameOption;
+
+		private boolean showSyncOption;
 
 		public boolean isShowTitleOption() {
 			return showTitleOption;
@@ -377,5 +393,14 @@ public class OptionsPrintPanel extends DefaultDataProviderPrintWidgetView {
 		public void setShowFileNameOption(boolean showFileNameOption) {
 			this.showFileNameOption = showFileNameOption;
 		}
+		
+		public boolean isShowSyncOption() {
+			return showSyncOption;
+		}
+		
+		public void setShowSyncOption(boolean showSyncOption) {
+			this.showSyncOption = showSyncOption;
+		}
+		
 	}
 }
