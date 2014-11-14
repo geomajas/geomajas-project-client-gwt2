@@ -96,6 +96,7 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder implements T
 		PageComponentInfo page = super.buildPage();
 		page.getLayoutConstraint().setWidth((float) pageWidth);
 		page.getLayoutConstraint().setHeight((float) pageHeight);
+		page.setBounds(new Bbox(0, 0, pageWidth, pageHeight));
 		return page;
 	}
 

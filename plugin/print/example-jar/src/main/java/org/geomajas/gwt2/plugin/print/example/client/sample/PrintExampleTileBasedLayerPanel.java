@@ -56,7 +56,7 @@ public class PrintExampleTileBasedLayerPanel extends PrintExamplePanel {
 			String[] domains = new String[] { "a", "b", "c" };
 			List<String> urls = new ArrayList<String>();
 			for (String domain : domains) {
-				urls.add("http://" + domain + ".tile.openstreetmap.org/{z}/{x}/{y}.png");
+				urls.add("http://" + domain + ".tile.opencyclemap.org/cycle/{z}/{x}/{y}.png");
 			}
 
 			// Create the configuration for the tiles:
