@@ -175,7 +175,12 @@ public class PrintExamplePrintServicePanel implements SamplePanel {
 		}
 
 		@Override
-		public Integer getRasterDpi() {
+		public int getRasterDpi() {
+			return 200;
+		}
+
+		@Override
+		public int getDpi() {
 			return 200;
 		}
 		

@@ -65,6 +65,8 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder implements T
 
 	protected int rasterDpi;
 
+	protected int dpi;
+
 	protected boolean withScaleBar;
 
 	protected boolean withArrow;
@@ -267,6 +269,14 @@ public class DefaultTemplateBuilder extends AbstractTemplateBuilder implements T
 
 	public void setTitleText(String titleText) {
 		this.titleText = titleText;
+	}
+	
+	public int getDpi() {
+		return dpi;
+	}
+	
+	public void setDpi(int dpi) {
+		this.dpi = dpi;
 	}
 
 	public int getRasterDpi() {

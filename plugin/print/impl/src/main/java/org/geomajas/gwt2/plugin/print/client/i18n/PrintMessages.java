@@ -42,6 +42,9 @@ public interface PrintMessages extends Messages {
 	String printPrefsWithArrow();
 	String printPrefsWithScaleBar();
 
+	String printPrefsDpi();
+	String printPrefsDpiTooltip();
+
 	String printPrefsRasterDpi();
 	String printPrefsRasterDpiTooltip();
 
