@@ -121,7 +121,7 @@
 								<id>generate-all-javadoc</id>
 								<phase>compile</phase>
 								<configuration>
-									<target>
+									<target unless="maven.javadoc.skip">
 										<javadoc packagenames="${geomajas.packages}" sourcepath="${project.build.directory}/javadoc-src" defaultexcludes="no" destdir="${project.build.directory}/apidocs/" version="true" use="true">
 											<doctitle>
 												<![CDATA[<h1>${geomajas.javadoc-title} - ${project.version}</h1>]]></doctitle>

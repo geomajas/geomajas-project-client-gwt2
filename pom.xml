@@ -209,6 +209,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-client-gwt2-plugin-print-tilebasedlayer</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-client-gwt2-plugin-print-wms</artifactId>
 				<version>${project.version}</version>
 			</dependency>

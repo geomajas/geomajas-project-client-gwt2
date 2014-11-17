@@ -20,6 +20,7 @@ import org.geomajas.gwt2.plugin.print.example.client.sample.PrintExampleCustomVi
 import org.geomajas.gwt2.plugin.print.example.client.sample.PrintExamplePanel;
 import org.geomajas.gwt2.plugin.print.example.client.sample.PrintExamplePrintServicePanel;
 import org.geomajas.gwt2.plugin.print.example.client.sample.PrintExampleSvgLayerPanel;
+import org.geomajas.gwt2.plugin.print.example.client.sample.PrintExampleTileBasedLayerPanel;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -152,6 +153,33 @@ public class ExampleJar implements EntryPoint {
 			@Override
 			public String getKey() {
 				return "printplugin-svglayer";
+			}
+		});
+		SamplePanelRegistry.registerFactory(CATEGORY_PRINT, new ShowcaseSampleDefinition() {
+
+			public SamplePanel create() {
+				return new PrintExampleTileBasedLayerPanel();
+			}
+
+			public String getTitle() {
+				return MESSAGES.printTileBasedLayerTitle();
+			}
+
+			public String getShortDescription() {
+				return MESSAGES.printTileBasedLayerShort();
+			}
+
+			public String getDescription() {
+				return MESSAGES.printTileBasedLayerDescription();
+			}
+
+			public String getCategory() {
+				return CATEGORY_PRINT;
+			}
+
+			@Override
+			public String getKey() {
+				return "printplugin-tilebasedlayer";
 			}
 		});
 		SamplePanelRegistry.registerFactory(CATEGORY_PRINT, new ShowcaseSampleDefinition() {

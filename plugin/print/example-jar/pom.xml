@@ -39,6 +39,14 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-client-gwt2-plugin-print-tilebasedlayer</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-client-gwt2-plugin-print-wms</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-geotools</artifactId>
 		</dependency>
 		<dependency>

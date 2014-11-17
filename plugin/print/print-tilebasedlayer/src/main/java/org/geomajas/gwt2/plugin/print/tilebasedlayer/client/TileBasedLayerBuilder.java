@@ -8,8 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-
-package org.geomajas.gwt2.plugin.print.wms.client;
+package org.geomajas.gwt2.plugin.print.tilebasedlayer.client;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,36 +17,37 @@ import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.service.BboxService;
 import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.client.map.layer.AbstractTileBasedLayer;
 import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
 import org.geomajas.gwt2.client.map.render.Tile;
+import org.geomajas.gwt2.client.map.render.TileRenderer;
 import org.geomajas.gwt2.client.service.TileService;
 import org.geomajas.gwt2.plugin.print.client.layerbuilder.PrintableLayersModelBuilder;
-import org.geomajas.gwt2.plugin.print.wms.server.dto.WmsClientLayerInfo;
-import org.geomajas.gwt2.plugin.wms.client.WmsClient;
-import org.geomajas.gwt2.plugin.wms.client.layer.WmsLayer;
+import org.geomajas.gwt2.plugin.print.tilebasedlayer.server.dto.TilebasedClientLayerInfo;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.plugin.rasterizing.command.dto.RasterLayerRasterizingInfo;
 
 /**
- * Builder for WMS layer.
- *
+ * Builder for tile-based layers.
+ * 
  * @author Jan De Moerloose
+ *
  */
-public class WmsLayerBuilder implements PrintableLayersModelBuilder {
+public class TileBasedLayerBuilder implements PrintableLayersModelBuilder {
 
 	@Override
 	public boolean supports(Layer object) {
-		return object instanceof WmsLayer;
+		return object instanceof AbstractTileBasedLayer;
 	}
 
 	@Override
 	public ClientLayerInfo build(MapPresenter mapPresenter, Layer layer, Bbox worldBounds, double resolution) {
-		WmsLayer tileBasedLayer = (WmsLayer) layer;
+		AbstractTileBasedLayer tileBasedLayer = (AbstractTileBasedLayer) layer;
 		TileConfiguration tileConfig = tileBasedLayer.getTileConfiguration();
 
-		WmsClientLayerInfo info = new WmsClientLayerInfo();
+		TilebasedClientLayerInfo info = new TilebasedClientLayerInfo();
 		List<RasterTile> tiles = new ArrayList<RasterTile>();
 		for (Tile tile : getTiles(tileBasedLayer, mapPresenter.getViewPort().getCrs(), resolution, worldBounds)) {
 			tiles.add(toRasterTile(tile));
@@ -73,7 +73,7 @@ public class WmsLayerBuilder implements PrintableLayersModelBuilder {
 		return rTile;
 	}
 
-	private List<Tile> getTiles(WmsLayer layer, String crs, double resolution, Bbox worldBounds) {
+	private List<Tile> getTiles(AbstractTileBasedLayer layer, String crs, double resolution, Bbox worldBounds) {
 		TileConfiguration tileConfig = layer.getTileConfiguration();
 		Bbox maxBounds = layer.getMaxBounds();
 		worldBounds = BboxService.intersection(worldBounds, maxBounds);
@@ -87,8 +87,8 @@ public class WmsLayerBuilder implements PrintableLayersModelBuilder {
 					Bbox bounds = TileService.getWorldBoundsForTile(tileConfig, code);
 					Tile tile = new Tile(getScreenBounds(actualResolution, bounds));
 					tile.setCode(code);
-					tile.setUrl(WmsClient.getInstance().getWmsService().getMapUrl(layer.getConfiguration(),
-							bounds, tileConfig.getTileWidth(), tileConfig.getTileHeight()));
+					TileRenderer tileRenderer = layer.getTileRenderer();
+					tile.setUrl(tileRenderer.getUrl(code));
 					tiles.add(tile);
 				}
 			}
@@ -107,4 +107,5 @@ public class WmsLayerBuilder implements PrintableLayersModelBuilder {
 				Math.round(worldBounds.getMaxX() / resolution) - Math.round(worldBounds.getX() / resolution),
 				Math.round(worldBounds.getMaxY() / resolution) - Math.round(worldBounds.getY() / resolution));
 	}
+
 }

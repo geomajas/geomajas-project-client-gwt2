@@ -43,11 +43,17 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class DefaultPrintableMapBuilder implements PrintableMapBuilder {
 
+	private static List<PrintableLayerBuilder> defaultLayerBuilders = new ArrayList<PrintableLayerBuilder>();
+	
+	static {
+		registerDefaultLayerBuilder(new RasterServerLayerBuilder());
+		registerDefaultLayerBuilder(new VectorServerLayerBuilder());
+	}
+
 	private List<PrintableLayerBuilder> layerBuilders = new ArrayList<PrintableLayerBuilder>();
 
 	public DefaultPrintableMapBuilder() {
-		layerBuilders.add(new RasterServerLayerBuilder());
-		layerBuilders.add(new VectorServerLayerBuilder());
+		layerBuilders.addAll(defaultLayerBuilders);
 	}
 
 	@Override
@@ -60,6 +66,10 @@ public class DefaultPrintableMapBuilder implements PrintableMapBuilder {
 		MapRasterizingInfo mapRasterizingInfo = buildMap(mapPresenter);
 		createWidgetPrintLayers(mapPresenter, mapRasterizingInfo, worldBounds, rasterResolution);
 	   	createModelLayersPrintLayers(mapPresenter, worldBounds, rasterResolution);
+	}
+	
+	public static void registerDefaultLayerBuilder(PrintableLayerBuilder layerBuilder) {
+		defaultLayerBuilders.add(layerBuilder);
 	}
 
 	/* private methods */
