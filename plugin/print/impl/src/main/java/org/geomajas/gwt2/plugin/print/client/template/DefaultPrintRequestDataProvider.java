@@ -47,6 +47,13 @@ public interface DefaultPrintRequestDataProvider extends PrintRequestDataProvide
 	void setSync(boolean sync);
 
 	/**
+	 * Set the overall image DPI.
+	 * 
+	 * @param dpi
+	 */
+	void setDpi(int dpi);
+
+	/**
 	 * Setter extension of {@link TemplateBuilderDataProvider}.
 	 *
 	 * @author Jan Venstermans
@@ -66,5 +73,7 @@ public interface DefaultPrintRequestDataProvider extends PrintRequestDataProvide
 		void setWithArrow(boolean withArrow);
 
 		void setWithScaleBar(boolean withScaleBar);
+
+		void setDpi(int dpi);
 	}
 }

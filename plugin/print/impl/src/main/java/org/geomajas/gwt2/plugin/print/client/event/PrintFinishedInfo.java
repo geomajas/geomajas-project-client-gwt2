@@ -44,9 +44,9 @@ public class PrintFinishedInfo {
 	private PrintConfiguration.PostPrintAction postPrintAction;
 
 	/**
-	 * A map of POST parameters (NOT encoded yet !!!)
+	 * A map of POST/GET parameters (NOT encoded yet !!!)
 	 */
-	private Map<String, String> postParams = new HashMap<String, String>();
+	private Map<String, String> params = new HashMap<String, String>();
 
 	/**
 	 * Get the encoded url.
@@ -87,12 +87,12 @@ public class PrintFinishedInfo {
 		this.url = url;
 	}
 
-	public Map<String, String> getPostParams() {
-		return postParams;
+	public Map<String, String> getParams() {
+		return params;
 	}
 
 	public void addParam(String name, String value) {
-		postParams.put(name, value);
+		params.put(name, value);
 	}
 
 	public PrintConfiguration.PostPrintAction getPostPrintAction() {

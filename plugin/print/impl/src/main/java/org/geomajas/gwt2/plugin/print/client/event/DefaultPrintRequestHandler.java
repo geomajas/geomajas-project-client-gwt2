@@ -12,6 +12,7 @@
 package org.geomajas.gwt2.plugin.print.client.event;
 
 import org.geomajas.gwt2.plugin.print.client.event.PrintFinishedInfo.HttpMethod;
+import org.geomajas.gwt2.plugin.print.client.util.UrlBuilder;
 
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.LoadEvent;
@@ -46,7 +47,11 @@ public class DefaultPrintRequestHandler implements PrintRequestHandler {
 					break;
 				case OPEN:
 				default:
-					Window.open(info.getUrl(), "_blank", null);
+					UrlBuilder builder = new UrlBuilder(info.getUrl());
+					for (String name : info.getParams().keySet()) {
+						builder.addParameter(name, info.getParams().get(name));
+					}
+					Window.open(builder.toString(), "_blank", null);
 					break;
 			}
 		} else {
@@ -71,8 +76,8 @@ public class DefaultPrintRequestHandler implements PrintRequestHandler {
 		panel.setMethod(FormPanel.METHOD_POST);
 		FlowPanel fieldsPanel = new FlowPanel();
 		panel.add(fieldsPanel);
-		for (String name : info.getPostParams().keySet()) {
-			fieldsPanel.add(new Hidden(name, info.getPostParams().get(name)));
+		for (String name : info.getParams().keySet()) {
+			fieldsPanel.add(new Hidden(name, info.getParams().get(name)));
 		}
 		panel.getElement().getStyle().setPosition(Style.Position.ABSOLUTE);
 		panel.getElement().getStyle().setBorderWidth(0, Style.Unit.PX);
@@ -83,7 +88,11 @@ public class DefaultPrintRequestHandler implements PrintRequestHandler {
 	private void createHiddenFrame(PrintFinishedInfo info) {
 		final Frame frame = new Frame();
 		frame.setVisible(false);
-		frame.setUrl(info.getUrl());
+		UrlBuilder builder = new UrlBuilder(info.getUrl());
+		for (String name : info.getParams().keySet()) {
+			builder.addParameter(name, info.getParams().get(name));
+		}
+		frame.setUrl(builder.toString());
 		frame.setPixelSize(0, 0);
 		frame.getElement().getStyle().setPosition(Style.Position.ABSOLUTE);
 		frame.getElement().getStyle().setBorderWidth(0, Style.Unit.PX);

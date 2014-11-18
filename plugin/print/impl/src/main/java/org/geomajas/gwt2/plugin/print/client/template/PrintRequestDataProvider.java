@@ -47,4 +47,11 @@ public interface PrintRequestDataProvider {
 	 * @return
 	 */
 	boolean isSync();
+	
+	/**
+	 * Get the DPI (for image prints).
+	 * 
+	 * @return
+	 */
+	int getDpi();
 }

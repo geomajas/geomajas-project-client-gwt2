@@ -40,8 +40,10 @@ public class PrintExampleCustomViewPanel extends PrintExamplePanel {
 				.setPageSize(PageSize.A1);
 		optionsPrintPanel.getDefaultPrintRequestDataProvider().
 				setFileName(MESSAGES.printCustomViewFileName());
-		optionsPrintPanel.getDefaultPrintRequestDataProvider().
-				setPostPrintAction(PrintConfiguration.PostPrintAction.SAVE);
+		optionsPrintPanel.getDefaultPrintRequestDataProvider().setPostPrintAction(
+				PrintConfiguration.PostPrintAction.SAVE);
+		optionsPrintPanel.getDefaultPrintRequestDataProvider().setSync(false);
+		optionsPrintPanel.getDefaultPrintRequestDataProvider().setDpi(72);
 
 		// activate all options
 		optionsPrintPanel.getOptionsToShowConfiguration().setShowTitleOption(true);
@@ -49,6 +51,7 @@ public class PrintExampleCustomViewPanel extends PrintExamplePanel {
 		optionsPrintPanel.getOptionsToShowConfiguration().setShowPageSizeOption(true);
 		optionsPrintPanel.getOptionsToShowConfiguration().setShowWithArrowOption(true);
 		optionsPrintPanel.getOptionsToShowConfiguration().setShowWithScaleBarOption(true);
+		optionsPrintPanel.getOptionsToShowConfiguration().setShowDpiOption(true);
 		optionsPrintPanel.getOptionsToShowConfiguration().setShowRasterDpiOption(true);
 		optionsPrintPanel.getOptionsToShowConfiguration().setShowPostPrintActionOption(true);
 		optionsPrintPanel.getOptionsToShowConfiguration().setShowFileNameOption(true);

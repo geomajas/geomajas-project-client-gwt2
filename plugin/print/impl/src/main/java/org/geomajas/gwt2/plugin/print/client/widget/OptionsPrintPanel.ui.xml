@@ -70,7 +70,17 @@
 			</g:Label>
 
 			<g:TextBox ui:field="rasterDpiTextBox" width="180px"
-					   title="{msg.printPrefsRasterDpiTooltip}"
+					   title="{msg.printPrefsDpiTooltip}"
+					   addStyleNames="{resource.css.textboxSuitableMargin}"	/> <!--  excl padding-left: 5px and padding-right: 2px -->
+		</g:VerticalPanel>
+		<g:VerticalPanel ui:field="dpiSection">
+			<g:Label addStyleNames="{resource.css.fieldLabel}">
+				<ui:text from='{msg.printPrefsDpi}' />
+				:
+			</g:Label>
+
+			<g:TextBox ui:field="dpiTextBox" width="180px"
+					   title="{msg.printPrefsDpiTooltip}"
 					   addStyleNames="{resource.css.textboxSuitableMargin}"	/> <!--  excl padding-left: 5px and padding-right: 2px -->
 		</g:VerticalPanel>
 		<g:VerticalPanel ui:field="postPrintActionSection">

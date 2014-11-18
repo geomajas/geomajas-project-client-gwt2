@@ -50,6 +50,7 @@ public class PrintUtilImpl implements PrintUtil {
 		builder.setWithArrow(templateBuilderDataProvider.isWithArrow());
 		builder.setWithScaleBar(templateBuilderDataProvider.isWithScaleBar());
 		builder.setRasterDpi(templateBuilderDataProvider.getRasterDpi());
+		builder.setDpi(templateBuilderDataProvider.getDpi());
 	}
 
 	@Override

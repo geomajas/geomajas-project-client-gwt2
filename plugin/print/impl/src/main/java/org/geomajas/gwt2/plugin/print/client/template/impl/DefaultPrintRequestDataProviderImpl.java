@@ -32,6 +32,7 @@ public final class DefaultPrintRequestDataProviderImpl implements DefaultPrintRe
 	private PrintConfiguration.PostPrintAction defaultPostPrintAction = PrintConfiguration.PostPrintAction.OPEN;
 	private String defaultFileName = MESSAGES.defaultPrintFileName();
 	private boolean defaultSync;
+	private int defaultDpi;
 
 	/* getters */
 	@Override
@@ -59,6 +60,13 @@ public final class DefaultPrintRequestDataProviderImpl implements DefaultPrintRe
 		return defaultSync;
 	}
 
+	@Override
+	public int getDpi() {
+		return defaultDpi;
+	}
+	
+	
+
 	/* setters */
 
 
@@ -77,6 +85,10 @@ public final class DefaultPrintRequestDataProviderImpl implements DefaultPrintRe
 		this.defaultSync = sync;
 	}
 
+	@Override
+	public void setDpi(int dpi) {
+		this.defaultDpi = dpi;
+	}
 
 	/**
 	 * Private default implementation of {@link TemplateBuilderDataProvider}.
@@ -85,6 +97,7 @@ public final class DefaultPrintRequestDataProviderImpl implements DefaultPrintRe
 
 		private String defaultTitle = MESSAGES.defaultPrintTitle();
 		private PageSize defaultPageSize = PageSize.A4;
+		private int defaultDpi = 200;
 		private int defaultRasterDpi = 200;
 		private boolean defaultLandscape = true;
 		private boolean defaultWithArrow = true;
@@ -109,9 +122,19 @@ public final class DefaultPrintRequestDataProviderImpl implements DefaultPrintRe
 		public void setPageSize(PageSize pageSize) {
 			this.defaultPageSize = pageSize;
 		}
+		
+		@Override
+		public void setDpi(int dpi) {
+			this.defaultDpi = dpi;
+		}		
 
 		@Override
-		public Integer getRasterDpi() {
+		public int getDpi() {
+			return defaultDpi;
+		}
+
+		@Override
+		public int getRasterDpi() {
 			return defaultRasterDpi;
 		}
 

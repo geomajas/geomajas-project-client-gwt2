@@ -60,6 +60,8 @@ public class PrintUtilImplTest extends PrintWidgetMockStart {
 		verify(builderMock).setWithArrow(viewData.isWithArrow());
 		verify(dataProviderMock).isWithScaleBar();
 		verify(builderMock).setWithScaleBar(viewData.isWithScaleBar());
+		verify(dataProviderMock).getDpi();
+		verify(builderMock).setDpi(viewData.getDpi());
 		verify(dataProviderMock).getRasterDpi();
 		verify(builderMock).setRasterDpi(viewData.getRasterDpi());
 
@@ -100,6 +102,7 @@ public class PrintUtilImplTest extends PrintWidgetMockStart {
 	private void stubDataProvider() {
 		stub(dataProviderMock.getTitle()).toReturn(viewData.getTitle());
 		stub(dataProviderMock.getPageSize()).toReturn(viewData.getPageSize());
+		stub(dataProviderMock.getDpi()).toReturn(viewData.getDpi());
 		stub(dataProviderMock.getRasterDpi()).toReturn(viewData.getRasterDpi());
 		stub(dataProviderMock.isLandscape()).toReturn(viewData.isLandscape());
 		stub(dataProviderMock.isWithArrow()).toReturn(viewData.isWithArrow());

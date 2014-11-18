@@ -25,6 +25,7 @@ public class PrintRequestInfo {
 	private String fileName;
 	private PrintConfiguration.PostPrintAction postPrintAction;
 	private boolean sync;
+	private int dpi;
 
 	public PrintTemplateInfo getPrintTemplateInfo() {
 		return printTemplateInfo;
@@ -58,5 +59,12 @@ public class PrintRequestInfo {
 		this.sync = sync;
 	}
 	
+	public int getDpi() {
+		return dpi;
+	}
+	
+	public void setDpi(int dpi) {
+		this.dpi = dpi;
+	}
 
 }

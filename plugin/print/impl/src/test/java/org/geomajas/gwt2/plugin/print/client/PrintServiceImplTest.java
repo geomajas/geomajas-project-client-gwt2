@@ -21,10 +21,12 @@ import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.service.CommandService;
+import org.geomajas.gwt2.client.service.EndPointService;
 import org.geomajas.gwt2.plugin.print.client.event.PrintFinishedInfo;
 import org.geomajas.gwt2.plugin.print.client.event.PrintRequestInfo;
 import org.geomajas.gwt2.plugin.print.client.template.TemplateBuilder;
 import org.geomajas.gwt2.plugin.print.client.template.TemplateBuilderDataProvider;
+import org.geomajas.gwt2.plugin.print.client.util.PrintConfiguration.PostPrintAction;
 import org.geomajas.gwt2.plugin.print.client.widget.PrintWidgetMockStart;
 import org.geomajas.plugin.printing.command.dto.PrintGetTemplateRequest;
 import org.geomajas.plugin.printing.command.dto.PrintTemplateInfo;
@@ -55,6 +57,9 @@ public class PrintServiceImplTest extends PrintWidgetMockStart {
 	private CommandService commandServiceMock;
 
 	@Mock
+	private EndPointService endPointServiceMock;
+
+	@Mock
 	private TemplateBuilderDataProvider dataProviderMock;
 
 	@Mock
@@ -69,6 +74,8 @@ public class PrintServiceImplTest extends PrintWidgetMockStart {
 
 		// stub Geomajas framework for testing
 		stub(serverExtensionMock.getCommandService()).toReturn(commandServiceMock);
+		stub(serverExtensionMock.getEndPointService()).toReturn(endPointServiceMock);
+		stub(endPointServiceMock.getDispatcherUrl()).toReturn("http://localhost:8888/d/");
 		stub(mapPresenterMock.getViewPort()).toReturn(viewPortMock);
 		stub(mapPresenterMock.getLayersModel()).toReturn(layersModelMock);
 		stub(viewPortMock.getBounds()).toReturn(viewPortBounds);
@@ -82,6 +89,8 @@ public class PrintServiceImplTest extends PrintWidgetMockStart {
 		PrintTemplateInfo printTemplateInfo = new PrintTemplateInfo();
 		PrintRequestInfo createInfo = new PrintRequestInfo();
 		createInfo.setPrintTemplateInfo(printTemplateInfo);
+		createInfo.setFileName("test.pdf");
+		createInfo.setPostPrintAction(PostPrintAction.OPEN);
 		Callback<PrintFinishedInfo, Void> callbackMock = mock(Callback.class);
 
 		printService.print(createInfo, callbackMock);

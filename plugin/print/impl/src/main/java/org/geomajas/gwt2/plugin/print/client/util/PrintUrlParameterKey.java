@@ -32,4 +32,6 @@ public interface PrintUrlParameterKey {
 
 	String URL_TEMPLATE = "template";
 
+	String URL_DPI = "dpi";
+
 }

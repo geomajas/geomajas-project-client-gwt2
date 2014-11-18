@@ -65,6 +65,9 @@ public class OptionsPrintPanel extends DefaultDataProviderPrintWidgetView {
 	protected TextBox titleTextBox;
 
 	@UiField
+	protected TextBox dpiTextBox;
+
+	@UiField
 	protected TextBox rasterDpiTextBox;
 
 	@UiField
@@ -90,28 +93,38 @@ public class OptionsPrintPanel extends DefaultDataProviderPrintWidgetView {
 
 	@UiField
 	protected VerticalPanel titleSection;
+
 	@UiField
 	protected VerticalPanel orientationSection;
+
 	@UiField
 	protected VerticalPanel pageSizeSection;
+
 	@UiField
 	protected HorizontalPanel withArrowSection;
+
 	@UiField
 	protected HorizontalPanel withScaleBarSection;
+
+	@UiField
+	protected VerticalPanel dpiSection;
+
 	@UiField
 	protected VerticalPanel rasterDpiSection;
+
 	@UiField
 	protected VerticalPanel postPrintActionSection;
+
 	@UiField
 	protected VerticalPanel fileNameSection;
 
 	@UiField
 	protected CheckBox syncCheckBox;
+
 	@UiField
 	protected HorizontalPanel syncSection;
 
-	private Map<PrintConfiguration.PostPrintAction, RadioButton> postPrintActionRadioButtonMap =
-			new HashMap<PrintConfiguration.PostPrintAction, RadioButton>();
+	private Map<PrintConfiguration.PostPrintAction, RadioButton> postPrintActionRadioButtonMap;
 
 	private OptionsToShowConfiguration optionsToShowConfiguration = new OptionsToShowConfiguration();
 
@@ -138,10 +151,10 @@ public class OptionsPrintPanel extends DefaultDataProviderPrintWidgetView {
 			pageSizeListBox.addItem(pageSizeName);
 		}
 		// fill the postPrintActionRadioButtonMap
-		postPrintActionRadioButtonMap.clear();
+		postPrintActionRadioButtonMap = new HashMap<PrintConfiguration.PostPrintAction, RadioButton>();
 		for (PrintConfiguration.PostPrintAction postPrintAction : PrintConfiguration.PostPrintAction.values()) {
-			RadioButton radioButton = new RadioButton("postPrintAction",
-					Print.getInstance().getPrintUtil().toString(postPrintAction));
+			RadioButton radioButton = new RadioButton("postPrintAction", Print.getInstance().getPrintUtil()
+					.toString(postPrintAction));
 			postPrintActionRadioButtonMap.put(postPrintAction, radioButton);
 			postPrintActionRadioGroup.add(radioButton);
 		}
@@ -150,6 +163,7 @@ public class OptionsPrintPanel extends DefaultDataProviderPrintWidgetView {
 
 	/**
 	 * Returns the configuration object, enabling to show or hide the view options.
+	 * 
 	 * @return optionsToShowConfiguration
 	 */
 	public OptionsToShowConfiguration getOptionsToShowConfiguration() {
@@ -159,7 +173,7 @@ public class OptionsPrintPanel extends DefaultDataProviderPrintWidgetView {
 	/* override the configured options */
 	@Override
 	public String getTitle() {
-		if (optionsToShowConfiguration.isShowTitleOption())  {
+		if (optionsToShowConfiguration.isShowTitleOption()) {
 			String title = titleTextBox.getText().trim();
 			if (title != null && !title.isEmpty()) {
 				return title;
@@ -170,7 +184,7 @@ public class OptionsPrintPanel extends DefaultDataProviderPrintWidgetView {
 
 	@Override
 	public boolean isLandscape() {
-		if (optionsToShowConfiguration.isShowLandscapeOption())  {
+		if (optionsToShowConfiguration.isShowLandscapeOption()) {
 			return optionLandscapeOrientation.getValue();
 		}
 		return super.isLandscape();
@@ -178,7 +192,7 @@ public class OptionsPrintPanel extends DefaultDataProviderPrintWidgetView {
 
 	@Override
 	public PageSize getPageSize() {
-		if (optionsToShowConfiguration.isShowPageSizeOption())  {
+		if (optionsToShowConfiguration.isShowPageSizeOption()) {
 			return PageSize.getByName(pageSizeListBox.getValue(pageSizeListBox.getSelectedIndex()));
 		}
 		return super.getPageSize();
@@ -186,7 +200,7 @@ public class OptionsPrintPanel extends DefaultDataProviderPrintWidgetView {
 
 	@Override
 	public boolean isWithArrow() {
-		if (optionsToShowConfiguration.isShowWithArrowOption())  {
+		if (optionsToShowConfiguration.isShowWithArrowOption()) {
 			return arrowCheckBox.getValue();
 		}
 		return super.isWithArrow();
@@ -194,20 +208,33 @@ public class OptionsPrintPanel extends DefaultDataProviderPrintWidgetView {
 
 	@Override
 	public boolean isWithScaleBar() {
-		if (optionsToShowConfiguration.isShowWithScaleBarOption())  {
+		if (optionsToShowConfiguration.isShowWithScaleBarOption()) {
 			return scaleBarBox.getValue();
 		}
 		return super.isWithScaleBar();
 	}
 
 	@Override
-	public Integer getRasterDpi() {
-		if (optionsToShowConfiguration.isShowRasterDpiOption())  {
+	public int getDpi() {
+		if (optionsToShowConfiguration.isShowDpiOption()) {
+			// TODO turn into a slider?: get value from (Integer) rasterDpiSlider.getValue()
+			try {
+				return Integer.parseInt(dpiTextBox.getText());
+			} catch (NumberFormatException nfe) {
+				return super.getDpi();
+			}
+		}
+		return super.getDpi();
+	}
+
+	@Override
+	public int getRasterDpi() {
+		if (optionsToShowConfiguration.isShowRasterDpiOption()) {
 			// TODO turn into a slider?: get value from (Integer) rasterDpiSlider.getValue()
 			try {
 				return Integer.parseInt(rasterDpiTextBox.getText());
 			} catch (NumberFormatException nfe) {
-				return null;
+				return super.getRasterDpi();
 			}
 		}
 		return super.getRasterDpi();
@@ -215,9 +242,9 @@ public class OptionsPrintPanel extends DefaultDataProviderPrintWidgetView {
 
 	@Override
 	public PrintConfiguration.PostPrintAction getPostPrintAction() {
-		if (optionsToShowConfiguration.isShowPostPrintActionOption())  {
-			for (Map.Entry<PrintConfiguration.PostPrintAction, RadioButton> entry :
-					postPrintActionRadioButtonMap.entrySet()) {
+		if (optionsToShowConfiguration.isShowPostPrintActionOption()) {
+			for (Map.Entry<PrintConfiguration.PostPrintAction, RadioButton> entry : postPrintActionRadioButtonMap
+					.entrySet()) {
 				if (entry.getValue().getValue()) {
 					return entry.getKey();
 				}
@@ -229,7 +256,7 @@ public class OptionsPrintPanel extends DefaultDataProviderPrintWidgetView {
 
 	@Override
 	public String getFileName() {
-		if (optionsToShowConfiguration.isShowFileNameOption())  {
+		if (optionsToShowConfiguration.isShowFileNameOption()) {
 			String fileName = fileNameTextBox.getText();
 			if (fileName != null && !fileName.isEmpty()) {
 				return fileName;
@@ -238,10 +265,10 @@ public class OptionsPrintPanel extends DefaultDataProviderPrintWidgetView {
 		// return default value
 		return super.getFileName();
 	}
-	
+
 	@Override
 	public boolean isSync() {
-		if (optionsToShowConfiguration.isShowSyncOption())  {
+		if (optionsToShowConfiguration.isShowSyncOption()) {
 			return syncCheckBox.getValue();
 		}
 		return super.isSync();
@@ -255,8 +282,12 @@ public class OptionsPrintPanel extends DefaultDataProviderPrintWidgetView {
 	}
 
 	protected boolean validate() {
-		if (getRasterDpi() == null) {
-			Window.alert("The dpi must be an integer value");
+		if (getDpi() <= 0) {
+			Window.alert("The dpi must be a positive integer value");
+			return false;
+		}
+		if (getRasterDpi() <= 0) {
+			Window.alert("The raster dpi must be a positive integer value");
 			return false;
 		}
 		if (getPostPrintAction() == null) {
@@ -272,14 +303,15 @@ public class OptionsPrintPanel extends DefaultDataProviderPrintWidgetView {
 	}
 
 	/**
-	 * Method to set the visibility of the view and thereby 'redrawing' it.
-	 * Make sure to call after changing the {@link OptionsToShowConfiguration}.
+	 * Method to set the visibility of the view and thereby 'redrawing' it. Make sure to call after changing the
+	 * {@link OptionsToShowConfiguration}.
 	 */
 	public void createViewBasedOnConfiguration() {
 		// set default values, when appropriate
 		arrowCheckBox.setValue(super.isWithArrow());
 		scaleBarBox.setValue(super.isWithScaleBar());
-		rasterDpiTextBox.setText(super.getRasterDpi().toString());
+		dpiTextBox.setText(super.getDpi() + "");
+		rasterDpiTextBox.setText(super.getRasterDpi() + "");
 		if (super.isLandscape()) {
 			optionLandscapeOrientation.setValue(true);
 		} else {
@@ -293,6 +325,7 @@ public class OptionsPrintPanel extends DefaultDataProviderPrintWidgetView {
 		pageSizeSection.setVisible(getOptionsToShowConfiguration().isShowPageSizeOption());
 		withArrowSection.setVisible(getOptionsToShowConfiguration().isShowWithArrowOption());
 		withScaleBarSection.setVisible(getOptionsToShowConfiguration().isShowWithScaleBarOption());
+		dpiSection.setVisible(getOptionsToShowConfiguration().isShowDpiOption());
 		rasterDpiSection.setVisible(getOptionsToShowConfiguration().isShowRasterDpiOption());
 		postPrintActionSection.setVisible(getOptionsToShowConfiguration().isShowPostPrintActionOption());
 		fileNameSection.setVisible(getOptionsToShowConfiguration().isShowFileNameOption());
@@ -308,10 +341,11 @@ public class OptionsPrintPanel extends DefaultDataProviderPrintWidgetView {
 	}
 
 	/**
-	 * Configuration object for the view options. Contains booleans for each option.
-	 * Initiated with all false values (default).
+	 * Configuration object for the view options. Contains booleans for each option. Initiated with all false values
+	 * (default).
 	 */
 	public class OptionsToShowConfiguration {
+
 		private boolean showTitleOption;
 
 		private boolean showLandscapeOption;
@@ -321,6 +355,8 @@ public class OptionsPrintPanel extends DefaultDataProviderPrintWidgetView {
 		private boolean showWithArrowOption;
 
 		private boolean showWithScaleBarOption;
+
+		private boolean showDpiOption;
 
 		private boolean showRasterDpiOption;
 
@@ -352,6 +388,14 @@ public class OptionsPrintPanel extends DefaultDataProviderPrintWidgetView {
 
 		public void setShowPageSizeOption(boolean showPageSizeOption) {
 			this.showPageSizeOption = showPageSizeOption;
+		}
+
+		public boolean isShowDpiOption() {
+			return showDpiOption;
+		}
+
+		public void setShowDpiOption(boolean showDpiOption) {
+			this.showDpiOption = showDpiOption;
 		}
 
 		public boolean isShowWithArrowOption() {
@@ -393,14 +437,14 @@ public class OptionsPrintPanel extends DefaultDataProviderPrintWidgetView {
 		public void setShowFileNameOption(boolean showFileNameOption) {
 			this.showFileNameOption = showFileNameOption;
 		}
-		
+
 		public boolean isShowSyncOption() {
 			return showSyncOption;
 		}
-		
+
 		public void setShowSyncOption(boolean showSyncOption) {
 			this.showSyncOption = showSyncOption;
 		}
-		
+
 	}
 }

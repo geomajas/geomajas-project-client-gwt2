@@ -33,5 +33,7 @@ public interface TemplateBuilderDataProvider {
 
 	boolean isWithScaleBar();
 
-	Integer getRasterDpi();
+	int getRasterDpi();
+
+	int getDpi();
 }

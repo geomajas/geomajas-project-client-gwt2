@@ -110,9 +110,15 @@ public abstract class DefaultDataProviderPrintWidgetView implements PrintWidgetV
 	}
 
 	@Override
-	public Integer getRasterDpi() {
+	public int getRasterDpi() {
 		return defaultPrintRequestDataProvider.getTemplateBuilderDataProvider().getRasterDpi();
 	}
+
+	@Override
+	public int getDpi() {
+		return defaultPrintRequestDataProvider.getTemplateBuilderDataProvider().getDpi();
+	}
+
 
 	@Override
 	public String getTitle() {
