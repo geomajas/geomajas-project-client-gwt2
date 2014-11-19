@@ -367,6 +367,7 @@ public final class MapPresenterImpl implements MapPresenter {
 			if (isTouchSupported) {
 				handlers.add(display.addTouchStartHandler(mapController));
 				handlers.add(display.addTouchMoveHandler(mapController));
+                handlers.add(display.addTouchEndHandler(mapController));
 				handlers.add(display.addTouchCancelHandler(mapController));
 				handlers.add(display.addGestureStartHandler(mapController));
 				handlers.add(display.addGestureChangeHandler(mapController));
@@ -400,6 +401,7 @@ public final class MapPresenterImpl implements MapPresenter {
 			if (isTouchSupported) {
 				registrations.add(display.addTouchStartHandler(mapListener));
 				registrations.add(display.addTouchMoveHandler(mapListener));
+                registrations.add(display.addTouchEndHandler(mapListener));
 				registrations.add(display.addTouchCancelHandler(mapListener));
 				registrations.add(display.addGestureStartHandler(mapListener));
 				registrations.add(display.addGestureChangeHandler(mapListener));

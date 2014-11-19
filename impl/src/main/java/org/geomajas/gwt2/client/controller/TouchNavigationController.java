@@ -67,7 +67,7 @@ public class TouchNavigationController extends AbstractMapController {
 	@Override
 	public void onTouchEnd(TouchEndEvent event) {
 		logger.log(Level.INFO, "TouchNavigationController -> onTouchEnd()");
-		//TODO: it is never fired = find out what is wrong with that
+        event.preventDefault();
 	}
 
 	@Override
