@@ -11,6 +11,7 @@
 
 package org.geomajas.gwt2.client.map.layer;
 
+import com.google.gwt.http.client.URL;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
@@ -21,9 +22,10 @@ import org.geomajas.gwt2.client.map.render.TileRenderer;
  * {@link TileRenderer} for server-side vector layers.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class VectorServerTileRenderer implements TileRenderer {
+
+	private final VectorServerLayer layer;
 
 	private String baseUrl;
 
@@ -31,7 +33,9 @@ public class VectorServerTileRenderer implements TileRenderer {
 
 	private TileConfiguration tileConfig;
 
-	public VectorServerTileRenderer(TileConfiguration tileConfig, String baseUrl, String extension) {
+	public VectorServerTileRenderer(VectorServerLayer layer, TileConfiguration tileConfig, String baseUrl,
+			String extension) {
+		this.layer = layer;
 		this.baseUrl = baseUrl;
 		this.extension = extension;
 		this.tileConfig = tileConfig;
@@ -54,6 +58,10 @@ public class VectorServerTileRenderer implements TileRenderer {
 		urlBuilder.append("&tileOrigin=" + tileOrigin.getX() + "," + tileOrigin.getY());
 		urlBuilder.append("&tileWidth=" + tileWidth);
 		urlBuilder.append("&tileHeight=" + tileHeight);
+		if (layer.getFilter() != null) {
+			urlBuilder.append("&filter=");
+			urlBuilder.append(URL.encode(layer.getFilter()));
+		}
 		if (GwtCommandDispatcher.getInstance().getUserToken() != null) {
 			urlBuilder.append("&userToken=");
 			urlBuilder.append(GwtCommandDispatcher.getInstance().getUserToken());

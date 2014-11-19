@@ -96,7 +96,7 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 			 String dispatcher = GeomajasServerExtension.getInstance().getEndPointService().getDispatcherUrl();
 			 String baseUrl = dispatcher + RASTERIZING_PREFIX + layerId + "@" + mapInfo.getCrs() + "/"
 			 + layerInfo.getNamedStyleInfo().getName() + "/";
-			tileRenderer = new VectorServerTileRenderer(tileConfiguration, baseUrl, ".png");
+			tileRenderer = new VectorServerTileRenderer(this, tileConfiguration, baseUrl, ".png");
 		}
 		return tileRenderer;
 	}
