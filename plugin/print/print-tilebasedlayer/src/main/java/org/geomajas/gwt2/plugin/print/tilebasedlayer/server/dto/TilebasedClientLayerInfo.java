@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.layer.LayerType;
 import org.geomajas.layer.tile.RasterTile;
 
 /**
@@ -36,7 +37,9 @@ public class TilebasedClientLayerInfo extends ClientLayerInfo {
 	private Coordinate tileOrigin;
 
 	private double scale;
-
+	
+	private String crs;
+		
 	/**
 	 * @see #setTiles(java.util.List)
 	 * @return
@@ -121,5 +124,26 @@ public class TilebasedClientLayerInfo extends ClientLayerInfo {
 	public void setScale(double scale) {
 		this.scale = scale;
 	}
+
+	@Override
+	public LayerType getLayerType() {
+		return LayerType.RASTER;
+	}
+	
+	/**
+	 * Set the crs of the tiles. Same as map CRS.
+	 * 
+	 * @param crs
+	 */
+	public void setCrs(String crs) {
+		this.crs = crs;
+	}
+
+	@Override
+	public String getCrs() {
+		return crs;
+	}	
+	
+	
 
 }

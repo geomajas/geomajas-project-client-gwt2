@@ -56,7 +56,7 @@ public class TileBasedLayerBuilder implements PrintableLayersModelBuilder {
 		info.setTileHeight(tileBasedLayer.getTileConfiguration().getTileHeight());
 		info.setTileWidth(tileBasedLayer.getTileConfiguration().getTileWidth());
 		info.setScale(1 / getActualResolution(tileConfig, resolution));
-
+		info.setCrs(mapPresenter.getViewPort().getCrs());
 		info.setId(tileBasedLayer.getId());
 		RasterLayerRasterizingInfo rasterInfo = new RasterLayerRasterizingInfo();
 		rasterInfo.setShowing(tileBasedLayer.isShowing());
