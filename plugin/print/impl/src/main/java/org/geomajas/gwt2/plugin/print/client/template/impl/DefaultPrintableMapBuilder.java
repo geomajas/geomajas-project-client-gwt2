@@ -58,7 +58,8 @@ public class DefaultPrintableMapBuilder implements PrintableMapBuilder {
 
 	@Override
 	public void registerLayerBuilder(PrintableLayerBuilder layerBuilder) {
-		layerBuilders.add(layerBuilder);
+		// prepend to the list take precedence !
+		layerBuilders.add(0, layerBuilder);
 	}
 
 	@Override
@@ -69,7 +70,8 @@ public class DefaultPrintableMapBuilder implements PrintableMapBuilder {
 	}
 	
 	public static void registerDefaultLayerBuilder(PrintableLayerBuilder layerBuilder) {
-		defaultLayerBuilders.add(layerBuilder);
+		// prepend to the list to take precedence !
+		defaultLayerBuilders.add(0, layerBuilder);
 	}
 
 	/* private methods */
@@ -109,6 +111,7 @@ public class DefaultPrintableMapBuilder implements PrintableMapBuilder {
 				if (widgetLayerPrintBuilder.supports(widget)) {
 					mapRasterizingInfo.getExtraLayers().add(
 							widgetLayerPrintBuilder.build(mapPresenter, widget, worldBounds, rasterResolution));
+					break;
 				}
 			}
 		}
@@ -122,6 +125,7 @@ public class DefaultPrintableMapBuilder implements PrintableMapBuilder {
 			for (PrintableLayersModelBuilder layerBuilder : getLayersModelBuilders()) {
 				if (layerBuilder.supports(layer)) {
 					clientLayers.add(layerBuilder.build(mapPresenter, layer, worldBounds, rasterResolution));
+					break;
 				}
 			}
 		}

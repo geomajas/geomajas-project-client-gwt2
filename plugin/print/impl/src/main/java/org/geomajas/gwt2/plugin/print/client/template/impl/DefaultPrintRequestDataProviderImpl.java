@@ -97,8 +97,8 @@ public final class DefaultPrintRequestDataProviderImpl implements DefaultPrintRe
 
 		private String defaultTitle = MESSAGES.defaultPrintTitle();
 		private PageSize defaultPageSize = PageSize.A4;
-		private int defaultDpi = 200;
-		private int defaultRasterDpi = 200;
+		private int defaultDpi = 144;
+		private int defaultRasterDpi = 72;
 		private boolean defaultLandscape = true;
 		private boolean defaultWithArrow = true;
 		private boolean defaultWithScaleBar = true;
