@@ -316,6 +316,10 @@ public class WmsServiceImpl implements WmsService {
 		} else {
 			url.append("?service=WMS");
 		}
+		
+		// Parameter: version
+		url.append("&version=");
+		url.append(wmsConfig.getVersion().toString());
 
 		// Parameter: layers
 		url.append("&layer=");
