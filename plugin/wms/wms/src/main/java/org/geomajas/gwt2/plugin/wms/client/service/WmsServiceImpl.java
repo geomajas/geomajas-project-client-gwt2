@@ -377,8 +377,8 @@ public class WmsServiceImpl implements WmsService {
 				url.append(";");
 			}
 			
-			// bit of a hack: use icon size to determine the dpi for geoserver
-			int dpi = legendConfig.getIconWidth() / LegendConfig.DEFAULT_ICON_SIZE * LEGEND_DPI;
+			// geoserver supports dpi directly, use calculated width/height for other servers
+			double dpi = legendConfig.getDpi();
 			url.append("bgColor:0xFFFFFF;dpi:" + dpi);
 			
 		} else {

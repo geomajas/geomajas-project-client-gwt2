@@ -51,6 +51,8 @@ public class LegendConfig implements Serializable {
 	private Integer width;
 	
 	private Integer height;
+	
+	private Double dpi;
 
 	/** Default constructor. Makes sure everything has a default value, to minimize the chance of a NPE. */
 	public LegendConfig() {
@@ -95,6 +97,26 @@ public class LegendConfig implements Serializable {
 	 */
 	public void setHeight(Integer height) {
 		this.height = height;
+	}
+	
+	/**
+	 * Get the DPI for which the legend graphic should render correctly (assuming font size in points).
+	 * 
+	 * @since 2.2.0
+	 */
+	public Double getDpi() {
+		return dpi;
+	}
+	
+	/**
+	 * Set the DPI for which the legend graphic should render correctly (assuming font size in points). This parameter
+	 * can be set to request a higher resolution image. The DPI of the default image is assumed to be the OGC DPI =
+	 * 90.714. For a DPI = 2 * 90.714 = 181.428, the image will be twice as large.
+	 * 
+	 * @param dpi
+	 */
+	public void setDpi(Double dpi) {
+		this.dpi = dpi;
 	}
 
 	/**
