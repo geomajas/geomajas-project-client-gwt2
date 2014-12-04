@@ -28,7 +28,9 @@ public interface VectorServerLayer extends ServerLayer<ClientVectorLayerInfo>, L
 	 * 
 	 * @param styleInfo
 	 *            the styleinfo
+	 * @deprecated Doesn't work atm.
 	 */
+	@Deprecated
 	void updateStyle(NamedStyleInfo styleInfo);
 
 	/**

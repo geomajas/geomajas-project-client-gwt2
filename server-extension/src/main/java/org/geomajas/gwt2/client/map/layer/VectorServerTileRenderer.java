@@ -20,7 +20,7 @@ import org.geomajas.gwt2.client.map.render.TileRenderer;
 
 /**
  * {@link TileRenderer} for server-side vector layers.
- * 
+ *
  * @author Jan De Moerloose
  */
 public class VectorServerTileRenderer implements TileRenderer {
@@ -58,6 +58,8 @@ public class VectorServerTileRenderer implements TileRenderer {
 		urlBuilder.append("&tileOrigin=" + tileOrigin.getX() + "," + tileOrigin.getY());
 		urlBuilder.append("&tileWidth=" + tileWidth);
 		urlBuilder.append("&tileHeight=" + tileHeight);
+		urlBuilder.append("&showLabels=");
+		urlBuilder.append(layer.isLabeled());
 		if (layer.getFilter() != null) {
 			urlBuilder.append("&filter=");
 			urlBuilder.append(URL.encode(layer.getFilter()));
@@ -68,5 +70,4 @@ public class VectorServerTileRenderer implements TileRenderer {
 		}
 		return urlBuilder.toString();
 	}
-
 }

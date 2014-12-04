@@ -219,7 +219,7 @@ public interface WmsService {
 	 * Get the URL for a WMS GetFeatureInfo request.
 	 * 
 	 * @param viewPort the viewPort
-	 * @param layer the layer
+	 * @param wmsLayer the layer
 	 * @param location location of the point
 	 * @param format format of the response
 	 * @return the URL of the GetFeatureInfo request.
