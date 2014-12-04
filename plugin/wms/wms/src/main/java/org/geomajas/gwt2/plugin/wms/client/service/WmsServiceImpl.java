@@ -343,20 +343,21 @@ public class WmsServiceImpl implements WmsService {
 		} else {
 			url.append(format.toLowerCase());
 		}
-
-		// Parameter: width
-		url.append("&width=");
-		url.append(legendConfig.getIconWidth());
-
-		// Parameter: height
-		url.append("&height=");
-		url.append(legendConfig.getIconHeight());
-
+		
 		// Parameter: transparent
 		url.append("&transparent=true");
 
 		// Check for specific vendor options:
 		if (WmsServiceVendor.GEOSERVER_WMS.equals(wmsConfig.getWmsServiceVendor())) {
+
+			// Parameter: for geoserver, width = icon width
+			url.append("&width=");
+			url.append(legendConfig.getIconWidth());
+
+			// Parameter: for geoserver, height = icon height
+			url.append("&height=");
+			url.append(legendConfig.getIconHeight());
+			
 			url.append(WMS_LEGEND_OPTIONS_START);
 			if (null != legendConfig.getFontStyle().getFamily()) {
 				url.append("fontName:");
@@ -375,9 +376,23 @@ public class WmsServiceImpl implements WmsService {
 				url.append(legendConfig.getFontStyle().getSize());
 				url.append(";");
 			}
-
-			int dpi = LEGEND_DPI;
+			
+			// bit of a hack: use icon size to determine the dpi for geoserver
+			int dpi = legendConfig.getIconWidth() / LegendConfig.DEFAULT_ICON_SIZE * LEGEND_DPI;
 			url.append("bgColor:0xFFFFFF;dpi:" + dpi);
+			
+		} else {
+			if(legendConfig.getWidth() != null) {
+				// Parameter: width
+				url.append("&width=");
+				url.append(legendConfig.getWidth());
+			}
+			
+			if(legendConfig.getHeight() != null) {
+				// Parameter: width
+				url.append("&height=");
+				url.append(legendConfig.getHeight());
+			}
 		}
 
 		return finishUrl(WmsRequest.GETLEGENDGRAPHIC, url);

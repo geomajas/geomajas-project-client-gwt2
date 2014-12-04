@@ -47,10 +47,54 @@ public class LegendConfig implements Serializable {
 	private String exceptions = DEFAULT_IMAGE_FORMAT;
 
 	private Bbox bounds;
+	
+	private Integer width;
+	
+	private Integer height;
 
 	/** Default constructor. Makes sure everything has a default value, to minimize the chance of a NPE. */
 	public LegendConfig() {
 		fontStyle = new FontStyle();
+	}
+	
+	/**
+	 * Get the (optional) width in pixels of the legend.
+	 * 
+	 * @return the width in pixels or null
+	 * @since 2.2.0
+	 */
+	public Integer getWidth() {
+		return width;
+	}
+
+	/**
+	 * Set the (optional) width in pixels of the legend.
+	 * 
+	 * @param width
+	 * @since 2.2.0
+	 */
+	public void setWidth(Integer width) {
+		this.width = width;
+	}
+
+	/**
+	 * Get the (optional) height in pixels of the legend.
+	 * 
+	 * @return the height in pixels or null
+	 * @since 2.2.0
+	 */
+	public Integer getHeight() {
+		return height;
+	}
+
+	/**
+	 * Set the (optional) height in pixels of the legend.
+	 * 
+	 * @param height
+	 * @since 2.2.0
+	 */
+	public void setHeight(Integer height) {
+		this.height = height;
 	}
 
 	/**
