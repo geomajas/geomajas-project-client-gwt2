@@ -5,14 +5,13 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.google.gwt.core.client.Callback;
-import com.google.gwt.http.client.Request;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
-import com.google.gwt.http.client.Response;
-import com.google.gwt.xml.client.Document;
-import com.google.gwt.xml.client.impl.XMLParserImpl;
-import com.google.gwtmockito.GwtMockitoTestRunner;
+import java.io.StringReader;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.xerces.parsers.DOMParser;
@@ -28,13 +27,14 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.xml.sax.InputSource;
 
-import java.io.StringReader;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
+import com.google.gwt.core.client.Callback;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.xml.client.Document;
+import com.google.gwt.xml.client.impl.XMLParserImpl;
+import com.google.gwtmockito.GwtMockitoTestRunner;
 
 @RunWith(GwtMockitoTestRunner.class)
 public abstract class AbstractWmsServiceTest {
@@ -124,6 +124,13 @@ public abstract class AbstractWmsServiceTest {
 			try {
 				Method m = delegate.getClass().getMethod(method.getName(), method.getParameterTypes());
 				Object result = m.invoke(delegate, args == null ? null : new Object[] { args[0] });
+				// equals() should equal the other's delegate
+				if(m.getName().equals("equals")) {
+					if(Proxy.isProxyClass(args[0].getClass())) {
+						W3CToGoogleHandler handler = (W3CToGoogleHandler)Proxy.getInvocationHandler(args[0]);
+						return delegate.equals(handler.delegate);
+					}
+				}
 				if (result == null) {
 					return null;
 				}

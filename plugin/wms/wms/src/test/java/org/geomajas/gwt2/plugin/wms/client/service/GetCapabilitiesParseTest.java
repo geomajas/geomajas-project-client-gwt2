@@ -56,6 +56,9 @@ public class GetCapabilitiesParseTest extends AbstractWmsServiceTest {
 
 						checkLayer(1, layers.get(0), WmsVersion.V1_1_1);
 						checkLayer(2, layers.get(1), WmsVersion.V1_1_1);
+						
+						WmsLayerInfo rootLayer = result.getRootLayer();
+						checkRoot(rootLayer, WmsVersion.V1_1_1);
 					}
 
 					public void onFailure(String reason) {
@@ -79,6 +82,9 @@ public class GetCapabilitiesParseTest extends AbstractWmsServiceTest {
 
 						checkLayer(1, layers.get(0), WmsVersion.V1_3_0);
 						checkLayer(2, layers.get(1), WmsVersion.V1_3_0);
+						
+						WmsLayerInfo rootLayer = result.getRootLayer();
+						checkRoot(rootLayer, WmsVersion.V1_3_0);
 					}
 
 					public void onFailure(String reason) {
@@ -136,6 +142,34 @@ public class GetCapabilitiesParseTest extends AbstractWmsServiceTest {
 		Assert.assertNotNull(styles);
 		Assert.assertEquals(1, styles.size());
 		checkLayerStyle(index, styles.get(0));
+	}
+
+	protected void checkRoot(WmsLayerInfo layer, WmsVersion version) {
+		Assert.assertFalse(layer.isQueryable());
+		Assert.assertNull(layer.getName());
+		Assert.assertEquals("someTitle", layer.getTitle());
+		Assert.assertEquals("someAbstract", layer.getAbstract());
+
+		List<String> keywords = layer.getKeywords();
+		Assert.assertNotNull(keywords);
+		Assert.assertEquals(0, keywords.size());
+
+		List<String> crs = layer.getCrs();
+		Assert.assertEquals(2, crs.size());
+		Assert.assertEquals("EPSG:31370", crs.get(0));
+		Assert.assertEquals("EPSG:4326", crs.get(1));
+
+		Bbox latlonBox = layer.getLatlonBoundingBox();
+		Assert.assertEquals(0.0, latlonBox.getX());
+		Assert.assertEquals(1.0, latlonBox.getMaxX());
+		Assert.assertEquals(2.0, latlonBox.getY());
+		Assert.assertEquals(3.0, latlonBox.getMaxY());
+		List<WmsLayerInfo> layers = layer.getLayers();
+		Assert.assertNotNull(layers);
+		Assert.assertEquals(2, layers.size());
+
+		checkLayer(1, layers.get(0), version);
+		checkLayer(2, layers.get(1), version);
 	}
 
 	private void checkMetadataUrl(List<WmsLayerMetadataUrlInfo> info) {

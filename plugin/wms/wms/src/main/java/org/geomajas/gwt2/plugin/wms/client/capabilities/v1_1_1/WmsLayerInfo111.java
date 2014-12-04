@@ -53,53 +53,57 @@ public class WmsLayerInfo111 extends AbstractXmlNodeWrapper implements WmsLayerI
 
 	private List<WmsLayerStyleInfo> styleInfo = new ArrayList<WmsLayerStyleInfo>();
 
+	private List<WmsLayerInfo> layers = new ArrayList<WmsLayerInfo>();
+
 	private double minScaleDenominator = -1;
 
 	private double maxScaleDenominator = -1;
 
 	private boolean queryable;
+	
+	private transient boolean parsed;
 
 	public WmsLayerInfo111(Node node) {
 		super(node);
 	}
 
 	public String getName() {
-		if (name == null) {
+		if (!parsed) {
 			parse(getNode());
 		}
 		return name;
 	}
 
 	public String getTitle() {
-		if (name == null) {
+		if (!parsed) {
 			parse(getNode());
 		}
 		return title;
 	}
 
 	public String getAbstract() {
-		if (name == null) {
+		if (!parsed) {
 			parse(getNode());
 		}
 		return abstractt;
 	}
 
 	public List<String> getKeywords() {
-		if (name == null) {
+		if (!parsed) {
 			parse(getNode());
 		}
 		return keywords;
 	}
 
 	public List<String> getCrs() {
-		if (name == null) {
+		if (!parsed) {
 			parse(getNode());
 		}
 		return crs;
 	}
 
 	public Bbox getLatlonBoundingBox() {
-		if (name == null) {
+		if (!parsed) {
 			parse(getNode());
 		}
 		return latlonBoundingBox;
@@ -107,7 +111,7 @@ public class WmsLayerInfo111 extends AbstractXmlNodeWrapper implements WmsLayerI
 
 	@Override
 	public String getBoundingBoxCrs() {
-		if (name == null) {
+		if (!parsed) {
 			parse(getNode());
 		}
 		if (null != this.crs && !this.crs.isEmpty() && null != boundingBoxes.get(this.crs.get(0))) {
@@ -118,7 +122,7 @@ public class WmsLayerInfo111 extends AbstractXmlNodeWrapper implements WmsLayerI
 
 	@Override
 	public Bbox getBoundingBox(String boundingBoxCrs) {
-		if (name == null) {
+		if (!parsed) {
 			parse(getNode());
 		}
 		return boundingBoxes.get(boundingBoxCrs);
@@ -126,7 +130,7 @@ public class WmsLayerInfo111 extends AbstractXmlNodeWrapper implements WmsLayerI
 
 	@Override
 	public Bbox getBoundingBox() {
-		if (name == null) {
+		if (!parsed) {
 			parse(getNode());
 		}
 		if (null != this.crs && !this.crs.isEmpty() && null != boundingBoxes.get(this.crs.get(0))) {
@@ -136,35 +140,42 @@ public class WmsLayerInfo111 extends AbstractXmlNodeWrapper implements WmsLayerI
 	}
 
 	public List<WmsLayerMetadataUrlInfo> getMetadataUrls() {
-		if (name == null) {
+		if (!parsed) {
 			parse(getNode());
 		}
 		return metadataUrls;
 	}
 
 	public List<WmsLayerStyleInfo> getStyleInfo() {
-		if (name == null) {
+		if (!parsed) {
 			parse(getNode());
 		}
 		return styleInfo;
 	}
+	
+	public List<WmsLayerInfo> getLayers() {
+		if (!parsed) {
+			parse(getNode());
+		}
+		return layers;
+	}
 
 	public double getMinScaleDenominator() {
-		if (name == null) {
+		if (!parsed) {
 			parse(getNode());
 		}
 		return minScaleDenominator;
 	}
 
 	public double getMaxScaleDenominator() {
-		if (name == null) {
+		if (!parsed) {
 			parse(getNode());
 		}
 		return maxScaleDenominator;
 	}
 
 	public boolean isQueryable() {
-		if (name == null) {
+		if (!parsed) {
 			parse(getNode());
 		}
 		return queryable;
@@ -209,6 +220,7 @@ public class WmsLayerInfo111 extends AbstractXmlNodeWrapper implements WmsLayerI
 				}
 			}
 		}
+		parsed = true;
 	}
 
 	private boolean isQueryable(Node layerNode) {

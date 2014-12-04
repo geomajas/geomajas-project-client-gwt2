@@ -38,4 +38,11 @@ public interface WmsGetCapabilitiesInfo extends Serializable {
 	 * @return The full list of layers.
 	 */
 	List<WmsLayerInfo> getLayers();
+	
+	/**
+	 * Retrieve the root layer defined in the capabilities file.
+	 *
+	 * @return The root layer.
+	 */
+	WmsLayerInfo getRootLayer();
 }
