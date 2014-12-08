@@ -11,22 +11,6 @@
 
 package org.geomajas.gwt2.plugin.wms.example.client.sample;
 
-import com.google.gwt.core.client.Callback;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.DecoratorPanel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.RadioButton;
-import com.google.gwt.user.client.ui.ResizeLayoutPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.MapEventBus;
@@ -43,7 +27,24 @@ import org.geomajas.gwt2.plugin.wms.client.layer.WmsLayerConfiguration;
 import org.geomajas.gwt2.plugin.wms.client.service.WmsService.WmsRequest;
 import org.geomajas.gwt2.plugin.wms.client.service.WmsService.WmsUrlTransformer;
 import org.geomajas.gwt2.plugin.wms.client.service.WmsService.WmsVersion;
-import org.geomajas.gwt2.plugin.wms.client.widget.WmsLayerLegend;
+
+import com.google.gwt.core.client.Callback;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.DecoratorPanel;
+import com.google.gwt.user.client.ui.DoubleBox;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.RadioButton;
+import com.google.gwt.user.client.ui.ResizeLayoutPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * ContentPanel that demonstrates rendering abilities in world space with a map that supports resizing.
@@ -74,6 +75,9 @@ public class WmsLayerLegendPanel implements SamplePanel {
 
 	@UiField
 	protected ListBox wmsVersionBox;
+	
+	@UiField
+	protected DoubleBox scaleBox;
 
 	public Widget asWidget() {
 		WmsClient.getInstance().getWmsService().setWmsUrlTransformer(new WmsUrlTransformer() {
@@ -90,7 +94,7 @@ public class WmsLayerLegendPanel implements SamplePanel {
 			}
 		});
 		Widget layout = UI_BINDER.createAndBindUi(this);
-
+		scaleBox.getElement().setPropertyString("placeholder", "Enter image scale factor:");
 		// Create the mapPresenter and add an InitializationHandler:
 		mapPresenter = GeomajasImpl.getInstance().createMapPresenter();
 		mapPresenter.setSize(480, 480);
@@ -160,7 +164,7 @@ public class WmsLayerLegendPanel implements SamplePanel {
 	 *
 	 * @author Pieter De Graef
 	 */
-	private static final class LayerPresenter extends VerticalPanel {
+	private final class LayerPresenter extends VerticalPanel {
 
 		private LayerPresenter(MapEventBus eventBus, final WmsLayer layer) {
 			setStyleName(ExampleBase.getShowcaseResource().css().sampleRow());
@@ -187,7 +191,15 @@ public class WmsLayerLegendPanel implements SamplePanel {
 					}
 					add(styleWidget);
 				}
-				add(new WmsLayerLegend(eventBus, layer));
+				WmsLayerLegend legend = new WmsLayerLegend(eventBus, layer);
+				if (scaleBox.getValue() != null) {
+					if (scaleBox.getValue() > 0.2 && scaleBox.getValue() < 5) {
+						legend.scale(scaleBox.getValue());
+					} else {
+						Window.alert("Choose a scale between 0.2 and 5");
+					}
+				}
+				add(legend);
 			}
 		}
 	}

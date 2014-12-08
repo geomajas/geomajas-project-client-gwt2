@@ -111,9 +111,11 @@ public class LegendConfig implements Serializable {
 	/**
 	 * Set the DPI for which the legend graphic should render correctly (assuming font size in points). This parameter
 	 * can be set to request a higher resolution image. The DPI of the default image is assumed to be the OGC DPI =
-	 * 90.714. For a DPI = 2 * 90.714 = 181.428, the image will be twice as large.
+	 * 90.714. For a DPI = 2 * 90.714 = 181.428, the image will be twice as large. This value will only be used if no
+	 * explicit width and height are requested. Current supported by Geoserver.
 	 * 
 	 * @param dpi
+	 * @since 2.2.0
 	 */
 	public void setDpi(Double dpi) {
 		this.dpi = dpi;

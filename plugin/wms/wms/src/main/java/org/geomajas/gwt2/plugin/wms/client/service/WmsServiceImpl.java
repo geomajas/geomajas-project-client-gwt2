@@ -58,8 +58,6 @@ public class WmsServiceImpl implements WmsService {
 
 	private static final String WMS_LEGEND_OPTIONS_START = "&legend_options=";
 
-	private static final int LEGEND_DPI = 91;
-
 	private static final int DEFAULT_MAX_FEATURES = 20; // Default maximum number of feats returned by GetFeatureInfo
 
 	protected WmsUrlTransformer urlTransformer;
@@ -358,7 +356,7 @@ public class WmsServiceImpl implements WmsService {
 			url.append("&height=");
 			url.append(legendConfig.getIconHeight());
 			
-			url.append(WMS_LEGEND_OPTIONS_START);
+			url.append("&legend_options=");
 			if (null != legendConfig.getFontStyle().getFamily()) {
 				url.append("fontName:");
 				url.append(legendConfig.getFontStyle().getFamily());
@@ -379,16 +377,17 @@ public class WmsServiceImpl implements WmsService {
 			
 			// geoserver supports dpi directly, use calculated width/height for other servers
 			double dpi = legendConfig.getDpi();
-			url.append("bgColor:0xFFFFFF;dpi:" + dpi);
+			// default dpi is 90.
+			url.append("bgColor:0xFFFFFF;dpi:" + (int) dpi);
 			
 		} else {
-			if(legendConfig.getWidth() != null) {
+			if (legendConfig.getWidth() != null) {
 				// Parameter: width
 				url.append("&width=");
 				url.append(legendConfig.getWidth());
 			}
-			
-			if(legendConfig.getHeight() != null) {
+
+			if (legendConfig.getHeight() != null) {
 				// Parameter: width
 				url.append("&height=");
 				url.append(legendConfig.getHeight());

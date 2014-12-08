@@ -9,12 +9,14 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt2.plugin.wms.client.widget;
+package org.geomajas.gwt2.plugin.wms.example.client.sample;
 
 import com.google.gwt.user.client.ui.Image;
+
 import org.geomajas.gwt2.client.event.LayerStyleChangedEvent;
 import org.geomajas.gwt2.client.event.LayerStyleChangedHandler;
 import org.geomajas.gwt2.client.map.MapEventBus;
+import org.geomajas.gwt2.client.map.layer.LegendConfig;
 import org.geomajas.gwt2.plugin.wms.client.layer.WmsLayer;
 
 /**
@@ -28,6 +30,8 @@ import org.geomajas.gwt2.plugin.wms.client.layer.WmsLayer;
 public class WmsLayerLegend extends Image {
 
 	private final WmsLayer layer;
+	
+	private LegendConfig config = new LegendConfig();
 
 	/**
 	 * Create a new legend widget for the given WMS layer.
@@ -46,10 +50,17 @@ public class WmsLayerLegend extends Image {
 			@Override
 			public void onLayerStyleChanged(LayerStyleChangedEvent event) {
 				if (event.getLayer() == WmsLayerLegend.this.layer) {
-					setUrl(WmsLayerLegend.this.layer.getLegendImageUrl());
+					setUrl(WmsLayerLegend.this.layer.getLegendImageUrl(config));
 				}
 			}
 		});
+	}
+	
+	public void scale(double factor) {
+		config.setWidth((int) (factor * getWidth()));
+		config.setHeight((int) (factor * getHeight()));
+		config.setDpi(2 * 90.7);
+		setUrl(WmsLayerLegend.this.layer.getLegendImageUrl(config));
 	}
 
 	/**
