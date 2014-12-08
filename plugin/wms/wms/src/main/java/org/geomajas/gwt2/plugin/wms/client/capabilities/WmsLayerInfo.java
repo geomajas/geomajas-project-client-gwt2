@@ -124,4 +124,12 @@ public interface WmsLayerInfo extends Serializable {
 	 * @return Returns the maximum scale denominator, or -1 if it is not provided.
 	 */
 	double getMaxScaleDenominator();
+	
+	/**
+	 * Get a list of supported coordinate systems for this layer.
+	 *
+	 * @return The list of supported coordinate systems.
+	 */
+	List<WmsLayerInfo> getLayers();
+
 }

@@ -124,6 +124,7 @@ public class WmsServiceTest extends AbstractWmsServiceTest {
 		Assert.assertNotNull(info);
 		Assert.assertEquals(8, info.getLayers().size());
 		Assert.assertEquals(3, info.getRequests().size());
+		Assert.assertNotNull(info.getRootLayer());
 
 		// unmarshal with jaxb to compare
 		JAXBContext context = JAXBContext.newInstance("net.opengis.wms.v_1_3_0");
@@ -157,7 +158,38 @@ public class WmsServiceTest extends AbstractWmsServiceTest {
 			}
 			Assert.assertTrue(BboxService.equals(toBbox(l.getBoundingBox().get(0)), layerInfo.getBoundingBox(), 0.0001));
 		}
+		
+		// compare tree
+		compareTree( wmsCapabilities.getCapability().getLayer(), info.getRootLayer());
+	}
 
+	private void compareTree(Layer l, WmsLayerInfo layerInfo) {
+		Assert.assertEquals(l.getName(), layerInfo.getName());
+		Assert.assertEquals(l.getAbstract(), layerInfo.getAbstract());
+		Assert.assertEquals(l.getTitle(), layerInfo.getTitle());
+		if(l.getMaxScaleDenominator() !=  null) {
+			Assert.assertEquals(l.getMaxScaleDenominator(), layerInfo.getMaxScaleDenominator());
+			Assert.assertEquals(l.getMinScaleDenominator(), layerInfo.getMinScaleDenominator());
+		} else {
+			Assert.assertEquals(-1, layerInfo.getMaxScaleDenominator(), 0.0001);
+			Assert.assertEquals(-1, layerInfo.getMinScaleDenominator(), 0.0001);
+		}
+		Assert.assertEquals(l.isQueryable(), layerInfo.isQueryable());
+		for (int j = 0; j < layerInfo.getStyleInfo().size(); j++) {
+			WmsLayerStyleInfo style = layerInfo.getStyleInfo().get(j);
+			Style s = l.getStyle().get(j);
+			Assert.assertEquals(s.getName(), style.getName());
+			Assert.assertEquals(s.getTitle(), style.getTitle());
+			Assert.assertEquals(s.getAbstract(), style.getAbstract());
+			Assert.assertEquals(s.getLegendURL().get(0).getFormat(), style.getLegendUrl().getFormat());
+		}
+		if (l.getBoundingBox().size() > 0) {
+			Assert.assertTrue(BboxService.equals(toBbox(l.getBoundingBox().get(0)),
+					layerInfo.getBoundingBox(l.getBoundingBox().get(0).getCRS()), 0.0001));
+		}
+		for (int i = 0; i < l.getLayer().size(); i++) {
+			compareTree(l.getLayer().get(i), layerInfo.getLayers().get(i));
+		}
 	}
 
 	@Test
@@ -175,6 +207,7 @@ public class WmsServiceTest extends AbstractWmsServiceTest {
 				Assert.assertEquals(layer.getMaxScaleDenominator(), 35000, 0.00001);
 			}
 		}
+		Assert.assertNotNull(info.getRootLayer());
 	}
 
 	@Test

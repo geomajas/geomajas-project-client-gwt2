@@ -11,17 +11,20 @@
 
 package org.geomajas.gwt2.plugin.wms.client.capabilities.v1_3_0;
 
-import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.Node;
-import com.google.gwt.xml.client.NodeList;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.geomajas.gwt2.client.service.AbstractXmlNodeWrapper;
 import org.geomajas.gwt2.plugin.wms.client.capabilities.WmsGetCapabilitiesInfo;
 import org.geomajas.gwt2.plugin.wms.client.capabilities.WmsLayerInfo;
 import org.geomajas.gwt2.plugin.wms.client.capabilities.WmsRequestInfo;
 import org.geomajas.gwt2.plugin.wms.client.capabilities.v1_1_1.WmsRequestInfo111;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.gwt.xml.client.Element;
+import com.google.gwt.xml.client.Node;
+import com.google.gwt.xml.client.NodeList;
 
 /**
  * Implementation of the {@link org.geomajas.gwt2.plugin.wms.client.capabilities.WmsGetCapabilitiesInfo}
@@ -36,6 +39,8 @@ public class WmsGetCapabilitiesInfo130 extends AbstractXmlNodeWrapper implements
 	private List<WmsRequestInfo> requests;
 
 	private List<WmsLayerInfo> layers;
+
+	private WmsLayerInfo rootLayer;
 
 	public WmsGetCapabilitiesInfo130(Node node) {
 		super(node);
@@ -53,6 +58,16 @@ public class WmsGetCapabilitiesInfo130 extends AbstractXmlNodeWrapper implements
 			parse(getNode());
 		}
 		return layers;
+	}
+	
+	
+
+	@Override
+	public WmsLayerInfo getRootLayer() {
+		if (rootLayer == null) {
+			parse(getNode());
+		}
+		return rootLayer;
 	}
 
 	protected void parse(Node node) {
@@ -72,12 +87,26 @@ public class WmsGetCapabilitiesInfo130 extends AbstractXmlNodeWrapper implements
 
 			NodeList layerNodes = element.getElementsByTagName("Layer");
 			layers = new ArrayList<WmsLayerInfo>();
+			Map<Node, WmsLayerInfo130> layersByNode = new LinkedHashMap<Node, WmsLayerInfo130>();
 			for (int i = 0; i < layerNodes.getLength(); i++) {
 				Node layerNode = layerNodes.item(i);
-				WmsLayerInfo layer = new WmsLayerInfo130(layerNode);
+				WmsLayerInfo130 layer = new WmsLayerInfo130(layerNode);
+				layersByNode.put(layerNode, layer);
 				if (layer.getName() != null) {
 					layers.add(layer);
 				}
+			}
+			// assuming each layer only has one parent
+			for (WmsLayerInfo130 wmsLayerInfo : layersByNode.values()) {
+				Node parent = wmsLayerInfo.getNode().getParentNode();
+				if (parent != null && layersByNode.containsKey(parent)) {
+					layersByNode.get(parent).getLayers().add(wmsLayerInfo);
+				} else {
+					rootLayer = wmsLayerInfo;
+				}
+			}
+			if (rootLayer == null) {
+				throw new IllegalArgumentException("Capabilities has no root layer !");
 			}
 		}
 	}
