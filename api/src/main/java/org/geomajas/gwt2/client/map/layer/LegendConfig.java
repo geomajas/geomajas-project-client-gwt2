@@ -47,10 +47,78 @@ public class LegendConfig implements Serializable {
 	private String exceptions = DEFAULT_IMAGE_FORMAT;
 
 	private Bbox bounds;
+	
+	private Integer width;
+	
+	private Integer height;
+	
+	private Double dpi;
 
 	/** Default constructor. Makes sure everything has a default value, to minimize the chance of a NPE. */
 	public LegendConfig() {
 		fontStyle = new FontStyle();
+	}
+	
+	/**
+	 * Get the (optional) width in pixels of the legend.
+	 * 
+	 * @return the width in pixels or null
+	 * @since 2.2.0
+	 */
+	public Integer getWidth() {
+		return width;
+	}
+
+	/**
+	 * Set the (optional) width in pixels of the legend.
+	 * 
+	 * @param width
+	 * @since 2.2.0
+	 */
+	public void setWidth(Integer width) {
+		this.width = width;
+	}
+
+	/**
+	 * Get the (optional) height in pixels of the legend.
+	 * 
+	 * @return the height in pixels or null
+	 * @since 2.2.0
+	 */
+	public Integer getHeight() {
+		return height;
+	}
+
+	/**
+	 * Set the (optional) height in pixels of the legend.
+	 * 
+	 * @param height
+	 * @since 2.2.0
+	 */
+	public void setHeight(Integer height) {
+		this.height = height;
+	}
+	
+	/**
+	 * Get the DPI for which the legend graphic should render correctly (assuming font size in points).
+	 * 
+	 * @since 2.2.0
+	 */
+	public Double getDpi() {
+		return dpi;
+	}
+	
+	/**
+	 * Set the DPI for which the legend graphic should render correctly (assuming font size in points). This parameter
+	 * can be set to request a higher resolution image. The DPI of the default image is assumed to be the OGC DPI =
+	 * 90.714. For a DPI = 2 * 90.714 = 181.428, the image will be twice as large. This value will only be used if no
+	 * explicit width and height are requested. Current supported by Geoserver.
+	 * 
+	 * @param dpi
+	 * @since 2.2.0
+	 */
+	public void setDpi(Double dpi) {
+		this.dpi = dpi;
 	}
 
 	/**

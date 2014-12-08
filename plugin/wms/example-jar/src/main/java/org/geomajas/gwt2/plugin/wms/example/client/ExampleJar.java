@@ -18,6 +18,7 @@ import org.geomajas.gwt2.plugin.wms.example.client.i18n.SampleMessages;
 import org.geomajas.gwt2.plugin.wms.example.client.sample.CapabilitiesPanel;
 import org.geomajas.gwt2.plugin.wms.example.client.sample.SelectStylePanel;
 import org.geomajas.gwt2.plugin.wms.example.client.sample.WmsFeatureInfoPanel;
+import org.geomajas.gwt2.plugin.wms.example.client.sample.WmsLayerLegendPanel;
 import org.geomajas.gwt2.plugin.wms.example.client.sample.WmsLayerPanel;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -151,7 +152,7 @@ public class ExampleJar implements EntryPoint {
 				return "selectstyle";
 			}
 		});
-/*		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
+		SamplePanelRegistry.registerFactory(CATEGORY_WMS, new ShowcaseSampleDefinition() {
 
 			public SamplePanel create() {
 				return new WmsLayerLegendPanel();
@@ -177,6 +178,6 @@ public class ExampleJar implements EntryPoint {
 			public String getKey() {
 				return "wmslayerlegend";
 			}
-		});*/
+		});
 	}
 }

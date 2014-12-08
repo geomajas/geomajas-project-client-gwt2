@@ -58,8 +58,6 @@ public class WmsServiceImpl implements WmsService {
 
 	private static final String WMS_LEGEND_OPTIONS_START = "&legend_options=";
 
-	private static final int LEGEND_DPI = 91;
-
 	private static final int DEFAULT_MAX_FEATURES = 20; // Default maximum number of feats returned by GetFeatureInfo
 
 	protected WmsUrlTransformer urlTransformer;
@@ -343,21 +341,22 @@ public class WmsServiceImpl implements WmsService {
 		} else {
 			url.append(format.toLowerCase());
 		}
-
-		// Parameter: width
-		url.append("&width=");
-		url.append(legendConfig.getIconWidth());
-
-		// Parameter: height
-		url.append("&height=");
-		url.append(legendConfig.getIconHeight());
-
+		
 		// Parameter: transparent
 		url.append("&transparent=true");
 
 		// Check for specific vendor options:
 		if (WmsServiceVendor.GEOSERVER_WMS.equals(wmsConfig.getWmsServiceVendor())) {
-			url.append(WMS_LEGEND_OPTIONS_START);
+
+			// Parameter: for geoserver, width = icon width
+			url.append("&width=");
+			url.append(legendConfig.getIconWidth());
+
+			// Parameter: for geoserver, height = icon height
+			url.append("&height=");
+			url.append(legendConfig.getIconHeight());
+			
+			url.append("&legend_options=");
 			if (null != legendConfig.getFontStyle().getFamily()) {
 				url.append("fontName:");
 				url.append(legendConfig.getFontStyle().getFamily());
@@ -375,9 +374,24 @@ public class WmsServiceImpl implements WmsService {
 				url.append(legendConfig.getFontStyle().getSize());
 				url.append(";");
 			}
+			
+			// geoserver supports dpi directly, use calculated width/height for other servers
+			double dpi = legendConfig.getDpi();
+			// default dpi is 90.
+			url.append("bgColor:0xFFFFFF;dpi:" + (int) dpi);
+			
+		} else {
+			if (legendConfig.getWidth() != null) {
+				// Parameter: width
+				url.append("&width=");
+				url.append(legendConfig.getWidth());
+			}
 
-			int dpi = LEGEND_DPI;
-			url.append("bgColor:0xFFFFFF;dpi:" + dpi);
+			if (legendConfig.getHeight() != null) {
+				// Parameter: width
+				url.append("&height=");
+				url.append(legendConfig.getHeight());
+			}
 		}
 
 		return finishUrl(WmsRequest.GETLEGENDGRAPHIC, url);
