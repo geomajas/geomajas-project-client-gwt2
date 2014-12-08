@@ -43,6 +43,7 @@ import org.geomajas.gwt2.plugin.wms.client.capabilities.WmsLayerInfo;
 import org.geomajas.gwt2.plugin.wms.client.capabilities.WmsLayerStyleInfo;
 import org.geomajas.gwt2.plugin.wms.client.describelayer.WmsDescribeLayerInfo;
 import org.geomajas.gwt2.plugin.wms.client.layer.WmsLayerConfiguration;
+import org.geomajas.gwt2.plugin.wms.client.layer.WmsServiceVendor;
 import org.geomajas.gwt2.plugin.wms.client.service.WmsService.WmsRequest;
 import org.geomajas.gwt2.plugin.wms.client.service.WmsService.WmsUrlTransformer;
 import org.geomajas.gwt2.plugin.wms.client.service.WmsService.WmsVersion;
@@ -113,6 +114,9 @@ public class WmsServiceTest extends AbstractWmsServiceTest {
 		wmsConfig.setLayers(VALUE_LAYER);
 		wmsConfig.setStyles(VALUE_STYLE);
 		wmsConfig.setCrs(VALUE_CRS2);
+		wmsConfig.setWmsServiceVendor(WmsServiceVendor.GEOSERVER_WMS);
+		wmsConfig.getLegendConfig().setIconWidth(20);
+		wmsConfig.getLegendConfig().setIconHeight(20);
 	}
 
 	@Test

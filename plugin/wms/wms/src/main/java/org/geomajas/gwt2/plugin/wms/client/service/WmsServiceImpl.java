@@ -376,9 +376,11 @@ public class WmsServiceImpl implements WmsService {
 			}
 			
 			// geoserver supports dpi directly, use calculated width/height for other servers
-			double dpi = legendConfig.getDpi();
-			// default dpi is 90.
-			url.append("bgColor:0xFFFFFF;dpi:" + (int) dpi);
+			if (legendConfig.getDpi() != null) {
+				double dpi = legendConfig.getDpi();
+				// default dpi is 90.
+				url.append("bgColor:0xFFFFFF;dpi:" + (int) dpi);
+			}
 			
 		} else {
 			if (legendConfig.getWidth() != null) {
