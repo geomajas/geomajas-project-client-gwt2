@@ -77,9 +77,12 @@ public abstract class AbstractServerLayer<T extends ClientLayerInfo> extends Abs
 	@Override
 	public boolean isShowing() {
 		if (markedAsVisible) {
-			double maxResolution = 1 / layerInfo.getMinimumScale().getPixelPerUnit();
-			double minResolution = 1 / layerInfo.getMaximumScale().getPixelPerUnit();
-			if (viewPort.getResolution() >= minResolution && viewPort.getResolution() <= maxResolution) {
+			// Check if current viewPort scale is between the minimum (inclusive) and
+			// the maximum scale (exclusive) of the layer.
+			// Inclusive/exclusive follows SLD convention.
+			double maxResolution = 1 / layerInfo.getMinimumScale().getPixelPerUnit(); //inclusive
+			double minResolution = 1 / layerInfo.getMaximumScale().getPixelPerUnit(); //exclusive
+			if (viewPort.getResolution() > minResolution && viewPort.getResolution() <= maxResolution) {
 				return true;
 			}
 		}
