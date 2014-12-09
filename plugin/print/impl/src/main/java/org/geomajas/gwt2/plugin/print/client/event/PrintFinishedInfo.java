@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.geomajas.gwt2.plugin.print.client.util.PrintConfiguration;
+import org.geomajas.gwt2.plugin.print.client.util.UrlBuilder;
 
 /**
  * Info object, containing info of the successful end of a print request. This info consists of the HTTP url and request
@@ -49,14 +50,20 @@ public class PrintFinishedInfo {
 	private Map<String, String> params = new HashMap<String, String>();
 
 	/**
-	 * Get the encoded url.
+	 * Get the encoded url. This returns a complete URL in the case of a HTTP GET method (async print).
 	 * 
 	 * @return the url
-	 * @deprecated renamed to {@link #getUrl()}
 	 */
-	@Deprecated
 	public String getEncodedUrl() {
-		return url;
+		if (method.equals(HttpMethod.GET)) {
+			UrlBuilder builder = new UrlBuilder(url);
+			for (String name : getParams().keySet()) {
+				builder.addParameter(name, getParams().get(name));
+			}
+			return builder.toString();
+		} else {
+			return url;
+		}
 	}
 
 	/**
@@ -64,7 +71,7 @@ public class PrintFinishedInfo {
 	 * 
 	 * @param the url
 	 * 
-	 * @deprecated renamed to {@link #setUrl(String)}
+	 * @deprecated use {@link #setUrl(String)} and {@link #addParam(String, String)} instead.
 	 */
 	@Deprecated
 	public void setEncodedUrl(String url) {
