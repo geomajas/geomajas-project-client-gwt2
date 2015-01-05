@@ -157,7 +157,7 @@ public class DomLayersModelRenderer implements LayersModelRenderer {
 									new Integer[] { DomLayersModelRenderer.this.configuration
 											.getHintValue(MapConfiguration.FADE_IN_TIME) });
 						}
-						layerContainer.asWidget().getElement().getStyle().setOpacity(1.0f);
+						layerContainer.asWidget().getElement().getStyle().setOpacity(layer.getOpacity());
 					}
 				}
 			}
