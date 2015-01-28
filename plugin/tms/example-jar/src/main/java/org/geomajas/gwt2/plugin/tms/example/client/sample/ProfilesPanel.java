@@ -129,6 +129,7 @@ public class ProfilesPanel implements SamplePanel {
 								});
 								if (first) {
 									addLayer(tileMap);
+									layerBox.setValue(true);
 									first = false;
 								}
 								layerList.add(layerBox);
