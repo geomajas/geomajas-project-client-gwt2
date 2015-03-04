@@ -122,10 +122,26 @@ public interface Layer {
 	 * Set the maximum bounds. The bounds is defined in the map CRS. For tile-based layers, only tiles within the
 	 * maximum bounds will be fetched. To avoid rounding errors, the center of the tile may be used for checking the
 	 * condition.
-	 * 
+	 *
 	 * @param maxBounds The maximum bounds
 	 * @since 2.1.0
 	 */
 	void setMaxBounds(Bbox maxBounds);
+
+	/**
+	 * Returns the maximum resolution at which the layer is visible.
+	 *
+	 * @return resolution
+	 * @since 2.3.0
+	 */
+	double getMaxResolution();
+
+	/**
+	 * Returns the minimum resolution at which the layer is visible.
+	 *
+	 * @return resolution
+	 * @since 2.3.0
+	 */
+	double getMinResolution();
 
 }
