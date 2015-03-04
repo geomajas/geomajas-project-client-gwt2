@@ -1,7 +1,7 @@
 <!--
   ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
   ~
-  ~ Copyright 2008-2015 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~ Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
   ~
   ~ The program is available in open source according to the GNU Affero
   ~ General Public License. All contributions in this program are covered
@@ -46,7 +46,7 @@
 
 	<properties>
 		<!-- geomajas versions -->
-		<gwt2-client-version-geomajas-server>1.17.0</gwt2-client-version-geomajas-server>
+		<gwt2-client-version-geomajas-server>1.17.1-SNAPSHOT</gwt2-client-version-geomajas-server>
 		<gwt2-client-version-geomajas-build-tools>2.5.0</gwt2-client-version-geomajas-build-tools>
 		<!-- gwt versions -->
 		<gwt2-client-version-gwt>2.5.1</gwt2-client-version-gwt>

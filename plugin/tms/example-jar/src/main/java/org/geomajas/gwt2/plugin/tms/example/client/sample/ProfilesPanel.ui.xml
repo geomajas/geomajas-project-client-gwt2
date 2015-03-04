@@ -6,11 +6,11 @@
     <g:DockLayoutPanel unit="PX" width="100%" height="100%">
         <g:west size="300">
             <g:HTMLPanel addStyleNames="{resource.css.sampleLeftLayout}">
-                <h2>TMS root service url</h2>
-                <p>This example uses the following base TMS url:</p>
+                <h2>TMS Service url</h2>
+                <p>This example uses the local Geomajas service url:</p>
                 <p ui:field="capaUrl"></p>
                 <p style="text-align: right;">
-                    <g:Button ui:field="goBtn">Get layers</g:Button>
+                    <g:ListBox ui:field="profileBox"/>
                 </p>
                 <h3>Available layers:</h3>
                 <g:VerticalPanel ui:field="layerList"/>

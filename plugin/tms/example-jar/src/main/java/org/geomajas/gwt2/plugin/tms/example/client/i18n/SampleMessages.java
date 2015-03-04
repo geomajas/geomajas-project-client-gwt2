@@ -31,4 +31,10 @@ public interface SampleMessages extends Messages {
 	String capabilitiesShort();
 
 	String capabilitiesDescription();
+
+	String profilesTitle();
+
+	String profilesShort();
+
+	String profilesDescription();
 }
