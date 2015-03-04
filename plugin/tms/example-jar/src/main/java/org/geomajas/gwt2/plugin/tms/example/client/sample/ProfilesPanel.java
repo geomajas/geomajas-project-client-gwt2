@@ -89,8 +89,13 @@ public class ProfilesPanel implements SamplePanel {
 	protected void onProfile(ChangeEvent event) {
 		String name = profileBox.getValue(profileBox.getSelectedIndex());
 		if (name != null) {
-			Profile profile = Profile.valueOf(name);
-			MapConfiguration configuration = TmsClient.getInstance().createTmsMap(profile);
+			Profile profile = Profile.valueOf(name);			
+			MapConfiguration configuration = null;
+			if (Profile.GLOBAL_GEODETIC.equals(profile)) {
+				configuration = TmsClient.getInstance().createGeodeticMap();
+			} else {
+				configuration = TmsClient.getInstance().createMercatorMap();
+			}
 			mapPanel.clear();
 			mapPresenter = GeomajasImpl.getInstance().createMapPresenter(configuration, 480, 480);
 			DecoratorPanel mapDecorator = new DecoratorPanel();

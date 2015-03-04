@@ -111,61 +111,54 @@ public final class TmsClient {
 	// ------------------------------------------------------------------------
 
 	/**
-	 * Create a map with one of the default profiles.
+	 * Create a map configuration with the global mercator profile and default zoom levels (21).
 	 * 
-	 * @param profile
 	 * @return
 	 */
-	public MapConfiguration createTmsMap(Profile profile) {
-		return createTmsMap(profile, 21);
+	public MapConfiguration createMercatorMap() {
+		return createTmsMap(Profile.GLOBAL_MERCATOR, 21);
 	}
 
 	/**
-	 * Create a map with one of the default profiles and a specific number of zoom levels (default = 21).
+	 * Create a map configuration with the global mercator profile and a specified number of zoom levels.
 	 * 
-	 * @param profile
 	 * @param nrOfZoomLevels
 	 * @return
 	 */
-	public MapConfiguration createTmsMap(Profile profile, int nrOfZoomLevels) {
-		switch (profile) {
-			case GLOBAL_GEODETIC:
-				return createTmsMap(profile, "EPSG:4326", CrsType.DEGREES, new Bbox(-180, -90, 360, 180), 256,
-						nrOfZoomLevels);
-			default:
-				return createTmsMap(profile, "EPSG:3857", CrsType.METRIC, new Bbox(-MERCATOR, -MERCATOR, 2 * MERCATOR,
-						2 * MERCATOR), 256, nrOfZoomLevels);
-		}
+	public MapConfiguration createMercatorMap(int nrOfZoomLevels) {
+		return createTmsMap(Profile.GLOBAL_MERCATOR, nrOfZoomLevels);
 	}
 
 	/**
-	 * Create a map with a local profile and specified crs, bounds and number of zoom levels. The resolution at level 0
-	 * is based on mapping the bounds to a rectangular tile width minimum width and height of minTileSize pixels.
+	 * Create a map configuration with the global geodetic profile and default zoom levels (21).
 	 * 
-	 * @param profile
-	 * @param crs
-	 * @param type
-	 * @param bounds
-	 * @param minTileSize
+	 * @return
+	 */
+	public MapConfiguration createGeodeticMap() {
+		return createTmsMap(Profile.GLOBAL_GEODETIC, 21);
+	}
+
+	/**
+	 * Create a map configuration with the global geodetic profile and a specified number of zoom levels.
+	 * 
 	 * @param nrOfZoomLevels
 	 * @return
 	 */
-	public MapConfiguration createTmsMap(Profile profile, String crs, CrsType type, Bbox bounds, int minTileSize,
-			int nrOfZoomLevels) {
-		MapConfigurationImpl mapConfiguration;
-		mapConfiguration = new MapConfigurationImpl();
-		mapConfiguration.setCrs(crs, type);
-		double minSize = bounds.getWidth() >= bounds.getHeight() ? bounds.getHeight() : bounds.getWidth();
-		List<Double> resolutions = new ArrayList<Double>();
-		for (int i = 0; i < nrOfZoomLevels; i++) {
-			resolutions.add(minSize / (minTileSize * Math.pow(2, i)));
-		}
-		mapConfiguration.setResolutions(resolutions);
-		mapConfiguration.setMaxBounds(Bbox.ALL);
-		mapConfiguration.setHintValue(PROFILE, profile);
-		mapConfiguration.setHintValue(MapConfiguration.INITIAL_BOUNDS, bounds);
+	public MapConfiguration createGeodeticMap(int nrOfZoomLevels) {
+		return createTmsMap(Profile.GLOBAL_GEODETIC, nrOfZoomLevels);
+	}
+
+	/**
+	 * Create a map configuration with a local profile.
+	 * 
+	 * @return
+	 */
+	public MapConfiguration createLocalMap(String crs, CrsType type, Bbox bounds, int minTileSize, int nrOfZoomLevels) {
+		MapConfiguration mapConfiguration = createTmsMap(crs, type, bounds, minTileSize, nrOfZoomLevels);
+		mapConfiguration.setHintValue(PROFILE, Profile.LOCAL);
 		return mapConfiguration;
 	}
+	
 	
 	/**
 	 * Create a new TMS layer instance.
@@ -281,4 +274,57 @@ public final class TmsClient {
 			callback.onFailure(e.getMessage());
 		}
 	}
+
+	/**
+	 * Create a map with one of the default profiles and a specific number of zoom levels (default = 21).
+	 * 
+	 * @param profile
+	 * @param nrOfZoomLevels
+	 * @return
+	 */
+	protected MapConfiguration createTmsMap(Profile profile, int nrOfZoomLevels) {
+		MapConfiguration mapConfiguration = null;
+		switch (profile) {
+			case GLOBAL_GEODETIC:
+				mapConfiguration = createTmsMap("EPSG:4326", CrsType.DEGREES, new Bbox(-180, -90, 360, 180), 256,
+						nrOfZoomLevels);
+				break;
+			case GLOBAL_MERCATOR:
+				mapConfiguration = createTmsMap("EPSG:3857", CrsType.METRIC, new Bbox(-MERCATOR, -MERCATOR,
+						2 * MERCATOR, 2 * MERCATOR), 256, nrOfZoomLevels);
+				break;
+			default:
+				throw new IllegalArgumentException("Local profiles not supported");
+		}
+		mapConfiguration.setHintValue(PROFILE, profile);
+		return mapConfiguration;
+	}
+
+	/**
+	 * Create a map with a local profile and specified crs, bounds and number of zoom levels. The resolution at level 0
+	 * is based on mapping the bounds to a rectangular tile width minimum width and height of minTileSize pixels.
+	 * 
+	 * @param crs
+	 * @param type
+	 * @param bounds
+	 * @param minTileSize
+	 * @param nrOfZoomLevels
+	 * @return
+	 */
+	protected MapConfiguration createTmsMap(String crs, CrsType type, Bbox bounds, int minTileSize,
+			int nrOfZoomLevels) {
+		MapConfigurationImpl mapConfiguration;
+		mapConfiguration = new MapConfigurationImpl();
+		mapConfiguration.setCrs(crs, type);
+		double minSize = bounds.getWidth() >= bounds.getHeight() ? bounds.getHeight() : bounds.getWidth();
+		List<Double> resolutions = new ArrayList<Double>();
+		for (int i = 0; i < nrOfZoomLevels; i++) {
+			resolutions.add(minSize / (minTileSize * Math.pow(2, i)));
+		}
+		mapConfiguration.setResolutions(resolutions);
+		mapConfiguration.setMaxBounds(Bbox.ALL);
+		mapConfiguration.setHintValue(MapConfiguration.INITIAL_BOUNDS, bounds);
+		return mapConfiguration;
+	}
+
 }
