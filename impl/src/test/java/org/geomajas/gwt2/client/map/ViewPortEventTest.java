@@ -126,12 +126,14 @@ public class ViewPortEventTest {
 		Assert.assertNull(event);
 
 		HandlerRegistration reg = eventBus.addViewPortChangedHandler(new AllowChangedHandler());
-		viewPort.setMapSize(500, 500);
+		viewPort.setMapSize(1000, 500);
 
 		Assert.assertEquals(0.25, viewPort.getResolution());
-		Assert.assertTrue(viewPort.getPosition().equalsDelta(new Coordinate(-62.5, 62.5), 0.00001));
+		Assert.assertTrue(viewPort.getPosition().equalsDelta(new Coordinate(0, 0), 0.00001));
 		Assert.assertNotNull(event);
 		Assert.assertTrue(event instanceof ViewPortChangedEvent);
+		Assert.assertEquals(500, viewPort.getMapHeight());
+		Assert.assertEquals(1000, viewPort.getMapWidth());
 
 		reg.removeHandler();
 	}
