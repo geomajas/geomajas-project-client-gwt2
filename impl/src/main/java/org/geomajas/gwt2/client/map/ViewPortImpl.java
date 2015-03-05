@@ -16,7 +16,6 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.service.BboxService;
-import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt.client.util.Dom;
 import org.geomajas.gwt2.client.animation.NavigationAnimation;
 import org.geomajas.gwt2.client.event.NavigationStopEvent;
