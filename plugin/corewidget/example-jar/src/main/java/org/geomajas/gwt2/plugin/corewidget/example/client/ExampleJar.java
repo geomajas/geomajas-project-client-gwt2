@@ -24,6 +24,7 @@ import org.geomajas.gwt2.plugin.corewidget.example.client.sample.feature.Feature
 import org.geomajas.gwt2.plugin.corewidget.example.client.sample.feature.featureinfo.FeatureInfoPanel;
 import org.geomajas.gwt2.plugin.corewidget.example.client.sample.map.LegendAddRemoveSample;
 import org.geomajas.gwt2.plugin.corewidget.example.client.sample.map.LegendOrderSample;
+import org.geomajas.gwt2.plugin.corewidget.example.client.sample.map.MapLegendLayerResolutionRangeSample;
 import org.geomajas.gwt2.plugin.corewidget.example.client.sample.map.MapLegendDropDownSample;
 import org.geomajas.gwt2.plugin.corewidget.example.client.sample.feature.FeatureMouseOverExample;
 
@@ -138,6 +139,36 @@ public class ExampleJar implements EntryPoint {
 			@Override
 			public String getKey() {
 				return "maplegenddropdown";
+			}
+		});
+
+		SamplePanelRegistry.registerFactory(CATEGORY_WIDGET, new ShowcaseSampleDefinition() {
+
+			public SamplePanel create() {
+				return new MapLegendLayerResolutionRangeSample();
+			}
+
+			@Override
+			public String getTitle() {
+				return MESSAGES.mapLegendLayerResolutionRangeTitle();
+			}
+
+			@Override
+			public String getDescription() {
+				return MESSAGES.mapLegendLayerResolutionRangeDescription();
+			}
+
+			public String getShortDescription() {
+				return MESSAGES.mapLegendLayerResolutionRangeDescrShort();
+			}
+
+			public String getCategory() {
+				return CATEGORY_WIDGET;
+			}
+
+			@Override
+			public String getKey() {
+				return "maplegendlayerresolutionrange";
 			}
 		});
 

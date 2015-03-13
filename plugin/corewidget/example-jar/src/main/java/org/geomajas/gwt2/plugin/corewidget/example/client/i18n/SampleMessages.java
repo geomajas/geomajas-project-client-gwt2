@@ -117,6 +117,18 @@ public interface SampleMessages extends Messages {
 
 	String mapLegendDropDownDescription();
 
+	// ------------------------------------------------------------------------
+	// Messages for the MapLegendDropDownResolutionVariation samples:
+	// ------------------------------------------------------------------------
+
+	String mapLegendLayerResolutionRangeWidget();
+
+	String mapLegendLayerResolutionRangeTitle();
+
+	String mapLegendLayerResolutionRangeDescrShort();
+
+	String mapLegendLayerResolutionRangeDescription();
+
 	String itemSelectTitle();
 
 	String itemSelectDescrShort();
