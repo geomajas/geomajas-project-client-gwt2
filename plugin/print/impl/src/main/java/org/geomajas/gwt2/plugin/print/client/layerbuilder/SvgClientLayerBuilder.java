@@ -12,8 +12,10 @@
 package org.geomajas.gwt2.plugin.print.client.layerbuilder;
 
 import com.google.gwt.user.client.ui.Widget;
+
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.plugin.rasterizing.command.dto.ClientSvgLayerInfo;
 import org.vaadin.gwtgraphics.client.VectorObjectContainer;
@@ -36,20 +38,12 @@ public class SvgClientLayerBuilder implements PrintableWidgetLayerBuilder {
 	public ClientLayerInfo build(MapPresenter mapPresenter, Widget widget, Bbox worldBounds, double rasterResolution) {
 		ClientSvgLayerInfo svg = new ClientSvgLayerInfo();
 		String svgContent = widget.getElement().getInnerHTML();
-		//svgContent = svgContent.replace("overflow=\"hidden\"", "");
 		svg.setSvgContent(svgContent);
-		Bbox viewPortBounds = mapPresenter.getViewPort().getBounds();
-		double xRatio = worldBounds.getWidth() / viewPortBounds.getWidth();
-		double yRatio = worldBounds.getHeight() / viewPortBounds.getHeight();
-		svg.setViewBoxWidth((int) (mapPresenter.getViewPort().getMapWidth() * xRatio));
-		svg.setViewBoxHeight((int) (mapPresenter.getViewPort().getMapHeight() * yRatio));
-		Bbox alteredBounds = new Bbox(worldBounds.getX() - (worldBounds.getWidth() - viewPortBounds.getWidth()) / 2,
-				worldBounds.getY() - (worldBounds.getHeight() - viewPortBounds.getHeight()) / 2,
-				worldBounds.getWidth(),
-				worldBounds.getHeight());
-		svg.setViewBoxBounds(alteredBounds);
-		// Should be :
-		//svg.setViewBoxBounds(viewPortBounds);
+		// send info to replace the viewbox server-side (original viewbox matches map bounds on screen, not print
+		// bounds)
+		svg.setViewBoxWorldBounds(worldBounds);
+		svg.setViewBoxScreenBounds(mapPresenter.getViewPort().getTransformationService()
+				.transform(worldBounds, RenderSpace.WORLD, RenderSpace.SCREEN));
 		return svg;
 	}
 }
