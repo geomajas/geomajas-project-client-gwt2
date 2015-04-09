@@ -20,23 +20,38 @@
     <title>Default Geocoder Widget</title>
 
     <para>The default Geocoder widget is class <code>org.geomajas.gwt2.plugin.geocoder.client.widget.GeocoderWidget</code>.
-		The following code creates the Geocoder Widget and
-		defines the position of the widget on the map:</para>
+		The following code creates the Geocoder Widget:</para>
 
-    <programlisting>GeocoderWidget geocoder = new GeocoderWidget(mapPresenter);
-geocoder.asWidget().getElement().getStyle().setTop(7, Style.Unit.PX);
-geocoder.asWidget().getElement().getStyle().setLeft(100, Style.Unit.PX);</programlisting>
+    <programlisting>GeocoderWidget geocoder = new GeocoderWidget(mapPresenter);</programlisting>
 
-    <para>Alternatively, the position can be set in the constructor:</para>
 
-	  <programlisting>GeocoderWidget geocoder = new GeocoderWidget(mapPresenter, 7, 100);</programlisting>
   </section>
+
+	<section>
+		<title>Customization of the Widget</title>
+
+		<para>An alternative constructor of the GeocoderWidget will take custom views.
+			The first view is the widget on the map; the second view presents different locations in case of multiple result to a search:</para>
+
+		<programlisting>GeocoderWidget geocoder = new GeocoderWidget(mapPresenter, customGeocderView,
+			customGeocoderAlternativesView);</programlisting>
+
+		<para>The position of the widget on the map is set via css class parameter ".gm-GeocoderGadget".
+			By default, the widget is positioned on the left top of the map, with values below:</para>
+
+		<programlisting>.gm-GeocoderGadget {
+	left: 100px;
+	top: 7px;
+}</programlisting>
+
+		<para>The position can be changed by overwriting these values in your own css file.</para>
+	</section>
 
   <section>
     <title>Default Geocoder Widget without css (no style)</title>
 
     <para>The geocoder widget can be loaded with empty css classes. This can be achieved by
-	setting the resource bundle factory <emphase>before</emphase> creating the widget:</para>
+	setting the resource bundle factory <emphasis>before</emphasis> creating the widget:</para>
 
 	  <programlisting>Geocoder.getInstance().setBundleFactory(new ExampleClientBundleFactoryNoStyle());
 // create the widget
