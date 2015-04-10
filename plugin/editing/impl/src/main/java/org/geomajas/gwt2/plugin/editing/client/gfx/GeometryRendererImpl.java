@@ -541,17 +541,21 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 		int[] indices = null;
 		if (geometry.getCoordinates() != null) {
 			int max = geometry.getCoordinates().length - 1;
-
+			boolean inserting = false;
+			boolean limited = false;
+			
 			// If we are inserting in this particular LinearRing, don't display the closing edge/vertex or it 
 			// looks like the ring is already closed
 			GeometryIndex insertIndex = editService.getInsertIndex();
 			if (insertIndex != null && editService.getEditingState().equals(GeometryEditState.INSERTING)
 					&& editService.getIndexService().isChildOf(parentIndex, insertIndex)) {
 				max--;
+				inserting = true;
 			}
 			// limit to maximum 50 visible indices if max > 50
 			if (max > 50) {
 				max = 50;
+				limited = true;
 				indices = new int[50];
 				Bbox bounds = mapPresenter.getViewPort().getBounds();
 				int j = 0;
@@ -577,6 +581,9 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 			}
 
 			// Then draw all vertices:
+			if (inserting && !limited) {
+				max++; // do show all vertices when inserting
+			}
 			for (int i = 0; i < max; i++) {
 				int ii = (indices == null ? i : indices[i]);
 				GeometryIndex index = editService.getIndexService().addChildren(parentIndex,
