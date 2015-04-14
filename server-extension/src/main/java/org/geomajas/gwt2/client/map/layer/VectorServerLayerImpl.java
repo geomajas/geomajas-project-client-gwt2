@@ -147,10 +147,10 @@ public class VectorServerLayerImpl extends AbstractServerLayer<ClientVectorLayer
 
 	@Override
 	public void clearSelectedFeatures() {
-		for (Feature feature : selection.values()) {
-			eventBus.fireEvent(new FeatureDeselectedEvent(this, feature));
+		List<Feature> featuresToDelete = new ArrayList<Feature>(selection.values());
+		for (Feature feature : featuresToDelete) {
+			deselectFeature(feature);
 		}
-		selection.clear();
 	}
 
 	@Override
