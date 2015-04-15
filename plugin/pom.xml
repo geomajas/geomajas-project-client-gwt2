@@ -31,8 +31,9 @@
 		<module>editing</module>
 		<module>geocoder</module>
 		<module>print</module>
-        <module>tms</module>
+		<module>tms</module>
 		<module>wms</module>
+		<module>wfs</module>
         <module>tilebasedlayer</module>
 	</modules>
 	

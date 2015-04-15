@@ -18,12 +18,12 @@ import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
 import org.geomajas.gwt2.plugin.wfs.client.query.dto.CriterionDto;
 
 /**
- * Request for the {@link org.geomajas.gwt2.plugin.wfs.server.command.WfsGetFeaturesCommand}.
- * Should contain all the info needed to create an actual WFS request.
+ * Request for the {@link org.geomajas.gwt2.plugin.wfs.server.command.WfsGetFeatureCommand}. Should contain all the info
+ * needed to create an actual WFS request.
  *
  * @author Jan De Moerloose
  */
-public class WfsGetFeaturesRequest implements CommandRequest {
+public class WfsGetFeatureRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 200L;
 
@@ -31,7 +31,7 @@ public class WfsGetFeaturesRequest implements CommandRequest {
 
 	private String baseUrl;
 
-	private String layerName;
+	private String typeName;
 
 	private CriterionDto criterion;
 
@@ -44,7 +44,7 @@ public class WfsGetFeaturesRequest implements CommandRequest {
 	private int startIndex;
 
 	private String crs;
-	
+
 	private List<AttributeDescriptor> schema;
 
 	public String getBaseUrl() {
@@ -55,12 +55,12 @@ public class WfsGetFeaturesRequest implements CommandRequest {
 		this.baseUrl = baseUrl;
 	}
 
-	public String getLayerName() {
-		return layerName;
+	public String getTypeName() {
+		return typeName;
 	}
 
-	public void setLayerName(String layerName) {
-		this.layerName = layerName;
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
 	}
 
 	public CriterionDto getCriterion() {
@@ -86,11 +86,11 @@ public class WfsGetFeaturesRequest implements CommandRequest {
 	public void setStartIndex(int startIndex) {
 		this.startIndex = startIndex;
 	}
-	
+
 	public int getMaxCoordsPerFeature() {
 		return maxCoordsPerFeature;
 	}
-	
+
 	public void setMaxCoordsPerFeature(int maxCoordsPerFeature) {
 		this.maxCoordsPerFeature = maxCoordsPerFeature;
 	}
@@ -116,15 +116,15 @@ public class WfsGetFeaturesRequest implements CommandRequest {
 	public String getCrs() {
 		return crs;
 	}
-	
+
 	public void setCrs(String crs) {
 		this.crs = crs;
 	}
-	
+
 	public List<AttributeDescriptor> getSchema() {
 		return schema;
 	}
-	
+
 	public void setSchema(List<AttributeDescriptor> schema) {
 		this.schema = schema;
 	}

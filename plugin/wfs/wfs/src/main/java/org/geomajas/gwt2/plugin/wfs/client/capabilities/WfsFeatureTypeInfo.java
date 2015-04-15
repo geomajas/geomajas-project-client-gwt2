@@ -12,6 +12,7 @@
 package org.geomajas.gwt2.plugin.wfs.client.capabilities;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.geomajas.geometry.Bbox;
 
@@ -48,7 +49,7 @@ public interface WfsFeatureTypeInfo extends Serializable {
 	 *
 	 * @return A list of keywords for this layer.
 	 */
-	String getKeywords();
+	List<String> getKeywords();
 
 	/**
 	 * Get the default CRS of this layer.

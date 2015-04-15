@@ -1,7 +1,9 @@
 package org.geomajas.gwt2.plugin.wfs.server.command;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,15 +18,26 @@ import org.geomajas.gwt2.client.map.attribute.GeometryAttributeTypeImpl;
 import org.geomajas.gwt2.client.map.attribute.GeometryType;
 import org.geomajas.gwt2.client.map.attribute.PrimitiveAttributeTypeImpl;
 import org.geomajas.gwt2.client.map.attribute.PrimitiveType;
+import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsDataStoreFactory;
 import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsDescribeFeatureTypeRequest;
 import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsDescribeFeatureTypeResponse;
 import org.geotools.data.DataStore;
-import org.geotools.data.DataStoreFinder;
+import org.geotools.data.ows.HTTPClient;
+import org.geotools.data.ows.SimpleHttpClient;
+import org.geotools.data.wfs.WFSDataStore;
+import org.geotools.data.wfs.WFSDataStoreFactory;
+import org.geotools.data.wfs.internal.WFSClient;
+import org.geotools.data.wfs.internal.WFSConfig;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.type.FeatureTypeFactoryImpl;
+import org.geotools.ows.ServiceException;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.MultiLineString;
@@ -32,7 +45,9 @@ import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
 
+@Component
 public class WfsDescribeFeatureTypeCommand implements
 		Command<WfsDescribeFeatureTypeRequest, WfsDescribeFeatureTypeResponse> {
 
@@ -43,15 +58,16 @@ public class WfsDescribeFeatureTypeCommand implements
 		// Create a WFS GetCapabilities URL:
 		String capa = request.getBaseUrl() + "?service=wfs&version=1.0.0&request=GetCapabilities";
 
-		Map<String, String> connectionParameters = new HashMap<String, String>();
-		connectionParameters.put("WFSDataStoreFactory:GET_CAPABILITIES_URL", capa);
-		connectionParameters.put("WFSDataStoreFactory:TIMEOUT", "10000");
+		Map<String, Serializable> connectionParameters = new HashMap<String, Serializable>();
+		connectionParameters.put(WFSDataStoreFactory.URL.key, capa);
+		connectionParameters.put(WFSDataStoreFactory.TIMEOUT.key, 10000);
 
 		// Get the WFS feature source:
 		SimpleFeatureType schema = null;
 		try {
-			DataStore data = DataStoreFinder.getDataStore(connectionParameters);
-			schema = data.getSchema(request.getTypeName());
+			WfsDataStoreFactory factory = new WfsDataStoreFactory();
+			DataStore data = factory.createDataStore(connectionParameters, getClientForUrl(capa));
+			schema = data.getSchema(request.getTypeName().replace(":", "_"));
 		} catch (IOException e) {
 			log.error("DescribeFeatureType failed for " + request.getTypeName(), e);
 			throw new GeomajasException(ExceptionCode.UNEXPECTED_PROBLEM, e.getMessage());
@@ -67,6 +83,10 @@ public class WfsDescribeFeatureTypeCommand implements
 			log.error("Missing type name on server: " + request.getTypeName());
 			throw new GeomajasException(ExceptionCode.PARAMETER_INVALID_VALUE, request.getTypeName());
 		}
+	}
+
+	protected HTTPClient getClientForUrl(String url) {
+		return new SimpleHttpClient();
 	}
 
 	public WfsDescribeFeatureTypeResponse getEmptyCommandResponse() {

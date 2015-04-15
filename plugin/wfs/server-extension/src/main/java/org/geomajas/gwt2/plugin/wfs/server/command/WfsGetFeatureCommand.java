@@ -12,31 +12,36 @@
 package org.geomajas.gwt2.plugin.wfs.server.command;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.sql.rowset.serial.SerialArray;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.geomajas.command.Command;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.service.BboxService;
 import org.geomajas.geometry.service.GeometryService;
+import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
-import org.geomajas.gwt2.plugin.wfs.client.WfsClient;
 import org.geomajas.gwt2.plugin.wfs.client.query.dto.CriterionDto;
 import org.geomajas.gwt2.plugin.wfs.server.command.converter.CriterionFilterConverter;
 import org.geomajas.gwt2.plugin.wfs.server.command.converter.FeatureConverter;
-import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsGetFeaturesRequest;
-import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsGetFeaturesResponse;
+import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsDataStoreFactory;
+import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsGetFeatureRequest;
+import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsGetFeatureResponse;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.Query;
+import org.geotools.data.ows.HTTPClient;
+import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.feature.FeatureCollection;
@@ -62,11 +67,11 @@ import org.xml.sax.SAXException;
  * 
  */
 @Component
-public class WfsGetFeaturesCommand implements Command<WfsGetFeaturesRequest, WfsGetFeaturesResponse> {
+public class WfsGetFeatureCommand implements Command<WfsGetFeatureRequest, WfsGetFeatureResponse> {
 
     private static final int MAX_COORDINATES_IN_FILTER = 100;
 
-    private final Logger log = LoggerFactory.getLogger(WfsGetFeaturesCommand.class);
+    private final Logger log = LoggerFactory.getLogger(WfsGetFeatureCommand.class);
 
     @Autowired
     private FilterService filterService;
@@ -74,7 +79,7 @@ public class WfsGetFeaturesCommand implements Command<WfsGetFeaturesRequest, Wfs
     @Autowired
     private DtoConverterService converterService;
 
-    public void execute(WfsGetFeaturesRequest request, WfsGetFeaturesResponse response) throws Exception {
+    public void execute(WfsGetFeatureRequest request, WfsGetFeatureResponse response) throws Exception {
         FeatureCollection<SimpleFeatureType, SimpleFeature> features = performWfsQuery(request);
         int maxCoordinates = request.getMaxCoordsPerFeature();
         double distance = 10;
@@ -83,21 +88,21 @@ public class WfsGetFeaturesCommand implements Command<WfsGetFeaturesRequest, Wfs
                 && features.getSchema().getCoordinateReferenceSystem() instanceof GeographicCRS) {
             distance = 0.0001;
         }
-        response.getFeatures().addAll(convertFeatures(features, maxCoordinates, distance));
-        log.info("Found " + response.getFeatures().size() + " features for layer " + request.getLayerName());
+        response.setFeatures(convertFeatures(features, maxCoordinates, distance));
+        log.info("Found " + response.getFeatures().size() + " features for layer " + request.getTypeName());
         response.setTotalBounds(getTotalBounds(response.getFeatures()));
     }
 
-    public FeatureCollection<SimpleFeatureType, SimpleFeature> performWfsQuery(WfsGetFeaturesRequest request)
+    public FeatureCollection<SimpleFeatureType, SimpleFeature> performWfsQuery(WfsGetFeatureRequest request)
             throws IOException {
         try {
             // create Geotools query
-            Query query = createQuery(request.getLayerName(), request.getSchema(), request.getCriterion(),
+            Query query = createQuery(request.getTypeName(), request.getSchema(), request.getCriterion(),
                     request.getMaxFeatures(), request.getStartIndex(),
                     request.getRequestedAttributeNames(), request.getCrs());
 
             // run it
-            return getFeatures(request.getBaseUrl(), request.getLayerName(), query);
+            return getFeatures(request.getBaseUrl(), request.getTypeName(), query);
         } catch (SAXException e) {
             throw new IOException(e);
         } catch (ParserConfigurationException e) {
@@ -158,16 +163,20 @@ public class WfsGetFeaturesCommand implements Command<WfsGetFeaturesRequest, Wfs
         } else {
             sb.append("?").append("service=wfs&request=GetCapabilities&VERSION=1.0.0");
         }
+        String capa = sb.toString();
+        Map<String, Serializable> connectionParameters = new HashMap<String, Serializable>();
+        connectionParameters.put(WFSDataStoreFactory.MAXFEATURES.key, query.getMaxFeatures());
+		connectionParameters.put(WFSDataStoreFactory.URL.key, capa);
+		connectionParameters.put(WFSDataStoreFactory.PROTOCOL.key, Boolean.TRUE);
+		WfsDataStoreFactory factory = new WfsDataStoreFactory();
+		DataStore data = factory.createDataStore(connectionParameters, getClientForUrl(capa));
+	    SimpleFeatureSource features = data.getFeatureSource(typeName.replace(":", "_"));
+	    return features.getFeatures(query);
+      }
 
-        Map<Object, Object> connectionParameters = new HashMap<Object, Object>();
-        connectionParameters.put(WFSDataStoreFactory.MAXFEATURES, "" + query.getMaxFeatures());
-        connectionParameters.put(WFSDataStoreFactory.URL, sb.toString());
-        connectionParameters.put(WFSDataStoreFactory.PROTOCOL, Boolean.TRUE); // use POST
-        DataStore wfs = DataStoreFinder.getDataStore(connectionParameters);
-        SimpleFeatureSource features = wfs.getFeatureSource(typeName);
-
-        return features.getFeatures(query);
-    }
+	protected HTTPClient getClientForUrl(String url) {
+		return new SimpleHttpClient();
+	}
 
     /**
      * Convert a feature collection to its dto equivalent.
@@ -216,8 +225,8 @@ public class WfsGetFeaturesCommand implements Command<WfsGetFeaturesRequest, Wfs
         return total;
     }
 
-    public WfsGetFeaturesResponse getEmptyCommandResponse() {
-        return new WfsGetFeaturesResponse();
+    public WfsGetFeatureResponse getEmptyCommandResponse() {
+        return new WfsGetFeatureResponse();
     }
 
 }

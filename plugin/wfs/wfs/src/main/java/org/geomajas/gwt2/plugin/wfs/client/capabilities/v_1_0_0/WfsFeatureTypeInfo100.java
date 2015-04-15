@@ -7,7 +7,6 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.client.service.AbstractXmlNodeWrapper;
 import org.geomajas.gwt2.plugin.wfs.client.capabilities.WfsFeatureTypeInfo;
 
-import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NamedNodeMap;
 import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
@@ -22,7 +21,7 @@ public class WfsFeatureTypeInfo100 extends AbstractXmlNodeWrapper implements Wfs
 
 	private String abstractt;
 
-	private String keywords;
+	private List<String> keywords = new ArrayList<String>();
 
 	private String defaultCrs;
 
@@ -55,7 +54,7 @@ public class WfsFeatureTypeInfo100 extends AbstractXmlNodeWrapper implements Wfs
 		return abstractt;
 	}
 
-	public String getKeywords() {
+	public List<String> getKeywords() {
 		if (!parsed) {
 			parse(getNode());
 		}
@@ -93,11 +92,25 @@ public class WfsFeatureTypeInfo100 extends AbstractXmlNodeWrapper implements Wfs
 			} else if ("Abstract".equalsIgnoreCase(nodeName)) {
 				abstractt = getValueRecursive(child);
 			} else if ("Keywords".equalsIgnoreCase(nodeName)) {
-				keywords = getValueRecursive(child);
+				addKeyWords(child);
 			} else if ("SRS".equalsIgnoreCase(nodeName)) {
 				defaultCrs = getValueRecursive(child);
 			} else if ("LatLongBoundingBox".equalsIgnoreCase(nodeName)) {
 				addLatLonBoundingBox(child);
+			}
+		}
+	}
+
+	private void addKeyWords(Node keywordListNode) {
+		String keywordList = getValueRecursive(keywordListNode);
+		if (keywordList != null) {
+			if (keywordList.contains(",")) {
+				String[] parts = keywordList.split(",");
+				for (int i = 0; i < parts.length; i++) {
+					keywords.add(parts[i].trim());
+				}
+			} else {
+				keywords.add(keywordList.trim());
 			}
 		}
 	}

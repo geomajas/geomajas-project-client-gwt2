@@ -22,7 +22,7 @@ import org.geomajas.layer.feature.Feature;
  *
  * @author Pieter De Graef
  */
-public class WfsGetFeaturesResponse extends CommandResponse {
+public class WfsGetFeatureResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 1L;
 
@@ -30,10 +30,10 @@ public class WfsGetFeaturesResponse extends CommandResponse {
 
 	private Bbox totalBounds;
 
-	public WfsGetFeaturesResponse() {
+	public WfsGetFeatureResponse() {
 	}
 
-	public WfsGetFeaturesResponse(List<Feature> features) {
+	public WfsGetFeatureResponse(List<Feature> features) {
 		this.features = features;
 	}
 

@@ -52,8 +52,7 @@
 		
 		<dependency>
 			<groupId>org.geotools</groupId>
-			<artifactId>gt-wfs</artifactId>
-			<version>${gwt2-client-version-geotools}</version>
+			<artifactId>gt-wfs-ng</artifactId>
 		</dependency>
 		
 
