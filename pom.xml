@@ -279,6 +279,32 @@
 				<version>${project.version}</version>
 			</dependency>
 
+			<!-- WFS plugin -->
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-client-gwt2-plugin-wfs</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-client-gwt2-plugin-wfs-server-extension</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-client-gwt2-plugin-wfs-server-example-jar</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-client-gwt2-plugin-wfs-example-jar</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-client-gwt2-plugin-wfs-javadoc</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 
 			<!-- Other Geomajas artifacts -->
 			<dependency>
