@@ -11,11 +11,8 @@
 
 package org.geomajas.gwt2.plugin.wfs.server.command.dto;
 
-import java.util.List;
-
 import org.geomajas.command.CommandResponse;
-import org.geomajas.geometry.Bbox;
-import org.geomajas.layer.feature.Feature;
+import org.geomajas.gwt2.plugin.wfs.server.dto.WfsFeatureCollectionDto;
 
 /**
  * Response for the GetFeatureInfo command. It returns the features found.
@@ -26,31 +23,17 @@ public class WfsGetFeatureResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 1L;
 
-	private List<Feature> features;
-
-	private Bbox totalBounds;
+	private WfsFeatureCollectionDto featureCollection;
 
 	public WfsGetFeatureResponse() {
 	}
 
-	public WfsGetFeatureResponse(List<Feature> features) {
-		this.features = features;
+	public WfsFeatureCollectionDto getFeatureCollection() {
+		return featureCollection;
 	}
 
-	public List<Feature> getFeatures() {
-		return features;
-	}
-
-	public void setFeatures(List<Feature> features) {
-		this.features = features;
-	}
-
-	public Bbox getTotalBounds() {
-		return totalBounds;
-	}
-
-	public void setTotalBounds(Bbox totalBounds) {
-		this.totalBounds = totalBounds;
+	public void setFeatureCollection(WfsFeatureCollectionDto featureCollection) {
+		this.featureCollection = featureCollection;
 	}
 
 }

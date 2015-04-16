@@ -27,7 +27,7 @@ public class WfsGetFeatureRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 200L;
 
-	public static final String COMMAND_NAME = "command.WfsGetFeatures";
+	public static final String COMMAND_NAME = "command.WfsGetFeature";
 
 	private String baseUrl;
 

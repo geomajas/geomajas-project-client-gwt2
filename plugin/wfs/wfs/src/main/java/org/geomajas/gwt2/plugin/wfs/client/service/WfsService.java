@@ -12,7 +12,10 @@
 package org.geomajas.gwt2.plugin.wfs.client.service;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.gwt2.plugin.wfs.client.capabilities.WfsGetCapabilitiesInfo;
+import org.geomajas.gwt2.plugin.wfs.client.protocol.WfsFeatureCollectionInfo;
+import org.geomajas.gwt2.plugin.wfs.client.protocol.WfsFeatureTypeDescriptionInfo;
+import org.geomajas.gwt2.plugin.wfs.client.protocol.WfsGetCapabilitiesInfo;
+import org.geomajas.gwt2.plugin.wfs.client.query.dto.QueryDto;
 
 import com.google.gwt.core.client.Callback;
 
@@ -99,12 +102,37 @@ public interface WfsService {
 	/**
 	 * Get the capabilities information of a WFS service.
 	 *
-	 * @param baseUrl The WFS base URL (without any WFS parameters).
 	 * @param version The preferred WFS version.
+	 * @param baseUrl The WFS base URL (without any WFS parameters).
 	 * @param callback Callback that returns a {@link WfsGetCapabilitiesInfo} instance on success. From here, you can
 	 *        extract all the information or layers defined in the capabilities file.
 	 */
-	void getCapabilities(String baseUrl, WfsVersion version, Callback<WfsGetCapabilitiesInfo, String> callback);
+	void getCapabilities(WfsVersion version, String baseUrl, Callback<WfsGetCapabilitiesInfo, String> callback);
+
+	/**
+	 * Get the feature type description from a WFS service.
+	 * 
+	 * @param version The preferred WFS version.
+	 * @param baseUrl The WFS base URL (without any WFS parameters).
+	 * @param typeName The feature type name
+	 * @param callback Callback that returns a {@link WfsFeatureTypeDescriptionInfo} instance on success. From here, you
+	 *        can extract all the attribute information.
+	 */
+	void describeFeatureType(WfsVersion version, String baseUrl, String typeName,
+			Callback<WfsFeatureTypeDescriptionInfo, String> callback);
+
+	/**
+	 * Get features from a WFS service.
+	 * 
+	 * @param version The preferred WFS version.
+	 * @param baseUrl The WFS base URL (without any WFS parameters).
+	 * @param typeName The feature type name
+	 * @param query The query
+	 * @param callback Callback that returns a {@link WfsFeatureCollectionInfo} instance on success. From here, you
+	 *        can extract all the attribute information.
+	 */
+	void getFeatures(WfsVersion version, String baseUrl, String typeName, QueryDto query,
+			Callback<WfsFeatureCollectionInfo, String> callback);
 
 	// ------------------------------------------------------------------------
 	// URL transformation options (for proxy):

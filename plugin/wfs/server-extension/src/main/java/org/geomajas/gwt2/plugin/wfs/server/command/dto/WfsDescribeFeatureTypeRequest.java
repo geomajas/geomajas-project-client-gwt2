@@ -4,7 +4,7 @@ import org.geomajas.command.CommandRequest;
 
 public class WfsDescribeFeatureTypeRequest implements CommandRequest {
 
-	private static final long serialVersionUID = 200L;
+	private static final long serialVersionUID = 100L;
 
 	public static final String COMMAND_NAME = "command.WfsDescribeFeatureType";
 

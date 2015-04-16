@@ -17,7 +17,7 @@ package org.geomajas.gwt2.plugin.wfs.client.query.dto;
  */
 public class ExcludeCriterionDto implements CriterionDto {	
 	
-	ExcludeCriterionDto() {
+	public ExcludeCriterionDto() {
 	}
 
 	@Override

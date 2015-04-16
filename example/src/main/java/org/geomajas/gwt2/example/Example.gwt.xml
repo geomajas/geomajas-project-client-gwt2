@@ -18,6 +18,7 @@
 
     <!-- Include plugins: -->
  	<inherits name='org.geomajas.gwt2.plugin.wms.example.ExampleJar' />
+ 	<inherits name='org.geomajas.gwt2.plugin.wfs.example.ServerExampleJar' />
 	<inherits name='org.geomajas.gwt2.plugin.editing.example.ExampleJar' />
     <inherits name='org.geomajas.gwt2.plugin.corewidget.example.ExampleJar' />
 	<inherits name='org.geomajas.gwt2.plugin.print.example.ExampleJar' />

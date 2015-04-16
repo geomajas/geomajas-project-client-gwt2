@@ -14,7 +14,7 @@ import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.xerces.parsers.DOMParser;
-import org.geomajas.gwt2.plugin.wfs.client.capabilities.WfsGetCapabilitiesInfo;
+import org.geomajas.gwt2.plugin.wfs.client.protocol.WfsGetCapabilitiesInfo;
 import org.geomajas.gwt2.plugin.wfs.client.service.WfsServiceImpl.RequestBuilderFactory;
 import org.geomajas.gwt2.plugin.wfs.client.service.WfsServiceImpl.UrlEncoder;
 import org.junit.Before;

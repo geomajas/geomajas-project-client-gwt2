@@ -3,7 +3,6 @@ package org.geomajas.gwt2.plugin.wfs.server.command;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,26 +17,21 @@ import org.geomajas.gwt2.client.map.attribute.GeometryAttributeTypeImpl;
 import org.geomajas.gwt2.client.map.attribute.GeometryType;
 import org.geomajas.gwt2.client.map.attribute.PrimitiveAttributeTypeImpl;
 import org.geomajas.gwt2.client.map.attribute.PrimitiveType;
-import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsDataStoreFactory;
 import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsDescribeFeatureTypeRequest;
 import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsDescribeFeatureTypeResponse;
+import org.geomajas.gwt2.plugin.wfs.server.command.factory.HttpClientFactory;
+import org.geomajas.gwt2.plugin.wfs.server.command.factory.WfsDataStoreFactory;
+import org.geomajas.gwt2.plugin.wfs.server.command.factory.impl.DefaultHttpClientFactory;
+import org.geomajas.gwt2.plugin.wfs.server.command.factory.impl.DefaultWfsDataStoreFactory;
+import org.geomajas.gwt2.plugin.wfs.server.dto.WfsFeatureTypeDescriptionDto;
 import org.geotools.data.DataStore;
-import org.geotools.data.ows.HTTPClient;
-import org.geotools.data.ows.SimpleHttpClient;
-import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.WFSDataStoreFactory;
-import org.geotools.data.wfs.internal.WFSClient;
-import org.geotools.data.wfs.internal.WFSConfig;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.type.FeatureTypeFactoryImpl;
-import org.geotools.ows.ServiceException;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.MultiLineString;
@@ -45,13 +39,29 @@ import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
 
-@Component
+@Component(WfsDescribeFeatureTypeRequest.COMMAND_NAME)
 public class WfsDescribeFeatureTypeCommand implements
 		Command<WfsDescribeFeatureTypeRequest, WfsDescribeFeatureTypeResponse> {
 
 	private final Logger log = LoggerFactory.getLogger(WfsDescribeFeatureTypeCommand.class);
+
+	private WfsDataStoreFactory dataStoreFactory;
+
+	private HttpClientFactory httpClientFactory;
+
+	public WfsDescribeFeatureTypeCommand() {
+		dataStoreFactory = new DefaultWfsDataStoreFactory();
+		httpClientFactory = new DefaultHttpClientFactory();
+	}
+
+	public void setDataStoreFactory(WfsDataStoreFactory dataStoreFactory) {
+		this.dataStoreFactory = dataStoreFactory;
+	}
+
+	public void setHttpClientFactory(HttpClientFactory httpClientFactory) {
+		this.httpClientFactory = httpClientFactory;
+	}
 
 	public void execute(WfsDescribeFeatureTypeRequest request, WfsDescribeFeatureTypeResponse response)
 			throws GeomajasException {
@@ -65,8 +75,8 @@ public class WfsDescribeFeatureTypeCommand implements
 		// Get the WFS feature source:
 		SimpleFeatureType schema = null;
 		try {
-			WfsDataStoreFactory factory = new WfsDataStoreFactory();
-			DataStore data = factory.createDataStore(connectionParameters, getClientForUrl(capa));
+			DataStore data = dataStoreFactory.createDataStore(connectionParameters,
+					httpClientFactory.getClientForUrl(capa));
 			schema = data.getSchema(request.getTypeName().replace(":", "_"));
 		} catch (IOException e) {
 			log.error("DescribeFeatureType failed for " + request.getTypeName(), e);
@@ -78,15 +88,15 @@ public class WfsDescribeFeatureTypeCommand implements
 			for (AttributeDescriptor attributeDescriptor : schema.getAttributeDescriptors()) {
 				descriptors.add(createDescriptor(attributeDescriptor));
 			}
-			response.setAttributeDescriptors(descriptors);
+			WfsFeatureTypeDescriptionDto featureTypeDescriptionDto = new WfsFeatureTypeDescriptionDto();
+			featureTypeDescriptionDto.setBaseUrl(request.getBaseUrl());
+			featureTypeDescriptionDto.setTypeName(request.getTypeName());
+			featureTypeDescriptionDto.setAttributeDescriptors(descriptors);
+			response.setFeatureTypeDescription(featureTypeDescriptionDto);
 		} else {
 			log.error("Missing type name on server: " + request.getTypeName());
 			throw new GeomajasException(ExceptionCode.PARAMETER_INVALID_VALUE, request.getTypeName());
 		}
-	}
-
-	protected HTTPClient getClientForUrl(String url) {
-		return new SimpleHttpClient();
 	}
 
 	public WfsDescribeFeatureTypeResponse getEmptyCommandResponse() {

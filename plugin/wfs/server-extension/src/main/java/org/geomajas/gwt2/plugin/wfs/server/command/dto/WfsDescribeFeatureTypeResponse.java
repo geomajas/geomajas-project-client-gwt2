@@ -1,25 +1,23 @@
 package org.geomajas.gwt2.plugin.wfs.server.command.dto;
 
-import java.util.List;
-
 import org.geomajas.command.CommandResponse;
-import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
+import org.geomajas.gwt2.plugin.wfs.server.dto.WfsFeatureTypeDescriptionDto;
 
 public class WfsDescribeFeatureTypeResponse extends CommandResponse {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 100L;
 
-	private List<AttributeDescriptor> attributeDescriptors;
+	private WfsFeatureTypeDescriptionDto featureTypeDescription;
 
 	public WfsDescribeFeatureTypeResponse() {
 	}
 
-	public List<AttributeDescriptor> getAttributeDescriptors() {
-		return this.attributeDescriptors;
+	public WfsFeatureTypeDescriptionDto getFeatureTypeDescription() {
+		return featureTypeDescription;
 	}
 
-	public void setAttributeDescriptors(List<AttributeDescriptor> attributeDescriptors) {
-		this.attributeDescriptors = attributeDescriptors;
+	public void setFeatureTypeDescription(WfsFeatureTypeDescriptionDto featureTypeDescription) {
+		this.featureTypeDescription = featureTypeDescription;
 	}
 
 }

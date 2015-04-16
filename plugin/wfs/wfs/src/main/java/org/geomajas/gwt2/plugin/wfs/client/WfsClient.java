@@ -23,7 +23,7 @@ public final class WfsClient {
 
 	private static WfsClient instance;
 
-	private final WfsService wfsService;
+	private WfsService wfsService;
 
 	private WfsClient() {
 		wfsService = new WfsServiceImpl();
@@ -52,5 +52,13 @@ public final class WfsClient {
 	 */
 	public WfsService getWfsService() {
 		return wfsService;
+	}
+
+	/**
+	 * 
+	 * @param wfsService
+	 */
+	public void setWfsService(WfsService wfsService) {
+		this.wfsService = wfsService;
 	}
 }

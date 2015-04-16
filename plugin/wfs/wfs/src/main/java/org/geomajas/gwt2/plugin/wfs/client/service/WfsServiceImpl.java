@@ -11,8 +11,13 @@
 
 package org.geomajas.gwt2.plugin.wfs.client.service;
 
-import org.geomajas.gwt2.plugin.wfs.client.capabilities.WfsGetCapabilitiesInfo;
-import org.geomajas.gwt2.plugin.wfs.client.capabilities.v_1_0_0.WfsGetCapabilitiesInfo100;
+import org.apache.xml.utils.UnImplNode;
+import org.geomajas.gwt2.plugin.wfs.client.protocol.WfsFeatureCollectionInfo;
+import org.geomajas.gwt2.plugin.wfs.client.protocol.WfsFeatureTypeDescriptionInfo;
+import org.geomajas.gwt2.plugin.wfs.client.protocol.WfsGetCapabilitiesInfo;
+import org.geomajas.gwt2.plugin.wfs.client.protocol.v_1_0_0.WfsGetCapabilitiesInfo100;
+import org.geomajas.gwt2.plugin.wfs.client.query.dto.QueryDto;
+import org.geomajas.gwt2.plugin.wfs.client.service.WfsService.WfsVersion;
 
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.http.client.Request;
@@ -60,7 +65,7 @@ public class WfsServiceImpl implements WfsService {
 	}
 
 	@Override
-	public void getCapabilities(String baseUrl, final WfsVersion version,
+	public void getCapabilities(final WfsVersion version, String baseUrl,
 			final Callback<WfsGetCapabilitiesInfo, String> callback) {
 		String url = getCapabilitiesUrl(baseUrl, version);
 		RequestBuilder builder = requestBuilderFactory.create(RequestBuilder.GET, url);
@@ -101,10 +106,23 @@ public class WfsServiceImpl implements WfsService {
 			callback.onFailure(e.getMessage());
 		}
 	}
+	
+
+	@Override
+	public void describeFeatureType(WfsVersion version, String baseUrl, String typeName,
+			Callback<WfsFeatureTypeDescriptionInfo, String> callback) {
+		throw new UnsupportedOperationException("This method is only supported by the WFS server extension");		
+	}
 
 	// ------------------------------------------------------------------------
 	// Proxy options:
 	// ------------------------------------------------------------------------
+
+	@Override
+	public void getFeatures(WfsVersion version, String baseUrl, String typeName, QueryDto query,
+			Callback<WfsFeatureCollectionInfo, String> callback) {
+		throw new UnsupportedOperationException("This method is only supported by the WFS server extension");		
+	}
 
 	@Override
 	public void setWfsUrlTransformer(WfsUrlTransformer urlTransformer) {

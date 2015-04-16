@@ -2,17 +2,13 @@ package org.geomajas.gwt2.plugin.wfs.server.command;
 
 import junit.framework.Assert;
 
-import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.ContextHandler;
-import org.geomajas.global.GeomajasException;
-import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
-import org.geomajas.gwt2.client.map.attribute.GeometryAttributeType;
-import org.geomajas.gwt2.client.map.attribute.GeometryType;
-import org.geomajas.gwt2.client.map.attribute.PrimitiveAttributeType;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 import org.geomajas.gwt2.plugin.wfs.client.query.dto.FidCriterionDto;
 import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsGetFeatureRequest;
 import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsGetFeatureResponse;
+import org.geotools.filter.text.ecql.ECQL;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,19 +26,21 @@ public class WfsGetFeatureCommandTest {
 	@Autowired
 	private WfsGetFeatureCommand command;
 
+	private WfsServlet servlet;
+
 	@Before
 	public void before() throws Exception {
 		server = new Server(8080);
-		ContextHandler contextHandler = new ContextHandler();
-		contextHandler.setContextPath("/wfs");
-		Handler handler = new WfsHandler();
-		contextHandler.setHandler(handler);
-		server.setHandler(contextHandler);
+		servlet = new WfsServlet();
+		ServletContextHandler servletContextHandler = new ServletContextHandler();
+		servletContextHandler.setContextPath("/");
+		servletContextHandler.addServlet(new ServletHolder(servlet),"/wfs/*");
+		server.setHandler(servletContextHandler);
 		server.start();
 	}
 
 	@Test
-	public void testBodem() throws Exception {
+	public void integrationTest() throws Exception {
 		WfsGetFeatureRequest request = new WfsGetFeatureRequest();
 		request.setBaseUrl("http://127.0.0.1:8080/wfs");
 		request.setTypeName("dov-pub-bodem:Bodemassociatiekaart");
@@ -50,7 +48,9 @@ public class WfsGetFeatureCommandTest {
 		request.setCrs("EPSG:31370");
 		WfsGetFeatureResponse response = new WfsGetFeatureResponse();
 		command.execute(request, response);
-		Assert.assertEquals(2, response.getFeatures().size());
+		Assert.assertEquals(2, response.getFeatureCollection().size());
+		Assert.assertNotNull(servlet.getLastFilter());
+		Assert.assertEquals(ECQL.toFilter("IN('Bodemassociatiekaart.1', 'Bodemassociatiekaart.2')"), servlet.getLastFilter());
 	}
 
 	@After

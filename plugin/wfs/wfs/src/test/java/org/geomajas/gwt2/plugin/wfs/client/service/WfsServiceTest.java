@@ -21,8 +21,8 @@ import net.opengis.wfs.WFSCapabilitiesType;
 
 import org.apache.tools.ant.filters.StringInputStream;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.gwt2.plugin.wfs.client.capabilities.WfsFeatureTypeInfo;
-import org.geomajas.gwt2.plugin.wfs.client.capabilities.WfsGetCapabilitiesInfo;
+import org.geomajas.gwt2.plugin.wfs.client.protocol.WfsFeatureTypeInfo;
+import org.geomajas.gwt2.plugin.wfs.client.protocol.WfsGetCapabilitiesInfo;
 import org.geomajas.gwt2.plugin.wfs.client.service.WfsService.WfsRequest;
 import org.geomajas.gwt2.plugin.wfs.client.service.WfsService.WfsUrlTransformer;
 import org.geomajas.gwt2.plugin.wfs.client.service.WfsService.WfsVersion;
@@ -77,7 +77,7 @@ public class WfsServiceTest extends AbstractWfsServiceTest {
 	public void testGetCapabilities100() throws Exception {
 		prepareResponse("capabilities_1_0_0.xml");
 		CapabilitiesCallback callback = new CapabilitiesCallback();
-		wfsService.getCapabilities("http://test", WfsVersion.V1_0_0, callback);
+		wfsService.getCapabilities(WfsVersion.V1_0_0, "http://test", callback);
 		WfsGetCapabilitiesInfo info = callback.getResult();
 		Assert.assertNotNull(info);
 		Assert.assertNotNull(info.getFeatureTypeList());

@@ -32,6 +32,7 @@ import org.opengis.feature.type.GeometryDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
 
@@ -71,7 +72,9 @@ public class FeatureConverter {
 		if (defaultGeometry instanceof Geometry) {
 			Geometry geometry = (Geometry) defaultGeometry;
 			if (maxCoordsPerFeature > 0) {
-				int distanceTolerance = 10;
+				// we take the tolerance from the 1st geometry to make sure we don't end up with an empty geometry !
+				Envelope firstEnvelope = geometry.getGeometryN(0).getEnvelopeInternal();
+				double distanceTolerance = (firstEnvelope.getWidth() + firstEnvelope.getHeight()) / maxCoordsPerFeature;
 				while (geometry.getNumPoints() > maxCoordsPerFeature) {
 					geometry = DouglasPeuckerSimplifier.simplify(geometry, distanceTolerance);
 					distanceTolerance *= 2;
@@ -84,7 +87,9 @@ public class FeatureConverter {
 				log.error("Error while parsing geometry from GML: " + e.getMessage());
 			}
 		}
-
+		if(dto.getGeometry().getCoordinates() == null) {
+			System.out.println();
+		}
 		return dto;
 	}
 
