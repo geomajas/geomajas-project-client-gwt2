@@ -1,3 +1,13 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2015 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the GNU Affero
+ * General Public License. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
 package org.geomajas.gwt2.plugin.wfs.server.command.factory.impl;
 
 import java.io.IOException;
@@ -26,7 +36,13 @@ import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.wfs.MultithreadedHttpClient;
 import org.geotools.util.logging.Logging;
 
-public class DefaultHTTPClient implements HTTPClient {
+/**
+ * Wrapper of Apache 4 client for geotools.
+ * 
+ * @author Jan De Moerloose
+ *
+ */
+public class DefaultHttpClientImpl implements HTTPClient {
 
 	private static final Logger LOGGER = Logging.getLogger(MultithreadedHttpClient.class);
 
@@ -40,7 +56,7 @@ public class DefaultHTTPClient implements HTTPClient {
 
 	private PoolingClientConnectionManager cm;
 
-	public DefaultHTTPClient() {
+	public DefaultHttpClientImpl() {
 		cm = new PoolingClientConnectionManager();
 		cm.setMaxTotal(100);
 		cm.setDefaultMaxPerRoute(100);
@@ -176,6 +192,12 @@ public class DefaultHTTPClient implements HTTPClient {
 		cm.setDefaultMaxPerRoute(maxConnections);
 	}
 
+	/**
+	 * Wraps the response.
+	 * 
+	 * @author Jan De Moerloose
+	 *
+	 */
 	private static class HttpMethodResponse implements HTTPResponse {
 
 		private HttpRequestBase request;

@@ -32,7 +32,7 @@ public final class WfsClient {
 	/**
 	 * Get a singleton instance.
 	 *
-	 * @return Return WmsClient!
+	 * @return Return WfsClient!
 	 */
 	public static WfsClient getInstance() {
 		if (instance == null) {

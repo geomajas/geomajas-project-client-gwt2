@@ -13,6 +13,8 @@ package org.geomajas.gwt2.plugin.wfs.server.command;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,11 +35,13 @@ import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsGetFeatureResponse;
 import org.geomajas.gwt2.plugin.wfs.server.command.factory.CriterionToFilterConverter;
 import org.geomajas.gwt2.plugin.wfs.server.command.factory.CriterionToFilterConverterFactory;
 import org.geomajas.gwt2.plugin.wfs.server.command.factory.HttpClientFactory;
+import org.geomajas.gwt2.plugin.wfs.server.command.factory.URLBuilder;
 import org.geomajas.gwt2.plugin.wfs.server.command.factory.WfsDataStoreFactory;
 import org.geomajas.gwt2.plugin.wfs.server.command.factory.impl.DefaultCriterionFilterConverter;
 import org.geomajas.gwt2.plugin.wfs.server.command.factory.impl.DefaultHttpClientFactory;
 import org.geomajas.gwt2.plugin.wfs.server.command.factory.impl.DefaultWfsDataStoreFactory;
 import org.geomajas.gwt2.plugin.wfs.server.dto.WfsFeatureCollectionDto;
+import org.geomajas.gwt2.plugin.wfs.server.dto.WfsVersionDto;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
@@ -139,10 +143,12 @@ public class WfsGetFeatureCommand implements Command<WfsGetFeatureRequest, WfsGe
 					request.getCrs());
 
 			// run it
-			return getFeatures(request.getBaseUrl(), request.getTypeName(), query);
+			return getFeatures(request.getBaseUrl(), request.getTypeName(), query, request.getVersion());
 		} catch (SAXException e) {
 			throw new IOException(e);
 		} catch (ParserConfigurationException e) {
+			throw new IOException(e);
+		} catch (URISyntaxException e) {
 			throw new IOException(e);
 		}
 
@@ -185,16 +191,11 @@ public class WfsGetFeatureCommand implements Command<WfsGetFeatureRequest, WfsGe
 	}
 
 	protected FeatureCollection<SimpleFeatureType, SimpleFeature> getFeatures(String baseUrl, String typeName,
-			Query query) throws IOException, SAXException, ParserConfigurationException {
+			Query query, WfsVersionDto version) throws IOException, SAXException, ParserConfigurationException,
+			URISyntaxException {
 
-		StringBuilder sb = new StringBuilder();
-		sb.append(baseUrl);
-		if (baseUrl.contains("?")) {
-			sb.append("&").append("service=wfs&request=GetCapabilities&VERSION=1.0.0");
-		} else {
-			sb.append("?").append("service=wfs&request=GetCapabilities&VERSION=1.0.0");
-		}
-		String capa = sb.toString();
+		URL url = URLBuilder.createWfsURL(new URL(baseUrl), version, "GetCapabilities");
+		String capa = url.toExternalForm();
 		Map<String, Serializable> connectionParameters = new HashMap<String, Serializable>();
 		connectionParameters.put(WFSDataStoreFactory.MAXFEATURES.key, query.getMaxFeatures());
 		connectionParameters.put(WFSDataStoreFactory.URL.key, capa);
@@ -242,9 +243,6 @@ public class WfsGetFeatureCommand implements Command<WfsGetFeatureRequest, WfsGe
 			org.geomajas.geometry.Geometry geom = featureDto.getGeometry();
 			if (geom != null) {
 				Bbox b = GeometryService.getBounds(geom);
-				if(b == null) {
-					System.out.println();
-				}
 				if (total == null) {
 					total = b;
 				} else {

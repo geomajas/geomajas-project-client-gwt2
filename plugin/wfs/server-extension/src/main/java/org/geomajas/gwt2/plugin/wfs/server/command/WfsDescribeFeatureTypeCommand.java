@@ -1,8 +1,18 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2015 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the GNU Affero
+ * General Public License. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
 package org.geomajas.gwt2.plugin.wfs.server.command;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,11 +30,12 @@ import org.geomajas.gwt2.client.map.attribute.PrimitiveType;
 import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsDescribeFeatureTypeRequest;
 import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsDescribeFeatureTypeResponse;
 import org.geomajas.gwt2.plugin.wfs.server.command.factory.HttpClientFactory;
+import org.geomajas.gwt2.plugin.wfs.server.command.factory.URLBuilder;
 import org.geomajas.gwt2.plugin.wfs.server.command.factory.WfsDataStoreFactory;
 import org.geomajas.gwt2.plugin.wfs.server.command.factory.impl.DefaultHttpClientFactory;
 import org.geomajas.gwt2.plugin.wfs.server.command.factory.impl.DefaultWfsDataStoreFactory;
 import org.geomajas.gwt2.plugin.wfs.server.dto.WfsFeatureTypeDescriptionDto;
-import org.geotools.data.DataStore;
+import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -40,6 +51,12 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 
+/**
+ * Command that issues WFS DescribeFeatureType request.
+ * 
+ * @author Jan De Moerloose
+ *
+ */
 @Component(WfsDescribeFeatureTypeRequest.COMMAND_NAME)
 public class WfsDescribeFeatureTypeCommand implements
 		Command<WfsDescribeFeatureTypeRequest, WfsDescribeFeatureTypeResponse> {
@@ -65,26 +82,28 @@ public class WfsDescribeFeatureTypeCommand implements
 
 	public void execute(WfsDescribeFeatureTypeRequest request, WfsDescribeFeatureTypeResponse response)
 			throws GeomajasException {
-		// Create a WFS GetCapabilities URL:
-		String capa = request.getBaseUrl() + "?service=wfs&version=1.0.0&request=GetCapabilities";
-
-		Map<String, Serializable> connectionParameters = new HashMap<String, Serializable>();
-		connectionParameters.put(WFSDataStoreFactory.URL.key, capa);
-		connectionParameters.put(WFSDataStoreFactory.TIMEOUT.key, 10000);
-
-		// Get the WFS feature source:
 		SimpleFeatureType schema = null;
 		try {
-			DataStore data = dataStoreFactory.createDataStore(connectionParameters,
+			// Create a WFS GetCapabilities URL:
+			URL url = URLBuilder.createWfsURL(new URL(request.getBaseUrl()), request.getVersion(), "GetCapabilities");
+			String capa = url.toExternalForm();
+
+			Map<String, Serializable> connectionParameters = new HashMap<String, Serializable>();
+			connectionParameters.put(WFSDataStoreFactory.URL.key, capa);
+			connectionParameters.put(WFSDataStoreFactory.TIMEOUT.key, 10000);
+
+			// Get the WFS feature source:
+			WFSDataStore data = dataStoreFactory.createDataStore(connectionParameters,
 					httpClientFactory.getClientForUrl(capa));
 			schema = data.getSchema(request.getTypeName().replace(":", "_"));
-		} catch (IOException e) {
+		} catch (Exception e) {
 			log.error("DescribeFeatureType failed for " + request.getTypeName(), e);
 			throw new GeomajasException(ExceptionCode.UNEXPECTED_PROBLEM, e.getMessage());
 		}
 
 		if (schema != null) {
-			List<org.geomajas.gwt2.client.map.attribute.AttributeDescriptor> descriptors = new ArrayList<org.geomajas.gwt2.client.map.attribute.AttributeDescriptor>();
+			List<org.geomajas.gwt2.client.map.attribute.AttributeDescriptor> descriptors = 
+					new ArrayList<org.geomajas.gwt2.client.map.attribute.AttributeDescriptor>();
 			for (AttributeDescriptor attributeDescriptor : schema.getAttributeDescriptors()) {
 				descriptors.add(createDescriptor(attributeDescriptor));
 			}

@@ -1,3 +1,13 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2015 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the GNU Affero
+ * General Public License. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
 package org.geomajas.gwt2.plugin.wfs.server.command.factory.impl;
 
 import java.io.IOException;
@@ -18,20 +28,21 @@ import org.geotools.ows.ServiceException;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
 
+/**
+ * Replaces geotools {@link WfsDataStoreFactory} to inject custom {@link HTTPClient}.
+ * 
+ * @author Jan De Moerloose
+ *
+ */
 public class DefaultWfsDataStoreFactory implements WfsDataStoreFactory {
 
 	@Override
 	public WFSDataStore createDataStore(Map<String, Serializable> params, HTTPClient http) throws IOException {
-
 		final WFSConfig config = WFSConfig.fromParams(params);
-
-		{
-			String user = config.getUser();
-			String password = config.getPassword();
-			if (((user == null) && (password != null))
-					|| ((config.getPassword() == null) && (config.getUser() != null))) {
-				throw new IOException("Cannot define only one of USERNAME or PASSWORD, must define both or neither");
-			}
+		String user = config.getUser();
+		String password = config.getPassword();
+		if (((user == null) && (password != null)) || ((config.getPassword() == null) && (config.getUser() != null))) {
+			throw new IOException("Cannot define only one of USERNAME or PASSWORD, must define both or neither");
 		}
 		final URL capabilitiesURL = (URL) WFSDataStoreFactory.URL.lookUp(params);
 		http.setUser(config.getUser());

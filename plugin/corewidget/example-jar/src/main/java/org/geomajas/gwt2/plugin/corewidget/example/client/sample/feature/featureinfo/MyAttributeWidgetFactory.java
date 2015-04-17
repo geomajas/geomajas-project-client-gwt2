@@ -11,14 +11,15 @@
 
 package org.geomajas.gwt2.plugin.corewidget.example.client.sample.feature.featureinfo;
 
-import com.google.gwt.i18n.client.NumberFormat;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.Widget;
 import org.geomajas.gwt2.client.map.attribute.Attribute;
 import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
 import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.plugin.corewidget.client.feature.featureinfo.builder.AttributeWidgetFactory;
 import org.geomajas.layer.feature.attribute.DoubleAttribute;
+
+import com.google.gwt.i18n.client.NumberFormat;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Factory to create attribute widgets. Overwrites the default attribute factory
@@ -36,7 +37,17 @@ public class MyAttributeWidgetFactory extends AttributeWidgetFactory {
 		Attribute<?> attributeValue = feature.getAttributes().get(descriptor.getName());
 
 		Widget widget;
-		if (attributeValue.getValue() instanceof DoubleAttribute) {
+		if (attributeValue == null) {
+			attributeValue = new Attribute<String>() {
+
+				@Override
+				public String getValue() {
+					return "";
+				}
+			};
+		}
+		feature.getAttributes().put(descriptor.getName(), attributeValue);
+		if (attributeValue != null && attributeValue.getValue() instanceof DoubleAttribute) {
 			widget = createDoubleWidget((DoubleAttribute) attributeValue.getValue());
 		} else {
 			widget = super.createAttributeWidget(feature, descriptor);

@@ -20,16 +20,17 @@ import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 
 /**
- * Generic WFS GetCapabilities definition.
- *
+ * {@link WfsGetCapabilitiesInfo} for version 1.0.0.
+ * 
  * @author Jan De Moerloose
+ *
  */
 public class WfsGetCapabilitiesInfo100 extends AbstractXmlNodeWrapper implements WfsGetCapabilitiesInfo {
 
 	private static final long serialVersionUID = 100L;
 
-	WfsFeatureTypeListInfo featureTypeList;
-	
+	private WfsFeatureTypeListInfo featureTypeList;
+
 	private transient boolean parsed;
 
 	public WfsGetCapabilitiesInfo100(Node node) {
@@ -38,7 +39,7 @@ public class WfsGetCapabilitiesInfo100 extends AbstractXmlNodeWrapper implements
 
 	@Override
 	public WfsFeatureTypeListInfo getFeatureTypeList() {
-		if(!parsed) {
+		if (!parsed) {
 			parse(getNode());
 		}
 		return featureTypeList;
@@ -49,7 +50,7 @@ public class WfsGetCapabilitiesInfo100 extends AbstractXmlNodeWrapper implements
 		if (node instanceof Element) {
 			Element element = (Element) node;
 			NodeList ftList = element.getElementsByTagName("FeatureTypeList");
-			if(ftList.getLength() == 1) {
+			if (ftList.getLength() == 1) {
 				featureTypeList = new WfsFeatureTypeListInfo100(ftList.item(0));
 			} else {
 				throw new IllegalArgumentException("Capabilities has no FeatureTypeList !");

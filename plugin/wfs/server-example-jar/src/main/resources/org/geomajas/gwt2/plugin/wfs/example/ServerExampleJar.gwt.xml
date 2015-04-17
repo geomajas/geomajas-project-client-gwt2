@@ -13,6 +13,7 @@
 
 <module rename-to="examplejar">
 	<inherits name='org.geomajas.gwt2.example.base.ExampleBase' />
+    <inherits name='org.geomajas.gwt2.plugin.corewidget.CoreWidget'/>
 	<inherits name='org.geomajas.gwt2.plugin.wfs.GeomajasClientPluginWfs' />
 	<inherits name='org.geomajas.gwt2.plugin.wfs.GeomajasClientPluginWfsServerExt' />
     <entry-point class="org.geomajas.gwt2.plugin.wfs.example.client.ServerExampleJar"/>

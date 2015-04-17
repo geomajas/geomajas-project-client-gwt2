@@ -11,6 +11,7 @@
 package org.geomajas.gwt2.plugin.wfs.client.query.dto;
 
 import java.io.Serializable;
+
 /**
  * Common interface for criterion DTO objects.
  * 
@@ -35,10 +36,10 @@ public interface CriterionDto extends Serializable {
 
 	String LIKE = "like";
 
-    String EMPTY = "empty";
-    
-    String NE = "!=";
-    
+	String EMPTY = "empty";
+
+	String NE = "!=";
+
 	void accept(CriterionDtoVisitor visitor, Object context);
 
 }

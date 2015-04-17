@@ -12,6 +12,7 @@
 package org.geomajas.gwt2.plugin.wfs.client.service;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
 import org.geomajas.gwt2.plugin.wfs.client.protocol.WfsFeatureCollectionInfo;
 import org.geomajas.gwt2.plugin.wfs.client.protocol.WfsFeatureTypeDescriptionInfo;
 import org.geomajas.gwt2.plugin.wfs.client.protocol.WfsGetCapabilitiesInfo;
@@ -23,6 +24,7 @@ import com.google.gwt.core.client.Callback;
  * Client service that assists in performing requests to a WFS server.
  *
  * @author Jan De Moerloose
+ * @since 2.2.1
  */
 @Api(allMethods = true)
 public interface WfsService {
@@ -66,9 +68,9 @@ public interface WfsService {
 
 		public static WfsRequest fromString(String text) {
 			if (text != null) {
-				for (WfsRequest wmsRequest : WfsRequest.values()) {
-					if (text.equalsIgnoreCase(wmsRequest.request)) {
-						return wmsRequest;
+				for (WfsRequest wfsRequest : WfsRequest.values()) {
+					if (text.equalsIgnoreCase(wfsRequest.request)) {
+						return wfsRequest;
 					}
 				}
 			}
@@ -87,7 +89,7 @@ public interface WfsService {
 		/**
 		 * Transform the given URL.
 		 *
-		 * @param request The WMS request that is used in the URL. It may be that you wish to add a proxy servlet to the
+		 * @param request The WFS request that is used in the URL. It may be that you wish to add a proxy servlet to the
 		 *        URL for some requests but not all.
 		 * @param url The URL to transform.
 		 * @return Returns the transformed URL.
@@ -96,7 +98,7 @@ public interface WfsService {
 	}
 
 	// ------------------------------------------------------------------------
-	// WMS GetCapabilities methods:
+	// WFS GetCapabilities methods:
 	// ------------------------------------------------------------------------
 
 	/**
@@ -132,6 +134,20 @@ public interface WfsService {
 	 *        can extract all the attribute information.
 	 */
 	void getFeatures(WfsVersion version, String baseUrl, String typeName, QueryDto query,
+			Callback<WfsFeatureCollectionInfo, String> callback);
+	
+	/**
+	 * Get features from a WFS service for a specific layer.
+	 * 
+	 * @param layer The layer.
+	 * @param version The preferred WFS version.
+	 * @param baseUrl The WFS base URL (without any WFS parameters).
+	 * @param typeName The feature type name
+	 * @param query The query
+	 * @param callback Callback that returns a {@link WfsFeatureCollectionInfo} instance on success. From here, you
+	 *        can extract all the attribute information.
+	 */
+	void getFeatures(WfsVersion version, FeaturesSupported layer, String baseUrl, String typeName, QueryDto query,
 			Callback<WfsFeatureCollectionInfo, String> callback);
 
 	// ------------------------------------------------------------------------

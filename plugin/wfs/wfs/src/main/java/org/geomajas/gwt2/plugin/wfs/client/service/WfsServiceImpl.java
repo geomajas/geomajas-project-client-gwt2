@@ -11,13 +11,12 @@
 
 package org.geomajas.gwt2.plugin.wfs.client.service;
 
-import org.apache.xml.utils.UnImplNode;
+import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
 import org.geomajas.gwt2.plugin.wfs.client.protocol.WfsFeatureCollectionInfo;
 import org.geomajas.gwt2.plugin.wfs.client.protocol.WfsFeatureTypeDescriptionInfo;
 import org.geomajas.gwt2.plugin.wfs.client.protocol.WfsGetCapabilitiesInfo;
 import org.geomajas.gwt2.plugin.wfs.client.protocol.v_1_0_0.WfsGetCapabilitiesInfo100;
 import org.geomajas.gwt2.plugin.wfs.client.query.dto.QueryDto;
-import org.geomajas.gwt2.plugin.wfs.client.service.WfsService.WfsVersion;
 
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.http.client.Request;
@@ -44,7 +43,7 @@ public class WfsServiceImpl implements WfsService {
 	protected UrlEncoder urlEncoder;
 
 	// ------------------------------------------------------------------------
-	// WmsService implementation:
+	// WfsService implementation:
 	// ------------------------------------------------------------------------
 
 	public WfsServiceImpl() {
@@ -114,15 +113,21 @@ public class WfsServiceImpl implements WfsService {
 		throw new UnsupportedOperationException("This method is only supported by the WFS server extension");		
 	}
 
-	// ------------------------------------------------------------------------
-	// Proxy options:
-	// ------------------------------------------------------------------------
-
 	@Override
 	public void getFeatures(WfsVersion version, String baseUrl, String typeName, QueryDto query,
 			Callback<WfsFeatureCollectionInfo, String> callback) {
 		throw new UnsupportedOperationException("This method is only supported by the WFS server extension");		
 	}
+
+	@Override
+	public void getFeatures(WfsVersion version, FeaturesSupported layer, String baseUrl, String typeName,
+			QueryDto query, Callback<WfsFeatureCollectionInfo, String> callback) {
+		throw new UnsupportedOperationException("This method is only supported by the WFS server extension");		
+	}
+
+	// ------------------------------------------------------------------------
+	// Proxy options:
+	// ------------------------------------------------------------------------
 
 	@Override
 	public void setWfsUrlTransformer(WfsUrlTransformer urlTransformer) {

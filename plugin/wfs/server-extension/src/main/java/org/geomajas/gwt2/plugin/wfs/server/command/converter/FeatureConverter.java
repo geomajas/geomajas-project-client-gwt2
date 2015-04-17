@@ -67,6 +67,7 @@ public class FeatureConverter {
 		dto.setId(feature.getID());
 		dto.setUpdatable(false);
 		dto.setDeletable(false);
+		dto.setLabel(feature.getID());
 
 		Object defaultGeometry = feature.getDefaultGeometry();
 		if (defaultGeometry instanceof Geometry) {
@@ -86,9 +87,6 @@ public class FeatureConverter {
 				// OK then, no geometry for you...
 				log.error("Error while parsing geometry from GML: " + e.getMessage());
 			}
-		}
-		if(dto.getGeometry().getCoordinates() == null) {
-			System.out.println();
 		}
 		return dto;
 	}

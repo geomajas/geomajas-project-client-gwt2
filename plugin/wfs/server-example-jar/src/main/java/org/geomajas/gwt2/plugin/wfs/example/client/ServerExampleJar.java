@@ -14,9 +14,11 @@ package org.geomajas.gwt2.plugin.wfs.example.client;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanelRegistry;
 import org.geomajas.gwt2.example.base.client.sample.ShowcaseSampleDefinition;
+import org.geomajas.gwt2.plugin.wfs.example.client.i18n.ServerSampleMessages;
 import org.geomajas.gwt2.plugin.wfs.example.client.sample.WfsCapabilitiesPanel;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 
 /**
  * Entry point and main class for the GWT client example application.
@@ -26,6 +28,8 @@ import com.google.gwt.core.client.EntryPoint;
 public class ServerExampleJar implements EntryPoint {
 
 	public static final String CATEGORY_WFS = "WFS Plugin";
+
+	private static final ServerSampleMessages MESSAGES = GWT.create(ServerSampleMessages.class);
 
 	public void onModuleLoad() {
 		// Register all samples:
@@ -44,15 +48,15 @@ public class ServerExampleJar implements EntryPoint {
 			}
 
 			public String getTitle() {
-				return "";
+				return MESSAGES.capabilitiesTitle();
 			}
 
 			public String getShortDescription() {
-				return "";
+				return MESSAGES.capabilitiesShort();
 			}
 
 			public String getDescription() {
-				return "";
+				return MESSAGES.capabilitiesDescription();
 			}
 
 			public String getCategory() {

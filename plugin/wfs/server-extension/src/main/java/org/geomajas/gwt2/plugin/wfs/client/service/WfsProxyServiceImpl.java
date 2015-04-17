@@ -1,3 +1,13 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2015 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the GNU Affero
+ * General Public License. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
 package org.geomajas.gwt2.plugin.wfs.client.service;
 
 import java.util.ArrayList;
@@ -21,15 +31,22 @@ import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsGetCapabilitiesRespons
 import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsGetFeatureRequest;
 import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsGetFeatureResponse;
 import org.geomajas.gwt2.plugin.wfs.server.dto.WfsFeatureCollectionDto;
+import org.geomajas.gwt2.plugin.wfs.server.dto.WfsVersionDto;
 
 import com.google.gwt.core.client.Callback;
 
+/**
+ * Implementation of {@link WfsService} that uses the Geomajas server.
+ * @author Jan De Moerloose
+ *
+ */
 public class WfsProxyServiceImpl implements WfsService {
 
 	@Override
 	public void getCapabilities(WfsVersion version, String baseUrl,
 			final Callback<WfsGetCapabilitiesInfo, String> callback) {
 		WfsGetCapabilitiesRequest request = new WfsGetCapabilitiesRequest(baseUrl);
+		request.setVersion(WfsVersionDto.fromString(version.toString()));
 		GwtCommand command = new GwtCommand(WfsGetCapabilitiesRequest.COMMAND_NAME);
 		command.setCommandRequest(request);
 		GeomajasServerExtension.getInstance().getCommandService()
@@ -57,6 +74,7 @@ public class WfsProxyServiceImpl implements WfsService {
 	public void describeFeatureType(WfsVersion version, String baseUrl, String typeName,
 			final Callback<WfsFeatureTypeDescriptionInfo, String> callback) {
 		WfsDescribeFeatureTypeRequest request = new WfsDescribeFeatureTypeRequest(baseUrl, typeName);
+		request.setVersion(WfsVersionDto.fromString(version.toString()));
 		GwtCommand command = new GwtCommand(WfsDescribeFeatureTypeRequest.COMMAND_NAME);
 		command.setCommandRequest(request);
 		GeomajasServerExtension.getInstance().getCommandService()
@@ -82,7 +100,13 @@ public class WfsProxyServiceImpl implements WfsService {
 
 	@Override
 	public void getFeatures(WfsVersion version, String baseUrl, String typeName, QueryDto query,
-			final Callback<WfsFeatureCollectionInfo, String> callback) {
+			Callback<WfsFeatureCollectionInfo, String> callback) {
+		getFeatures(version, null, baseUrl, typeName, query, callback);
+	}
+
+	@Override
+	public void getFeatures(WfsVersion version, final FeaturesSupported layer, String baseUrl, String typeName,
+			QueryDto query, final Callback<WfsFeatureCollectionInfo, String> callback) {
 		WfsGetFeatureRequest request = new WfsGetFeatureRequest();
 		request.setBaseUrl(baseUrl);
 		request.setTypeName(typeName);
@@ -93,6 +117,7 @@ public class WfsProxyServiceImpl implements WfsService {
 		request.setSchema(query.getAttributeDescriptors());
 		request.setStartIndex(query.getStartIndex());
 		request.setRequestedAttributeNames(query.getRequestedAttributeNames());
+		request.setVersion(WfsVersionDto.fromString(version.toString()));
 		GwtCommand command = new GwtCommand(WfsGetFeatureRequest.COMMAND_NAME);
 		command.setCommandRequest(request);
 		GeomajasServerExtension.getInstance().getCommandService()
@@ -102,28 +127,28 @@ public class WfsProxyServiceImpl implements WfsService {
 					public void execute(WfsGetFeatureResponse response) {
 						final WfsFeatureCollectionDto collection = response.getFeatureCollection();
 						callback.onSuccess(new WfsFeatureCollectionInfo() {
-							
+
 							@Override
 							public String getTypeName() {
 								return collection.getTypeName();
 							}
-							
+
 							@Override
 							public List<Feature> getFeatures() {
 								List<Feature> features = new ArrayList<Feature>();
 								for (org.geomajas.layer.feature.Feature feature : collection.getFeatures()) {
-									Feature newFeature = GeomajasServerExtension.getInstance().getServerFeatureService()
-											.create(feature, null);
+									Feature newFeature = GeomajasServerExtension.getInstance()
+											.getServerFeatureService().create(feature, layer);
 									features.add(newFeature);
 								}
 								return features;
 							}
-							
+
 							@Override
 							public Bbox getBoundingBox() {
 								return collection.getBoundingBox();
 							}
-							
+
 							@Override
 							public String getBaseUrl() {
 								return collection.getBaseUrl();
