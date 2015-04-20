@@ -308,9 +308,11 @@ public class DefaultCriterionFilterConverter implements CriterionToFilterConvert
 		}
 
 		public String getDefaultGeometryName() {
-			for (AttributeDescriptor attributeDescriptor : schema) {
-				if (attributeDescriptor.getType() instanceof GeometryAttributeType) {
-					return attributeDescriptor.getName();
+			if (schema != null) {
+				for (AttributeDescriptor attributeDescriptor : schema) {
+					if (attributeDescriptor.getType() instanceof GeometryAttributeType) {
+						return attributeDescriptor.getName();
+					}
 				}
 			}
 			return "the_geom";

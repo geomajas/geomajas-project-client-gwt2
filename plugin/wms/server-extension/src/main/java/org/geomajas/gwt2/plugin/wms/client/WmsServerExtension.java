@@ -11,28 +11,25 @@
 
 package org.geomajas.gwt2.plugin.wms.client;
 
-import com.google.gwt.core.client.Callback;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.geomajas.gwt.client.command.AbstractCommandCallback;
-import org.geomajas.gwt.client.command.GwtCommand;
-import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt2.client.map.Hint;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
+import org.geomajas.gwt2.plugin.wfs.client.WfsServerExtension;
+import org.geomajas.gwt2.plugin.wfs.client.protocol.WfsFeatureTypeDescriptionInfo;
+import org.geomajas.gwt2.plugin.wfs.client.service.WfsService.WfsVersion;
 import org.geomajas.gwt2.plugin.wms.client.capabilities.WmsLayerInfo;
 import org.geomajas.gwt2.plugin.wms.client.describelayer.WmsDescribeLayerInfo;
 import org.geomajas.gwt2.plugin.wms.client.describelayer.WmsLayerDescriptionInfo;
 import org.geomajas.gwt2.plugin.wms.client.layer.FeatureInfoSupportedWmsServerLayer;
 import org.geomajas.gwt2.plugin.wms.client.layer.FeatureSearchSupportedWmsServerLayer;
-import org.geomajas.gwt2.plugin.wms.client.layer.WfsLayerConfiguration;
 import org.geomajas.gwt2.plugin.wms.client.layer.WmsLayerConfiguration;
 import org.geomajas.gwt2.plugin.wms.client.service.WmsProxyServiceImpl;
 import org.geomajas.gwt2.plugin.wms.client.service.WmsService;
-import org.geomajas.gwt2.plugin.wms.server.command.dto.WfsDescribeLayerRequest;
-import org.geomajas.gwt2.plugin.wms.server.command.dto.WfsDescribeLayerResponse;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.google.gwt.core.client.Callback;
 
 /**
  * Starting point for the WMS server extension. It provides additional functionality on top of the normal WMS client.
@@ -88,7 +85,7 @@ public final class WmsServerExtension {
 	 * @param callback Callback that will be given the answer through the associated layer configuration.
 	 */
 	public void supportsFeatures(String baseUrl, WmsService.WmsVersion version, final String typeName,
-			final Callback<WfsLayerConfiguration, String> callback) {
+			final Callback<WfsFeatureTypeDescriptionInfo, String> callback) {
 		wmsService.describeLayer(baseUrl, typeName, version, new Callback<WmsDescribeLayerInfo, String>() {
 
 			@Override
@@ -105,21 +102,8 @@ public final class WmsServerExtension {
 				}
 				if (wfsUrl != null) {
 					// we need an extra call for the schema !!!
-					final String wfsBaseUrl = wfsUrl;
-					GwtCommand command = new GwtCommand(WfsDescribeLayerRequest.COMMAND_NAME);
-					command.setCommandRequest(new WfsDescribeLayerRequest(wfsUrl, typeName));
-					GwtCommandDispatcher.getInstance().execute(command,
-							new AbstractCommandCallback<WfsDescribeLayerResponse>() {
-
-								@Override
-								public void execute(WfsDescribeLayerResponse response) {
-									WfsLayerConfiguration layerConfiguration = new WfsLayerConfiguration(wfsBaseUrl,
-											typeName);
-									layerConfiguration.getDescriptors().addAll(response.getAttributeDescriptors());
-									callback.onSuccess(layerConfiguration);
-								}
-
-							});
+					WfsServerExtension.getInstance().getWfsService()
+							.describeFeatureType(WfsVersion.V1_0_0, wfsUrl, typeName, callback);
 				} else {
 					callback.onFailure("No WFS in layer description");
 				}
@@ -187,7 +171,7 @@ public final class WmsServerExtension {
 	 * @return A new WMS layer.
 	 */
 	public FeatureSearchSupportedWmsServerLayer createLayer(String title, String crs, TileConfiguration tileConfig,
-			WmsLayerConfiguration layerConfig, WmsLayerInfo layerInfo, WfsLayerConfiguration wfsConfig) {
+			WmsLayerConfiguration layerConfig, WmsLayerInfo layerInfo, WfsFeatureTypeDescriptionInfo wfsConfig) {
 		return new FeatureSearchSupportedWmsServerLayer(title, crs, layerConfig, tileConfig, layerInfo, wfsConfig);
 	}
 
@@ -220,6 +204,7 @@ public final class WmsServerExtension {
 	 * @param hint The hint to retrieve the current value for.
 	 * @return The map hint value.
 	 */
+	@SuppressWarnings("unchecked")
 	public <T> T getHintValue(Hint<T> hint) {
 		return (T) hintValues.get(hint);
 	}
