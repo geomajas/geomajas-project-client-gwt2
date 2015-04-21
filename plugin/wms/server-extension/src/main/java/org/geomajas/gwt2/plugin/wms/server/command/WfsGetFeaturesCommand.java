@@ -52,13 +52,14 @@ public class WfsGetFeaturesCommand implements Command<WfsGetFeaturesRequest, Wfs
 		Map<String, String> connectionParameters = new HashMap<String, String>();
 		connectionParameters.put("WFSDataStoreFactory:GET_CAPABILITIES_URL", capa);
 		connectionParameters.put("WFSDataStoreFactory:TIMEOUT", "10000");
+		
+		// new geotools expects _ as prefix delimiter
+		String typeName = request.getLayer().replaceAll(":", "_");
 
 		// Get the WFS feature source:
 		DataStore data = DataStoreFinder.getDataStore(connectionParameters);
-		FeatureSource<SimpleFeatureType, SimpleFeature> source = data.getFeatureSource(request.getLayer());
-		SimpleFeatureType schema;
-
-		schema = data.getSchema(request.getLayer()); // forward all exceptions
+		FeatureSource<SimpleFeatureType, SimpleFeature> source = data.getFeatureSource(typeName);
+		SimpleFeatureType schema = data.getSchema(typeName); // forward all exceptions
 
 		// Filter:
 		String geomName = schema.getGeometryDescriptor().getLocalName();
