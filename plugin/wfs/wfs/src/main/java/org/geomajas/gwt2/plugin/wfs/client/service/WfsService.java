@@ -54,7 +54,9 @@ public interface WfsService {
 	 * @author Jan De Moerloose
 	 */
 	public enum WfsRequest {
-		GETCAPABILITIES("GetCapabilities");
+		GET_CAPABILITIES("GetCapabilities"),
+		DESCRIBE_FEATURE_TYPE("DescribeFeatureType"),
+		GET_FEATURE("GetFeature");
 
 		private String request;
 

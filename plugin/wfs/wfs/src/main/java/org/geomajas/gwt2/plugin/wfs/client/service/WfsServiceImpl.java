@@ -176,7 +176,7 @@ public class WfsServiceImpl implements WfsService {
 		// Parameter: request type
 		url.append("&request=GetCapabilities");
 
-		return finishUrl(WfsRequest.GETCAPABILITIES, url);
+		return finishUrl(WfsRequest.GET_CAPABILITIES, url);
 	}
 
 	// ------------------------------------------------------------------------
