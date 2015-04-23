@@ -10,18 +10,31 @@
  */
 package org.geomajas.gwt2.plugin.wfs.server.command.factory;
 
-import java.util.List;
+import java.net.URL;
 
-import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
-import org.geomajas.gwt2.client.map.feature.query.CriterionDto;
-import org.opengis.filter.Filter;
+import org.geotools.data.ows.HTTPClient;
 
 /**
- * Convert {@link CriterionDto} to {@link Filter}.
+ * Factory for geotools {@link HTTPClient}.
+ * 
  * @author Jan De Moerloose
  *
  */
-public interface CriterionToFilterConverter {
+public interface WfsHttpClientFactory {
 
-	Filter convert(CriterionDto criterionDto, List<AttributeDescriptor> schema);
+	/**
+	 * Get the target URL for this source URL. Usually the same, but useful if proxying to a different host.
+	 * 
+	 * @param sourceUrl
+	 * @return
+	 */
+	URL getTargetUrl(String sourceUrl);
+
+	/**
+	 * Obtain a client for this url.
+	 * 
+	 * @param url
+	 * @return
+	 */
+	HTTPClient create(String sourceUrl);
 }

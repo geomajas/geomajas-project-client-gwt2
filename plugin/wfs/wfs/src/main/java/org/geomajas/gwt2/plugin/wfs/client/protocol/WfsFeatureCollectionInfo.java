@@ -13,6 +13,7 @@ package org.geomajas.gwt2.plugin.wfs.client.protocol;
 import java.io.Serializable;
 import java.util.List;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt2.client.map.feature.Feature;
 
@@ -20,7 +21,9 @@ import org.geomajas.gwt2.client.map.feature.Feature;
  * Feature collection definition within WFS GetFeature.
  *
  * @author Jan De Moerloose
+ * @since 2.2.1
  */
+@Api(allMethods = true)
 public interface WfsFeatureCollectionInfo extends Serializable {
 
 	/**

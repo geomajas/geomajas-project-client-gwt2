@@ -47,8 +47,11 @@ public final class URLBuilder {
 		params.add(new BasicNameValuePair("service", "WFS"));
 		params.add(new BasicNameValuePair("version", version.toString()));
 		params.add(new BasicNameValuePair("request", request));
+		String protocol = baseUrl.getProtocol();
+		String authority = baseUrl.getAuthority();
+		String path = baseUrl.getPath();
 		String query = URLEncodedUtils.format(params, "UTF-8");
-		URL url = new URL(baseUrl.getProtocol(), baseUrl.getHost(), baseUrl.getPort(), baseUrl.getPath() + "?" + query);
+		URL url = new URL(protocol + "://" + authority + path + "?" + query);
 		return url;
 	}
 }

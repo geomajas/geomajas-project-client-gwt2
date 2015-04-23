@@ -10,8 +10,9 @@
   -->
 <module>
     <inherits name="org.geomajas.gwt2.GeomajasClientServerExtension" />
+    <inherits name="org.geomajas.gwt2.plugin.wfs.GeomajasClientPluginWfsServerExt" />
     <inherits name="org.geomajas.gwt2.plugin.wms.GeomajasClientPluginWms" />
-    
+
     <!-- Source for this plug-in -->
     <source path="client" />
     <source path="server/command/dto" />

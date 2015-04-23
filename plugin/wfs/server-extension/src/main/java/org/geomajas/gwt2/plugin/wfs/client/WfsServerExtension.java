@@ -10,6 +10,7 @@
  */
 package org.geomajas.gwt2.plugin.wfs.client;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.plugin.wfs.client.service.WfsProxyServiceImpl;
 import org.geomajas.gwt2.plugin.wfs.client.service.WfsService;
 
@@ -17,8 +18,10 @@ import org.geomajas.gwt2.plugin.wfs.client.service.WfsService;
  * Entrypoint for WFS server extension.
  * 
  * @author Jan De Moerloose
+ * @since 2.2.1
  *
  */
+@Api(allMethods = true)
 public final class WfsServerExtension {
 
 	private static WfsServerExtension instance;

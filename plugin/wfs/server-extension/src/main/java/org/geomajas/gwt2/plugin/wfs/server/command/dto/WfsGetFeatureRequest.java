@@ -15,7 +15,7 @@ import java.util.List;
 
 import org.geomajas.command.CommandRequest;
 import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
-import org.geomajas.gwt2.plugin.wfs.client.query.dto.CriterionDto;
+import org.geomajas.gwt2.client.map.feature.query.CriterionDto;
 import org.geomajas.gwt2.plugin.wfs.server.dto.WfsVersionDto;
 
 /**

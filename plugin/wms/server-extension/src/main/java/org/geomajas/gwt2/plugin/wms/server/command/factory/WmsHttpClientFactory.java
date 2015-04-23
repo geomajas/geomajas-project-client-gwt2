@@ -8,26 +8,34 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.plugin.wfs.client.protocol;
+package org.geomajas.gwt2.plugin.wms.server.command.factory;
 
-import java.io.Serializable;
-import java.util.List;
+import java.net.URL;
 
-import org.geomajas.annotation.Api;
+import org.apache.http.client.HttpClient;
+
 
 /**
- * Generic WFS feature type list definition.
- *
+ * Factory for {@link HttpClient}.
+ * 
  * @author Jan De Moerloose
- * @since 2.2.1
+ *
  */
-@Api(allMethods = true)
-public interface WfsFeatureTypeListInfo extends Serializable {
-
+public interface WmsHttpClientFactory {
+	
 	/**
-	 * Get the feature types.
+	 * Get the target URL for this source URL. Usually the same, but useful if proxying to a different host.
 	 * 
+	 * @param sourceUrl
 	 * @return
 	 */
-	List<WfsFeatureTypeInfo> getFeatureTypes();
+	URL getTargetUrl(String sourceUrl);
+
+	/**
+	 * Obtain a client for this url.
+	 * 
+	 * @param url
+	 * @return
+	 */
+	HttpClient create(String sourceUrl);
 }

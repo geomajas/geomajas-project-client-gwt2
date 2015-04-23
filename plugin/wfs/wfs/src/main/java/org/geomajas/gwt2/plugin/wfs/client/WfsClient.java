@@ -11,6 +11,7 @@
 
 package org.geomajas.gwt2.plugin.wfs.client;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.plugin.wfs.client.service.WfsService;
 import org.geomajas.gwt2.plugin.wfs.client.service.WfsServiceImpl;
 
@@ -18,7 +19,9 @@ import org.geomajas.gwt2.plugin.wfs.client.service.WfsServiceImpl;
  * Starting point for the WF client plugin.
  *
  * @author Jan De Moerloose
+ * @since 2.2.1
  */
+@Api(allMethods = true)
 public final class WfsClient {
 
 	private static WfsClient instance;

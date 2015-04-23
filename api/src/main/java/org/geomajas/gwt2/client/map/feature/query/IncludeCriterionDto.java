@@ -8,26 +8,31 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.plugin.wfs.client.protocol;
-
-import java.io.Serializable;
-import java.util.List;
+package org.geomajas.gwt2.client.map.feature.query;
 
 import org.geomajas.annotation.Api;
 
 /**
- * Generic WFS feature type list definition.
- *
+ * DTO object for include all criterion.
+ * 
  * @author Jan De Moerloose
+ *
  * @since 2.2.1
  */
 @Api(allMethods = true)
-public interface WfsFeatureTypeListInfo extends Serializable {
+public class IncludeCriterionDto implements CriterionDto {
+
+	private static final long serialVersionUID = 221L;
 
 	/**
-	 * Get the feature types.
-	 * 
-	 * @return
+	 * Create an include-all criterion.
 	 */
-	List<WfsFeatureTypeInfo> getFeatureTypes();
+	public IncludeCriterionDto() {
+	}
+
+	@Override
+	public void accept(CriterionDtoVisitor visitor, Object context) {
+		visitor.visit(this, context);
+	}
+
 }

@@ -13,11 +13,15 @@ package org.geomajas.gwt2.plugin.wfs.client.protocol;
 
 import java.io.Serializable;
 
+import org.geomajas.annotation.Api;
+
 /**
  * Generic WFS GetCapabilities definition.
  *
  * @author Jan De Moerloose
+ * @since 2.2.1
  */
+@Api(allMethods = true)
 public interface WfsGetCapabilitiesInfo extends Serializable {
 
 	/**

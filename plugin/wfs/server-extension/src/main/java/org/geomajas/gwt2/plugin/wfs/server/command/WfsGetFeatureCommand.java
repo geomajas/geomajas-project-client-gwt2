@@ -28,18 +28,18 @@ import org.geomajas.geometry.service.BboxService;
 import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
-import org.geomajas.gwt2.plugin.wfs.client.query.dto.CriterionDto;
+import org.geomajas.gwt2.client.map.feature.query.CriterionDto;
 import org.geomajas.gwt2.plugin.wfs.server.command.converter.FeatureConverter;
 import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsGetFeatureRequest;
 import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsGetFeatureResponse;
 import org.geomajas.gwt2.plugin.wfs.server.command.factory.CriterionToFilterConverter;
 import org.geomajas.gwt2.plugin.wfs.server.command.factory.CriterionToFilterConverterFactory;
-import org.geomajas.gwt2.plugin.wfs.server.command.factory.HttpClientFactory;
 import org.geomajas.gwt2.plugin.wfs.server.command.factory.URLBuilder;
 import org.geomajas.gwt2.plugin.wfs.server.command.factory.WfsDataStoreFactory;
+import org.geomajas.gwt2.plugin.wfs.server.command.factory.WfsHttpClientFactory;
 import org.geomajas.gwt2.plugin.wfs.server.command.factory.impl.DefaultCriterionFilterConverter;
-import org.geomajas.gwt2.plugin.wfs.server.command.factory.impl.DefaultHttpClientFactory;
 import org.geomajas.gwt2.plugin.wfs.server.command.factory.impl.DefaultWfsDataStoreFactory;
+import org.geomajas.gwt2.plugin.wfs.server.command.factory.impl.DefaultWfsHttpClientFactory;
 import org.geomajas.gwt2.plugin.wfs.server.dto.WfsFeatureCollectionDto;
 import org.geomajas.gwt2.plugin.wfs.server.dto.WfsVersionDto;
 import org.geomajas.layer.feature.Feature;
@@ -47,6 +47,7 @@ import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geotools.data.DataStore;
 import org.geotools.data.Query;
+import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.feature.FeatureCollection;
@@ -75,8 +76,6 @@ import org.xml.sax.SAXException;
 @Component(WfsGetFeatureRequest.COMMAND_NAME)
 public class WfsGetFeatureCommand implements Command<WfsGetFeatureRequest, WfsGetFeatureResponse> {
 
-	private static final int MAX_COORDINATES_IN_FILTER = 100;
-
 	private final Logger log = LoggerFactory.getLogger(WfsGetFeatureCommand.class);
 
 	@Autowired
@@ -89,7 +88,7 @@ public class WfsGetFeatureCommand implements Command<WfsGetFeatureRequest, WfsGe
 
 	private CriterionToFilterConverterFactory criterionToFilterFactory;
 
-	private HttpClientFactory httpClientFactory;
+	private WfsHttpClientFactory httpClientFactory;
 
 	public WfsGetFeatureCommand() {
 		dataStoreFactory = new DefaultWfsDataStoreFactory();
@@ -100,7 +99,7 @@ public class WfsGetFeatureCommand implements Command<WfsGetFeatureRequest, WfsGe
 				return new DefaultCriterionFilterConverter(filterService, converterService);
 			}
 		};
-		httpClientFactory = new DefaultHttpClientFactory();
+		httpClientFactory = new DefaultWfsHttpClientFactory();
 	}
 
 	public void setDataStoreFactory(WfsDataStoreFactory dataStoreFactory) {
@@ -111,7 +110,7 @@ public class WfsGetFeatureCommand implements Command<WfsGetFeatureRequest, WfsGe
 		this.criterionToFilterFactory = criterionToFilterFactory;
 	}
 
-	public void setHttpClientFactory(HttpClientFactory httpClientFactory) {
+	public void setHttpClientFactory(WfsHttpClientFactory httpClientFactory) {
 		this.httpClientFactory = httpClientFactory;
 	}
 
@@ -134,7 +133,7 @@ public class WfsGetFeatureCommand implements Command<WfsGetFeatureRequest, WfsGe
 		log.info("Found " + response.getFeatureCollection().size() + " features for layer " + request.getTypeName());
 	}
 
-	public FeatureCollection<SimpleFeatureType, SimpleFeature> performWfsQuery(WfsGetFeatureRequest request)
+	protected FeatureCollection<SimpleFeatureType, SimpleFeature> performWfsQuery(WfsGetFeatureRequest request)
 			throws IOException {
 		try {
 			// create Geotools query
@@ -142,8 +141,12 @@ public class WfsGetFeatureCommand implements Command<WfsGetFeatureRequest, WfsGe
 					request.getMaxFeatures(), request.getStartIndex(), request.getRequestedAttributeNames(),
 					request.getCrs());
 
+			String sourceUrl = request.getBaseUrl();
+			URL targetUrl = httpClientFactory.getTargetUrl(sourceUrl);
+			HTTPClient client = httpClientFactory.create(sourceUrl);
+
 			// run it
-			return getFeatures(request.getBaseUrl(), request.getTypeName(), query, request.getVersion());
+			return getFeatures(targetUrl, client, request.getTypeName(), query, request.getVersion());
 		} catch (SAXException e) {
 			throw new IOException(e);
 		} catch (ParserConfigurationException e) {
@@ -190,18 +193,17 @@ public class WfsGetFeatureCommand implements Command<WfsGetFeatureRequest, WfsGe
 		return query;
 	}
 
-	protected FeatureCollection<SimpleFeatureType, SimpleFeature> getFeatures(String baseUrl, String typeName,
-			Query query, WfsVersionDto version) throws IOException, SAXException, ParserConfigurationException,
-			URISyntaxException {
+	protected FeatureCollection<SimpleFeatureType, SimpleFeature> getFeatures(URL baseUrl, HTTPClient client,
+			String typeName, Query query, WfsVersionDto version) throws IOException, SAXException,
+			ParserConfigurationException, URISyntaxException {
 
-		URL url = URLBuilder.createWfsURL(new URL(baseUrl), version, "GetCapabilities");
+		URL url = URLBuilder.createWfsURL(baseUrl, version, "GetCapabilities");
 		String capa = url.toExternalForm();
 		Map<String, Serializable> connectionParameters = new HashMap<String, Serializable>();
 		connectionParameters.put(WFSDataStoreFactory.MAXFEATURES.key, query.getMaxFeatures());
 		connectionParameters.put(WFSDataStoreFactory.URL.key, capa);
 		connectionParameters.put(WFSDataStoreFactory.PROTOCOL.key, Boolean.TRUE);
-		DataStore data = dataStoreFactory
-				.createDataStore(connectionParameters, httpClientFactory.getClientForUrl(capa));
+		DataStore data = dataStoreFactory.createDataStore(connectionParameters, client);
 		SimpleFeatureSource features = data.getFeatureSource(typeName.replace(":", "_"));
 		return features.getFeatures(query);
 	}
@@ -235,7 +237,7 @@ public class WfsGetFeatureCommand implements Command<WfsGetFeatureRequest, WfsGe
 	 * Get the total bounds of all features in the collection.
 	 *
 	 * @param features
-	 * @return bounds or null if no
+	 * @return bounds or null if no features
 	 */
 	protected Bbox getTotalBounds(List<Feature> features) {
 		Bbox total = null;

@@ -17,17 +17,17 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
 import org.geomajas.gwt2.client.map.attribute.GeometryAttributeType;
-import org.geomajas.gwt2.plugin.wfs.client.query.dto.AttributeCriterionDto;
-import org.geomajas.gwt2.plugin.wfs.client.query.dto.BboxCriterionDto;
-import org.geomajas.gwt2.plugin.wfs.client.query.dto.CriterionDto;
-import org.geomajas.gwt2.plugin.wfs.client.query.dto.CriterionDtoVisitor;
-import org.geomajas.gwt2.plugin.wfs.client.query.dto.DWithinCriterionDto;
-import org.geomajas.gwt2.plugin.wfs.client.query.dto.ExcludeCriterionDto;
-import org.geomajas.gwt2.plugin.wfs.client.query.dto.FidCriterionDto;
-import org.geomajas.gwt2.plugin.wfs.client.query.dto.FullTextCriterionDto;
-import org.geomajas.gwt2.plugin.wfs.client.query.dto.GeometryCriterionDto;
-import org.geomajas.gwt2.plugin.wfs.client.query.dto.IncludeCriterionDto;
-import org.geomajas.gwt2.plugin.wfs.client.query.dto.LogicalCriterionDto;
+import org.geomajas.gwt2.client.map.feature.query.AttributeCriterionDto;
+import org.geomajas.gwt2.client.map.feature.query.BboxCriterionDto;
+import org.geomajas.gwt2.client.map.feature.query.CriterionDto;
+import org.geomajas.gwt2.client.map.feature.query.CriterionDtoVisitor;
+import org.geomajas.gwt2.client.map.feature.query.DWithinCriterionDto;
+import org.geomajas.gwt2.client.map.feature.query.ExcludeCriterionDto;
+import org.geomajas.gwt2.client.map.feature.query.FidCriterionDto;
+import org.geomajas.gwt2.client.map.feature.query.FullTextCriterionDto;
+import org.geomajas.gwt2.client.map.feature.query.GeometryCriterionDto;
+import org.geomajas.gwt2.client.map.feature.query.IncludeCriterionDto;
+import org.geomajas.gwt2.client.map.feature.query.LogicalCriterionDto;
 import org.geomajas.gwt2.plugin.wfs.server.command.factory.CriterionToFilterConverter;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
@@ -277,6 +277,10 @@ public class DefaultCriterionFilterConverter implements CriterionToFilterConvert
 	public void visit(ExcludeCriterionDto criterion, Object context) {
 		FilterContext fc = (FilterContext) context;
 		fc.setFilter(Filter.EXCLUDE);
+	}
+
+	@Override
+	public void visit(CriterionDto criterionDto, Object context) {
 	}
 
 	/**

@@ -29,10 +29,10 @@ import org.geomajas.gwt2.client.map.attribute.PrimitiveAttributeTypeImpl;
 import org.geomajas.gwt2.client.map.attribute.PrimitiveType;
 import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsDescribeFeatureTypeRequest;
 import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsDescribeFeatureTypeResponse;
-import org.geomajas.gwt2.plugin.wfs.server.command.factory.HttpClientFactory;
+import org.geomajas.gwt2.plugin.wfs.server.command.factory.WfsHttpClientFactory;
 import org.geomajas.gwt2.plugin.wfs.server.command.factory.URLBuilder;
 import org.geomajas.gwt2.plugin.wfs.server.command.factory.WfsDataStoreFactory;
-import org.geomajas.gwt2.plugin.wfs.server.command.factory.impl.DefaultHttpClientFactory;
+import org.geomajas.gwt2.plugin.wfs.server.command.factory.impl.DefaultWfsHttpClientFactory;
 import org.geomajas.gwt2.plugin.wfs.server.command.factory.impl.DefaultWfsDataStoreFactory;
 import org.geomajas.gwt2.plugin.wfs.server.dto.WfsFeatureTypeDescriptionDto;
 import org.geotools.data.wfs.WFSDataStore;
@@ -65,18 +65,18 @@ public class WfsDescribeFeatureTypeCommand implements
 
 	private WfsDataStoreFactory dataStoreFactory;
 
-	private HttpClientFactory httpClientFactory;
+	private WfsHttpClientFactory httpClientFactory;
 
 	public WfsDescribeFeatureTypeCommand() {
 		dataStoreFactory = new DefaultWfsDataStoreFactory();
-		httpClientFactory = new DefaultHttpClientFactory();
+		httpClientFactory = new DefaultWfsHttpClientFactory();
 	}
 
 	public void setDataStoreFactory(WfsDataStoreFactory dataStoreFactory) {
 		this.dataStoreFactory = dataStoreFactory;
 	}
 
-	public void setHttpClientFactory(HttpClientFactory httpClientFactory) {
+	public void setHttpClientFactory(WfsHttpClientFactory httpClientFactory) {
 		this.httpClientFactory = httpClientFactory;
 	}
 
@@ -84,8 +84,11 @@ public class WfsDescribeFeatureTypeCommand implements
 			throws GeomajasException {
 		SimpleFeatureType schema = null;
 		try {
+			String sourceUrl = request.getBaseUrl();
+			URL targetUrl = httpClientFactory.getTargetUrl(sourceUrl);
+			
 			// Create a WFS GetCapabilities URL:
-			URL url = URLBuilder.createWfsURL(new URL(request.getBaseUrl()), request.getVersion(), "GetCapabilities");
+			URL url = URLBuilder.createWfsURL(targetUrl, request.getVersion(), "GetCapabilities");
 			String capa = url.toExternalForm();
 
 			Map<String, Serializable> connectionParameters = new HashMap<String, Serializable>();
@@ -94,7 +97,7 @@ public class WfsDescribeFeatureTypeCommand implements
 
 			// Get the WFS feature source:
 			WFSDataStore data = dataStoreFactory.createDataStore(connectionParameters,
-					httpClientFactory.getClientForUrl(capa));
+					httpClientFactory.create(sourceUrl));
 			schema = data.getSchema(request.getTypeName().replace(":", "_"));
 		} catch (Exception e) {
 			log.error("DescribeFeatureType failed for " + request.getTypeName(), e);

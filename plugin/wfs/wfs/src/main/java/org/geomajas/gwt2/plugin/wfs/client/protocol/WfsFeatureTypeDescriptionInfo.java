@@ -13,13 +13,16 @@ package org.geomajas.gwt2.plugin.wfs.client.protocol;
 import java.io.Serializable;
 import java.util.List;
 
+import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
 
 /**
  * Feature type description of WFS DescribeFeatureType.
  *
  * @author Jan De Moerloose
+ * @since 2.2.1
  */
+@Api(allMethods = true)
 public interface WfsFeatureTypeDescriptionInfo extends Serializable {
 
 	/**

@@ -11,12 +11,12 @@
 
 package org.geomajas.gwt2.plugin.wfs.client.service;
 
+import org.geomajas.gwt2.client.map.feature.query.QueryDto;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
 import org.geomajas.gwt2.plugin.wfs.client.protocol.WfsFeatureCollectionInfo;
 import org.geomajas.gwt2.plugin.wfs.client.protocol.WfsFeatureTypeDescriptionInfo;
 import org.geomajas.gwt2.plugin.wfs.client.protocol.WfsGetCapabilitiesInfo;
 import org.geomajas.gwt2.plugin.wfs.client.protocol.v_1_0_0.WfsGetCapabilitiesInfo100;
-import org.geomajas.gwt2.plugin.wfs.client.query.dto.QueryDto;
 
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.http.client.Request;

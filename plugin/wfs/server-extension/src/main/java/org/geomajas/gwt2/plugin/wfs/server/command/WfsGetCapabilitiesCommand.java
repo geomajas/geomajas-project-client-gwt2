@@ -26,10 +26,10 @@ import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsGetCapabilitiesRequest;
 import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsGetCapabilitiesResponse;
-import org.geomajas.gwt2.plugin.wfs.server.command.factory.HttpClientFactory;
+import org.geomajas.gwt2.plugin.wfs.server.command.factory.WfsHttpClientFactory;
 import org.geomajas.gwt2.plugin.wfs.server.command.factory.URLBuilder;
 import org.geomajas.gwt2.plugin.wfs.server.command.factory.WfsDataStoreFactory;
-import org.geomajas.gwt2.plugin.wfs.server.command.factory.impl.DefaultHttpClientFactory;
+import org.geomajas.gwt2.plugin.wfs.server.command.factory.impl.DefaultWfsHttpClientFactory;
 import org.geomajas.gwt2.plugin.wfs.server.command.factory.impl.DefaultWfsDataStoreFactory;
 import org.geomajas.gwt2.plugin.wfs.server.dto.WfsFeatureTypeDto;
 import org.geomajas.gwt2.plugin.wfs.server.dto.WfsFeatureTypeListDto;
@@ -61,32 +61,36 @@ public class WfsGetCapabilitiesCommand implements Command<WfsGetCapabilitiesRequ
 
 	private WfsDataStoreFactory dataStoreFactory;
 
-	private HttpClientFactory httpClientFactory;
+	private WfsHttpClientFactory httpClientFactory;
 
 	public WfsGetCapabilitiesCommand() {
 		dataStoreFactory = new DefaultWfsDataStoreFactory();
-		httpClientFactory = new DefaultHttpClientFactory();
+		httpClientFactory = new DefaultWfsHttpClientFactory();
 	}
 
 	public void setDataStoreFactory(WfsDataStoreFactory dataStoreFactory) {
 		this.dataStoreFactory = dataStoreFactory;
 	}
 
-	public void setHttpClientFactory(HttpClientFactory httpClientFactory) {
+	public void setHttpClientFactory(WfsHttpClientFactory httpClientFactory) {
 		this.httpClientFactory = httpClientFactory;
 	}
 
 	public void execute(WfsGetCapabilitiesRequest request, WfsGetCapabilitiesResponse response)
 			throws GeomajasException {
 		try {
+			String sourceUrl = request.getBaseUrl();
+			URL targetUrl = httpClientFactory.getTargetUrl(sourceUrl);
+			
 			// Create a WFS GetCapabilities URL:
-			URL url = URLBuilder.createWfsURL(new URL(request.getBaseUrl()), request.getVersion(), "GetCapabilities");
+			URL url = URLBuilder.createWfsURL(targetUrl, request.getVersion(), "GetCapabilities");
 			String capa = url.toExternalForm();
+			
 			Map<String, Serializable> connectionParameters = new HashMap<String, Serializable>();
 			connectionParameters.put(WFSDataStoreFactory.URL.key, capa);
 			connectionParameters.put(WFSDataStoreFactory.TIMEOUT.key, 10000);
 			WFSDataStore wfs = dataStoreFactory.createDataStore(connectionParameters,
-					httpClientFactory.getClientForUrl(capa));
+					httpClientFactory.create(sourceUrl));
 			// The following uses internal geotools classes, anyone knows a more generic way to get the feature types
 			// ???
 			WfsFeatureTypeListDto wfsFeatureTypeListDto = null;
