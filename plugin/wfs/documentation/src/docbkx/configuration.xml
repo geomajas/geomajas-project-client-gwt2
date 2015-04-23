@@ -17,55 +17,57 @@
   <section>
     <title>Getting started</title>
 
-    <para>As most Geomajas plugins, the WMS client plugin too has a single
+    <para>The WFS client plugin provides client-side support for communicating
+    with OGC Web Feature Services.</para>
+
+    <para>As most Geomajas plugins, the WFS client plugin too has a singleton
     class that provides a starting point for most functionalities the plugin
-    supports. This starting point is the <code>WmsClient</code> class:</para>
+    supports. This starting point is the <code>WfsClient</code> class:</para>
 
-    <programlisting>org.geomajas.gwt2.plugin.wms.client.WmsClient</programlisting>
+    <programlisting>org.geomajas.gwt2.plugin.wfs.client.WfsClient</programlisting>
 
-    <para>From here on it is possible to create new WMS layers or execute WMS
-    GetCapabilities requests, or ...</para>
+    <para>From here on it is possible to execute WFS GetCapabilities,
+    DescribeFeatureType or GetFeature requests. Several versions of the OGC
+    WFS protocol are supported. All request are sent asynchronously.</para>
+
+    <para><warning>
+        <para>We currently only support GetCapabilities, use the WFS server
+        extension plugin for other requests !</para>
+      </warning></para>
 
     <section>
-      <title>Using the WmsService</title>
+      <title>Using the WfsService</title>
 
-      <para>Before we explain how to create a client-side WMS layer, let us
-      first delve into the inner workings of the WMS client plugin. It
-      provides a client WMS service definition that supports WMS requests:
-      <code>org.geomajas.gwt2.plugin.wms.client.service.WmsService</code></para>
-
-      <para><code>This WmsService provides support for the following WMS
-      requests:</code></para>
+      <para>The WfsService gives access to the following requests:</para>
 
       <itemizedlist>
         <listitem>
-          <para><emphasis>GetCapabilities</emphasis>: Executes a WMS
-          GetCapabilities and parses the result into Java objects. This
-          capabilities object allows you to read the WMS contact information,
-          the list of supports coordinate reference systems, the list of known
-          layers, etc.</para>
+          <para><emphasis>GetCapabilities</emphasis>: Executes a WFS
+          GetCapabilities request and parses the result into Java objects.
+          This capabilities object allows you to read the list of feature
+          types published by the server.</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>GetMap</emphasis>: A GetMap request gets an image
-          for a certain location. This request is used by the layer
-          renderer.</para>
+          <para><emphasis>DescribeFeatureType</emphasis>: Executes a WFS
+          DescribeFeatureType request. This returns a description of the
+          attributes of the feature type. To be implemented</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>GetLegendGraphic</emphasis>: A GetLegendGraphic
-          request gets an image for the legend of a certain layer. This legend
-          displays styling information.</para>
+          <para><emphasis>GetFeature</emphasis>: Executes a WFS GetFeature
+          request. This queries for a collection of features that conform to a
+          specified filter. To be implemented</para>
         </listitem>
       </itemizedlist>
 
-      <para>The WmsService is a singleton service that can be acquired as
+      <para>The WfsService is a singleton service that can be acquired as
       follows:</para>
 
-      <programlisting>WmsService wmsService = WmsClient.getInstance().getWmsService();</programlisting>
+      <programlisting>WfService wfsService = WfsClient.getInstance().getWfsService();</programlisting>
 
-      <para>Using this WmsService it is possible to directly execute the
-      supported WMS requests. There is no need for a WMS layer.</para>
+      <para>Using this WfsService it is possible to directly execute the
+      supported WFS requests. There is no need for a WFS layer.</para>
     </section>
 
     <section>
@@ -73,31 +75,29 @@
 
       <para>One of the most common problems when executing Ajax requests from
       within the browser is the security regarding cross domain requests. The
-      WMS server you want to communicate with, will most likely be located on
+      WFS server you want to communicate with, will most likely be located on
       a different server that your web application.</para>
 
-      <para>For this purpose, the <code>WmsService</code> allows you to
-      specify a <code><code>WmsUrlTransformer</code></code> object that will
-      transform WMS request URLs to your liking. It can go as far as to
-      specify different transformations for different types of WMS request.
+      <para>For this purpose, the <code>WfsService</code> allows you to
+      specify a <code><code>WfsUrlTransformer</code></code> object that will
+      transform WFS request URLs to your liking. It can go as far as to
+      specify different transformations for different types of WFS request.
       For example, you may want the <code>GetCapabilities</code> and
-      <code>GetFeatureInfo</code> requests to make use of a proxy servlet,
-      while your <code>GetMap</code> and <code>GetLegendGraphic</code>
-      requests must remain untouched (<code>GetMap</code> and
-      <code>GetLegendGraphic</code> URLs point to images, we apply them
-      directly onto an images href attribute, where the cross-domain problem
-      does not exist).</para>
+      DescribeFeatureType requests to make use of a proxy servlet, while your
+      <code>GetFeature</code> requests must remain untouched (<code>GetFeature
+      may use jsonp</code>, so the cross-domain problem does not
+      exist).</para>
 
       <para>The following example will add a proxy servlet for the
       <code>GetCapabilities</code> and <code>GetFeatureInfo</code> requests,
       while the other WMS requests are left untouched:</para>
 
-      <programlisting>wmsService.setWmsUrlTransformer(new WmsUrlTransformer() {
+      <programlisting>wfsService.setWfsUrlTransformer(new WfsUrlTransformer() {
 
-    public String transform(WmsRequest request, String url) {
+    public String transform(WfsRequest request, String url) {
         switch (request) {
-            case GetCapabilities:
-            case GetFeatureInfo:
+            case GET_CAPABILITIES:
+            case DESCRIBE_FEATURE_TYPE:
                 return "/proxy?url=" + url;
             default:
         }
@@ -114,7 +114,7 @@
       <title>Configuration objects</title>
 
       <para>Before we go into the actual creating of a WMS layer, let us first
-      cover the required configuration objects. </para>
+      cover the required configuration objects.</para>
 
       <para>The first is the <code>WmsTileConfiguration</code> object. It
       provides the point of origin and the size of the tiles in pixels:</para>
@@ -314,7 +314,8 @@ WmsClient.getInstance().getWmsService()
     });</programlisting>
     </section>
   </section>
-<!--
+
+  <!--
   <section>
     <title>WMS Server extension</title>
 
