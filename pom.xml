@@ -415,6 +415,11 @@
 				<artifactId>gt-wms</artifactId>
 				<version>${gwt2-client-version-geotools}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.geotools</groupId>
+				<artifactId>gt-wfs-ng</artifactId>
+				<version>${gwt2-client-version-geotools}</version>
+			</dependency>
 
 			<!-- Other artifacts -->
 			<dependency>
