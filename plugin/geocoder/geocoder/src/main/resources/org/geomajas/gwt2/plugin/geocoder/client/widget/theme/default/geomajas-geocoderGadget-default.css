@@ -1,6 +1,9 @@
+@external .gm-*;
 .gm-GeocoderGadget {
 	position: absolute;
 	z-index: 1;
+    left: 100px;
+    top: 7px;
 }
 
 .gm-GeocoderGadget-textBox {

@@ -1,7 +1,7 @@
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
- * Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
+ * Copyright 2008-2015 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
  * The program is available in open source according to the GNU Affero
  * General Public License. All contributions in this program are covered
@@ -11,14 +11,16 @@
 
 package org.geomajas.gwt2.plugin.tms.example.client;
 
-import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanelRegistry;
 import org.geomajas.gwt2.example.base.client.sample.ShowcaseSampleDefinition;
 import org.geomajas.gwt2.plugin.tms.example.client.i18n.SampleMessages;
 import org.geomajas.gwt2.plugin.tms.example.client.sample.CapabilitiesPanel;
+import org.geomajas.gwt2.plugin.tms.example.client.sample.ProfilesPanel;
 import org.geomajas.gwt2.plugin.tms.example.client.sample.TmsLayerPanel;
+
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 
 /**
  * Entry point that adds TMS related samples to the showcase application.
@@ -92,6 +94,34 @@ public class ExampleJar implements EntryPoint {
 			@Override
 			public String getKey() {
 				return "tmscapa";
+			}
+		});
+		
+		SamplePanelRegistry.registerFactory(CATEGORY_TMS, new ShowcaseSampleDefinition() {
+
+			public SamplePanel create() {
+				return new ProfilesPanel();
+			}
+
+			public String getTitle() {
+				return MESSAGES.profilesTitle();
+			}
+
+			public String getShortDescription() {
+				return MESSAGES.profilesShort();
+			}
+
+			public String getDescription() {
+				return MESSAGES.profilesDescription();
+			}
+
+			public String getCategory() {
+				return CATEGORY_TMS;
+			}
+
+			@Override
+			public String getKey() {
+				return "tmsprofile";
 			}
 		});
 	}

@@ -1,7 +1,7 @@
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
- * Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
+ * Copyright 2008-2015 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
  * The program is available in open source according to the GNU Affero
  * General Public License. All contributions in this program are covered
@@ -52,13 +52,14 @@ public class WfsGetFeaturesCommand implements Command<WfsGetFeaturesRequest, Wfs
 		Map<String, String> connectionParameters = new HashMap<String, String>();
 		connectionParameters.put("WFSDataStoreFactory:GET_CAPABILITIES_URL", capa);
 		connectionParameters.put("WFSDataStoreFactory:TIMEOUT", "10000");
+		
+		// new geotools expects _ as prefix delimiter
+		String typeName = request.getLayer().replaceAll(":", "_");
 
 		// Get the WFS feature source:
 		DataStore data = DataStoreFinder.getDataStore(connectionParameters);
-		FeatureSource<SimpleFeatureType, SimpleFeature> source = data.getFeatureSource(request.getLayer());
-		SimpleFeatureType schema;
-
-		schema = data.getSchema(request.getLayer()); // forward all exceptions
+		FeatureSource<SimpleFeatureType, SimpleFeature> source = data.getFeatureSource(typeName);
+		SimpleFeatureType schema = data.getSchema(typeName); // forward all exceptions
 
 		// Filter:
 		String geomName = schema.getGeometryDescriptor().getLocalName();

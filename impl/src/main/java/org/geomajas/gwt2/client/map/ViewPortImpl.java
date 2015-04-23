@@ -1,7 +1,7 @@
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
- * Copyright 2008-2014 Geosparc nv, http://www.geosparc.com/, Belgium.
+ * Copyright 2008-2015 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
  * The program is available in open source according to the GNU Affero
  * General Public License. All contributions in this program are covered
@@ -16,7 +16,6 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.service.BboxService;
-import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt.client.util.Dom;
 import org.geomajas.gwt2.client.animation.NavigationAnimation;
 import org.geomajas.gwt2.client.event.NavigationStopEvent;
@@ -191,8 +190,6 @@ public final class ViewPortImpl implements ViewPort {
 	protected void setMapSize(int width, int height) {
 		if (this.mapWidth != width || this.mapHeight != height) {
 			View oldView = getView();
-			Coordinate screen = new Coordinate((double) width / 2.0, (double) height / 2.0);
-			position = getTransformationService().transform(screen, RenderSpace.SCREEN, RenderSpace.WORLD);
 			this.mapWidth = width;
 			this.mapHeight = height;
 			if (eventBus != null) {
