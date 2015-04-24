@@ -1,0 +1,6 @@
+org.geomajas.gwt2.plugin.wfs.client.WfsServerExtension::2.2.1
+org.geomajas.gwt2.plugin.wfs.client.WfsServerExtension:WfsService getWfsService():2.2.1
+org.geomajas.gwt2.plugin.wfs.client.WfsServerExtension:static WfsServerExtension getInstance():2.2.1
+org.geomajas.gwt2.plugin.wfs.server.dto.WfsVersionDto:V1_0_0:?
+org.geomajas.gwt2.plugin.wfs.server.dto.WfsVersionDto:V1_1_0:?
+org.geomajas.gwt2.plugin.wfs.server.dto.WfsVersionDto:V2_0_0:?
