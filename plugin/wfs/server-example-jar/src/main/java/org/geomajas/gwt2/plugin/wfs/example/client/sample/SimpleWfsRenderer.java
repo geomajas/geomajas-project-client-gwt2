@@ -17,13 +17,14 @@ import org.geomajas.gwt2.client.event.MapCompositionHandler;
 import org.geomajas.gwt2.client.map.MapEventBus;
 import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.feature.Feature;
-import org.geomajas.gwt2.client.map.feature.query.IncludeCriterionDto;
-import org.geomajas.gwt2.client.map.feature.query.QueryDto;
+import org.geomajas.gwt2.client.map.feature.query.Criterion;
+import org.geomajas.gwt2.client.map.feature.query.Query;
 import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.client.map.render.LayerRenderer;
 import org.geomajas.gwt2.client.map.render.RenderingInfo;
 import org.geomajas.gwt2.plugin.wfs.client.WfsServerExtension;
 import org.geomajas.gwt2.plugin.wfs.client.protocol.WfsFeatureCollectionInfo;
+import org.geomajas.gwt2.plugin.wfs.client.service.WfsService;
 import org.vaadin.gwtgraphics.client.Shape;
 import org.vaadin.gwtgraphics.client.VectorObject;
 import org.vaadin.gwtgraphics.client.VectorObjectContainer;
@@ -84,44 +85,40 @@ public class SimpleWfsRenderer implements LayerRenderer {
 	public void render(RenderingInfo renderingInfo) {
 		if (!featuresLoaded) {
 			featuresLoaded = true;
-			QueryDto query = new QueryDto();
-			query.setMaxFeatures(maxFeatures);
-			query.setMaxCoordsPerFeature(maxCoordinates);
-			query.setCriterion(new IncludeCriterionDto());
-			query.setCrs(viewPort.getCrs());
-			query.setAttributeDescriptors(layer.getSchema());
-			WfsServerExtension
-					.getInstance()
-					.getWfsService()
-					.getFeatures(layer.getVersion(), layer, layer.getBaseUrl(), layer.getTypeName(), query,
-							new Callback<WfsFeatureCollectionInfo, String>() {
+			WfsService wfsService = WfsServerExtension.getInstance().getWfsService();
+			Criterion criterion = wfsService.buildCriterion().include().build();
+			Query query = wfsService.buildQuery().criterion(criterion).maxFeatures(maxFeatures)
+					.maxCoordinates(maxCoordinates).crs(viewPort.getCrs()).attributeDescriptors(layer.getSchema())
+					.build();
+			wfsService.getFeatures(layer.getVersion(), layer, layer.getBaseUrl(), layer.getTypeName(), query,
+					new Callback<WfsFeatureCollectionInfo, String>() {
 
-								@Override
-								public void onSuccess(WfsFeatureCollectionInfo result) {
-									for (final Feature feature : result.getFeatures()) {
-										VectorObject shape = GeomajasImpl.getInstance().getGfxUtil()
-												.toShape(feature.getGeometry());
-										if (shape != null) {
-											container.add(shape);
-											shape.addClickHandler(new ClickHandler() {
+						@Override
+						public void onSuccess(WfsFeatureCollectionInfo result) {
+							for (final Feature feature : result.getFeatures()) {
+								VectorObject shape = GeomajasImpl.getInstance().getGfxUtil()
+										.toShape(feature.getGeometry());
+								if (shape != null) {
+									container.add(shape);
+									shape.addClickHandler(new ClickHandler() {
 
-												@Override
-												public void onClick(ClickEvent event) {
-													eventBus.fireEvent(new ShowFeatureEvent(feature));
-												}
-											});
-											new Highlighter(shape);
+										@Override
+										public void onClick(ClickEvent event) {
+											eventBus.fireEvent(new ShowFeatureEvent(feature));
 										}
-									}
-
+									});
+									new Highlighter(shape);
 								}
+							}
 
-								@Override
-								public void onFailure(String reason) {
-									// TODO Auto-generated method stub
+						}
 
-								}
-							});
+						@Override
+						public void onFailure(String reason) {
+							// TODO Auto-generated method stub
+
+						}
+					});
 		}
 	}
 

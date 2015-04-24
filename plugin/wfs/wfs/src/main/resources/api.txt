@@ -23,9 +23,11 @@ org.geomajas.gwt2.plugin.wfs.client.protocol.WfsFeatureTypeListInfo:List<WfsFeat
 org.geomajas.gwt2.plugin.wfs.client.protocol.WfsGetCapabilitiesInfo::2.2.1
 org.geomajas.gwt2.plugin.wfs.client.protocol.WfsGetCapabilitiesInfo:WfsFeatureTypeListInfo getFeatureTypeList():2.2.1
 org.geomajas.gwt2.plugin.wfs.client.service.WfsService::2.2.1
+org.geomajas.gwt2.plugin.wfs.client.service.WfsService:CriterionBuilder buildCriterion():2.2.1
+org.geomajas.gwt2.plugin.wfs.client.service.WfsService:QueryBuilder buildQuery():2.2.1
 org.geomajas.gwt2.plugin.wfs.client.service.WfsService:WfsUrlTransformer getWfsUrlTransformer():2.2.1
 org.geomajas.gwt2.plugin.wfs.client.service.WfsService:void describeFeatureType(WfsVersion, String, String, Callback<WfsFeatureTypeDescriptionInfo,String>, ):2.2.1
 org.geomajas.gwt2.plugin.wfs.client.service.WfsService:void getCapabilities(WfsVersion, String, Callback<WfsGetCapabilitiesInfo,String>, ):2.2.1
-org.geomajas.gwt2.plugin.wfs.client.service.WfsService:void getFeatures(WfsVersion, FeaturesSupported, String, String, QueryDto, Callback<WfsFeatureCollectionInfo,String>, ):2.2.1
-org.geomajas.gwt2.plugin.wfs.client.service.WfsService:void getFeatures(WfsVersion, String, String, QueryDto, Callback<WfsFeatureCollectionInfo,String>, ):2.2.1
+org.geomajas.gwt2.plugin.wfs.client.service.WfsService:void getFeatures(WfsVersion, FeaturesSupported, String, String, Query, Callback<WfsFeatureCollectionInfo,String>, ):2.2.1
+org.geomajas.gwt2.plugin.wfs.client.service.WfsService:void getFeatures(WfsVersion, String, String, Query, Callback<WfsFeatureCollectionInfo,String>, ):2.2.1
 org.geomajas.gwt2.plugin.wfs.client.service.WfsService:void setWfsUrlTransformer(WfsUrlTransformer, ):2.2.1

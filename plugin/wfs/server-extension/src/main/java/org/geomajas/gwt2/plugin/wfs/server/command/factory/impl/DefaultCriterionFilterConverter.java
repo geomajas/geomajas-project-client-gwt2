@@ -17,17 +17,17 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
 import org.geomajas.gwt2.client.map.attribute.GeometryAttributeType;
-import org.geomajas.gwt2.client.map.feature.query.AttributeCriterionDto;
-import org.geomajas.gwt2.client.map.feature.query.BboxCriterionDto;
-import org.geomajas.gwt2.client.map.feature.query.CriterionDto;
-import org.geomajas.gwt2.client.map.feature.query.CriterionDtoVisitor;
-import org.geomajas.gwt2.client.map.feature.query.DWithinCriterionDto;
-import org.geomajas.gwt2.client.map.feature.query.ExcludeCriterionDto;
-import org.geomajas.gwt2.client.map.feature.query.FidCriterionDto;
-import org.geomajas.gwt2.client.map.feature.query.FullTextCriterionDto;
-import org.geomajas.gwt2.client.map.feature.query.GeometryCriterionDto;
-import org.geomajas.gwt2.client.map.feature.query.IncludeCriterionDto;
-import org.geomajas.gwt2.client.map.feature.query.LogicalCriterionDto;
+import org.geomajas.gwt2.client.map.feature.query.AttributeCriterion;
+import org.geomajas.gwt2.client.map.feature.query.BboxCriterion;
+import org.geomajas.gwt2.client.map.feature.query.Criterion;
+import org.geomajas.gwt2.client.map.feature.query.CriterionVisitor;
+import org.geomajas.gwt2.client.map.feature.query.DWithinCriterion;
+import org.geomajas.gwt2.client.map.feature.query.ExcludeCriterion;
+import org.geomajas.gwt2.client.map.feature.query.FidCriterion;
+import org.geomajas.gwt2.client.map.feature.query.FullTextCriterion;
+import org.geomajas.gwt2.client.map.feature.query.GeometryCriterion;
+import org.geomajas.gwt2.client.map.feature.query.IncludeCriterion;
+import org.geomajas.gwt2.client.map.feature.query.LogicalCriterion;
 import org.geomajas.gwt2.plugin.wfs.server.command.factory.CriterionToFilterConverter;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
@@ -46,12 +46,12 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
 
 /**
- * Converts {@link CriterionDto} to a geotools {@link Filter}.
+ * Converts {@link Criterion} to a geotools {@link Filter}.
  * 
  * @author Jan De Moerloose
  * 
  */
-public class DefaultCriterionFilterConverter implements CriterionToFilterConverter, CriterionDtoVisitor {
+public class DefaultCriterionFilterConverter implements CriterionToFilterConverter, CriterionVisitor {
 
 	private final Logger log = LoggerFactory.getLogger(DefaultCriterionFilterConverter.class);
 
@@ -89,7 +89,7 @@ public class DefaultCriterionFilterConverter implements CriterionToFilterConvert
 	 * @param schema
 	 * @return
 	 */
-	public Filter convert(CriterionDto criterionDto, List<AttributeDescriptor> schema) {
+	public Filter convert(Criterion criterionDto, List<AttributeDescriptor> schema) {
 		FilterContext fc = new FilterContext();
 		fc.setSchema(schema);
 		criterionDto.accept(this, fc);
@@ -102,13 +102,13 @@ public class DefaultCriterionFilterConverter implements CriterionToFilterConvert
 	}
 
 	@Override
-	public void visit(LogicalCriterionDto criterion, Object context) {
+	public void visit(LogicalCriterion criterion, Object context) {
 		FilterContext fc = (FilterContext) context;
 		if (criterion.getChildren().size() == 0) {
 			fc.setFilter(Filter.EXCLUDE);
 		} else {
 			Filter filter = null;
-			for (CriterionDto child : criterion.getChildren()) {
+			for (Criterion child : criterion.getChildren()) {
 				child.accept(this, fc);
 				if (filter == null) {
 					filter = fc.getFilter();
@@ -121,7 +121,7 @@ public class DefaultCriterionFilterConverter implements CriterionToFilterConvert
 	}
 
 	@Override
-	public void visit(AttributeCriterionDto<?> criterion, Object context) {
+	public void visit(AttributeCriterion<?> criterion, Object context) {
 		FilterContext fc = (FilterContext) context;
 		String operation = criterion.getOperation();
 		String name = criterion.getAttributeName();
@@ -137,7 +137,7 @@ public class DefaultCriterionFilterConverter implements CriterionToFilterConvert
 	}
 
 	@Override
-	public void visit(BboxCriterionDto criterion, Object context) {
+	public void visit(BboxCriterion criterion, Object context) {
 		FilterContext fc = (FilterContext) context;
 		Bbox bbox = criterion.getBbox();
 		Envelope envelope = converterService.toInternal(bbox);
@@ -151,7 +151,7 @@ public class DefaultCriterionFilterConverter implements CriterionToFilterConvert
 	}
 
 	@Override
-	public void visit(FidCriterionDto criterion, Object context) {
+	public void visit(FidCriterion criterion, Object context) {
 		FilterContext fc = (FilterContext) context;
 		String[] fids = criterion.getFids();
 
@@ -161,7 +161,7 @@ public class DefaultCriterionFilterConverter implements CriterionToFilterConvert
 	}
 
 	@Override
-	public void visit(GeometryCriterionDto criterion, Object context) {
+	public void visit(GeometryCriterion criterion, Object context) {
 		FilterContext fc = (FilterContext) context;
 		String operation = criterion.getOperation();
 		String name = criterion.getAttributeName();
@@ -176,21 +176,21 @@ public class DefaultCriterionFilterConverter implements CriterionToFilterConvert
 			FilterFactory2 ff = (FilterFactory2) filterService.getFilterFactory();
 			Expression nameExpression = ff.property(name);
 			Literal geomLiteral = ff.literal(geometry);
-			if (GeometryCriterionDto.CONTAINS.equalsIgnoreCase(operation)) {
+			if (GeometryCriterion.CONTAINS.equalsIgnoreCase(operation)) {
 				filter = filterService.createContainsFilter(geometry, name);
-			} else if (GeometryCriterionDto.CROSSES.equalsIgnoreCase(operation)) {
+			} else if (GeometryCriterion.CROSSES.equalsIgnoreCase(operation)) {
 				filter = ff.crosses(nameExpression, geomLiteral);
-			} else if (GeometryCriterionDto.DISJOINT.equalsIgnoreCase(operation)) {
+			} else if (GeometryCriterion.DISJOINT.equalsIgnoreCase(operation)) {
 				filter = ff.disjoint(nameExpression, geomLiteral);
-			} else if (GeometryCriterionDto.EQUALS.equalsIgnoreCase(operation)) {
+			} else if (GeometryCriterion.EQUALS.equalsIgnoreCase(operation)) {
 				filter = ff.equals(nameExpression, geomLiteral);
-			} else if (GeometryCriterionDto.INTERSECTS.equalsIgnoreCase(operation)) {
+			} else if (GeometryCriterion.INTERSECTS.equalsIgnoreCase(operation)) {
 				filter = filterService.createIntersectsFilter(geometry, name);
-			} else if (GeometryCriterionDto.OVERLAPS.equalsIgnoreCase(operation)) {
+			} else if (GeometryCriterion.OVERLAPS.equalsIgnoreCase(operation)) {
 				filter = filterService.createOverlapsFilter(geometry, name);
-			} else if (GeometryCriterionDto.TOUCHES.equalsIgnoreCase(operation)) {
+			} else if (GeometryCriterion.TOUCHES.equalsIgnoreCase(operation)) {
 				filter = filterService.createTouchesFilter(geometry, name);
-			} else if (GeometryCriterionDto.WITHIN.equalsIgnoreCase(operation)) {
+			} else if (GeometryCriterion.WITHIN.equalsIgnoreCase(operation)) {
 				filter = filterService.createWithinFilter(geometry, name);
 			}
 			fc.setFilter(filter);
@@ -200,7 +200,7 @@ public class DefaultCriterionFilterConverter implements CriterionToFilterConvert
 	}
 
 	@Override
-	public void visit(DWithinCriterionDto criterion, Object context) {
+	public void visit(DWithinCriterion criterion, Object context) {
 		FilterContext fc = (FilterContext) context;
 		String name = criterion.getAttributeName();
 		if (name == null) {
@@ -243,7 +243,7 @@ public class DefaultCriterionFilterConverter implements CriterionToFilterConvert
 	}
 
 	@Override
-	public void visit(FullTextCriterionDto criterion, Object context) {
+	public void visit(FullTextCriterion criterion, Object context) {
 		FilterContext fc = (FilterContext) context;
 		List<AttributeDescriptor> schema = fc.getSchema();
 		String key = "*" + criterion.getKey() + "*";
@@ -268,19 +268,19 @@ public class DefaultCriterionFilterConverter implements CriterionToFilterConvert
 	}
 
 	@Override
-	public void visit(IncludeCriterionDto criterion, Object context) {
+	public void visit(IncludeCriterion criterion, Object context) {
 		FilterContext fc = (FilterContext) context;
 		fc.setFilter(Filter.INCLUDE);
 	}
 
 	@Override
-	public void visit(ExcludeCriterionDto criterion, Object context) {
+	public void visit(ExcludeCriterion criterion, Object context) {
 		FilterContext fc = (FilterContext) context;
 		fc.setFilter(Filter.EXCLUDE);
 	}
 
 	@Override
-	public void visit(CriterionDto criterionDto, Object context) {
+	public void visit(Criterion criterion, Object context) {
 	}
 
 	/**

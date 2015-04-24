@@ -11,29 +11,27 @@
 
 package org.geomajas.gwt2.plugin.wms.client.layer;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.geomajas.geometry.Geometry;
-import org.geomajas.gwt.client.command.AbstractCommandCallback;
-import org.geomajas.gwt.client.command.GwtCommand;
-import org.geomajas.gwt.client.command.GwtCommandDispatcher;
-import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.event.FeatureDeselectedEvent;
 import org.geomajas.gwt2.client.event.FeatureSelectedEvent;
 import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
 import org.geomajas.gwt2.client.map.attribute.GeometryAttributeType;
 import org.geomajas.gwt2.client.map.feature.Feature;
-import org.geomajas.gwt2.client.map.feature.query.GeometryCriterionDto;
+import org.geomajas.gwt2.client.map.feature.query.Criterion;
+import org.geomajas.gwt2.client.map.feature.query.GeometryCriterion;
+import org.geomajas.gwt2.client.map.feature.query.Query;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
 import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
+import org.geomajas.gwt2.plugin.wfs.client.WfsServerExtension;
+import org.geomajas.gwt2.plugin.wfs.client.protocol.WfsFeatureCollectionInfo;
 import org.geomajas.gwt2.plugin.wfs.client.protocol.WfsFeatureTypeDescriptionInfo;
-import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsGetFeatureRequest;
-import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsGetFeatureResponse;
-import org.geomajas.gwt2.plugin.wfs.server.dto.WfsVersionDto;
+import org.geomajas.gwt2.plugin.wfs.client.service.WfsService;
+import org.geomajas.gwt2.plugin.wfs.client.service.WfsService.WfsVersion;
 import org.geomajas.gwt2.plugin.wms.client.WmsServerExtension;
 import org.geomajas.gwt2.plugin.wms.client.capabilities.WmsLayerInfo;
 
@@ -128,33 +126,32 @@ public class FeatureSearchSupportedWmsServerLayer extends FeatureInfoSupportedWm
 		Integer maxC = WmsServerExtension.getInstance().getHintValue(WmsServerExtension.GET_FEATUREINFO_MAX_COORDS);
 		Integer maxF = WmsServerExtension.getInstance().getHintValue(WmsServerExtension.GET_FEATUREINFO_MAX_FEATURES);
 
-		GeometryCriterionDto criterionDto = new GeometryCriterionDto(defaultGeometryName,
-				GeometryCriterionDto.INTERSECTS, geometry);
-		WfsGetFeatureRequest request = new WfsGetFeatureRequest();
-		request.setBaseUrl(wfsConfig.getBaseUrl());
-		request.setCriterion(criterionDto);
-		request.setCrs(getCrs());
-		request.setMaxCoordsPerFeature(maxC);
-		request.setMaxFeatures(maxF);
-		request.setSchema(wfsConfig.getAttributeDescriptors());
-		request.setTypeName(wfsConfig.getTypeName());
-		request.setVersion(WfsVersionDto.V1_0_0);
+		WfsService wfsService = WfsServerExtension.getInstance().getWfsService();
 
-		GwtCommand command = new GwtCommand(WfsGetFeatureRequest.COMMAND_NAME);
-		command.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(command, new AbstractCommandCallback<WfsGetFeatureResponse>() {
+		Criterion criterion = wfsService.buildCriterion().attribute(defaultGeometryName)
+				.operation(GeometryCriterion.INTERSECTS).value(geometry).build();
 
-			@Override
-			public void execute(WfsGetFeatureResponse response) {
-				List<Feature> features = new ArrayList<Feature>();
-				for (org.geomajas.layer.feature.Feature feature : response.getFeatureCollection().getFeatures()) {
-					Feature newFeature = GeomajasServerExtension.getInstance().getServerFeatureService()
-							.create(feature, FeatureSearchSupportedWmsServerLayer.this);
-					features.add(newFeature);
-				}
-				callback.onSuccess(features);
-			}
-		});
+		Query query = wfsService.buildQuery().criterion(criterion)
+				.attributeDescriptors(wfsConfig.getAttributeDescriptors()).maxCoordinates(maxC).maxFeatures(maxF)
+				.crs(getCrs()).build();
+
+		WfsServerExtension
+				.getInstance()
+				.getWfsService()
+				.getFeatures(WfsVersion.V1_0_0, this, wfsConfig.getBaseUrl(), wfsConfig.getTypeName(), query,
+						new Callback<WfsFeatureCollectionInfo, String>() {
+
+							@Override
+							public void onSuccess(WfsFeatureCollectionInfo result) {
+								callback.onSuccess(result.getFeatures());
+							}
+
+							@Override
+							public void onFailure(String reason) {
+								callback.onFailure(reason);
+							}
+						});
+
 	}
 
 }

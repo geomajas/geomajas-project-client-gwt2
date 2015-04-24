@@ -11,7 +11,9 @@
 
 package org.geomajas.gwt2.plugin.wfs.client.service;
 
-import org.geomajas.gwt2.client.map.feature.query.QueryDto;
+import org.geomajas.gwt2.client.map.feature.query.CriterionBuilder;
+import org.geomajas.gwt2.client.map.feature.query.Query;
+import org.geomajas.gwt2.client.map.feature.query.QueryBuilder;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
 import org.geomajas.gwt2.plugin.wfs.client.protocol.WfsFeatureCollectionInfo;
 import org.geomajas.gwt2.plugin.wfs.client.protocol.WfsFeatureTypeDescriptionInfo;
@@ -114,14 +116,25 @@ public class WfsServiceImpl implements WfsService {
 	}
 
 	@Override
-	public void getFeatures(WfsVersion version, String baseUrl, String typeName, QueryDto query,
+	public void getFeatures(WfsVersion version, String baseUrl, String typeName, Query query,
 			Callback<WfsFeatureCollectionInfo, String> callback) {
 		throw new UnsupportedOperationException("This method is only supported by the WFS server extension");		
 	}
 
 	@Override
 	public void getFeatures(WfsVersion version, FeaturesSupported layer, String baseUrl, String typeName,
-			QueryDto query, Callback<WfsFeatureCollectionInfo, String> callback) {
+			Query query, Callback<WfsFeatureCollectionInfo, String> callback) {
+		throw new UnsupportedOperationException("This method is only supported by the WFS server extension");		
+	}
+	
+
+	@Override
+	public QueryBuilder buildQuery() {
+		throw new UnsupportedOperationException("This method is only supported by the WFS server extension");		
+	}
+
+	@Override
+	public CriterionBuilder buildCriterion() {
 		throw new UnsupportedOperationException("This method is only supported by the WFS server extension");		
 	}
 

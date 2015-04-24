@@ -15,8 +15,9 @@ import java.util.List;
 
 import org.geomajas.command.CommandRequest;
 import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
-import org.geomajas.gwt2.client.map.feature.query.CriterionDto;
+import org.geomajas.gwt2.client.map.feature.query.Criterion;
 import org.geomajas.gwt2.plugin.wfs.server.dto.WfsVersionDto;
+import org.geomajas.gwt2.plugin.wfs.server.dto.query.CriterionDto;
 
 /**
  * Request for the {@link org.geomajas.gwt2.plugin.wfs.server.command.WfsGetFeatureCommand}. Should contain all the info
@@ -77,7 +78,7 @@ public class WfsGetFeatureRequest implements CommandRequest {
 		this.typeName = typeName;
 	}
 
-	public CriterionDto getCriterion() {
+	public Criterion getCriterion() {
 		return criterion;
 	}
 

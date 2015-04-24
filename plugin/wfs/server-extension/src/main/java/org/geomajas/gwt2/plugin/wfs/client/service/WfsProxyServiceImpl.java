@@ -19,11 +19,15 @@ import org.geomajas.gwt.client.command.AbstractCommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.map.feature.Feature;
-import org.geomajas.gwt2.client.map.feature.query.QueryDto;
+import org.geomajas.gwt2.client.map.feature.query.CriterionBuilder;
+import org.geomajas.gwt2.client.map.feature.query.Query;
+import org.geomajas.gwt2.client.map.feature.query.QueryBuilder;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
 import org.geomajas.gwt2.plugin.wfs.client.protocol.WfsFeatureCollectionInfo;
 import org.geomajas.gwt2.plugin.wfs.client.protocol.WfsFeatureTypeDescriptionInfo;
 import org.geomajas.gwt2.plugin.wfs.client.protocol.WfsGetCapabilitiesInfo;
+import org.geomajas.gwt2.plugin.wfs.client.query.CriterionDtoBuilder;
+import org.geomajas.gwt2.plugin.wfs.client.query.QueryDtoBuilder;
 import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsDescribeFeatureTypeRequest;
 import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsDescribeFeatureTypeResponse;
 import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsGetCapabilitiesRequest;
@@ -32,11 +36,13 @@ import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsGetFeatureRequest;
 import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsGetFeatureResponse;
 import org.geomajas.gwt2.plugin.wfs.server.dto.WfsFeatureCollectionDto;
 import org.geomajas.gwt2.plugin.wfs.server.dto.WfsVersionDto;
+import org.geomajas.gwt2.plugin.wfs.server.dto.query.CriterionDto;
 
 import com.google.gwt.core.client.Callback;
 
 /**
  * Implementation of {@link WfsService} that uses the Geomajas server.
+ * 
  * @author Jan De Moerloose
  *
  */
@@ -99,18 +105,18 @@ public class WfsProxyServiceImpl implements WfsService {
 	}
 
 	@Override
-	public void getFeatures(WfsVersion version, String baseUrl, String typeName, QueryDto query,
+	public void getFeatures(WfsVersion version, String baseUrl, String typeName, Query query,
 			Callback<WfsFeatureCollectionInfo, String> callback) {
 		getFeatures(version, null, baseUrl, typeName, query, callback);
 	}
 
 	@Override
 	public void getFeatures(WfsVersion version, final FeaturesSupported layer, String baseUrl, String typeName,
-			QueryDto query, final Callback<WfsFeatureCollectionInfo, String> callback) {
+			Query query, final Callback<WfsFeatureCollectionInfo, String> callback) {
 		WfsGetFeatureRequest request = new WfsGetFeatureRequest();
 		request.setBaseUrl(baseUrl);
 		request.setTypeName(typeName);
-		request.setCriterion(query.getCriterion());
+		request.setCriterion((CriterionDto) query.getCriterion());
 		request.setCrs(query.getCrs());
 		request.setMaxCoordsPerFeature(query.getMaxCoordsPerFeature());
 		request.setMaxFeatures(query.getMaxFeatures());
@@ -127,6 +133,8 @@ public class WfsProxyServiceImpl implements WfsService {
 					public void execute(WfsGetFeatureResponse response) {
 						final WfsFeatureCollectionDto collection = response.getFeatureCollection();
 						callback.onSuccess(new WfsFeatureCollectionInfo() {
+
+							private static final long serialVersionUID = 1L;
 
 							@Override
 							public String getTypeName() {
@@ -167,6 +175,16 @@ public class WfsProxyServiceImpl implements WfsService {
 					}
 
 				});
+	}
+
+	@Override
+	public QueryBuilder buildQuery() {
+		return new QueryDtoBuilder();
+	}
+
+	@Override
+	public CriterionBuilder buildCriterion() {
+		return new CriterionDtoBuilder();
 	}
 
 	@Override

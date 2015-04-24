@@ -28,7 +28,7 @@ import org.geomajas.geometry.service.BboxService;
 import org.geomajas.geometry.service.GeometryService;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
-import org.geomajas.gwt2.client.map.feature.query.CriterionDto;
+import org.geomajas.gwt2.client.map.feature.query.Criterion;
 import org.geomajas.gwt2.plugin.wfs.server.command.converter.FeatureConverter;
 import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsGetFeatureRequest;
 import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsGetFeatureResponse;
@@ -168,7 +168,7 @@ public class WfsGetFeatureCommand implements Command<WfsGetFeatureRequest, WfsGe
 	 * @throws IOException
 	 * @throws GeomajasException
 	 */
-	protected Query createQuery(String typeName, List<AttributeDescriptor> schema, CriterionDto criterion,
+	protected Query createQuery(String typeName, List<AttributeDescriptor> schema, Criterion criterion,
 			int maxFeatures, int startIndex, List<String> attributeNames, String crs) throws IOException {
 		CriterionToFilterConverter converter = criterionToFilterFactory.createConverter();
 		Filter filter = converter.convert(criterion, schema);

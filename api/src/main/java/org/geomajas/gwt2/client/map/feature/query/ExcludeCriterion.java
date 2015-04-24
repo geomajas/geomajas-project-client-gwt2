@@ -8,20 +8,19 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-package org.geomajas.gwt2.plugin.wfs.server.command.factory;
+package org.geomajas.gwt2.client.map.feature.query;
 
-import java.util.List;
+import org.geomajas.annotation.Api;
 
-import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
-import org.geomajas.gwt2.client.map.feature.query.Criterion;
-import org.opengis.filter.Filter;
 
 /**
- * Convert {@link Criterion} to {@link Filter}.
+ * Exclude all criterion.
+ * 
  * @author Jan De Moerloose
  *
+ * @since 2.2.1
  */
-public interface CriterionToFilterConverter {
+@Api(allMethods = true)
+public interface ExcludeCriterion extends Criterion {
 
-	Filter convert(Criterion criterionDto, List<AttributeDescriptor> schema);
 }

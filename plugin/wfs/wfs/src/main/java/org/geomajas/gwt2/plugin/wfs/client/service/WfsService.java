@@ -12,7 +12,9 @@
 package org.geomajas.gwt2.plugin.wfs.client.service;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.gwt2.client.map.feature.query.QueryDto;
+import org.geomajas.gwt2.client.map.feature.query.CriterionBuilder;
+import org.geomajas.gwt2.client.map.feature.query.Query;
+import org.geomajas.gwt2.client.map.feature.query.QueryBuilder;
 import org.geomajas.gwt2.client.map.layer.FeaturesSupported;
 import org.geomajas.gwt2.plugin.wfs.client.protocol.WfsFeatureCollectionInfo;
 import org.geomajas.gwt2.plugin.wfs.client.protocol.WfsFeatureTypeDescriptionInfo;
@@ -54,9 +56,7 @@ public interface WfsService {
 	 * @author Jan De Moerloose
 	 */
 	public enum WfsRequest {
-		GET_CAPABILITIES("GetCapabilities"),
-		DESCRIBE_FEATURE_TYPE("DescribeFeatureType"),
-		GET_FEATURE("GetFeature");
+		GET_CAPABILITIES("GetCapabilities"), DESCRIBE_FEATURE_TYPE("DescribeFeatureType"), GET_FEATURE("GetFeature");
 
 		private String request;
 
@@ -133,12 +133,12 @@ public interface WfsService {
 	 * @param baseUrl The WFS base URL (without any WFS parameters).
 	 * @param typeName The feature type name
 	 * @param query The query
-	 * @param callback Callback that returns a {@link WfsFeatureCollectionInfo} instance on success. From here, you
-	 *        can extract all the attribute information.
+	 * @param callback Callback that returns a {@link WfsFeatureCollectionInfo} instance on success. From here, you can
+	 *        extract all the attribute information.
 	 */
-	void getFeatures(WfsVersion version, String baseUrl, String typeName, QueryDto query,
+	void getFeatures(WfsVersion version, String baseUrl, String typeName, Query query,
 			Callback<WfsFeatureCollectionInfo, String> callback);
-	
+
 	/**
 	 * Get features from a WFS service for a specific layer.
 	 * 
@@ -147,10 +147,10 @@ public interface WfsService {
 	 * @param baseUrl The WFS base URL (without any WFS parameters).
 	 * @param typeName The feature type name
 	 * @param query The query
-	 * @param callback Callback that returns a {@link WfsFeatureCollectionInfo} instance on success. From here, you
-	 *        can extract all the attribute information.
+	 * @param callback Callback that returns a {@link WfsFeatureCollectionInfo} instance on success. From here, you can
+	 *        extract all the attribute information.
 	 */
-	void getFeatures(WfsVersion version, FeaturesSupported layer, String baseUrl, String typeName, QueryDto query,
+	void getFeatures(WfsVersion version, FeaturesSupported layer, String baseUrl, String typeName, Query query,
 			Callback<WfsFeatureCollectionInfo, String> callback);
 
 	// ------------------------------------------------------------------------
@@ -171,5 +171,19 @@ public interface WfsService {
 	 * @return The current WFS URL transformer.
 	 */
 	WfsUrlTransformer getWfsUrlTransformer();
+
+	/**
+	 * Get a new query builder.
+	 * 
+	 * @return
+	 */
+	QueryBuilder buildQuery();
+
+	/**
+	 * Get a new criterion builder.
+	 * 
+	 * @return
+	 */
+	CriterionBuilder buildCriterion();
 
 }

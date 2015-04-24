@@ -23,19 +23,19 @@ import org.geomajas.gwt2.client.map.attribute.GeometryAttributeTypeImpl;
 import org.geomajas.gwt2.client.map.attribute.GeometryType;
 import org.geomajas.gwt2.client.map.attribute.PrimitiveAttributeTypeImpl;
 import org.geomajas.gwt2.client.map.attribute.PrimitiveType;
-import org.geomajas.gwt2.client.map.feature.query.AttributeCriterionDto;
-import org.geomajas.gwt2.client.map.feature.query.BboxCriterionDto;
-import org.geomajas.gwt2.client.map.feature.query.CriterionDto;
-import org.geomajas.gwt2.client.map.feature.query.DWithinCriterionDto;
-import org.geomajas.gwt2.client.map.feature.query.DoubleAttributeCriterionDto;
-import org.geomajas.gwt2.client.map.feature.query.FidCriterionDto;
-import org.geomajas.gwt2.client.map.feature.query.FullTextCriterionDto;
-import org.geomajas.gwt2.client.map.feature.query.GeometryCriterionDto;
-import org.geomajas.gwt2.client.map.feature.query.IntegerAttributeCriterionDto;
-import org.geomajas.gwt2.client.map.feature.query.LogicalCriterionDto;
-import org.geomajas.gwt2.client.map.feature.query.StringAttributeCriterionDto;
+import org.geomajas.gwt2.client.map.feature.query.Criterion;
 import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsGetFeatureRequest;
 import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsGetFeatureResponse;
+import org.geomajas.gwt2.plugin.wfs.server.dto.query.AttributeCriterionDto;
+import org.geomajas.gwt2.plugin.wfs.server.dto.query.BboxCriterionDto;
+import org.geomajas.gwt2.plugin.wfs.server.dto.query.DWithinCriterionDto;
+import org.geomajas.gwt2.plugin.wfs.server.dto.query.DoubleAttributeCriterionDto;
+import org.geomajas.gwt2.plugin.wfs.server.dto.query.FidCriterionDto;
+import org.geomajas.gwt2.plugin.wfs.server.dto.query.FullTextCriterionDto;
+import org.geomajas.gwt2.plugin.wfs.server.dto.query.GeometryCriterionDto;
+import org.geomajas.gwt2.plugin.wfs.server.dto.query.IntegerAttributeCriterionDto;
+import org.geomajas.gwt2.plugin.wfs.server.dto.query.LogicalCriterionDto;
+import org.geomajas.gwt2.plugin.wfs.server.dto.query.StringAttributeCriterionDto;
 import org.geomajas.layer.feature.Feature;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
@@ -287,7 +287,7 @@ public class WfsGetFeatureCommandTest {
 	}
 
 	protected List<Feature> queryFeatures(FeatureSource<SimpleFeatureType, SimpleFeature> source,
-			CriterionDto criterion, int maxFeatures, int startIndex, List<String> attributeNames) throws IOException,
+			Criterion criterion, int maxFeatures, int startIndex, List<String> attributeNames) throws IOException,
 			GeomajasException {
 		List<org.geomajas.gwt2.client.map.attribute.AttributeDescriptor> descriptors = 
 				new ArrayList<org.geomajas.gwt2.client.map.attribute.AttributeDescriptor>();

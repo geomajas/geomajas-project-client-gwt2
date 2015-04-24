@@ -197,15 +197,17 @@ List&lt;AttributeDescriptor&gt; attributeDescriptors = description.getAttributeD
 
       <para>A WFS GetFeature request returns a collection of features that are
       compliant with a specified query criterion or filter. Querying for
-      features can be done as follows:<programlisting>QueryDto query = new QueryDto();
-query.setMaxFeatures(maxFeatures);
-query.setMaxCoordsPerFeature(maxCoordinates);
-query.setCriterion(new IncludeCriterionDto());
-query.setCrs(viewPort.getCrs());
-query.setAttributeDescriptors(attributeDescriptors);
+      features can be done as follows:<programlisting>WfsService wfsService = WfsServerExtension.getInstance().getWfsService();
 
-WfsServerExtension.getInstance().getWfsService()
-          .getFeatures(WfsVersion.V1_0_0, &lt;null or FeatureSupported&gt;, wfsBaseUrl, typeName, query,
+//  Build the criterion (include all)
+Criterion criterion = wfsService.buildCriterion().include().build();
+
+// Build the query
+Query query = wfsService.buildQuery().criterion(criterion).maxFeatures(maxFeatures)
+  .maxCoordinates(maxCoordinates).crs(viewPort.getCrs()).attributeDescriptors(layer.getSchema()).build();
+
+// Run the query
+wfsService.getFeatures(WfsVersion.V1_0_0, &lt;null or FeatureSupported&gt;, wfsBaseUrl, typeName, query,
               new Callback&lt;WfsFeatureCollectionInfo, String&gt;() {
 
                 @Override
@@ -217,39 +219,43 @@ WfsServerExtension.getInstance().getWfsService()
                 public void onFailure(String reason) {
                   Window.alert("We're very sorry, but something went wrong: " + reason);
                 }
-              });</programlisting>The query object contains a criterion dto
-      that defines the filter that should be applied to the features. In the
-      example code no filtering is done, but there is a family of criterion
-      types provided:</para>
+              });</programlisting></para>
+
+      <para>The service provides builders for criteria and query
+      objects.</para>
+
+      <para>The query object contains a criterion that defines the filter that
+      should be applied to the features. In the example code no filtering is
+      done, but there is a family of criterion types provided:</para>
 
       <itemizedlist>
         <listitem>
-          <para><code>AttributeCriterionDto</code>: criterion for an attribute
+          <para><code>AttributeCriterion</code>: criterion for an attribute
           that contains and operation and a value for comparison. There are
           subtypes for all primitive attribute types and the Date type:
           StringCriterionDto, DoubleCriterionDto, etc...</para>
         </listitem>
 
         <listitem>
-          <para><code>IncludeCriterionDto</code>/<code>ExcludeCriterionDto</code>:
+          <para><code>IncludeCriterion</code>/<code>ExcludeCriterion</code>:
           criteria for including/excluding all features</para>
         </listitem>
 
         <listitem>
-          <para><code>FullTextCriterionDto</code>: a special criterion for
+          <para><code>FullTextCriterion</code>: a special criterion for
           full-text searching on the server side, without having to explicitly
           declare all attributes. Will be typically transformed to an
           OR-criterion on all string-alike attributes.</para>
         </listitem>
 
         <listitem>
-          <para><code>LogicalCriterionDto</code>: a criterion that logically
+          <para><code>LogicalCriterion</code>: a criterion that logically
           groups a set of child criteria. This can be an OR or
           AND-grouping.</para>
         </listitem>
 
         <listitem>
-          <para><code>SpatialCriterionDto</code>: spatial criteria act on the
+          <para><code>SpatialCriterion</code>: spatial criteria act on the
           geometry attribute. Normal spatial predicates are supported by the
           <code>GeometryCriterionDto</code>. There are special criteria for
           bounding box queries and distance queries.</para>
