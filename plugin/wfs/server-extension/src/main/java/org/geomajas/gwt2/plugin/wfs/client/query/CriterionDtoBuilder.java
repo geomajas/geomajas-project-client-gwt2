@@ -27,12 +27,10 @@ import org.geomajas.gwt2.plugin.wfs.server.dto.query.CriterionDto;
 import org.geomajas.gwt2.plugin.wfs.server.dto.query.DWithinCriterionDto;
 import org.geomajas.gwt2.plugin.wfs.server.dto.query.DateAttributeCriterionDto;
 import org.geomajas.gwt2.plugin.wfs.server.dto.query.DoubleAttributeCriterionDto;
-import org.geomajas.gwt2.plugin.wfs.server.dto.query.ExcludeCriterionDto;
 import org.geomajas.gwt2.plugin.wfs.server.dto.query.FidCriterionDto;
 import org.geomajas.gwt2.plugin.wfs.server.dto.query.FloatAttributeCriterionDto;
 import org.geomajas.gwt2.plugin.wfs.server.dto.query.FullTextCriterionDto;
 import org.geomajas.gwt2.plugin.wfs.server.dto.query.GeometryCriterionDto;
-import org.geomajas.gwt2.plugin.wfs.server.dto.query.IncludeCriterionDto;
 import org.geomajas.gwt2.plugin.wfs.server.dto.query.IntegerAttributeCriterionDto;
 import org.geomajas.gwt2.plugin.wfs.server.dto.query.LogicalCriterionDto;
 import org.geomajas.gwt2.plugin.wfs.server.dto.query.LongAttributeCriterionDto;
@@ -184,13 +182,13 @@ public class CriterionDtoBuilder implements CriterionBuilder {
 
 	@Override
 	public CriterionBuilder include() {
-		criterion = new IncludeCriterionDto();
+		criterion = CriterionDto.INCLUDE;
 		return this;
 	}
 
 	@Override
 	public CriterionBuilder exclude() {
-		criterion = new ExcludeCriterionDto();
+		criterion = CriterionDto.EXCLUDE;
 		return this;
 	}
 

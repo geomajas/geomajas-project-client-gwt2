@@ -26,7 +26,7 @@ public class ExcludeCriterionDto implements ExcludeCriterion, CriterionDto {
 	/**
 	 * Create an exclude-all criterion.
 	 */
-	public ExcludeCriterionDto() {
+	ExcludeCriterionDto() {
 	}
 
 	@Override
