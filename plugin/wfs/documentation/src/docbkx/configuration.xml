@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2015 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+<chapter id="chapter-configuration">
+  <title>Configuration</title>
+
+  <section>
+    <title>Dependencies</title>
+
+    <para>To use the server extension (most likely as the client
+    implementation is quite limited for now), add the following dependency to
+    your project:</para>
+
+    <informalexample>
+      <programlisting> &lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-client-gwt2-plugin-wfs-server-extension&lt;/artifactId&gt;
+&lt;/dependency&gt;</programlisting>
+    </informalexample>
+
+    <para>Add the following module inheritance to your GWT module
+    descriptor:</para>
+
+    <informalexample>
+      <programlisting>&lt;module&gt;
+    &lt;inherits name='org.geomajas.gwt2.plugin.wfs.GeomajasClientPluginWfsServerExt' /&gt;
+&lt;/module&gt;</programlisting>
+    </informalexample>
+  </section>
+
+  <section>
+    <title>Getting started</title>
+
+    <para>The WFS client plugin provides client-side support for communicating
+    with OGC Web Feature Services. There is a client-side only plugin and a
+    server side extension. The client-side only plugin is currently limited to
+    GetCapabilities requests, for searching features the server extension
+    should be used.</para>
+
+    <para>As most Geomajas plugins, the WFS client plugin too has a singleton
+    class that provides a starting point for most functionalities the plugin
+    supports. This starting point is the <code>WfsServerExtension</code>
+    class:</para>
+
+    <programlisting>org.geomajas.gwt2.plugin.wfs.client.WfsServerExtension</programlisting>
+
+    <para>From here on it is possible to execute WFS GetCapabilities,
+    DescribeFeatureType or GetFeature requests. Several versions of the OGC
+    WFS protocol are supported. All request are sent asynchronously.</para>
+
+    <section>
+      <title>Using the WfsService</title>
+
+      <para>The WfsService gives access to the following requests:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>GetCapabilities</emphasis>: Executes a WFS
+          GetCapabilities request and parses the result into Java objects.
+          This capabilities object allows you to read the list of feature
+          types published by the server.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>DescribeFeatureType</emphasis>: Executes a WFS
+          DescribeFeatureType request. This returns a description of the
+          attributes of the feature type. To be implemented</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>GetFeature</emphasis>: Executes a WFS GetFeature
+          request. This queries for a collection of features that conform to a
+          specified filter. To be implemented</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>The WfsService is a singleton service that can be acquired as
+      follows:</para>
+
+      <para><programlisting>WfService wfsService = WfsServerExtension.getInstance().getWfsService();</programlisting></para>
+
+      <para>Using this WfsService it is possible to directly execute the
+      supported WFS requests. There is no need for a WFS layer.</para>
+    </section>
+
+    <section>
+      <title>Automatic URL transformation</title>
+
+      <para>One of the most common problems when executing Ajax requests from
+      within the browser is the security regarding cross domain requests. The
+      WFS server you want to communicate with, will most likely be located on
+      a different server that your web application.</para>
+
+      <para>For this purpose, the <code>WfsService</code> allows you to
+      specify a <code><code>WfsUrlTransformer</code></code> object that will
+      transform WFS request URLs to your liking. This is useful if you want to
+      use a proxy server to avoid the cross-domain restrictions of the
+      browser. The following example redirects all requests to a local proxy
+      servlet:</para>
+
+      <programlisting>wfsService.setWfsUrlTransformer(new WfsUrlTransformer() {
+
+    public String transform(WfsRequest request, String url) {
+        return "/proxy?url=" + url;
+    }
+});</programlisting>
+    </section>
+  </section>
+
+  <section>
+    <title>Request execution</title>
+
+    <section>
+      <title>Using WFS GetCapabilities</title>
+
+      <para>In some cases, the application will need to check which WFS
+      feature types are available on the server. This can be achieved through
+      the GetCapabilities request, the result of which can than be used to
+      select a particular feature type for further querying.</para>
+
+      <para>A WFS GetCapabilities request returns an object of the type
+      <code>WfsGetCapabilitiesInfo</code>. The following example executes a
+      GetCapabilities request:</para>
+
+      <programlisting>String wfsBaseUrl = "http://apps.geomajas.org/geoserver/demo_world/ows";
+WfsServerExtension.getInstance().getWfsService()
+    .getCapabilities(WfsVersion.V1_0_0, wfsBaseUrl, new Callback&lt;WfsGetCapabilitiesInfo, String&gt;() {
+
+        @Override
+        public void onSuccess(WfsGetCapabilitiesInfo capabilities) {
+            // Do something with the result...
+        }
+
+        @Override
+        public void onFailure(String reason) {
+            Window.alert("We're very sorry, but something went wrong: " + reason);
+        }
+    });</programlisting>
+
+      <para>This object contains the list of feature types, which can be
+      accessed as follows:</para>
+
+      <programlisting>WfsGetCapabilitiesInfo capabilities; // Type of object in a GetCapabilities request.
+WfsFeatureTypeListInfo featureTypeList = capabilities.getFeatureTypeList();
+List&lt;WfsFeatureTypeInfo&gt; featureTypes = featureTypeList.getFeatureTypes();</programlisting>
+
+      <para>Each feature type has the attributes name, title, abstract,
+      etc...The feature type name can be used to query the detailed
+      description of the feature type with a DescribeFeatureType
+      request.</para>
+    </section>
+
+    <section>
+      <title>Using WFS DescribeFeatureType</title>
+
+      <para>A WFS DescribeFeatureType request returns an object of the type
+      <code>WfsFeatureTypeDescriptionInfo</code>. Querying the feature type
+      description (or schema) of a particular feature type can be done as
+      follows:</para>
+
+      <para><programlisting>String typeName = "demo_world:simplified_borders";
+WfsServerExtension.getInstance().getWfsService()
+        .describeFeatureType(WfsVersion.V1_0_0, wfsBaseUrl, typeName,
+            new Callback&lt;WfsFeatureTypeDescriptionInfo, String&gt;() {
+
+              @Override
+              public void onSuccess(WfsFeatureTypeDescriptionInfo result) {
+                // Do something with the result...
+              }
+
+              @Override
+              public void onFailure(String reason) {
+                Window.alert("We're very sorry, but something went wrong: " + reason);
+              }
+            });</programlisting>The feature type description object contains
+      all attribute descriptors of the feature type:</para>
+
+      <para><programlisting>WfsFeatureTypeDescriptionInfo description; // Type of object in a WfsFeatureTypeDescriptionInfo request.
+List&lt;AttributeDescriptor&gt; attributeDescriptors = description.getAttributeDescriptors();</programlisting>Each
+      attribute descriptor has the attribute name and the type of the
+      attribute, which contains the binding class. The list includes the
+      default geometry attribute.</para>
+    </section>
+
+    <section>
+      <title>Using WFS GetFeature</title>
+
+      <para>A WFS GetFeature request returns a collection of features that are
+      compliant with a specified query criterion or filter. Querying for
+      features can be done as follows:<programlisting>WfsService wfsService = WfsServerExtension.getInstance().getWfsService();
+
+//  Build the criterion (include all)
+Criterion criterion = wfsService.buildCriterion().include().build();
+
+// Build the query
+Query query = wfsService.buildQuery().criterion(criterion).maxFeatures(maxFeatures)
+  .maxCoordinates(maxCoordinates).crs(viewPort.getCrs()).attributeDescriptors(layer.getSchema()).build();
+
+// Run the query
+wfsService.getFeatures(WfsVersion.V1_0_0, &lt;null or FeatureSupported&gt;, wfsBaseUrl, typeName, query,
+              new Callback&lt;WfsFeatureCollectionInfo, String&gt;() {
+
+                @Override
+                public void onSuccess(WfsFeatureCollectionInfo result) {
+                  // Do something with the result...
+                }
+
+                @Override
+                public void onFailure(String reason) {
+                  Window.alert("We're very sorry, but something went wrong: " + reason);
+                }
+              });</programlisting></para>
+
+      <para>The service provides builders for criteria and query
+      objects.</para>
+
+      <para>The query object contains a criterion that defines the filter that
+      should be applied to the features. In the example code no filtering is
+      done, but there is a family of criterion types provided:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><code>AttributeCriterion</code>: criterion for an attribute
+          that contains and operation and a value for comparison. There are
+          subtypes for all primitive attribute types and the Date type:
+          StringCriterionDto, DoubleCriterionDto, etc...</para>
+        </listitem>
+
+        <listitem>
+          <para><code>IncludeCriterion</code>/<code>ExcludeCriterion</code>:
+          criteria for including/excluding all features</para>
+        </listitem>
+
+        <listitem>
+          <para><code>FullTextCriterion</code>: a special criterion for
+          full-text searching on the server side, without having to explicitly
+          declare all attributes. Will be typically transformed to an
+          OR-criterion on all string-alike attributes.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>LogicalCriterion</code>: a criterion that logically
+          groups a set of child criteria. This can be an OR or
+          AND-grouping.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>SpatialCriterion</code>: spatial criteria act on the
+          geometry attribute. Normal spatial predicates are supported by the
+          <code>GeometryCriterionDto</code>. There are special criteria for
+          bounding box queries and distance queries.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+  </section>
+</chapter>

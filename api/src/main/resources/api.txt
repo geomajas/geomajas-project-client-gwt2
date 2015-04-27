@@ -140,7 +140,9 @@ org.geomajas.gwt2.client.event.NavigationUpdateHandler::2.0.0
 org.geomajas.gwt2.client.event.NavigationUpdateHandler:Type<NavigationUpdateHandler> TYPE:2.0.0
 org.geomajas.gwt2.client.event.NavigationUpdateHandler:void onNavigationUpdated(NavigationUpdateEvent, ):2.0.0
 org.geomajas.gwt2.client.event.TileLevelRenderedEvent::2.0.0
+org.geomajas.gwt2.client.event.TileLevelRenderedEvent:TileLevelRenderedEvent(TileLevelRenderer, ):2.1.0
 org.geomajas.gwt2.client.event.TileLevelRenderedEvent:TileLevelRenderedEvent(double, ):2.0.0
+org.geomajas.gwt2.client.event.TileLevelRenderedEvent:TileLevelRenderer getRenderer():2.1.0
 org.geomajas.gwt2.client.event.TileLevelRenderedEvent:Type<TileLevelRenderedHandler> getAssociatedType():2.0.0
 org.geomajas.gwt2.client.event.TileLevelRenderedEvent:double getResolution():2.0.0
 org.geomajas.gwt2.client.event.TileLevelRenderedHandler::2.0.0
@@ -366,6 +368,104 @@ org.geomajas.gwt2.client.map.feature.Feature:Object getAttributeValue(String, ):
 org.geomajas.gwt2.client.map.feature.Feature:String getId():2.0.0
 org.geomajas.gwt2.client.map.feature.Feature:String getLabel():2.0.0
 org.geomajas.gwt2.client.map.feature.Feature:boolean isSelected():2.0.0
+org.geomajas.gwt2.client.map.feature.query.AttributeCriterion::2.2.1
+org.geomajas.gwt2.client.map.feature.query.AttributeCriterion:AttributeCriterion<T> clone():2.2.1
+org.geomajas.gwt2.client.map.feature.query.AttributeCriterion:String getAttributeName():2.2.1
+org.geomajas.gwt2.client.map.feature.query.AttributeCriterion:String getOperation():2.2.1
+org.geomajas.gwt2.client.map.feature.query.AttributeCriterion:T getValue():2.2.1
+org.geomajas.gwt2.client.map.feature.query.BboxCriterion::2.2.1
+org.geomajas.gwt2.client.map.feature.query.BboxCriterion:Bbox getBbox():2.2.1
+org.geomajas.gwt2.client.map.feature.query.BboxCriterion:String getAttributeName():2.2.1
+org.geomajas.gwt2.client.map.feature.query.BboxCriterion:String getCrs():2.2.1
+org.geomajas.gwt2.client.map.feature.query.Criterion::2.2.1
+org.geomajas.gwt2.client.map.feature.query.Criterion:String EMPTY:2.2.1
+org.geomajas.gwt2.client.map.feature.query.Criterion:String EQ:2.2.1
+org.geomajas.gwt2.client.map.feature.query.Criterion:String GT:2.2.1
+org.geomajas.gwt2.client.map.feature.query.Criterion:String GTEQ:2.2.1
+org.geomajas.gwt2.client.map.feature.query.Criterion:String LIKE:2.2.1
+org.geomajas.gwt2.client.map.feature.query.Criterion:String LT:2.2.1
+org.geomajas.gwt2.client.map.feature.query.Criterion:String LTEQ:2.2.1
+org.geomajas.gwt2.client.map.feature.query.Criterion:String NE:2.2.1
+org.geomajas.gwt2.client.map.feature.query.Criterion:void accept(CriterionVisitor, Object, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionBuilder::2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionBuilder:Criterion build():2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionBuilder:CriterionBuilder and(List<Criterion>, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionBuilder:CriterionBuilder attribute(String, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionBuilder:CriterionBuilder bbox(Bbox, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionBuilder:CriterionBuilder bbox(double, double, double, double, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionBuilder:CriterionBuilder crs(String, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionBuilder:CriterionBuilder exclude():2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionBuilder:CriterionBuilder fid(String, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionBuilder:CriterionBuilder fullText(String, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionBuilder:CriterionBuilder include():2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionBuilder:CriterionBuilder operation(String, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionBuilder:CriterionBuilder or(List<Criterion>, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionBuilder:CriterionBuilder value(BigDecimal, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionBuilder:CriterionBuilder value(Boolean, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionBuilder:CriterionBuilder value(Date, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionBuilder:CriterionBuilder value(Double, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionBuilder:CriterionBuilder value(Float, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionBuilder:CriterionBuilder value(Geometry, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionBuilder:CriterionBuilder value(Integer, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionBuilder:CriterionBuilder value(Long, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionBuilder:CriterionBuilder value(Short, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionBuilder:CriterionBuilder value(String, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionBuilder:CriterionBuilder within(double, String, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionVisitor::2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionVisitor:void visit(AttributeCriterion<?>, Object, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionVisitor:void visit(BboxCriterion, Object, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionVisitor:void visit(Criterion, Object, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionVisitor:void visit(DWithinCriterion, Object, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionVisitor:void visit(ExcludeCriterion, Object, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionVisitor:void visit(FidCriterion, Object, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionVisitor:void visit(FullTextCriterion, Object, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionVisitor:void visit(GeometryCriterion, Object, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionVisitor:void visit(IncludeCriterion, Object, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.CriterionVisitor:void visit(LogicalCriterion, Object, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.DWithinCriterion::2.2.1
+org.geomajas.gwt2.client.map.feature.query.DWithinCriterion:Geometry getValue():2.2.1
+org.geomajas.gwt2.client.map.feature.query.DWithinCriterion:String getAttributeName():2.2.1
+org.geomajas.gwt2.client.map.feature.query.DWithinCriterion:String getUnits():2.2.1
+org.geomajas.gwt2.client.map.feature.query.DWithinCriterion:double getDistance():2.2.1
+org.geomajas.gwt2.client.map.feature.query.ExcludeCriterion::2.2.1
+org.geomajas.gwt2.client.map.feature.query.FidCriterion::2.2.1
+org.geomajas.gwt2.client.map.feature.query.FidCriterion:String[] getFids():2.2.1
+org.geomajas.gwt2.client.map.feature.query.FullTextCriterion::2.2.1
+org.geomajas.gwt2.client.map.feature.query.FullTextCriterion:String getKey():2.2.1
+org.geomajas.gwt2.client.map.feature.query.GeometryCriterion::2.2.1
+org.geomajas.gwt2.client.map.feature.query.GeometryCriterion:Geometry getValue():2.2.1
+org.geomajas.gwt2.client.map.feature.query.GeometryCriterion:String CONTAINS:2.2.1
+org.geomajas.gwt2.client.map.feature.query.GeometryCriterion:String CROSSES:2.2.1
+org.geomajas.gwt2.client.map.feature.query.GeometryCriterion:String DISJOINT:2.2.1
+org.geomajas.gwt2.client.map.feature.query.GeometryCriterion:String EQUALS:2.2.1
+org.geomajas.gwt2.client.map.feature.query.GeometryCriterion:String INTERSECTS:2.2.1
+org.geomajas.gwt2.client.map.feature.query.GeometryCriterion:String OVERLAPS:2.2.1
+org.geomajas.gwt2.client.map.feature.query.GeometryCriterion:String TOUCHES:2.2.1
+org.geomajas.gwt2.client.map.feature.query.GeometryCriterion:String WITHIN:2.2.1
+org.geomajas.gwt2.client.map.feature.query.GeometryCriterion:String getAttributeName():2.2.1
+org.geomajas.gwt2.client.map.feature.query.GeometryCriterion:String getOperation():2.2.1
+org.geomajas.gwt2.client.map.feature.query.IncludeCriterion::2.2.1
+org.geomajas.gwt2.client.map.feature.query.LogicalCriterion::2.2.1
+org.geomajas.gwt2.client.map.feature.query.LogicalCriterion:List<Criterion> getChildren():2.2.1
+org.geomajas.gwt2.client.map.feature.query.LogicalCriterion:Operator getOperator():2.2.1
+org.geomajas.gwt2.client.map.feature.query.Query::2.2.1
+org.geomajas.gwt2.client.map.feature.query.Query:Criterion getCriterion():2.2.1
+org.geomajas.gwt2.client.map.feature.query.Query:List<AttributeDescriptor> getAttributeDescriptors():2.2.1
+org.geomajas.gwt2.client.map.feature.query.Query:List<String> getRequestedAttributeNames():2.2.1
+org.geomajas.gwt2.client.map.feature.query.Query:String getCrs():2.2.1
+org.geomajas.gwt2.client.map.feature.query.Query:int getMaxCoordsPerFeature():2.2.1
+org.geomajas.gwt2.client.map.feature.query.Query:int getMaxFeatures():2.2.1
+org.geomajas.gwt2.client.map.feature.query.Query:int getStartIndex():2.2.1
+org.geomajas.gwt2.client.map.feature.query.QueryBuilder::2.2.1
+org.geomajas.gwt2.client.map.feature.query.QueryBuilder:Query build():2.2.1
+org.geomajas.gwt2.client.map.feature.query.QueryBuilder:QueryBuilder attributeDescriptors(List<AttributeDescriptor>, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.QueryBuilder:QueryBuilder criterion(Criterion, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.QueryBuilder:QueryBuilder crs(String, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.QueryBuilder:QueryBuilder maxCoordinates(int, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.QueryBuilder:QueryBuilder maxFeatures(int, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.QueryBuilder:QueryBuilder requestedAttributeNames(String, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.QueryBuilder:QueryBuilder startIndex(int, ):2.2.1
+org.geomajas.gwt2.client.map.feature.query.SpatialCriterion::2.2.1
 org.geomajas.gwt2.client.map.layer.FeaturesSupported::2.0.0
 org.geomajas.gwt2.client.map.layer.FeaturesSupported:Collection<Feature> getSelectedFeatures():2.0.0
 org.geomajas.gwt2.client.map.layer.FeaturesSupported:List<AttributeDescriptor> getAttributeDescriptors():2.0.0
@@ -377,6 +477,7 @@ org.geomajas.gwt2.client.map.layer.LabelsSupported::2.0.0
 org.geomajas.gwt2.client.map.layer.LabelsSupported:boolean isLabeled():2.0.0
 org.geomajas.gwt2.client.map.layer.LabelsSupported:void setLabeled(boolean, ):2.0.0
 org.geomajas.gwt2.client.map.layer.Layer::2.0.0
+org.geomajas.gwt2.client.map.layer.Layer:Bbox getMaxBounds():2.1.0
 org.geomajas.gwt2.client.map.layer.Layer:LayerRenderer getRenderer():2.0.0
 org.geomajas.gwt2.client.map.layer.Layer:String getId():2.0.0
 org.geomajas.gwt2.client.map.layer.Layer:String getTitle():2.0.0
@@ -386,6 +487,7 @@ org.geomajas.gwt2.client.map.layer.Layer:boolean isShowing():2.0.0
 org.geomajas.gwt2.client.map.layer.Layer:double getOpacity():2.0.0
 org.geomajas.gwt2.client.map.layer.Layer:void refresh():2.0.0
 org.geomajas.gwt2.client.map.layer.Layer:void setMarkedAsVisible(boolean, ):2.0.0
+org.geomajas.gwt2.client.map.layer.Layer:void setMaxBounds(Bbox, ):2.1.0
 org.geomajas.gwt2.client.map.layer.Layer:void setOpacity(double, ):2.0.0
 org.geomajas.gwt2.client.map.layer.Layer:void setSelected(boolean, ):2.0.0
 org.geomajas.gwt2.client.map.layer.LayersModel::2.0.0
@@ -402,7 +504,10 @@ org.geomajas.gwt2.client.map.layer.LayersModel:int getLayerPosition(Layer, ):2.0
 org.geomajas.gwt2.client.map.layer.LayersModel:void clear():2.0.0
 org.geomajas.gwt2.client.map.layer.LegendConfig::2.0.0
 org.geomajas.gwt2.client.map.layer.LegendConfig:Bbox getBounds():2.0.0
+org.geomajas.gwt2.client.map.layer.LegendConfig:Double getDpi():2.2.0
 org.geomajas.gwt2.client.map.layer.LegendConfig:FontStyle getFontStyle():2.0.0
+org.geomajas.gwt2.client.map.layer.LegendConfig:Integer getHeight():2.2.0
+org.geomajas.gwt2.client.map.layer.LegendConfig:Integer getWidth():2.2.0
 org.geomajas.gwt2.client.map.layer.LegendConfig:LegendConfig():2.0.0
 org.geomajas.gwt2.client.map.layer.LegendConfig:String getExceptions():2.0.0
 org.geomajas.gwt2.client.map.layer.LegendConfig:String getImageFormat():2.0.0
@@ -411,18 +516,41 @@ org.geomajas.gwt2.client.map.layer.LegendConfig:int getIconWidth():2.0.0
 org.geomajas.gwt2.client.map.layer.LegendConfig:static final String DEFAULT_IMAGE_FORMAT:2.0.0
 org.geomajas.gwt2.client.map.layer.LegendConfig:static final int DEFAULT_ICON_SIZE:2.0.0
 org.geomajas.gwt2.client.map.layer.LegendConfig:void setBounds(Bbox, ):2.0.0
+org.geomajas.gwt2.client.map.layer.LegendConfig:void setDpi(Double, ):2.2.0
 org.geomajas.gwt2.client.map.layer.LegendConfig:void setExceptions(String, ):2.0.0
 org.geomajas.gwt2.client.map.layer.LegendConfig:void setFontStyle(FontStyle, ):2.0.0
+org.geomajas.gwt2.client.map.layer.LegendConfig:void setHeight(Integer, ):2.2.0
 org.geomajas.gwt2.client.map.layer.LegendConfig:void setIconHeight(int, ):2.0.0
 org.geomajas.gwt2.client.map.layer.LegendConfig:void setIconWidth(int, ):2.0.0
 org.geomajas.gwt2.client.map.layer.LegendConfig:void setImageFormat(String, ):2.0.0
+org.geomajas.gwt2.client.map.layer.LegendConfig:void setWidth(Integer, ):2.2.0
 org.geomajas.gwt2.client.map.layer.LegendUrlSupported::2.0.0
 org.geomajas.gwt2.client.map.layer.LegendUrlSupported:String getLegendImageUrl():2.0.0
 org.geomajas.gwt2.client.map.layer.LegendUrlSupported:String getLegendImageUrl(LegendConfig, ):2.0.0
+org.geomajas.gwt2.client.map.layer.tile.TileBasedLayer::2.1.0
+org.geomajas.gwt2.client.map.layer.tile.TileBasedLayer:TileConfiguration getTileConfiguration():2.1.0
+org.geomajas.gwt2.client.map.layer.tile.TileConfiguration::2.1.0
+org.geomajas.gwt2.client.map.layer.tile.TileConfiguration:Coordinate getTileOrigin():2.1.0
+org.geomajas.gwt2.client.map.layer.tile.TileConfiguration:TileConfiguration():2.1.0
+org.geomajas.gwt2.client.map.layer.tile.TileConfiguration:TileConfiguration(int, int, Coordinate, List<Double>, ):2.1.0
+org.geomajas.gwt2.client.map.layer.tile.TileConfiguration:TileConfiguration(int, int, Coordinate, ViewPort, ):2.1.0
+org.geomajas.gwt2.client.map.layer.tile.TileConfiguration:double getMaximumResolution():2.1.0
+org.geomajas.gwt2.client.map.layer.tile.TileConfiguration:double getMinimumResolution():2.1.0
+org.geomajas.gwt2.client.map.layer.tile.TileConfiguration:double getResolution(int, ):2.1.0
+org.geomajas.gwt2.client.map.layer.tile.TileConfiguration:int getResolutionCount():2.1.0
+org.geomajas.gwt2.client.map.layer.tile.TileConfiguration:int getResolutionIndex(double, ):2.1.0
+org.geomajas.gwt2.client.map.layer.tile.TileConfiguration:int getTileHeight():2.1.0
+org.geomajas.gwt2.client.map.layer.tile.TileConfiguration:int getTileWidth():2.1.0
+org.geomajas.gwt2.client.map.layer.tile.TileConfiguration:void setResolutions(List<Double>, ):2.1.0
+org.geomajas.gwt2.client.map.layer.tile.TileConfiguration:void setTileHeight(int, ):2.1.0
+org.geomajas.gwt2.client.map.layer.tile.TileConfiguration:void setTileOrigin(Coordinate, ):2.1.0
+org.geomajas.gwt2.client.map.layer.tile.TileConfiguration:void setTileWidth(int, ):2.1.0
 org.geomajas.gwt2.client.map.render.BasicRenderer::2.0.0
 org.geomajas.gwt2.client.map.render.BasicRenderer:void render(RenderingInfo, ):2.0.0
 org.geomajas.gwt2.client.map.render.LayerRenderer::2.0.0
 org.geomajas.gwt2.client.map.render.LayerRenderer:Layer getLayer():2.0.0
+org.geomajas.gwt2.client.map.render.LayerRenderer:double getOpacity():2.1.0
+org.geomajas.gwt2.client.map.render.LayerRenderer:void setOpacity(double, ):2.1.0
 org.geomajas.gwt2.client.map.render.LayersModelRenderer::2.0.0
 org.geomajas.gwt2.client.map.render.LayersModelRenderer:LayerRenderer getLayerRenderer(Layer, ):2.0.0
 org.geomajas.gwt2.client.map.render.LayersModelRenderer:boolean isAnimated(Layer, ):2.0.0
@@ -455,6 +583,8 @@ org.geomajas.gwt2.client.map.render.TileCode:int hashCode():2.0.0
 org.geomajas.gwt2.client.map.render.TileCode:void setTileLevel(int, ):2.0.0
 org.geomajas.gwt2.client.map.render.TileCode:void setX(int, ):2.0.0
 org.geomajas.gwt2.client.map.render.TileCode:void setY(int, ):2.0.0
+org.geomajas.gwt2.client.map.render.TileRenderer::2.1.0
+org.geomajas.gwt2.client.map.render.TileRenderer:String getUrl(TileCode, ):2.1.0
 org.geomajas.gwt2.client.widget.DefaultMapWidget::2.0.0
 org.geomajas.gwt2.client.widget.DefaultMapWidget:PAN_CONTROL:2.0.0
 org.geomajas.gwt2.client.widget.DefaultMapWidget:SCALEBAR:2.0.0

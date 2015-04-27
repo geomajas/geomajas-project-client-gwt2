@@ -11,6 +11,24 @@
 
 package org.geomajas.gwt2.plugin.wms.example.client.sample;
 
+import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.GeomajasServerExtension;
+import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
+import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
+import org.geomajas.gwt2.client.widget.MapLayoutPanel;
+import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
+import org.geomajas.gwt2.plugin.wfs.client.protocol.WfsFeatureTypeDescriptionInfo;
+import org.geomajas.gwt2.plugin.wms.client.WmsClient;
+import org.geomajas.gwt2.plugin.wms.client.WmsServerExtension;
+import org.geomajas.gwt2.plugin.wms.client.capabilities.WmsGetCapabilitiesInfo;
+import org.geomajas.gwt2.plugin.wms.client.capabilities.WmsLayerInfo;
+import org.geomajas.gwt2.plugin.wms.client.layer.FeatureSearchSupportedWmsServerLayer;
+import org.geomajas.gwt2.plugin.wms.client.layer.WmsLayerConfiguration;
+import org.geomajas.gwt2.plugin.wms.client.service.WmsService.WmsRequest;
+import org.geomajas.gwt2.plugin.wms.client.service.WmsService.WmsUrlTransformer;
+import org.geomajas.gwt2.plugin.wms.client.service.WmsService.WmsVersion;
+
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -26,24 +44,6 @@ import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-
-import org.geomajas.gwt2.client.GeomajasImpl;
-import org.geomajas.gwt2.client.GeomajasServerExtension;
-import org.geomajas.gwt2.client.map.MapPresenter;
-import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
-import org.geomajas.gwt2.client.map.layer.tile.TileConfiguration;
-import org.geomajas.gwt2.client.widget.MapLayoutPanel;
-import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
-import org.geomajas.gwt2.plugin.wms.client.WmsClient;
-import org.geomajas.gwt2.plugin.wms.client.WmsServerExtension;
-import org.geomajas.gwt2.plugin.wms.client.capabilities.WmsGetCapabilitiesInfo;
-import org.geomajas.gwt2.plugin.wms.client.capabilities.WmsLayerInfo;
-import org.geomajas.gwt2.plugin.wms.client.layer.FeatureSearchSupportedWmsServerLayer;
-import org.geomajas.gwt2.plugin.wms.client.layer.WfsLayerConfiguration;
-import org.geomajas.gwt2.plugin.wms.client.layer.WmsLayerConfiguration;
-import org.geomajas.gwt2.plugin.wms.client.service.WmsService.WmsRequest;
-import org.geomajas.gwt2.plugin.wms.client.service.WmsService.WmsUrlTransformer;
-import org.geomajas.gwt2.plugin.wms.client.service.WmsService.WmsVersion;
 
 /**
  * ContentPanel that demonstrates rendering abilities in world space with a map that supports resizing.
@@ -156,7 +156,7 @@ public class IsFeaturesSupportedPanel implements SamplePanel {
 
 		// For every layer we check if it supports features or not:
 		WmsServerExtension.getInstance().supportsFeatures(WMS_BASE_URL, getWmsVersion(), layerInfo.getName(),
-				new Callback<WfsLayerConfiguration, String>() {
+				new Callback<WfsFeatureTypeDescriptionInfo, String>() {
 
 					@Override
 					public void onFailure(String s) {
@@ -170,7 +170,7 @@ public class IsFeaturesSupportedPanel implements SamplePanel {
 					}
 
 					@Override
-					public void onSuccess(final WfsLayerConfiguration wfsLayerConfiguration) {
+					public void onSuccess(final WfsFeatureTypeDescriptionInfo wfsLayerConfiguration) {
 						radioButton.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
 
 							@Override
@@ -182,7 +182,7 @@ public class IsFeaturesSupportedPanel implements SamplePanel {
 				});
 	}
 
-	private void installLayer(WmsLayerInfo layerInfo, WfsLayerConfiguration wfsLayerConfiguration) {
+	private void installLayer(WmsLayerInfo layerInfo, WfsFeatureTypeDescriptionInfo wfsLayerConfiguration) {
 		// First remove all layers from the map:
 		mapPresenter.getLayersModel().clear();
 
@@ -201,7 +201,7 @@ public class IsFeaturesSupportedPanel implements SamplePanel {
 					layerInfo.getTitle(), mapPresenter.getViewPort().getCrs(), tileConfig, layerConfig, layerInfo,
 					wfsLayerConfiguration);
 			// When this layer is initialized, we can write out it's attribute descriptors:
-			for (AttributeDescriptor descriptor : wfsLayerConfiguration.getDescriptors()) {
+			for (AttributeDescriptor descriptor : wfsLayerConfiguration.getAttributeDescriptors()) {
 				attributePanel.add(new HTML("Attribute: <b>" + descriptor.getName() + "</b> ("
 						+ descriptor.getType().getName() + ")"));
 			}

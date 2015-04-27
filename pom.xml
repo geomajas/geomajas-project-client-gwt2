@@ -69,7 +69,8 @@
 		<gwt2-client-version-gwtmockito>1.1.4</gwt2-client-version-gwtmockito>
 		<gwt2-client-version-mockito>1.9.5</gwt2-client-version-mockito>
 		<gwt2-client-version-gwt-jackson>0.6.2</gwt2-client-version-gwt-jackson>
-		<gwt2-client-version-jackson>2.4.3</gwt2-client-version-jackson>
+		<gwt2-client-version-jackson1>1.9.2</gwt2-client-version-jackson1>
+		<gwt2-client-version-jackson2>2.4.3</gwt2-client-version-jackson2>
 	</properties>
 
 	<dependencyManagement>
@@ -279,6 +280,32 @@
 				<version>${project.version}</version>
 			</dependency>
 
+			<!-- WFS plugin -->
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-client-gwt2-plugin-wfs</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-client-gwt2-plugin-wfs-server-extension</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-client-gwt2-plugin-wfs-server-example-jar</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-client-gwt2-plugin-wfs-example-jar</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-client-gwt2-plugin-wfs-javadoc</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 
 			<!-- Other Geomajas artifacts -->
 			<dependency>
@@ -291,19 +318,24 @@
 
 			<!-- Other dependencies -->
 			<dependency>
+				<groupId>org.codehaus.jackson</groupId>
+				<artifactId>jackson-core-asl</artifactId>
+				<version>${gwt2-client-version-jackson1}</version>
+			</dependency>	
+			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-core</artifactId>
-				<version>${gwt2-client-version-jackson}</version>
+				<version>${gwt2-client-version-jackson2}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-annotations</artifactId>
-				<version>${gwt2-client-version-jackson}</version>
+				<version>${gwt2-client-version-jackson2}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-databind</artifactId>
-				<version>${gwt2-client-version-jackson}</version>
+				<version>${gwt2-client-version-jackson2}</version>
 			</dependency>
 
 			<dependency>
