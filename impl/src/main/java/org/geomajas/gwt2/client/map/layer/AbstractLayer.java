@@ -139,6 +139,22 @@ public abstract class AbstractLayer implements Layer {
 		}
 	}
 
+	/**
+	 * Check if current viewPort resolution is between the minimum (inclusive) and
+	 * the maximum scale (exclusive) of the layer.
+	 *  Inclusive/exclusive follows SLD convention: exclusive minResolution, inclusive maxResolution.
+	 *
+	 * @param viewPort the viewPort
+	 * @return whether the layer is visible in the provided viewPort resolution
+	 */
+	public boolean isVisibleAtViewPortResolution(ViewPort viewPort) {
+		if (viewPort.getResolution() > getMinResolution()
+				&& viewPort.getResolution() <= getMaxResolution()) {
+			return true;
+		}
+		return false;
+	}
+
 	// ------------------------------------------------------------------------
 	// Protected methods:
 	// ------------------------------------------------------------------------

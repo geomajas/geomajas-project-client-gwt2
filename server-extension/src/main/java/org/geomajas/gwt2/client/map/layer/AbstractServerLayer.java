@@ -77,7 +77,7 @@ public abstract class AbstractServerLayer<T extends ClientLayerInfo> extends Abs
 	@Override
 	public boolean isShowing() {
 		if (markedAsVisible) {
-			return LayerUtil.isLayerVisibleAtViewPortResolution(viewPort, this);
+			return isVisibleAtViewPortResolution(viewPort);
 		}
 		return false;
 	}

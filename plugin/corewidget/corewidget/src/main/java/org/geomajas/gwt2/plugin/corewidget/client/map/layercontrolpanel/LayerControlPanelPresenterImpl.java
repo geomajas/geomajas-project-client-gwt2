@@ -18,8 +18,8 @@ import org.geomajas.gwt2.client.event.LayerVisibilityMarkedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
 import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.client.map.ViewPort;
 import org.geomajas.gwt2.client.map.layer.Layer;
-import org.geomajas.gwt2.client.map.layer.LayerUtil;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -101,9 +101,25 @@ public class LayerControlPanelPresenterImpl implements LayerControlPanelPresente
 	protected void updateVisibilityToggle() {
 		if (disableToggleOutOfRange) {
 			view.enableVisibilityToggle(
-					LayerUtil.isLayerVisibleAtViewPortResolution(mapPresenter.getViewPort(), layer));
+					isLayerVisibleAtViewPortResolution(mapPresenter.getViewPort(), layer));
 		}
 	}
 
+	/**
+	 * Check if current viewPort resolution is between the minimum (inclusive) and
+	 * the maximum scale (exclusive) of the layer.
+	 *  Inclusive/exclusive follows SLD convention: exclusive minResolution, inclusive maxResolution.
+	 *
+	 * @param viewPort the viewPort
+	 * @param layer layer
+	 * @return whether the layer is visible in the provided viewPort resolution
+	 */
+	public boolean isLayerVisibleAtViewPortResolution(ViewPort viewPort, Layer layer) {
+		if (viewPort.getResolution() > layer.getMinResolution()
+				&& viewPort.getResolution() <= layer.getMaxResolution()) {
+			return true;
+		}
+		return false;
+	}
 }
 

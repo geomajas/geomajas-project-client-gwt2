@@ -130,6 +130,8 @@ public interface Layer {
 
 	/**
 	 * Returns the maximum resolution at which the layer is visible.
+	 * By SLD convention, the maximum resolution value is inclusive:
+	 * the layer will be visible at this specific resolution.
 	 *
 	 * @return resolution
 	 * @since 2.3.0
@@ -138,6 +140,8 @@ public interface Layer {
 
 	/**
 	 * Returns the minimum resolution at which the layer is visible.
+	 * By SLD convention, the minimum resolution value is exclusive:
+	 * the layer will not be visible at this specific resolution.
 	 *
 	 * @return resolution
 	 * @since 2.3.0
