@@ -11,9 +11,6 @@
 
 package org.geomajas.gwt2.plugin.wfs.example.client.sample;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.geomajas.command.dto.TransformGeometryRequest;
 import org.geomajas.command.dto.TransformGeometryResponse;
 import org.geomajas.geometry.Bbox;
@@ -23,13 +20,13 @@ import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.gfx.VectorContainer;
 import org.geomajas.gwt2.client.map.MapConfiguration;
-import org.geomajas.gwt2.client.map.MapConfiguration.CrsType;
-import org.geomajas.gwt2.client.map.MapConfigurationImpl;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.feature.Feature;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.gwt2.example.base.client.widget.ShowcaseDialogBox;
 import org.geomajas.gwt2.plugin.corewidget.client.feature.featureinfo.FeatureInfoWidget;
+import org.geomajas.gwt2.plugin.tilebasedlayer.client.TileBasedLayerClient;
+import org.geomajas.gwt2.plugin.tilebasedlayer.client.layer.OsmLayer;
 import org.geomajas.gwt2.plugin.wfs.client.WfsServerExtension;
 import org.geomajas.gwt2.plugin.wfs.client.protocol.WfsFeatureTypeDescriptionInfo;
 import org.geomajas.gwt2.plugin.wfs.client.protocol.WfsFeatureTypeInfo;
@@ -96,17 +93,15 @@ public class WfsCapabilitiesPanel implements SamplePanel {
 	@UiField
 	protected Label loading;
 
-	private static final double OSM_HALF_WIDTH = 20037508.342789244;
-
-	private static final int OSM_TILE_SIZE = 256;
-
 	private static final String OSM_EPSG = "EPSG:3857";
+
+	private OsmLayer osmLayer;
 
 	public Widget asWidget() {
 		Widget layout = UI_BINDER.createAndBindUi(this);
 
 		// Create the mapPresenter and add an InitializationHandler:
-		MapConfiguration mapConfiguration = createOsmMap(25);
+		MapConfiguration mapConfiguration = TileBasedLayerClient.getInstance().createOsmMap(25);
 		mapPresenter = GeomajasImpl.getInstance().createMapPresenter(mapConfiguration, 480, 480);
 		mapPresenter.getEventBus().addHandler(ShowFeatureHandler.TYPE, new ShowFeatureHandler() {
 
@@ -115,6 +110,9 @@ public class WfsCapabilitiesPanel implements SamplePanel {
 				showFeature(event.getFeature());
 			}
 		});
+		osmLayer = TileBasedLayerClient.getInstance().createOsmLayer("osm", 25,
+				"http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png");
+		mapPresenter.getLayersModel().addLayer(osmLayer);
 		// Define the whole layout:
 		DecoratorPanel mapDecorator = new DecoratorPanel();
 		mapDecorator.add(mapPresenter.asWidget());
@@ -137,20 +135,6 @@ public class WfsCapabilitiesPanel implements SamplePanel {
 		dialogBox.setModal(false);
 		dialogBox.show();
 
-	}
-
-	public MapConfiguration createOsmMap(int nrOfLevels) {
-		MapConfiguration configuration = new MapConfigurationImpl();
-		Bbox bounds = new Bbox(-OSM_HALF_WIDTH, -OSM_HALF_WIDTH, 2 * OSM_HALF_WIDTH, 2 * OSM_HALF_WIDTH);
-		configuration.setCrs(OSM_EPSG, CrsType.METRIC);
-		configuration.setHintValue(MapConfiguration.INITIAL_BOUNDS, bounds);
-		configuration.setMaxBounds(Bbox.ALL);
-		List<Double> resolutions = new ArrayList<Double>();
-		for (int i = 0; i < nrOfLevels; i++) {
-			resolutions.add(OSM_HALF_WIDTH / (OSM_TILE_SIZE * Math.pow(2, i - 1)));
-		}
-		configuration.setResolutions(resolutions);
-		return configuration;
 	}
 
 	private void transformBoundsAndNavigate(Bbox wgs84BoundingBox) {
@@ -190,6 +174,7 @@ public class WfsCapabilitiesPanel implements SamplePanel {
 	private void getCapabilities() {
 		// First clear the panel and the map:
 		mapPresenter.getLayersModel().clear();
+		mapPresenter.getLayersModel().addLayer(osmLayer);
 		layerList.clear();
 		startLoading();
 		WfsServerExtension.getInstance().getWfsService()

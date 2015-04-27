@@ -89,7 +89,7 @@ public class QueryDtoBuilder implements QueryBuilder {
 		queryDto.setCriterion(criterion);
 		queryDto.setCrs(crs);
 		queryDto.setStartIndex(startIndex);
-		if(requestedAttributeNames != null) {
+		if (requestedAttributeNames != null) {
 			queryDto.setRequestedAttributeNames(Arrays.asList(requestedAttributeNames));
 		}
 		queryDto.setAttributeDescriptors(attributeDescriptors);
