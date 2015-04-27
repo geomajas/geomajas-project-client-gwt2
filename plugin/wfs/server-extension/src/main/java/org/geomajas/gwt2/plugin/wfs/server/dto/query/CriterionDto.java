@@ -37,5 +37,5 @@ public interface CriterionDto extends Criterion, Serializable {
 	/**
 	 * Quick reference to include all criterion.
 	 */
-	ExcludeCriterionDto INCLUDE = new ExcludeCriterionDto();
+	IncludeCriterionDto INCLUDE = new IncludeCriterionDto();
 }

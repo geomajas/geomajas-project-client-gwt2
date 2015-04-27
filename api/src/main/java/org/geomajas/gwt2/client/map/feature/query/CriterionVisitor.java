@@ -11,7 +11,6 @@
 package org.geomajas.gwt2.client.map.feature.query;
 
 import org.geomajas.annotation.Api;
-import org.geomajas.annotation.UserImplemented;
 
 /**
  * Visitor pattern for visiting a criteria tree.
@@ -21,7 +20,6 @@ import org.geomajas.annotation.UserImplemented;
  * @since 2.2.1
  */
 @Api(allMethods = true)
-@UserImplemented
 public interface CriterionVisitor {
 
 	/**
