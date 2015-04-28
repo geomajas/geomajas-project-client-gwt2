@@ -86,16 +86,20 @@ public class WfsGetFeatureCommandTest {
 	private SimpleFeature f2;
 
 	private SimpleFeature f3;
+	
+	private int port;
 
 	@Before
 	public void before() throws Exception {
-		server = new Server(8080);
+		server = new Server(0);
 		servlet = new WfsServlet();
 		ServletContextHandler servletContextHandler = new ServletContextHandler();
 		servletContextHandler.setContextPath("/");
 		servletContextHandler.addServlet(new ServletHolder(servlet),"/wfs/*");
 		server.setHandler(servletContextHandler);
 		server.start();
+		port = server.getConnectors()[0].getLocalPort();
+		servlet.setPort(port);
 		StringBuilder sb = new StringBuilder();
 		sb.append("myGeom:Point,");
 		sb.append("myInt:Integer,");
@@ -114,7 +118,7 @@ public class WfsGetFeatureCommandTest {
 	@Test
 	public void integrationTest() throws Exception {
 		WfsGetFeatureRequest request = new WfsGetFeatureRequest();
-		request.setBaseUrl("http://127.0.0.1:8080/wfs");
+		request.setBaseUrl("http://127.0.0.1:"+port+"/wfs");
 		request.setTypeName("dov-pub-bodem:Bodemassociatiekaart");
 		request.setCriterion(new FidCriterionDto(new String[] { "Bodemassociatiekaart.1", "Bodemassociatiekaart.2" }));
 		request.setCrs("EPSG:31370");

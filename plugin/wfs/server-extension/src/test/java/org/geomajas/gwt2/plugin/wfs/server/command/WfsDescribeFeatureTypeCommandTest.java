@@ -29,6 +29,8 @@ public class WfsDescribeFeatureTypeCommandTest {
 
 	private Server server;
 
+	private int port;
+
 	@Autowired
 	private WfsDescribeFeatureTypeCommand command;
 
@@ -36,18 +38,20 @@ public class WfsDescribeFeatureTypeCommandTest {
 
 	@Before
 	public void before() throws Exception {
-		server = new Server(8080);
+		server = new Server(0);
 		servlet = new WfsServlet();
 		ServletContextHandler servletContextHandler = new ServletContextHandler();
 		servletContextHandler.setContextPath("/");
-		servletContextHandler.addServlet(new ServletHolder(servlet),"/wfs/*");
+		servletContextHandler.addServlet(new ServletHolder(servlet), "/wfs/*");
 		server.setHandler(servletContextHandler);
 		server.start();
+		port = server.getConnectors()[0].getLocalPort();
+		servlet.setPort(port);
 	}
 
 	@Test
 	public void integrationTest() throws GeomajasException {
-		WfsDescribeFeatureTypeRequest request = new WfsDescribeFeatureTypeRequest("http://127.0.0.1:8080/wfs",
+		WfsDescribeFeatureTypeRequest request = new WfsDescribeFeatureTypeRequest("http://127.0.0.1:" + port + "/wfs",
 				"dov-pub-bodem:Bodemassociatiekaart");
 		WfsDescribeFeatureTypeResponse response = new WfsDescribeFeatureTypeResponse();
 		command.execute(request, response);
