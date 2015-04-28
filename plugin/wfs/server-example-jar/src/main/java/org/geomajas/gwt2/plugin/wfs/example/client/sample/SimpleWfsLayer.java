@@ -106,6 +106,16 @@ public class SimpleWfsLayer extends AbstractLayer implements FeaturesSupported {
 	}
 
 	@Override
+	public double getMaxResolution() {
+		return Double.MAX_VALUE;
+	}
+
+	@Override
+	public double getMinResolution() {
+		return Double.MIN_VALUE;
+	}
+
+	@Override
 	public List<AttributeDescriptor> getAttributeDescriptors() {
 		return wfsFeatureTypeDescriptionInfo.getAttributeDescriptors();
 	}
