@@ -4,8 +4,7 @@ before_install:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - "git clone https://github.com/geomajas/geomajas-build-tools target/geomajas-build-tools"
-  - "ls -al $HOME/.m2"
-  - "find $HOME/.m2"
+  - "du -sh $HOME/.m2"
 jdk:
   - oraclejdk7
 cache:
