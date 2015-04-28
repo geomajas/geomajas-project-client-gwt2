@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <WFS_Capabilities version="1.0.0" xmlns="http://www.opengis.net/wfs"
-	xmlns:profielen="http://127.0.0.1:8080/wfs/geologie/profielen"
-	xmlns:dov-pub-soil="http://127.0.0.1:8080/wfs/dov-pub-soil"
-	xmlns:dov-pub-aardewerk="http://127.0.0.1:8080/wfs/dov-pub-aardewerk"
-	xmlns:geologie="https://dov.vlaanderen.be" xmlns:erosie="http://127.0.0.1:8080/wfs/erosie"
-	xmlns:grondwater="http://127.0.0.1:8080/wfs/grondwater"
-	xmlns:bodem_varia="http://127.0.0.1:8080/wfs/bodem_varia"
-	xmlns:dieptecriteria="http://127.0.0.1:8080/wfs/dieptecriteria"
-	xmlns:dov-pub-ALBON_DUT_Geology="http://127.0.0.1:8080/wfs/dov-pub-ALBON_DUT_Geology"
-	xmlns:dov-pub-bodem="http://127.0.0.1:8080/wfs/dov-pub-bodem"
-	xmlns:gw_beleid="http://127.0.0.1:8080/wfs/gw_beleid" xmlns:HCOV="http://127.0.0.1:8080/wfs/HCOV"
-	xmlns:g3dv2="http://127.0.0.1:8080/wfs/g3dv2" xmlns:geothermie="http://127.0.0.1:8080/wfs/geothermie"
-	xmlns:gw_varia="http://127.0.0.1:8080/wfs/gw_varia" xmlns:quartair="http://127.0.0.1:8080/wfs/quartair"
-	xmlns:geologie_varia="http://127.0.0.1:8080/wfs/geologie/geologie_varia"
-	xmlns:bodem="http://127.0.0.1:8080/wfs/bodem" xmlns:dov-pub="http://127.0.0.1:8080/wfs/dov-pub"
+	xmlns:profielen="http://127.0.0.1:__port__/wfs/geologie/profielen"
+	xmlns:dov-pub-soil="http://127.0.0.1:__port__/wfs/dov-pub-soil"
+	xmlns:dov-pub-aardewerk="http://127.0.0.1:__port__/wfs/dov-pub-aardewerk"
+	xmlns:geologie="https://dov.vlaanderen.be" xmlns:erosie="http://127.0.0.1:__port__/wfs/erosie"
+	xmlns:grondwater="http://127.0.0.1:__port__/wfs/grondwater"
+	xmlns:bodem_varia="http://127.0.0.1:__port__/wfs/bodem_varia"
+	xmlns:dieptecriteria="http://127.0.0.1:__port__/wfs/dieptecriteria"
+	xmlns:dov-pub-ALBON_DUT_Geology="http://127.0.0.1:__port__/wfs/dov-pub-ALBON_DUT_Geology"
+	xmlns:dov-pub-bodem="http://127.0.0.1:__port__/wfs/dov-pub-bodem"
+	xmlns:gw_beleid="http://127.0.0.1:__port__/wfs/gw_beleid" xmlns:HCOV="http://127.0.0.1:__port__/wfs/HCOV"
+	xmlns:g3dv2="http://127.0.0.1:__port__/wfs/g3dv2" xmlns:geothermie="http://127.0.0.1:__port__/wfs/geothermie"
+	xmlns:gw_varia="http://127.0.0.1:__port__/wfs/gw_varia" xmlns:quartair="http://127.0.0.1:__port__/wfs/quartair"
+	xmlns:geologie_varia="http://127.0.0.1:__port__/wfs/geologie/geologie_varia"
+	xmlns:bodem="http://127.0.0.1:__port__/wfs/bodem" xmlns:dov-pub="http://127.0.0.1:__port__/wfs/dov-pub"
 	xmlns:ogc="http://www.opengis.net/ogc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.opengis.net/wfs http://127.0.0.1:8080/wfs/WFS-capabilities.xsd">
+	xsi:schemaLocation="http://www.opengis.net/wfs http://127.0.0.1:__port__/wfs/WFS-capabilities.xsd">
 	<Service>
 		<Name>WFS</Name>
 		<Title>Download Service van Databank Ondergrond Vlaanderen</Title>
 		<Abstract>Download Service van Databank Ondergrond Vlaanderen</Abstract>
 		<Keywords />
-		<OnlineResource>http://127.0.0.1:8080/wfs
+		<OnlineResource>http://127.0.0.1:__port__/wfs
 		</OnlineResource>
 		<Fees>No fees</Fees>
 		<AccessConstraints />
@@ -32,12 +32,12 @@
 				<DCPType>
 					<HTTP>
 						<Get
-							onlineResource="http://127.0.0.1:8080/wfs?request=GetCapabilities" />
+							onlineResource="http://127.0.0.1:__port__/wfs?request=GetCapabilities" />
 					</HTTP>
 				</DCPType>
 				<DCPType>
 					<HTTP>
-						<Post onlineResource="http://127.0.0.1:8080/wfs" />
+						<Post onlineResource="http://127.0.0.1:__port__/wfs" />
 					</HTTP>
 				</DCPType>
 			</GetCapabilities>
@@ -48,12 +48,12 @@
 				<DCPType>
 					<HTTP>
 						<Get
-							onlineResource="http://127.0.0.1:8080/wfs?request=DescribeFeatureType" />
+							onlineResource="http://127.0.0.1:__port__/wfs?request=DescribeFeatureType" />
 					</HTTP>
 				</DCPType>
 				<DCPType>
 					<HTTP>
-						<Post onlineResource="http://127.0.0.1:8080/wfs" />
+						<Post onlineResource="http://127.0.0.1:__port__/wfs" />
 					</HTTP>
 				</DCPType>
 			</DescribeFeatureType>
@@ -69,12 +69,12 @@
 				<DCPType>
 					<HTTP>
 						<Get
-							onlineResource="http://127.0.0.1:8080/wfs?request=GetFeature" />
+							onlineResource="http://127.0.0.1:__port__/wfs?request=GetFeature" />
 					</HTTP>
 				</DCPType>
 				<DCPType>
 					<HTTP>
-						<Post onlineResource="http://127.0.0.1:8080/wfs" />
+						<Post onlineResource="http://127.0.0.1:__port__/wfs" />
 					</HTTP>
 				</DCPType>
 			</GetFeature>
@@ -87,7 +87,7 @@
 		<FeatureType>
 			<Name>dov-pub-bodem:Bodemkundig_erfgoed</Name>
 			<Title>! URL gewijzigd. Bodemkundig erfgoed</Title>
-			<Abstract>Nieuwe URL: http://127.0.0.1:8080/wfs/geoserver/bodem_varia/bodemkundig_erfgoed</Abstract>
+			<Abstract>Nieuwe URL: http://127.0.0.1:__port__/wfs/geoserver/bodem_varia/bodemkundig_erfgoed</Abstract>
 			<Keywords>Soil,  bodem</Keywords>
 			<SRS>EPSG:31370</SRS>
 			<LatLongBoundingBox minx="2.534012015078217" miny="50.694051222131925"
@@ -96,7 +96,7 @@
 		<FeatureType>
 			<Name>dov-pub:Boorgatmetingen</Name>
 			<Title>! URL gewijzigd. Boorgatmetingen</Title>
-			<Abstract>Nieuwe URL: http://127.0.0.1:8080/wfs/geoserver/geologie_varia/boorgatmetingen</Abstract>
+			<Abstract>Nieuwe URL: http://127.0.0.1:__port__/wfs/geoserver/geologie_varia/boorgatmetingen</Abstract>
 			<Keywords>Geology,  Ondergrond,  Boringen,  DOV,  Vlaanderen,  Geologie</Keywords>
 			<SRS>EPSG:31370</SRS>
 			<LatLongBoundingBox minx="2.579532933632709" miny="50.667377808127526"
@@ -105,7 +105,7 @@
 		<FeatureType>
 			<Name>dov-pub-bodem:Erosiegevoeligheid_Vlaamse_gemeenten_2006</Name>
 			<Title>! URL gewijzigd. Erosiegevoeligheidskaart van de Vlaamse gemeenten</Title>
-			<Abstract>Nieuwe URL: http://127.0.0.1:8080/wfs/geoserver/erosie/erosie_gemeente</Abstract>
+			<Abstract>Nieuwe URL: http://127.0.0.1:__port__/wfs/geoserver/erosie/erosie_gemeente</Abstract>
 			<Keywords>Soil,  bodem,  erosie,  bodemerosie</Keywords>
 			<SRS>EPSG:31370</SRS>
 			<LatLongBoundingBox minx="2.5287562256059712"
@@ -114,7 +114,7 @@
 		<FeatureType>
 			<Name>dov-pub:Geologische_Dwarsprofielen</Name>
 			<Title>! URL gewijzigd. Geologische Dwarsprofielen</Title>
-			<Abstract>Nieuwe URL: http://127.0.0.1:8080/wfs/geoserver/profielen/geologische_dwarsprofielen</Abstract>
+			<Abstract>Nieuwe URL: http://127.0.0.1:__port__/wfs/geoserver/profielen/geologische_dwarsprofielen</Abstract>
 			<Keywords>Geology,  Ondergrond,  Boringen,  Lithologische beschrijving,  Formele stratigrafie,  DOV,  Tertiair,  Breuken,  Voorkomen,  Vlaanderen,  Geologie,  Krijt,  Paleozoicum,  lithosfeer ,  gesteente ,  afzetting ,  ondergrond</Keywords>
 			<SRS>EPSG:31370</SRS>
 			<LatLongBoundingBox minx="2.535938669522628" miny="50.58389060349548"
@@ -123,7 +123,7 @@
 		<FeatureType>
 			<Name>dov-pub:Grondwaterlichamen-index_20101008</Name>
 			<Title>! URL gewijzigd. Grondwaterlichamen</Title>
-			<Abstract>Nieuwe URL: http://127.0.0.1:8080/wfs/geoserver/gw_beleid/grondwaterlichamen</Abstract>
+			<Abstract>Nieuwe URL: http://127.0.0.1:__port__/wfs/geoserver/gw_beleid/grondwaterlichamen</Abstract>
 			<Keywords>Geology,  ondergrond,  hydrostratigrafie,  DOV,  Vlaanderen,  geologie</Keywords>
 			<SRS>EPSG:31370</SRS>
 			<LatLongBoundingBox minx="2.5246674724173372"

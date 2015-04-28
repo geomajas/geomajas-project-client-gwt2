@@ -26,7 +26,7 @@ public class IncludeCriterionDto implements IncludeCriterion, CriterionDto {
 	/**
 	 * Create an include-all criterion.
 	 */
-	public IncludeCriterionDto() {
+	IncludeCriterionDto() {
 	}
 
 	@Override
