@@ -38,6 +38,8 @@ public class WmsLayerImpl extends AbstractTileBasedLayer implements WmsLayer {
 	protected TileRenderer tileRenderer;
 
 	private double opacity = 1.0;
+	
+	private String crs;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -60,7 +62,7 @@ public class WmsLayerImpl extends AbstractTileBasedLayer implements WmsLayer {
 	public WmsLayerImpl(String id, String title, String crs, WmsLayerConfiguration wmsConfig,
 			TileConfiguration tileConfig, WmsLayerInfo layerCapabilities) {
 		super(id, tileConfig);
-
+		this.crs = crs;
 		this.title = title;
 		this.wmsConfig = wmsConfig;
 		this.tileConfig = tileConfig;
@@ -141,6 +143,10 @@ public class WmsLayerImpl extends AbstractTileBasedLayer implements WmsLayer {
 	@Override
 	public double getOpacity() {
 		return opacity;
+	}
+	
+	public String getCrs() {
+		return crs;
 	}
 
 	// ------------------------------------------------------------------------

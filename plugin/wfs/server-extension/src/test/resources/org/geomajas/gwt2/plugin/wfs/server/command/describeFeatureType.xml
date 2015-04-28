@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:HCOV="http://127.0.0.1:__port__/wfs/HCOV" xmlns:bodem="http://dov.vlaanderen.be/bodem" xmlns:bodem_varia="http://dov.vlaanderen.be/bodem_varia" xmlns:dieptecriteria="http://127.0.0.1:__port__/wfs/dieptecriteria" xmlns:dov-pub="http://127.0.0.1:__port__/wfs/dov-pub" xmlns:dov-pub-ALBON_DUT_Geology="http://127.0.0.1:__port__/wfs/dov-pub-ALBON_DUT_Geology" xmlns:dov-pub-aardewerk="http://127.0.0.1:__port__/wfs/dov-pub-aardewerk" xmlns:dov-pub-bodem="http://127.0.0.1:__port__/wfs/dov-pub-bodem" xmlns:dov-pub-soil="http://127.0.0.1:__port__/wfs/dov-pub-soil" xmlns:erosie="http://dov.vlaanderen.be/erosie" xmlns:g3dv2="http://127.0.0.1:__port__/wfs/g3dv2" xmlns:geologie="https://dov.vlaanderen.be" xmlns:geologie_varia="http://dov.vlaanderen.be/geologie/geologie_varia" xmlns:geothermie="http://127.0.0.1:__port__/wfs/geothermie" xmlns:gml="http://www.opengis.net/gml" xmlns:grondwater="http://127.0.0.1:__port__/wfs/grondwater" xmlns:gw_beleid="http://dov.vlaanderen.be/gw_beleid" xmlns:gw_varia="http://dov.vlaanderen.be/gw_varia" xmlns:profielen="http://dov.vlaanderen.be/geologie/profielen" xmlns:quartair="http://127.0.0.1:__port__/wfs/quartair" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://127.0.0.1:__port__/wfs/dov-pub-bodem">
+  <xsd:import namespace="http://www.opengis.net/gml" schemaLocation="http://127.0.0.1:__port__/wfs:443/geoserver/schemas/gml/2.1.2/feature.xsd"/>
+  <xsd:complexType name="BodemassociatiekaartType">
+    <xsd:complexContent>
+      <xsd:extension base="gml:AbstractFeatureType">
+        <xsd:sequence>
+          <xsd:element maxOccurs="1" minOccurs="0" name="uidn" nillable="true" type="xsd:decimal"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="oidn" nillable="true" type="xsd:decimal"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="associatie" nillable="true" type="xsd:int"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="omschr" nillable="true" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="shape" nillable="true" type="gml:MultiPolygonPropertyType"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="Bodemassociatiekaart" substitutionGroup="gml:_Feature" type="dov-pub-bodem:BodemassociatiekaartType"/>
+</xsd:schema>

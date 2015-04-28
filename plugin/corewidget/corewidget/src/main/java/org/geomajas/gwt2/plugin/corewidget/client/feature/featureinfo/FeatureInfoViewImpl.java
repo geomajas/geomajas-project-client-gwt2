@@ -63,7 +63,7 @@ public class FeatureInfoViewImpl implements FeatureInfoView {
 		contentPanel.clear();
 
 		// Layout the attributes of the feature in a grid:
-		Grid grid = new Grid(feature.getAttributes().size(), 3);
+		Grid grid = new Grid(feature.getLayer().getAttributeDescriptors().size(), 3);
 		CellFormatter formatter = grid.getCellFormatter();
 		int i = 0;
 		for (AttributeDescriptor descriptor : feature.getLayer().getAttributeDescriptors()) {

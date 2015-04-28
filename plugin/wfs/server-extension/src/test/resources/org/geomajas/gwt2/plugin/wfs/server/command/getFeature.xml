@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wfs:FeatureCollection xmlns="http://www.opengis.net/wfs"
+	xmlns:wfs="http://www.opengis.net/wfs" xmlns:dov-pub-bodem="http://127.0.0.1:__port__/wfs/dov-pub-bodem"
+	xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://127.0.0.1:__port__/wfs/dov-pub-bodem http://127.0.0.1:__port__/wfs:443/geoserver/dov-pub-bodem/wfs?service=WFS&amp;version=1.0.0&amp;request=DescribeFeatureType&amp;typeName=dov-pub-bodem%3ABodemassociatiekaart http://www.opengis.net/wfs http://127.0.0.1:__port__/wfs:443/geoserver/schemas/wfs/1.0.0/WFS-basic.xsd">
+	<gml:boundedBy>
+		<gml:null>unknown</gml:null>
+	</gml:boundedBy>
+	<gml:featureMember>
+		<dov-pub-bodem:Bodemassociatiekaart
+			fid="Bodemassociatiekaart.1">
+			<dov-pub-bodem:uidn>84.0</dov-pub-bodem:uidn>
+			<dov-pub-bodem:oidn>84.0</dov-pub-bodem:oidn>
+			<dov-pub-bodem:associatie>2</dov-pub-bodem:associatie>
+			<dov-pub-bodem:omschr>duinen: duingronden en overgangsgronden</dov-pub-bodem:omschr>
+			<dov-pub-bodem:shape>
+				<gml:MultiPolygon srsName="http://www.opengis.net/gml/srs/epsg.xml#31370">
+					<gml:polygonMember>
+						<gml:Polygon>
+							<gml:outerBoundaryIs>
+								<gml:LinearRing>
+									<gml:coordinates xmlns:gml="http://www.opengis.net/gml"
+										decimal="." cs="," ts=" ">25453.602,196512.7699 25752.454,196643.1449 26414.559,197013.2379 26365.219,197257.2539 26067.066,197282.1759 25440.002,196979.9729 24294.328,196624.0509 23546.244,196470.5349 23423.143,195827.8479 23472.041,195621.0979 25453.602,196512.7699</gml:coordinates>
+								</gml:LinearRing>
+							</gml:outerBoundaryIs>
+						</gml:Polygon>
+					</gml:polygonMember>
+				</gml:MultiPolygon>
+			</dov-pub-bodem:shape>
+		</dov-pub-bodem:Bodemassociatiekaart>
+	</gml:featureMember>
+	<gml:featureMember>
+		<dov-pub-bodem:Bodemassociatiekaart
+			fid="Bodemassociatiekaart.2">
+			<dov-pub-bodem:uidn>100.0</dov-pub-bodem:uidn>
+			<dov-pub-bodem:oidn>100.0</dov-pub-bodem:oidn>
+			<dov-pub-bodem:associatie>6</dov-pub-bodem:associatie>
+			<dov-pub-bodem:omschr>polders middelland: overdekte poelgronden</dov-pub-bodem:omschr>
+			<dov-pub-bodem:shape>
+				<gml:MultiPolygon srsName="http://www.opengis.net/gml/srs/epsg.xml#31370">
+					<gml:polygonMember>
+						<gml:Polygon>
+							<gml:outerBoundaryIs>
+								<gml:LinearRing>
+									<gml:coordinates xmlns:gml="http://www.opengis.net/gml"
+										decimal="." cs="," ts=" ">69944.016,225233.2699 69864.195,225034.6449 69965.031,224766.7069 70733.75,224156.8169 71100.102,224191.9259 71370.875,224370.8479 71047.555,225298.5979 69944.016,225233.2699</gml:coordinates>
+								</gml:LinearRing>
+							</gml:outerBoundaryIs>
+						</gml:Polygon>
+					</gml:polygonMember>
+				</gml:MultiPolygon>
+			</dov-pub-bodem:shape>
+		</dov-pub-bodem:Bodemassociatiekaart>
+	</gml:featureMember>
+</wfs:FeatureCollection>

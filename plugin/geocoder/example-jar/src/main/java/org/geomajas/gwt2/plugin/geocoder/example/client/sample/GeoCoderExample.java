@@ -11,7 +11,6 @@
 package org.geomajas.gwt2.plugin.geocoder.example.client.sample;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
@@ -73,8 +72,6 @@ public class GeoCoderExample implements SamplePanel {
 
 		// create geocoder widget
 		GeocoderWidget geocoder = new GeocoderWidget(mapPresenter);
-		geocoder.asWidget().getElement().getStyle().setTop(7, Style.Unit.PX);
-		geocoder.asWidget().getElement().getStyle().setLeft(100, Style.Unit.PX);
 
 		// add geocoder widget to the map
 		mapPresenter.getWidgetPane().add(geocoder.asWidget());

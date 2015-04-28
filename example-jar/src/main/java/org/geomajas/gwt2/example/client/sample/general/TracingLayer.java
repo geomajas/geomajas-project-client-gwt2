@@ -92,4 +92,14 @@ public class TracingLayer implements Layer {
 	@Override
 	public void setMaxBounds(Bbox maxBounds) {
 	}
+
+	@Override
+	public double getMaxResolution() {
+		return Double.MAX_VALUE;
+	}
+
+	@Override
+	public double getMinResolution() {
+		return Double.MIN_VALUE;
+	}
 }

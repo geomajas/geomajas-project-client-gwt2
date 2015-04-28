@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WFS_Capabilities version="1.0.0" xmlns="http://www.opengis.net/wfs"
+	xmlns:profielen="http://127.0.0.1:__port__/wfs/geologie/profielen"
+	xmlns:dov-pub-soil="http://127.0.0.1:__port__/wfs/dov-pub-soil"
+	xmlns:dov-pub-aardewerk="http://127.0.0.1:__port__/wfs/dov-pub-aardewerk"
+	xmlns:geologie="https://dov.vlaanderen.be" xmlns:erosie="http://127.0.0.1:__port__/wfs/erosie"
+	xmlns:grondwater="http://127.0.0.1:__port__/wfs/grondwater"
+	xmlns:bodem_varia="http://127.0.0.1:__port__/wfs/bodem_varia"
+	xmlns:dieptecriteria="http://127.0.0.1:__port__/wfs/dieptecriteria"
+	xmlns:dov-pub-ALBON_DUT_Geology="http://127.0.0.1:__port__/wfs/dov-pub-ALBON_DUT_Geology"
+	xmlns:dov-pub-bodem="http://127.0.0.1:__port__/wfs/dov-pub-bodem"
+	xmlns:gw_beleid="http://127.0.0.1:__port__/wfs/gw_beleid" xmlns:HCOV="http://127.0.0.1:__port__/wfs/HCOV"
+	xmlns:g3dv2="http://127.0.0.1:__port__/wfs/g3dv2" xmlns:geothermie="http://127.0.0.1:__port__/wfs/geothermie"
+	xmlns:gw_varia="http://127.0.0.1:__port__/wfs/gw_varia" xmlns:quartair="http://127.0.0.1:__port__/wfs/quartair"
+	xmlns:geologie_varia="http://127.0.0.1:__port__/wfs/geologie/geologie_varia"
+	xmlns:bodem="http://127.0.0.1:__port__/wfs/bodem" xmlns:dov-pub="http://127.0.0.1:__port__/wfs/dov-pub"
+	xmlns:ogc="http://www.opengis.net/ogc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.opengis.net/wfs http://127.0.0.1:__port__/wfs/WFS-capabilities.xsd">
+	<Service>
+		<Name>WFS</Name>
+		<Title>Download Service van Databank Ondergrond Vlaanderen</Title>
+		<Abstract>Download Service van Databank Ondergrond Vlaanderen</Abstract>
+		<Keywords />
+		<OnlineResource>http://127.0.0.1:__port__/wfs
+		</OnlineResource>
+		<Fees>No fees</Fees>
+		<AccessConstraints />
+	</Service>
+	<Capability>
+		<Request>
+			<GetCapabilities>
+				<DCPType>
+					<HTTP>
+						<Get
+							onlineResource="http://127.0.0.1:__port__/wfs?request=GetCapabilities" />
+					</HTTP>
+				</DCPType>
+				<DCPType>
+					<HTTP>
+						<Post onlineResource="http://127.0.0.1:__port__/wfs" />
+					</HTTP>
+				</DCPType>
+			</GetCapabilities>
+			<DescribeFeatureType>
+				<SchemaDescriptionLanguage>
+					<XMLSCHEMA />
+				</SchemaDescriptionLanguage>
+				<DCPType>
+					<HTTP>
+						<Get
+							onlineResource="http://127.0.0.1:__port__/wfs?request=DescribeFeatureType" />
+					</HTTP>
+				</DCPType>
+				<DCPType>
+					<HTTP>
+						<Post onlineResource="http://127.0.0.1:__port__/wfs" />
+					</HTTP>
+				</DCPType>
+			</DescribeFeatureType>
+			<GetFeature>
+				<ResultFormat>
+					<WFSKMLOutputFormat />
+					<GML2 />
+					<GML3 />
+					<SHAPE-ZIP />
+					<CSV />
+					<JSON />
+				</ResultFormat>
+				<DCPType>
+					<HTTP>
+						<Get
+							onlineResource="http://127.0.0.1:__port__/wfs?request=GetFeature" />
+					</HTTP>
+				</DCPType>
+				<DCPType>
+					<HTTP>
+						<Post onlineResource="http://127.0.0.1:__port__/wfs" />
+					</HTTP>
+				</DCPType>
+			</GetFeature>
+		</Request>
+	</Capability>
+	<FeatureTypeList>
+		<Operations>
+			<Query />
+		</Operations>
+		<FeatureType>
+			<Name>dov-pub-bodem:Bodemkundig_erfgoed</Name>
+			<Title>! URL gewijzigd. Bodemkundig erfgoed</Title>
+			<Abstract>Nieuwe URL: http://127.0.0.1:__port__/wfs/geoserver/bodem_varia/bodemkundig_erfgoed</Abstract>
+			<Keywords>Soil,  bodem</Keywords>
+			<SRS>EPSG:31370</SRS>
+			<LatLongBoundingBox minx="2.534012015078217" miny="50.694051222131925"
+				maxx="5.683311269964404" maxy="51.37339440676714" />
+		</FeatureType>
+		<FeatureType>
+			<Name>dov-pub:Boorgatmetingen</Name>
+			<Title>! URL gewijzigd. Boorgatmetingen</Title>
+			<Abstract>Nieuwe URL: http://127.0.0.1:__port__/wfs/geoserver/geologie_varia/boorgatmetingen</Abstract>
+			<Keywords>Geology,  Ondergrond,  Boringen,  DOV,  Vlaanderen,  Geologie</Keywords>
+			<SRS>EPSG:31370</SRS>
+			<LatLongBoundingBox minx="2.579532933632709" miny="50.667377808127526"
+				maxx="5.778132545950628" maxy="51.49752838779955" />
+		</FeatureType>
+		<FeatureType>
+			<Name>dov-pub-bodem:Erosiegevoeligheid_Vlaamse_gemeenten_2006</Name>
+			<Title>! URL gewijzigd. Erosiegevoeligheidskaart van de Vlaamse gemeenten</Title>
+			<Abstract>Nieuwe URL: http://127.0.0.1:__port__/wfs/geoserver/erosie/erosie_gemeente</Abstract>
+			<Keywords>Soil,  bodem,  erosie,  bodemerosie</Keywords>
+			<SRS>EPSG:31370</SRS>
+			<LatLongBoundingBox minx="2.5287562256059712"
+				miny="50.673820326927796" maxx="5.935381278746876" maxy="51.50542873725437" />
+		</FeatureType>
+		<FeatureType>
+			<Name>dov-pub:Geologische_Dwarsprofielen</Name>
+			<Title>! URL gewijzigd. Geologische Dwarsprofielen</Title>
+			<Abstract>Nieuwe URL: http://127.0.0.1:__port__/wfs/geoserver/profielen/geologische_dwarsprofielen</Abstract>
+			<Keywords>Geology,  Ondergrond,  Boringen,  Lithologische beschrijving,  Formele stratigrafie,  DOV,  Tertiair,  Breuken,  Voorkomen,  Vlaanderen,  Geologie,  Krijt,  Paleozoicum,  lithosfeer ,  gesteente ,  afzetting ,  ondergrond</Keywords>
+			<SRS>EPSG:31370</SRS>
+			<LatLongBoundingBox minx="2.535938669522628" miny="50.58389060349548"
+				maxx="5.901969479589169" maxy="51.46058952385844" />
+		</FeatureType>
+		<FeatureType>
+			<Name>dov-pub:Grondwaterlichamen-index_20101008</Name>
+			<Title>! URL gewijzigd. Grondwaterlichamen</Title>
+			<Abstract>Nieuwe URL: http://127.0.0.1:__port__/wfs/geoserver/gw_beleid/grondwaterlichamen</Abstract>
+			<Keywords>Geology,  ondergrond,  hydrostratigrafie,  DOV,  Vlaanderen,  geologie</Keywords>
+			<SRS>EPSG:31370</SRS>
+			<LatLongBoundingBox minx="2.5246674724173372"
+				miny="50.67387127118702" maxx="5.935371353028723" maxy="51.50547196791507" />
+		</FeatureType>
+		<FeatureType>
+			<Name>dov-pub-bodem:Bodemassociatiekaart</Name>
+			<Title>Bodemassociatiekaart</Title>
+			<Abstract>Bodemassociatiekaart</Abstract>
+			<Keywords>bodem,  bodemassociatie,  Belgische bodemclassicatie,  DOV_PATHNAME@001#DOV:400#Bodem:200#Bodemkaarten:100#Bodemassociatiekaart:010#</Keywords>
+			<SRS>EPSG:31370</SRS>
+			<LatLongBoundingBox minx="2.52847177604682" miny="50.677779677994366"
+				maxx="5.937716064043308" maxy="51.50522810584153" />
+		</FeatureType>
+		<FeatureType>
+			<Name>dov-pub-aardewerk:vw_horizonten</Name>
+			<Title>vw_horizonten</Title>
+			<Abstract>vw_horizonten</Abstract>
+			<Keywords>vw_horizonten, features</Keywords>
+			<SRS>EPSG:31370</SRS>
+			<LatLongBoundingBox minx="2.547328283452114" miny="50.676434214996874"
+				maxx="5.91383250174035" maxy="51.36265023266482" />
+		</FeatureType>
+	</FeatureTypeList>
+	<ogc:Filter_Capabilities>
+		<ogc:Spatial_Capabilities>
+			<ogc:Spatial_Operators>
+				<ogc:Disjoint />
+				<ogc:Equals />
+				<ogc:DWithin />
+				<ogc:Beyond />
+				<ogc:Intersect />
+				<ogc:Touches />
+				<ogc:Crosses />
+				<ogc:Within />
+				<ogc:Contains />
+				<ogc:Overlaps />
+				<ogc:BBOX />
+			</ogc:Spatial_Operators>
+		</ogc:Spatial_Capabilities>
+		<ogc:Scalar_Capabilities>
+			<ogc:Logical_Operators />
+			<ogc:Comparison_Operators>
+				<ogc:Simple_Comparisons />
+				<ogc:Between />
+				<ogc:Like />
+				<ogc:NullCheck />
+			</ogc:Comparison_Operators>
+			<ogc:Arithmetic_Operators>
+				<ogc:Simple_Arithmetic />
+				<ogc:Functions>
+					<ogc:Function_Names>
+						<ogc:Function_Name nArgs="1">abs</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">abs_2</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">abs_3</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">abs_4</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">acos</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">AddCoverages</ogc:Function_Name>
+						<ogc:Function_Name nArgs="4">Aggregate</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">Area</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">area2</ogc:Function_Name>
+						<ogc:Function_Name nArgs="3">AreaGrid</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">asin</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">asMultiGeometry</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">atan</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">atan2</ogc:Function_Name>
+						<ogc:Function_Name nArgs="14">BarnesSurface</ogc:Function_Name>
+						<ogc:Function_Name nArgs="3">between</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">boundary</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">boundaryDimension</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">Bounds</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">buffer</ogc:Function_Name>
+						<ogc:Function_Name nArgs="3">BufferFeatureCollection</ogc:Function_Name>
+						<ogc:Function_Name nArgs="3">bufferWithSegments</ogc:Function_Name>
+						<ogc:Function_Name nArgs="7">Categorize</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">ceil</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">centroid</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">classify</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">Clip</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">CollectGeometries</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">Collection_Average</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">Collection_Bounds</ogc:Function_Name>
+						<ogc:Function_Name nArgs="0">Collection_Count</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">Collection_Max</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">Collection_Median</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">Collection_Min</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">Collection_Sum</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">Collection_Unique</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">Concatenate</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">contains</ogc:Function_Name>
+						<ogc:Function_Name nArgs="7">Contour</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">convert</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">convexHull</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">cos</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">Count</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">CropCoverage</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">crosses</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">dateFormat</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">dateParse</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">difference</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">dimension</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">disjoint</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">disjoint3D</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">distance</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">distance3D</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">double2bool</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">endAngle</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">endPoint</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">env</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">envelope</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">EqualInterval</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">equalsExact</ogc:Function_Name>
+						<ogc:Function_Name nArgs="3">equalsExactTolerance</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">equalTo</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">exp</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">exteriorRing</ogc:Function_Name>
+						<ogc:Function_Name nArgs="3">Feature</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">floor</ogc:Function_Name>
+						<ogc:Function_Name nArgs="3">FormatDateTimezone</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">geometryType</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">geomFromWKT</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">geomLength</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">getGeometryN</ogc:Function_Name>
+						<ogc:Function_Name nArgs="0">getID</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">getX</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">getY</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">getz</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">greaterEqualThan</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">greaterThan</ogc:Function_Name>
+						<ogc:Function_Name nArgs="5">Grid</ogc:Function_Name>
+						<ogc:Function_Name nArgs="7">Heatmap</ogc:Function_Name>
+						<ogc:Function_Name nArgs="0">id</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">IEEEremainder</ogc:Function_Name>
+						<ogc:Function_Name nArgs="3">if_then_else</ogc:Function_Name>
+						<ogc:Function_Name nArgs="11">in10</ogc:Function_Name>
+						<ogc:Function_Name nArgs="3">in2</ogc:Function_Name>
+						<ogc:Function_Name nArgs="4">in3</ogc:Function_Name>
+						<ogc:Function_Name nArgs="5">in4</ogc:Function_Name>
+						<ogc:Function_Name nArgs="6">in5</ogc:Function_Name>
+						<ogc:Function_Name nArgs="7">in6</ogc:Function_Name>
+						<ogc:Function_Name nArgs="8">in7</ogc:Function_Name>
+						<ogc:Function_Name nArgs="9">in8</ogc:Function_Name>
+						<ogc:Function_Name nArgs="10">in9</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">InclusionFeatureCollection</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">int2bbool</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">int2ddouble</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">interiorPoint</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">interiorRingN</ogc:Function_Name>
+						<ogc:Function_Name nArgs="3">Interpolate</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">intersection</ogc:Function_Name>
+						<ogc:Function_Name nArgs="7">IntersectionFeatureCollection</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">intersects</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">intersects3D</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">isClosed</ogc:Function_Name>
+						<ogc:Function_Name nArgs="0">isCoverage</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">isEmpty</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">isLike</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">isNull</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">isometric</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">isRing</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">isSimple</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">isValid</ogc:Function_Name>
+						<ogc:Function_Name nArgs="3">isWithinDistance</ogc:Function_Name>
+						<ogc:Function_Name nArgs="3">isWithinDistance3D</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">Jenks</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">length</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">lessEqualThan</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">lessThan</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">list</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">log</ogc:Function_Name>
+						<ogc:Function_Name nArgs="4">LRSGeocode</ogc:Function_Name>
+						<ogc:Function_Name nArgs="5">LRSMeasure</ogc:Function_Name>
+						<ogc:Function_Name nArgs="5">LRSSegment</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">max</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">max_2</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">max_3</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">max_4</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">min</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">min_2</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">min_3</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">min_4</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">mincircle</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">minimumdiameter</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">minrectangle</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">modulo</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">MultiplyCoverages</ogc:Function_Name>
+						<ogc:Function_Name nArgs="3">Nearest</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">not</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">notEqualTo</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">numberFormat</ogc:Function_Name>
+						<ogc:Function_Name nArgs="5">numberFormat2</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">numGeometries</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">numInteriorRing</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">numPoints</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">octagonalenvelope</ogc:Function_Name>
+						<ogc:Function_Name nArgs="3">offset</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">overlaps</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">parameter</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">parseBoolean</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">parseDouble</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">parseInt</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">parseLong</ogc:Function_Name>
+						<ogc:Function_Name nArgs="0">pi</ogc:Function_Name>
+						<ogc:Function_Name nArgs="4">PointBuffers</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">pointN</ogc:Function_Name>
+						<ogc:Function_Name nArgs="7">PointStacker</ogc:Function_Name>
+						<ogc:Function_Name nArgs="6">PolygonExtraction</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">pow</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">property</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">PropertyExists</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">Quantile</ogc:Function_Name>
+						<ogc:Function_Name nArgs="3">Query</ogc:Function_Name>
+						<ogc:Function_Name nArgs="0">random</ogc:Function_Name>
+						<ogc:Function_Name nArgs="3">RangeLookup</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">RasterAsPointCollection</ogc:Function_Name>
+						<ogc:Function_Name nArgs="4">RasterZonalStatistics</ogc:Function_Name>
+						<ogc:Function_Name nArgs="5">Recode</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">RectangularClip</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">relate</ogc:Function_Name>
+						<ogc:Function_Name nArgs="3">relatePattern</ogc:Function_Name>
+						<ogc:Function_Name nArgs="3">Reproject</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">rint</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">round</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">round_2</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">roundDouble</ogc:Function_Name>
+						<ogc:Function_Name nArgs="6">ScaleCoverage</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">setCRS</ogc:Function_Name>
+						<ogc:Function_Name nArgs="3">Simplify</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">sin</ogc:Function_Name>
+						<ogc:Function_Name nArgs="3">Snap</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">sqrt</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">StandardDeviation</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">startAngle</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">startPoint</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">strCapitalize</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">strConcat</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">strEndsWith</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">strEqualsIgnoreCase</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">strIndexOf</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">strLastIndexOf</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">strLength</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">strMatches</ogc:Function_Name>
+						<ogc:Function_Name nArgs="3">strPosition</ogc:Function_Name>
+						<ogc:Function_Name nArgs="4">strReplace</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">strStartsWith</ogc:Function_Name>
+						<ogc:Function_Name nArgs="3">strSubstring</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">strSubstringStart</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">strToLowerCase</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">strToUpperCase</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">strTrim</ogc:Function_Name>
+						<ogc:Function_Name nArgs="3">strTrim2</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">StyleCoverage</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">symDifference</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">tan</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">toDegrees</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">toDirectPosition</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">ToEnvelope</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">toPoint</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">toRadians</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">touches</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">toWKT</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">toXlinkHref</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">Transform</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">union</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">UnionFeatureCollection</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">Unique</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">UniqueInterval</ogc:Function_Name>
+						<ogc:Function_Name nArgs="6">VectorToRaster</ogc:Function_Name>
+						<ogc:Function_Name nArgs="3">VectorZonalStatistics</ogc:Function_Name>
+						<ogc:Function_Name nArgs="1">vertices</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">Vocab</ogc:Function_Name>
+						<ogc:Function_Name nArgs="2">within</ogc:Function_Name>
+					</ogc:Function_Names>
+				</ogc:Functions>
+			</ogc:Arithmetic_Operators>
+		</ogc:Scalar_Capabilities>
+	</ogc:Filter_Capabilities>
+</WFS_Capabilities>

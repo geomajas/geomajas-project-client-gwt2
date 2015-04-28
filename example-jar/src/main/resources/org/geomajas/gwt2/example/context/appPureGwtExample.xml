@@ -26,6 +26,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<ref bean="mapOsm" />
 				<ref bean="mapWms" />
 				<ref bean="mapLegend" />
+				<ref bean="mapLegendLayerResolutionRange" />
 				<ref bean="mapLayerVisibility" />
 				<ref bean="mapCountries" />
 				<ref bean="mapFeatureSelection" />

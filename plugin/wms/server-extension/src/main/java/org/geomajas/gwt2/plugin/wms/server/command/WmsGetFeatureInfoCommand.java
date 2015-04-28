@@ -11,10 +11,24 @@
 
 package org.geomajas.gwt2.plugin.wms.server.command;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.util.EntityUtils;
 import org.geomajas.command.Command;
+import org.geomajas.gwt2.plugin.wfs.server.command.converter.FeatureConverter;
 import org.geomajas.gwt2.plugin.wms.client.service.WmsService.GetFeatureInfoFormat;
 import org.geomajas.gwt2.plugin.wms.server.command.dto.WmsGetFeatureInfoRequest;
 import org.geomajas.gwt2.plugin.wms.server.command.dto.WmsGetFeatureInfoResponse;
+import org.geomajas.gwt2.plugin.wms.server.command.factory.WmsHttpClientFactory;
+import org.geomajas.gwt2.plugin.wms.server.command.factory.impl.DefaultWmsHttpClientFactory;
 import org.geomajas.layer.feature.Feature;
 import org.geotools.GML;
 import org.geotools.GML.Version;
@@ -26,16 +40,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.xml.sax.SAXException;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 /**
  * Command that executes a WMS GetFeatureInfo request.
@@ -52,39 +56,57 @@ public class WmsGetFeatureInfoCommand implements Command<WmsGetFeatureInfoReques
 	private final Logger log = LoggerFactory.getLogger(WmsGetFeatureInfoCommand.class);
 
 	private static final String PARAM_FORMAT = "info_format";
+	
+	private WmsHttpClientFactory httpClientFactory = new DefaultWmsHttpClientFactory();
 
 	public void execute(WmsGetFeatureInfoRequest request, WmsGetFeatureInfoResponse response) throws Exception {
-		URL url = new URL(request.getUrl());
+		HttpClient client = httpClientFactory.create(request.getUrl());
+		URL url = httpClientFactory.getTargetUrl(request.getUrl());
 		GML gml;
 
 		GetFeatureInfoFormat format = getFormatFromUrl(request.getUrl());
 		switch (format) {
 			case GML2:
 				gml = new GML(Version.GML2);
-				response.setFeatures(getFeaturesFromUrl(url, gml, request.getMaxCoordsPerFeature()));
+				response.setFeatures(getFeaturesFromUrl(client, url, gml, request.getMaxCoordsPerFeature()));
 				break;
 			case GML3:
 				gml = new GML(Version.GML3);
-				response.setFeatures(getFeaturesFromUrl(url, gml, request.getMaxCoordsPerFeature()));
+				response.setFeatures(getFeaturesFromUrl(client, url, gml, request.getMaxCoordsPerFeature()));
 				break;
 			case JSON:
-				response.setFeatures(getFeaturesFromJson(request, url, request.getMaxCoordsPerFeature()));
+				response.setFeatures(getFeaturesFromJson(client, request, url, request.getMaxCoordsPerFeature()));
 				break;
 			default:
-				String content = readUrl(url);
+				String content = readUrl(client, url);
 				response.setWmsResponse(content);
 		}
+	}
+	
+	public WmsHttpClientFactory getHttpClientFactory() {
+		return httpClientFactory;
+	}
+	
+	public void setHttpClientFactory(WmsHttpClientFactory httpClientFactory) {
+		this.httpClientFactory = httpClientFactory;
 	}
 
 	public WmsGetFeatureInfoResponse getEmptyCommandResponse() {
 		return new WmsGetFeatureInfoResponse();
 	}
 
-	private List<Feature> getFeaturesFromJson(WmsGetFeatureInfoRequest request, URL url, int maxCoordsPerFeature)
-			throws IOException {
+	private List<Feature> getFeaturesFromJson(HttpClient client, WmsGetFeatureInfoRequest request, URL url,
+			int maxCoordsPerFeature) throws IOException {
 		FeatureConverter converter = new FeatureConverter();
 		List<Feature> dtoFeatures = new ArrayList<Feature>();
-		FeatureIterator<SimpleFeature> it = new FeatureJSON().streamFeatureCollection(url.openStream());
+		HttpGet get = new HttpGet(url.toExternalForm());
+		HttpResponse response = client.execute(get);
+		if (200 != response.getStatusLine().getStatusCode()) {
+			get.releaseConnection();
+			throw new IOException("Server returned " + response.getStatusLine() + " for URL " + url.toExternalForm());
+		}
+		FeatureIterator<SimpleFeature> it = new FeatureJSON()
+				.streamFeatureCollection(response.getEntity().getContent());
 		while (it.hasNext()) {
 			SimpleFeature feature = it.next();
 			try {
@@ -97,10 +119,16 @@ public class WmsGetFeatureInfoCommand implements Command<WmsGetFeatureInfoReques
 		return dtoFeatures;
 	}
 
-	private List<Feature> getFeaturesFromUrl(URL url, GML gml, int maxCoordsPerFeature) throws IOException,
-			SAXException, ParserConfigurationException {
+	private List<Feature> getFeaturesFromUrl(HttpClient client, URL url, GML gml, int maxCoordsPerFeature)
+			throws IOException, SAXException, ParserConfigurationException {
+		HttpGet get = new HttpGet(url.toExternalForm());
+		HttpResponse response = client.execute(get);
+		if (200 != response.getStatusLine().getStatusCode()) {
+			get.releaseConnection();
+			throw new IOException("Server returned " + response.getStatusLine() + " for URL " + url.toExternalForm());
+		}
+		FeatureCollection<?, SimpleFeature> collection = gml.decodeFeatureCollection(response.getEntity().getContent());
 		List<Feature> dtoFeatures = new ArrayList<Feature>();
-		FeatureCollection<?, SimpleFeature> collection = gml.decodeFeatureCollection(url.openStream());
 		if (null == collection) {
 			return dtoFeatures; // empty list
 		}
@@ -145,17 +173,13 @@ public class WmsGetFeatureInfoCommand implements Command<WmsGetFeatureInfoReques
 		return GetFeatureInfoFormat.HTML;
 	}
 
-	private String readUrl(URL url) throws Exception {
-		URLConnection connection = url.openConnection();
-		BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-
-		StringBuilder response = new StringBuilder();
-		String inputLine;
-		while ((inputLine = in.readLine()) != null) {
-			response.append(inputLine);
+	private String readUrl(HttpClient client, URL url) throws Exception {
+		HttpGet get = new HttpGet(url.toExternalForm());
+		HttpResponse response = client.execute(get);
+		if (200 != response.getStatusLine().getStatusCode()) {
+			get.releaseConnection();
+			throw new IOException("Server returned " + response.getStatusLine() + " for URL " + url.toExternalForm());
 		}
-		in.close();
-
-		return response.toString();
+		return EntityUtils.toString(response.getEntity());
 	}
 }
