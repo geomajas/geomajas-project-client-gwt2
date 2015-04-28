@@ -8,6 +8,6 @@ jdk:
 cache:
   directories:
   - $HOME/.m2
-install: mvn install -B -q -V -Dgwt.compiler.localWorkers=1 -DskipTests=true --settings target/geomajas-build-tools/settings.xml
-script: mvn test -B -q -V
+install: mvn install -B -V -Dgwt.compiler.localWorkers=1 -DskipTests=true --settings target/geomajas-build-tools/settings.xml
+script: mvn test -B -V
 env: MAVEN_OPTS="-Xmx2048m -XX:MaxPermSize=256m"
