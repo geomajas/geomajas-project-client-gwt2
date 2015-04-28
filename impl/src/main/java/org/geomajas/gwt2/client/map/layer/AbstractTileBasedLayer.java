@@ -93,4 +93,14 @@ public abstract class AbstractTileBasedLayer extends AbstractLayer implements Ti
 	public double getOpacity() {
 		return renderer.getOpacity();
 	}
+
+	@Override
+	public double getMaxResolution() {
+		return tileConfiguration.getMaximumResolution();
+	}
+
+	@Override
+	public double getMinResolution() {
+		return tileConfiguration.getMinimumResolution();
+	}
 }

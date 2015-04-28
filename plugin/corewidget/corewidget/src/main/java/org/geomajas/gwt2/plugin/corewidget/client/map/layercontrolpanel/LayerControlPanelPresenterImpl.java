@@ -19,7 +19,6 @@ import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.ViewPort;
-import org.geomajas.gwt2.client.map.layer.AbstractServerLayer;
 import org.geomajas.gwt2.client.map.layer.Layer;
 
 import java.util.logging.Level;
@@ -41,14 +40,17 @@ public class LayerControlPanelPresenterImpl implements LayerControlPanelPresente
 
 	private Layer layer;
 
+	private MapPresenter mapPresenter;
+
 	public LayerControlPanelPresenterImpl(LayerControlPanelView view, Layer layer, MapPresenter mapPresenter,
 										  boolean disableToggleOutOfRange) {
 		this.view = view;
 		this.layer = layer;
+		this.mapPresenter = mapPresenter;
 		log.log(Level.INFO, "disableToggleOutOfRange => " + disableToggleOutOfRange);
 
 		this.disableToggleOutOfRange = disableToggleOutOfRange;
-		init(mapPresenter);
+		init();
 	}
 
 	// ------------------------------------------------------------------------
@@ -64,34 +66,31 @@ public class LayerControlPanelPresenterImpl implements LayerControlPanelPresente
 	// ------------------------------------------------------------------------
 	// Private methods:
 	// ------------------------------------------------------------------------
-	private void init(final MapPresenter mapPresenter) {
+	private void init() {
 		view.setLayerTitle(layer.getTitle());
 		view.setLayerVisible(layer.isMarkedAsVisible());
 
-		if (disableToggleOutOfRange) {
-			view.enableVisibilityToggle(isLayerOutOfRange(mapPresenter.getViewPort(), layer));
-		}
+		updateVisibilityToggle();
 
 		mapPresenter.getEventBus().addViewPortChangedHandler(new ViewPortChangedHandler() {
 			@Override
 			public void onViewPortChanged(ViewPortChangedEvent event) {
-
-				if (disableToggleOutOfRange) {
-					view.enableVisibilityToggle(isLayerOutOfRange(mapPresenter.getViewPort(), layer));
-				}
-
+				updateVisibilityToggle();
 			}
 		});
 
 		// React to layer visibility events:
 		mapPresenter.getEventBus().addLayerVisibilityHandler(new LayerVisibilityHandler() {
 
+			@Override
 			public void onShow(LayerShowEvent event) {
 			}
 
+			@Override
 			public void onHide(LayerHideEvent event) {
 			}
 
+			@Override
 			public void onVisibilityMarked(LayerVisibilityMarkedEvent event) {
 				view.setLayerVisible(layer.isMarkedAsVisible());
 
@@ -99,24 +98,28 @@ public class LayerControlPanelPresenterImpl implements LayerControlPanelPresente
 		}, this.layer);
 	}
 
-	protected boolean isLayerOutOfRange(ViewPort viewPort, Layer layer) {
-
-		if (layer instanceof AbstractServerLayer) {
-			AbstractServerLayer serverLayer = (AbstractServerLayer) layer;
-
-			double maxResolution = 1 / serverLayer.getLayerInfo().getMinimumScale().getPixelPerUnit();
-			double minResolution = 1 / serverLayer.getLayerInfo().getMaximumScale().getPixelPerUnit();
-
-			if (viewPort.getResolution() >= minResolution && viewPort.getResolution() <= maxResolution) {
-				return true;
-			}
-
-			return false;
+	protected void updateVisibilityToggle() {
+		if (disableToggleOutOfRange) {
+			view.enableVisibilityToggle(
+					isLayerVisibleAtViewPortResolution(mapPresenter.getViewPort(), layer));
 		}
-
-		//TODO: implement this for layers other than AbstractServerLayer
-		return true;
 	}
 
+	/**
+	 * Check if current viewPort resolution is between the minimum (inclusive) and
+	 * the maximum scale (exclusive) of the layer.
+	 *  Inclusive/exclusive follows SLD convention: exclusive minResolution, inclusive maxResolution.
+	 *
+	 * @param viewPort the viewPort
+	 * @param layer layer
+	 * @return whether the layer is visible in the provided viewPort resolution
+	 */
+	public boolean isLayerVisibleAtViewPortResolution(ViewPort viewPort, Layer layer) {
+		if (viewPort.getResolution() > layer.getMinResolution()
+				&& viewPort.getResolution() <= layer.getMaxResolution()) {
+			return true;
+		}
+		return false;
+	}
 }
 
