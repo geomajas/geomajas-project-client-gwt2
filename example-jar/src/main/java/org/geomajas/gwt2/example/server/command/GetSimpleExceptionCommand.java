@@ -11,7 +11,7 @@
 
 package org.geomajas.gwt2.example.server.command;
 
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.command.EmptyCommandRequest;
 import org.springframework.stereotype.Component;
@@ -26,13 +26,20 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class GetSimpleExceptionCommand implements
-		Command<EmptyCommandRequest, CommandResponse> {
+		CommandHasRequest<EmptyCommandRequest, CommandResponse> {
 
+	@Override
 	public void execute(EmptyCommandRequest request, CommandResponse response)
 			throws Exception {
 		throw new Exception("Server-side generated exception.");
 	}
 
+	@Override
+	public EmptyCommandRequest getEmptyCommandRequest() {
+		return new EmptyCommandRequest();
+	}
+
+	@Override
 	public CommandResponse getEmptyCommandResponse() {
 		return new CommandResponse();
 	}

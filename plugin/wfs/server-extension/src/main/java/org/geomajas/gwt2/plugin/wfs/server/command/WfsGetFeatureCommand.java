@@ -22,7 +22,7 @@ import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.service.BboxService;
 import org.geomajas.geometry.service.GeometryService;
@@ -74,7 +74,7 @@ import org.xml.sax.SAXException;
  * 
  */
 @Component(WfsGetFeatureRequest.COMMAND_NAME)
-public class WfsGetFeatureCommand implements Command<WfsGetFeatureRequest, WfsGetFeatureResponse> {
+public class WfsGetFeatureCommand implements CommandHasRequest<WfsGetFeatureRequest, WfsGetFeatureResponse> {
 
 	private final Logger log = LoggerFactory.getLogger(WfsGetFeatureCommand.class);
 
@@ -114,6 +114,7 @@ public class WfsGetFeatureCommand implements Command<WfsGetFeatureRequest, WfsGe
 		this.httpClientFactory = httpClientFactory;
 	}
 
+	@Override
 	public void execute(WfsGetFeatureRequest request, WfsGetFeatureResponse response) throws Exception {
 		FeatureCollection<SimpleFeatureType, SimpleFeature> features = performWfsQuery(request);
 		int maxCoordinates = request.getMaxCoordsPerFeature();
@@ -255,6 +256,12 @@ public class WfsGetFeatureCommand implements Command<WfsGetFeatureRequest, WfsGe
 		return total;
 	}
 
+	@Override
+	public WfsGetFeatureRequest getEmptyCommandRequest() {
+		return new WfsGetFeatureRequest();
+	}
+
+	@Override
 	public WfsGetFeatureResponse getEmptyCommandResponse() {
 		return new WfsGetFeatureResponse();
 	}
