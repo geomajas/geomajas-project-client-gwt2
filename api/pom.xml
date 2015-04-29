@@ -40,6 +40,17 @@
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-client-common-gwt</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.geomajas.project</groupId>
+			<artifactId>geomajas-project-geometry-core</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.geomajas.project</groupId>
+			<artifactId>geomajas-project-geometry-core</artifactId>
+			<classifier>sources</classifier>
+		</dependency>
 
 		<!-- GWT dependencies -->
 		<dependency>
