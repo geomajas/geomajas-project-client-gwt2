@@ -21,7 +21,7 @@
 
     <groupId>org.geomajas.plugin</groupId>
     <artifactId>geomajas-client-gwt2-plugin-tilebasedlayer-documentation</artifactId>
-    <version>2.3.0</version>
+    <version>2.3.1-SNAPSHOT</version>
 
     <name>Geomajas GWT2 client: Plugin Tile Based Layer - Documentation</name>
     <description>Geomajas GWT2 client: Plugin Tile Based Layer - Documentation</description>
