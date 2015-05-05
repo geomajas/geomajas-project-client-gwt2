@@ -90,7 +90,7 @@ public class NavigationAnimationImpl extends Animation implements NavigationAnim
 	@Override
 	protected void onUpdate(double progress) {
 		View view = trajectory.getView(progress);
-		viewPort.applyView(view);
+		viewPort.applyView(view, progress < 1);
 		eventBus.fireEvent(new NavigationUpdateEvent(this, view));
 	}
 

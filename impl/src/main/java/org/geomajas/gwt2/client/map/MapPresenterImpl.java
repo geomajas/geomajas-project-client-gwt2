@@ -11,6 +11,7 @@
 
 package org.geomajas.gwt2.client.map;
 
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.HasAllGestureHandlers;
 import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
 import com.google.gwt.event.dom.client.HasMouseDownHandlers;
@@ -70,6 +71,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * Default implementation of the map presenter interface. In other words this is the default GWT map object.
@@ -77,6 +79,10 @@ import java.util.Map;
  * @author Pieter De Graef
  */
 public final class MapPresenterImpl implements MapPresenter {
+	
+
+	private static Logger logger = Logger.getLogger("MapPresenterImpl");
+	
 
 	/**
 	 * Map view definition.
@@ -226,7 +232,7 @@ public final class MapPresenterImpl implements MapPresenter {
 
 			@Override
 			public void onViewPortChanged(ViewPortChangedEvent event) {
-				renderer.render(new RenderingInfo(display.getMapHtmlContainer(), event.getTo(), event.getTrajectory()));
+				renderer.render(new RenderingInfo(display.getMapHtmlContainer(), event.getTo(), event.getTrajectory(), event.isIntermediate()));
 			}
 		});
 		this.eventBus.addMapCompositionHandler(new MapCompositionHandler() {
@@ -246,8 +252,10 @@ public final class MapPresenterImpl implements MapPresenter {
 		this.eventBus.addViewPortChangedHandler(new WorldTransformableRenderer());
 
 		if (isTouchSupported) {
+			logger.fine("touch");
 			fallbackController = new TouchNavigationController();
 		} else {
+			logger.fine("no touch");
 			fallbackController = new NavigationController();
 		}
 
@@ -276,7 +284,7 @@ public final class MapPresenterImpl implements MapPresenter {
 
 		// Immediately zoom to the initial bounds as configured:
 		viewPort.applyBounds(configuration.getHintValue(MapConfiguration.INITIAL_BOUNDS), ZoomOption.LEVEL_CLOSEST);
-		renderer.render(new RenderingInfo(display.getMapHtmlContainer(), viewPort.getView(), null));
+		renderer.render(new RenderingInfo(display.getMapHtmlContainer(), viewPort.getView(), null, false));
 
 		// Adding the default map control widgets:
 		if (getWidgetPane() != null) {

@@ -69,7 +69,7 @@ public abstract class DomTileLevelLayerRenderer implements LayerRenderer {
 
 	private TileLevelRenderer targetRenderer;
 
-	private int cacheSize = 3;
+	private int cacheSize = 2;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -115,7 +115,7 @@ public abstract class DomTileLevelLayerRenderer implements LayerRenderer {
 			public void onShow(LayerShowEvent event) {
 				if (container != null) {
 					container.setVisible(true);
-					render(new RenderingInfo(container, viewPort.getView(), null));
+					render(new RenderingInfo(container, viewPort.getView(), null, false));
 				}
 			}
 
@@ -148,7 +148,9 @@ public abstract class DomTileLevelLayerRenderer implements LayerRenderer {
 
 	@Override
 	public void render(RenderingInfo renderingInfo) {
-		logger.log(Level.INFO, "Rendering " + renderingInfo.getView().getResolution());
+//		logger.info("rendering position "+renderingInfo.getView().getPosition());
+//		logger.info("viewport position "+viewPort.getView().getPosition());
+//		logger.log(Level.INFO, "Rendering " + renderingInfo.getView().getResolution());
 		if (!(renderingInfo.getWidget() instanceof HtmlContainer)) {
 			throw new IllegalArgumentException("This implementation requires HtmlContainers to render.");
 		}
@@ -158,14 +160,17 @@ public abstract class DomTileLevelLayerRenderer implements LayerRenderer {
 		setContainer((HtmlContainer) renderingInfo.getWidget());
 
 		// Prepare the target view. Try to make sure it's rendered when the animation arrives there:
-		View targetView = renderingInfo.getView();
-		if (renderingInfo.getTrajectory() != null) {
-			targetView = renderingInfo.getTrajectory().getView(1.0);
-		}
-		try {
-			prepareView(container, targetView);
-		} catch (Exception e) {
-			logger.log(Level.SEVERE, "could not prepare view", e);
+		if(!renderingInfo.isIntermediate()) {
+			View targetView = renderingInfo.getView();
+			if (renderingInfo.getTrajectory() != null) {
+				targetView = renderingInfo.getTrajectory().getView(1.0);
+			}
+			try {
+//				logger.log(Level.SEVERE, "preparing view");
+				prepareView(container, targetView);
+			} catch (Exception e) {
+//				logger.log(Level.SEVERE, "could not prepare view", e);
+			}
 		}
 
 		// Now render the current view:
@@ -307,8 +312,8 @@ public abstract class DomTileLevelLayerRenderer implements LayerRenderer {
 		Matrix transformation = viewPort.getTransformationService().getTranslationMatrix(currentResolution);
 		HtmlContainer tileLevelContainer = tileLevelContainers.get(renderer.getTileLevel());
 		Coordinate origin = tileLevelContainer.getOrigin();
-		logger.info("Applying scale " + rendererResolution / currentResolution + " to current "
-				+ renderer.getTileLevel());
+//		logger.info("Applying scale " + rendererResolution / currentResolution + " to current "
+//				+ renderer.getTileLevel());
 		tileLevelContainer.applyScale(rendererResolution / currentResolution, 0, 0);
 		double left = transformation.getDx() - origin.getX() * tileLevelContainer.getScale();
 		double top = transformation.getDy() - origin.getY() * tileLevelContainer.getScale();
@@ -329,7 +334,7 @@ public abstract class DomTileLevelLayerRenderer implements LayerRenderer {
 	}
 
 	protected void setVisible(int tileLevel) {
-		logger.info("Setting level " + tileLevel + " to visible");
+//		logger.info("Setting level " + tileLevel + " to visible");
 		// First set the correct level to visible, so as to make sure the map never gets white:
 		tileLevelContainers.get(tileLevel).setVisible(true);
 
@@ -343,7 +348,7 @@ public abstract class DomTileLevelLayerRenderer implements LayerRenderer {
 
 	protected void refresh() {
 		clear();
-		render(new RenderingInfo(container, viewPort.getView(), null));
+		render(new RenderingInfo(container, viewPort.getView(), null, false));
 	}
 
 	private void clear() {

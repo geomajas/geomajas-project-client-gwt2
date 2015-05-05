@@ -11,6 +11,8 @@
 
 package org.geomajas.gwt2.client.controller;
 
+import java.util.logging.Logger;
+
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.map.RenderSpace;
@@ -137,7 +139,9 @@ public class NavigationController extends AbstractMapController {
 
 	@Override
 	public void onDrag(HumanInputEvent<?> event) {
-		updateView(event);
+		if(dragging) {
+			updateView(event);
+		}
 	}
 
 	@Override

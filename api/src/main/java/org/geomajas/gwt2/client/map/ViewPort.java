@@ -191,14 +191,14 @@ public interface ViewPort {
 	 *
 	 * @param view The new view to apply on the map.
 	 */
-	void applyView(View view);
+	void applyView(View view, boolean isIntermediate);
 
 	/**
 	 * Apply a new view on the map.
 	 *
 	 * @param view The new view to apply on the map.
 	 */
-	void applyView(View view, ZoomOption zoomOption);
+	void applyView(View view, ZoomOption zoomOption,  boolean isIntermediate);
 
 	// ------------------------------------------------------------------------
 	// ViewPort transformation methods:
@@ -237,4 +237,6 @@ public interface ViewPort {
 	 * @return The view that relates to the provided bounding box.
 	 */
 	View asView(Bbox bounds, ZoomOption zoomOption);
+
+	void finishIntermediate();
 }

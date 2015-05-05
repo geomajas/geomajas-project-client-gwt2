@@ -95,7 +95,7 @@ public class DomLayersModelRenderer implements LayersModelRenderer {
 				if (layerRenderer != null) {
 					registerLayerRenderer(event.getLayer(), layerRenderer);
 					layerRenderer.render(new RenderingInfo(getOrCreateLayerContainer(event.getLayer()),
-							DomLayersModelRenderer.this.viewPort.getView(), null));
+							DomLayersModelRenderer.this.viewPort.getView(), null, false));
 				}
 			}
 		});
@@ -129,8 +129,9 @@ public class DomLayersModelRenderer implements LayersModelRenderer {
 						// This layer is not animated, hide it before the navigation starts:
 						HtmlContainer layerContainer = getOrCreateLayerContainer(layer);
 						LayerRenderer layerRenderer = layerRenderers.get(layer);
+						boolean isPanOnly = event.getTrajectory().getView(0.0).getResolution() - event.getTrajectory().getView(1).getResolution() < 1E-5;
 						layerRenderer.render(new RenderingInfo(layerContainer, event.getTrajectory().getView(0.0),
-								event.getTrajectory()));
+								event.getTrajectory(), isPanOnly));
 						DomService.applyTransition(layerContainer.asWidget().getElement(), new String[] { "opacity" },
 								new Integer[] { 0 });
 						layerContainer.asWidget().getElement().getStyle().setOpacity(0.0f);
@@ -150,7 +151,7 @@ public class DomLayersModelRenderer implements LayersModelRenderer {
 						// This layer is not animated, hide it before the navigation starts:
 						HtmlContainer layerContainer = getOrCreateLayerContainer(layer);
 						LayerRenderer layerRenderer = layerRenderers.get(layer);
-						layerRenderer.render(new RenderingInfo(layerContainer, event.getView(), null));
+						layerRenderer.render(new RenderingInfo(layerContainer, event.getView(), null, false));
 						if (DomLayersModelRenderer.this.configuration != null) {
 							DomService.applyTransition(layerContainer.asWidget().getElement(),
 									new String[] { "opacity" },
@@ -210,7 +211,7 @@ public class DomLayersModelRenderer implements LayersModelRenderer {
 
 			// Adjust the rendering info, to use a layer specific container widget:
 			RenderingInfo layerInfo = new RenderingInfo(getOrCreateLayerContainer(layer), renderingInfo.getView(),
-					renderingInfo.getTrajectory());
+					renderingInfo.getTrajectory(), renderingInfo.isIntermediate());
 			LayerRenderer layerRenderer = layerRenderers.get(layer);
 			layerRenderer.render(layerInfo);
 		}

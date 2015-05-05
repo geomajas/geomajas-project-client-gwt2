@@ -13,6 +13,7 @@ package org.geomajas.gwt2.client.map;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.service.BboxService;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Implementation of the ViewPort interface.
@@ -193,7 +195,7 @@ public final class ViewPortImpl implements ViewPort {
 			this.mapWidth = width;
 			this.mapHeight = height;
 			if (eventBus != null) {
-				eventBus.fireEvent(new ViewPortChangedEvent(oldView, getView(), currentAnimation));
+				eventBus.fireEvent(new ViewPortChangedEvent(oldView, getView(), currentAnimation, false));
 			}
 		}
 	}
@@ -271,7 +273,7 @@ public final class ViewPortImpl implements ViewPort {
 					if (Dom.isTransformationSupported()) {
 						currentAnimation.run();
 					} else {
-						applyView(currentAnimation.getEndView());
+						applyView(currentAnimation.getEndView(), true);
 						currentAnimation = null;
 					}
 				}
@@ -285,8 +287,13 @@ public final class ViewPortImpl implements ViewPort {
 		if (tempPosition != position) {
 			View oldView = getView();
 			position = tempPosition;
-			eventBus.fireEvent(new ViewPortChangedEvent(oldView, getView(), currentAnimation));
+			eventBus.fireEvent(new ViewPortChangedEvent(oldView, getView(), currentAnimation, false));
 		}
+	}
+	
+	@Override
+	public void finishIntermediate() {
+		eventBus.fireEvent(new ViewPortChangedEvent(getView(), getView(), null, false));
 	}
 
 	@Override
@@ -300,15 +307,15 @@ public final class ViewPortImpl implements ViewPort {
 	}
 
 	@Override
-	public void applyView(View view) {
-		applyView(view, ZoomOption.FREE);
+	public void applyView(View view, boolean isIntermediate) {
+		applyView(view, ZoomOption.FREE, isIntermediate);
 	}
 
 	@Override
-	public void applyView(View view, ZoomOption zoomOption) {
+	public void applyView(View view, ZoomOption zoomOption, boolean intermediate) {
 		double tempResolution = checkResolution(view.getResolution(), ZoomOption.FREE);
 		Coordinate tempPosition = checkPosition(view.getPosition(), tempResolution);
-		applyViewNoChecks(tempPosition, tempResolution);
+		applyViewNoChecks(tempPosition, tempResolution, intermediate);
 	}
 
 	@Override
@@ -320,7 +327,7 @@ public final class ViewPortImpl implements ViewPort {
 	public void applyBounds(Bbox bounds, ZoomOption zoomOption) {
 		double tempResolution = getResolutionForBounds(bounds, zoomOption);
 		Coordinate tempPosition = checkPosition(BboxService.getCenterPoint(bounds), tempResolution);
-		applyViewNoChecks(tempPosition, tempResolution);
+		applyViewNoChecks(tempPosition, tempResolution, false);
 	}
 
 	@Override
@@ -375,7 +382,7 @@ public final class ViewPortImpl implements ViewPort {
 
 			// Now apply on this view port:
 			Coordinate tempPosition = checkPosition(BboxService.getCenterPoint(newBbox), validResolution);
-			applyViewNoChecks(tempPosition, validResolution);
+			applyViewNoChecks(tempPosition, validResolution, false);
 		}
 	}
 
@@ -495,12 +502,12 @@ public final class ViewPortImpl implements ViewPort {
 		return allowedResolution;
 	}
 
-	private void applyViewNoChecks(Coordinate tempPosition, double tempResolution) {
+	private void applyViewNoChecks(Coordinate tempPosition, double tempResolution, boolean intermediate) {
 		if (tempResolution != resolution || !position.equals(tempPosition)) {
 			View oldView = getView();
 			resolution = tempResolution;
 			position = tempPosition;
-			eventBus.fireEvent(new ViewPortChangedEvent(oldView, getView(), currentAnimation));
+			eventBus.fireEvent(new ViewPortChangedEvent(oldView, getView(), currentAnimation, intermediate));
 		}
 	}
 }
