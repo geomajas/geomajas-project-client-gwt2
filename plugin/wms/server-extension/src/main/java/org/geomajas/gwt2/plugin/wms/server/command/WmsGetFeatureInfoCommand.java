@@ -22,7 +22,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.util.EntityUtils;
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.gwt2.plugin.wfs.server.command.converter.FeatureConverter;
 import org.geomajas.gwt2.plugin.wms.client.service.WmsService.GetFeatureInfoFormat;
 import org.geomajas.gwt2.plugin.wms.server.command.dto.WmsGetFeatureInfoRequest;
@@ -51,7 +51,8 @@ import org.xml.sax.SAXException;
  * @author Jan De Moerloose
  */
 @Component
-public class WmsGetFeatureInfoCommand implements Command<WmsGetFeatureInfoRequest, WmsGetFeatureInfoResponse> {
+public class WmsGetFeatureInfoCommand implements
+		CommandHasRequest<WmsGetFeatureInfoRequest, WmsGetFeatureInfoResponse> {
 
 	private final Logger log = LoggerFactory.getLogger(WmsGetFeatureInfoCommand.class);
 
@@ -59,6 +60,7 @@ public class WmsGetFeatureInfoCommand implements Command<WmsGetFeatureInfoReques
 	
 	private WmsHttpClientFactory httpClientFactory = new DefaultWmsHttpClientFactory();
 
+	@Override
 	public void execute(WmsGetFeatureInfoRequest request, WmsGetFeatureInfoResponse response) throws Exception {
 		HttpClient client = httpClientFactory.create(request.getUrl());
 		URL url = httpClientFactory.getTargetUrl(request.getUrl());
@@ -91,6 +93,12 @@ public class WmsGetFeatureInfoCommand implements Command<WmsGetFeatureInfoReques
 		this.httpClientFactory = httpClientFactory;
 	}
 
+	@Override
+	public WmsGetFeatureInfoRequest getEmptyCommandRequest() {
+		return new WmsGetFeatureInfoRequest();
+	}
+
+	@Override
 	public WmsGetFeatureInfoResponse getEmptyCommandResponse() {
 		return new WmsGetFeatureInfoResponse();
 	}

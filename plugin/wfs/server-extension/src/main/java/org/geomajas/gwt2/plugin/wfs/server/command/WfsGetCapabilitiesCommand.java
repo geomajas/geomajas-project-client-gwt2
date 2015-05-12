@@ -20,7 +20,7 @@ import net.opengis.wfs.FeatureTypeListType;
 import net.opengis.wfs.FeatureTypeType;
 import net.opengis.wfs.WFSCapabilitiesType;
 
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
@@ -52,7 +52,8 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component(WfsGetCapabilitiesRequest.COMMAND_NAME)
-public class WfsGetCapabilitiesCommand implements Command<WfsGetCapabilitiesRequest, WfsGetCapabilitiesResponse> {
+public class WfsGetCapabilitiesCommand implements
+		CommandHasRequest<WfsGetCapabilitiesRequest, WfsGetCapabilitiesResponse> {
 
 	private final Logger log = LoggerFactory.getLogger(WfsGetCapabilitiesCommand.class);
 
@@ -76,6 +77,7 @@ public class WfsGetCapabilitiesCommand implements Command<WfsGetCapabilitiesRequ
 		this.httpClientFactory = httpClientFactory;
 	}
 
+	@Override
 	public void execute(WfsGetCapabilitiesRequest request, WfsGetCapabilitiesResponse response)
 			throws GeomajasException {
 		try {
@@ -171,6 +173,12 @@ public class WfsGetCapabilitiesCommand implements Command<WfsGetCapabilitiesRequ
 		return featureTypeListDto;
 	}
 
+	@Override
+	public WfsGetCapabilitiesRequest getEmptyCommandRequest() {
+		return new WfsGetCapabilitiesRequest();
+	}
+
+	@Override
 	public WfsGetCapabilitiesResponse getEmptyCommandResponse() {
 		return new WfsGetCapabilitiesResponse();
 	}

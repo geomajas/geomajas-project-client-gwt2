@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.geomajas.command.Command;
+import org.geomajas.command.CommandHasRequest;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.gwt2.client.map.attribute.AttributeDescriptorImpl;
@@ -59,7 +59,7 @@ import com.vividsolutions.jts.geom.Polygon;
  */
 @Component(WfsDescribeFeatureTypeRequest.COMMAND_NAME)
 public class WfsDescribeFeatureTypeCommand implements
-		Command<WfsDescribeFeatureTypeRequest, WfsDescribeFeatureTypeResponse> {
+		CommandHasRequest<WfsDescribeFeatureTypeRequest, WfsDescribeFeatureTypeResponse> {
 
 	private final Logger log = LoggerFactory.getLogger(WfsDescribeFeatureTypeCommand.class);
 
@@ -80,6 +80,7 @@ public class WfsDescribeFeatureTypeCommand implements
 		this.httpClientFactory = httpClientFactory;
 	}
 
+	@Override
 	public void execute(WfsDescribeFeatureTypeRequest request, WfsDescribeFeatureTypeResponse response)
 			throws GeomajasException {
 		SimpleFeatureType schema = null;
@@ -121,6 +122,12 @@ public class WfsDescribeFeatureTypeCommand implements
 		}
 	}
 
+	@Override
+	public WfsDescribeFeatureTypeRequest getEmptyCommandRequest() {
+		return new WfsDescribeFeatureTypeRequest(null, null);
+	}
+
+	@Override
 	public WfsDescribeFeatureTypeResponse getEmptyCommandResponse() {
 		return new WfsDescribeFeatureTypeResponse();
 	}
