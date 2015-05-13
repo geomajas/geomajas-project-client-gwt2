@@ -14,8 +14,6 @@ package org.geomajas.gwt2.client.controller;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.service.MathService;
 import org.geomajas.gwt.client.map.RenderSpace;
-import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
-import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.View;
 import org.geomajas.gwt2.client.map.ViewPort;
@@ -76,8 +74,9 @@ public class TouchNavigationController extends NavigationController {
 			double dy = startCenter.getY() - newCenter.getY();
 			double resolution = mapPresenter.getViewPort().getResolution() / scale;
 			Coordinate position = calculatePosition(scale, startCenter);
-			mapPresenter.getViewPort().applyView(
-					new View(new Coordinate(position.getX() + dx, position.getY() + dy), resolution), true);
+			View view = new View(new Coordinate(position.getX() + dx, position.getY() + dy), resolution);
+			view.setInteractive(true);
+			mapPresenter.getViewPort().applyView(view);
 		} else {
 			onDrag(event);
 		}
@@ -91,9 +90,9 @@ public class TouchNavigationController extends NavigationController {
 			if (event.getTouches().length() == 0) {
 				zooming = false;
 			}
-			mapPresenter.getViewPort().finishIntermediate();
+			mapPresenter.getViewPort().stopInteraction();
 		} else {
-//			onUp(event);
+			onUp(event);
 		}
 		event.preventDefault();
 		event.stopPropagation();

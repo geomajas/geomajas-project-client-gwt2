@@ -191,14 +191,14 @@ public interface ViewPort {
 	 *
 	 * @param view The new view to apply on the map.
 	 */
-	void applyView(View view, boolean isIntermediate);
+	void applyView(View view);
 
 	/**
 	 * Apply a new view on the map.
 	 *
 	 * @param view The new view to apply on the map.
 	 */
-	void applyView(View view, ZoomOption zoomOption,  boolean isIntermediate);
+	void applyView(View view, ZoomOption zoomOption);
 
 	// ------------------------------------------------------------------------
 	// ViewPort transformation methods:
@@ -238,5 +238,13 @@ public interface ViewPort {
 	 */
 	View asView(Bbox bounds, ZoomOption zoomOption);
 
-	void finishIntermediate();
+	/**
+	 * If the last view was interactive, stop the interaction by reapplying this view with an interactive = false state,
+	 * else do nothing. Can be used by controllers that have an explicit final event without a new associated view (e.g.
+	 * touch end).
+	 * 
+	 * @since 2.4.0
+	 */
+	void stopInteraction();
+
 }

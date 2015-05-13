@@ -175,6 +175,7 @@ public class DomTileLevelRenderer implements TileLevelRenderer {
 		}
 		if (xmin < 0) {
 			xmin = 0;
+
 		}
 		if (xmax < 0 || ymax < 0) {
 			return codes;
@@ -202,16 +203,22 @@ public class DomTileLevelRenderer implements TileLevelRenderer {
 
 		// In case of failure, we can't just sit and wait. Instead we consider the resolution level rendered.
 		public void onFailure(String reason) {
-			GeomajasImpl.getInstance().getEventBus().fireEventFromSource(new TileLevelRenderedEvent(
-					DomTileLevelRenderer.this), DomTileLevelRenderer.this);
+			GeomajasImpl
+					.getInstance()
+					.getEventBus()
+					.fireEventFromSource(new TileLevelRenderedEvent(DomTileLevelRenderer.this),
+							DomTileLevelRenderer.this);
 		}
 
 		public void onSuccess(String result) {
 			if (nrLoadingTiles > 0) { // A cancel may have reset the number of loading tiles.
 				nrLoadingTiles--;
 				if (nrLoadingTiles == 0) {
-					GeomajasImpl.getInstance().getEventBus().fireEventFromSource(new TileLevelRenderedEvent(
-							DomTileLevelRenderer.this), DomTileLevelRenderer.this);
+					GeomajasImpl
+							.getInstance()
+							.getEventBus()
+							.fireEventFromSource(new TileLevelRenderedEvent(DomTileLevelRenderer.this),
+									DomTileLevelRenderer.this);
 				}
 			}
 		}

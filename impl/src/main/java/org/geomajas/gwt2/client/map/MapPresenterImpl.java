@@ -11,26 +11,12 @@
 
 package org.geomajas.gwt2.client.map;
 
-import com.google.gwt.core.shared.GWT;
-import com.google.gwt.event.dom.client.HasAllGestureHandlers;
-import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
-import com.google.gwt.event.dom.client.HasMouseDownHandlers;
-import com.google.gwt.event.dom.client.HasMouseMoveHandlers;
-import com.google.gwt.event.dom.client.HasMouseOutHandlers;
-import com.google.gwt.event.dom.client.HasMouseOverHandlers;
-import com.google.gwt.event.dom.client.HasMouseUpHandlers;
-import com.google.gwt.event.dom.client.HasMouseWheelHandlers;
-import com.google.gwt.event.dom.client.HasTouchCancelHandlers;
-import com.google.gwt.event.dom.client.HasTouchEndHandlers;
-import com.google.gwt.event.dom.client.HasTouchMoveHandlers;
-import com.google.gwt.event.dom.client.HasTouchStartHandlers;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.RequiresResize;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.web.bindery.event.shared.EventBus;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
 
 import org.geomajas.geometry.Matrix;
 import org.geomajas.gwt.client.controller.MapEventParser;
@@ -57,21 +43,34 @@ import org.geomajas.gwt2.client.map.render.RenderingInfo;
 import org.geomajas.gwt2.client.map.render.dom.DomLayersModelRenderer;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
 import org.geomajas.gwt2.client.widget.DefaultMapWidget;
-import org.geomajas.gwt2.client.widget.map.MapWidgetImpl;
 import org.geomajas.gwt2.client.widget.control.pan.PanControl;
 import org.geomajas.gwt2.client.widget.control.scalebar.Scalebar;
 import org.geomajas.gwt2.client.widget.control.watermark.Watermark;
 import org.geomajas.gwt2.client.widget.control.zoom.ZoomControl;
 import org.geomajas.gwt2.client.widget.control.zoom.ZoomStepControl;
 import org.geomajas.gwt2.client.widget.control.zoomtorect.ZoomToRectangleControl;
+import org.geomajas.gwt2.client.widget.map.MapWidgetImpl;
 import org.vaadin.gwtgraphics.client.Transformable;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
+import com.google.gwt.event.dom.client.HasAllGestureHandlers;
+import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
+import com.google.gwt.event.dom.client.HasMouseDownHandlers;
+import com.google.gwt.event.dom.client.HasMouseMoveHandlers;
+import com.google.gwt.event.dom.client.HasMouseOutHandlers;
+import com.google.gwt.event.dom.client.HasMouseOverHandlers;
+import com.google.gwt.event.dom.client.HasMouseUpHandlers;
+import com.google.gwt.event.dom.client.HasMouseWheelHandlers;
+import com.google.gwt.event.dom.client.HasTouchCancelHandlers;
+import com.google.gwt.event.dom.client.HasTouchEndHandlers;
+import com.google.gwt.event.dom.client.HasTouchMoveHandlers;
+import com.google.gwt.event.dom.client.HasTouchStartHandlers;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.RequiresResize;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.web.bindery.event.shared.EventBus;
 
 /**
  * Default implementation of the map presenter interface. In other words this is the default GWT map object.
@@ -232,7 +231,7 @@ public final class MapPresenterImpl implements MapPresenter {
 
 			@Override
 			public void onViewPortChanged(ViewPortChangedEvent event) {
-				renderer.render(new RenderingInfo(display.getMapHtmlContainer(), event.getTo(), event.getTrajectory(), event.isIntermediate()));
+				renderer.render(new RenderingInfo(display.getMapHtmlContainer(), event.getTo(), event.getTrajectory()));
 			}
 		});
 		this.eventBus.addMapCompositionHandler(new MapCompositionHandler() {
@@ -284,7 +283,7 @@ public final class MapPresenterImpl implements MapPresenter {
 
 		// Immediately zoom to the initial bounds as configured:
 		viewPort.applyBounds(configuration.getHintValue(MapConfiguration.INITIAL_BOUNDS), ZoomOption.LEVEL_CLOSEST);
-		renderer.render(new RenderingInfo(display.getMapHtmlContainer(), viewPort.getView(), null, false));
+		renderer.render(new RenderingInfo(display.getMapHtmlContainer(), viewPort.getView(), null));
 
 		// Adding the default map control widgets:
 		if (getWidgetPane() != null) {

@@ -33,8 +33,6 @@ public class ViewPortChangedEvent extends Event<ViewPortChangedHandler> {
 
 	private final Trajectory trajectory;
 
-	private boolean intermediate;
-
 	// -------------------------------------------------------------------------
 	// Constructor:
 	// -------------------------------------------------------------------------
@@ -44,11 +42,10 @@ public class ViewPortChangedEvent extends Event<ViewPortChangedHandler> {
 	 * @param viewPort
 	 *            the view port
 	 */
-	public ViewPortChangedEvent(View from, View to, Trajectory trajectory, boolean intermediate) {
+	public ViewPortChangedEvent(View from, View to, Trajectory trajectory) {
 		this.from = from;
 		this.to = to;
 		this.trajectory = trajectory;
-		this.intermediate = intermediate;
 	}
 
 	// -------------------------------------------------------------------------
@@ -84,10 +81,6 @@ public class ViewPortChangedEvent extends Event<ViewPortChangedHandler> {
 	 */
 	public View getTo() {
 		return to;
-	}
-
-	public boolean isIntermediate() {
-		return intermediate;
 	}
 
 	/**

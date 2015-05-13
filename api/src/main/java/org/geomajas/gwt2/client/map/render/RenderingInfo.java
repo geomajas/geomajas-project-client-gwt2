@@ -33,8 +33,6 @@ public class RenderingInfo {
 	private final View view;
 
 	private final Trajectory trajectory;
-	
-	private final boolean intermediate;
 
 	// ------------------------------------------------------------------------
 	// Constructors:
@@ -50,11 +48,10 @@ public class RenderingInfo {
 	 * @param trajectory
 	 *            The expected trajectory, or null.
 	 */
-	public RenderingInfo(final IsWidget widget, final View view, final Trajectory trajectory, final boolean intermediate) {
+	public RenderingInfo(final IsWidget widget, final View view, final Trajectory trajectory) {
 		this.widget = widget;
 		this.view = view;
 		this.trajectory = trajectory;
-		this.intermediate = intermediate;
 	}
 
 	// ------------------------------------------------------------------------
@@ -90,12 +87,6 @@ public class RenderingInfo {
 	 */
 	public Trajectory getTrajectory() {
 		return trajectory;
-	}
-
-	
-	public boolean isIntermediate() {
-		return intermediate;
-	}
-	
+	}	
 	
 }
