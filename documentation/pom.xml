@@ -101,7 +101,7 @@
 						<executions>
 							<execution>
 								<id>unpack-dependencies</id>
-								<phase>generate-resources</phase>
+								<phase>prepare-package</phase>
 								<goals>
 									<goal>unpack-dependencies</goal>
 								</goals>
@@ -119,7 +119,7 @@
 						<executions>
 							<execution>
 								<id>generate-all-javadoc</id>
-								<phase>compile</phase>
+								<phase>package</phase>
 								<configuration>
 									<target unless="maven.javadoc.skip">
 										<javadoc packagenames="${geomajas.packages}" sourcepath="${project.build.directory}/javadoc-src" defaultexcludes="no" destdir="${project.build.directory}/apidocs/" version="true" use="true">
