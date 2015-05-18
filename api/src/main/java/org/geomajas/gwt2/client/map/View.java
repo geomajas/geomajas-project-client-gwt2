@@ -196,7 +196,7 @@ public class View {
 			// We don't compare bounds, because a view may come from a map with a different size. It's resolution and
 			// position that matter.
 			return other.getPosition().equals(position) && Math.abs(other.getResolution() - resolution) < 1e-10
-					&& !hintValues.equals(other.hintValues);
+					&& hintValues.equals(other.hintValues);
 		}
 		return false;
 	}
