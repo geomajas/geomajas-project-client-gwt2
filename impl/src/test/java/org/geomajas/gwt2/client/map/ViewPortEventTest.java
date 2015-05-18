@@ -58,13 +58,13 @@ public class ViewPortEventTest {
 		event = null;
 
 		Assert.assertEquals(0.25, viewPort.getResolution());
-		Assert.assertNull(event);
 
 		HandlerRegistration reg = eventBus.addViewPortChangedHandler(new AllowChangedHandler());
 
 		viewPort.applyPosition(new Coordinate(342, 342));
 		Assert.assertEquals(0.25, viewPort.getResolution());
-		Assert.assertNotNull(event);
+		// same position, so no event expected !
+		Assert.assertNull(event);
 
 		reg.removeHandler();
 	}
