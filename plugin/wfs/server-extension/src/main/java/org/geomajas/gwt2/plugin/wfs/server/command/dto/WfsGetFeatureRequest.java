@@ -13,10 +13,8 @@ package org.geomajas.gwt2.plugin.wfs.server.command.dto;
 
 import java.util.List;
 
-import org.geomajas.command.CommandRequest;
 import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
 import org.geomajas.gwt2.client.map.feature.query.Criterion;
-import org.geomajas.gwt2.plugin.wfs.server.dto.WfsVersionDto;
 import org.geomajas.gwt2.plugin.wfs.server.dto.query.CriterionDto;
 
 /**
@@ -25,13 +23,11 @@ import org.geomajas.gwt2.plugin.wfs.server.dto.query.CriterionDto;
  *
  * @author Jan De Moerloose
  */
-public class WfsGetFeatureRequest implements CommandRequest {
+public class WfsGetFeatureRequest extends AbstractWfsRequest {
 
 	private static final long serialVersionUID = 200L;
 
 	public static final String COMMAND_NAME = "command.WfsGetFeature";
-
-	private String baseUrl;
 
 	private String typeName;
 
@@ -49,25 +45,7 @@ public class WfsGetFeatureRequest implements CommandRequest {
 
 	private List<AttributeDescriptor> schema;
 
-	private WfsVersionDto version = WfsVersionDto.V1_0_0;
-
 	public WfsGetFeatureRequest() {
-	}
-
-	public WfsVersionDto getVersion() {
-		return version;
-	}
-
-	public void setVersion(WfsVersionDto version) {
-		this.version = version;
-	}
-
-	public String getBaseUrl() {
-		return baseUrl;
-	}
-
-	public void setBaseUrl(String baseUrl) {
-		this.baseUrl = baseUrl;
 	}
 
 	public String getTypeName() {

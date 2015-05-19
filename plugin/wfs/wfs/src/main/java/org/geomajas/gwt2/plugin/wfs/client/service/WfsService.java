@@ -44,6 +44,17 @@ public interface WfsService {
 		private WfsVersion(String version) {
 			this.version = version;
 		}
+		
+		public static WfsVersion fromString(String text) {
+			if (text != null) {
+				for (WfsVersion version : WfsVersion.values()) {
+					if (text.equalsIgnoreCase(version.toString())) {
+						return version;
+					}
+				}
+			}
+			return null;
+		}
 
 		public String toString() {
 			return version;

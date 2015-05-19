@@ -10,8 +10,6 @@
  */
 package org.geomajas.gwt2.plugin.wfs.server.command.dto;
 
-import org.geomajas.command.CommandRequest;
-import org.geomajas.gwt2.plugin.wfs.server.dto.WfsVersionDto;
 
 /**
  * Request for the {@link org.geomajas.gwt2.plugin.wfs.server.command.WfsGetCapabilitiesCommand}. 
@@ -19,36 +17,16 @@ import org.geomajas.gwt2.plugin.wfs.server.dto.WfsVersionDto;
  *
  * @author Jan De Moerloose
  */
-public class WfsGetCapabilitiesRequest implements CommandRequest {
+public class WfsGetCapabilitiesRequest extends AbstractWfsRequest {
 
 	private static final long serialVersionUID = 100L;
 
 	public static final String COMMAND_NAME = "command.WfsGetCapabilities";
 
-	private String baseUrl;
-
-	private WfsVersionDto version = WfsVersionDto.V1_0_0;
-
 	public WfsGetCapabilitiesRequest() {
 	}
 
-	public WfsVersionDto getVersion() {
-		return version;
-	}
-
-	public void setVersion(WfsVersionDto version) {
-		this.version = version;
-	}
-
 	public WfsGetCapabilitiesRequest(String baseUrl) {
-		this.baseUrl = baseUrl;
-	}
-
-	public String getBaseUrl() {
-		return baseUrl;
-	}
-
-	public void setBaseUrl(String baseUrl) {
-		this.baseUrl = baseUrl;
+		setBaseUrl(baseUrl);
 	}
 }

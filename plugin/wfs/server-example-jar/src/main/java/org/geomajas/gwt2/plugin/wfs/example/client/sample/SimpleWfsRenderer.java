@@ -59,6 +59,8 @@ public class SimpleWfsRenderer implements LayerRenderer {
 
 	private MapEventBus eventBus;
 
+	private Criterion criterion;
+
 	public SimpleWfsRenderer(final SimpleWfsLayer layer, ViewPort viewPort, VectorObjectContainer container,
 			MapEventBus eventBus) {
 		this.layer = layer;
@@ -86,7 +88,9 @@ public class SimpleWfsRenderer implements LayerRenderer {
 		if (!featuresLoaded) {
 			featuresLoaded = true;
 			WfsService wfsService = WfsServerExtension.getInstance().getWfsService();
-			Criterion criterion = wfsService.buildCriterion().include().build();
+			if(criterion == null) {
+				criterion =  wfsService.buildCriterion().include().build();
+			}
 			Query query = wfsService.buildQuery().criterion(criterion).maxFeatures(maxFeatures)
 					.maxCoordinates(maxCoordinates).crs(viewPort.getCrs()).attributeDescriptors(layer.getSchema())
 					.build();
@@ -124,6 +128,7 @@ public class SimpleWfsRenderer implements LayerRenderer {
 
 	private void clear() {
 		container.clear();
+		featuresLoaded = false;
 	}
 
 	public int getMaxFeatures() {
@@ -190,6 +195,12 @@ public class SimpleWfsRenderer implements LayerRenderer {
 			}
 		}
 
+	}
+
+	public void setFilter(Criterion criterion) {
+		this.criterion = criterion;
+		clear();
+		render(null);
 	}
 
 }

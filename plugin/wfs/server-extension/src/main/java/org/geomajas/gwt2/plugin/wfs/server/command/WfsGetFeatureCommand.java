@@ -147,7 +147,7 @@ public class WfsGetFeatureCommand implements CommandHasRequest<WfsGetFeatureRequ
 			HTTPClient client = httpClientFactory.create(sourceUrl);
 
 			// run it
-			return getFeatures(targetUrl, client, request.getTypeName(), query, request.getVersion());
+			return getFeatures(targetUrl, client, request.getTypeName(), query, request.getVersion(), request.getStrategy());
 		} catch (SAXException e) {
 			throw new IOException(e);
 		} catch (ParserConfigurationException e) {
@@ -175,14 +175,19 @@ public class WfsGetFeatureCommand implements CommandHasRequest<WfsGetFeatureRequ
 		Filter filter = converter.convert(criterion, schema);
 		Query query = null;
 		if (attributeNames == null) {
-			query = new Query(typeName, filter, maxFeatures, Query.ALL_NAMES, null);
+			query = new Query(typeName, filter, maxFeatures > 0 ? maxFeatures : Integer.MAX_VALUE, Query.ALL_NAMES, null);
 		} else {
-			query = new Query(typeName, filter, maxFeatures, attributeNames.toArray(new String[attributeNames.size()]),
+			query = new Query(typeName, filter, maxFeatures > 0 ? maxFeatures : Integer.MAX_VALUE, attributeNames.toArray(new String[attributeNames.size()]),
 					null);
 		}
-		query.setStartIndex(startIndex);
+		if(startIndex > 0) {
+			query.setStartIndex(startIndex);
+		}
 		if (null != crs) {
 			try {
+				if(crs.equalsIgnoreCase("EPSG:4326")) {
+					crs = "urn:x-ogc:def:crs:EPSG:4326";
+				}
 				query.setCoordinateSystem(CRS.decode(crs));
 			} catch (NoSuchAuthorityCodeException e) { // assume non-fatal
 				log.warn("Problem getting CRS for id " + crs + ": " + e.getMessage());
@@ -195,7 +200,7 @@ public class WfsGetFeatureCommand implements CommandHasRequest<WfsGetFeatureRequ
 	}
 
 	protected FeatureCollection<SimpleFeatureType, SimpleFeature> getFeatures(URL baseUrl, HTTPClient client,
-			String typeName, Query query, WfsVersionDto version) throws IOException, SAXException,
+			String typeName, Query query, WfsVersionDto version, String strategy) throws IOException, SAXException,
 			ParserConfigurationException, URISyntaxException {
 
 		URL url = URLBuilder.createWfsURL(baseUrl, version, "GetCapabilities");
@@ -204,6 +209,9 @@ public class WfsGetFeatureCommand implements CommandHasRequest<WfsGetFeatureRequ
 		connectionParameters.put(WFSDataStoreFactory.MAXFEATURES.key, query.getMaxFeatures());
 		connectionParameters.put(WFSDataStoreFactory.URL.key, capa);
 		connectionParameters.put(WFSDataStoreFactory.PROTOCOL.key, Boolean.TRUE);
+		if(strategy != null) {
+			connectionParameters.put(WFSDataStoreFactory.WFS_STRATEGY.key, strategy);
+		}
 		DataStore data = dataStoreFactory.createDataStore(connectionParameters, client);
 		SimpleFeatureSource features = data.getFeatureSource(typeName.replace(":", "_"));
 		return features.getFeatures(query);

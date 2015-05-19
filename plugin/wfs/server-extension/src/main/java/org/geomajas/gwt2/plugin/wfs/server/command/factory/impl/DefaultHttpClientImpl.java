@@ -189,7 +189,7 @@ public class DefaultHttpClientImpl implements HTTPClient {
 	 * @author Jan De Moerloose
 	 *
 	 */
-	private static class HttpMethodResponse implements HTTPResponse {
+	private class HttpMethodResponse implements HTTPResponse {
 
 		private HttpRequestBase request;
 
@@ -232,6 +232,10 @@ public class DefaultHttpClientImpl implements HTTPClient {
 		public InputStream getResponseStream() throws IOException {
 			if (responseBodyAsStream == null) {
 				responseBodyAsStream = response.getEntity().getContent();
+				String content = IOUtils.toString(responseBodyAsStream, "UTF-8");
+//				content = content.replaceAll("EPSG:4326", "urn:x-ogc:def:crs:EPSG:4326");
+				log.info(content);
+				responseBodyAsStream = IOUtils.toInputStream(content, "UTF-8");
 			}
 			return responseBodyAsStream;
 		}

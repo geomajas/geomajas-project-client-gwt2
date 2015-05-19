@@ -52,7 +52,9 @@ public class WfsProxyServiceImpl implements WfsService {
 	public void getCapabilities(WfsVersion version, String baseUrl,
 			final Callback<WfsGetCapabilitiesInfo, String> callback) {
 		WfsGetCapabilitiesRequest request = new WfsGetCapabilitiesRequest(baseUrl);
-		request.setVersion(WfsVersionDto.fromString(version.toString()));
+		if(version != null) {
+			request.setVersion(WfsVersionDto.fromString(version.toString()));
+		}
 		GwtCommand command = new GwtCommand(WfsGetCapabilitiesRequest.COMMAND_NAME);
 		command.setCommandRequest(request);
 		GeomajasServerExtension.getInstance().getCommandService()
@@ -80,7 +82,9 @@ public class WfsProxyServiceImpl implements WfsService {
 	public void describeFeatureType(WfsVersion version, String baseUrl, String typeName,
 			final Callback<WfsFeatureTypeDescriptionInfo, String> callback) {
 		WfsDescribeFeatureTypeRequest request = new WfsDescribeFeatureTypeRequest(baseUrl, typeName);
-		request.setVersion(WfsVersionDto.fromString(version.toString()));
+		if(version != null) {
+			request.setVersion(WfsVersionDto.fromString(version.toString()));
+		}
 		GwtCommand command = new GwtCommand(WfsDescribeFeatureTypeRequest.COMMAND_NAME);
 		command.setCommandRequest(request);
 		GeomajasServerExtension.getInstance().getCommandService()
@@ -123,7 +127,9 @@ public class WfsProxyServiceImpl implements WfsService {
 		request.setSchema(query.getAttributeDescriptors());
 		request.setStartIndex(query.getStartIndex());
 		request.setRequestedAttributeNames(query.getRequestedAttributeNames());
-		request.setVersion(WfsVersionDto.fromString(version.toString()));
+		if(version != null) {
+			request.setVersion(WfsVersionDto.fromString(version.toString()));
+		}
 		GwtCommand command = new GwtCommand(WfsGetFeatureRequest.COMMAND_NAME);
 		command.setCommandRequest(request);
 		GeomajasServerExtension.getInstance().getCommandService()

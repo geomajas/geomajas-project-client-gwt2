@@ -45,7 +45,9 @@ public final class URLBuilder {
 			}
 		}
 		params.add(new BasicNameValuePair("service", "WFS"));
-		params.add(new BasicNameValuePair("version", version.toString()));
+		if(version != null) {
+			params.add(new BasicNameValuePair("version", version.toString()));
+		}
 		params.add(new BasicNameValuePair("request", request));
 		String protocol = baseUrl.getProtocol();
 		String authority = baseUrl.getAuthority();
