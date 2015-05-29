@@ -88,7 +88,7 @@ public class NavigationController extends AbstractMapController {
 	private ScrollZoomType scrollZoomType = ScrollZoomType.ZOOM_POSITION;
 
 	private long lastMillis;
-	
+
 	private static final long MAX_KINETIC_DELAY = 30;
 
 	// ------------------------------------------------------------------------
@@ -224,28 +224,28 @@ public class NavigationController extends AbstractMapController {
 	protected void stopPanning(HumanInputEvent<?> event) {
 		dragging = false;
 		mapPresenter.setCursor("default");
-        if (null != event && dragPositions.size() >= 2) {
-            logger.info("kinetics started");
-            // start kinetic animation
-            Coordinate dragStart = toWorld(dragPositions.get(0));
-            Coordinate dragStop = toWorld(dragPositions.get(dragPositions.size() - 1));
-            long timeStart = dragTimes.get(0).getTime();
-            long timeStop = dragTimes.get(dragTimes.size() - 1).getTime();
-            int delta = (int) (timeStop - timeStart);
-            long delay = new Date().getTime() - timeStop;
-            if (delta > 0 && delay < MAX_KINETIC_DELAY) {
-                // map moves in the inverse direction !
-                Coordinate direction = subtract(dragStart, dragStop);
-                double distance = abs(direction);
-                Coordinate current = mapPresenter.getViewPort().getPosition();
-                double resolution = mapPresenter.getViewPort().getResolution();
-                KineticTrajectory trajectory = new KineticTrajectory(new View(current, resolution), direction, distance
-                        / delta);
-                mapPresenter.getViewPort().registerAnimation(
-                        new NavigationAnimationImpl(mapPresenter.getViewPort(), mapPresenter.getEventBus(), trajectory,
-                                (int) trajectory.getDuration()));
-            }
-        }
+		if (null != event && dragPositions.size() >= 2) {
+			logger.info("kinetics started");
+			// start kinetic animation
+			Coordinate dragStart = toWorld(dragPositions.get(0));
+			Coordinate dragStop = toWorld(dragPositions.get(dragPositions.size() - 1));
+			long timeStart = dragTimes.get(0).getTime();
+			long timeStop = dragTimes.get(dragTimes.size() - 1).getTime();
+			int delta = (int) (timeStop - timeStart);
+			long delay = new Date().getTime() - timeStop;
+			if (delta > 0 && delay < MAX_KINETIC_DELAY) {
+				// map moves in the inverse direction !
+				Coordinate direction = subtract(dragStart, dragStop);
+				double distance = abs(direction);
+				Coordinate current = mapPresenter.getViewPort().getPosition();
+				double resolution = mapPresenter.getViewPort().getResolution();
+				KineticTrajectory trajectory = new KineticTrajectory(new View(current, resolution), direction, distance
+						/ delta);
+				mapPresenter.getViewPort().registerAnimation(
+						new NavigationAnimationImpl(mapPresenter.getViewPort(), mapPresenter.getEventBus(), trajectory,
+								(int) trajectory.getDuration()));
+			}
+		}
 	}
 
 	private double abs(Coordinate c) {
@@ -282,8 +282,8 @@ public class NavigationController extends AbstractMapController {
 	}
 
 	protected native int getWheelDelta(NativeEvent evt) /*-{
-		return Math.round(-evt.wheelDelta) || 0;
-	}-*/;
+														return Math.round(-evt.wheelDelta) || 0;
+														}-*/;
 
 	protected void scrollZoomTo(boolean isNorth, Coordinate location) {
 		ViewPort viewPort = mapPresenter.getViewPort();
