@@ -1,0 +1,42 @@
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2015 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+
+<module>
+	<source path="client"/>
+	
+	<define-property name="modernie" values="none,yes" />
+	<property-provider name="modernie"><![CDATA[
+	  {
+	    var ua = $wnd.navigator.userAgent;
+	    if (ua.indexOf('IE') == -1 && ua.indexOf('Trident') != -1) { return 'yes'; }
+	    return 'none';
+	  }
+	]]></property-provider>
+
+	<set-property name="modernie" value="none">
+		<none>
+			<when-property-is name="user.agent" value="gecko1_8" />
+		</none>
+	</set-property>
+	
+
+	<replace-with class="org.geomajas.gwt.client.event.impl.PointerEventsImpl">
+		<when-type-is class="org.geomajas.gwt.client.event.PointerEvents"/>
+		<when-property-is value="yes" name="modernie"/>
+	</replace-with>
+	
+	<replace-with class="org.geomajas.gwt.client.event.impl.PointerEventsImplIE10">
+		<when-type-is class="org.geomajas.gwt.client.event.PointerEvents"/>
+		<when-property-is value="ie10" name="user.agent"/>
+	</replace-with>
+
+	<entry-point class="org.geomajas.gwt.client.event.PointerEvents"/>	
+</module>

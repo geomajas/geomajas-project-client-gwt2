@@ -13,6 +13,10 @@ package org.geomajas.gwt2.client.controller;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.service.MathService;
+import org.geomajas.gwt.client.event.PointerTouchCancelEvent;
+import org.geomajas.gwt.client.event.PointerTouchEndEvent;
+import org.geomajas.gwt.client.event.PointerTouchMoveEvent;
+import org.geomajas.gwt.client.event.PointerTouchStartEvent;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.View;
@@ -25,6 +29,7 @@ import com.google.gwt.event.dom.client.GestureEndEvent;
 import com.google.gwt.event.dom.client.GestureStartEvent;
 import com.google.gwt.event.dom.client.TouchCancelEvent;
 import com.google.gwt.event.dom.client.TouchEndEvent;
+import com.google.gwt.event.dom.client.TouchEvent;
 import com.google.gwt.event.dom.client.TouchMoveEvent;
 import com.google.gwt.event.dom.client.TouchStartEvent;
 
@@ -35,7 +40,7 @@ import com.google.gwt.event.dom.client.TouchStartEvent;
  * @author Jan De Moerloose
  * @since 2.0.0
  */
-public class TouchNavigationController extends NavigationController {
+public class TouchNavigationController extends NavigationController implements PointerController {
 
 	protected boolean zooming;
 
@@ -49,6 +54,50 @@ public class TouchNavigationController extends NavigationController {
 
 	@Override
 	public void onTouchStart(TouchStartEvent event) {
+		onStart(event);
+	}
+
+	@Override
+	public void onTouchMove(TouchMoveEvent event) {
+		onMove(event);
+	}
+
+	@Override
+	public void onTouchEnd(TouchEndEvent event) {
+		onEnd(event);
+	}
+
+	@Override
+	public void onTouchCancel(TouchCancelEvent event) {
+		onCancel(event);
+	}
+	
+	@Override
+	public void onTouchStart(PointerTouchStartEvent event) {
+		onStart(event);
+	}
+
+	@Override
+	public void onTouchMove(PointerTouchMoveEvent event) {
+		onMove(event);
+	}
+
+	@Override
+	public void onTouchEnd(PointerTouchEndEvent event) {
+		onEnd(event);
+	}
+
+	@Override
+	public void onTouchCancel(PointerTouchCancelEvent event) {
+		onCancel(event);
+	}
+
+	private void onCancel(TouchEvent<?> event) {
+		event.preventDefault();
+		event.stopPropagation();
+	}
+
+	public void onStart(TouchEvent<?> event) {
 		if (event.getTouches().length() == 2) {
 			Coordinate p1 = getWorldLocation(event.getTouches().get(0), RenderSpace.WORLD);
 			Coordinate p2 = getWorldLocation(event.getTouches().get(1), RenderSpace.WORLD);
@@ -63,8 +112,7 @@ public class TouchNavigationController extends NavigationController {
 		event.stopPropagation();
 	}
 
-	@Override
-	public void onTouchMove(TouchMoveEvent event) {
+	private void onMove(TouchEvent<?> event) {
 		if (event.getTouches().length() == 2 && zooming) {
 			Coordinate p1 = getWorldLocation(event.getTouches().get(0), RenderSpace.WORLD);
 			Coordinate p2 = getWorldLocation(event.getTouches().get(1), RenderSpace.WORLD);
@@ -84,8 +132,7 @@ public class TouchNavigationController extends NavigationController {
 		event.stopPropagation();
 	}
 
-	@Override
-	public void onTouchEnd(TouchEndEvent event) {
+	private void onEnd(TouchEvent<?> event) {
 		if (zooming) {
 			if (event.getTouches().length() == 0) {
 				zooming = false;
@@ -105,11 +152,6 @@ public class TouchNavigationController extends NavigationController {
 				.transform(c, RenderSpace.SCREEN, RenderSpace.WORLD);
 	}
 
-	private Coordinate getScreenLocation(Coordinate c) {
-		return mapPresenter.getViewPort().getTransformationService()
-				.transform(c, RenderSpace.WORLD, RenderSpace.SCREEN);
-	}
-
 	private Coordinate getCenter(Coordinate p1, Coordinate p2) {
 		return new Coordinate(0.5 * (p1.getX() + p2.getX()), 0.5 * (p1.getY() + p2.getY()));
 	}
@@ -124,12 +166,6 @@ public class TouchNavigationController extends NavigationController {
 		double dX = (rescalePoint.getX() - position.getX()) * (1 - 1 / scale);
 		double dY = (rescalePoint.getY() - position.getY()) * (1 - 1 / scale);
 		return new Coordinate(position.getX() + dX, position.getY() + dY);
-	}
-
-	@Override
-	public void onTouchCancel(TouchCancelEvent event) {
-		event.preventDefault();
-		event.stopPropagation();
 	}
 
 	// ------------------------------------------------------------------------

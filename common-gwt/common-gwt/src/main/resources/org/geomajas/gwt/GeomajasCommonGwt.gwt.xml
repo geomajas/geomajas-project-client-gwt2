@@ -13,6 +13,8 @@
 <!-- 	<inherits name="com.smartgwt.GeomajasSgFunction"/>
 	<inherits name="org.geomajas.GeomajasDto"/>
  -->
+	<inherits name="org.geomajas.gwt.PointerEvents"/>
+	
 	<!-- make sure the default is there -->
 	<source path="client"/>
 	
