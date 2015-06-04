@@ -41,7 +41,7 @@ public class PointerTouchEndEvent extends TouchEvent<PointerTouchEndHandler> {
 
 	@Override
 	protected void dispatch(PointerTouchEndHandler handler) {
-		handler.onTouchEnd(this);
+		handler.onPointerTouchEnd(this);
 	}
 
 }

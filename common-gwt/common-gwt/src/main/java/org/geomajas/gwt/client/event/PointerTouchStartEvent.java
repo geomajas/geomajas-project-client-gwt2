@@ -41,7 +41,7 @@ public class PointerTouchStartEvent extends TouchEvent<PointerTouchStartHandler>
 
 	@Override
 	protected void dispatch(PointerTouchStartHandler handler) {
-		handler.onTouchStart(this);
+		handler.onPointerTouchStart(this);
 	}
 
 }

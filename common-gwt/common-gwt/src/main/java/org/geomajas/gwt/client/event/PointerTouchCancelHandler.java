@@ -24,5 +24,5 @@ public interface PointerTouchCancelHandler extends EventHandler {
    *
    * @param event the {@link PointerTouchCancelEvent} that was fired
    */
-  void onTouchCancel(PointerTouchCancelEvent event);
+  void onPointerTouchCancel(PointerTouchCancelEvent event);
 }

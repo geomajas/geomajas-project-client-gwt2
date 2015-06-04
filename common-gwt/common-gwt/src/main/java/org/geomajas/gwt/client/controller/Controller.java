@@ -12,6 +12,10 @@
 package org.geomajas.gwt.client.controller;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.gwt.client.event.PointerTouchCancelHandler;
+import org.geomajas.gwt.client.event.PointerTouchEndHandler;
+import org.geomajas.gwt.client.event.PointerTouchMoveHandler;
+import org.geomajas.gwt.client.event.PointerTouchStartHandler;
 
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.GestureChangeHandler;
@@ -41,7 +45,8 @@ import com.google.gwt.event.dom.client.TouchStartHandler;
 @Api(allMethods = true)
 public interface Controller extends MouseDownHandler, MouseUpHandler, MouseMoveHandler, MouseOutHandler,
 		MouseOverHandler, MouseWheelHandler, DoubleClickHandler, TouchStartHandler, TouchEndHandler, TouchMoveHandler,
-		TouchCancelHandler, GestureStartHandler, GestureEndHandler, GestureChangeHandler, MapEventParser {
+		TouchCancelHandler, PointerTouchStartHandler, PointerTouchEndHandler, PointerTouchMoveHandler,
+		PointerTouchCancelHandler, GestureStartHandler, GestureEndHandler, GestureChangeHandler, MapEventParser {
 
 	/**
 	 * Is the given event the result of a mouse event coming from the right mouse button?

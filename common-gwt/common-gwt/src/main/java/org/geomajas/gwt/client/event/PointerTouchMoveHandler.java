@@ -24,5 +24,5 @@ public interface PointerTouchMoveHandler extends EventHandler {
    *
    * @param event the {@link PointerTouchMoveEvent} that was fired
    */
-  void onTouchMove(PointerTouchMoveEvent event);
+  void onPointerTouchMove(PointerTouchMoveEvent event);
 }

@@ -27,12 +27,19 @@ import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseWheelEvent;
 import com.google.gwt.event.dom.client.TouchCancelEvent;
 import com.google.gwt.event.dom.client.TouchEndEvent;
+import com.google.gwt.event.dom.client.TouchEvent;
 import com.google.gwt.event.dom.client.TouchMoveEvent;
 import com.google.gwt.event.dom.client.TouchStartEvent;
+
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.event.PointerTouchCancelEvent;
+import org.geomajas.gwt.client.event.PointerTouchEndEvent;
+import org.geomajas.gwt.client.event.PointerTouchMoveEvent;
+import org.geomajas.gwt.client.event.PointerTouchStartEvent;
 import org.geomajas.gwt.client.handler.MapDownHandler;
 import org.geomajas.gwt.client.handler.MapDragHandler;
+import org.geomajas.gwt.client.handler.MapTouchHandler;
 import org.geomajas.gwt.client.handler.MapUpHandler;
 import org.geomajas.gwt.client.map.RenderSpace;
 
@@ -53,7 +60,8 @@ import org.geomajas.gwt.client.map.RenderSpace;
  * @since 2.0.0
  */
 @Api(allMethods = true)
-public abstract class AbstractController implements Controller, MapDownHandler, MapUpHandler, MapDragHandler {
+public abstract class AbstractController implements Controller, MapDownHandler, MapUpHandler, MapDragHandler,
+		MapTouchHandler {
 
 	protected boolean dragging;
 
@@ -110,7 +118,7 @@ public abstract class AbstractController implements Controller, MapDownHandler, 
 	}
 
 	// ------------------------------------------------------------------------
-	// Methods for aligning mouse and touch events:
+	// Methods for aligning mouse and touch events for dragging :
 	// ------------------------------------------------------------------------
 
 	@Override
@@ -130,6 +138,38 @@ public abstract class AbstractController implements Controller, MapDownHandler, 
 	 */
 	public boolean isDragging() {
 		return dragging;
+	}
+
+	// ------------------------------------------------------------------------
+	// Methods for aligning mouse and touch events (general case) :
+	// ------------------------------------------------------------------------
+
+	@Override
+	public void onMapTouchStart(TouchEvent<?> event) {
+		onDown(event);
+		event.stopPropagation();
+		event.preventDefault();
+	}
+
+	@Override
+	public void onMapTouchMove(TouchEvent<?> event) {
+		onDrag(event);
+		event.stopPropagation();
+		event.preventDefault();
+	}
+
+	@Override
+	public void onMapTouchEnd(TouchEvent<?> event) {
+		onUp(event);
+		event.stopPropagation();
+		event.preventDefault();
+	}
+
+	@Override
+	public void onMapTouchCancel(TouchEvent<?> event) {
+		onUp(event);
+		event.stopPropagation();
+		event.preventDefault();
 	}
 
 	// ------------------------------------------------------------------------
@@ -177,31 +217,47 @@ public abstract class AbstractController implements Controller, MapDownHandler, 
 
 	@Override
 	public void onTouchStart(TouchStartEvent event) {
-		onDown(event);
-		event.stopPropagation();
-		event.preventDefault();
+		onMapTouchStart(event);
 	}
 
 	@Override
 	public void onTouchMove(TouchMoveEvent event) {
-		onDrag(event);
-		event.stopPropagation();
-		event.preventDefault();
+		onMapTouchMove(event);
 	}
 
 	@Override
 	public void onTouchEnd(TouchEndEvent event) {
-		onUp(event);
-		event.stopPropagation();
-		event.preventDefault();
+		onMapTouchEnd(event);
 	}
 
 	@Override
 	public void onTouchCancel(TouchCancelEvent event) {
-		onUp(event);
-		event.stopPropagation();
-		event.preventDefault();
+		onMapTouchCancel(event);
 	}
+
+	// ------------------------------------------------------------------------
+	// Pointer Touch Handler implementations:
+	// ------------------------------------------------------------------------
+
+	@Override
+	public void onPointerTouchStart(PointerTouchStartEvent event) {
+		onMapTouchStart(event);
+	}
+
+	@Override
+	public void onPointerTouchMove(PointerTouchMoveEvent event) {
+		onMapTouchMove(event);
+	}
+
+	@Override
+	public void onPointerTouchEnd(PointerTouchEndEvent event) {
+		onMapTouchEnd(event);
+	}
+
+	@Override
+	public void onPointerTouchCancel(PointerTouchCancelEvent event) {
+		onMapTouchCancel(event);
+	}	
 
 	// ------------------------------------------------------------------------
 	// Gesture Handler implementations:

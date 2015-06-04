@@ -41,7 +41,7 @@ public class PointerTouchMoveEvent extends TouchEvent<PointerTouchMoveHandler> {
 
 	@Override
 	protected void dispatch(PointerTouchMoveHandler handler) {
-		handler.onTouchMove(this);
+		handler.onPointerTouchMove(this);
 	}
 
 }

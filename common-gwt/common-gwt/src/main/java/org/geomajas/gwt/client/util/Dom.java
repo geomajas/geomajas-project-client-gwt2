@@ -11,11 +11,12 @@
 
 package org.geomajas.gwt.client.util;
 
+import org.geomajas.annotation.Api;
+import org.geomajas.gwt.client.util.impl.DomImpl;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Window.Navigator;
-import org.geomajas.annotation.Api;
-import org.geomajas.gwt.client.util.impl.DomImpl;
 
 /**
  * <p> Extension of the GWT DOM class, to support elements and attributes with specific name-spaces. These name-spaces

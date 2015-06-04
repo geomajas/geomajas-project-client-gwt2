@@ -13,10 +13,6 @@ package org.geomajas.gwt2.client.controller;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.service.MathService;
-import org.geomajas.gwt.client.event.PointerTouchCancelEvent;
-import org.geomajas.gwt.client.event.PointerTouchEndEvent;
-import org.geomajas.gwt.client.event.PointerTouchMoveEvent;
-import org.geomajas.gwt.client.event.PointerTouchStartEvent;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt2.client.map.MapPresenter;
 import org.geomajas.gwt2.client.map.View;
@@ -24,14 +20,7 @@ import org.geomajas.gwt2.client.map.ViewPort;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Touch;
-import com.google.gwt.event.dom.client.GestureChangeEvent;
-import com.google.gwt.event.dom.client.GestureEndEvent;
-import com.google.gwt.event.dom.client.GestureStartEvent;
-import com.google.gwt.event.dom.client.TouchCancelEvent;
-import com.google.gwt.event.dom.client.TouchEndEvent;
 import com.google.gwt.event.dom.client.TouchEvent;
-import com.google.gwt.event.dom.client.TouchMoveEvent;
-import com.google.gwt.event.dom.client.TouchStartEvent;
 
 /**
  * Generic controller that is used on touch devices. Note that gestures and multi touch are not supported by some mobile
@@ -48,56 +37,12 @@ public class TouchNavigationController extends NavigationController implements P
 
 	protected double startDist;
 
-	// ------------------------------------------------------------------------
-	// Touch events:
-	// ------------------------------------------------------------------------
 
-	@Override
-	public void onTouchStart(TouchStartEvent event) {
-		onStart(event);
+	public void onMapTouchCancel(TouchEvent<?> event) {
+		onMapTouchEnd(event);
 	}
 
-	@Override
-	public void onTouchMove(TouchMoveEvent event) {
-		onMove(event);
-	}
-
-	@Override
-	public void onTouchEnd(TouchEndEvent event) {
-		onEnd(event);
-	}
-
-	@Override
-	public void onTouchCancel(TouchCancelEvent event) {
-		onCancel(event);
-	}
-	
-	@Override
-	public void onTouchStart(PointerTouchStartEvent event) {
-		onStart(event);
-	}
-
-	@Override
-	public void onTouchMove(PointerTouchMoveEvent event) {
-		onMove(event);
-	}
-
-	@Override
-	public void onTouchEnd(PointerTouchEndEvent event) {
-		onEnd(event);
-	}
-
-	@Override
-	public void onTouchCancel(PointerTouchCancelEvent event) {
-		onCancel(event);
-	}
-
-	private void onCancel(TouchEvent<?> event) {
-		event.preventDefault();
-		event.stopPropagation();
-	}
-
-	public void onStart(TouchEvent<?> event) {
+	public void onMapTouchStart(TouchEvent<?> event) {
 		if (event.getTouches().length() == 2) {
 			Coordinate p1 = getWorldLocation(event.getTouches().get(0), RenderSpace.WORLD);
 			Coordinate p2 = getWorldLocation(event.getTouches().get(1), RenderSpace.WORLD);
@@ -112,7 +57,7 @@ public class TouchNavigationController extends NavigationController implements P
 		event.stopPropagation();
 	}
 
-	private void onMove(TouchEvent<?> event) {
+	public void onMapTouchMove(TouchEvent<?> event) {
 		if (event.getTouches().length() == 2 && zooming) {
 			Coordinate p1 = getWorldLocation(event.getTouches().get(0), RenderSpace.WORLD);
 			Coordinate p2 = getWorldLocation(event.getTouches().get(1), RenderSpace.WORLD);
@@ -132,7 +77,7 @@ public class TouchNavigationController extends NavigationController implements P
 		event.stopPropagation();
 	}
 
-	private void onEnd(TouchEvent<?> event) {
+	public void onMapTouchEnd(TouchEvent<?> event) {
 		if (zooming) {
 			if (event.getTouches().length() == 0) {
 				zooming = false;
@@ -169,22 +114,6 @@ public class TouchNavigationController extends NavigationController implements P
 	}
 
 	// ------------------------------------------------------------------------
-	// Gesture events:
-	// ------------------------------------------------------------------------
-
-	@Override
-	public void onGestureStart(GestureStartEvent event) {
-	}
-
-	@Override
-	public void onGestureEnd(GestureEndEvent event) {
-	}
-
-	@Override
-	public void onGestureChange(GestureChangeEvent event) {
-	}
-
-	// ------------------------------------------------------------------------
 	// Methods:
 	// ------------------------------------------------------------------------
 
@@ -192,10 +121,6 @@ public class TouchNavigationController extends NavigationController implements P
 	public void onActivate(final MapPresenter mapPresenter) {
 		this.mapPresenter = mapPresenter;
 		this.eventParser = mapPresenter.getMapEventParser();
-	}
-
-	@Override
-	public void onDeactivate(MapPresenter mapPresenter) {
 	}
 
 }

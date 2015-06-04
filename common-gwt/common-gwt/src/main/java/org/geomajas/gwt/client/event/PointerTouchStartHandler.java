@@ -24,5 +24,5 @@ public interface PointerTouchStartHandler extends EventHandler {
    *
    * @param event the {@link PointerTouchStartEvent} that was fired
    */
-  void onTouchStart(PointerTouchStartEvent event);
+  void onPointerTouchStart(PointerTouchStartEvent event);
 }

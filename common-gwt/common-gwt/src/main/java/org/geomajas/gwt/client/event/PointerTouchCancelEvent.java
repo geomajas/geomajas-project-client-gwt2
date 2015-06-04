@@ -41,7 +41,7 @@ public class PointerTouchCancelEvent extends TouchEvent<PointerTouchCancelHandle
 
 	@Override
 	protected void dispatch(PointerTouchCancelHandler handler) {
-		handler.onTouchCancel(this);
+		handler.onPointerTouchCancel(this);
 	}
 
 }

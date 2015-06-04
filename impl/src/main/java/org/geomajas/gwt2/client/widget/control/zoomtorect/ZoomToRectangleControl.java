@@ -11,32 +11,21 @@
 
 package org.geomajas.gwt2.client.widget.control.zoomtorect;
 
-import com.google.gwt.dom.client.NativeEvent;
-import com.google.gwt.dom.client.Style.Position;
-import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.DoubleClickEvent;
-import com.google.gwt.event.dom.client.DoubleClickHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseDownHandler;
-import com.google.gwt.event.dom.client.MouseEvent;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.event.dom.client.MouseMoveHandler;
-import com.google.gwt.event.dom.client.MouseUpEvent;
-import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.Event.NativePreviewEvent;
-import com.google.gwt.user.client.Event.NativePreviewHandler;
-import com.google.gwt.user.client.ui.SimplePanel;
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.controller.MapEventParser;
+import org.geomajas.gwt.client.event.PointerEvents;
+import org.geomajas.gwt.client.event.PointerTouchEndEvent;
+import org.geomajas.gwt.client.event.PointerTouchEndHandler;
+import org.geomajas.gwt.client.event.PointerTouchMoveEvent;
+import org.geomajas.gwt.client.event.PointerTouchMoveHandler;
+import org.geomajas.gwt.client.event.PointerTouchStartEvent;
+import org.geomajas.gwt.client.event.PointerTouchStartHandler;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt2.client.GeomajasImpl;
 import org.geomajas.gwt2.client.animation.NavigationAnimationFactory;
+import org.geomajas.gwt2.client.controller.MapEventParserImpl;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
 import org.geomajas.gwt2.client.gfx.VectorContainer;
@@ -51,6 +40,27 @@ import org.vaadin.gwtgraphics.client.shape.Rectangle;
 import org.vaadin.gwtgraphics.client.shape.path.ClosePath;
 import org.vaadin.gwtgraphics.client.shape.path.LineTo;
 import org.vaadin.gwtgraphics.client.shape.path.MoveTo;
+
+import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.DoubleClickEvent;
+import com.google.gwt.event.dom.client.DoubleClickHandler;
+import com.google.gwt.event.dom.client.HumanInputEvent;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.MouseDownEvent;
+import com.google.gwt.event.dom.client.MouseDownHandler;
+import com.google.gwt.event.dom.client.MouseMoveEvent;
+import com.google.gwt.event.dom.client.MouseMoveHandler;
+import com.google.gwt.event.dom.client.MouseUpEvent;
+import com.google.gwt.event.dom.client.MouseUpHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Event.NativePreviewEvent;
+import com.google.gwt.user.client.Event.NativePreviewHandler;
+import com.google.gwt.user.client.ui.SimplePanel;
 
 /**
  * Map widget that displays a button for zooming in to a rectangle on the map. The user is supposed to drag the
@@ -78,8 +88,7 @@ public class ZoomToRectangleControl extends AbstractMapWidget {
 	/**
 	 * Create a new instance for the given map.
 	 * 
-	 * @param mapPresenter
-	 *            The map presenter.
+	 * @param mapPresenter The map presenter.
 	 */
 	public ZoomToRectangleControl(MapPresenter mapPresenter) {
 		this(mapPresenter, GeomajasImpl.getClientBundleFactory().createZoomToRectangleControlResource());
@@ -88,8 +97,7 @@ public class ZoomToRectangleControl extends AbstractMapWidget {
 	/**
 	 * Create a new instance for the given map.
 	 * 
-	 * @param mapPresenter
-	 *            The map presenter.
+	 * @param mapPresenter The map presenter.
 	 */
 	public ZoomToRectangleControl(MapPresenter mapPresenter, ZoomToRectangleControlResource resource) {
 		super(mapPresenter);
@@ -133,26 +141,42 @@ public class ZoomToRectangleControl extends AbstractMapWidget {
 		addDomHandler(preventWeirdBehaviourHandler, DoubleClickEvent.getType());
 
 		// Create TOP button:
-		addDomHandler(new MouseUpHandler() {
+		if (PointerEvents.isSupported()) {
+			addDomHandler(new PointerTouchStartHandler() {
 
-			public void onMouseUp(MouseUpEvent event) {
-				cleanup();
-				container = mapPresenter.getContainerManager().addScreenContainer();
-				zoomToRectangleGroup = new ZoomToRectGroup(mapPresenter.getViewPort());
-				escapeHandler = Event.addNativePreviewHandler(new NativePreviewHandler() {
+				@Override
+				public void onPointerTouchStart(PointerTouchStartEvent event) {
+					startRectangle();
 
-					public void onPreviewNativeEvent(NativePreviewEvent event) {
-						if (event.getTypeInt() == Event.ONKEYDOWN || event.getTypeInt() == Event.ONKEYPRESS) {
-							if (KeyCodes.KEY_ESCAPE == event.getNativeEvent().getKeyCode()) {
-								cleanup();
-							}
-						}
+				}
+			}, PointerTouchStartEvent.getType());
+		} else {
+			addDomHandler(new MouseUpHandler() {
+
+				public void onMouseUp(MouseUpEvent event) {
+					startRectangle();
+				}
+
+			}, MouseUpEvent.getType());
+		}
+	}
+
+	private void startRectangle() {
+		cleanup();
+		container = mapPresenter.getContainerManager().addScreenContainer();
+		zoomToRectangleGroup = new ZoomToRectGroup(mapPresenter.getViewPort());
+		escapeHandler = Event.addNativePreviewHandler(new NativePreviewHandler() {
+
+			public void onPreviewNativeEvent(NativePreviewEvent event) {
+				if (event.getTypeInt() == Event.ONKEYDOWN || event.getTypeInt() == Event.ONKEYPRESS) {
+					if (KeyCodes.KEY_ESCAPE == event.getNativeEvent().getKeyCode()) {
+						cleanup();
 					}
-				});
-
-				container.add(zoomToRectangleGroup);
+				}
 			}
-		}, MouseUpEvent.getType());
+		});
+
+		container.add(zoomToRectangleGroup);
 	}
 
 	// ------------------------------------------------------------------------
@@ -172,11 +196,11 @@ public class ZoomToRectangleControl extends AbstractMapWidget {
 
 		private boolean dragging;
 
-		private int x;
-
-		private int y;
+		private Coordinate xy;
 
 		private Bbox screenBounds;
+
+		private MapEventParser eventParser = new MapEventParserImpl(mapPresenter);
 
 		public ZoomToRectGroup(final ViewPort viewPort) {
 			eventCatcher = new Rectangle(0, 0, mapPresenter.getViewPort().getMapWidth(), mapPresenter.getViewPort()
@@ -204,66 +228,76 @@ public class ZoomToRectangleControl extends AbstractMapWidget {
 			add(zoomInRect);
 			add(eventCatcher);
 
-			eventCatcher.addMouseDownHandler(new MouseDownHandler() {
+			if (PointerEvents.isSupported()) {
+				eventCatcher.addDomHandler(new PointerTouchStartHandler() {
 
-				public void onMouseDown(MouseDownEvent event) {
-					if (event.getNativeButton() != NativeEvent.BUTTON_RIGHT) {
-						dragging = true;
-						x = event.getRelativeX(mapPresenter.asWidget().getElement());
-						y = event.getRelativeY(mapPresenter.asWidget().getElement());
-						updateRectangle(event);
+					@Override
+					public void onPointerTouchStart(PointerTouchStartEvent event) {
+						startDragging(event);
+
 					}
-					event.stopPropagation();
-					event.preventDefault();
-				}
-			});
+				}, PointerTouchStartEvent.getType());
 
-			eventCatcher.addMouseUpHandler(new MouseUpHandler() {
+				eventCatcher.addDomHandler(new PointerTouchEndHandler() {
 
-				public void onMouseUp(MouseUpEvent event) {
-					if (event.getNativeButton() != NativeEvent.BUTTON_RIGHT && dragging) {
-						dragging = false;
-						if (screenBounds != null) {
-							Bbox worldBounds = viewPort.getTransformationService().transform(screenBounds,
-									RenderSpace.SCREEN, RenderSpace.WORLD);
-							View endView = viewPort.asView(worldBounds, ZoomOption.LEVEL_CLOSEST);
-							viewPort.registerAnimation(NavigationAnimationFactory.createZoomIn(mapPresenter, endView));
-						}
+					@Override
+					public void onPointerTouchEnd(PointerTouchEndEvent event) {
+						stopDragging(viewPort, event);
 					}
-					event.stopPropagation();
-				}
-			});
+				}, PointerTouchEndEvent.getType());
 
-			eventCatcher.addMouseMoveHandler(new MouseMoveHandler() {
+				eventCatcher.addDomHandler(new PointerTouchMoveHandler() {
 
-				public void onMouseMove(MouseMoveEvent event) {
-					if (dragging) {
-						updateRectangle(event);
+					@Override
+					public void onPointerTouchMove(PointerTouchMoveEvent event) {
+						continueDragging(event);
 					}
-					event.stopPropagation();
-				}
-			});
+				}, PointerTouchMoveEvent.getType());
+			} else {
+				eventCatcher.addMouseDownHandler(new MouseDownHandler() {
 
-			eventCatcher.addClickHandler(new ClickHandler() {
+					public void onMouseDown(MouseDownEvent event) {
+						startDragging(event);
+					}
 
-				public void onClick(ClickEvent event) {
-					event.stopPropagation();
-				}
-			});
+				});
 
-			eventCatcher.addDoubleClickHandler(new DoubleClickHandler() {
+				eventCatcher.addMouseUpHandler(new MouseUpHandler() {
 
-				public void onDoubleClick(DoubleClickEvent event) {
-					event.stopPropagation();
-				}
-			});
+					public void onMouseUp(MouseUpEvent event) {
+						stopDragging(viewPort, event);
+					}
+				});
+
+				eventCatcher.addMouseMoveHandler(new MouseMoveHandler() {
+
+					public void onMouseMove(MouseMoveEvent event) {
+						continueDragging(event);
+					}
+				});
+
+				eventCatcher.addClickHandler(new ClickHandler() {
+
+					public void onClick(ClickEvent event) {
+						event.stopPropagation();
+					}
+				});
+
+				eventCatcher.addDoubleClickHandler(new DoubleClickHandler() {
+
+					public void onDoubleClick(DoubleClickEvent event) {
+						event.stopPropagation();
+					}
+				});
+			}
+
 		}
 
-		private void updateRectangle(MouseEvent<?> event) {
-			int beginX = x;
-			int beginY = y;
-			int endX = event.getRelativeX(mapPresenter.asWidget().getElement());
-			int endY = event.getRelativeY(mapPresenter.asWidget().getElement());
+		private void updateRectangle(HumanInputEvent<?> event) {
+			int beginX = (int) xy.getX();
+			int beginY = (int) xy.getY();
+			int endX = (int) eventParser.getLocation(event, RenderSpace.SCREEN).getX();
+			int endY = (int) eventParser.getLocation(event, RenderSpace.SCREEN).getY();
 
 			// Check if begin and end need to be reversed:
 			if (beginX > endX) {
@@ -287,6 +321,34 @@ public class ZoomToRectangleControl extends AbstractMapWidget {
 				zoomInRect.setStep(9, new ClosePath());
 				screenBounds = new Bbox(beginX, beginY, width, height);
 			}
+		}
+
+		private void startDragging(HumanInputEvent<?> event) {
+			dragging = true;
+			xy = eventParser.getLocation(event, RenderSpace.SCREEN);
+			updateRectangle(event);
+			event.stopPropagation();
+			event.preventDefault();
+		}
+
+		private void stopDragging(final ViewPort viewPort, HumanInputEvent<?> event) {
+			if (dragging) {
+				dragging = false;
+				if (screenBounds != null) {
+					Bbox worldBounds = viewPort.getTransformationService().transform(screenBounds, RenderSpace.SCREEN,
+							RenderSpace.WORLD);
+					View endView = viewPort.asView(worldBounds, ZoomOption.LEVEL_CLOSEST);
+					viewPort.registerAnimation(NavigationAnimationFactory.createZoomIn(mapPresenter, endView));
+				}
+			}
+			event.stopPropagation();
+		}
+
+		private void continueDragging(HumanInputEvent<?> event) {
+			if (dragging) {
+				updateRectangle(event);
+			}
+			event.stopPropagation();
 		}
 	}
 }

@@ -24,5 +24,5 @@ public interface PointerTouchEndHandler extends EventHandler {
    *
    * @param event the {@link PointerTouchEndEvent} that was fired
    */
-  void onTouchEnd(PointerTouchEndEvent event);
+  void onPointerTouchEnd(PointerTouchEndEvent event);
 }
