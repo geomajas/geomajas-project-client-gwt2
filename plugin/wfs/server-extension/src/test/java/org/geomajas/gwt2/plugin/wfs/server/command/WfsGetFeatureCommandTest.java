@@ -26,6 +26,7 @@ import org.geomajas.gwt2.client.map.attribute.PrimitiveType;
 import org.geomajas.gwt2.client.map.feature.query.Criterion;
 import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsGetFeatureRequest;
 import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsGetFeatureResponse;
+import org.geomajas.gwt2.plugin.wfs.server.dto.WfsVersionDto;
 import org.geomajas.gwt2.plugin.wfs.server.dto.query.AttributeCriterionDto;
 import org.geomajas.gwt2.plugin.wfs.server.dto.query.BboxCriterionDto;
 import org.geomajas.gwt2.plugin.wfs.server.dto.query.DWithinCriterionDto;
@@ -68,7 +69,7 @@ import com.vividsolutions.jts.io.WKTReader;
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml", "commandContext.xml" })
 public class WfsGetFeatureCommandTest {
 
-	private static final String WMS_BASE_URL = "http://apps.geomajas.org/geoserver/demo_world/ows";
+	private static final String WFS_BASE_URL = "http://apps.geomajas.org/geoserver/demo_world/ows?version=1.1.0";
 
 	private static final String LAYER = "demo_world:simplified_country_borders";
 
@@ -138,7 +139,7 @@ public class WfsGetFeatureCommandTest {
 		Geometry geometry = GeometryService.toPolygon(bounds);
 
 		WfsGetFeatureRequest request = new WfsGetFeatureRequest();
-		request.setBaseUrl(WMS_BASE_URL);
+		request.setBaseUrl(WFS_BASE_URL);
 		request.setTypeName(LAYER);
 		request.setCriterion(new GeometryCriterionDto("the_geom",GeometryCriterionDto.INTERSECTS,geometry));
 		request.setCrs("EPSG:4326");		

@@ -35,7 +35,6 @@ import org.geomajas.gwt2.plugin.wfs.server.command.factory.impl.DefaultWfsHttpCl
 import org.geomajas.gwt2.plugin.wfs.server.dto.WfsFeatureTypeDto;
 import org.geomajas.gwt2.plugin.wfs.server.dto.WfsFeatureTypeListDto;
 import org.geomajas.gwt2.plugin.wfs.server.dto.WfsGetCapabilitiesDto;
-import org.geomajas.gwt2.plugin.wfs.server.dto.WfsVersionDto;
 import org.geomajas.service.DtoConverterService;
 import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.WFSDataStoreFactory;
@@ -93,7 +92,7 @@ public class WfsGetCapabilitiesCommand implements
 			Map<String, Serializable> connectionParameters = new HashMap<String, Serializable>();
 			connectionParameters.put(WFSDataStoreFactory.URL.key, capa);
 			connectionParameters.put(WFSDataStoreFactory.TIMEOUT.key, 10000);
-			if(request.getStrategy() != null) {
+			if (request.getStrategy() != null) {
 				connectionParameters.put(WFSDataStoreFactory.WFS_STRATEGY.key, request.getStrategy());
 			}
 			WFSDataStore wfs = dataStoreFactory.createDataStore(connectionParameters,

@@ -147,7 +147,8 @@ public class WfsGetFeatureCommand implements CommandHasRequest<WfsGetFeatureRequ
 			HTTPClient client = httpClientFactory.create(sourceUrl);
 
 			// run it
-			return getFeatures(targetUrl, client, request.getTypeName(), query, request.getVersion(), request.getStrategy());
+			return getFeatures(targetUrl, client, request.getTypeName(), query, request.getVersion(),
+					request.getStrategy());
 		} catch (SAXException e) {
 			throw new IOException(e);
 		} catch (ParserConfigurationException e) {
@@ -175,17 +176,19 @@ public class WfsGetFeatureCommand implements CommandHasRequest<WfsGetFeatureRequ
 		Filter filter = converter.convert(criterion, schema);
 		Query query = null;
 		if (attributeNames == null) {
-			query = new Query(typeName, filter, maxFeatures > 0 ? maxFeatures : Integer.MAX_VALUE, Query.ALL_NAMES, null);
-		} else {
-			query = new Query(typeName, filter, maxFeatures > 0 ? maxFeatures : Integer.MAX_VALUE, attributeNames.toArray(new String[attributeNames.size()]),
+			query = new Query(typeName, filter, maxFeatures > 0 ? maxFeatures : Integer.MAX_VALUE, Query.ALL_NAMES,
 					null);
+		} else {
+			query = new Query(typeName, filter, maxFeatures > 0 ? maxFeatures : Integer.MAX_VALUE,
+					attributeNames.toArray(new String[attributeNames.size()]), null);
 		}
-		if(startIndex > 0) {
+		if (startIndex > 0) {
 			query.setStartIndex(startIndex);
 		}
 		if (null != crs) {
 			try {
-				if(crs.equalsIgnoreCase("EPSG:4326")) {
+				// always use the urn version as otherwise servers disagree on axis order
+				if (crs.equalsIgnoreCase("EPSG:4326")) {
 					crs = "urn:x-ogc:def:crs:EPSG:4326";
 				}
 				query.setCoordinateSystem(CRS.decode(crs));
@@ -209,7 +212,7 @@ public class WfsGetFeatureCommand implements CommandHasRequest<WfsGetFeatureRequ
 		connectionParameters.put(WFSDataStoreFactory.MAXFEATURES.key, query.getMaxFeatures());
 		connectionParameters.put(WFSDataStoreFactory.URL.key, capa);
 		connectionParameters.put(WFSDataStoreFactory.PROTOCOL.key, Boolean.TRUE);
-		if(strategy != null) {
+		if (strategy != null) {
 			connectionParameters.put(WFSDataStoreFactory.WFS_STRATEGY.key, strategy);
 		}
 		DataStore data = dataStoreFactory.createDataStore(connectionParameters, client);

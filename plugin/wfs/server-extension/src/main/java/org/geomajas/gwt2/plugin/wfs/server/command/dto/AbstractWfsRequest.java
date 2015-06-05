@@ -24,7 +24,7 @@ public abstract class AbstractWfsRequest implements CommandRequest {
 
 	private String baseUrl;
 
-	private WfsVersionDto version = null;
+	private WfsVersionDto version;
 
 	private String strategy;
 

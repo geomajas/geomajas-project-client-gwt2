@@ -69,6 +69,12 @@ public class DefaultWfsDataStoreFactory implements WfsDataStoreFactory {
 		return dataStore;
 	}
 	
+	/**
+	 * Trying to force x-y order...
+	 * 
+	 * @author Jan De Moerloose
+	 *
+	 */
 	class WfsConfigAxisOrder extends WFSConfig {
 		
 		private WFSConfig wfsConfig;

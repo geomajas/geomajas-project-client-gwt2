@@ -39,13 +39,14 @@ public final class URLBuilder {
 		// we override some query params
 		for (int i = params.size() - 1; i >= 0; i--) {
 			NameValuePair pair = params.get(i);
-			if ("service".equalsIgnoreCase(pair.getName()) || "version".equalsIgnoreCase(pair.getName())
+			if ("service".equalsIgnoreCase(pair.getName())
+					|| ("version".equalsIgnoreCase(pair.getName()) && version != null)
 					|| "request".equalsIgnoreCase(pair.getName())) {
 				params.remove(i);
 			}
 		}
 		params.add(new BasicNameValuePair("service", "WFS"));
-		if(version != null) {
+		if (version != null) {
 			params.add(new BasicNameValuePair("version", version.toString()));
 		}
 		params.add(new BasicNameValuePair("request", request));

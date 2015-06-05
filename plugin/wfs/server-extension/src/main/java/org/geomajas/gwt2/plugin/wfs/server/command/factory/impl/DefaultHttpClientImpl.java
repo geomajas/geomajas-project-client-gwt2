@@ -91,6 +91,10 @@ public class DefaultHttpClientImpl implements HTTPClient {
 			post.addHeader("Content-type", postContentType);
 		}
 		byte[] byteContent = IOUtils.toByteArray(postContent);
+		if (log.isDebugEnabled()) {
+			log.debug(url.toExternalForm());
+			log.debug(new String(byteContent, "UTF-8"));
+		}
 		HttpEntity requestEntity = new ByteArrayEntity(byteContent);
 		post.setEntity(requestEntity);
 
@@ -232,10 +236,6 @@ public class DefaultHttpClientImpl implements HTTPClient {
 		public InputStream getResponseStream() throws IOException {
 			if (responseBodyAsStream == null) {
 				responseBodyAsStream = response.getEntity().getContent();
-				String content = IOUtils.toString(responseBodyAsStream, "UTF-8");
-//				content = content.replaceAll("EPSG:4326", "urn:x-ogc:def:crs:EPSG:4326");
-				log.info(content);
-				responseBodyAsStream = IOUtils.toInputStream(content, "UTF-8");
 			}
 			return responseBodyAsStream;
 		}

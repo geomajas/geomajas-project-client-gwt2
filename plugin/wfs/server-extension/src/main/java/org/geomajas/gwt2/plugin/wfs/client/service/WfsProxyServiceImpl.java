@@ -52,7 +52,7 @@ public class WfsProxyServiceImpl implements WfsService {
 	public void getCapabilities(WfsVersion version, String baseUrl,
 			final Callback<WfsGetCapabilitiesInfo, String> callback) {
 		WfsGetCapabilitiesRequest request = new WfsGetCapabilitiesRequest(baseUrl);
-		if(version != null) {
+		if (version != null) {
 			request.setVersion(WfsVersionDto.fromString(version.toString()));
 		}
 		GwtCommand command = new GwtCommand(WfsGetCapabilitiesRequest.COMMAND_NAME);
@@ -82,7 +82,7 @@ public class WfsProxyServiceImpl implements WfsService {
 	public void describeFeatureType(WfsVersion version, String baseUrl, String typeName,
 			final Callback<WfsFeatureTypeDescriptionInfo, String> callback) {
 		WfsDescribeFeatureTypeRequest request = new WfsDescribeFeatureTypeRequest(baseUrl, typeName);
-		if(version != null) {
+		if (version != null) {
 			request.setVersion(WfsVersionDto.fromString(version.toString()));
 		}
 		GwtCommand command = new GwtCommand(WfsDescribeFeatureTypeRequest.COMMAND_NAME);
@@ -127,7 +127,7 @@ public class WfsProxyServiceImpl implements WfsService {
 		request.setSchema(query.getAttributeDescriptors());
 		request.setStartIndex(query.getStartIndex());
 		request.setRequestedAttributeNames(query.getRequestedAttributeNames());
-		if(version != null) {
+		if (version != null) {
 			request.setVersion(WfsVersionDto.fromString(version.toString()));
 		}
 		GwtCommand command = new GwtCommand(WfsGetFeatureRequest.COMMAND_NAME);
