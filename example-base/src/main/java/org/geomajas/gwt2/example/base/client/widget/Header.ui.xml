@@ -30,7 +30,7 @@
 
 	<g:HTMLPanel addStyleNames="{style.header}">
 		<div class="{style.headerImageDiv}"><g:Image resource='{resource.geomajasLogoBg}' /></div>
-		<div class="{style.headerTitle}">Showcase Client Gwt 2.x</div>
+		<div class="{style.headerTitle}" ui:field="headerLabel"></div>
 	</g:HTMLPanel>
 
 </ui:UiBinder> 

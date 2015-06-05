@@ -53,6 +53,7 @@
 				<filtering>true</filtering>
 				<includes>
 					<include>META-INF/geomajasContext.xml</include>
+                    <include>org/geomajas/gwt2/example/base/client/resource/VersionMessages.properties</include>
 				</includes>
 			</resource>
 			<resource>
@@ -60,6 +61,7 @@
 				<filtering>false</filtering>
 				<excludes>
 					<exclude>META-INF/geomajasContext.xml</exclude>
+					<exclude>org/geomajas/gwt2/example/base/client/resource/VersionMessages.properties</exclude>
 				</excludes>
 			</resource>
 		</resources>
