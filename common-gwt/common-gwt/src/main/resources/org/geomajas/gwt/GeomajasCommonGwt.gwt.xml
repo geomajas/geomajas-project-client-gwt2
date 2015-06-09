@@ -26,6 +26,7 @@
 		<when-type-is class="org.geomajas.gwt.client.util.impl.DomImpl" />
 		<any>
 			<when-property-is name="user.agent" value="gecko" />
+            <!-- will also be used by IE11 :-->
 			<when-property-is name="user.agent" value="gecko1_8" />
 		</any>
 	</replace-with>
@@ -52,6 +53,14 @@
 		<when-type-is class="org.geomajas.gwt.client.util.impl.DomImpl" />
 		<any>
 			<when-property-is name="user.agent" value="ie9" />
+		</any>
+	</replace-with>
+
+    <!-- IE10 implementation -->
+	<replace-with class="org.geomajas.gwt.client.util.impl.DomImplIE10">
+		<when-type-is class="org.geomajas.gwt.client.util.impl.DomImpl" />
+		<any>
+			<when-property-is name="user.agent" value="ie10" />
 		</any>
 	</replace-with>
 
