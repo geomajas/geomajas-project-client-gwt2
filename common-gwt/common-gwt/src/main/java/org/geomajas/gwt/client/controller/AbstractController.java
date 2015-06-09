@@ -144,6 +144,10 @@ public abstract class AbstractController implements Controller, MapDownHandler, 
 	// Methods for aligning mouse and touch events (general case) :
 	// ------------------------------------------------------------------------
 
+	/**
+	 * Forward as mouse down and stop the event.
+	 * @since 2.4.0
+	 */
 	@Override
 	public void onMapTouchStart(TouchEvent<?> event) {
 		onDown(event);
@@ -151,6 +155,10 @@ public abstract class AbstractController implements Controller, MapDownHandler, 
 		event.preventDefault();
 	}
 
+	/**
+	 * Forward as mouse move and stop the event.
+	 * @since 2.4.0
+	 */
 	@Override
 	public void onMapTouchMove(TouchEvent<?> event) {
 		onDrag(event);
@@ -158,6 +166,10 @@ public abstract class AbstractController implements Controller, MapDownHandler, 
 		event.preventDefault();
 	}
 
+	/**
+	 * Forward as mouse up and stop the event.
+	 * @since 2.4.0
+	 */
 	@Override
 	public void onMapTouchEnd(TouchEvent<?> event) {
 		onUp(event);
@@ -165,6 +177,10 @@ public abstract class AbstractController implements Controller, MapDownHandler, 
 		event.preventDefault();
 	}
 
+	/**
+	 * Forward as mouse up and stop the event.
+	 * @since 2.4.0
+	 */
 	@Override
 	public void onMapTouchCancel(TouchEvent<?> event) {
 		onUp(event);
@@ -215,21 +231,33 @@ public abstract class AbstractController implements Controller, MapDownHandler, 
 	// Touch Handler implementations:
 	// ------------------------------------------------------------------------
 
+	/**
+	 * Don't override this method, override {@link #onMapTouchStart(TouchEvent)} instead.
+	 */
 	@Override
 	public void onTouchStart(TouchStartEvent event) {
 		onMapTouchStart(event);
 	}
 
+	/**
+	 * Don't override this method, override {@link #onMapTouchMove(TouchEvent)} instead.
+	 */
 	@Override
 	public void onTouchMove(TouchMoveEvent event) {
 		onMapTouchMove(event);
 	}
 
+	/**
+	 * Don't override this method, override {@link #onMapTouchEnd(TouchEvent)} instead.
+	 */
 	@Override
 	public void onTouchEnd(TouchEndEvent event) {
 		onMapTouchEnd(event);
 	}
 
+	/**
+	 * Don't override this method, override {@link #onMapTouchCancel(TouchEvent)} instead.
+	 */
 	@Override
 	public void onTouchCancel(TouchCancelEvent event) {
 		onMapTouchCancel(event);
@@ -239,21 +267,37 @@ public abstract class AbstractController implements Controller, MapDownHandler, 
 	// Pointer Touch Handler implementations:
 	// ------------------------------------------------------------------------
 
+	/**
+	 * Don't override this method, override {@link #onMapTouchStart(TouchEvent)} instead.
+	 * @since 2.4.0
+	 */
 	@Override
 	public void onPointerTouchStart(PointerTouchStartEvent event) {
 		onMapTouchStart(event);
 	}
 
+	/**
+	 * Don't override this method, override {@link #onMapTouchMove(TouchEvent)} instead.
+	 * @since 2.4.0
+	 */
 	@Override
 	public void onPointerTouchMove(PointerTouchMoveEvent event) {
 		onMapTouchMove(event);
 	}
 
+	/**
+	 * Don't override this method, override {@link #onMapTouchEnd(TouchEvent)} instead.
+	 * @since 2.4.0
+	 */
 	@Override
 	public void onPointerTouchEnd(PointerTouchEndEvent event) {
 		onMapTouchEnd(event);
 	}
 
+	/**
+	 * Don't override this method, override {@link #onMapTouchCancel(TouchEvent)} instead.
+	 * @since 2.4.0
+	 */
 	@Override
 	public void onPointerTouchCancel(PointerTouchCancelEvent event) {
 		onMapTouchCancel(event);

@@ -10,6 +10,8 @@
  */
 package org.geomajas.gwt.client.event;
 
+import org.geomajas.annotation.Api;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 
@@ -18,7 +20,9 @@ import com.google.gwt.core.client.GWT;
  * 
  * @author Jan De Moerloose
  *
+ * @since 2.4.0
  */
+@Api
 public class PointerEvents implements EntryPoint {
 
 	static final PointerEvents IMPL = GWT.create(PointerEvents.class);
@@ -26,10 +30,19 @@ public class PointerEvents implements EntryPoint {
 	public PointerEvents() {
 	}
 
+	/**
+	 * Initialize pointer support. Called automatically from entrypoint.
+	 */
 	public static void init() {
 		IMPL.doInit();
 	}
 
+	/**
+	 * Are pointer events supported (currently only for IE 10+) ?
+	 * @return true if supported
+	 * @since 2.4.0
+	 */
+	@Api
 	public static boolean isSupported() {
 		return IMPL.supports();
 	}

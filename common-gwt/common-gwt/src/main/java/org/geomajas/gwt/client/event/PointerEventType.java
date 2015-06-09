@@ -10,12 +10,16 @@
  */
 package org.geomajas.gwt.client.event;
 
+import org.geomajas.annotation.Api;
+
 /**
  * Type enumeration of pointer events.
  * 
  * @author Jan De Moerloose
+ * @since 2.4.0
  *
  */
+@Api(allMethods = true)
 public enum PointerEventType {
 
 	/**
@@ -35,10 +39,21 @@ public enum PointerEventType {
 	 */
 	POINTER_CANCEL; // cancel
 
+	/**
+	 * Get the type of the event.
+	 * 
+	 * @return
+	 */
 	public String getType() {
 		return PointerEvents.IMPL.getNativeTypeName(this);
 	}
 
+	/**
+	 * Get the pointer event from its type.
+	 * 
+	 * @param type
+	 * @return the event
+	 */
 	public static PointerEventType fromType(String type) {
 		for (PointerEventType eventType : PointerEventType.values()) {
 			if (type.equals(eventType.getType())) {

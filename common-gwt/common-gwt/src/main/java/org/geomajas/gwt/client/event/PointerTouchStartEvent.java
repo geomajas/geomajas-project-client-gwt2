@@ -10,13 +10,17 @@
  */
 package org.geomajas.gwt.client.event;
 
+import org.geomajas.annotation.Api;
+
 import com.google.gwt.event.dom.client.TouchEvent;
 
 /**
  * Represents a "touchified" pointer start event.
  * 
  * @author Jan De Moerloose
+ * @since 2.4.0
  */
+@Api(allMethods = true)
 public class PointerTouchStartEvent extends TouchEvent<PointerTouchStartHandler> {
 
 	/**
