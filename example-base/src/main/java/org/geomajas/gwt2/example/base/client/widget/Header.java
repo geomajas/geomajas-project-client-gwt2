@@ -12,9 +12,12 @@
 package org.geomajas.gwt2.example.base.client.widget;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import org.geomajas.gwt2.example.base.client.VersionUtil;
 
 /**
  * Page header for this showcase.
@@ -31,9 +34,13 @@ public class Header extends Composite {
 	interface MyUiBinder extends UiBinder<Widget, Header> {
 	}
 
+	@UiField
+	protected DivElement headerLabel;
+
 	private static final MyUiBinder UIBINDER = GWT.create(MyUiBinder.class);
 
 	public Header() {
 		initWidget(UIBINDER.createAndBindUi(this));
+		headerLabel.setInnerText("Showcase Client Gwt " + VersionUtil.getVersion());
 	}
 }
