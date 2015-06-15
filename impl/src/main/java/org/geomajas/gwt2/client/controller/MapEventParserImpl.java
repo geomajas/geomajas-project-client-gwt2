@@ -20,6 +20,7 @@ import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.dom.client.Touch;
 import com.google.gwt.event.dom.client.HumanInputEvent;
 import com.google.gwt.event.dom.client.MouseEvent;
+import com.google.gwt.event.dom.client.TouchEndEvent;
 import com.google.gwt.event.dom.client.TouchEvent;
 
 /**
@@ -34,8 +35,7 @@ public class MapEventParserImpl implements MapEventParser {
 	/**
 	 * This object must be initialized with the map it's supposed to interpret the events from.
 	 * 
-	 * @param mapPresenter
-	 *            The map that is the origin of the events.
+	 * @param mapPresenter The map that is the origin of the events.
 	 */
 	public MapEventParserImpl(MapPresenter mapPresenter) {
 		this.mapPresenter = mapPresenter;
@@ -50,14 +50,21 @@ public class MapEventParserImpl implements MapEventParser {
 						.transform(screen, RenderSpace.SCREEN, RenderSpace.WORLD);
 			case SCREEN:
 			default:
+				Element element = mapPresenter.asWidget().getElement();
 				if (event instanceof MouseEvent<?>) {
-					Element element = mapPresenter.asWidget().getElement();
 					double offsetX = ((MouseEvent<?>) event).getRelativeX(element);
 					double offsetY = ((MouseEvent<?>) event).getRelativeY(element);
 					return new Coordinate(offsetX, offsetY);
 				} else if (event instanceof TouchEvent<?>) {
-					Touch touch = ((TouchEvent<?>) event).getTouches().get(0);
-					return new Coordinate(touch.getClientX(), touch.getClientY());
+					Touch touch = null;
+					if (event instanceof TouchEndEvent) {
+						touch = ((TouchEvent<?>) event).getChangedTouches().get(0);
+					} else {
+						touch = ((TouchEvent<?>) event).getTouches().get(0);
+					}
+					double offsetX = touch.getRelativeX(element);
+					double offsetY = touch.getRelativeY(element);
+					return new Coordinate(offsetX, offsetY);
 				}
 				return new Coordinate(event.getNativeEvent().getClientX(), event.getNativeEvent().getClientY());
 		}
@@ -71,4 +78,5 @@ public class MapEventParserImpl implements MapEventParser {
 		}
 		return null;
 	}
+
 }

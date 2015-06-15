@@ -215,6 +215,10 @@ public class DomLayersModelRenderer implements LayersModelRenderer {
 			layerRenderer.render(layerInfo);
 		}
 	}
+	
+	public DomTileLevelLayerRenderer getCurrentRenderer() {
+		return (DomTileLevelLayerRenderer) layersModel.getLayer(0).getRenderer();
+	}
 
 	@Override
 	public boolean isAnimated(Layer layer) {

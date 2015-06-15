@@ -287,10 +287,22 @@ org.geomajas.gwt2.client.map.MapPresenter:void setMapController(MapController, )
 org.geomajas.gwt2.client.map.MapPresenter:void setSize(int, int, ):2.0.0
 org.geomajas.gwt2.client.map.View::2.0.0
 org.geomajas.gwt2.client.map.View:Coordinate getPosition():2.0.0
+org.geomajas.gwt2.client.map.View:Set<Hint<?>> getHints():2.4.0
+org.geomajas.gwt2.client.map.View:T getHint(Hint<T>, ):2.4.0
 org.geomajas.gwt2.client.map.View:View(Coordinate, double, ):2.0.0
 org.geomajas.gwt2.client.map.View:boolean equals(Object, ):2.0.0
+org.geomajas.gwt2.client.map.View:boolean isAnimation():2.4.0
+org.geomajas.gwt2.client.map.View:boolean isDragging():2.4.0
+org.geomajas.gwt2.client.map.View:boolean isInteractive():2.4.0
 org.geomajas.gwt2.client.map.View:double getResolution():2.0.0
 org.geomajas.gwt2.client.map.View:int hashCode():2.0.0
+org.geomajas.gwt2.client.map.View:static final Hint<Boolean> ANIMATION:2.4.0
+org.geomajas.gwt2.client.map.View:static final Hint<Boolean> DRAGGING:2.4.0
+org.geomajas.gwt2.client.map.View:static final Hint<Boolean> INTERACTIVE:2.4.0
+org.geomajas.gwt2.client.map.View:void setAnimation(boolean, ):2.4.0
+org.geomajas.gwt2.client.map.View:void setDragging(boolean, ):2.4.0
+org.geomajas.gwt2.client.map.View:void setHint(Hint<T>, T, ):2.4.0
+org.geomajas.gwt2.client.map.View:void setInteractive(boolean, ):2.4.0
 org.geomajas.gwt2.client.map.ViewPort::2.0.0
 org.geomajas.gwt2.client.map.ViewPort:Bbox asBounds(View, ):2.0.0
 org.geomajas.gwt2.client.map.ViewPort:Bbox getBounds():2.0.0
@@ -317,6 +329,7 @@ org.geomajas.gwt2.client.map.ViewPort:void applyResolution(double, ZoomOption, )
 org.geomajas.gwt2.client.map.ViewPort:void applyView(View, ):2.0.0
 org.geomajas.gwt2.client.map.ViewPort:void applyView(View, ZoomOption, ):2.0.0
 org.geomajas.gwt2.client.map.ViewPort:void registerAnimation(NavigationAnimation, ):2.0.0
+org.geomajas.gwt2.client.map.ViewPort:void stopInteraction():2.4.0
 org.geomajas.gwt2.client.map.ViewPortTransformationService::2.0.0
 org.geomajas.gwt2.client.map.ViewPortTransformationService:Bbox transform(Bbox, RenderSpace, RenderSpace, ):2.0.0
 org.geomajas.gwt2.client.map.ViewPortTransformationService:Coordinate transform(Coordinate, RenderSpace, RenderSpace, ):2.0.0
@@ -484,6 +497,8 @@ org.geomajas.gwt2.client.map.layer.Layer:String getTitle():2.0.0
 org.geomajas.gwt2.client.map.layer.Layer:boolean isMarkedAsVisible():2.0.0
 org.geomajas.gwt2.client.map.layer.Layer:boolean isSelected():2.0.0
 org.geomajas.gwt2.client.map.layer.Layer:boolean isShowing():2.0.0
+org.geomajas.gwt2.client.map.layer.Layer:double getMaxResolution():2.3.0
+org.geomajas.gwt2.client.map.layer.Layer:double getMinResolution():2.3.0
 org.geomajas.gwt2.client.map.layer.Layer:double getOpacity():2.0.0
 org.geomajas.gwt2.client.map.layer.Layer:void refresh():2.0.0
 org.geomajas.gwt2.client.map.layer.Layer:void setMarkedAsVisible(boolean, ):2.0.0

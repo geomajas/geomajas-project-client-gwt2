@@ -11,12 +11,20 @@ org.geomajas.gwt.client.controller.AbstractController:void onDrag(HumanInputEven
 org.geomajas.gwt.client.controller.AbstractController:void onGestureChange(GestureChangeEvent, ):2.0.0
 org.geomajas.gwt.client.controller.AbstractController:void onGestureEnd(GestureEndEvent, ):2.0.0
 org.geomajas.gwt.client.controller.AbstractController:void onGestureStart(GestureStartEvent, ):2.0.0
+org.geomajas.gwt.client.controller.AbstractController:void onMapTouchCancel(TouchEvent<?>, ):2.4.0
+org.geomajas.gwt.client.controller.AbstractController:void onMapTouchEnd(TouchEvent<?>, ):2.4.0
+org.geomajas.gwt.client.controller.AbstractController:void onMapTouchMove(TouchEvent<?>, ):2.4.0
+org.geomajas.gwt.client.controller.AbstractController:void onMapTouchStart(TouchEvent<?>, ):2.4.0
 org.geomajas.gwt.client.controller.AbstractController:void onMouseDown(MouseDownEvent, ):2.0.0
 org.geomajas.gwt.client.controller.AbstractController:void onMouseMove(MouseMoveEvent, ):2.0.0
 org.geomajas.gwt.client.controller.AbstractController:void onMouseOut(MouseOutEvent, ):2.0.0
 org.geomajas.gwt.client.controller.AbstractController:void onMouseOver(MouseOverEvent, ):2.0.0
 org.geomajas.gwt.client.controller.AbstractController:void onMouseUp(MouseUpEvent, ):2.0.0
 org.geomajas.gwt.client.controller.AbstractController:void onMouseWheel(MouseWheelEvent, ):2.0.0
+org.geomajas.gwt.client.controller.AbstractController:void onPointerTouchCancel(PointerTouchCancelEvent, ):2.4.0
+org.geomajas.gwt.client.controller.AbstractController:void onPointerTouchEnd(PointerTouchEndEvent, ):2.4.0
+org.geomajas.gwt.client.controller.AbstractController:void onPointerTouchMove(PointerTouchMoveEvent, ):2.4.0
+org.geomajas.gwt.client.controller.AbstractController:void onPointerTouchStart(PointerTouchStartEvent, ):2.4.0
 org.geomajas.gwt.client.controller.AbstractController:void onTouchCancel(TouchCancelEvent, ):2.0.0
 org.geomajas.gwt.client.controller.AbstractController:void onTouchEnd(TouchEndEvent, ):2.0.0
 org.geomajas.gwt.client.controller.AbstractController:void onTouchMove(TouchMoveEvent, ):2.0.0
@@ -27,6 +35,31 @@ org.geomajas.gwt.client.controller.Controller:boolean isRightMouseButton(HumanIn
 org.geomajas.gwt.client.controller.MapEventParser::2.0.0
 org.geomajas.gwt.client.controller.MapEventParser:Coordinate getLocation(HumanInputEvent<?>, RenderSpace, ):2.0.0
 org.geomajas.gwt.client.controller.MapEventParser:Element getTarget(HumanInputEvent<?>, ):2.0.0
+org.geomajas.gwt.client.event.PointerEventType::2.4.0
+org.geomajas.gwt.client.event.PointerEventType:POINTER_CANCEL:2.4.0
+org.geomajas.gwt.client.event.PointerEventType:POINTER_DOWN:2.4.0
+org.geomajas.gwt.client.event.PointerEventType:POINTER_MOVE:2.4.0
+org.geomajas.gwt.client.event.PointerEventType:POINTER_UP:2.4.0
+org.geomajas.gwt.client.event.PointerEventType:String getType():2.4.0
+org.geomajas.gwt.client.event.PointerEventType:static PointerEventType fromType(String, ):2.4.0
+org.geomajas.gwt.client.event.PointerEvents::2.4.0
+org.geomajas.gwt.client.event.PointerEvents:static boolean isSupported():2.4.0
+org.geomajas.gwt.client.event.PointerTouchCancelEvent::2.4.0
+org.geomajas.gwt.client.event.PointerTouchCancelEvent:PointerTouchCancelEvent():2.4.0
+org.geomajas.gwt.client.event.PointerTouchCancelEvent:Type<PointerTouchCancelHandler> getAssociatedType():2.4.0
+org.geomajas.gwt.client.event.PointerTouchCancelEvent:static Type<PointerTouchCancelHandler> getType():2.4.0
+org.geomajas.gwt.client.event.PointerTouchEndEvent::2.4.0
+org.geomajas.gwt.client.event.PointerTouchEndEvent:PointerTouchEndEvent():2.4.0
+org.geomajas.gwt.client.event.PointerTouchEndEvent:Type<PointerTouchEndHandler> getAssociatedType():2.4.0
+org.geomajas.gwt.client.event.PointerTouchEndEvent:static Type<PointerTouchEndHandler> getType():2.4.0
+org.geomajas.gwt.client.event.PointerTouchMoveEvent::2.4.0
+org.geomajas.gwt.client.event.PointerTouchMoveEvent:PointerTouchMoveEvent():2.4.0
+org.geomajas.gwt.client.event.PointerTouchMoveEvent:Type<PointerTouchMoveHandler> getAssociatedType():2.4.0
+org.geomajas.gwt.client.event.PointerTouchMoveEvent:static Type<PointerTouchMoveHandler> getType():2.4.0
+org.geomajas.gwt.client.event.PointerTouchStartEvent::2.4.0
+org.geomajas.gwt.client.event.PointerTouchStartEvent:PointerTouchStartEvent():2.4.0
+org.geomajas.gwt.client.event.PointerTouchStartEvent:Type<PointerTouchStartHandler> getAssociatedType():2.4.0
+org.geomajas.gwt.client.event.PointerTouchStartEvent:static Type<PointerTouchStartHandler> getType():2.4.0
 org.geomajas.gwt.client.map.RenderSpace::2.0.0
 org.geomajas.gwt.client.map.RenderSpace:SCREEN:2.0.0
 org.geomajas.gwt.client.map.RenderSpace:WORLD:2.0.0

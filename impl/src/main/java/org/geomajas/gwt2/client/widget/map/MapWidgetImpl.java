@@ -11,6 +11,33 @@
 
 package org.geomajas.gwt2.client.widget.map;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.geomajas.gwt.client.event.PointerTouchCancelEvent;
+import org.geomajas.gwt.client.event.PointerTouchCancelHandler;
+import org.geomajas.gwt.client.event.PointerTouchEndEvent;
+import org.geomajas.gwt.client.event.PointerTouchEndHandler;
+import org.geomajas.gwt.client.event.PointerTouchMoveEvent;
+import org.geomajas.gwt.client.event.PointerTouchMoveHandler;
+import org.geomajas.gwt.client.event.PointerTouchStartEvent;
+import org.geomajas.gwt.client.event.PointerTouchStartHandler;
+import org.geomajas.gwt2.client.GeomajasImpl;
+import org.geomajas.gwt2.client.gfx.CanvasContainer;
+import org.geomajas.gwt2.client.gfx.CanvasContainerImpl;
+import org.geomajas.gwt2.client.gfx.TransformableWidgetContainer;
+import org.geomajas.gwt2.client.gfx.TransformableWidgetContainerImpl;
+import org.geomajas.gwt2.client.gfx.VectorContainer;
+import org.geomajas.gwt2.client.gfx.VectorGroup;
+import org.geomajas.gwt2.client.map.MapPresenterImpl.MapWidget;
+import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
+import org.geomajas.gwt2.client.map.render.dom.container.HtmlGroup;
+import org.geomajas.gwt2.client.widget.control.watermark.Watermark;
+import org.vaadin.gwtgraphics.client.DrawingArea;
+import org.vaadin.gwtgraphics.client.Group;
+import org.vaadin.gwtgraphics.client.Transformable;
+
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
@@ -46,24 +73,6 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.RequiresResize;
 import com.google.gwt.user.client.ui.Widget;
-import org.geomajas.gwt2.client.GeomajasImpl;
-import org.geomajas.gwt2.client.gfx.CanvasContainer;
-import org.geomajas.gwt2.client.gfx.CanvasContainerImpl;
-import org.geomajas.gwt2.client.gfx.TransformableWidgetContainer;
-import org.geomajas.gwt2.client.gfx.TransformableWidgetContainerImpl;
-import org.geomajas.gwt2.client.gfx.VectorContainer;
-import org.geomajas.gwt2.client.gfx.VectorGroup;
-import org.geomajas.gwt2.client.map.MapPresenterImpl.MapWidget;
-import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
-import org.geomajas.gwt2.client.map.render.dom.container.HtmlGroup;
-import org.geomajas.gwt2.client.widget.control.watermark.Watermark;
-import org.vaadin.gwtgraphics.client.DrawingArea;
-import org.vaadin.gwtgraphics.client.Group;
-import org.vaadin.gwtgraphics.client.Transformable;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * <p> Implementation of the MapWidget interface. It represents the MVP 'view' of the map's presenter (aka
@@ -434,5 +443,25 @@ public final class MapWidgetImpl extends AbsolutePanel implements MapWidget {
 	@Override
 	public HandlerRegistration addGestureEndHandler(GestureEndHandler handler) {
 		return addDomHandler(handler, GestureEndEvent.getType());
+	}
+
+	@Override
+	public HandlerRegistration addPointerTouchStartHandler(PointerTouchStartHandler handler) {
+		return addDomHandler(handler, PointerTouchStartEvent.getType());
+	}
+
+	@Override
+	public HandlerRegistration addPointerTouchEndHandler(PointerTouchEndHandler handler) {
+		return addDomHandler(handler, PointerTouchEndEvent.getType());
+	}
+
+	@Override
+	public HandlerRegistration addPointerTouchMoveHandler(PointerTouchMoveHandler handler) {
+		return addDomHandler(handler, PointerTouchMoveEvent.getType());
+	}
+
+	@Override
+	public HandlerRegistration addPointerTouchCancelHandler(PointerTouchCancelHandler handler) {
+		return addDomHandler(handler, PointerTouchCancelEvent.getType());
 	}
 }

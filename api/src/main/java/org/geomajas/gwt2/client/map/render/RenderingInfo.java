@@ -87,5 +87,6 @@ public class RenderingInfo {
 	 */
 	public Trajectory getTrajectory() {
 		return trajectory;
-	}
+	}	
+	
 }

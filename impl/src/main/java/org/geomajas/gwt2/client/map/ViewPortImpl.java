@@ -11,8 +11,11 @@
 
 package org.geomajas.gwt2.client.map;
 
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.service.BboxService;
@@ -22,10 +25,8 @@ import org.geomajas.gwt2.client.event.NavigationStopEvent;
 import org.geomajas.gwt2.client.event.NavigationStopHandler;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 
 /**
  * Implementation of the ViewPort interface.
@@ -61,9 +62,7 @@ public final class ViewPortImpl implements ViewPort {
 
 	private String crs;
 
-	private double resolution = 1.0;
-
-	private Coordinate position;
+	private View view = new View(new Coordinate(), 1.0);
 
 	private NavigationAnimation currentAnimation;
 
@@ -74,7 +73,6 @@ public final class ViewPortImpl implements ViewPort {
 	public ViewPortImpl(MapEventBus eventBus) {
 		this.eventBus = eventBus;
 		this.transformationService = new ViewPortTransformationServiceImpl(this);
-		this.position = new Coordinate();
 
 		eventBus.addNavigationStopHandler(new NavigationStopHandler() {
 
@@ -219,17 +217,17 @@ public final class ViewPortImpl implements ViewPort {
 
 	@Override
 	public Coordinate getPosition() {
-		return new Coordinate(position);
+		return (Coordinate) view.getPosition().clone();
 	}
 
 	@Override
 	public double getResolution() {
-		return resolution;
+		return view.getResolution();
 	}
 
 	@Override
 	public View getView() {
-		return new View(new Coordinate(position), resolution);
+		return copy(view);
 	}
 
 	/**
@@ -239,10 +237,10 @@ public final class ViewPortImpl implements ViewPort {
 	 * @return Returns the bounding box that covers the currently visible area on the map.
 	 */
 	public Bbox getBounds() {
-		double w = mapWidth * resolution;
-		double h = mapHeight * resolution;
-		double x = position.getX() - w / 2;
-		double y = position.getY() - h / 2;
+		double w = mapWidth * getResolution();
+		double h = mapHeight * getResolution();
+		double x = getPosition().getX() - w / 2;
+		double y = getPosition().getY() - h / 2;
 		return new Bbox(x, y, w, h);
 	}
 
@@ -252,10 +250,10 @@ public final class ViewPortImpl implements ViewPort {
 
 	@Override
 	public void registerAnimation(NavigationAnimation animation) {
-		boolean cancelSupport = configuration.getHintValue(MapConfiguration.ANIMATION_CANCEL_SUPPORT);
-		if (!cancelSupport && currentAnimation != null) {
-			return;
-		}
+		// boolean cancelSupport = configuration.getHintValue(MapConfiguration.ANIMATION_CANCEL_SUPPORT);
+		// if (!cancelSupport && currentAnimation != null) {
+		// return;
+		// }
 
 		if (currentAnimation != null) {
 			currentAnimation.cancel();
@@ -281,22 +279,29 @@ public final class ViewPortImpl implements ViewPort {
 
 	@Override
 	public void applyPosition(Coordinate coordinate) {
-		Coordinate tempPosition = checkPosition(coordinate, resolution);
-		if (tempPosition != position) {
-			View oldView = getView();
-			position = tempPosition;
-			eventBus.fireEvent(new ViewPortChangedEvent(oldView, getView(), currentAnimation));
+		Coordinate tempPosition = checkPosition(coordinate, getResolution());
+		if (!tempPosition.equals(getPosition())) {
+			view = new View(tempPosition, getResolution());
+			applyViewNoChecks(view);
 		}
 	}
 
 	@Override
+	public void stopInteraction() {
+		View oldView = getView();
+		view = copy(oldView);
+		view.setInteractive(false);
+		eventBus.fireEvent(new ViewPortChangedEvent(oldView, view, null));
+	}
+
+	@Override
 	public void applyResolution(double resolution) {
-		applyResolution(resolution, position, ZoomOption.FREE);
+		applyResolution(resolution, getPosition(), ZoomOption.FREE);
 	}
 
 	@Override
 	public void applyResolution(double resolution, ZoomOption zoomOption) {
-		applyResolution(resolution, position, zoomOption);
+		applyResolution(resolution, getPosition(), zoomOption);
 	}
 
 	@Override
@@ -308,7 +313,8 @@ public final class ViewPortImpl implements ViewPort {
 	public void applyView(View view, ZoomOption zoomOption) {
 		double tempResolution = checkResolution(view.getResolution(), ZoomOption.FREE);
 		Coordinate tempPosition = checkPosition(view.getPosition(), tempResolution);
-		applyViewNoChecks(tempPosition, tempResolution);
+		View copy = copy(view, tempPosition, tempResolution);
+		applyViewNoChecks(copy);
 	}
 
 	@Override
@@ -320,7 +326,8 @@ public final class ViewPortImpl implements ViewPort {
 	public void applyBounds(Bbox bounds, ZoomOption zoomOption) {
 		double tempResolution = getResolutionForBounds(bounds, zoomOption);
 		Coordinate tempPosition = checkPosition(BboxService.getCenterPoint(bounds), tempResolution);
-		applyViewNoChecks(tempPosition, tempResolution);
+		View copy = copy(view, tempPosition, tempResolution);
+		applyViewNoChecks(copy);
 	}
 
 	@Override
@@ -360,22 +367,22 @@ public final class ViewPortImpl implements ViewPort {
 
 	private void applyResolution(double newResolution, Coordinate rescalePoint, ZoomOption zoomOption) {
 		double validResolution = checkResolution(newResolution, zoomOption);
-		if (validResolution != resolution) {
+		if (validResolution != getResolution()) {
 			// Calculate theoretical new bounds. First create a BBOX of correct size:
 			Bbox newBbox = new Bbox(0, 0, getMapWidth() * validResolution, getMapHeight() * validResolution);
 
 			// Calculate translate vector to assure rescalePoint is on the same position as before.
-			double factor = resolution / validResolution;
-			double dX = (rescalePoint.getX() - position.getX()) * (1 - 1 / factor);
-			double dY = (rescalePoint.getY() - position.getY()) * (1 - 1 / factor);
+			double factor = getResolution() / validResolution;
+			double dX = (rescalePoint.getX() - getPosition().getX()) * (1 - 1 / factor);
+			double dY = (rescalePoint.getY() - getPosition().getY()) * (1 - 1 / factor);
 
 			// Apply translation to set the BBOX on the correct location:
-			newBbox = BboxService.setCenterPoint(newBbox, new Coordinate(position.getX(), position.getY()));
+			newBbox = BboxService.setCenterPoint(newBbox, getPosition());
 			newBbox = BboxService.translate(newBbox, dX, dY);
 
 			// Now apply on this view port:
 			Coordinate tempPosition = checkPosition(BboxService.getCenterPoint(newBbox), validResolution);
-			applyViewNoChecks(tempPosition, validResolution);
+			applyViewNoChecks(new View(tempPosition, validResolution));
 		}
 	}
 
@@ -495,12 +502,37 @@ public final class ViewPortImpl implements ViewPort {
 		return allowedResolution;
 	}
 
-	private void applyViewNoChecks(Coordinate tempPosition, double tempResolution) {
-		if (tempResolution != resolution || !position.equals(tempPosition)) {
-			View oldView = getView();
-			resolution = tempResolution;
-			position = tempPosition;
-			eventBus.fireEvent(new ViewPortChangedEvent(oldView, getView(), currentAnimation));
+	private void applyViewNoChecks(View nextView) {
+		if (!view.equals(nextView)) {
+			View oldView = view;
+			view = nextView;
+			if (!nextView.isAnimation() && currentAnimation != null) {
+				currentAnimation.cancel();
+			}
+			eventBus.fireEvent(new ViewPortChangedEvent(oldView, nextView, currentAnimation));
 		}
 	}
+
+	private View copy(View view) {
+		View clone = new View((Coordinate) view.getPosition().clone(), view.getResolution());
+		for (Hint<?> hint : view.getHints()) {
+			clone.setHint((Hint) hint, view.getHint(hint));
+		}
+		return clone;
+	}
+
+	private View copy(View view, Coordinate position, double resolution) {
+		View clone = new View((Coordinate) position.clone(), resolution);
+		for (Hint<?> hint : view.getHints()) {
+			clone.setHint((Hint) hint, view.getHint(hint));
+		}
+		return clone;
+	}
+
+	public void applyViewNoEvent(View view) {
+		double tempResolution = checkResolution(view.getResolution(), ZoomOption.FREE);
+		Coordinate tempPosition = checkPosition(view.getPosition(), tempResolution);
+		this.view = copy(view, tempPosition, tempResolution);
+	}
+
 }

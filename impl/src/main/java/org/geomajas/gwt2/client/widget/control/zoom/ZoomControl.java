@@ -114,7 +114,7 @@ public class ZoomControl extends AbstractMapWidget {
 	 * Initialize handlers for desktop browser.
 	 */
 	private void initializeForDesktop() {
-		logger.log(Level.INFO, "ZoomControl ->initializeForDesktop()");
+		logger.log(Level.FINE, "ZoomControl ->initializeForDesktop()");
 		StopPropagationHandler preventWeirdBehaviourHandler = new StopPropagationHandler();
 		addDomHandler(preventWeirdBehaviourHandler, MouseDownEvent.getType());
 		addDomHandler(preventWeirdBehaviourHandler, MouseUpEvent.getType());
@@ -127,7 +127,7 @@ public class ZoomControl extends AbstractMapWidget {
 		zoomInElement.addDomHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				logger.log(Level.INFO, "ZoomControl -> zoomInElement onClick()");
+				logger.log(Level.FINE, "ZoomControl -> zoomInElement onClick()");
 				int index = viewPort.getResolutionIndex(viewPort.getResolution());
 				if (index < viewPort.getResolutionCount() - 1) {
 					viewPort.registerAnimation(NavigationAnimationFactory.createZoomIn(mapPresenter));
@@ -140,7 +140,7 @@ public class ZoomControl extends AbstractMapWidget {
 		zoomOutElement.addDomHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				logger.log(Level.INFO, "ZoomControl -> zoomOutElement onClick()");
+				logger.log(Level.FINE, "ZoomControl -> zoomOutElement onClick()");
 				int index = viewPort.getResolutionIndex(viewPort.getResolution());
 				if (index > 0) {
 					viewPort.registerAnimation(NavigationAnimationFactory.createZoomOut(mapPresenter));
@@ -154,7 +154,7 @@ public class ZoomControl extends AbstractMapWidget {
 	 * Initialize handlers for mobile devices.
 	 */
 	private void initializeForTouchDevice() {
-		logger.log(Level.INFO, "ZoomControl -> initializeForTouchDevice()");
+		logger.log(Level.FINE, "ZoomControl -> initializeForTouchDevice()");
 		// Add touch handlers to the zoom in button:
 		zoomInElement.addDomHandler(new TouchStartHandler() {
 
@@ -163,7 +163,7 @@ public class ZoomControl extends AbstractMapWidget {
 				event.stopPropagation();
 				event.preventDefault();
 
-				logger.log(Level.INFO, "ZoomControl -> zoomInElement onTouchStart()");
+				logger.log(Level.FINE, "ZoomControl -> zoomInElement onTouchStart()");
 				ViewPort viewPort = mapPresenter.getViewPort();
 				int index = viewPort.getResolutionIndex(viewPort.getResolution());
 
@@ -179,7 +179,7 @@ public class ZoomControl extends AbstractMapWidget {
 
 			@Override
 			public void onTouchStart(TouchStartEvent event) {
-				logger.log(Level.INFO, "zoomOutElement -> zoomInElement onTouchStart()");
+				logger.log(Level.FINE, "zoomOutElement -> zoomInElement onTouchStart()");
 				event.stopPropagation();
 				event.preventDefault();
 

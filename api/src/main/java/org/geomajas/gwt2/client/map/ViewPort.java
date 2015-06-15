@@ -237,4 +237,14 @@ public interface ViewPort {
 	 * @return The view that relates to the provided bounding box.
 	 */
 	View asView(Bbox bounds, ZoomOption zoomOption);
+
+	/**
+	 * If the last view was interactive, stop the interaction by reapplying this view with an interactive = false state,
+	 * else do nothing. Can be used by controllers that have an explicit final event without a new associated view (e.g.
+	 * touch end).
+	 * 
+	 * @since 2.4.0
+	 */
+	void stopInteraction();
+
 }

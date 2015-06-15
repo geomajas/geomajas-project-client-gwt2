@@ -11,28 +11,17 @@
 
 package org.geomajas.gwt2.client.map;
 
-import com.google.gwt.event.dom.client.HasAllGestureHandlers;
-import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
-import com.google.gwt.event.dom.client.HasMouseDownHandlers;
-import com.google.gwt.event.dom.client.HasMouseMoveHandlers;
-import com.google.gwt.event.dom.client.HasMouseOutHandlers;
-import com.google.gwt.event.dom.client.HasMouseOverHandlers;
-import com.google.gwt.event.dom.client.HasMouseUpHandlers;
-import com.google.gwt.event.dom.client.HasMouseWheelHandlers;
-import com.google.gwt.event.dom.client.HasTouchCancelHandlers;
-import com.google.gwt.event.dom.client.HasTouchEndHandlers;
-import com.google.gwt.event.dom.client.HasTouchMoveHandlers;
-import com.google.gwt.event.dom.client.HasTouchStartHandlers;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.RequiresResize;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.web.bindery.event.shared.EventBus;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
 
 import org.geomajas.geometry.Matrix;
 import org.geomajas.gwt.client.controller.MapEventParser;
+import org.geomajas.gwt.client.event.HasAllPointerTouchHandlers;
+import org.geomajas.gwt.client.event.PointerEvents;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt.client.util.Dom;
 import org.geomajas.gwt2.client.controller.MapController;
@@ -56,20 +45,34 @@ import org.geomajas.gwt2.client.map.render.RenderingInfo;
 import org.geomajas.gwt2.client.map.render.dom.DomLayersModelRenderer;
 import org.geomajas.gwt2.client.map.render.dom.container.HtmlContainer;
 import org.geomajas.gwt2.client.widget.DefaultMapWidget;
-import org.geomajas.gwt2.client.widget.map.MapWidgetImpl;
 import org.geomajas.gwt2.client.widget.control.pan.PanControl;
 import org.geomajas.gwt2.client.widget.control.scalebar.Scalebar;
 import org.geomajas.gwt2.client.widget.control.watermark.Watermark;
 import org.geomajas.gwt2.client.widget.control.zoom.ZoomControl;
 import org.geomajas.gwt2.client.widget.control.zoom.ZoomStepControl;
 import org.geomajas.gwt2.client.widget.control.zoomtorect.ZoomToRectangleControl;
+import org.geomajas.gwt2.client.widget.map.MapWidgetImpl;
 import org.vaadin.gwtgraphics.client.Transformable;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.google.gwt.event.dom.client.HasAllGestureHandlers;
+import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
+import com.google.gwt.event.dom.client.HasMouseDownHandlers;
+import com.google.gwt.event.dom.client.HasMouseMoveHandlers;
+import com.google.gwt.event.dom.client.HasMouseOutHandlers;
+import com.google.gwt.event.dom.client.HasMouseOverHandlers;
+import com.google.gwt.event.dom.client.HasMouseUpHandlers;
+import com.google.gwt.event.dom.client.HasMouseWheelHandlers;
+import com.google.gwt.event.dom.client.HasTouchCancelHandlers;
+import com.google.gwt.event.dom.client.HasTouchEndHandlers;
+import com.google.gwt.event.dom.client.HasTouchMoveHandlers;
+import com.google.gwt.event.dom.client.HasTouchStartHandlers;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.RequiresResize;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.web.bindery.event.shared.EventBus;
 
 /**
  * Default implementation of the map presenter interface. In other words this is the default GWT map object.
@@ -77,6 +80,8 @@ import java.util.Map;
  * @author Pieter De Graef
  */
 public final class MapPresenterImpl implements MapPresenter {
+
+	private static Logger logger = Logger.getLogger("MapPresenterImpl");
 
 	/**
 	 * Map view definition.
@@ -86,7 +91,7 @@ public final class MapPresenterImpl implements MapPresenter {
 	public interface MapWidget extends HasMouseDownHandlers, HasMouseUpHandlers, HasMouseOutHandlers,
 			HasMouseOverHandlers, HasMouseMoveHandlers, HasMouseWheelHandlers, HasDoubleClickHandlers, IsWidget,
 			RequiresResize, HasTouchStartHandlers, HasTouchEndHandlers, HasTouchCancelHandlers, HasTouchMoveHandlers,
-			HasAllGestureHandlers {
+			HasAllGestureHandlers, HasAllPointerTouchHandlers {
 
 		/**
 		 * Returns the HTML container of the map. This is a normal HTML container that contains the images of rasterized
@@ -172,7 +177,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		/**
 		 * Set the total size of the view.
 		 *
-		 * @param width  width
+		 * @param width width
 		 * @param height height
 		 */
 		void setPixelSize(int width, int height);
@@ -220,7 +225,7 @@ public final class MapPresenterImpl implements MapPresenter {
 		this.mapEventParser = new MapEventParserImpl(this);
 		this.renderer = new DomLayersModelRenderer(layersModel, viewPort, this.eventBus);
 		this.containerManager = new ContainerManagerImpl(display, viewPort);
-		this.isTouchSupported = Dom.isTouchSupported();
+		this.isTouchSupported = Dom.isTouchSupported() || PointerEvents.isSupported();
 
 		this.eventBus.addViewPortChangedHandler(new ViewPortChangedHandler() {
 
@@ -246,8 +251,19 @@ public final class MapPresenterImpl implements MapPresenter {
 		this.eventBus.addViewPortChangedHandler(new WorldTransformableRenderer());
 
 		if (isTouchSupported) {
+			if (PointerEvents.isSupported()) {
+				logger.info("touch supported");
+				try {
+					logger.info("setting touch action");
+					display.asWidget().getElement().getStyle().setProperty("touchAction", "none");
+				} catch (Exception e) {
+					logger.info("oooops " + e.getMessage());
+				}
+			}
+			logger.fine("touch");
 			fallbackController = new TouchNavigationController();
 		} else {
+			logger.fine("no touch");
 			fallbackController = new NavigationController();
 		}
 
@@ -255,13 +271,21 @@ public final class MapPresenterImpl implements MapPresenter {
 		setSize(100, 100);
 	}
 
+	/**
+	 * Generic controller that is used on touch devices. Note that gestures and multi touch are not supported by some
+	 * mobile browsers.
+	 *
+	 * @author Jan De Moerloose
+	 * @since 2.0.0
+	 */
+
 	// ------------------------------------------------------------------------
 	// MapPresenter implementation:
 	// ------------------------------------------------------------------------
 	public void initialize(MapConfiguration configuration, DefaultMapWidget... mapWidgets) {
 		initialize(configuration, true, mapWidgets);
 	}
-	
+
 	public void initialize(MapConfiguration configuration, boolean fireEvent, DefaultMapWidget... mapWidgets) {
 		this.configuration = configuration;
 
@@ -365,14 +389,22 @@ public final class MapPresenterImpl implements MapPresenter {
 		}
 		if (mapController != null) {
 			if (isTouchSupported) {
-				handlers.add(display.addTouchStartHandler(mapController));
-				handlers.add(display.addTouchMoveHandler(mapController));
-				handlers.add(display.addTouchEndHandler(mapController));
-				handlers.add(display.addTouchCancelHandler(mapController));
-				handlers.add(display.addGestureStartHandler(mapController));
-				handlers.add(display.addGestureChangeHandler(mapController));
-				handlers.add(display.addGestureEndHandler(mapController));
-
+				if (PointerEvents.isSupported()) {
+					handlers.add(display.addPointerTouchStartHandler(mapController));
+					handlers.add(display.addPointerTouchMoveHandler(mapController));
+					handlers.add(display.addPointerTouchEndHandler(mapController));
+					handlers.add(display.addPointerTouchCancelHandler(mapController));
+					handlers.add(display.addMouseWheelHandler(mapController));
+				} else {
+					handlers.add(display.addTouchStartHandler(mapController));
+					handlers.add(display.addTouchMoveHandler(mapController));
+					handlers.add(display.addTouchEndHandler(mapController));
+					handlers.add(display.addTouchCancelHandler(mapController));
+					handlers.add(display.addGestureStartHandler(mapController));
+					handlers.add(display.addGestureChangeHandler(mapController));
+					handlers.add(display.addGestureEndHandler(mapController));
+					handlers.add(display.addMouseWheelHandler(mapController));
+				}
 			} else {
 				handlers.add(display.addMouseDownHandler(mapController));
 				handlers.add(display.addMouseMoveHandler(mapController));
@@ -399,13 +431,22 @@ public final class MapPresenterImpl implements MapPresenter {
 			List<HandlerRegistration> registrations = new ArrayList<HandlerRegistration>();
 
 			if (isTouchSupported) {
-				registrations.add(display.addTouchStartHandler(mapListener));
-				registrations.add(display.addTouchMoveHandler(mapListener));
-				registrations.add(display.addTouchEndHandler(mapListener));
-				registrations.add(display.addTouchCancelHandler(mapListener));
-				registrations.add(display.addGestureStartHandler(mapListener));
-				registrations.add(display.addGestureChangeHandler(mapListener));
-				registrations.add(display.addGestureEndHandler(mapListener));
+				if (PointerEvents.isSupported()) {
+					registrations.add(display.addPointerTouchStartHandler(mapController));
+					registrations.add(display.addPointerTouchMoveHandler(mapController));
+					registrations.add(display.addPointerTouchEndHandler(mapController));
+					registrations.add(display.addPointerTouchCancelHandler(mapController));
+					registrations.add(display.addMouseWheelHandler(mapController));
+				} else {
+					registrations.add(display.addTouchStartHandler(mapController));
+					registrations.add(display.addTouchMoveHandler(mapController));
+					registrations.add(display.addTouchEndHandler(mapController));
+					registrations.add(display.addTouchCancelHandler(mapController));
+					registrations.add(display.addGestureStartHandler(mapController));
+					registrations.add(display.addGestureChangeHandler(mapController));
+					registrations.add(display.addGestureEndHandler(mapController));
+					registrations.add(display.addMouseWheelHandler(mapController));
+				}
 			} else {
 				registrations.add(display.addMouseDownHandler(mapListener));
 				registrations.add(display.addMouseMoveHandler(mapListener));

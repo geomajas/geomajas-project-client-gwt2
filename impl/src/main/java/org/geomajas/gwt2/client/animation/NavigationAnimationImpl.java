@@ -43,14 +43,10 @@ public class NavigationAnimationImpl extends Animation implements NavigationAnim
 	/**
 	 * Create a new instance. Usually this is done through the {@link NavigationAnimationFactory}.
 	 * 
-	 * @param viewPort
-	 *            The map ViewPort.
-	 * @param eventBus
-	 *            The EventBus for firing events onto.
-	 * @param trajectory
-	 *            The animation trajectory to run.
-	 * @param millis
-	 *            The animation length in milliseconds.
+	 * @param viewPort The map ViewPort.
+	 * @param eventBus The EventBus for firing events onto.
+	 * @param trajectory The animation trajectory to run.
+	 * @param millis The animation length in milliseconds.
 	 */
 	public NavigationAnimationImpl(ViewPort viewPort, MapEventBus eventBus, Trajectory trajectory, int millis) {
 		this.viewPort = viewPort;
@@ -90,6 +86,7 @@ public class NavigationAnimationImpl extends Animation implements NavigationAnim
 	@Override
 	protected void onUpdate(double progress) {
 		View view = trajectory.getView(progress);
+		view.setAnimation(progress < 1);
 		viewPort.applyView(view);
 		eventBus.fireEvent(new NavigationUpdateEvent(this, view));
 	}
