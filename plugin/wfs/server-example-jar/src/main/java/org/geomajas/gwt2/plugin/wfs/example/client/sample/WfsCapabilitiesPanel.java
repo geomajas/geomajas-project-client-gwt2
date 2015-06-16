@@ -177,16 +177,17 @@ public class WfsCapabilitiesPanel implements SamplePanel {
 
 	@UiHandler("filterBtn")
 	protected void onFilter(ClickEvent event) {
-		if(filterText.getValue() != null && !filterText.getValue().isEmpty()) {
-			if(attributeBox.getSelectedValue() != null) {
+		if (filterText.getValue() != null && !filterText.getValue().isEmpty()) {
+			if (attributeBox.getSelectedValue() != null) {
 				CriterionBuilder b = WfsServerExtension.getInstance().getWfsService().buildCriterion();
-				Criterion c = b.attribute(attributeBox.getSelectedValue()).operation("=").value(filterText.getValue()).build();
-				if(layer != null) {
+				Criterion c = b.attribute(attributeBox.getSelectedValue()).operation("=").value(filterText.getValue())
+						.build();
+				if (layer != null) {
 					layer.getRenderer().setFilter(c);
 				}
 			}
 		} else {
-			if(layer != null) {
+			if (layer != null) {
 				layer.getRenderer().setFilter(null);
 			}
 		}
@@ -260,9 +261,9 @@ public class WfsCapabilitiesPanel implements SamplePanel {
 									}
 								}
 								VectorContainer container = mapPresenter.getContainerManager().addWorldContainer();
-								layer = new SimpleWfsLayer(getWfsVersion(), getCapabilitiesurl(),
-										layerInfo, result, layerInfo.getName(), mapPresenter.getViewPort(), container,
-										mapPresenter.getEventBus());
+								layer = new SimpleWfsLayer(getWfsVersion(), getCapabilitiesurl(), layerInfo, result,
+										layerInfo.getName(), mapPresenter.getViewPort(), container, mapPresenter
+												.getEventBus());
 								layer.getRenderer().setMaxCoordinates(nrOfFeaturesText.getValue());
 								layer.getRenderer().setMaxFeatures(nrOfFeaturesText.getValue());
 								mapPresenter.getLayersModel().addLayer(layer);

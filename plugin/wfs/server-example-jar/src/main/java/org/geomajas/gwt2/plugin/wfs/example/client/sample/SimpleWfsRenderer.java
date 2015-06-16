@@ -88,8 +88,8 @@ public class SimpleWfsRenderer implements LayerRenderer {
 		if (!featuresLoaded) {
 			featuresLoaded = true;
 			WfsService wfsService = WfsServerExtension.getInstance().getWfsService();
-			if(criterion == null) {
-				criterion =  wfsService.buildCriterion().include().build();
+			if (criterion == null) {
+				criterion = wfsService.buildCriterion().include().build();
 			}
 			Query query = wfsService.buildQuery().criterion(criterion).maxFeatures(maxFeatures)
 					.maxCoordinates(maxCoordinates).crs(viewPort.getCrs()).attributeDescriptors(layer.getSchema())
