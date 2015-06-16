@@ -66,6 +66,7 @@ public class View {
 		this.resolution = resolution;
 		setHint(INTERACTIVE, false);
 		setHint(ANIMATION, false);
+		setHint(DRAGGING, false);
 	}
 
 	/**

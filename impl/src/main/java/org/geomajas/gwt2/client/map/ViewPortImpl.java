@@ -291,6 +291,7 @@ public final class ViewPortImpl implements ViewPort {
 		View oldView = getView();
 		view = copy(oldView);
 		view.setInteractive(false);
+		view.setDragging(false);
 		eventBus.fireEvent(new ViewPortChangedEvent(oldView, view, null));
 	}
 

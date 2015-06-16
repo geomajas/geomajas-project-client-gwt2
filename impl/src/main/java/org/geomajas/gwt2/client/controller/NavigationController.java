@@ -244,6 +244,8 @@ public class NavigationController extends AbstractMapController {
 				mapPresenter.getViewPort().registerAnimation(
 						new NavigationAnimationImpl(mapPresenter.getViewPort(), mapPresenter.getEventBus(), trajectory,
 								(int) trajectory.getDuration()));
+			} else {
+				mapPresenter.getViewPort().stopInteraction();
 			}
 		}
 	}
