@@ -10,8 +10,6 @@
  */
 package org.geomajas.gwt2.plugin.wfs.server.command.dto;
 
-import org.geomajas.command.CommandRequest;
-import org.geomajas.gwt2.plugin.wfs.server.dto.WfsVersionDto;
 
 /**
  * Request for the {@link org.geomajas.gwt2.plugin.wfs.server.command.WfsDescribeFeatureTypeCommand}. Should contain all
@@ -19,33 +17,21 @@ import org.geomajas.gwt2.plugin.wfs.server.dto.WfsVersionDto;
  *
  * @author Jan De Moerloose
  */
-public class WfsDescribeFeatureTypeRequest implements CommandRequest {
+public class WfsDescribeFeatureTypeRequest extends AbstractWfsRequest {
 
 	private static final long serialVersionUID = 100L;
 
 	public static final String COMMAND_NAME = "command.WfsDescribeFeatureType";
 
-	private String baseUrl;
-
 	private String typeName;
-
-	private WfsVersionDto version = WfsVersionDto.V1_0_0;
 
 	@SuppressWarnings("unused")
 	private WfsDescribeFeatureTypeRequest() {
 	}
 
 	public WfsDescribeFeatureTypeRequest(String baseUrl, String typeName) {
-		this.baseUrl = baseUrl;
+		setBaseUrl(baseUrl);
 		this.typeName = typeName;
-	}
-
-	public WfsVersionDto getVersion() {
-		return version;
-	}
-
-	public void setVersion(WfsVersionDto version) {
-		this.version = version;
 	}
 
 	public String getTypeName() {
@@ -54,13 +40,5 @@ public class WfsDescribeFeatureTypeRequest implements CommandRequest {
 
 	public void setTypeName(String typeName) {
 		this.typeName = typeName;
-	}
-
-	public String getBaseUrl() {
-		return baseUrl;
-	}
-
-	public void setBaseUrl(String baseUrl) {
-		this.baseUrl = baseUrl;
 	}
 }

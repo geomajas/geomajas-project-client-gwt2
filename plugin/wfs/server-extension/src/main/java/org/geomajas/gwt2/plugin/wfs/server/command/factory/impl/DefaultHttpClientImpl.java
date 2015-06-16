@@ -91,6 +91,10 @@ public class DefaultHttpClientImpl implements HTTPClient {
 			post.addHeader("Content-type", postContentType);
 		}
 		byte[] byteContent = IOUtils.toByteArray(postContent);
+		if (log.isDebugEnabled()) {
+			log.debug(url.toExternalForm());
+			log.debug(new String(byteContent, "UTF-8"));
+		}
 		HttpEntity requestEntity = new ByteArrayEntity(byteContent);
 		post.setEntity(requestEntity);
 
@@ -189,7 +193,7 @@ public class DefaultHttpClientImpl implements HTTPClient {
 	 * @author Jan De Moerloose
 	 *
 	 */
-	private static class HttpMethodResponse implements HTTPResponse {
+	private class HttpMethodResponse implements HTTPResponse {
 
 		private HttpRequestBase request;
 

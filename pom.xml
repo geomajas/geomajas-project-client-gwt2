@@ -46,7 +46,7 @@
 
 	<properties>
 		<!-- geomajas versions -->
-		<gwt2-client-version-geomajas-server>1.18.0</gwt2-client-version-geomajas-server>
+		<gwt2-client-version-geomajas-server>1.18.1-SNAPSHOT</gwt2-client-version-geomajas-server>
 		<gwt2-client-version-geomajas-build-tools>2.5.0</gwt2-client-version-geomajas-build-tools>
 		<!-- gwt versions -->
 		<gwt2-client-version-gwt>2.7.0</gwt2-client-version-gwt>
@@ -64,6 +64,7 @@
 		<gwt2-client-version-spring>3.0.5.RELEASE</gwt2-client-version-spring>
 		<gwt2-client-version-vaadin-graphics>1.0.0.TX11</gwt2-client-version-vaadin-graphics>
 		<gwt2-client-version-geotools>13.0</gwt2-client-version-geotools>
+		<gwt2-client-version-geotools-wfs>13.0.GM2</gwt2-client-version-geotools-wfs>
 		<!-- test versions -->
 		<gwt2-client-version-selenium>2.39.0</gwt2-client-version-selenium>
 		<gwt2-client-version-gwtmockito>1.1.4</gwt2-client-version-gwtmockito>
@@ -418,7 +419,7 @@
 			<dependency>
 				<groupId>org.geotools</groupId>
 				<artifactId>gt-wfs-ng</artifactId>
-				<version>${gwt2-client-version-geotools}</version>
+				<version>${gwt2-client-version-geotools-wfs}</version>
 			</dependency>
 
 			<!-- Other artifacts -->

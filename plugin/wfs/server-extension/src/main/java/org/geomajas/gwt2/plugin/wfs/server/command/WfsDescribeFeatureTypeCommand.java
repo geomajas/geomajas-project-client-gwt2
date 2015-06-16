@@ -95,7 +95,9 @@ public class WfsDescribeFeatureTypeCommand implements
 			Map<String, Serializable> connectionParameters = new HashMap<String, Serializable>();
 			connectionParameters.put(WFSDataStoreFactory.URL.key, capa);
 			connectionParameters.put(WFSDataStoreFactory.TIMEOUT.key, 10000);
-
+			if (request.getStrategy() != null) {
+				connectionParameters.put(WFSDataStoreFactory.WFS_STRATEGY.key, request.getStrategy());
+			}
 			// Get the WFS feature source:
 			WFSDataStore data = dataStoreFactory.createDataStore(connectionParameters,
 					httpClientFactory.create(sourceUrl));

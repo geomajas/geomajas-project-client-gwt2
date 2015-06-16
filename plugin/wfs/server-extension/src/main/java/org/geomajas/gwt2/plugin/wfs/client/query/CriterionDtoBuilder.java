@@ -120,6 +120,7 @@ public class CriterionDtoBuilder implements CriterionBuilder {
 	@Override
 	public CriterionBuilder value(String value) {
 		this.value = value;
+		primitiveType = PrimitiveType.STRING;
 		return this;
 	}
 

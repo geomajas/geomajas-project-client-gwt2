@@ -13,6 +13,7 @@ package org.geomajas.gwt2.plugin.wfs.server.command.factory.impl;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.Map;
 
 import org.geomajas.gwt2.plugin.wfs.server.command.factory.WfsDataStoreFactory;
@@ -53,7 +54,7 @@ public class DefaultWfsDataStoreFactory implements WfsDataStoreFactory {
 		// WFSClient performs version negotiation and selects the correct strategy
 		WFSClient wfsClient;
 		try {
-			wfsClient = new WFSClient(capabilitiesURL, http, config);
+			wfsClient = new WFSClient(capabilitiesURL, http, new WfsConfigAxisOrder(config));
 		} catch (ServiceException e) {
 			throw new IOException(e);
 		}
@@ -66,6 +67,98 @@ public class DefaultWfsDataStoreFactory implements WfsDataStoreFactory {
 		dataStore.setNamespaceURI(config.getNamespaceOverride());
 
 		return dataStore;
+	}
+	
+	/**
+	 * Trying to force x-y order...
+	 * 
+	 * @author Jan De Moerloose
+	 *
+	 */
+	class WfsConfigAxisOrder extends WFSConfig {
+		
+		private WFSConfig wfsConfig;
+
+		public WfsConfigAxisOrder(WFSConfig wfsConfig) {
+			this.wfsConfig = wfsConfig;
+		}
+
+		public int hashCode() {
+			return wfsConfig.hashCode();
+		}
+
+		public boolean equals(Object obj) {
+			return wfsConfig.equals(obj);
+		}
+
+		public String getUser() {
+			return wfsConfig.getUser();
+		}
+
+		public String getPassword() {
+			return wfsConfig.getPassword();
+		}
+
+		public int getTimeoutMillis() {
+			return wfsConfig.getTimeoutMillis();
+		}
+
+		public PreferredHttpMethod getPreferredMethod() {
+			return wfsConfig.getPreferredMethod();
+		}
+
+		public int getBuffer() {
+			return wfsConfig.getBuffer();
+		}
+
+		public boolean isTryGZIP() {
+			return wfsConfig.isTryGZIP();
+		}
+
+		public boolean isLenient() {
+			return wfsConfig.isLenient();
+		}
+
+		public Integer getMaxFeatures() {
+			return wfsConfig.getMaxFeatures();
+		}
+
+		public Charset getDefaultEncoding() {
+			return wfsConfig.getDefaultEncoding();
+		}
+
+		public String getWfsStrategy() {
+			return wfsConfig.getWfsStrategy();
+		}
+
+		public Integer getFilterCompliance() {
+			return wfsConfig.getFilterCompliance();
+		}
+
+		public String getNamespaceOverride() {
+			return wfsConfig.getNamespaceOverride();
+		}
+
+		public String getOutputformatOverride() {
+			return wfsConfig.getOutputformatOverride();
+		}
+
+		public boolean isUseDefaultSrs() {
+			return wfsConfig.isUseDefaultSrs();
+		}
+
+		public String getAxisOrder() {
+			return WFSDataStoreFactory.AXIS_ORDER_EAST_NORTH;
+		}
+
+		public String getAxisOrderFilter() {
+			return wfsConfig.getAxisOrderFilter();
+		}
+
+		public String toString() {
+			return wfsConfig.toString();
+		}
+		
 	}
 
 }

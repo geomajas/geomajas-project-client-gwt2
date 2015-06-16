@@ -162,11 +162,11 @@ public class WmsSearchByLocationPanel implements SamplePanel {
 						wmsLayer = WmsServerExtension.getInstance().createLayer("Countries",
 								mapPresenter.getViewPort().getCrs(), tileConfig, layerConfig, null,
 								wfsLayerConfiguration);
+						wmsLayer.setMaxBounds(new Bbox(-180, -90, 360, 360));
+						mapPresenter.getLayersModel().addLayer(wmsLayer);
 					}
 				});
 
-		wmsLayer.setMaxBounds(new Bbox(-180, -90, 360, 360));
-		mapPresenter.getLayersModel().addLayer(wmsLayer);
 		mapPresenter.getViewPort().applyBounds(mapPresenter.getViewPort().getMaximumBounds());
 	}
 

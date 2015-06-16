@@ -10,17 +10,6 @@
 				<p>Please enter your WFS url</p>
 				<g:TextBox ui:field="capsText" visibleLength="70">http://apps.geomajas.org/geoserver/demo_world/ows</g:TextBox>
 				<g:Button ui:field="goBtn">Get Capabilities</g:Button>
-				<g:ListBox ui:field="wfsVersionBox">
-					<g:item value='1'>
-						WFS 1.0.0
-					</g:item>
-					<g:item value='2'>
-						WFS 1.1.0
-					</g:item>
-					<g:item value='3'>
-						WFS 2.0.0
-					</g:item>
-				</g:ListBox>
 			</g:HTMLPanel>
 		</g:north>
 
@@ -50,6 +39,54 @@
 				<g:ResizeLayoutPanel ui:field="mapPanel" width="100%" height="100%" />
 			</g:SimplePanel>
 		</g:center>
+		
+		<g:east size="300">
+			<g:HTMLPanel addStyleNames="{resource.css.sampleLeftLayout}">
+				<p>Choose version:</p>
+				<p style="text-align: left;">
+					<g:ListBox ui:field="wfsVersionBox">
+						<g:item value='1'>
+							WFS 1.0.0
+						</g:item>
+						<g:item value='2'>
+							WFS 1.1.0
+						</g:item>
+						<g:item value='3'>
+							WFS 2.0.0
+						</g:item>
+						<g:item value='4'>
+							Auto
+						</g:item>
+					</g:ListBox>
+				</p>
+				<p>Force server strategy:</p>
+				<p style="text-align: left;">
+					<g:ListBox ui:field="strategyBox">
+						<g:item value=''>
+							Auto
+						</g:item>
+						<g:item value='geoserver'>
+							geoserver
+						</g:item>
+						<g:item value='mapserver'>
+							mapserver
+						</g:item>
+						<g:item value='cubewerx'>
+							cubewerx
+						</g:item>
+						<g:item value='ionic'>
+							ionic
+						</g:item>
+					</g:ListBox>
+				</p>
+				<p>String Attribute filter (like)</p>
+				<p style="text-align: left;">
+					<g:ListBox ui:field="attributeBox"></g:ListBox>
+					<g:TextBox ui:field="filterText"></g:TextBox>
+				</p>
+				<g:Button ui:field="filterBtn">Apply filter</g:Button>
+			</g:HTMLPanel>
+		</g:east>
 	</g:DockLayoutPanel>
 
 </ui:UiBinder> 

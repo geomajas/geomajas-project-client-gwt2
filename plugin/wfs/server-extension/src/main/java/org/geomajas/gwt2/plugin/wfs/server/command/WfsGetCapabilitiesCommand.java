@@ -24,13 +24,14 @@ import org.geomajas.command.CommandHasRequest;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.gwt2.plugin.wfs.client.service.WfsService.WfsVersion;
 import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsGetCapabilitiesRequest;
 import org.geomajas.gwt2.plugin.wfs.server.command.dto.WfsGetCapabilitiesResponse;
-import org.geomajas.gwt2.plugin.wfs.server.command.factory.WfsHttpClientFactory;
 import org.geomajas.gwt2.plugin.wfs.server.command.factory.URLBuilder;
 import org.geomajas.gwt2.plugin.wfs.server.command.factory.WfsDataStoreFactory;
-import org.geomajas.gwt2.plugin.wfs.server.command.factory.impl.DefaultWfsHttpClientFactory;
+import org.geomajas.gwt2.plugin.wfs.server.command.factory.WfsHttpClientFactory;
 import org.geomajas.gwt2.plugin.wfs.server.command.factory.impl.DefaultWfsDataStoreFactory;
+import org.geomajas.gwt2.plugin.wfs.server.command.factory.impl.DefaultWfsHttpClientFactory;
 import org.geomajas.gwt2.plugin.wfs.server.dto.WfsFeatureTypeDto;
 import org.geomajas.gwt2.plugin.wfs.server.dto.WfsFeatureTypeListDto;
 import org.geomajas.gwt2.plugin.wfs.server.dto.WfsGetCapabilitiesDto;
@@ -91,12 +92,17 @@ public class WfsGetCapabilitiesCommand implements
 			Map<String, Serializable> connectionParameters = new HashMap<String, Serializable>();
 			connectionParameters.put(WFSDataStoreFactory.URL.key, capa);
 			connectionParameters.put(WFSDataStoreFactory.TIMEOUT.key, 10000);
+			if (request.getStrategy() != null) {
+				connectionParameters.put(WFSDataStoreFactory.WFS_STRATEGY.key, request.getStrategy());
+			}
 			WFSDataStore wfs = dataStoreFactory.createDataStore(connectionParameters,
 					httpClientFactory.create(sourceUrl));
 			// The following uses internal geotools classes, anyone knows a more generic way to get the feature types
 			// ???
 			WfsFeatureTypeListDto wfsFeatureTypeListDto = null;
-			switch (request.getVersion()) {
+			String vs = wfs.getWfsClient().getInfo().getVersion();
+			WfsVersion version = WfsVersion.fromString(vs);
+			switch (version) {
 				case V1_0_0:
 				case V1_1_0:
 					wfsFeatureTypeListDto = create1xxFeatureTypeList(wfs);

@@ -21,7 +21,10 @@ import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.gfx.VectorContainer;
 import org.geomajas.gwt2.client.map.MapConfiguration;
 import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.client.map.attribute.AttributeDescriptor;
 import org.geomajas.gwt2.client.map.feature.Feature;
+import org.geomajas.gwt2.client.map.feature.query.Criterion;
+import org.geomajas.gwt2.client.map.feature.query.CriterionBuilder;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.geomajas.gwt2.example.base.client.widget.ShowcaseDialogBox;
 import org.geomajas.gwt2.plugin.corewidget.client.feature.featureinfo.FeatureInfoWidget;
@@ -91,7 +94,18 @@ public class WfsCapabilitiesPanel implements SamplePanel {
 	protected ListBox wfsVersionBox;
 
 	@UiField
+	protected ListBox strategyBox;
+
+	@UiField
+	protected ListBox attributeBox;
+
+	@UiField
+	protected TextBox filterText;
+
+	@UiField
 	protected Label loading;
+
+	private SimpleWfsLayer layer;
 
 	private static final String OSM_EPSG = "EPSG:3857";
 
@@ -161,6 +175,23 @@ public class WfsCapabilitiesPanel implements SamplePanel {
 		getCapabilities();
 	}
 
+	@UiHandler("filterBtn")
+	protected void onFilter(ClickEvent event) {
+		if(filterText.getValue() != null && !filterText.getValue().isEmpty()) {
+			if(attributeBox.getSelectedValue() != null) {
+				CriterionBuilder b = WfsServerExtension.getInstance().getWfsService().buildCriterion();
+				Criterion c = b.attribute(attributeBox.getSelectedValue()).operation("=").value(filterText.getValue()).build();
+				if(layer != null) {
+					layer.getRenderer().setFilter(c);
+				}
+			}
+		} else {
+			if(layer != null) {
+				layer.getRenderer().setFilter(null);
+			}
+		}
+	}
+
 	private void startLoading() {
 		loading.setVisible(true);
 		loading.setText("Loading...");
@@ -178,7 +209,7 @@ public class WfsCapabilitiesPanel implements SamplePanel {
 		layerList.clear();
 		startLoading();
 		WfsServerExtension.getInstance().getWfsService()
-				.getCapabilities(getWfsVersion(), capsText.getText(), new Callback<WfsGetCapabilitiesInfo, String>() {
+				.getCapabilities(getWfsVersion(), getCapabilitiesurl(), new Callback<WfsGetCapabilitiesInfo, String>() {
 
 					@Override
 					public void onSuccess(WfsGetCapabilitiesInfo result) {
@@ -217,13 +248,19 @@ public class WfsCapabilitiesPanel implements SamplePanel {
 		WfsServerExtension
 				.getInstance()
 				.getWfsService()
-				.describeFeatureType(getWfsVersion(), capsText.getText(), layerInfo.getName(),
+				.describeFeatureType(getWfsVersion(), getCapabilitiesurl(), layerInfo.getName(),
 						new Callback<WfsFeatureTypeDescriptionInfo, String>() {
 
 							@Override
 							public void onSuccess(WfsFeatureTypeDescriptionInfo result) {
+								attributeBox.clear();
+								for (AttributeDescriptor desc : result.getAttributeDescriptors()) {
+									if (desc.getType().getBinding().equals(String.class)) {
+										attributeBox.addItem(desc.getName());
+									}
+								}
 								VectorContainer container = mapPresenter.getContainerManager().addWorldContainer();
-								SimpleWfsLayer layer = new SimpleWfsLayer(getWfsVersion(), capsText.getText(),
+								layer = new SimpleWfsLayer(getWfsVersion(), getCapabilitiesurl(),
 										layerInfo, result, layerInfo.getName(), mapPresenter.getViewPort(), container,
 										mapPresenter.getEventBus());
 								layer.getRenderer().setMaxCoordinates(nrOfFeaturesText.getValue());
@@ -241,13 +278,29 @@ public class WfsCapabilitiesPanel implements SamplePanel {
 						});
 	}
 
+	private String getCapabilitiesurl() {
+		boolean strategySelected = strategyBox.getSelectedIndex() >= 1;
+		boolean containsQuery = capsText.getText().contains("?");
+		if (strategySelected) {
+			if (containsQuery) {
+				return capsText.getText() + "&strategy=" + strategyBox.getSelectedValue();
+			} else {
+				return capsText.getText() + "?strategy=" + strategyBox.getSelectedValue();
+			}
+		} else {
+			return capsText.getText();
+		}
+	}
+
 	private WfsVersion getWfsVersion() {
 		if (wfsVersionBox.getSelectedIndex() == 0) {
 			return WfsVersion.V1_0_0;
 		} else if (wfsVersionBox.getSelectedIndex() == 1) {
 			return WfsVersion.V1_1_0;
+		} else if (wfsVersionBox.getSelectedIndex() == 2) {
+			return WfsVersion.V2_0_0;
 		}
-		return WfsVersion.V2_0_0;
+		return null;
 	}
 
 }
