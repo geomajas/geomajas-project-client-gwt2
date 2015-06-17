@@ -66,6 +66,11 @@ public final class ViewPortImpl implements ViewPort {
 
 	private NavigationAnimation currentAnimation;
 
+	/**
+	 * Used as fallback map size value, both width and heigth.
+	 */
+	protected static final int MAP_SIZE_FALLBACK_VALUE = 100;
+
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
@@ -87,6 +92,12 @@ public final class ViewPortImpl implements ViewPort {
 	// Configuration stuff:
 	// -------------------------------------------------------------------------
 
+	/**
+	 * Copy {@link MapConfiguration} information. Specifically, copy or calculate the list of available resolutions.
+	 * This resolution list will not change after initialization.
+	 *
+	 * @param configuration map configuration object
+	 */
 	protected void initialize(MapConfiguration configuration) {
 		this.configuration = configuration;
 		this.crs = configuration.getCrs();
@@ -105,6 +116,8 @@ public final class ViewPortImpl implements ViewPort {
 			if (tempResolution == 0.0) {
 				throw new IllegalStateException("Could not initialize the map. Could it be it has no size?");
 			}
+			// always add one resolution under the minimum resolution:
+			// this ensures the possibility to display the map at minimum resolution
 			resolutions.add(tempResolution);
 			while (tempResolution > configuration.getMinimumResolution()) {
 				tempResolution /= 2;
@@ -410,20 +423,23 @@ public final class ViewPortImpl implements ViewPort {
 		if (maxBounds == null) {
 			return 0;
 		}
+
 		double wRatio;
 		double boundsWidth = maxBounds.getWidth();
-		if (boundsWidth <= 0) {
-			wRatio = getMaximumResolution();
+		if (boundsWidth > 0) {
+			wRatio = boundsWidth / (mapWidth > 0 ? mapWidth : MAP_SIZE_FALLBACK_VALUE);
 		} else {
-			wRatio = boundsWidth / mapWidth;
+			wRatio = getMaximumResolution();
 		}
+
 		double hRatio;
 		double boundsHeight = maxBounds.getHeight();
-		if (boundsHeight <= 0) {
-			hRatio = getMaximumResolution();
+		if (boundsHeight > 0) {
+			hRatio = boundsHeight / (mapHeight > 0 ? mapHeight : MAP_SIZE_FALLBACK_VALUE);
 		} else {
-			hRatio = boundsHeight / mapHeight;
+			hRatio = getMaximumResolution();
 		}
+
 		// Return the checked resolution for the minimum to fit inside:
 		return wRatio < hRatio ? wRatio : hRatio;
 	}
