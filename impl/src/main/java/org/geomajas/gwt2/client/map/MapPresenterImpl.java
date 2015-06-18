@@ -405,15 +405,15 @@ public final class MapPresenterImpl implements MapPresenter {
 					handlers.add(display.addGestureEndHandler(mapController));
 					handlers.add(display.addMouseWheelHandler(mapController));
 				}
-			} else {
-				handlers.add(display.addMouseDownHandler(mapController));
-				handlers.add(display.addMouseMoveHandler(mapController));
-				handlers.add(display.addMouseOutHandler(mapController));
-				handlers.add(display.addMouseOverHandler(mapController));
-				handlers.add(display.addMouseUpHandler(mapController));
-				handlers.add(display.addMouseWheelHandler(mapController));
-				handlers.add(display.addDoubleClickHandler(mapController));
-			}
+			} 
+			// always listen to mouse events, controllers are responsible to avoid double-handling !!!
+			handlers.add(display.addMouseDownHandler(mapController));
+			handlers.add(display.addMouseMoveHandler(mapController));
+			handlers.add(display.addMouseOutHandler(mapController));
+			handlers.add(display.addMouseOverHandler(mapController));
+			handlers.add(display.addMouseUpHandler(mapController));
+			handlers.add(display.addMouseWheelHandler(mapController));
+			handlers.add(display.addDoubleClickHandler(mapController));
 
 			this.mapController = mapController;
 			mapController.onActivate(this);
@@ -447,14 +447,14 @@ public final class MapPresenterImpl implements MapPresenter {
 					registrations.add(display.addGestureEndHandler(mapController));
 					registrations.add(display.addMouseWheelHandler(mapController));
 				}
-			} else {
-				registrations.add(display.addMouseDownHandler(mapListener));
-				registrations.add(display.addMouseMoveHandler(mapListener));
-				registrations.add(display.addMouseOutHandler(mapListener));
-				registrations.add(display.addMouseOverHandler(mapListener));
-				registrations.add(display.addMouseUpHandler(mapListener));
-				registrations.add(display.addMouseWheelHandler(mapListener));
 			}
+			// always listen to mouse events, listeners are responsible to avoid double-handling !!!
+			registrations.add(display.addMouseDownHandler(mapListener));
+			registrations.add(display.addMouseMoveHandler(mapListener));
+			registrations.add(display.addMouseOutHandler(mapListener));
+			registrations.add(display.addMouseOverHandler(mapListener));
+			registrations.add(display.addMouseUpHandler(mapListener));
+			registrations.add(display.addMouseWheelHandler(mapListener));
 
 			mapListener.onActivate(this);
 			listeners.put(mapListener, registrations);
