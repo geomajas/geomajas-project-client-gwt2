@@ -17,6 +17,7 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.event.dom.client.MouseWheelHandler;
+import org.geomajas.graphics.client.controller.DefaultMetaController;
 import org.geomajas.graphics.client.controller.MetaController;
 import org.geomajas.graphics.client.object.GraphicsObject;
 import org.geomajas.graphics.client.service.GraphicsService;
@@ -36,7 +37,7 @@ import com.google.gwt.event.dom.client.MouseWheelEvent;
  * @author Jan De Moerloose
  * 
  */
-public class NavigationMetaController extends MetaController implements
+public class NavigationMetaController extends DefaultMetaController implements
 		MouseUpHandler, MouseMoveHandler, MouseWheelHandler, MouseOutHandler, ClickHandler,
 			MouseOverHandler {
 
@@ -47,6 +48,8 @@ public class NavigationMetaController extends MetaController implements
 	private boolean objectActive;
 
 	private MapPresenter mapPresenter;
+
+	private boolean active;
 
 	public NavigationMetaController(GraphicsService service, MapPresenter mapPresenter) {
 		super(service);
@@ -66,7 +69,8 @@ public class NavigationMetaController extends MetaController implements
 			if (active) {
 				// for activation of objects
 				for (GraphicsObject object : getObjectContainer().getObjects()) {
-					register(object.asObject().addMouseDownHandler(this));
+					// TODO: test next line
+					register(object.getRenderable().addMouseDownHandler(this));
 				}
 				// for deactivating
 				register(getObjectContainer().getBackGround().addMouseDownHandler(this));
@@ -117,7 +121,8 @@ public class NavigationMetaController extends MetaController implements
 			if (!isObjectActive() && getObjectContainer().isObject(event)) {
 				// activate controllers for this object
 				for (GraphicsObject object : getObjectContainer().getObjects()) {
-					if (object.asObject() == event.getSource()) {
+					// TODO: test next line
+					if (object.getRenderable() == event.getSource()) {
 						activateControllersForObject(object, event);
 						objectActive = true;
 						break;

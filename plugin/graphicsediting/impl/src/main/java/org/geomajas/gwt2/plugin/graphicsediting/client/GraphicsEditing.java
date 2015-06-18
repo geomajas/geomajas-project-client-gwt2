@@ -13,6 +13,8 @@ package org.geomajas.gwt2.plugin.graphicsediting.client;
 
 import org.geomajas.annotation.Api;
 import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.plugin.graphicsediting.client.render.GraphicsEditingRenderElementFactory;
+import org.geomajas.gwt2.plugin.graphicsediting.client.render.VectorGraphicsEditingRenderElementFactoryImpl;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.gwt2.plugin.editing.client.Editing;
 import org.geomajas.gwt2.plugin.editing.client.GeometryEditor;
@@ -31,6 +33,8 @@ public final class GraphicsEditing {
 	private static GraphicsEditing instance;
 
 	private StrokeFillCreationValues strokeFillCreationValues = StrokeFillCreationValues.getInstance();
+
+	private static GraphicsEditingRenderElementFactory renderElementFactory;
 
 	/**
 	 * Get a singleton instance.
@@ -65,5 +69,16 @@ public final class GraphicsEditing {
 		GeometryEditor editor = Editing.getInstance().createGeometryEditor(mapPresenter);
 		editor.getBaseController().setClickToStop(true);
 		return editor.getEditService();
+	}
+
+	public static GraphicsEditingRenderElementFactory getRenderElementFactory() {
+		if (renderElementFactory == null) {
+			renderElementFactory = new VectorGraphicsEditingRenderElementFactoryImpl();
+		}
+		return renderElementFactory;
+	}
+
+	public static void setRenderElementFactory(GraphicsEditingRenderElementFactory renderElementFactory) {
+		GraphicsEditing.renderElementFactory = renderElementFactory;
 	}
 }

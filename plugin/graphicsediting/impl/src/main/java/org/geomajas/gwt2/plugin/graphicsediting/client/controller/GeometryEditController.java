@@ -16,27 +16,27 @@ import com.google.gwt.event.dom.client.MouseUpHandler;
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.graphics.client.controller.VisibleOnActiveGraphicsController;
+import org.geomajas.graphics.client.controller.AbstractInterruptibleGraphicsController;
+import org.geomajas.graphics.client.controller.GraphicsControllerWithVisibleElement;
 import org.geomajas.graphics.client.event.GraphicsObjectContainerEvent;
-import org.geomajas.graphics.client.object.Draggable;
 import org.geomajas.graphics.client.object.GraphicsObject;
-import org.geomajas.graphics.client.object.Resizable;
-import org.geomajas.graphics.client.service.AbstractGraphicsController;
-import org.geomajas.graphics.client.service.GraphicsObjectContainer.Space;
+import org.geomajas.graphics.client.object.role.Draggable;
+import org.geomajas.graphics.client.object.role.Resizable;
+import org.geomajas.graphics.client.render.RenderContainer;
+import org.geomajas.graphics.client.render.RenderSpace;
 import org.geomajas.graphics.client.service.GraphicsService;
-import org.geomajas.graphics.client.shape.AnchoredImage;
 import org.geomajas.graphics.client.util.BboxPosition;
 import org.geomajas.graphics.client.util.GraphicsUtil;
 import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.plugin.graphicsediting.client.GraphicsEditing;
+import org.geomajas.gwt2.plugin.graphicsediting.client.object.GeometryEditable;
+import org.geomajas.gwt2.plugin.graphicsediting.client.operation.GeometryEditOperation;
+import org.geomajas.gwt2.plugin.graphicsediting.client.render.GraphicsEditingAnchoredImage;
 import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditChangeStateHandler;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
-import org.geomajas.gwt2.plugin.graphicsediting.client.GraphicsEditing;
-import org.geomajas.gwt2.plugin.graphicsediting.client.object.GeometryEditable;
-import org.geomajas.gwt2.plugin.graphicsediting.client.operation.GeometryEditOperation;
-import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 
 /**
  * Controller for {@link GeometryEditable} objects. The controller will show a pencil icon in the upper left
@@ -47,8 +47,8 @@ import org.vaadin.gwtgraphics.client.VectorObjectContainer;
  * 
  */
 @Api(allMethods = true)
-public class GeometryEditController extends AbstractGraphicsController implements GeometryEditChangeStateHandler,
-		GeometryEditStopHandler, GraphicsObjectContainerEvent.Handler, VisibleOnActiveGraphicsController {
+public class GeometryEditController extends AbstractInterruptibleGraphicsController implements GeometryEditChangeStateHandler,
+		GeometryEditStopHandler, GraphicsObjectContainerEvent.Handler, GraphicsControllerWithVisibleElement {
 
 	/**
 	 * Default value of indentation of pencil button from the object bound.
@@ -69,7 +69,7 @@ public class GeometryEditController extends AbstractGraphicsController implement
 	/**
 	 * Our own container.
 	 */
-	private VectorObjectContainer container;
+	private RenderContainer container;
 
 	private EditHandler handler;
 
@@ -175,38 +175,36 @@ public class GeometryEditController extends AbstractGraphicsController implement
 	 */
 	private class EditHandler implements MouseUpHandler {
 
-		private AnchoredImage propertyImage;
+		private GraphicsEditingAnchoredImage propertyImage;
 
 		public EditHandler() {
-			propertyImage = new AnchoredImage(0, 0, 16, 16, GWT.getModuleBaseURL() + "image/pencil16.png",
-					offsetX, offsetY);
+			propertyImage = GraphicsEditing.getRenderElementFactory().createGraphicsEditingAnchoredImage(0, 0, 16, 16,
+					GWT.getModuleBaseURL() + "image/pencil16.png", true, offsetX, offsetY);
 			propertyImage.setFixedSize(true);
 			propertyImage.addMouseUpHandler(this);
 		}
 
 		public void update() {
 			if (getObject().hasRole(Resizable.TYPE)) {
-				BboxPosition bboxPos = transform(BboxPosition.CORNER_UL, Space.SCREEN, Space.USER);
-				Coordinate pos = transform(new Coordinate(IMG_DIST, IMG_DIST), Space.SCREEN, Space.USER);
+				BboxPosition bboxPos = transform(BboxPosition.CORNER_UL, RenderSpace.SCREEN, RenderSpace.USER);
+				Coordinate pos = transform(new Coordinate(IMG_DIST, IMG_DIST), RenderSpace.SCREEN, RenderSpace.USER);
 				if (getObject().hasRole(Resizable.TYPE)) {
 					pos = GraphicsUtil.getPosition(getObject().getRole(Resizable.TYPE).getUserBounds(), bboxPos);
 				} else if (getObject().hasRole(Draggable.TYPE)) {
 					pos = GraphicsUtil.getPosition(getObject().getRole(Draggable.TYPE).getUserBounds(), bboxPos);
 				}
-				propertyImage.setUserX(pos.getX());
-				propertyImage.setUserY(pos.getY());
+				propertyImage.setUserPosition(pos);
 			} else if (getObject().hasRole(Draggable.TYPE)) {
-				Coordinate position = getObject().getRole(Draggable.TYPE).getPosition();
-				propertyImage.setUserX(position.getX());
-				propertyImage.setUserY(position.getY());
+				Coordinate position = getObject().getRole(Draggable.TYPE).getUserPosition();
+				propertyImage.setUserPosition(position);
 			}
 		}
 
-		public void remove(VectorObjectContainer container) {
+		public void remove(RenderContainer container) {
 			container.remove(propertyImage);
 		}
 
-		public void add(VectorObjectContainer container) {
+		public void add(RenderContainer container) {
 			container.add(propertyImage);
 		}
 

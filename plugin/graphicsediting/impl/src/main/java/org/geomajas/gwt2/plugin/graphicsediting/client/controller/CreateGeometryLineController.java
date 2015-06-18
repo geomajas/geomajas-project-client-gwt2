@@ -10,29 +10,25 @@
  */
 package org.geomajas.gwt2.plugin.graphicsediting.client.controller;
 
-import com.google.gwt.event.dom.client.DoubleClickEvent;
-import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import org.geomajas.annotation.Api;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.graphics.client.controller.AbstractInterruptibleGraphicsController;
 import org.geomajas.graphics.client.object.GraphicsObject;
-import org.geomajas.graphics.client.object.role.Fillable;
 import org.geomajas.graphics.client.object.role.Strokable;
 import org.geomajas.graphics.client.operation.AddOperation;
-import org.geomajas.graphics.client.service.AbstractGraphicsController;
+import org.geomajas.graphics.client.render.RenderContainer;
 import org.geomajas.graphics.client.service.GraphicsService;
 import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.plugin.graphicsediting.client.GraphicsEditing;
+import org.geomajas.gwt2.plugin.graphicsediting.client.StrokeFillCreationValues;
+import org.geomajas.gwt2.plugin.graphicsediting.client.object.BaseGeometryPath;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopEvent;
 import org.geomajas.plugin.editing.client.event.GeometryEditStopHandler;
-import org.geomajas.plugin.editing.client.operation.GeometryOperationFailedException;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
 import org.geomajas.plugin.editing.client.service.GeometryEditState;
 import org.geomajas.plugin.editing.client.service.GeometryIndex;
 import org.geomajas.plugin.editing.client.service.GeometryIndexType;
-import org.geomajas.gwt2.plugin.graphicsediting.client.GraphicsEditing;
-import org.geomajas.gwt2.plugin.graphicsediting.client.StrokeFillCreationValues;
-import org.geomajas.gwt2.plugin.graphicsediting.client.object.GGeometryPath;
-import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,11 +38,10 @@ import java.util.List;
  * 
  * @author Jan De Moerloose
  * @since 2.5.0
- *
+ * 
  */
 @Api(allMethods = true)
-public class CreatePolygonController extends AbstractGraphicsController implements GeometryEditStopHandler,
-		DoubleClickHandler {
+public class CreateGeometryLineController extends AbstractInterruptibleGraphicsController implements GeometryEditStopHandler {
 
 	private boolean active;
 
@@ -54,19 +49,18 @@ public class CreatePolygonController extends AbstractGraphicsController implemen
 
 	private GraphicsObject path;
 
-	private VectorObjectContainer container;
+	private RenderContainer container;
 
 	private final MapPresenter mapPresenter;
 
 	private GeometryEditService editService;
 
 	/**
-	 * Default constructor of
-	 * {@link CreatePolygonController}.
+	 * Default constructor for{@link CreateGeometryLineController} .
 	 * @param graphicsService
 	 * @param mapPresenter
 	 */
-	public CreatePolygonController(GraphicsService graphicsService, MapPresenter mapPresenter) {
+	public CreateGeometryLineController(GraphicsService graphicsService, MapPresenter mapPresenter) {
 		super(graphicsService);
 		this.mapPresenter = mapPresenter;
 		container = createContainer();
@@ -77,7 +71,6 @@ public class CreatePolygonController extends AbstractGraphicsController implemen
 		this.active = active;
 		if (active) {
 			container = createContainer();
-			registrations.add(getObjectContainer().addDoubleClickHandler(this));
 			startEditing();
 		} else {
 			for (HandlerRegistration r : registrations) {
@@ -106,20 +99,17 @@ public class CreatePolygonController extends AbstractGraphicsController implemen
 
 	private void startEditing() {
 		if (path == null) {
-			Geometry polygon = new Geometry(Geometry.POLYGON, 0, -1);
+			
+			Geometry line = new Geometry(Geometry.LINE_STRING, 0, -1);
 			if (editService == null) {
 				editService = GraphicsEditing.getInstance().createClickToStopEditService(mapPresenter);
 				editService.addGeometryEditStopHandler(this);
 			}
-			editService.start(polygon);
-			try {
-				GeometryIndex index = editService.addEmptyChild();
-				index = editService.getIndexService().addChildren(index, GeometryIndexType.TYPE_VERTEX, 0);
-				editService.setEditingState(GeometryEditState.INSERTING);
-				editService.setInsertIndex(index);
-			} catch (GeometryOperationFailedException e) {
-				e.printStackTrace();
-			}
+			editService.start(line);
+			
+			GeometryIndex index = editService.getIndexService().create(GeometryIndexType.TYPE_VERTEX, 0);
+			editService.setEditingState(GeometryEditState.INSERTING);
+			editService.setInsertIndex(index);
 		}
 	}
 
@@ -127,29 +117,21 @@ public class CreatePolygonController extends AbstractGraphicsController implemen
 	public void onGeometryEditStop(GeometryEditStopEvent event) {
 		if (isActive()) {
 			try {
-				Geometry geom = event.getGeometry();
 				path = createObject(event.getGeometry());
-				execute(new AddOperation( path));
+				execute(new AddOperation(path));
 			} catch (Exception e) {
 				// do nothing
 			}
 			path = null;
 		}
 	}
-	
-	@Override
-	public void onDoubleClick(DoubleClickEvent event) {
-		editService.stop();
-	}
 
 	protected GraphicsObject createObject(Geometry geometry) {
-		GGeometryPath path = new GGeometryPath(geometry, null);
+		BaseGeometryPath path = new BaseGeometryPath(geometry);
 		StrokeFillCreationValues creationValues = GraphicsEditing.getInstance().getStrokeFillCreationValues();
-		path.getRole(Fillable.TYPE).setFillColor(creationValues.getPolygonCreateFillColor());
-		path.getRole(Fillable.TYPE).setFillOpacity(creationValues.getPolygonCreateFillOpacity());
-		path.getRole(Strokable.TYPE).setStrokeColor(creationValues.getPolygonCreateStrokeColor());
-		path.getRole(Strokable.TYPE).setStrokeOpacity(creationValues.getPolygonCreateStrokeOpacity());
-		path.getRole(Strokable.TYPE).setStrokeWidth(creationValues.getPolygonCreateStrokeWidth());
+		path.getRole(Strokable.TYPE).setStrokeColor(creationValues.getLineCreateStrokeColor());
+		path.getRole(Strokable.TYPE).setStrokeOpacity(creationValues.getLineCreateStrokeOpacity());
+		path.getRole(Strokable.TYPE).setStrokeWidth(creationValues.getLineCreateStrokeWidth());
 		return path;
 	}
 }

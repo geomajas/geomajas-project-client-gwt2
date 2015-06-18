@@ -11,9 +11,8 @@
 package org.geomajas.gwt2.plugin.graphicsediting.client.controller;
 
 import org.geomajas.annotation.Api;
+import org.geomajas.graphics.client.controller.GraphicsControllerFactory;
 import org.geomajas.graphics.client.object.GraphicsObject;
-import org.geomajas.graphics.client.service.GraphicsController;
-import org.geomajas.graphics.client.service.GraphicsControllerFactory;
 import org.geomajas.graphics.client.service.GraphicsService;
 import org.geomajas.gwt2.plugin.graphicsediting.client.object.GeometryEditable;
 import org.geomajas.gwt2.client.map.MapPresenter;
@@ -26,7 +25,7 @@ import org.geomajas.gwt2.client.map.MapPresenter;
  * 
  */
 @Api(allMethods = true)
-public class GeometryEditControllerFactory implements GraphicsControllerFactory {
+public class GeometryEditControllerFactory implements GraphicsControllerFactory<GeometryEditController> {
 
 	private final MapPresenter mapPresenter;
 
@@ -60,7 +59,7 @@ public class GeometryEditControllerFactory implements GraphicsControllerFactory 
 	}
 
 	@Override
-	public GraphicsController createController(GraphicsService graphicsService, GraphicsObject object) {
+	public GeometryEditController createController(GraphicsService graphicsService, GraphicsObject object) {
 		return new GeometryEditController(object, graphicsService, mapPresenter, offsetX, offsetY);
 	}
 

@@ -10,30 +10,29 @@
  */
 package org.geomajas.gwt2.plugin.graphicsediting.example.client.annotation;
 
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.event.dom.client.HumanInputEvent;
+import com.google.web.bindery.event.shared.EventBus;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.graphics.client.object.GRectangle;
-import org.geomajas.graphics.client.service.AbstractGraphicsObjectContainer;
+import org.geomajas.graphics.client.render.BaseRectangle;
+import org.geomajas.graphics.client.service.objectcontainer.GraphicsObjectContainerImpl;
 import org.geomajas.graphics.client.util.BboxPosition;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt2.client.event.ViewPortChangedEvent;
 import org.geomajas.gwt2.client.event.ViewPortChangedHandler;
 import org.geomajas.gwt2.client.map.MapPresenter;
 
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.event.dom.client.MouseEvent;
-import com.google.web.bindery.event.shared.EventBus;
-
 /**
  * AnnotationContainer.
  * 
  * @author Jan De Moerloose
  */
-public class AnnotationContainer extends AbstractGraphicsObjectContainer implements ViewPortChangedHandler {
+public class AnnotationContainer extends GraphicsObjectContainerImpl implements ViewPortChangedHandler {
 
 	private MapPresenter mapPresenter;
 
-	private GRectangle mask;
+	private BaseRectangle mask;
 
 	public AnnotationContainer(MapPresenter mapPresenter, EventBus eventBus) {
 		super(eventBus);
@@ -50,22 +49,26 @@ public class AnnotationContainer extends AbstractGraphicsObjectContainer impleme
 	}
 
 	@Override
-	public Coordinate getScreenCoordinate(MouseEvent<?> event) {
+	public Coordinate getScreenCoordinate(HumanInputEvent<?> event) {
 		Element screenElement = mapPresenter.asWidget().getElement();
-		return new Coordinate(event.getRelativeX(screenElement), event.getRelativeY(screenElement));
+		//TODO: test
+		return new Coordinate(event.getNativeEvent().getScreenX() - screenElement.getAbsoluteLeft(),
+				event.getNativeEvent().getScreenY() - screenElement.getAbsoluteTop());
 	}
 
 	@Override
-	public Coordinate transform(Coordinate coordinate, Space from, Space to) {
+	public Coordinate transform(Coordinate coordinate, org.geomajas.graphics.client.render.RenderSpace from,
+								org.geomajas.graphics.client.render.RenderSpace to) {
 		return mapPresenter.getViewPort().getTransformationService().transform(coordinate, convert(from), convert(to));
 	}
 
 	@Override
-	public Bbox transform(Bbox bounds, Space from, Space to) {
+	public Bbox transform(Bbox bounds, org.geomajas.graphics.client.render.RenderSpace from,
+						  org.geomajas.graphics.client.render.RenderSpace to) {
 		return mapPresenter.getViewPort().getTransformationService().transform(bounds, convert(from), convert(to));
 	}
 
-	private RenderSpace convert(Space space) {
+	private RenderSpace convert(org.geomajas.graphics.client.render.RenderSpace space) {
 		switch (space) {
 			case SCREEN:
 				return RenderSpace.SCREEN;
@@ -76,7 +79,8 @@ public class AnnotationContainer extends AbstractGraphicsObjectContainer impleme
 	}
 
 	@Override
-	public BboxPosition transform(BboxPosition position, Space from, Space to) {
+	public BboxPosition transform(BboxPosition position, org.geomajas.graphics.client.render.RenderSpace from,
+								  org.geomajas.graphics.client.render.RenderSpace to) {
 		return position;
 	}
 	
