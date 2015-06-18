@@ -47,6 +47,7 @@
 	<properties>
 		<!-- geomajas versions -->
 		<gwt2-client-version-geomajas-server>1.18.1</gwt2-client-version-geomajas-server>
+		<gwt2-client-version-geomajas-graphics>1.0.0-RC1</gwt2-client-version-geomajas-graphics>
 		<!-- gwt versions -->
 		<gwt2-client-version-gwt>2.7.0</gwt2-client-version-gwt>
 		<gwt2-client-version-gwt-exporter>2.4.0</gwt2-client-version-gwt-exporter>
@@ -208,6 +209,23 @@
 				<version>${project.version}</version>
 			</dependency>
 
+			<!-- GraphicsEditing plugin -->
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-client-gwt2-plugin-graphicsediting-impl</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-client-gwt2-plugin-graphicsediting-example-jar</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-client-gwt2-plugin-graphicsediting-javadoc</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
 			<!-- Print plugin -->
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
@@ -325,6 +343,11 @@
 				<version>${gwt2-client-version-geomajas-server}</version>
 				<type>pom</type>
 				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.project</groupId>
+				<artifactId>geomajas-project-graphics</artifactId>
+				<version>${gwt2-client-version-geomajas-graphics}</version>
 			</dependency>
 
 			<!-- Other dependencies -->

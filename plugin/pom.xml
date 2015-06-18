@@ -30,6 +30,7 @@
 		<module>corewidget</module>
 		<module>editing</module>
 		<module>geocoder</module>
+		<module>graphicsediting</module>
 		<module>print</module>
 		<module>tilebasedlayer</module>
 		<module>tms</module>

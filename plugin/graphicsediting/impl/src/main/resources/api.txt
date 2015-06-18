@@ -1,0 +1,74 @@
+org.geomajas.gwt2.plugin.graphicsediting.client.GraphicsEditing::2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.GraphicsEditing:GeometryEditService createClickToStopEditService(MapPresenter, ):2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.GraphicsEditing:GraphicsEditing():2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.GraphicsEditing:StrokeFillCreationValues getStrokeFillCreationValues():2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.GraphicsEditing:static GraphicsEditing getInstance():2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.StrokeFillCreationValues::2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.StrokeFillCreationValues:String getLineCreateStrokeColor():2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.StrokeFillCreationValues:String getPolygonCreateFillColor():2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.StrokeFillCreationValues:String getPolygonCreateStrokeColor():2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.StrokeFillCreationValues:double getLineCreateStrokeOpacity():2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.StrokeFillCreationValues:double getPolygonCreateFillOpacity():2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.StrokeFillCreationValues:double getPolygonCreateStrokeOpacity():2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.StrokeFillCreationValues:int getLineCreateStrokeWidth():2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.StrokeFillCreationValues:int getPolygonCreateStrokeWidth():2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.StrokeFillCreationValues:static StrokeFillCreationValues getInstance():2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.StrokeFillCreationValues:void setLineCreateStrokeColor(String, ):2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.StrokeFillCreationValues:void setLineCreateStrokeOpacity(double, ):2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.StrokeFillCreationValues:void setLineCreateStrokeWidth(int, ):2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.StrokeFillCreationValues:void setPolygonCreateFillColor(String, ):2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.StrokeFillCreationValues:void setPolygonCreateFillOpacity(double, ):2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.StrokeFillCreationValues:void setPolygonCreateStrokeColor(String, ):2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.StrokeFillCreationValues:void setPolygonCreateStrokeOpacity(double, ):2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.StrokeFillCreationValues:void setPolygonCreateStrokeWidth(int, ):2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.action.EditAction::2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.action.EditAction:EditAction(MapPresenter, ):2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.action.EditAction:String getIconUrl():2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.action.EditAction:String getLabel():2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.action.EditAction:boolean isInProgress():2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.action.EditAction:boolean isInterrupted():2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.action.EditAction:boolean supports(GraphicsObject, ):2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.action.EditAction:void cancel():2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.action.EditAction:void execute(GraphicsObject, ):2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.action.EditAction:void onChangeEditingState(GeometryEditChangeStateEvent, ):2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.action.EditAction:void onGeometryEditStop(GeometryEditStopEvent, ):2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.action.EditAction:void pause():2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.action.EditAction:void resume():2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.action.EditAction:void save():2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.action.EditAction:void setIconUrl(String, ):2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.action.EditAction:void setService(GraphicsService, ):2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.action.EditAction:void start():2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.action.EditAction:void stop():2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.controller.CreateLineController::2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.controller.CreateLineController:CreateLineController(GraphicsService, MapPresenter, ):2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.controller.CreateLineController:boolean isActive():2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.controller.CreateLineController:void destroy():2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.controller.CreateLineController:void onGeometryEditStop(GeometryEditStopEvent, ):2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.controller.CreateLineController:void setActive(boolean, ):2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.controller.CreatePolygonController::2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.controller.CreatePolygonController:CreatePolygonController(GraphicsService, MapPresenter, ):2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.controller.CreatePolygonController:boolean isActive():2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.controller.CreatePolygonController:void destroy():2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.controller.CreatePolygonController:void onDoubleClick(DoubleClickEvent, ):2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.controller.CreatePolygonController:void onGeometryEditStop(GeometryEditStopEvent, ):2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.controller.CreatePolygonController:void setActive(boolean, ):2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.controller.GeometryEditController::2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.controller.GeometryEditController:GeometryEditController(GraphicsObject, GraphicsService, MapPresenter, double, double, ):2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.controller.GeometryEditController:boolean isActive():2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.controller.GeometryEditController:static final int IMG_DIST:2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.controller.GeometryEditController:void destroy():2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.controller.GeometryEditController:void onAction(GraphicsObjectContainerEvent, ):2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.controller.GeometryEditController:void onChangeEditingState(GeometryEditChangeStateEvent, ):2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.controller.GeometryEditController:void onGeometryEditStop(GeometryEditStopEvent, ):2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.controller.GeometryEditController:void setActive(boolean, ):2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.controller.GeometryEditController:void setControllerElementsVisible(boolean, ):2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.controller.GeometryEditControllerFactory::2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.controller.GeometryEditControllerFactory:GeometryEditControllerFactory(MapPresenter, ):2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.controller.GeometryEditControllerFactory:GeometryEditControllerFactory(MapPresenter, double, double, ):2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.controller.GeometryEditControllerFactory:GraphicsController createController(GraphicsService, GraphicsObject, ):2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.controller.GeometryEditControllerFactory:boolean supports(GraphicsObject, ):2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.object.GeometryEditable::2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.object.GeometryEditable:Geometry getGeometry():2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.object.GeometryEditable:RoleType<GeometryEditable> TYPE:2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.object.GeometryEditable:String TYPE_NAME:2.5.0
+org.geomajas.gwt2.plugin.graphicsediting.client.object.GeometryEditable:void setGeometry(Geometry, ):2.5.0
