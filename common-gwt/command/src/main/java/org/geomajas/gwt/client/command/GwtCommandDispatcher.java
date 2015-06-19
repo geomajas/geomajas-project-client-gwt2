@@ -11,15 +11,11 @@
 
 package org.geomajas.gwt.client.command;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.i18n.client.LocaleInfo;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.Window.ClosingEvent;
-import com.google.gwt.user.client.Window.ClosingHandler;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.rpc.ServiceDefTarget;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.geomajas.annotation.Api;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.global.ExceptionCode;
@@ -36,10 +32,16 @@ import org.geomajas.gwt.client.command.event.TokenChangedEvent;
 import org.geomajas.gwt.client.command.event.TokenChangedHandler;
 import org.geomajas.gwt.client.util.Log;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.i18n.client.LocaleInfo;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.Window.ClosingEvent;
+import com.google.gwt.user.client.Window.ClosingHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.rpc.RpcRequestBuilder;
+import com.google.gwt.user.client.rpc.ServiceDefTarget;
 
 /**
  * The central client side dispatcher for all commands. Use the {@link #execute(GwtCommand, CommandCallback...)}
@@ -641,6 +643,16 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers, CommandE
 	 */
 	public void setShowError(boolean showError) {
 		this.showError = showError;
+	}
+
+	/**
+	 * Set the RPC request builder that should be used with the RPC service.
+	 * 
+	 * @param builder
+	 * @since 2.4.0
+	 */
+	public void setRpcRequestBuilder(RpcRequestBuilder builder) {
+		((ServiceDefTarget) service).setRpcRequestBuilder(builder);
 	}
 
 	// -------------------------------------------------------------------------
