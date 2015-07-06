@@ -8,26 +8,32 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.gwt2.plugin.wfs.server.dto.query;
+
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.geomajas.gwt2.client.map.feature.query.Criterion;
+import org.geomajas.gwt2.client.map.feature.query.CriterionVisitor;
+import org.geomajas.gwt2.client.map.feature.query.LogicalCriterion;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.geomajas.gwt2.client.map.feature.query.Criterion;
-import org.geomajas.gwt2.client.map.feature.query.CriterionVisitor;
-import org.geomajas.gwt2.client.map.feature.query.LogicalCriterion;
-
 /**
  * DTO object for logical criteria.
- * 
+ *
  * @author Jan De Moerloose
- * 
  */
 public class LogicalCriterionDto implements LogicalCriterion, CriterionDto {
 
 	private static final long serialVersionUID = 221L;
 
+	@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
+	@org.codehaus.jackson.annotate.JsonTypeInfo(
+			use = org.codehaus.jackson.annotate.JsonTypeInfo.Id.CLASS,
+			include = org.codehaus.jackson.annotate.JsonTypeInfo.As.PROPERTY,
+			property = "@class")
 	private List<Criterion> children = new ArrayList<Criterion>();
 
 	private Operator operator;
@@ -39,7 +45,7 @@ public class LogicalCriterionDto implements LogicalCriterion, CriterionDto {
 
 	/**
 	 * Create a logical criterion for this operator.
-	 * 
+	 *
 	 * @param operator
 	 */
 	public LogicalCriterionDto(Operator operator) {
@@ -48,7 +54,7 @@ public class LogicalCriterionDto implements LogicalCriterion, CriterionDto {
 
 	/**
 	 * Create a logical criterion for this operator and child criteria.
-	 * 
+	 *
 	 * @param operator
 	 * @param criteria
 	 */
@@ -64,7 +70,7 @@ public class LogicalCriterionDto implements LogicalCriterion, CriterionDto {
 
 	/**
 	 * Get the logical operator.
-	 * 
+	 *
 	 * @return
 	 */
 	@Override
@@ -74,7 +80,7 @@ public class LogicalCriterionDto implements LogicalCriterion, CriterionDto {
 
 	/**
 	 * Set the logical operator.
-	 * 
+	 *
 	 * @param operator
 	 */
 	public void setOperator(Operator operator) {
@@ -83,7 +89,7 @@ public class LogicalCriterionDto implements LogicalCriterion, CriterionDto {
 
 	/**
 	 * Get the child criteria.
-	 * 
+	 *
 	 * @return
 	 */
 	@Override
@@ -93,7 +99,7 @@ public class LogicalCriterionDto implements LogicalCriterion, CriterionDto {
 
 	/**
 	 * Set the child criteria.
-	 * 
+	 *
 	 * @param children
 	 */
 	public void setChildren(List<Criterion> children) {
