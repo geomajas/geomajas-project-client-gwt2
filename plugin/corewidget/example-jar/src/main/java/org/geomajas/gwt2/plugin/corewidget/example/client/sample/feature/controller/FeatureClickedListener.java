@@ -17,6 +17,8 @@ import com.google.gwt.event.dom.client.MouseUpEvent;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.geometry.service.MathService;
+import org.geomajas.gwt.client.event.PointerTouchEndEvent;
+import org.geomajas.gwt.client.event.PointerTouchStartEvent;
 import org.geomajas.gwt.client.map.RenderSpace;
 import org.geomajas.gwt2.client.GeomajasServerExtension;
 import org.geomajas.gwt2.client.controller.AbstractMapController;
@@ -81,32 +83,28 @@ public class FeatureClickedListener extends AbstractMapController {
 		super.onDeactivate(mapPresenter);
 	}
 
+	// mouse events
+
 	@Override
 	public void onMouseUp(MouseUpEvent event) {
-
-		if (isDownPosition(event)) {
-
-			Geometry point = new Geometry(Geometry.POINT, 0, -1);
-			Coordinate coordinate = getLocation(event, RenderSpace.WORLD);
-			point.setCoordinates(new Coordinate[] { coordinate });
-
-			GeomajasServerExtension
-					.getInstance()
-					.getServerFeatureService()
-					.search(mapPresenter, point, calculateBufferFromPixelTolerance(),
-							ServerFeatureService.QueryType.INTERSECTS,
-							ServerFeatureService.SearchLayerType.SEARCH_ALL_LAYERS, -1, new SelectionCallback()
-					);
-
-		}
-
+		registerDownPosition(event);
 	}
 
 	@Override
 	public void onMouseDown(MouseDownEvent event) {
+		registerUpPosition(event);
+	}
 
-		clickedPosition = getLocation(event, RenderSpace.SCREEN);
+	// pointer events
 
+	@Override
+	public void onPointerTouchStart(PointerTouchStartEvent event) {
+		registerDownPosition(event);
+	}
+
+	@Override
+	public void onPointerTouchEnd(PointerTouchEndEvent event) {
+		registerUpPosition(event);
 	}
 
 	/**
@@ -170,6 +168,34 @@ public class FeatureClickedListener extends AbstractMapController {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * General method for MouseDown, also callable via pointer events.
+	 */
+	private void registerDownPosition(HumanInputEvent<?> event) {
+		if (isDownPosition(event)) {
+
+			Geometry point = new Geometry(Geometry.POINT, 0, -1);
+			Coordinate coordinate = getLocation(event, RenderSpace.WORLD);
+			point.setCoordinates(new Coordinate[] { coordinate });
+
+			GeomajasServerExtension
+					.getInstance()
+					.getServerFeatureService()
+					.search(mapPresenter, point, calculateBufferFromPixelTolerance(),
+							ServerFeatureService.QueryType.INTERSECTS,
+							ServerFeatureService.SearchLayerType.SEARCH_ALL_LAYERS, -1, new SelectionCallback()
+					);
+
+		}
+	}
+
+	/**
+	 * General method for MouseUp, also callable via pointer events.
+	 */
+	private void registerUpPosition(HumanInputEvent<?> event) {
+		clickedPosition = getLocation(event, RenderSpace.SCREEN);
 	}
 
 }

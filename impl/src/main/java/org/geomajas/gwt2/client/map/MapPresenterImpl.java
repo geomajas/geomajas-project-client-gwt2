@@ -27,6 +27,7 @@ import org.geomajas.gwt.client.util.Dom;
 import org.geomajas.gwt2.client.controller.MapController;
 import org.geomajas.gwt2.client.controller.MapEventParserImpl;
 import org.geomajas.gwt2.client.controller.NavigationController;
+import org.geomajas.gwt2.client.controller.PointerBrowserNavigationController;
 import org.geomajas.gwt2.client.controller.TouchNavigationController;
 import org.geomajas.gwt2.client.event.LayerAddedEvent;
 import org.geomajas.gwt2.client.event.LayerRemovedEvent;
@@ -260,8 +261,13 @@ public final class MapPresenterImpl implements MapPresenter {
 					logger.info("oooops " + e.getMessage());
 				}
 			}
-			logger.fine("touch");
-			fallbackController = new TouchNavigationController();
+			if (Dom.isTouchSupported()) {
+				logger.fine("touch");
+				fallbackController = new TouchNavigationController();
+			} else {
+				logger.fine("pointer browser");
+				fallbackController = new PointerBrowserNavigationController();
+			}
 		} else {
 			logger.fine("no touch");
 			fallbackController = new NavigationController();
@@ -432,20 +438,20 @@ public final class MapPresenterImpl implements MapPresenter {
 
 			if (isTouchSupported) {
 				if (PointerEvents.isSupported()) {
-					registrations.add(display.addPointerTouchStartHandler(mapController));
-					registrations.add(display.addPointerTouchMoveHandler(mapController));
-					registrations.add(display.addPointerTouchEndHandler(mapController));
-					registrations.add(display.addPointerTouchCancelHandler(mapController));
-					registrations.add(display.addMouseWheelHandler(mapController));
+					registrations.add(display.addPointerTouchStartHandler(mapListener));
+					registrations.add(display.addPointerTouchMoveHandler(mapListener));
+					registrations.add(display.addPointerTouchEndHandler(mapListener));
+					registrations.add(display.addPointerTouchCancelHandler(mapListener));
+					registrations.add(display.addMouseWheelHandler(mapListener));
 				} else {
-					registrations.add(display.addTouchStartHandler(mapController));
-					registrations.add(display.addTouchMoveHandler(mapController));
-					registrations.add(display.addTouchEndHandler(mapController));
-					registrations.add(display.addTouchCancelHandler(mapController));
-					registrations.add(display.addGestureStartHandler(mapController));
-					registrations.add(display.addGestureChangeHandler(mapController));
-					registrations.add(display.addGestureEndHandler(mapController));
-					registrations.add(display.addMouseWheelHandler(mapController));
+					registrations.add(display.addTouchStartHandler(mapListener));
+					registrations.add(display.addTouchMoveHandler(mapListener));
+					registrations.add(display.addTouchEndHandler(mapListener));
+					registrations.add(display.addTouchCancelHandler(mapListener));
+					registrations.add(display.addGestureStartHandler(mapListener));
+					registrations.add(display.addGestureChangeHandler(mapListener));
+					registrations.add(display.addGestureEndHandler(mapListener));
+					registrations.add(display.addMouseWheelHandler(mapListener));
 				}
 			}
 			// always listen to mouse events, listeners are responsible to avoid double-handling !!!
