@@ -18,6 +18,7 @@ import org.geomajas.gwt2.client.event.LayerRefreshedHandler;
 import org.geomajas.gwt2.client.event.MapInitializationEvent;
 import org.geomajas.gwt2.client.event.MapInitializationHandler;
 import org.geomajas.gwt2.client.map.MapPresenter;
+import org.geomajas.gwt2.client.map.layer.LabelsSupported;
 import org.geomajas.gwt2.client.map.layer.Layer;
 import org.geomajas.gwt2.example.base.client.ExampleBase;
 import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
@@ -25,9 +26,12 @@ import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -132,6 +136,19 @@ public class LayerRefreshPanel implements SamplePanel {
 				}
 			});
 			add(removeBtn);
+			if (layer instanceof LabelsSupported) {
+				final LabelsSupported labelsSupported = (LabelsSupported) layer;
+				CheckBox labeledCheckBox = new CheckBox("Labeled");
+				labeledCheckBox.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+
+					@Override
+					public void onValueChange(ValueChangeEvent<Boolean> event) {
+						labelsSupported.setLabeled(!labelsSupported.isLabeled());
+						layer.refresh();
+					}
+				});
+				add(labeledCheckBox);
+			}
 			add(new Label(layer.getTitle()));
 			setStyleName(ExampleBase.getShowcaseResource().css().sampleRow());
 		}
