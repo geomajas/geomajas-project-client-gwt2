@@ -319,8 +319,8 @@ public abstract class DomTileLevelLayerRenderer implements LayerRenderer {
 		Matrix transformation = viewPort.getTransformationService().getTranslationMatrix(currentResolution);
 		HtmlContainer tileLevelContainer = tileLevelContainers.get(renderer.getTileLevel());
 		Coordinate origin = tileLevelContainer.getOrigin();
-		logger.info("Applying scale " + rendererResolution / currentResolution + " to current "
-				+ renderer.getTileLevel());
+//		logger.info("Applying scale " + rendererResolution / currentResolution + " to current "
+//				+ renderer.getTileLevel());
 		tileLevelContainer.applyScale(rendererResolution / currentResolution, 0, 0);
 		double left = transformation.getDx() - origin.getX() * tileLevelContainer.getScale();
 		double top = transformation.getDy() - origin.getY() * tileLevelContainer.getScale();
@@ -355,6 +355,7 @@ public abstract class DomTileLevelLayerRenderer implements LayerRenderer {
 
 	protected void refresh() {
 		clear();
+		render(new RenderingInfo(container, viewPort.getView(), null));
 	}
 
 	private void clear() {
