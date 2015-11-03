@@ -46,7 +46,7 @@
 
 	<properties>
 		<!-- geomajas versions -->
-		<gwt2-client-version-geomajas-server>1.18.2</gwt2-client-version-geomajas-server>
+		<gwt2-client-version-geomajas-server>1.18.3</gwt2-client-version-geomajas-server>
 		<!-- gwt versions -->
 		<gwt2-client-version-gwt>2.7.0</gwt2-client-version-gwt>
 		<gwt2-client-version-gwt-exporter>2.4.0</gwt2-client-version-gwt-exporter>
