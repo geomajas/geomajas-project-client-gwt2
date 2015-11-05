@@ -22,7 +22,7 @@
 
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-client-gwt2-plugin-print-documentation</artifactId>
-	<version>2.4.2</version>
+	<version>2.4.2-SNAPSHOT</version>
 
 	<name>Geomajas GWT2 client: Plugin Print - Documentation</name>
 	<description>Geomajas GWT2 client: Plugin Print - Documentation</description>
