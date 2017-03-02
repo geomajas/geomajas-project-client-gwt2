@@ -23,7 +23,7 @@ import com.google.gwt.user.client.impl.DOMImplStandard;
 
 /**
  * Standard implementation of {@link PointerEvents}.
- * 
+ *
  * @author Jan De Moerloose
  *
  */
@@ -35,9 +35,15 @@ public class PointerEventsImpl extends PointerEvents {
 
 	private static JavaScriptObject touches;
 
-	protected boolean supports() {
-		return true;
-	}
+	//$wnd.navigator.pointerEnabled,  $wnd.navigator.maxTouchPoints >= IE11
+	//$wnd.navigator.msPointerEnabled, $wnd.navigator.msMaxTouchPoints	< IE11
+	// To test for touch capable hardware and pointer event support
+	protected native boolean supports() /*-{
+		if ($wnd.navigator.pointerEnabled && ($wnd.navigator.maxTouchPoints !== 0)) {
+			return true;
+		}
+		return false;
+	}-*/;
 
 	public String getNativeTypeName(PointerEventType type) {
 		switch (type) {
@@ -54,16 +60,18 @@ public class PointerEventsImpl extends PointerEvents {
 	}
 
 	public void doInit() {
-		logger.info("PointerEventsImpl.doInit");
-		if (bitlessEventDispatchers == null) {
-			bitlessEventDispatchers = JavaScriptObject.createObject();
-			touches = JavaScriptObject.createArray();
-			for (PointerEventType e : PointerEventType.values()) {
-				addBitlessDispatcher(e.getType(), bitlessEventDispatchers);
+		if (supports()) {
+			logger.info("PointerEventsImpl.doInit");
+			if (bitlessEventDispatchers == null) {
+				bitlessEventDispatchers = JavaScriptObject.createObject();
+				touches = JavaScriptObject.createArray();
+				for (PointerEventType e : PointerEventType.values()) {
+					addBitlessDispatcher(e.getType(), bitlessEventDispatchers);
+				}
+				DOMImplStandard.addBitlessEventDispatchers(bitlessEventDispatchers);
+				catchAll(PointerEventType.POINTER_CANCEL.getType(), Document.get().getDocumentElement());
+				catchAll(PointerEventType.POINTER_UP.getType(), Document.get().getDocumentElement());
 			}
-			DOMImplStandard.addBitlessEventDispatchers(bitlessEventDispatchers);
-			catchAll(PointerEventType.POINTER_CANCEL.getType(), Document.get().getDocumentElement());
-			catchAll(PointerEventType.POINTER_UP.getType(), Document.get().getDocumentElement());
 		}
 	}
 
