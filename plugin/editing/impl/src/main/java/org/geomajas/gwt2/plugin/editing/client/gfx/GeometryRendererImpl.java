@@ -1,3 +1,4 @@
+/* CHECKSTYLE:OFF */
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
@@ -77,7 +78,7 @@ import java.util.Map;
  * @author Pieter De Graef
  * @author Jan De Moerloose
  */
-public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStartHandler, GeometryEditStopHandler,
+public class GeometryRendererImpl implements GeometryShapeRenderer, GeometryEditStartHandler, GeometryEditStopHandler,
 		GeometryEditSuspendHandler, GeometryEditResumeHandler, GeometryIndexHighlightBeginHandler,
 		GeometryIndexHighlightEndHandler, GeometryEditMoveHandler, GeometryEditShapeChangedHandler,
 		GeometryEditChangeStateHandler, GeometryIndexSelectedHandler, GeometryIndexDeselectedHandler,
@@ -152,6 +153,16 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 	// ------------------------------------------------------------------------
 	// Public methods:
 	// ------------------------------------------------------------------------
+
+	@Override
+	public void setStyleFactory(GeometryIndexStyleFactory styleFactory) {
+		this.styleFactory = styleFactory;
+	}
+
+	@Override
+	public void setShapeFactory(GeometryIndexShapeFactory shapeFactory) {
+		this.shapeFactory = shapeFactory;
+	}
 
 	/**
 	 * Clear everything and completely redraw the edited geometry.
@@ -543,8 +554,8 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 			int max = geometry.getCoordinates().length - 1;
 			boolean inserting = false;
 			boolean limited = false;
-			
-			// If we are inserting in this particular LinearRing, don't display the closing edge/vertex or it 
+
+			// If we are inserting in this particular LinearRing, don't display the closing edge/vertex or it
 			// looks like the ring is already closed
 			GeometryIndex insertIndex = editService.getInsertIndex();
 			if (insertIndex != null && editService.getEditingState().equals(GeometryEditState.INSERTING)
@@ -663,3 +674,5 @@ public class GeometryRendererImpl implements GeometryRenderer, GeometryEditStart
 		return true;
 	}
 }
+/* CHECKSTYLE:ON */
+/* CHECKSTYLE:ON */

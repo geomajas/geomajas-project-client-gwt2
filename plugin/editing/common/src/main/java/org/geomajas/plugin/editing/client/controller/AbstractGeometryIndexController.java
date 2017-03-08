@@ -1,3 +1,4 @@
+/* CHECKSTYLE:OFF */
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
@@ -11,6 +12,7 @@
 
 package org.geomajas.plugin.editing.client.controller;
 
+import com.google.gwt.event.dom.client.TouchEvent;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.controller.AbstractController;
@@ -24,7 +26,7 @@ import com.google.gwt.event.dom.client.HumanInputEvent;
 
 /**
  * Abstract base controller for specific controllers used in the editing process.
- * 
+ *
  * @author Pieter De Graef
  */
 public abstract class AbstractGeometryIndexController extends AbstractController {
@@ -43,7 +45,7 @@ public abstract class AbstractGeometryIndexController extends AbstractController
 
 	/**
 	 * Create a new instance, setting all the necessary services.
-	 * 
+	 *
 	 * @param service
 	 *            The geometry edit service this controller uses.
 	 * @param snappingService
@@ -58,6 +60,24 @@ public abstract class AbstractGeometryIndexController extends AbstractController
 		this.snappingService = snappingService;
 	}
 
+	@Override
+	public void onMapTouchStart(TouchEvent<?> event) {
+		event.preventDefault();
+		onDown(event);
+	}
+
+	@Override
+	public void onMapTouchMove(TouchEvent<?> event) {
+		event.preventDefault();
+		onDrag(event);
+	}
+
+	@Override
+	public void onMapTouchEnd(TouchEvent<?> event) {
+		event.preventDefault();
+		onUp(event);
+	}
+
 	// ------------------------------------------------------------------------
 	// Public methods:
 	// ------------------------------------------------------------------------
@@ -65,7 +85,7 @@ public abstract class AbstractGeometryIndexController extends AbstractController
 	/**
 	 * Get the real world location of the event, while making sure it is within the maximum bounds. If no maximum bounds
 	 * have been set, the original event location in world space is returned.
-	 * 
+	 *
 	 * @param event
 	 *            The event to extract the location from.
 	 * @return The location within maximum bounds.
@@ -79,7 +99,7 @@ public abstract class AbstractGeometryIndexController extends AbstractController
 	/**
 	 * Get the snapped real world location of the event, while making sure it is within the maximum bounds. If no
 	 * maximum bounds have been set, the snapped location of the event in world space is returned.
-	 * 
+	 *
 	 * @param event
 	 *            The event to extract the location from.
 	 * @return The location within maximum bounds.
@@ -99,7 +119,7 @@ public abstract class AbstractGeometryIndexController extends AbstractController
 
 	/**
 	 * Should this controller make use of snapping or not?
-	 * 
+	 *
 	 * @return true or false.
 	 */
 	public boolean isSnappingEnabled() {
@@ -108,7 +128,7 @@ public abstract class AbstractGeometryIndexController extends AbstractController
 
 	/**
 	 * Determine whether or not this controller should make use of snapping.
-	 * 
+	 *
 	 * @param snappingEnabled
 	 *            True or false.
 	 */
@@ -118,7 +138,7 @@ public abstract class AbstractGeometryIndexController extends AbstractController
 
 	/**
 	 * Get an optional maximum bounds wherein all positions should stay.
-	 * 
+	 *
 	 * @return An optional maximum bounds.
 	 */
 	public Bbox getMaxBounds() {
@@ -127,7 +147,7 @@ public abstract class AbstractGeometryIndexController extends AbstractController
 
 	/**
 	 * Apply an optional maximum bounds wherein all positions should stay.
-	 * 
+	 *
 	 * @param maxBounds
 	 *            The maximum bounds, or null if no restrictions should be placed on locations during editing (null is
 	 *            the default value).
@@ -143,7 +163,7 @@ public abstract class AbstractGeometryIndexController extends AbstractController
 	/**
 	 * Get a location, derived from the original, that is sure to be within the maximum bounds. If no maximum bounds
 	 * have been set, a clone of the original is returned.
-	 * 
+	 *
 	 * @param original
 	 *            The original location.
 	 * @return The derived location within the maximum bounds.
@@ -166,3 +186,5 @@ public abstract class AbstractGeometryIndexController extends AbstractController
 		return new Coordinate(x, y);
 	}
 }
+/* CHECKSTYLE:ON */
+/* CHECKSTYLE:ON */
