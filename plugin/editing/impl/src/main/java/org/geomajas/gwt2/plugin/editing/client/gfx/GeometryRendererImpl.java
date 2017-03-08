@@ -1,4 +1,3 @@
-/* CHECKSTYLE:OFF */
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
@@ -55,7 +54,6 @@ import org.geomajas.plugin.editing.client.event.state.GeometryIndexMarkForDeleti
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexMarkForDeletionEndHandler;
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexSelectedEvent;
 import org.geomajas.plugin.editing.client.event.state.GeometryIndexSelectedHandler;
-import org.geomajas.plugin.editing.client.gfx.GeometryRenderer;
 import org.geomajas.plugin.editing.client.handler.EdgeMapHandlerFactory;
 import org.geomajas.plugin.editing.client.handler.VertexMapHandlerFactory;
 import org.geomajas.plugin.editing.client.service.GeometryEditService;
@@ -674,5 +672,3 @@ public class GeometryRendererImpl implements GeometryShapeRenderer, GeometryEdit
 		return true;
 	}
 }
-/* CHECKSTYLE:ON */
-/* CHECKSTYLE:ON */

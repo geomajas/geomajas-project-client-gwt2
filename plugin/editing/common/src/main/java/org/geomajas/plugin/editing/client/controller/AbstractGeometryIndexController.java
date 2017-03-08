@@ -1,4 +1,3 @@
-/* CHECKSTYLE:OFF */
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
@@ -186,5 +185,3 @@ public abstract class AbstractGeometryIndexController extends AbstractController
 		return new Coordinate(x, y);
 	}
 }
-/* CHECKSTYLE:ON */
-/* CHECKSTYLE:ON */
