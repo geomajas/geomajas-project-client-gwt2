@@ -21,6 +21,7 @@ import org.geomajas.gwt2.example.base.client.sample.SamplePanel;
 import org.vaadin.gwtgraphics.client.shape.Rectangle;
 import org.vaadin.gwtgraphics.client.shape.Text;
 
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
@@ -29,6 +30,12 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
+import com.google.gwt.event.dom.client.TouchEndEvent;
+import com.google.gwt.event.dom.client.TouchEndHandler;
+import com.google.gwt.event.dom.client.TouchMoveEvent;
+import com.google.gwt.event.dom.client.TouchMoveHandler;
+import com.google.gwt.event.dom.client.TouchStartEvent;
+import com.google.gwt.event.dom.client.TouchStartHandler;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
@@ -36,7 +43,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 /**
  * ContentPanel that demonstrates user interaction on custom drawings.
- * 
+ *
  * @author Pieter De Graef
  */
 public class DrawingInteractionPanel implements SamplePanel {
@@ -67,7 +74,7 @@ public class DrawingInteractionPanel implements SamplePanel {
 
 	/**
 	 * Map initialization handler that draws a rectangle in screen space.
-	 * 
+	 *
 	 * @author Pieter De Graef
 	 */
 	private class MyMapInitializationHandler implements MapInitializationHandler {
@@ -91,6 +98,9 @@ public class DrawingInteractionPanel implements SamplePanel {
 			rectangle.addMouseUpHandler(dragHandler);
 			rectangle.addMouseMoveHandler(dragHandler);
 			rectangle.addMouseOutHandler(dragHandler);
+			rectangle.addDomHandler(dragHandler, TouchMoveEvent.getType());
+			rectangle.addDomHandler(dragHandler, TouchStartEvent.getType());
+			rectangle.addDomHandler(dragHandler, TouchEndEvent.getType());
 			text.addMouseDownHandler(dragHandler);
 			text.addMouseUpHandler(dragHandler);
 			text.addMouseMoveHandler(dragHandler);
@@ -100,16 +110,56 @@ public class DrawingInteractionPanel implements SamplePanel {
 
 	/**
 	 * A mouse handler that lets the rectangle (and the accompanying text) move around the map by dragging it.
-	 * 
+	 *
 	 * @author Pieter De Graef
 	 */
-	private class DragHandler implements MouseDownHandler, MouseUpHandler, MouseMoveHandler, MouseOutHandler {
+	private class DragHandler
+			implements
+				MouseDownHandler,
+				MouseUpHandler,
+				MouseMoveHandler,
+				MouseOutHandler,
+				TouchStartHandler,
+				TouchMoveHandler,
+				TouchEndHandler {
 
 		private boolean dragging;
 
 		private int startX;
 
 		private int startY;
+
+		@Override
+		public void onTouchEnd(TouchEndEvent event) {
+			dragging = false;
+		}
+
+		@Override
+		public void onTouchMove(TouchMoveEvent event) {
+			if (dragging) {
+				if (event.getTouches().length() == 1) {
+					Element e = event.getRelativeElement();
+					int deltaX = event.getTouches().get(0).getRelativeX(e) - startX;
+					int deltaY = event.getTouches().get(0).getRelativeY(e) - startY;
+					rectangle.setX(rectangle.getX() + deltaX);
+					rectangle.setY(rectangle.getY() + deltaY);
+					text.setX(text.getX() + deltaX);
+					text.setY(text.getY() + deltaY);
+				}
+			}
+		}
+
+		@Override
+		public void onTouchStart(TouchStartEvent event) {
+			if (event.getTouches().length() == 1) {
+				dragging = true;
+				Element e = event.getRelativeElement();
+				startX = event.getTouches().get(0).getRelativeX(e);
+				startY = event.getTouches().get(0).getRelativeY(e);
+			}
+			// Stop the event from reaching the map controller: no panning while we're dragging the rectangle.
+			event.stopPropagation();
+		}
 
 		public void onMouseMove(MouseMoveEvent event) {
 			if (dragging) {
