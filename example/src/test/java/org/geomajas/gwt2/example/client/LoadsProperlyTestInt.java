@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -24,7 +25,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * Verify that the application loads properly.
- * 
+ *
  * @author Jan De Moerloose
  */
 public class LoadsProperlyTestInt {
@@ -43,10 +44,11 @@ public class LoadsProperlyTestInt {
 
 	/**
 	 * Simple test which verifies that the demo starts.
-	 * 
+	 *
 	 * @throws Exception oops
 	 */
 	@Test
+	@Ignore
 	public void testDemoLoadsProperly() throws Exception {
 		WebDriverWait wait = new WebDriverWait(driver, 20);
 		wait.pollingEvery(500, TimeUnit.MILLISECONDS);
