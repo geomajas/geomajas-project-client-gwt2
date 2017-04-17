@@ -20,6 +20,7 @@ import org.geomajas.gwt2.example.client.i18n.SampleMessages;
 import org.geomajas.gwt2.example.client.sample.feature.FeatureSelectionPanel;
 import org.geomajas.gwt2.example.client.sample.feature.MultiLineStringFeatureSelectionPanel;
 import org.geomajas.gwt2.example.client.sample.general.AlternativeControlsPanel;
+import org.geomajas.gwt2.example.client.sample.general.MapBoundingBoxPanel;
 import org.geomajas.gwt2.example.client.sample.general.MapFillPanel;
 import org.geomajas.gwt2.example.client.sample.general.NavigationOptionPanel;
 import org.geomajas.gwt2.example.client.sample.general.ResizeMapPanel;
@@ -255,6 +256,33 @@ public class ExampleJar implements EntryPoint {
 //				return CATEGORY_GENERAL;
 //			}
 //		});
+		SamplePanelRegistry.registerFactory(CATEGORY_GENERAL, new ShowcaseSampleDefinition() {
+
+			public SamplePanel create() {
+				return new MapBoundingBoxPanel();
+			}
+
+			public String getTitle() {
+				return MESSAGES.generalMapBoundingBoxTitle();
+			}
+
+			public String getShortDescription() {
+				return MESSAGES.generalMapBoundingBoxShort();
+			}
+
+			public String getDescription() {
+				return MESSAGES.generalMapBoundingBoxDescription();
+			}
+
+			public String getCategory() {
+				return CATEGORY_GENERAL;
+			}
+
+			@Override
+			public String getKey() {
+				return "boundingbox";
+			}
+		});
 	}
 
 	private void registerLayerSamples() {

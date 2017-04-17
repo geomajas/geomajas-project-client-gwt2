@@ -78,6 +78,12 @@ public interface SampleMessages extends Messages {
 
 	String generalTraceNavigationDescription();
 
+	String generalMapBoundingBoxTitle();
+
+	String generalMapBoundingBoxShort();
+
+	String generalMapBoundingBoxDescription();
+
 	// ------------------------------------------------------------------------
 	// Category: Layers
 	// ------------------------------------------------------------------------
