@@ -85,7 +85,7 @@ public class VectorTileObject extends VectorObject {
 		 if(fragment) {
 			 var children = fragment.childNodes;         
 			 for(var i=0; i < children.length; i++) {
-		var node = @org.geomajas.gwt.client.gfx.VectorTileObject::clone(Lcom/google/gwt/user/client/Element;)
+		var node = @org.geomajas.gwt2.client.gfx.VectorTileObject::clone(Lcom/google/gwt/user/client/Element;)
 				 		(children[i]);
 				 element.appendChild (node);
 			 }
